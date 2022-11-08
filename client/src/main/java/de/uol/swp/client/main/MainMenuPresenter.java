@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.user.UserService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -123,7 +122,23 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method called when the logout button is pressed
+     * Method called when the Delete User button is pressed
+     *
+     * If the Delete User button is pressed, this method requests the user service
+     * first to logout the user, then to drop the user.
+     *
+     * @param event The ActionEvent created by pressing the Delete User button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onDropUser(ActionEvent event) {
+        LOG.info("Trying to drop user......");
+        userService.dropUser(loggedInUser);
+    }
+
+    /**
+     * Method called when the Logout button is pressed
      *
      * If the logout button is pressed, this method requests the user service
      * to log this user out.
