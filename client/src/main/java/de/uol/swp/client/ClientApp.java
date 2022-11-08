@@ -10,10 +10,13 @@ import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.message.UserLoggedInMessage;
+import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -186,6 +189,22 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.info("Registration successful.");
 		sceneManager.showLoginScreen();
 	}
+	/**
+	 * Show Login Screen
+	 *
+	 * If an DeadEvent object is detected on the EventBus, this method is called.
+	 * It writes "DeadEvent detected " and the error message of the detected DeadEvent
+	 * object to the log, if the loglevel is set to ERROR or higher.
+	 *
+	 * @param deadEvent The DeadEvent object found on the EventBus
+	 * @since 2019-08-07
+	 */
+	@Subscribe
+	void onUserLoggedOutMessage(UserLoggedOutMessage message){
+		LOG.info("User logged out.");
+		sceneManager.showLoginScreen();
+	}
+
 
 	/**
 	 * Handles errors produced by the EventBus

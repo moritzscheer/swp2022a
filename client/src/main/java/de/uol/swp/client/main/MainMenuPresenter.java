@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.user.UserService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -119,6 +120,25 @@ public class MainMenuPresenter extends AbstractPresenter {
     public void onAllOnlineUsersResponse(AllOnlineUsersResponse allUsersResponse) {
         LOG.debug("Update of user list {}", allUsersResponse.getUsers());
         updateUsersList(allUsersResponse.getUsers());
+    }
+
+    /**
+     * Logout Button
+     *
+     * This method clears the entire user list and then adds the name of each user
+     * in the list given to the main menus user list. If there ist no user list
+     * this it creates one.
+     *
+     * @implNote The code inside this Method has to run in the JavaFX-application
+     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged in
+     *                 users
+     * @see de.uol.swp.common.user.UserDTO
+     * @since 2019-08-29
+     */
+    @FXML
+    void onLogout(ActionEvent event) {
+        userService.logout(loggedInUser);
     }
 
     /**
