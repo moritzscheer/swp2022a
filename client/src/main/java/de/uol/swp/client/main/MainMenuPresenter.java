@@ -123,21 +123,17 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Logout Button
+     * Method called when the logout button is pressed
      *
-     * This method clears the entire user list and then adds the name of each user
-     * in the list given to the main menus user list. If there ist no user list
-     * this it creates one.
+     * If the logout button is pressed, this method requests the user service
+     * to log this user out.
      *
-     * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged in
-     *                 users
-     * @see de.uol.swp.common.user.UserDTO
-     * @since 2019-08-29
+     * @param event The ActionEvent created by pressing the logout button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
      */
     @FXML
-    void onLogout(ActionEvent event) {
+    private void onLogout(ActionEvent event) {
         userService.logout(loggedInUser);
     }
 

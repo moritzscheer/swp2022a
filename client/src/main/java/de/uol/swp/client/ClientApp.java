@@ -190,18 +190,20 @@ public class ClientApp extends Application implements ConnectionListener {
 		sceneManager.showLoginScreen();
 	}
 	/**
-	 * Show Login Screen
+	 * Handles Logout
 	 *
-	 * If an DeadEvent object is detected on the EventBus, this method is called.
-	 * It writes "DeadEvent detected " and the error message of the detected DeadEvent
-	 * object to the log, if the loglevel is set to ERROR or higher.
+	 * If an UserLoggedOutMessage object is detected on the EventBus this
+  	 * method is called. It tells the SceneManager to show the login window. If
+  	 * the loglevel is set to INFO or higher "User {username} logged out." is written
+  	 * to the log.
 	 *
-	 * @param deadEvent The DeadEvent object found on the EventBus
-	 * @since 2019-08-07
+	 * @param message The UserLoggedOutMessage object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @since 2022-11-08
 	 */
 	@Subscribe
 	void onUserLoggedOutMessage(UserLoggedOutMessage message){
-		LOG.info("User logged out.");
+		LOG.info("User {} logged out.",  message.getUsername());
 		sceneManager.showLoginScreen();
 	}
 
