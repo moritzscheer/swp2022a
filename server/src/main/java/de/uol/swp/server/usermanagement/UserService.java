@@ -101,9 +101,8 @@ public class UserService extends AbstractService {
         }
         ResponseMessage returnMessage;
         try {
-            LOG.error("Got herreeeeeee!!");
             userManagement.dropUser(msg.getUser());
-            returnMessage = new UserDroppedResponse();
+            returnMessage = new UserDroppedResponse(msg.getUsername());
         }catch (Exception e){
             LOG.error(e);
             returnMessage = new RegistrationExceptionMessage("Cannot drop user "+msg.getUser()+" "+e.getMessage());

@@ -221,7 +221,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 */
 	@Subscribe
 	void onUserDroppedResponse(UserDroppedResponse response){
-		LOG.info("User dropped.");
+		LOG.info("User {} has been dropped.", response.getUsername());
 		sceneManager.showLoginScreen();
 	}
 

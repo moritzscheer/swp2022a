@@ -133,8 +133,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onDropUser(ActionEvent event) {
-        LOG.info("Trying to drop user......");
         userService.dropUser(loggedInUser);
+        userService.logout(loggedInUser);
     }
 
     /**

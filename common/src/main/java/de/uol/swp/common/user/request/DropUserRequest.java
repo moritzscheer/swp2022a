@@ -29,6 +29,8 @@ public class DropUserRequest extends AbstractRequestMessage {
 		return toDrop;
 	}
 
+	public String getUsername(){ return toDrop.getUsername(); };
+
 	@Override
 	public boolean authorizationNeeded() {
 		return false;
