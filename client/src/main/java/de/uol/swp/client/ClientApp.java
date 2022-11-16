@@ -8,6 +8,7 @@ import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
+import de.uol.swp.common.lobby.message.LobbyCreatedResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -185,6 +186,22 @@ public class ClientApp extends Application implements ConnectionListener {
 	public void onRegistrationSuccessfulMessage(RegistrationSuccessfulResponse message) {
 		LOG.info("Registration successful.");
 		sceneManager.showLoginScreen();
+	}
+
+	/**
+	 * Handles successful created Lobbies
+	 *
+	 * If an LobbyCreatedResponse object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the lobby window. If
+	 *
+	 * @param message The LobbyCreatedResponse object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @since 2022-11-15
+	 */
+	@Subscribe
+	public void onLobbyCreatedMessage(LobbyCreatedResponse message) {
+		LOG.info("Lobby created.");
+		sceneManager.showLobbyViewScreen();
 	}
 
 	/**

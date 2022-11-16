@@ -7,11 +7,14 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.lobby.LobbyPresenter;
+import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
+import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +45,7 @@ public class SceneManager {
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
+    private Scene lobbyScene;
     private Scene mainScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
@@ -66,6 +70,7 @@ public class SceneManager {
         initLoginView();
         initMainView();
         initRegistrationView();
+        initLobbyView();
     }
 
     /**
@@ -148,6 +153,24 @@ public class SceneManager {
     }
 
     /**
+     * Initializes the lobby view
+     *
+     * If the lobbyScene is null it gets set to a new scene containing the
+     * a pane showing the lobby view as specified by the LobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-15
+     */
+    private void initLobbyView() throws IOException {
+        if (lobbyScene == null){
+            Parent rootPane = initPresenter(LobbyPresenter.FXML);
+            lobbyScene = new Scene(rootPane, 1600,900);
+            lobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
      * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets
@@ -209,6 +232,21 @@ public class SceneManager {
     }
 
     /**
+     * Handles ShowLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowLobbyViewEvent is detected on the EventBus, this method gets
+     * called. It shows the error message of the event in a error alert.
+     *
+     * @param event The ShowLobbyViewEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
+     * @since 2022-11-15
+     */
+    @Subscribe
+    public void onShowLobbyEvent(ShowLobbyViewEvent event) {
+        showLobbyViewScreen();
+    }
+
+    /**
      * Shows an error message inside an error alert
      *
      * @param message The type of error to be shown
@@ -263,6 +301,7 @@ public class SceneManager {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
+            primaryStage.centerOnScreen();
         });
     }
 
@@ -318,5 +357,17 @@ public class SceneManager {
      */
     public void showRegistrationScreen() {
         showScene(registrationScene,"Registration");
+    }
+
+    /**
+     * Shows the Lobby screen
+     *
+     * Switches the current Scene to the lobbyScene and sets the title of
+     * the window to "Lobby"
+     *
+     * @since 2022-11-15
+     */
+    public void showLobbyViewScreen() {
+        showScene(lobbyScene,"Lobby");
     }
 }

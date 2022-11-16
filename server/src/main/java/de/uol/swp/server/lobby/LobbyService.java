@@ -6,9 +6,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.message.*;
+import de.uol.swp.common.lobby.message.LobbyCreatedResponse;
+import de.uol.swp.common.message.MessageContext;
+import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
@@ -59,6 +64,11 @@ public class LobbyService extends AbstractService {
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
         lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getOwner());
         sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
+
+        ResponseMessage returnMessage = new LobbyCreatedResponse();
+
+        createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
     }
 
     /**
