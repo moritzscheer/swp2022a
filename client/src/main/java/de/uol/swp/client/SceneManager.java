@@ -7,6 +7,12 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.lobby.MultiplayerCanceledEvent;
+import de.uol.swp.client.lobby.MultiplayerPresenter;
+import de.uol.swp.client.lobby.ShowMultiplayerViewEvent;
+import de.uol.swp.client.lobby.create.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.create.CreateLobbyPresenter;
+import de.uol.swp.client.lobby.create.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
@@ -42,6 +48,10 @@ public class SceneManager {
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
+
+    private Scene multiplayerScene;
+
+    private Scene createLobbyScene;
     private Scene mainScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
@@ -66,6 +76,8 @@ public class SceneManager {
         initLoginView();
         initMainView();
         initRegistrationView();
+        initMultiplayerView();
+        initCreateLobbyView();
     }
 
     /**
@@ -147,6 +159,22 @@ public class SceneManager {
         }
     }
 
+    private void initMultiplayerView() throws IOException {
+        if (multiplayerScene == null){
+            Parent rootPane = initPresenter(MultiplayerPresenter.FXML);
+            multiplayerScene = new Scene(rootPane, 400,200);
+            multiplayerScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    private void initCreateLobbyView() throws IOException {
+        if (createLobbyScene == null){
+            Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
+            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
@@ -188,6 +216,39 @@ public class SceneManager {
      * @see de.uol.swp.client.register.event.RegistrationCanceledEvent
      * @since 2019-09-03
      */
+
+    @Subscribe
+    public void onShowMultiplayerEvent(ShowMultiplayerViewEvent event){
+        showMultiplayerScreen();
+    }
+
+    /**
+     * Handles RegistrationCanceledEvent detected on the EventBus
+     *
+     * If a RegistrationCanceledEvent is detected on the EventBus, this method gets
+     * called. It calls a method to show the screen shown before registration.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.register.event.RegistrationCanceledEvent
+     * @since 2019-09-03
+     */
+
+    @Subscribe
+    public void onCreateLobbyEvent(ShowCreateLobbyViewEvent event){
+        showCreateLobbyScreen();
+    }
+
+    /**
+     * Handles RegistrationCanceledEvent detected on the EventBus
+     *
+     * If a RegistrationCanceledEvent is detected on the EventBus, this method gets
+     * called. It calls a method to show the screen shown before registration.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.register.event.RegistrationCanceledEvent
+     * @since 2019-09-03
+     */
+
     @Subscribe
     public void onRegistrationCanceledEvent(RegistrationCanceledEvent event){
         showScene(lastScene, lastTitle);
@@ -203,6 +264,29 @@ public class SceneManager {
      * @see de.uol.swp.client.register.event.RegistrationErrorEvent
      * @since 2019-09-03
      */
+
+    @Subscribe
+    public void onMultiplayerCanceledEvent(MultiplayerCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    @Subscribe
+    public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    /**
+     * Handles RegistrationErrorEvent detected on the EventBus
+     *
+     * If a RegistrationErrorEvent is detected on the EventBus, this method gets
+     * called. It shows the error message of the event in a error alert.
+     *
+     * @param event The RegistrationErrorEvent detected on the EventBus
+     * @see de.uol.swp.client.register.event.RegistrationErrorEvent
+     * @since 2019-09-03
+     */
+
+
     @Subscribe
     public void onRegistrationErrorEvent(RegistrationErrorEvent event) {
         showError(event.getMessage());
@@ -319,4 +403,13 @@ public class SceneManager {
     public void showRegistrationScreen() {
         showScene(registrationScene,"Registration");
     }
+
+    public void showMultiplayerScreen() {
+        showScene(multiplayerScene,"Multiplayer");
+    }
+
+    public void showCreateLobbyScreen() {
+        showScene(createLobbyScene,"Create Lobby");
+    }
+
 }

@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.ShowMultiplayerViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -177,6 +178,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     void onJoinLobby(ActionEvent event) {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
+    }
+
+    @FXML
+     void onMultiplayer(ActionEvent actionEvent) {
+        eventBus.post(new ShowMultiplayerViewEvent());
     }
 
 

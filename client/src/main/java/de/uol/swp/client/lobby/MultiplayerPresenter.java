@@ -1,17 +1,24 @@
-package de.uol.swp.client.register;
+package de.uol.swp.client.lobby;
 
 import com.google.common.base.Strings;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.create.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.user.ClientUserService;
+import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Manages the registration window
@@ -21,27 +28,33 @@ import javafx.scene.control.TextField;
  * @since 2019-08-29
  *
  */
-public class RegistrationPresenter extends AbstractPresenter {
+public class MultiplayerPresenter extends AbstractPresenter {
 
-    public static final String FXML = "/fxml/RegistrationView.fxml";
 
-    private static final RegistrationCanceledEvent registrationCanceledEvent = new RegistrationCanceledEvent();
+    public static final String FXML = "/fxml/LobbyScouterView.fxml";
+
+    private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
+
+    private ObservableList<String> users;
+
+    private User loggedInUser;
+
+    @Inject
+    private LobbyService lobbyService;
 
     @FXML
-    private TextField loginField;
+    private ListView<String> usersView;
 
-    @FXML
-    private PasswordField passwordField1;
 
-    @FXML
-    private PasswordField passwordField2;
 
-    /**
-     * Default Constructor
-     *
-     * @since 2019-09-18
-     */
-    public RegistrationPresenter() {
+
+
+    //private static final RegistrationCanceledEvent registrationCanceledEvent = new RegistrationCanceledEvent();
+
+    private static final MultiplayerCanceledEvent multiplayerCanceledEvent = new MultiplayerCanceledEvent();
+
+
+    public MultiplayerPresenter() {
     }
 
     /**
@@ -53,7 +66,7 @@ public class RegistrationPresenter extends AbstractPresenter {
      * @since 2019-09-18
      */
     @Inject
-    public RegistrationPresenter(EventBus eventBus, ClientUserService userService) {
+    public MultiplayerPresenter(EventBus eventBus, ClientUserService userService) {
         setEventBus(eventBus);
     }
 
@@ -71,7 +84,13 @@ public class RegistrationPresenter extends AbstractPresenter {
      */
     @FXML
     void onCancelButtonPressed(ActionEvent event) {
-        eventBus.post(registrationCanceledEvent);
+        eventBus.post(multiplayerCanceledEvent);
+    }
+
+    @FXML
+    void onCreateLobbyButtonPressed(ActionEvent actionEvent) {
+
+        eventBus.post(new ShowCreateLobbyViewEvent());
     }
 
     /**
@@ -90,18 +109,7 @@ public class RegistrationPresenter extends AbstractPresenter {
      * @since 2019-09-02
      *
      */
-    @FXML
-    void onRegisterButtonPressed(ActionEvent event) {
-        if (Strings.isNullOrEmpty(loginField.getText())){
-            eventBus.post(new RegistrationErrorEvent("Username cannot be empty"));
-        } else if (!passwordField1.getText().equals(passwordField2.getText())) {
-            eventBus.post(new RegistrationErrorEvent("Passwords are not equal"));
-        } else if (Strings.isNullOrEmpty(passwordField1.getText())) {
-            eventBus.post(new RegistrationErrorEvent("Password cannot be empty"));
-        } else {
-            userService.createUser(new UserDTO(loginField.getText(), passwordField1.getText(), "empty"));
-        }
-    }
+
 
 
 
