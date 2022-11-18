@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -160,7 +161,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     void onCreateLobby(ActionEvent event) {
-        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""));
+        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
     }
 
     /**
@@ -179,5 +180,12 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
     }
 
-
+    @FXML
+     void onMultiplayer(ActionEvent actionEvent) {
+        eventBus.post(new ShowMultiplayerViewEvent());
+    }
+    @FXML
+    void onSingleplayer(ActionEvent event){
+        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
+    }
 }

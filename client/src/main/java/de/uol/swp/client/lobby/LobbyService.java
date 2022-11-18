@@ -3,6 +3,7 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.lobby.message.CreateLobbyRequest;
+import de.uol.swp.common.lobby.message.DropLobbyRequest;
 import de.uol.swp.common.lobby.message.LobbyJoinUserRequest;
 import de.uol.swp.common.user.UserDTO;
 
@@ -39,8 +40,11 @@ public class LobbyService {
      * @see de.uol.swp.common.lobby.message.CreateLobbyRequest
      * @since 2019-11-20
      */
-    public void createNewLobby(String name, UserDTO user) {
+    public void createNewLobby(String name, UserDTO user, Boolean gamemode, String password, int roomSize) {
         CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user);
+        createLobbyRequest.setGamemode(gamemode);
+        createLobbyRequest.setPassword(password);
+        createLobbyRequest.setRoomSize(roomSize);
         eventBus.post(createLobbyRequest);
     }
 
@@ -55,5 +59,10 @@ public class LobbyService {
     public void joinLobby(String name, UserDTO user) {
         LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
         eventBus.post(joinUserRequest);
+    }
+
+    public void dropLobby(String name, UserDTO user) {
+        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user);
+        eventBus.post(dropLobbyRequest);
     }
 }

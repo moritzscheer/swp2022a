@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" styleClass="\@../css/swp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.LobbyPresenter">
+<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" styleClass="\@../css/swp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.Presenter.LobbyPresenter">
     <GridPane id="grid" layoutX="25.0" layoutY="25.0" prefHeight="850.0" prefWidth="1550.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1050.0" minWidth="10.0" prefWidth="1050.0" />
@@ -66,7 +66,7 @@
                   <font>
                      <Font size="18.0" />
                   </font></Button>
-                  <Button id="buttonBack" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="back">
+                  <Button id="buttonBack" maxHeight="40.0" maxWidth="100.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onButtonBackPressed" prefHeight="40.0" prefWidth="100.0" text="back">
                   <font>
                      <Font size="18.0" />
                   </font></Button>

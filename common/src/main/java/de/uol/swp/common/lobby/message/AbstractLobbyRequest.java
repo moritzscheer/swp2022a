@@ -15,6 +15,9 @@ import java.util.Objects;
  */
 public class AbstractLobbyRequest extends AbstractRequestMessage {
 
+    private Boolean gamemode;               //multiplayer = true, singleplayer = false
+    private int roomSize;                   //size of the Lobby
+    private String password;       //passwort of the lobby
     String name;
     UserDTO user;
 
@@ -91,5 +94,26 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
     @Override
     public int hashCode() {
         return Objects.hash(name, user);
+    }
+
+    public Boolean getGamemode() {
+        return gamemode;
+    }
+    public void setGamemode(Boolean gamemode) {
+        this.gamemode = gamemode;
+    }
+
+    public int getRoomSize() {
+        return roomSize;
+    }
+    public void setRoomSize(int roomSize) {
+        this.roomSize = roomSize;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

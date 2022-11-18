@@ -1,28 +1,26 @@
 package de.uol.swp.common.lobby.message;
 
-import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 /**
- * A response, that the Lobby creation was successful
+ * Request sent to the server when a user wants to delete the current lobby
  *
- * This response is only sent to clients that previously sent a CreateLobbyRequest
- * that was executed successfully, otherwise an ExceptionMessage would be sent.
- *
+ * @see de.uol.swp.common.lobby.message.AbstractLobbyRequest
+ * @see de.uol.swp.common.user.User
  * @author Moritz Scheer
- * @since 2022-11-15
+ * @since 2022-11-16
  */
 
-public class LobbyCreatedResponse extends AbstractLobbyResponse {
+public class DropLobbyRequest extends AbstractLobbyRequest{
 
     /**
      * Default constructor
      *
      * @implNote this constructor is needed for serialization
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
-    public LobbyCreatedResponse() {
+    public DropLobbyRequest() {
     }
 
     /**
@@ -30,9 +28,9 @@ public class LobbyCreatedResponse extends AbstractLobbyResponse {
      *
      * @param name name of the lobby
      * @param owner User trying to create the lobby
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
-    public LobbyCreatedResponse(String name, UserDTO owner) {
+    public DropLobbyRequest(String name, UserDTO owner) {
         super(name, owner);
     }
 
@@ -40,7 +38,7 @@ public class LobbyCreatedResponse extends AbstractLobbyResponse {
      * Setter for the user variable
      *
      * @param owner  User trying to create the lobby
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
     public void setOwner(UserDTO owner) {
         setUser(owner);
@@ -50,7 +48,7 @@ public class LobbyCreatedResponse extends AbstractLobbyResponse {
      * Getter for the user variable
      *
      * @return User trying to create the lobby
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
     public User getOwner() {
         return getUser();

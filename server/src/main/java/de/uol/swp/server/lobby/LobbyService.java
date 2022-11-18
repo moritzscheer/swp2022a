@@ -6,14 +6,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.message.*;
-import de.uol.swp.common.lobby.message.LobbyCreatedResponse;
-import de.uol.swp.common.message.MessageContext;
-import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
-import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
@@ -53,22 +48,18 @@ public class LobbyService extends AbstractService {
      *
      * If a CreateLobbyRequest is detected on the EventBus, this method is called.
      * It creates a new Lobby via the LobbyManagement using the parameters from the
-     * request and sends a LobbyCreatedMessage to every connected user
+     * request and sends a LobbyCreatedMessage to every connected user, if the gamemode
+     * is set to false. Else a LobbyCreatedMessage is send to the Client that send the Request.
      *
      * @param createLobbyRequest The CreateLobbyRequest found on the EventBus
-     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, User)
+     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, User, Boolean)
      * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
      * @since 2019-10-08
      */
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
-        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getOwner());
+        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getOwner(), createLobbyRequest.getGamemode());
         sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
-
-        ResponseMessage returnMessage = new LobbyCreatedResponse();
-
-        createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
-        post(returnMessage);
     }
 
     /**
@@ -115,6 +106,24 @@ public class LobbyService extends AbstractService {
             sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
         }
         // TODO: error handling not existing lobby
+    }
+
+    /**
+     * Handles DeleteLobbyRequest found on the EventBus
+     *
+     * If a DeleteLobbyRequest is detected on the EventBus, this method is called.
+     * It removes the lobby from a register in the LobbyManagement and sends a
+     * LobbyDeletedSuccessfulMessage to every user in the lobby.
+     *
+     * @param dropLobbyRequest The DropLobbyRequest found on the EventBus
+     * @see de.uol.swp.common.lobby.Lobby
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onDropLobbyRequest(DropLobbyRequest dropLobbyRequest) {
+        lobbyManagement.dropLobby(dropLobbyRequest.getUser());
+        sendToAll(new LobbyDroppedMessage(dropLobbyRequest.getName(), (UserDTO) dropLobbyRequest.getOwner()));
     }
 
     /**

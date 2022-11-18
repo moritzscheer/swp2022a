@@ -7,14 +7,19 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
-import de.uol.swp.client.lobby.LobbyPresenter;
+import de.uol.swp.client.lobby.Presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.event.MultiplayerCanceledEvent;
+import de.uol.swp.client.lobby.Presenter.FindCreatePresenter;
+import de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent;
+import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.Presenter.CreateLobbyPresenter;
+import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
-import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -46,10 +51,11 @@ public class SceneManager {
     private String lastTitle;
     private Scene registrationScene;
     private Scene lobbyScene;
+    private Scene multiplayerScene;
+    private Scene createLobbyScene;
     private Scene mainScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
-
     private final Injector injector;
 
     @Inject
@@ -71,6 +77,8 @@ public class SceneManager {
         initMainView();
         initRegistrationView();
         initLobbyView();
+        initMultiplayerView();
+        initCreateLobbyView();
     }
 
     /**
@@ -152,21 +160,27 @@ public class SceneManager {
         }
     }
 
-    /**
-     * Initializes the lobby view
-     *
-     * If the lobbyScene is null it gets set to a new scene containing the
-     * a pane showing the lobby view as specified by the LobbyView
-     * FXML file.
-     *
-     * @see de.uol.swp.client.register.RegistrationPresenter
-     * @since 2022-11-15
-     */
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);
             lobbyScene = new Scene(rootPane, 1600,900);
             lobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    private void initMultiplayerView() throws IOException {
+        if (multiplayerScene == null){
+            Parent rootPane = initPresenter(FindCreatePresenter.FXML);
+            multiplayerScene = new Scene(rootPane, 400,200);
+            multiplayerScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    private void initCreateLobbyView() throws IOException {
+        if (createLobbyScene == null){
+            Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
+            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
 
@@ -202,6 +216,36 @@ public class SceneManager {
     }
 
     /**
+     * Handles ShowMultiplayerViewEvent detected on the EventBus
+     *
+     * If a ShowMultiplayerViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The ShowMultiplayerViewEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onShowMultiplayerEvent(ShowMultiplayerViewEvent event){
+        showMultiplayerScreen();
+    }
+
+    /**
+     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onCreateLobbyEvent(ShowCreateLobbyViewEvent event){
+        showCreateLobbyScreen();
+    }
+
+    /**
      * Handles RegistrationCanceledEvent detected on the EventBus
      *
      * If a RegistrationCanceledEvent is detected on the EventBus, this method gets
@@ -230,6 +274,27 @@ public class SceneManager {
     public void onRegistrationErrorEvent(RegistrationErrorEvent event) {
         showError(event.getMessage());
     }
+
+    @Subscribe
+    public void onMultiplayerCanceledEvent(MultiplayerCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    @Subscribe
+    public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    /**
+     * Handles RegistrationErrorEvent detected on the EventBus
+     *
+     * If a RegistrationErrorEvent is detected on the EventBus, this method gets
+     * called. It shows the error message of the event in a error alert.
+     *
+     * @param event The RegistrationErrorEvent detected on the EventBus
+     * @see de.uol.swp.client.register.event.RegistrationErrorEvent
+     * @since 2019-09-03
+     */
 
     /**
      * Handles ShowLobbyViewEvent detected on the EventBus
@@ -359,15 +424,16 @@ public class SceneManager {
         showScene(registrationScene,"Registration");
     }
 
-    /**
-     * Shows the Lobby screen
-     *
-     * Switches the current Scene to the lobbyScene and sets the title of
-     * the window to "Lobby"
-     *
-     * @since 2022-11-15
-     */
+    public void showMultiplayerScreen() {
+        showScene(multiplayerScene,"Multiplayer");
+    }
+
+    public void showCreateLobbyScreen() {
+        showScene(createLobbyScene,"Create Lobby");
+    }
+
     public void showLobbyViewScreen() {
         showScene(lobbyScene,"Lobby");
     }
+
 }
