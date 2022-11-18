@@ -37,6 +37,7 @@ public class SceneManager {
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
+    static final String MAIN_MENU_VIEW_STYLE = "/images/HintergrundUndLogo.png";
 
     private final Stage primaryStage;
     private Scene loginScene;
@@ -52,6 +53,7 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
+        primaryStage.setResizable(false);
         this.injector = injected;
         initViews();
     }
@@ -106,9 +108,9 @@ public class SceneManager {
      */
     private void initMainView() throws IOException {
         if (mainScene == null) {
-            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = new Scene(rootPane, 800, 600);
-            mainScene.getStylesheets().add(STYLE_SHEET);
+           Parent rootPane = initPresenter(MainMenuPresenter.FXML);
+            mainScene = new Scene(rootPane, 600, 600);
+            mainScene.getStylesheets().add(MAIN_MENU_VIEW_STYLE);
         }
     }
 
