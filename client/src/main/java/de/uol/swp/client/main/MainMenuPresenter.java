@@ -148,7 +148,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-08
      */
     @FXML
-    private void onLogout(ActionEvent event) {
+    private void onLogoutButtonPressed(ActionEvent event) {
         userService.logout(loggedInUser);
     }
 
