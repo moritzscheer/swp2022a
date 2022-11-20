@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="Cefqmx0Oj_4-pc0AHTQd" name="Page-1">
-        <mxGraphModel dx="1794" dy="1654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="1">
+        <mxGraphModel dx="2595" dy="670" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="1">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -61,9 +61,6 @@
                     <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
                         <mxPoint x="1" y="2" as="offset"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="96" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;rounded=0;" parent="8" vertex="1">
-                    <mxGeometry x="45" y="710" width="10" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="10" value="serverHandler" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="1314.47" y="80" width="100" height="400" as="geometry"/>
@@ -316,27 +313,27 @@
                         <mxPoint x="47" y="-2" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="106" value="UserService" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" vertex="1" parent="1">
+                <mxCell id="106" value="UserService" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="544.47" y="80" width="120" height="800" as="geometry"/>
                 </mxCell>
-                <mxCell id="107" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;" vertex="1" parent="106">
+                <mxCell id="107" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;" parent="106" vertex="1">
                     <mxGeometry x="55" y="170" width="10" height="40" as="geometry"/>
                 </mxCell>
-                <mxCell id="108" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;entryX=0.029;entryY=0.005;entryDx=0;entryDy=0;entryPerimeter=0;rounded=0;exitX=1.167;exitY=1.008;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="1" source="3" target="107">
+                <mxCell id="108" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;entryX=0.029;entryY=0.005;entryDx=0;entryDy=0;entryPerimeter=0;rounded=0;exitX=1.167;exitY=1.008;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="3" target="107" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="294.9985714285713" y="290" as="sourcePoint"/>
                         <mxPoint x="439.55" y="290" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="109" value="logout(loggedInUser)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" vertex="1" connectable="0" parent="108">
+                <mxCell id="109" value="logout(loggedInUser)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="108" vertex="1" connectable="0">
                     <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
                         <mxPoint x="-20" y="-2" as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="110" value="ClientApp" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" vertex="1" parent="1">
+                <mxCell id="110" value="ClientApp" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
                     <mxGeometry x="380" y="80" width="120" height="800" as="geometry"/>
                 </mxCell>
-                <mxCell id="112" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;rounded=0;" edge="1" parent="1" source="89" target="110">
+                <mxCell id="112" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;rounded=0;" parent="1" source="89" target="110" edge="1">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="749.4700000000003" y="749.2299999999999" as="sourcePoint"/>
                         <mxPoint x="445.5999999999999" y="749.6499999999996" as="targetPoint"/>
@@ -345,7 +342,7 @@
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="113" value="onUserLoggedOutMessage(UserLoggedOutMessage)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" vertex="1" connectable="0" parent="112">
+                <mxCell id="113" value="onUserLoggedOutMessage(UserLoggedOutMessage)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="112" vertex="1" connectable="0">
                     <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
                         <mxPoint x="-52" y="3" as="offset"/>
                     </mxGeometry>
