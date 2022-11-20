@@ -1,6 +1,5 @@
 *.class
 bin/
-*/target/*
-!client/target/classes/
+target/
 .idea
 *.iml
