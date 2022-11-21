@@ -1,4 +1,4 @@
 package de.uol.swp.client.lobby.event;
 
-public class MultiplayerCanceledEvent {
+public class FindCreateCanceledEvent {
 }

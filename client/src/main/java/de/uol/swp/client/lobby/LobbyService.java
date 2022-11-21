@@ -2,9 +2,10 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
-import de.uol.swp.common.lobby.message.CreateLobbyRequest;
-import de.uol.swp.common.lobby.message.DropLobbyRequest;
-import de.uol.swp.common.lobby.message.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.CreateLobbyRequest;
+import de.uol.swp.common.lobby.request.DropLobbyRequest;
+import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -37,15 +38,16 @@ public class LobbyService {
      *
      * @param name Name chosen for the new lobby
      * @param user User who wants to create the new lobby
-     * @see de.uol.swp.common.lobby.message.CreateLobbyRequest
+     * @see CreateLobbyRequest
      * @since 2019-11-20
      */
-    public void createNewLobby(String name, UserDTO user, Boolean gamemode, String password, int roomSize) {
-        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user);
-        createLobbyRequest.setGamemode(gamemode);
-        createLobbyRequest.setPassword(password);
-        createLobbyRequest.setRoomSize(roomSize);
+    public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
+        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, isMultiplayer);
+        if(isMultiplayer) {
+            createLobbyRequest.setPassword(password);
+        }
         eventBus.post(createLobbyRequest);
+
     }
 
     /**
@@ -53,7 +55,7 @@ public class LobbyService {
      *
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
-     * @see de.uol.swp.common.lobby.message.LobbyJoinUserRequest
+     * @see LobbyJoinUserRequest
      * @since 2019-11-20
      */
     public void joinLobby(String name, UserDTO user) {
@@ -61,8 +63,13 @@ public class LobbyService {
         eventBus.post(joinUserRequest);
     }
 
-    public void dropLobby(String name, UserDTO user) {
-        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user);
+    public void dropLobby(String name, UserDTO user, Boolean isMultiplayer) {
+        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user, isMultiplayer);
         eventBus.post(dropLobbyRequest);
+    }
+
+    public void leaveLobby(String name, UserDTO user) {
+        LobbyLeaveUserRequest lobbyLeaveUserRequest = new LobbyLeaveUserRequest(name, user);
+        eventBus.post(lobbyLeaveUserRequest);
     }
 }

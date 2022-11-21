@@ -1,12 +1,20 @@
-package de.uol.swp.common.lobby.message;
+package de.uol.swp.common.lobby.request;
 
 import de.uol.swp.common.message.AbstractRequestMessage;
-import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
 
-public class AbstractLobbyResponse extends AbstractResponseMessage {
+/**
+ * Base class of all lobby request messages. Basic handling of lobby data.
+ *
+ * @see de.uol.swp.common.user.User
+ * @see de.uol.swp.common.message.AbstractRequestMessage
+ * @author Marco Grawunder
+ * @since 2019-10-08
+ */
+public class AbstractLobbyRequest extends AbstractRequestMessage {
+
     String name;
     UserDTO user;
 
@@ -14,9 +22,9 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * Default constructor
      *
      * @implNote this constructor is needed for serialization
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
-    public AbstractLobbyResponse() {
+    public AbstractLobbyRequest() {
     }
 
     /**
@@ -24,9 +32,9 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      *
      * @param name name of the lobby
      * @param user user responsible for the creation of this message
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
-    public AbstractLobbyResponse(String name, UserDTO user) {
+    public AbstractLobbyRequest(String name, UserDTO user) {
         this.name = name;
         this.user = user;
     }
@@ -35,7 +43,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * Getter for the name variable
      *
      * @return String containing the lobby's name
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
     public String getName() {
         return name;
@@ -45,7 +53,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * Setter for the name variable
      *
      * @param name  String containing the lobby's name
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
     public void setName(String name) {
         this.name = name;
@@ -55,7 +63,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * Getter for the user variable
      *
      * @return User responsible for the creation of this message
-     * @since 2022-11-16
+     * @since 2019-10-08
      */
     public UserDTO getUser() {
         return user;
@@ -75,7 +83,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbstractLobbyResponse that = (AbstractLobbyResponse) o;
+        AbstractLobbyRequest that = (AbstractLobbyRequest) o;
         return Objects.equals(name, that.name) &&
                 Objects.equals(user, that.user);
     }

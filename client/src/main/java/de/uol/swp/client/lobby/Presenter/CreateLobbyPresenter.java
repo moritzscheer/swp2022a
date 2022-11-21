@@ -44,6 +44,6 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     }
 
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
-        lobbyService.createNewLobby(nameField.getText(), new UserDTO("test", "",  ""), true, passwordRoomField.getText(), Integer.parseInt(roomSize.getText()));
+        lobbyService.createNewLobby(nameField.getText(), new UserDTO("test", "",  ""), true, passwordRoomField.getText());
     }
 }

@@ -3,8 +3,8 @@ package de.uol.swp.server.lobby;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -18,46 +18,57 @@ import java.util.Optional;
  * @since 2019-10-08
  */
 public class LobbyManagement {
-
-    private String singleplayerName = "Singleplayer-1";
-    private int anzahl = 1;
+    private String lobbyName;
     private final Map<String, Lobby> lobbies = new HashMap<>();
 
     /**
-     * Creates a new lobby and adds it to the list
+     * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
+     * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name containing:
+     * (name of the owner)-Singleplayer-(counter)
      *
-     * @implNote the primary key of the lobbies is the name therefore the name has
-     *           to be unique
-     * @param name the name of the lobby to create
+     * @implNote the primary key of the lobbies is the name therefore the name has to be unique
+     *
+     * @param lobbyName the name of the lobby to create
      * @param owner the user who wants to create a lobby
-     * @param gamemode true if multiplayer, false if singleplayer
+     * @param isMultiplayer true if multiplayer, false if singleplayer
      * @see de.uol.swp.common.user.User
      * @throws IllegalArgumentException name already taken
      * @since 2022-11-17
      */
-    public void createLobby(String name, User owner, Boolean gamemode) {
-        if (lobbies.containsKey(name) || lobbies.containsKey(singleplayerName)) {
-            createSingleplayerName();
-            createLobby(name, owner, gamemode);
-            throw new IllegalArgumentException("Lobby name " + name + " already exists!");
-        }
-        else {
-            if(gamemode) {
-                lobbies.put(name, new LobbyDTO(name, owner));
-            }
-            else {
-                lobbies.put(singleplayerName, new LobbyDTO(name, owner));
+    public void createLobby(String lobbyName, UserDTO owner, Boolean isMultiplayer) {
 
+        if (isMultiplayer) {
+            if (lobbies.containsKey(lobbyName)) {
+                throw new IllegalArgumentException("Lobby name " + lobbyName + " already exists!");
+            } else {
+                lobbies.put(lobbyName, new LobbyDTO(lobbyName, owner));
+                this.lobbyName = lobbyName;
+                System.out.println("Lobby '" + lobbyName + "' from User '" + owner.getUsername() + "' was created");
             }
+        } else {
+            this.lobbyName = createSinglePlayerName(owner);
+            lobbies.put(this.lobbyName, new LobbyDTO(this.lobbyName, owner));
+            System.out.println("Lobby '" + this.lobbyName + "' from User '" + owner.getUsername() + "' was created");
         }
     }
 
-    private void createSingleplayerName() {
-        String[] parts = singleplayerName.split("-");
-        parts[0] = "Singleplayer-";
-        anzahl++;
-        parts[1] = Integer.toString(anzahl);
-        this.singleplayerName = parts[0] + parts[1];
+    /**
+     * creates an unique Singleplayer Name containing: (name of the owner)-Singleplayer-(counter)
+     *
+     * @param owner the user who wants to create a lobby
+     * @see de.uol.swp.common.user.User
+     * @return created singlePlayerName
+     * @since 2022-11-21
+     */
+    private String createSinglePlayerName(UserDTO owner) {
+        int counter = 1;
+        String singlePlayerName = owner.getUsername() + "-SinglePlayer-" + counter;
+
+        while(lobbies.containsKey(singlePlayerName)) {
+            counter++;
+            singlePlayerName = owner.getUsername() + "-SinglePlayer-" + counter;
+        }
+        return singlePlayerName;
     }
 
     /**
@@ -68,11 +79,12 @@ public class LobbyManagement {
      *                                  name
      * @since 2019-10-08
      */
-    public void dropLobby(User name) {
+    public void dropLobby(String name, User user) {
         if (!lobbies.containsKey(name)) {
             throw new IllegalArgumentException("Lobby name " + name + " not found!");
         }
         lobbies.remove(name);
+        System.out.println("Lobby '" + name + "' from User '" + user.getUsername() + "' was removed.");
     }
 
     /**
@@ -91,5 +103,8 @@ public class LobbyManagement {
         return Optional.empty();
     }
 
+    public String getLobbyName() {
+        return this.lobbyName;
+    }
 
 }

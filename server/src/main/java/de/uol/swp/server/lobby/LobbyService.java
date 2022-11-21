@@ -6,6 +6,14 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.message.*;
+import de.uol.swp.common.lobby.request.CreateLobbyRequest;
+import de.uol.swp.common.lobby.request.DropLobbyRequest;
+import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
+import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
+import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -48,18 +56,25 @@ public class LobbyService extends AbstractService {
      *
      * If a CreateLobbyRequest is detected on the EventBus, this method is called.
      * It creates a new Lobby via the LobbyManagement using the parameters from the
-     * request and sends a LobbyCreatedMessage to every connected user, if the gamemode
-     * is set to false. Else a LobbyCreatedMessage is send to the Client that send the Request.
+     * request and sends a LobbyCreatedMessage to every connected user, if the isMultiplayer variable
+     * is set to true. Also a LobbyCreatedResponse is send to the Client that send the Request.
      *
      * @param createLobbyRequest The CreateLobbyRequest found on the EventBus
-     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, User, Boolean)
+     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, UserDTO, Boolean)
      * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
      * @since 2019-10-08
      */
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
-        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getOwner(), createLobbyRequest.getGamemode());
-        sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
+        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.isMultiplayer());
+
+        LobbyCreatedResponse returnMessage;
+        if(createLobbyRequest.isMultiplayer()) {
+            sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
+        }
+        returnMessage = new LobbyCreatedResponse(lobbyManagement.getLobbyName(), createLobbyRequest.getUser(), createLobbyRequest.isMultiplayer());
+        createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
     }
 
     /**
@@ -122,8 +137,14 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onDropLobbyRequest(DropLobbyRequest dropLobbyRequest) {
-        lobbyManagement.dropLobby(dropLobbyRequest.getUser());
-        sendToAll(new LobbyDroppedMessage(dropLobbyRequest.getName(), (UserDTO) dropLobbyRequest.getOwner()));
+        lobbyManagement.dropLobby(dropLobbyRequest.getName(), dropLobbyRequest.getUser());
+
+        if(dropLobbyRequest.isMultiplayer()) {
+            sendToAll(new LobbyDroppedMessage(lobbyManagement.getLobbyName(), (UserDTO) dropLobbyRequest.getOwner()));
+        }
+        LobbyDroppedResponse returnMessage = new LobbyDroppedResponse(lobbyManagement.getLobbyName(), dropLobbyRequest.getUser());
+        dropLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
     }
 
     /**

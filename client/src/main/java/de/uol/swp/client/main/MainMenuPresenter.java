@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent;
+import de.uol.swp.client.lobby.event.ShowFindCreateViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -159,10 +159,10 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @see de.uol.swp.client.lobby.LobbyService
      * @since 2019-11-20
      */
-    @FXML
-    void onCreateLobby(ActionEvent event) {
-        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
-    }
+    //@FXML
+    //void onCreateLobby(ActionEvent event) {
+    //    lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
+    //}
 
     /**
      * Method called when the join lobby button is pressed
@@ -182,10 +182,10 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     @FXML
      void onMultiplayer(ActionEvent actionEvent) {
-        eventBus.post(new ShowMultiplayerViewEvent());
+        eventBus.post(new ShowFindCreateViewEvent());
     }
     @FXML
     void onSingleplayer(ActionEvent event){
-        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
+        lobbyService.createNewLobby("test", new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getEMail()), false, "");
     }
 }

@@ -10,6 +10,8 @@ import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
+import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -44,6 +46,8 @@ public class ClientApp extends Application implements ConnectionListener {
 	private ClientUserService userService;
 
 	private User user;
+
+	private String lobbyName;
 
 	private ClientConnection clientConnection;
 
@@ -133,6 +137,10 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.info("ClientConnection shutdown");
 	}
 
+	// -----------------------------------------------------
+	// Login_Messages
+	// -----------------------------------------------------
+
 	/**
 	 * Handles successful login
 	 *
@@ -152,6 +160,10 @@ public class ClientApp extends Application implements ConnectionListener {
 		this.user = message.getUser();
 		sceneManager.showMainScreen(user);
 	}
+
+	// -----------------------------------------------------
+	// Registration_Messages
+	// -----------------------------------------------------
 
 	/**
 	 * Handles unsuccessful registrations
@@ -184,10 +196,14 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * @since 2019-09-02
 	 */
 	@Subscribe
-	public void onRegistrationSuccessfulMessage(RegistrationSuccessfulResponse message) {
+	public void onRegistrationSuccessfulResponse(RegistrationSuccessfulResponse message) {
 		LOG.info("Registration successful.");
 		sceneManager.showLoginScreen();
 	}
+
+	// -----------------------------------------------------
+	// Lobby_Messages
+	// -----------------------------------------------------
 
 	/**
 	 * Handles successful created Lobbies
@@ -200,8 +216,8 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * @since 2022-11-15
 	 */
 	@Subscribe
-	public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
-		LOG.info("Lobby created.");
+	public void onLobbyCreatedResponse(LobbyCreatedResponse message) {
+		LOG.info("Lobby " + message.getName() + " created.");
 		sceneManager.showLobbyViewScreen();
 	}
 
@@ -216,12 +232,10 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * @since 2022-11-17
 	 */
 	@Subscribe
-	public void onLobbyDroppedMessage(LobbyDroppedMessage message) {
-		LOG.info("Lobby deleted.");
+	public void onLobbyDroppedResponse(LobbyDroppedResponse message) {
+		LOG.info("Lobby " + message.getName() + " deleted.");
 		sceneManager.showMainScreen(message.getUser());
 	}
-
-
 
 	/**
 	 * Handles errors produced by the EventBus

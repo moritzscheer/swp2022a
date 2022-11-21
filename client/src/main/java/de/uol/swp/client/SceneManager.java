@@ -8,9 +8,9 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.lobby.Presenter.LobbyPresenter;
-import de.uol.swp.client.lobby.event.MultiplayerCanceledEvent;
+import de.uol.swp.client.lobby.event.FindCreateCanceledEvent;
 import de.uol.swp.client.lobby.Presenter.FindCreatePresenter;
-import de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent;
+import de.uol.swp.client.lobby.event.ShowFindCreateViewEvent;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
 import de.uol.swp.client.lobby.Presenter.CreateLobbyPresenter;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
@@ -51,7 +51,7 @@ public class SceneManager {
     private String lastTitle;
     private Scene registrationScene;
     private Scene lobbyScene;
-    private Scene multiplayerScene;
+    private Scene findCreateScene;
     private Scene createLobbyScene;
     private Scene mainScene;
     private Scene lastScene = null;
@@ -77,7 +77,7 @@ public class SceneManager {
         initMainView();
         initRegistrationView();
         initLobbyView();
-        initMultiplayerView();
+        initFindCreateView();
         initCreateLobbyView();
     }
 
@@ -168,11 +168,11 @@ public class SceneManager {
         }
     }
 
-    private void initMultiplayerView() throws IOException {
-        if (multiplayerScene == null){
+    private void initFindCreateView() throws IOException {
+        if (findCreateScene == null){
             Parent rootPane = initPresenter(FindCreatePresenter.FXML);
-            multiplayerScene = new Scene(rootPane, 400,200);
-            multiplayerScene.getStylesheets().add(STYLE_SHEET);
+            findCreateScene = new Scene(rootPane, 1600,900);
+            findCreateScene.getStylesheets().add(STYLE_SHEET);
         }
     }
 
@@ -183,6 +183,10 @@ public class SceneManager {
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
+
+    // -----------------------------------------------------
+    // Registration_ViewEvents
+    // -----------------------------------------------------
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -198,51 +202,6 @@ public class SceneManager {
     @Subscribe
     public void onShowRegistrationViewEvent(ShowRegistrationViewEvent event){
         showRegistrationScreen();
-    }
-
-    /**
-     * Handles ShowLoginViewEvent detected on the EventBus
-     *
-     * If a ShowLoginViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the login screen.
-     *
-     * @param event The ShowLoginViewEvent detected on the EventBus
-     * @see de.uol.swp.client.auth.events.ShowLoginViewEvent
-     * @since 2019-09-03
-     */
-    @Subscribe
-    public void onShowLoginViewEvent(ShowLoginViewEvent event){
-        showLoginScreen();
-    }
-
-    /**
-     * Handles ShowMultiplayerViewEvent detected on the EventBus
-     *
-     * If a ShowMultiplayerViewEvent is detected on the EventBus, this method gets
-     * called.
-     *
-     * @param event The ShowMultiplayerViewEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowMultiplayerViewEvent
-     * @since 2022-11-17
-     */
-    @Subscribe
-    public void onShowMultiplayerEvent(ShowMultiplayerViewEvent event){
-        showMultiplayerScreen();
-    }
-
-    /**
-     * Handles ShowCreateLobbyViewEvent detected on the EventBus
-     *
-     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
-     * called.
-     *
-     * @param event The RegistrationCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
-     * @since 2022-11-17
-     */
-    @Subscribe
-    public void onCreateLobbyEvent(ShowCreateLobbyViewEvent event){
-        showCreateLobbyScreen();
     }
 
     /**
@@ -275,41 +234,115 @@ public class SceneManager {
         showError(event.getMessage());
     }
 
+    // -----------------------------------------------------
+    // Login_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles ShowLoginViewEvent detected on the EventBus
+     *
+     * If a ShowLoginViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the login screen.
+     *
+     * @param event The ShowLoginViewEvent detected on the EventBus
+     * @see de.uol.swp.client.auth.events.ShowLoginViewEvent
+     * @since 2019-09-03
+     */
     @Subscribe
-    public void onMultiplayerCanceledEvent(MultiplayerCanceledEvent event){
-        showScene(lastScene, lastTitle);
+    public void onShowLoginViewEvent(ShowLoginViewEvent event){
+        showLoginScreen();
     }
 
+    // -----------------------------------------------------
+    // FindCreate_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles ShowFindCreateViewEvent detected on the EventBus
+     *
+     * If a ShowFindCreateViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The ShowFindCreateViewEvent detected on the EventBus
+     * @see ShowFindCreateViewEvent
+     * @since 2022-11-17
+     */
     @Subscribe
-    public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
-        showScene(lastScene, lastTitle);
+    public void onShowFindCreateViewEvent(ShowFindCreateViewEvent event){
+        showFindCreateScreen();
     }
 
     /**
-     * Handles RegistrationErrorEvent detected on the EventBus
+     * Handles FindCreateCanceledEvent detected on the EventBus
      *
-     * If a RegistrationErrorEvent is detected on the EventBus, this method gets
-     * called. It shows the error message of the event in a error alert.
+     * If a FindCreateCanceledEvent is detected on the EventBus, this method gets
+     * called.
      *
-     * @param event The RegistrationErrorEvent detected on the EventBus
-     * @see de.uol.swp.client.register.event.RegistrationErrorEvent
-     * @since 2019-09-03
+     * @param event The FindCreateCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.FindCreateCanceledEvent
+     * @since 2022-11-19
      */
+    @Subscribe
+    public void onFindCreateCanceledEvent(FindCreateCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    // -----------------------------------------------------
+    // Lobby_Events
+    // -----------------------------------------------------
 
     /**
      * Handles ShowLobbyViewEvent detected on the EventBus
      *
      * If a ShowLobbyViewEvent is detected on the EventBus, this method gets
-     * called. It shows the error message of the event in a error alert.
+     * called.
      *
      * @param event The ShowLobbyViewEvent detected on the EventBus
      * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
      * @since 2022-11-15
      */
     @Subscribe
-    public void onShowLobbyEvent(ShowLobbyViewEvent event) {
+    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
         showLobbyViewScreen();
     }
+
+    // -----------------------------------------------------
+    // CreateLobby_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles CreateLobbyCanceledEvent detected on the EventBus
+     *
+     * If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The CreateLobbyCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent
+     * @since 2022-11-15
+     */
+    @Subscribe
+    public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    /**
+     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onCreateLobbyEvent(ShowCreateLobbyViewEvent event){
+        showCreateLobbyScreen();
+    }
+
+    // -----------------------------------------------------
+    // Error methods
+    // -----------------------------------------------------
 
     /**
      * Shows an error message inside an error alert
@@ -424,8 +457,8 @@ public class SceneManager {
         showScene(registrationScene,"Registration");
     }
 
-    public void showMultiplayerScreen() {
-        showScene(multiplayerScene,"Multiplayer");
+    public void showFindCreateScreen() {
+        showScene(findCreateScene,"Lobbies");
     }
 
     public void showCreateLobbyScreen() {
