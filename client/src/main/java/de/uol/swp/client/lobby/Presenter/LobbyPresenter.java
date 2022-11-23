@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.main.events.ShowMainMenuViewEvent;
 import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -97,11 +97,8 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onButtonBackPressed(ActionEvent event) {
-        if(loggedInUser.getUsername().equals(owner.getUsername())) {
-            lobbyService.dropLobby(lobbyName, new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getEMail()), isMultiplayer);
-        } else {
-            lobbyService.leaveLobby(lobbyName, new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getEMail()));
-        }
+        lobbyService.leaveLobby(lobbyName, new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getEMail()));
+        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
     }
 
     @FXML

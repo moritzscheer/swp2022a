@@ -12,6 +12,8 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class LobbyJoinUserRequest extends AbstractLobbyRequest {
 
+    private String password;
+
     /**
      * Default constructor
      *
@@ -27,8 +29,16 @@ public class LobbyJoinUserRequest extends AbstractLobbyRequest {
      * @param user user who wants to join the lobby
      * @since 2019-10-08
      */
-    public LobbyJoinUserRequest(String name, UserDTO user) {
+    public LobbyJoinUserRequest(String name, UserDTO user, String password) {
         super(name, user);
+        this.password = password;
     }
 
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

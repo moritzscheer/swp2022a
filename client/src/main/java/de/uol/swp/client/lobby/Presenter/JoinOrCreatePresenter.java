@@ -5,18 +5,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.lobby.event.FindCreateCanceledEvent;
-import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.lobby.events.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.lobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.user.User;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Manages the registration window
@@ -26,12 +22,9 @@ import org.apache.logging.log4j.Logger;
  * @since 2019-08-29
  *
  */
-public class FindCreatePresenter extends AbstractPresenter {
+public class JoinOrCreatePresenter extends AbstractPresenter {
 
-
-    public static final String FXML = "/fxml/FindCreateView.fxml";
-
-    private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
+    public static final String FXML = "/fxml/JoinOrCreateView.fxml";
 
     private User loggedInUser;
 
@@ -46,10 +39,7 @@ public class FindCreatePresenter extends AbstractPresenter {
     @FXML
     private ListView<String> lobbyView;
 
-    //private static final RegistrationCanceledEvent registrationCanceledEvent = new RegistrationCanceledEvent();
-    private static final FindCreateCanceledEvent findCreateCanceledEvent = new FindCreateCanceledEvent();
-
-    public FindCreatePresenter() {
+    public JoinOrCreatePresenter() {
     }
 
     /**
@@ -61,7 +51,7 @@ public class FindCreatePresenter extends AbstractPresenter {
      * @since 2019-09-18
      */
     @Inject
-    public FindCreatePresenter(EventBus eventBus, ClientUserService userService) {
+    public JoinOrCreatePresenter(EventBus eventBus, ClientUserService userService) {
         setEventBus(eventBus);
     }
 
@@ -85,7 +75,7 @@ public class FindCreatePresenter extends AbstractPresenter {
      */
     @FXML
     void onCancelButtonPressed(ActionEvent event) {
-        eventBus.post(findCreateCanceledEvent);
+        eventBus.post(new JoinOrCreateCanceledEvent());
     }
 
     @FXML

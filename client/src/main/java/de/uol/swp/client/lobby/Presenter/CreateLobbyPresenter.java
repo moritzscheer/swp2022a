@@ -3,7 +3,7 @@ package de.uol.swp.client.lobby.Presenter;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -44,6 +44,6 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     }
 
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
-        lobbyService.createNewLobby(nameField.getText(), new UserDTO("test", "",  ""), true, passwordRoomField.getText());
+        lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordRoomField.getText());
     }
 }

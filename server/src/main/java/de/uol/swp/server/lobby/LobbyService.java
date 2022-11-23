@@ -10,12 +10,9 @@ import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.DropLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
-import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
 import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
-import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
@@ -60,13 +57,13 @@ public class LobbyService extends AbstractService {
      * is set to true. Also a LobbyCreatedResponse is send to the Client that send the Request.
      *
      * @param createLobbyRequest The CreateLobbyRequest found on the EventBus
-     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, UserDTO, Boolean)
+     * @see de.uol.swp.server.lobby.LobbyManagement#createLobby(String, UserDTO, String, Boolean)
      * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
      * @since 2019-10-08
      */
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
-        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.isMultiplayer());
+        lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.getPassword(), createLobbyRequest.isMultiplayer());
 
         LobbyCreatedResponse returnMessage;
         if(createLobbyRequest.isMultiplayer()) {
@@ -94,7 +91,7 @@ public class LobbyService extends AbstractService {
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyJoinUserRequest.getName());
 
         if (lobby.isPresent()) {
-            lobby.get().joinUser(lobbyJoinUserRequest.getUser());
+            lobby.get().joinUser(lobbyJoinUserRequest.getUser(), lobbyJoinUserRequest.getPassword());
             sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
         }
         // TODO: error handling not existing lobby
@@ -137,7 +134,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onDropLobbyRequest(DropLobbyRequest dropLobbyRequest) {
-        lobbyManagement.dropLobby(dropLobbyRequest.getName(), dropLobbyRequest.getUser());
+        lobbyManagement.dropLobby(dropLobbyRequest.getName());
 
         if(dropLobbyRequest.isMultiplayer()) {
             sendToAll(new LobbyDroppedMessage(lobbyManagement.getLobbyName(), (UserDTO) dropLobbyRequest.getOwner()));

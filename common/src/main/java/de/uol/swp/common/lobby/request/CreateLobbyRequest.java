@@ -32,9 +32,10 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
      * @param owner User trying to create the lobby
      * @since 2019-10-08
      */
-    public CreateLobbyRequest(String name, UserDTO owner, Boolean multiplayer) {
+    public CreateLobbyRequest(String name, UserDTO owner, Boolean multiplayer, String password) {
         super(name, owner);
         this.multiplayer = multiplayer;
+        this.password = password;
     }
 
     /**

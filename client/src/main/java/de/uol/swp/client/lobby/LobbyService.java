@@ -42,12 +42,8 @@ public class LobbyService {
      * @since 2019-11-20
      */
     public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
-        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, isMultiplayer);
-        if(isMultiplayer) {
-            createLobbyRequest.setPassword(password);
-        }
+        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, isMultiplayer, password);
         eventBus.post(createLobbyRequest);
-
     }
 
     /**
@@ -58,8 +54,8 @@ public class LobbyService {
      * @see LobbyJoinUserRequest
      * @since 2019-11-20
      */
-    public void joinLobby(String name, UserDTO user) {
-        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
+    public void joinLobby(String name, UserDTO user, String password) {
+        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
         eventBus.post(joinUserRequest);
     }
 

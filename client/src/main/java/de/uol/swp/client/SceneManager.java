@@ -8,14 +8,15 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.lobby.Presenter.LobbyPresenter;
-import de.uol.swp.client.lobby.event.FindCreateCanceledEvent;
-import de.uol.swp.client.lobby.Presenter.FindCreatePresenter;
-import de.uol.swp.client.lobby.event.ShowFindCreateViewEvent;
-import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.events.JoinOrCreateCanceledEvent;
+import de.uol.swp.client.lobby.Presenter.JoinOrCreatePresenter;
+import de.uol.swp.client.lobby.events.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent;
 import de.uol.swp.client.lobby.Presenter.CreateLobbyPresenter;
-import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.lobby.events.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.lobby.events.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.main.events.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -170,7 +171,7 @@ public class SceneManager {
 
     private void initFindCreateView() throws IOException {
         if (findCreateScene == null){
-            Parent rootPane = initPresenter(FindCreatePresenter.FXML);
+            Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
             findCreateScene = new Scene(rootPane, 1600,900);
             findCreateScene.getStylesheets().add(STYLE_SHEET);
         }
@@ -254,6 +255,25 @@ public class SceneManager {
     }
 
     // -----------------------------------------------------
+    // MainManu_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles ShowMainMenuViewEvent detected on the EventBus
+     *
+     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the main manu screen.
+     *
+     * @param event The ShowMainMenuViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.events.ShowMainMenuViewEvent
+     * @since 2022-11-22
+     */
+    @Subscribe
+    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
+        showMainScreen(event.getUser());
+    }
+
+    // -----------------------------------------------------
     // FindCreate_Events
     // -----------------------------------------------------
 
@@ -264,11 +284,11 @@ public class SceneManager {
      * called.
      *
      * @param event The ShowFindCreateViewEvent detected on the EventBus
-     * @see ShowFindCreateViewEvent
+     * @see ShowJoinOrCreateViewEvent
      * @since 2022-11-17
      */
     @Subscribe
-    public void onShowFindCreateViewEvent(ShowFindCreateViewEvent event){
+    public void onShowFindCreateViewEvent(ShowJoinOrCreateViewEvent event){
         showFindCreateScreen();
     }
 
@@ -279,11 +299,11 @@ public class SceneManager {
      * called.
      *
      * @param event The FindCreateCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.FindCreateCanceledEvent
+     * @see JoinOrCreateCanceledEvent
      * @since 2022-11-19
      */
     @Subscribe
-    public void onFindCreateCanceledEvent(FindCreateCanceledEvent event){
+    public void onFindCreateCanceledEvent(JoinOrCreateCanceledEvent event){
         showScene(lastScene, lastTitle);
     }
 
@@ -298,7 +318,7 @@ public class SceneManager {
      * called.
      *
      * @param event The ShowLobbyViewEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
+     * @see de.uol.swp.client.lobby.events.ShowLobbyViewEvent
      * @since 2022-11-15
      */
     @Subscribe
@@ -317,7 +337,7 @@ public class SceneManager {
      * called.
      *
      * @param event The CreateLobbyCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent
+     * @see de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent
      * @since 2022-11-15
      */
     @Subscribe
@@ -332,7 +352,7 @@ public class SceneManager {
      * called.
      *
      * @param event The RegistrationCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
+     * @see de.uol.swp.client.lobby.events.ShowCreateLobbyViewEvent
      * @since 2022-11-17
      */
     @Subscribe

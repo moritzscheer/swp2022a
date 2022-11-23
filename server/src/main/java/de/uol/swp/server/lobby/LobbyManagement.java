@@ -2,7 +2,6 @@ package de.uol.swp.server.lobby;
 
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.HashMap;
@@ -35,19 +34,18 @@ public class LobbyManagement {
      * @throws IllegalArgumentException name already taken
      * @since 2022-11-17
      */
-    public void createLobby(String lobbyName, UserDTO owner, Boolean isMultiplayer) {
-
+    public void createLobby(String lobbyName, UserDTO owner, String password, Boolean isMultiplayer) {
         if (isMultiplayer) {
             if (lobbies.containsKey(lobbyName)) {
                 throw new IllegalArgumentException("Lobby name " + lobbyName + " already exists!");
             } else {
-                lobbies.put(lobbyName, new LobbyDTO(lobbyName, owner));
+                lobbies.put(lobbyName, new LobbyDTO(lobbyName, owner, password, true));
                 this.lobbyName = lobbyName;
                 System.out.println("Lobby '" + lobbyName + "' from User '" + owner.getUsername() + "' was created");
             }
         } else {
             this.lobbyName = createSinglePlayerName(owner);
-            lobbies.put(this.lobbyName, new LobbyDTO(this.lobbyName, owner));
+            lobbies.put(this.lobbyName, new LobbyDTO(this.lobbyName, owner, "", false));
             System.out.println("Lobby '" + this.lobbyName + "' from User '" + owner.getUsername() + "' was created");
         }
     }
@@ -79,12 +77,11 @@ public class LobbyManagement {
      *                                  name
      * @since 2019-10-08
      */
-    public void dropLobby(String name, User user) {
+    public void dropLobby(String name) {
         if (!lobbies.containsKey(name)) {
             throw new IllegalArgumentException("Lobby name " + name + " not found!");
         }
         lobbies.remove(name);
-        System.out.println("Lobby '" + name + "' from User '" + user.getUsername() + "' was removed.");
     }
 
     /**
