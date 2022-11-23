@@ -46,7 +46,7 @@ public interface Lobby {
      * @param user The new user to add to the lobby
      * @since 2019-10-08
      */
-    void joinUser(User user, String password);
+    void joinUser(User user);
 
     /**
      * Removes an user from the lobby

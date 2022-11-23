@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.events;
+package de.uol.swp.client.lobby.event;
 
 public class JoinOrCreateCanceledEvent {
 }

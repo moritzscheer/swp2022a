@@ -69,7 +69,7 @@ public class LobbyService extends AbstractService {
         if(createLobbyRequest.isMultiplayer()) {
             sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
         }
-        returnMessage = new LobbyCreatedResponse(lobbyManagement.getLobbyName(), createLobbyRequest.getUser(), createLobbyRequest.isMultiplayer());
+        returnMessage = new LobbyCreatedResponse(lobbyManagement.getName(), createLobbyRequest.getUser(), createLobbyRequest.isMultiplayer());
         createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
     }
@@ -91,7 +91,7 @@ public class LobbyService extends AbstractService {
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyJoinUserRequest.getName());
 
         if (lobby.isPresent()) {
-            lobby.get().joinUser(lobbyJoinUserRequest.getUser(), lobbyJoinUserRequest.getPassword());
+            lobby.get().joinUser(lobbyJoinUserRequest.getUser());
             sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
         }
         // TODO: error handling not existing lobby
@@ -118,30 +118,6 @@ public class LobbyService extends AbstractService {
             sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
         }
         // TODO: error handling not existing lobby
-    }
-
-    /**
-     * Handles DeleteLobbyRequest found on the EventBus
-     *
-     * If a DeleteLobbyRequest is detected on the EventBus, this method is called.
-     * It removes the lobby from a register in the LobbyManagement and sends a
-     * LobbyDeletedSuccessfulMessage to every user in the lobby.
-     *
-     * @param dropLobbyRequest The DropLobbyRequest found on the EventBus
-     * @see de.uol.swp.common.lobby.Lobby
-     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
-     * @since 2022-11-17
-     */
-    @Subscribe
-    public void onDropLobbyRequest(DropLobbyRequest dropLobbyRequest) {
-        lobbyManagement.dropLobby(dropLobbyRequest.getName());
-
-        if(dropLobbyRequest.isMultiplayer()) {
-            sendToAll(new LobbyDroppedMessage(lobbyManagement.getLobbyName(), (UserDTO) dropLobbyRequest.getOwner()));
-        }
-        LobbyDroppedResponse returnMessage = new LobbyDroppedResponse(lobbyManagement.getLobbyName(), dropLobbyRequest.getUser());
-        dropLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
-        post(returnMessage);
     }
 
     /**

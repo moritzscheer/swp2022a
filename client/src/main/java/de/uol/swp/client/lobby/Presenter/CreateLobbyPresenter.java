@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -21,19 +21,13 @@ public class CreateLobbyPresenter extends AbstractPresenter {
 
     private static final CreateLobbyCanceledEvent createLobbyCanceledEvent = new CreateLobbyCanceledEvent();
     public static final String FXML = "/fxml/CreateLobbyView.fxml";
-
-    private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
-
+    private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
     private ObservableList<String> users;
-
     private User loggedInUser;
-
     @Inject
     private LobbyService lobbyService;
-
     @FXML
     private ListView<String> usersView;
-
     @FXML
     private TextField nameField;
     @FXML
@@ -58,10 +52,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
         this.loggedInUser = message.getUser();
     }
+
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
         lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
     }
-
-
 }

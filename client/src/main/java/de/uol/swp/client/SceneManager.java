@@ -8,15 +8,15 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.lobby.Presenter.LobbyPresenter;
-import de.uol.swp.client.lobby.events.JoinOrCreateCanceledEvent;
+import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.Presenter.JoinOrCreatePresenter;
-import de.uol.swp.client.lobby.events.ShowJoinOrCreateViewEvent;
-import de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
 import de.uol.swp.client.lobby.Presenter.CreateLobbyPresenter;
-import de.uol.swp.client.lobby.events.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.lobby.events.ShowLobbyViewEvent;
+import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
-import de.uol.swp.client.main.events.ShowMainMenuViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -52,7 +52,7 @@ public class SceneManager {
     private String lastTitle;
     private Scene registrationScene;
     private Scene lobbyScene;
-    private Scene findCreateScene;
+    private Scene joinOrCreateScene;
     private Scene createLobbyScene;
     private Scene mainScene;
     private Scene lastScene = null;
@@ -78,7 +78,7 @@ public class SceneManager {
         initMainView();
         initRegistrationView();
         initLobbyView();
-        initFindCreateView();
+        initJoinOrCreateView();
         initCreateLobbyView();
     }
 
@@ -169,11 +169,11 @@ public class SceneManager {
         }
     }
 
-    private void initFindCreateView() throws IOException {
-        if (findCreateScene == null){
+    private void initJoinOrCreateView() throws IOException {
+        if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            findCreateScene = new Scene(rootPane, 1600,900);
-            findCreateScene.getStylesheets().add(STYLE_SHEET);
+            joinOrCreateScene = new Scene(rootPane, 1600,900);
+            joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
         }
     }
 
@@ -184,10 +184,6 @@ public class SceneManager {
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
-
-    // -----------------------------------------------------
-    // Registration_ViewEvents
-    // -----------------------------------------------------
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -203,6 +199,21 @@ public class SceneManager {
     @Subscribe
     public void onShowRegistrationViewEvent(ShowRegistrationViewEvent event){
         showRegistrationScreen();
+    }
+
+    /**
+     * Handles ShowLoginViewEvent detected on the EventBus
+     *
+     * If a ShowLoginViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the login screen.
+     *
+     * @param event The ShowLoginViewEvent detected on the EventBus
+     * @see de.uol.swp.client.auth.events.ShowLoginViewEvent
+     * @since 2019-09-03
+     */
+    @Subscribe
+    public void onShowLoginViewEvent(ShowLoginViewEvent event){
+        showLoginScreen();
     }
 
     /**
@@ -236,25 +247,6 @@ public class SceneManager {
     }
 
     // -----------------------------------------------------
-    // Login_Events
-    // -----------------------------------------------------
-
-    /**
-     * Handles ShowLoginViewEvent detected on the EventBus
-     *
-     * If a ShowLoginViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the login screen.
-     *
-     * @param event The ShowLoginViewEvent detected on the EventBus
-     * @see de.uol.swp.client.auth.events.ShowLoginViewEvent
-     * @since 2019-09-03
-     */
-    @Subscribe
-    public void onShowLoginViewEvent(ShowLoginViewEvent event){
-        showLoginScreen();
-    }
-
-    // -----------------------------------------------------
     // MainManu_Events
     // -----------------------------------------------------
 
@@ -265,7 +257,7 @@ public class SceneManager {
      * called. It calls a method to switch the current screen to the main manu screen.
      *
      * @param event The ShowMainMenuViewEvent detected on the EventBus
-     * @see de.uol.swp.client.main.events.ShowMainMenuViewEvent
+     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
      * @since 2022-11-22
      */
     @Subscribe
@@ -289,7 +281,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowFindCreateViewEvent(ShowJoinOrCreateViewEvent event){
-        showFindCreateScreen();
+        showJoinOrCreateScreen();
     }
 
     /**
@@ -318,7 +310,7 @@ public class SceneManager {
      * called.
      *
      * @param event The ShowLobbyViewEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.events.ShowLobbyViewEvent
+     * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
      * @since 2022-11-15
      */
     @Subscribe
@@ -337,7 +329,7 @@ public class SceneManager {
      * called.
      *
      * @param event The CreateLobbyCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.events.CreateLobbyCanceledEvent
+     * @see de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent
      * @since 2022-11-15
      */
     @Subscribe
@@ -352,7 +344,7 @@ public class SceneManager {
      * called.
      *
      * @param event The RegistrationCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.events.ShowCreateLobbyViewEvent
+     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
      * @since 2022-11-17
      */
     @Subscribe
@@ -477,8 +469,8 @@ public class SceneManager {
         showScene(registrationScene,"Registration");
     }
 
-    public void showFindCreateScreen() {
-        showScene(findCreateScene,"Lobbies");
+    public void showJoinOrCreateScreen() {
+        showScene(joinOrCreateScene,"Lobbies");
     }
 
     public void showCreateLobbyScreen() {

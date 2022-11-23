@@ -22,9 +22,7 @@ public class LobbyDTO implements Lobby {
     private final String name;
     private User owner;
     private final Set<User> users = new TreeSet<>();
-
     private final String password;
-
     private final Boolean multiplayer;
 
     /**
@@ -49,17 +47,8 @@ public class LobbyDTO implements Lobby {
     }
 
     @Override
-    public void joinUser(User user, String password) {
-        if(multiplayer) {
-            if(this.password.equals(password)) {
-                this.users.add(user);
-            } else {
-                throw new IllegalArgumentException("Password " + password + " is incorrect!");
-            }
-        } else {
-            throw new IllegalArgumentException("could not join Lobby " + name + ". Lobby is set to private");
-        }
-
+    public void joinUser(User user) {
+        this.users.add(user);
     }
 
     @Override

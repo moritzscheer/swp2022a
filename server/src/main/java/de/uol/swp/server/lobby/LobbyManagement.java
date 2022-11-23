@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 2019-10-08
  */
 public class LobbyManagement {
-    private String lobbyName;
+    private String name;
     private final Map<String, Lobby> lobbies = new HashMap<>();
 
     /**
@@ -27,26 +27,26 @@ public class LobbyManagement {
      *
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
      *
-     * @param lobbyName the name of the lobby to create
+     * @param name the name of the lobby to create
      * @param owner the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @see de.uol.swp.common.user.User
      * @throws IllegalArgumentException name already taken
      * @since 2022-11-17
      */
-    public void createLobby(String lobbyName, UserDTO owner, String password, Boolean isMultiplayer) {
+    public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
         if (isMultiplayer) {
-            if (lobbies.containsKey(lobbyName)) {
-                throw new IllegalArgumentException("Lobby name " + lobbyName + " already exists!");
+            if (lobbies.containsKey(name)) {
+                throw new IllegalArgumentException("Lobby name " + name + " already exists!");
             } else {
-                lobbies.put(lobbyName, new LobbyDTO(lobbyName, owner, password, true));
-                this.lobbyName = lobbyName;
-                System.out.println("Lobby '" + lobbyName + "' from User '" + owner.getUsername() + "' was created");
+                this.name = name;
+                lobbies.put(name, new LobbyDTO(name, owner, password, true));
+                System.out.println("Lobby '" + name + "' from User '" + owner.getUsername() + "' was created");
             }
         } else {
-            this.lobbyName = createSinglePlayerName(owner);
-            lobbies.put(this.lobbyName, new LobbyDTO(this.lobbyName, owner, "", false));
-            System.out.println("Lobby '" + this.lobbyName + "' from User '" + owner.getUsername() + "' was created");
+            this.name = createSinglePlayerName(owner);
+            lobbies.put(this.name, new LobbyDTO(this.name, owner, "", false));
+            System.out.println("Lobby '" + this.name + "' from User '" + owner.getUsername() + "' was created");
         }
     }
 
@@ -100,8 +100,8 @@ public class LobbyManagement {
         return Optional.empty();
     }
 
-    public String getLobbyName() {
-        return this.lobbyName;
+    public String getName() {
+        return this.name;
     }
 
 }

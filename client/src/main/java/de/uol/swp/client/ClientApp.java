@@ -8,10 +8,6 @@ import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
-import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
-import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
-import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -46,8 +42,6 @@ public class ClientApp extends Application implements ConnectionListener {
 	private ClientUserService userService;
 
 	private User user;
-
-	private String lobbyName;
 
 	private ClientConnection clientConnection;
 
@@ -137,10 +131,6 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.info("ClientConnection shutdown");
 	}
 
-	// -----------------------------------------------------
-	// Login_Messages
-	// -----------------------------------------------------
-
 	/**
 	 * Handles successful login
 	 *
@@ -160,10 +150,6 @@ public class ClientApp extends Application implements ConnectionListener {
 		this.user = message.getUser();
 		sceneManager.showMainScreen(user);
 	}
-
-	// -----------------------------------------------------
-	// Registration_Messages
-	// -----------------------------------------------------
 
 	/**
 	 * Handles unsuccessful registrations
@@ -196,45 +182,9 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * @since 2019-09-02
 	 */
 	@Subscribe
-	public void onRegistrationSuccessfulResponse(RegistrationSuccessfulResponse message) {
+	public void onRegistrationSuccessfulMessage(RegistrationSuccessfulResponse message) {
 		LOG.info("Registration successful.");
 		sceneManager.showLoginScreen();
-	}
-
-	// -----------------------------------------------------
-	// Lobby_Messages
-	// -----------------------------------------------------
-
-	/**
-	 * Handles successful created Lobbies
-	 *
-	 * If an LobbyCreatedResponse object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the lobby window.
-	 *
-	 * @param message The LobbyCreatedResponse object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @since 2022-11-15
-	 */
-	@Subscribe
-	public void onLobbyCreatedResponse(LobbyCreatedResponse message) {
-		LOG.info("Lobby " + message.getName() + " created.");
-		sceneManager.showLobbyViewScreen();
-	}
-
-	/**
-	 * Handles successful deleted Lobbies
-	 *
-	 * If an LobbyDroppedMessage object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the Main Menu window.
-	 *
-	 * @param message The LobbyDroppedMessage object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @since 2022-11-17
-	 */
-	@Subscribe
-	public void onLobbyDroppedResponse(LobbyDroppedResponse message) {
-		LOG.info("Lobby " + message.getName() + " deleted.");
-		sceneManager.showMainScreen(message.getUser());
 	}
 
 	/**

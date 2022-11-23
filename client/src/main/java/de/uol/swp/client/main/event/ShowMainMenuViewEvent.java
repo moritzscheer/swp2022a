@@ -1,4 +1,4 @@
-package de.uol.swp.client.main.events;
+package de.uol.swp.client.main.event;
 
 import de.uol.swp.common.user.User;
 

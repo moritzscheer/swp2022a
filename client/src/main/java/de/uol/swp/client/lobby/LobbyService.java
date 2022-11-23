@@ -38,7 +38,7 @@ public class LobbyService {
      *
      * @param name Name chosen for the new lobby
      * @param user User who wants to create the new lobby
-     * @see CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
      * @since 2019-11-20
      */
     public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
@@ -51,21 +51,11 @@ public class LobbyService {
      *
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
-     * @see LobbyJoinUserRequest
+     * @see de.uol.swp.common.lobby.request.LobbyJoinUserRequest
      * @since 2019-11-20
      */
-    public void joinLobby(String name, UserDTO user, String password) {
-        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
+    public void joinLobby(String name, UserDTO user) {
+        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
         eventBus.post(joinUserRequest);
-    }
-
-    public void dropLobby(String name, UserDTO user, Boolean isMultiplayer) {
-        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user, isMultiplayer);
-        eventBus.post(dropLobbyRequest);
-    }
-
-    public void leaveLobby(String name, UserDTO user) {
-        LobbyLeaveUserRequest lobbyLeaveUserRequest = new LobbyLeaveUserRequest(name, user);
-        eventBus.post(lobbyLeaveUserRequest);
     }
 }

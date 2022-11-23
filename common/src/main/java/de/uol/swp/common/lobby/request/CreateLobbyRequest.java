@@ -6,7 +6,7 @@ import de.uol.swp.common.user.UserDTO;
 /**
  * Request sent to the server when a user wants to create a new lobby
  *
- * @see AbstractLobbyRequest
+ * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
  * @see de.uol.swp.common.user.User
  * @author Marco Grawunder
  * @since 2019-10-08
@@ -60,13 +60,7 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     public Boolean isMultiplayer() {
         return multiplayer;
     }
-    public void setMultiplayer(Boolean multiplayer) {
-        this.multiplayer = multiplayer;
-    }
     public String getPassword() {
         return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

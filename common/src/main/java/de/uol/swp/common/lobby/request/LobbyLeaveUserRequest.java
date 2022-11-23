@@ -5,7 +5,7 @@ import de.uol.swp.common.user.UserDTO;
 /**
  * Request sent to the server when a user wants to leave a lobby
  *
- * @see AbstractLobbyRequest
+ * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
  * @see de.uol.swp.common.user.User
  * @author Marco Grawunder
  * @since 2019-10-08
@@ -24,12 +24,12 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
     /**
      * Constructor
      *
-     * @param name name of the lobby
+     * @param lobbyName name of the lobby
      * @param user user who wants to leave the lobby
      * @since 2019-10-08
      */
-    public LobbyLeaveUserRequest(String name, UserDTO user) {
-        super(name, user);
+    public LobbyLeaveUserRequest(String lobbyName, UserDTO user) {
+        super(lobbyName, user);
     }
 
 }
