@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.events.ShowLobbyViewEvent;
 import de.uol.swp.client.main.events.ShowMainMenuViewEvent;
 import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
 import de.uol.swp.common.user.User;
@@ -82,6 +83,7 @@ public class LobbyPresenter extends AbstractPresenter {
         this.loggedInUser = message.getUser();
         this.owner = message.getUser();
         this.lobbyName = message.getName();
+        eventBus.post(new ShowLobbyViewEvent());
     }
 
     /**
@@ -97,18 +99,11 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onButtonBackPressed(ActionEvent event) {
-        lobbyService.leaveLobby(lobbyName, new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), loggedInUser.getEMail()));
-        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
-    }
-
-    @FXML
-    private void onButtonGameSettingsPressed(ActionEvent event) {
-        //eventBus.post(createLobbyCanceledEvent);
+        // leave user
     }
 
     @FXML
     private void onButtonStartPressed(ActionEvent event) {
         //eventBus.post(startGameEvent);
-
     }
 }
