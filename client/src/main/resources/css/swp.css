@@ -1,12 +1,3 @@
 * {
     -fx-font-family: 'sans-serif'
 }
-#grid {
-    -fx-background-color: white;
-    -fx-opacity: 0.95;
-    -fx-border-color: black;
-
-}
-#lobbyBackground {
-    -fx-background-image: url("../picture/");
-}

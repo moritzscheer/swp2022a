@@ -175,10 +175,10 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @see de.uol.swp.client.lobby.LobbyService
      * @since 2019-11-20
      */
-    //@FXML
-    //void onJoinLobby(ActionEvent event) {
-    //    lobbyService.joinLobby("test", new UserDTO("ich", "", ""), "");
-    //}
+    @FXML
+    void onJoinLobby(ActionEvent event) {
+        lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
+    }
 
     @FXML
      void onMultiplayer(ActionEvent actionEvent) {
