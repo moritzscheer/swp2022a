@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
-import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
+import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -76,11 +76,12 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-17
      */
     @Subscribe
-    public void onLobbyCreatedResponse(LobbyCreatedResponse message) {
+    public void onLobbyCreatedResponse(LobbyCreatedSuccessfulResponse message) {
         this.isMultiplayer = message.isMultiplayer();
         this.loggedInUser = message.getUser();
         this.owner = message.getUser();
         this.lobbyName = message.getName();
+        LOG.info("Lobby " + message.getName() + " created successful");
         eventBus.post(new ShowLobbyViewEvent());
     }
 

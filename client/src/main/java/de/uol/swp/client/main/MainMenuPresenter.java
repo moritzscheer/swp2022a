@@ -186,6 +186,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
     @FXML
     void onSingleplayer(ActionEvent event){
-        lobbyService.createNewLobby("test", (UserDTO) loggedInUser, false, "");
+        lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 }

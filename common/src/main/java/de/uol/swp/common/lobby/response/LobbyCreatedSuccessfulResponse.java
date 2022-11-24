@@ -4,10 +4,10 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
 
-public class LobbyCreatedResponse extends AbstractLobbyResponse {
+public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
 
     private Boolean multiplayer;
-    public LobbyCreatedResponse(String name, UserDTO user, Boolean multiplayer) {
+    public LobbyCreatedSuccessfulResponse(String name, UserDTO user, Boolean multiplayer) {
         super(name, user);
         this.multiplayer = multiplayer;
     }
@@ -26,7 +26,7 @@ public class LobbyCreatedResponse extends AbstractLobbyResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LobbyCreatedResponse that = (LobbyCreatedResponse) o;
+        LobbyCreatedSuccessfulResponse that = (LobbyCreatedSuccessfulResponse) o;
         return Objects.equals(user, that.user);
     }
 
