@@ -28,11 +28,12 @@
           </TextField>
           <PasswordField id="passwordField" fx:id="passwordField1" layoutX="210.0" layoutY="89.0" prefHeight="36.0" prefWidth="167.0" promptText="Passwort eingeben" />
           <PasswordField id="passwordField" fx:id="passwordField2" layoutX="210.0" layoutY="144.0" prefHeight="36.0" prefWidth="167.0" promptText="Passwort wiederholen" />
+
           <Button id="registerButton" defaultButton="true" layoutX="235.0" layoutY="196.0" mnemonicParsing="false" onAction="#onRegisterButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Registieren" />
           <Button id="cancelButton" layoutX="58.0" layoutY="196.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Abbrechen" />
       
           <Label layoutX="58.0" layoutY="89.0" prefHeight="36.0" prefWidth="127.0" text="Passwort:" />
-          <Label layoutX="58.0" layoutY="144.0" prefHeight="36.0" prefWidth="127.0" text="Passwort wiederholen:" />
+          <Label layoutX="58.0" layoutY="144.0" prefHeight="36.0" prefWidth="127.0" text="Passwort:" />
       </children>
    </AnchorPane>
 </AnchorPane>
