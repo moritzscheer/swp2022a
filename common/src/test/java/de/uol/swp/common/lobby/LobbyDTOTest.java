@@ -45,7 +45,7 @@ class LobbyDTOTest {
      * @since 2019-10-08
      */
     @Test
-    void createLobbyTestMP() {
+    void createLobbyTest() {
         Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
 
         assertEquals("test", lobby.getName());
@@ -53,24 +53,6 @@ class LobbyDTOTest {
         assertEquals(defaultUser, lobby.getUsers().iterator().next());
         assertEquals("1234", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
-    }
-
-    /**
-     * This test check whether a singleplayer lobby is created correctly
-     *
-     * If the variables are not set correctly the test fails
-     *
-     * @since 2019-10-08
-     */
-    @Test
-    void createLobbyTestSP() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", false);
-
-        assertEquals("test", lobby.getName());
-        assertEquals(1, lobby.getUsers().size());
-        assertEquals(defaultUser, lobby.getUsers().iterator().next());
-        assertEquals("", lobby.getPassword());
-        assertEquals(false, lobby.isMultiplayer());
     }
 
     // -----------------------------------------------------
