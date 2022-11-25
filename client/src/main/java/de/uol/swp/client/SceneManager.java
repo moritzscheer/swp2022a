@@ -36,8 +36,9 @@ public class SceneManager {
 
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
+
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
-    static final String GENERELL_VIEW_STYLE_SHEET = "css/GenerellViewStyle";
+    static final String BASE_VIEW_STYLE_SHEET = "css/GenerellViewStyle";
 
     private final Stage primaryStage;
     private Scene loginScene;
@@ -110,7 +111,7 @@ public class SceneManager {
         if (mainScene == null) {
            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
             mainScene = new Scene(rootPane, 600, 600);
-            mainScene.getStylesheets().add(GENERELL_VIEW_STYLE_SHEET);
+            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -127,7 +128,7 @@ public class SceneManager {
         if (loginScene == null) {
             Parent rootPane = initPresenter(LoginPresenter.FXML);
             loginScene = new Scene(rootPane);
-            loginScene.getStylesheets().add(GENERELL_VIEW_STYLE_SHEET);
+            loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
