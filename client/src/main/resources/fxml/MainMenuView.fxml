@@ -18,7 +18,7 @@
             <Font name="Comic Sans MS" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="multyplayerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Mehrspieler" textAlignment="CENTER">
+      <Button fx:id="multiplayerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Mehrspieler" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>
