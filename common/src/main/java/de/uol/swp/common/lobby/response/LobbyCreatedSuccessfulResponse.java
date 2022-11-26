@@ -6,10 +6,12 @@ import java.util.Objects;
 
 public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
 
+    private Integer lobbyID;
     private Boolean multiplayer;
-    public LobbyCreatedSuccessfulResponse(String name, UserDTO user, Boolean multiplayer) {
+    public LobbyCreatedSuccessfulResponse(String name, UserDTO user, Boolean multiplayer, Integer lobbyID) {
         super(name, user);
         this.multiplayer = multiplayer;
+        this.lobbyID = lobbyID;
     }
 
     /**
@@ -39,7 +41,7 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
         return multiplayer;
     }
 
-    public void setMultiplayer() {
-        this.multiplayer = multiplayer;
+    public Integer getLobbyID() {
+        return this.lobbyID;
     }
 }

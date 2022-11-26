@@ -32,6 +32,7 @@ public class LobbyPresenter extends AbstractPresenter {
 
     private ObservableList<String> users;
 
+    private Integer lobbyID;
     private User owner;
 
     private User loggedInUser;
@@ -81,6 +82,8 @@ public class LobbyPresenter extends AbstractPresenter {
         this.loggedInUser = message.getUser();
         this.owner = message.getUser();
         this.lobbyName = message.getName();
+        this.lobbyID = message.getLobbyID();
+        System.out.println(isMultiplayer + " " + loggedInUser.getUsername()  + " " + lobbyName + " " + lobbyID);
         LOG.info("Lobby " + message.getName() + " created successful");
         eventBus.post(new ShowLobbyViewEvent());
     }
