@@ -6,7 +6,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
+import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
@@ -48,6 +50,8 @@ public class SceneManager {
     private Scene lastScene = null;
     private Scene currentScene = null;
 
+    private Scene changeAccountOptionsScene;
+
     private final Injector injector;
 
     @Inject
@@ -69,7 +73,9 @@ public class SceneManager {
         initLoginView();
         initMainView();
         initRegistrationView();
+        initAccountOptionsView();
     }
+
 
     /**
      * Subroutine creating parent panes from FXML files
@@ -151,6 +157,23 @@ public class SceneManager {
     }
 
     /**
+     * Initializes the account view
+     *
+     * If the changeAccountOptionsScene is null it gets set to a new scene containing the
+     * pane showing the account view as specified by the AccountView FXML file.
+     *
+     * @see de.uol.swp.client.main.AccountMenuPresenter
+     * @since 2022-11-25
+     */
+    private void initAccountOptionsView() throws IOException {
+        if(changeAccountOptionsScene == null) {
+            Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
+            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
      * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets
@@ -210,6 +233,11 @@ public class SceneManager {
     public void onRegistrationErrorEvent(RegistrationErrorEvent event) {
         showError(event.getMessage());
     }
+    @Subscribe
+    public void onChangeAccountOptions(ShowAccountOptionsViewEvent event) {
+        showAccountView();
+    }
+
 
     /**
      * Shows an error message inside an error alert
@@ -309,6 +337,9 @@ public class SceneManager {
      */
     public void showLoginScreen() {
         showScene(loginScene,"Login");
+    }
+    public void showAccountView() {
+        showScene(changeAccountOptionsScene, "Account options");
     }
 
     /**

@@ -3,6 +3,7 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -179,6 +180,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     void onJoinLobby(ActionEvent event) {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
+    }
+
+    @FXML
+    void onChangeAccountOptions(ActionEvent event) {
+        eventBus.post(new ShowAccountOptionsViewEvent());
     }
 
 

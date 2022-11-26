@@ -28,7 +28,7 @@
             <Font name="Comic Sans MS" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="321.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Konto" textAlignment="CENTER">
+      <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="321.0" mnemonicParsing="false" onAction="#onChangeAccountOptions" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Konto" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>
