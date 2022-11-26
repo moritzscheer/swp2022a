@@ -12,6 +12,8 @@ import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedResponse;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.request.RetrieveAllUsersInLobbyRequest;
+import de.uol.swp.common.user.response.AllUsersInLobbyResponse;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
@@ -137,5 +139,25 @@ public class LobbyService extends AbstractService {
 
         // TODO: error handling not existing lobby
     }
+
+    /**
+     * Handles RetrieveAllUsersInLobbyRequest found on the EventBus
+     *
+     * If a RetrieveAllUsersInLobbyRequest is detected on the EventBus, this method
+     * is called. It posts a AllUsersInLobbyResponse containing user objects for
+     * every user in the specified lobby on the EvenBus.
+     *
+     * @param msg RetrieveAllUsersInLobbyRequest found on the EventBus
+     * @see de.uol.swp.common.user.request.RetrieveAllUsersInLobbyRequest
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2022-11-20
+     */
+    @Subscribe
+    public void onRetrieveAllUsersInLobbyRequest(RetrieveAllUsersInLobbyRequest msg) {
+        AllUsersInLobbyResponse response = new AllUsersInLobbyResponse(msg.getLobbyName(), lobbyManagement.getLobby(msg.getLobbyName()).get().getUsers());
+        response.initWithMessage(msg);
+        post(response);
+    }
+
 
 }

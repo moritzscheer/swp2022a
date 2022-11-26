@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.request.RetrieveAllUsersInLobbyRequest;
 
 /**
  * Classes that manages lobbies
@@ -55,5 +56,11 @@ public class LobbyService {
     public void joinLobby(String name, UserDTO user) {
         LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
         eventBus.post(joinUserRequest);
+    }
+
+
+    public void retrieveAllUsersInLobby(String lobbyName) {
+        RetrieveAllUsersInLobbyRequest cmd = new RetrieveAllUsersInLobbyRequest(lobbyName);
+        eventBus.post(cmd);
     }
 }
