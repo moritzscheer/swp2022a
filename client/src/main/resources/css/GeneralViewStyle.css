@@ -26,7 +26,13 @@
     -fx-border-width: 6;
 }
 
+#PartingLine{
 
+}
+
+#Headline{
+
+}
 
 /**
     In this section you can change the style the LoginView.
@@ -42,9 +48,7 @@
 /**
     In this section you can change the style the MainMenuView.
  */
-.FlowPane{
 
-}
 
 /**
     In this section you can change the style the OptionView.
