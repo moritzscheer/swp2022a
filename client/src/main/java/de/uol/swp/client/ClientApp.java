@@ -10,8 +10,10 @@ import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
+import de.uol.swp.common.user.response.UserDroppedResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -186,6 +188,43 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.info("Registration successful.");
 		sceneManager.showLoginScreen();
 	}
+
+	/**
+	 * Handles Logout
+	 *
+	 * If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+  	 * method is called. It tells the SceneManager to show the login window. If
+  	 * the loglevel is set to INFO or higher "User {username} logged out." is written
+  	 * to the log.
+	 *
+	 * @param message The UserLoggedOutMessage object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @since 2022-11-08
+	 */
+	@Subscribe
+	void onUserLoggedOutMessage(UserLoggedOutMessage message){
+		LOG.info("User {} logged out.",  message.getUsername());
+		sceneManager.showLoginScreen();
+	}
+
+	/**
+	 * Handles User Drop
+	 *
+	 * If an onUserDroppedMessage object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the login window. If
+	 * the loglevel is set to INFO or higher "User {response} dropped." is written
+	 * to the log.
+	 *
+	 * @param response The UserDroppedResponse object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @since 2022-11-08
+	 */
+	@Subscribe
+	void onUserDroppedResponse(UserDroppedResponse response){
+		LOG.info("User {} has been dropped.", response.getUsername());
+		sceneManager.showLoginScreen();
+	}
+
 
 	/**
 	 * Handles errors produced by the EventBus

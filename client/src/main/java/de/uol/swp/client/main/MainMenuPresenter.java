@@ -124,6 +124,37 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
+     * Method called when the Delete User button is pressed
+     *
+     * If the Delete User button is pressed, this method requests the user service
+     * first to logout the user, then to drop the user.
+     *
+     * @param event The ActionEvent created by pressing the Delete User button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onDropUser(ActionEvent event) {
+        userService.dropUser(loggedInUser);
+        userService.logout(loggedInUser);
+    }
+
+    /**
+     * Method called when the Logout button is pressed
+     *
+     * If the logout button is pressed, this method requests the user service
+     * to log this user out.
+     *
+     * @param event The ActionEvent created by pressing the logout button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onLogoutButtonPressed(ActionEvent event) {
+        userService.logout(loggedInUser);
+    }
+
+    /**
      * Updates the main menus user list according to the list given
      *
      * This method clears the entire user list and then adds the name of each user
