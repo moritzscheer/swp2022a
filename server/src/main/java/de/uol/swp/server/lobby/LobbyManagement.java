@@ -45,7 +45,7 @@ public class LobbyManagement {
                 }
             }
         }
-        lobbies.put(lobbyID, new LobbyDTO(name, owner, password, true));
+        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, true));
         this.name = name;
     }
 
@@ -73,9 +73,11 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public Optional<Lobby> getLobby(String name) {
-        Lobby lobby = lobbies.get(name);
-        if (lobby != null) {
-            return Optional.of(lobby);
+        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
+            if(entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
+                Lobby lobby = lobbies.get(entry.getKey());
+                return Optional.of(lobby);
+            }
         }
         return Optional.empty();
     }

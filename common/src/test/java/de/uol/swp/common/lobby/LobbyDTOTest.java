@@ -22,7 +22,7 @@ class LobbyDTOTest {
     private static final User defaultUser = new UserDTO("marco", "marco", "marco@grawunder.de");
     private static final User notInLobbyUser = new UserDTO("no", "marco", "no@grawunder.de");
 
-    private static final int NO_USERS = 10;
+    private static final int NO_USERS = 7;
     private static final List<UserDTO> users;
 
     static {
@@ -46,7 +46,7 @@ class LobbyDTOTest {
      */
     @Test
     void createLobbyTest() {
-        Lobby lobbyMP = new LobbyDTO("test", defaultUser, "1234", true);
+        Lobby lobbyMP = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
         assertEquals("test", lobbyMP.getName());
         assertEquals(1, lobbyMP.getUsers().size());
@@ -54,7 +54,7 @@ class LobbyDTOTest {
         assertEquals("1234", lobbyMP.getPassword());
         assertEquals(true, lobbyMP.isMultiplayer());
 
-        Lobby lobbySP = new LobbyDTO(null, defaultUser, null, false);
+        Lobby lobbySP = new LobbyDTO(2, null, defaultUser, null, false);
 
         assertEquals(null, lobbySP.getName());
         assertEquals(1, lobbySP.getUsers().size());
@@ -77,18 +77,25 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
+        Lobby lobbyMP = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
-        lobby.joinUser(users.get(0));
-        assertEquals(2,lobby.getUsers().size());
-        assertTrue(lobby.getUsers().contains(users.get(0)));
+        lobbyMP.joinUser(users.get(0), "1234");
+        assertEquals(2,lobbyMP.getUsers().size());
+        assertTrue(lobbyMP.getUsers().contains(users.get(0)));
 
-        lobby.joinUser(users.get(0));
-        assertEquals(2, lobby.getUsers().size());
+        lobbyMP.joinUser(users.get(0), "1234");
+        assertEquals(2, lobbyMP.getUsers().size());
 
-        lobby.joinUser(users.get(1));
-        assertEquals(3,lobby.getUsers().size());
-        assertTrue(lobby.getUsers().contains(users.get(1)));
+        lobbyMP.joinUser(users.get(1),"1234");
+        assertEquals(3,lobbyMP.getUsers().size());
+        assertTrue(lobbyMP.getUsers().contains(users.get(1)));
+
+        assertThrows(IllegalArgumentException.class, () -> lobbyMP.joinUser(users.get(2), "4321"));
+
+
+        Lobby lobbySP = new LobbyDTO(2, null, defaultUser, null, false);
+
+        assertThrows(IllegalArgumentException.class, () -> lobbySP.joinUser(users.get(2), "4321"));
     }
 
     /**
@@ -101,8 +108,10 @@ class LobbyDTOTest {
      */
     @Test
     void leaveUserLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
-        users.forEach(lobby::joinUser);
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+        for(User user: users) {
+            lobby.joinUser(user, "1234");
+        }
 
         assertEquals(lobby.getUsers().size(), users.size() + 1);
         lobby.leaveUser(users.get(5));
@@ -121,8 +130,10 @@ class LobbyDTOTest {
      */
     @Test
     void removeOwnerFromLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
-        users.forEach(lobby::joinUser);
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+        for(User user: users) {
+            lobby.joinUser(user, "1234");
+        }
 
         lobby.leaveUser(defaultUser);
 
@@ -141,8 +152,10 @@ class LobbyDTOTest {
      */
     @Test
     void updateOwnerTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
-        users.forEach(lobby::joinUser);
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+        for(User user: users) {
+            lobby.joinUser(user, "1234");
+        }
 
         lobby.updateOwner(users.get(6));
         assertEquals(lobby.getOwner(), users.get(6));
@@ -159,7 +172,7 @@ class LobbyDTOTest {
      */
     @Test
     void assureNonEmptyLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
         assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
     }

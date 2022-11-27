@@ -19,14 +19,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class CreateLobbyPresenter extends AbstractPresenter {
-
-    private static final CreateLobbyCanceledEvent createLobbyCanceledEvent = new CreateLobbyCanceledEvent();
     public static final String FXML = "/fxml/CreateLobbyView.fxml";
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
-    private ObservableList<String> users;
-    private User loggedInUser;
     @Inject
     private LobbyService lobbyService;
+    private ObservableList<String> users;
+    private User loggedInUser;
     @FXML
     private ListView<String> usersView;
     @FXML
@@ -38,7 +36,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
 
     @FXML
     void onCancelButtonPressed(ActionEvent event) {
-        eventBus.post(createLobbyCanceledEvent);
+        eventBus.post(new CreateLobbyCanceledEvent());
     }
 
     /**
@@ -60,7 +58,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      * Handles lobby create exceptions
      *
      * If an LobbyCreatedExceptionResponse object is detected on the EventBus this
-     * method is called. If the loglevel is set to Error or higher "RLobby create error " and the
+     * method is called. If the loglevel is set to Error or higher "Lobby create error " and the
      * error message are written to the log.
      *
      * @param message The RegistrationSuccessfulResponse object detected on the EventBus
