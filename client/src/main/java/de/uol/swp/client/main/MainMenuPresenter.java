@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -179,5 +180,9 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
     }
 
+    @FXML
+    void onRulebookButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowRulebookViewEvent());
+    }
 
 }

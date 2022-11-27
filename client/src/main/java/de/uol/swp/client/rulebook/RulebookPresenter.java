@@ -3,6 +3,7 @@ package de.uol.swp.client.rulebook;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,8 +41,4 @@ public class RulebookPresenter extends AbstractPresenter {
         setEventBus(eventBus);
     }
 
-    @FXML
-    void onBackButtonPressed(ActionEvent event){
-
-    }
 }

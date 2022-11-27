@@ -12,6 +12,8 @@ import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
+import de.uol.swp.client.rulebook.RulebookPresenter;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -38,12 +40,14 @@ public class SceneManager {
     static final String STYLE_SHEET = "css/swp.css";
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
     static final String MAIN_MENU_VIEW_STYLE = "/images/HintergrundUndLogo.png";
+    static final String OTHER_VIEW_STYLE = "/images/BackgroundWithoutLogo.png";
 
     private final Stage primaryStage;
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
     private Scene mainScene;
+    private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
 
@@ -67,6 +71,7 @@ public class SceneManager {
     private void initViews() throws IOException {
         initLoginView();
         initMainView();
+        initRulebookView();
         initRegistrationView();
     }
 
@@ -115,6 +120,24 @@ public class SceneManager {
     }
 
     /**
+     * Initializes the rulebook view
+     *
+     * If the rulebookScene is null it gets set to a new scene containing the
+     * a pane showing the rulebook view as specified by the RulebookView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.rulebook.RulebookPresenter
+     * @since 2022-11-27
+     */
+    private void initRulebookView() throws IOException {
+        if (rulebookScene == null) {
+            Parent rootPane = initPresenter(RulebookPresenter.FXML);
+            rulebookScene = new Scene(rootPane);
+            rulebookScene.getStylesheets().add(OTHER_VIEW_STYLE);
+        }
+    }
+
+    /**
      * Initializes the login view
      *
      * If the loginScene is null it gets set to a new scene containing the
@@ -148,6 +171,23 @@ public class SceneManager {
             registrationScene.getStylesheets().add(STYLE_SHEET);
         }
     }
+
+    /**
+     * Handles ShowRegistrationViewEvent detected on the EventBus
+     *
+     * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the registration
+     * screen.
+     *
+     * @param event The ShowRegistrationViewEvent detected on the EventBus
+     * @see de.uol.swp.client.register.event.ShowRegistrationViewEvent
+     * @since 2019-09-03
+     */
+    @Subscribe
+    public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
+        showRulebook();
+    }
+
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -296,6 +336,18 @@ public class SceneManager {
      */
     public void showMainScreen(User currentUser) {
         showScene(mainScene, "Welcome " + currentUser.getUsername());
+    }
+
+    /**
+     * Shows the rulebook screenn
+     *
+     * Switches the main menu Scene to the rulebookScene and sets the title of
+     * the window to "Die Spielregeln"
+     *
+     * @since 2022-11-27
+     */
+    public void showRulebook() {
+        showScene(rulebookScene, "Die Spielregeln");
     }
 
     /**

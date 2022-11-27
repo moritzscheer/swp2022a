@@ -23,7 +23,7 @@
          <Button fx:id="einstellungenButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Einstellungen"></Button>
          <Button fx:id="kontoButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Konto"></Button>
          <Button fx:id="creditsButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Credits"></Button>
-         <Button fx:id="spielregelnButton" mnemonicParsing="false" prefHeight="44.0" prefWidth="321.0" text="Spielregeln"></Button>
+         <Button fx:id="spielregelnButton" mnemonicParsing="false" prefHeight="44.0" prefWidth="321.0" text="Spielregeln" onAction="#onRulebookButtonPressed"></Button>
          <Button fx:id="logoutButton" mnemonicParsing="false" prefHeight="44.0" prefWidth="321.0" text="Logout"></Button>
       </children>
    </FlowPane>
