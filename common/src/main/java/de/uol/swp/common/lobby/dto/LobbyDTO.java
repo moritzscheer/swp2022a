@@ -19,11 +19,13 @@ import java.util.TreeSet;
  */
 public class LobbyDTO implements Lobby {
 
+    private final Integer lobbyID;
     private final String name;
     private User owner;
     private final Set<User> users = new TreeSet<>();
     private final String password;
     private final Boolean multiplayer;
+    private Integer playerSlot = 8;
 
     /**
      * Constructor
@@ -33,7 +35,8 @@ public class LobbyDTO implements Lobby {
      *                owner
      * @since 2019-10-08
      */
-    public LobbyDTO(String name, User creator, String password, Boolean multiplayer) {
+    public LobbyDTO(Integer lobbyID, String name, User creator, String password, Boolean multiplayer) {
+        this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
         this.users.add(creator);
@@ -47,8 +50,18 @@ public class LobbyDTO implements Lobby {
     }
 
     @Override
-    public void joinUser(User user) {
-        this.users.add(user);
+    public void joinUser(User user, String password) {
+        if(isMultiplayer()) {
+            if(users.size() >= playerSlot) {
+                throw new IllegalArgumentException("Lobby is already full!");
+            } else if(password.equals(this.password)) {
+                this.users.add(user);
+            } else {
+                throw new IllegalArgumentException("password is incorrect!");
+            }
+        } else {
+            throw new IllegalArgumentException("Lobby is set to Private!");
+        }
     }
 
     @Override
@@ -90,5 +103,9 @@ public class LobbyDTO implements Lobby {
     @Override
     public Boolean isMultiplayer() {
         return this.multiplayer;
+    }
+
+    public Integer getLobbyID() {
+        return this.lobbyID;
     }
 }

@@ -10,6 +10,9 @@ import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyCreatedExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -83,6 +86,7 @@ public class LobbyService extends AbstractService {
             LOG.error(e);
             returnMessage = new LobbyCreatedExceptionResponse("Cannot create Lobby. " + e.getMessage());
         }
+        LOG.info("lobby {} created successfully", createLobbyRequest.getUser().getUsername());
         createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
     }
@@ -92,7 +96,8 @@ public class LobbyService extends AbstractService {
      *
      * If a LobbyJoinUserRequest is detected on the EventBus, this method is called.
      * It adds a user to a Lobby stored in the LobbyManagement and sends a UserJoinedLobbyMessage
-     * to every user in the lobby.
+     * to every user in the lobby and a LobbyJoinedSuccessfulResponse to the Client that send the request.
+     * If no lobby was found or the password is wrong a LobbyJoinedExceptionResponse is sent to the client.
      *
      * @param lobbyJoinUserRequest The LobbyJoinUserRequest found on the EventBus
      * @see de.uol.swp.common.lobby.Lobby
@@ -101,13 +106,26 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onLobbyJoinUserRequest(LobbyJoinUserRequest lobbyJoinUserRequest) {
+        LOG.debug("Got new lobby message from User {}", lobbyJoinUserRequest.getUser().getUsername());
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyJoinUserRequest.getName());
 
+        ResponseMessage returnMessage;
         if (lobby.isPresent()) {
-            lobby.get().joinUser(lobbyJoinUserRequest.getUser());
-            sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
+            try {
+                lobby.get().joinUser(lobbyJoinUserRequest.getUser(), lobbyJoinUserRequest.getPassword());
+
+                sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
+                returnMessage = new LobbyJoinedSuccessfulResponse(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser(), lobby.get().getLobbyID());
+                LOG.info("lobby {} joined successfully", lobby.get().getName());
+            } catch (IllegalArgumentException e) {
+                LOG.error(e);
+                returnMessage = new LobbyJoinedExceptionResponse("Cannot join Lobby. " + e.getMessage());
+            }
+        } else {
+            returnMessage = new LobbyJoinedExceptionResponse("Cannot find lobby. Lobby does not exist!");
         }
-        // TODO: error handling not existing lobby
+        lobbyJoinUserRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
     }
 
     /**
