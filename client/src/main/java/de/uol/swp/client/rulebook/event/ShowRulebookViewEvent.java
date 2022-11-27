@@ -1,5 +1,7 @@
 package de.uol.swp.client.rulebook.event;
 
+import de.uol.swp.common.user.User;
+
 /**
  * Event used to show the rulebook window
  *

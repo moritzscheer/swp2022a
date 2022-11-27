@@ -37,6 +37,10 @@
     -fx-text-alignment: center;
 }
 
+#Background{
+    -fx-background-image: url("/images/BackgroundWithLogo.png");
+    -fx-background-size: 1600 900;
+}
 
 /**
     In this section you can change the style the LoginView.

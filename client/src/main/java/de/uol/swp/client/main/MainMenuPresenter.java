@@ -180,6 +180,15 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
     }
 
+    /**
+     * Method called when the rulebook button is pressed
+     *
+     * If the rulebook button is pressed, it changes the scene from main menu to rulebook.
+     *
+     * @param event The ActionEvent created by pressing the rulebook button
+     * @see de.uol.swp.client.rulebook
+     * @since 2022-11-27
+     */
     @FXML
     void onRulebookButtonPressed(ActionEvent event) {
         eventBus.post(new ShowRulebookViewEvent());

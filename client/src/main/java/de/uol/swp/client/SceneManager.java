@@ -8,6 +8,7 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -39,7 +40,7 @@ public class SceneManager {
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
-    static final String MAIN_MENU_VIEW_STYLE = "/images/HintergrundUndLogo.png";
+    static final String MAIN_MENU_VIEW_STYLE = "/images/BackgroundWithLogo.png";
     static final String OTHER_VIEW_STYLE = "/images/BackgroundWithoutLogo.png";
 
     private final Stage primaryStage;
@@ -173,19 +174,36 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowRegistrationViewEvent detected on the EventBus
+     * Handles ShowMainMenuViewEvent detected on the EventBus
      *
-     * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the registration
+     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the main menu
      * screen.
      *
-     * @param event The ShowRegistrationViewEvent detected on the EventBus
-     * @see de.uol.swp.client.register.event.ShowRegistrationViewEvent
+     * @param event The ShowMainMenuViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
      * @since 2019-09-03
      */
     @Subscribe
+    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+
+    /**
+     * Handles ShowRulebookViewEvent detected on the EventBus
+     *
+     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the rulebook
+     * screen.
+     *
+     * @param event The ShowRulebookViewEvent detected on the EventBus
+     * @see de.uol.swp.client.rulebook.event.ShowRulebookViewEvent
+     * @since 2022-11-27
+     */
+    @Subscribe
     public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
-        showRulebook();
+        showRulebookScreen();
     }
 
 
@@ -346,7 +364,7 @@ public class SceneManager {
      *
      * @since 2022-11-27
      */
-    public void showRulebook() {
+    public void showRulebookScreen() {
         showScene(rulebookScene, "Die Spielregeln");
     }
 
