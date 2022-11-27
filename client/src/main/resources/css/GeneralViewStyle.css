@@ -27,11 +27,14 @@
 }
 
 #PartingLine{
-
+    -fx-stroke-width: 3.0;
 }
 
 #Headline{
-
+    -fx-stroke-type: OUTSIDE;
+    -fx-stroke-width: 0.0;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
 }
 
 /**
