@@ -7,7 +7,10 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.credit.CreditPresenter;
+import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -37,13 +40,15 @@ public class SceneManager {
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
-    static final String MAIN_MENU_VIEW_STYLE = "/images/HintergrundUndLogo.png";
+    static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle.css";
+
 
     private final Stage primaryStage;
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
     private Scene mainScene;
+    private Scene creditScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
 
@@ -67,6 +72,7 @@ public class SceneManager {
     private void initViews() throws IOException {
         initLoginView();
         initMainView();
+        initCreditView();
         initRegistrationView();
     }
 
@@ -110,7 +116,25 @@ public class SceneManager {
         if (mainScene == null) {
            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
             mainScene = new Scene(rootPane);
-            mainScene.getStylesheets().add(MAIN_MENU_VIEW_STYLE);
+            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the credit view
+     *
+     * If the creditScene is null it gets set to a new scene containing the
+     * a pane showing the credit view as specified by the CreditView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.credit.CreditPresenter
+     * @since 2022-11-29
+     */
+    private void initCreditView() throws IOException {
+        if (creditScene == null) {
+            Parent rootPane = initPresenter(CreditPresenter.FXML);
+            creditScene = new Scene(rootPane);
+            creditScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -147,6 +171,39 @@ public class SceneManager {
             registrationScene = new Scene(rootPane);
             registrationScene.getStylesheets().add(STYLE_SHEET);
         }
+    }
+
+    /**
+     * Handles ShowMainMenuViewEvent detected on the EventBus
+     *
+     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the main menu
+     * screen.
+     *
+     * @param event The ShowMainMenuViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
+     * @since 2022-11-09
+     */
+    @Subscribe
+    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+
+    /**
+     * Handles ShowCreditViewEvent detected on the EventBus
+     *
+     * If a ShowCreditViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the credit
+     * screen.
+     *
+     * @param event The ShowCreditViewEvent detected on the EventBus
+     * @see de.uol.swp.client.credit.event.ShowCreditViewEvent
+     * @since 2022-11-29
+     */
+    @Subscribe
+    public void onShowCreditViewEvent(ShowCreditViewEvent event){
+        showCreditScreen();
     }
 
     /**
@@ -296,6 +353,18 @@ public class SceneManager {
      */
     public void showMainScreen(User currentUser) {
         showScene(mainScene, "Welcome " + currentUser.getUsername());
+    }
+
+    /**
+     * Shows the credit screen
+     *
+     * Switches the main menu Scene to the creditScene and sets the title of
+     * the window to "Die Credits"
+     *
+     * @since 2022-11-29
+     */
+    public void showCreditScreen() {
+        showScene(creditScene, "Die Credits");
     }
 
     /**

@@ -3,6 +3,7 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -179,5 +180,17 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
     }
 
-
+    /**
+     * Method called when the credit button is pressed
+     *
+     * If the credit button is pressed, it changes the scene from main menu to credit.
+     *
+     * @param event The ActionEvent created by pressing the credit button
+     * @see de.uol.swp.client.credit
+     * @since 2022-11-29
+     */
+    @FXML
+    void onCreditButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowCreditViewEvent());
+    }
 }
