@@ -73,6 +73,8 @@ class LobbyDTOTest {
      * The test fails if the size of the user list of the lobby does not get bigger
      * or a user who joined is not in the list.
      *
+     * Else the test fails, if a user can join a singleplayer lobby or puts in an incorrect password.
+     *
      * @since 2019-10-08
      */
     @Test
