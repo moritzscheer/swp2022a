@@ -40,8 +40,7 @@ public class SceneManager {
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
-    static final String MAIN_MENU_VIEW_STYLE = "/images/BackgroundWithLogo.png";
-    static final String OTHER_VIEW_STYLE = "/images/BackgroundWithoutLogo.png";
+    static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle.css";
 
     private final Stage primaryStage;
     private Scene loginScene;
@@ -116,7 +115,7 @@ public class SceneManager {
         if (mainScene == null) {
            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
             mainScene = new Scene(rootPane);
-            mainScene.getStylesheets().add(MAIN_MENU_VIEW_STYLE);
+            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -134,7 +133,7 @@ public class SceneManager {
         if (rulebookScene == null) {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
             rulebookScene = new Scene(rootPane);
-            rulebookScene.getStylesheets().add(OTHER_VIEW_STYLE);
+            rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
