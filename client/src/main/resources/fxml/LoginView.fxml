@@ -31,7 +31,7 @@
             <font>
                <Font size="20.0" />
             </font></Label>
-         <PasswordField id="passwordField" fx:id="passwordField" layoutX="123.0" layoutY="74.0" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" />
+         <PasswordField id="passwordField" fx:id="passwordField" layoutX="128.0" layoutY="73.0" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" />
          <Button id="loginButton" defaultButton="true" layoutX="123.0" layoutY="133.0" mnemonicParsing="false" onAction="#onLoginButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Login" />
          <Button id="registerButton" layoutX="212.0" layoutY="133.0" mnemonicParsing="false" onAction="#onRegisterButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Register" />
       </children>

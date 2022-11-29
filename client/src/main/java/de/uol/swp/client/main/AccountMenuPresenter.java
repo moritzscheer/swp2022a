@@ -30,10 +30,6 @@ public class AccountMenuPresenter extends AbstractPresenter {
 
     }
     @FXML
-    private void onDeletePasswordButtonPressed(ActionEvent event){
-
-    }
-    @FXML
     private void onPasswordResetButtonPressed(ActionEvent event) {
 
     }
