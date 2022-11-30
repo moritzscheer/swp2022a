@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -179,5 +180,18 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
     }
 
+    /**
+     * Method called when the rulebook button is pressed
+     *
+     * If the rulebook button is pressed, it changes the scene from main menu to rulebook.
+     *
+     * @param event The ActionEvent created by pressing the rulebook button
+     * @see de.uol.swp.client.rulebook
+     * @since 2022-11-27
+     */
+    @FXML
+    void onRulebookButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowRulebookViewEvent());
+    }
 
 }
