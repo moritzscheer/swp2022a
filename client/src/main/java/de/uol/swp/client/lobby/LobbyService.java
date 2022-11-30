@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -55,5 +56,10 @@ public class LobbyService {
     public void joinLobby(String name, UserDTO user, String password) {
         LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
         eventBus.post(joinUserRequest);
+    }
+
+    public void retrieveAllLobbies() {
+        RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest = new RetrieveAllOnlineLobbiesRequest();
+        eventBus.post(retrieveAllLobbiesRequest);
     }
 }

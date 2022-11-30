@@ -8,17 +8,22 @@ import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.user.ClientUserService;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import java.util.List;
 
 /**
  * Manages the registration window
@@ -34,11 +39,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(JoinOrCreatePresenter.class);
     @Inject
     private LobbyService lobbyService;
+    private ObservableList<String> lobbies;
     private User loggedInUser;
-    private String lobbyName;
-
-    @FXML
-    private ListView<String> usersView;
     @FXML
     private ListView<String> lobbyView;
     @FXML
@@ -77,6 +79,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         this.loggedInUser = message.getUser();
     }
 
+    // -----------------------------------------------------
+    // Methods for the LobbyList
+    // -----------------------------------------------------
+
     /**
      * Handles created Lobbies
      *
@@ -89,8 +95,63 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @Subscribe
     public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
         LOG.info("User " + message.getUser().getUsername() + " created the lobby " + message.getName());
-        this.lobbyName = message.getName();
+        System.out.println(!loggedInUser.getUsername().equals(message.getUser().getUsername()));
+        Platform.runLater(() -> {
+            if(lobbies != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
+                lobbies.add(message.getName());
+        });
     }
+
+    /**
+     * Handles new list of lobbies
+     *
+     * If a new AllOnlineLobbiesResponse object is posted to the EventBus the names
+     * of currently open lobbies are put onto the lobby list in the joinOrCreate.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "Update of lobby
+     * list" with the names of all currently open lobbies is displayed in the
+     * log.
+     *
+     * @param allLobbiesResponse the AllOnlineLobbiesResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @since 2022-11-30
+     */
+    @Subscribe
+    public void onAllOnlineLobbiesResponse(AllOnlineLobbiesResponse allLobbiesResponse) {
+        LOG.debug("Update of lobby list {}", allLobbiesResponse.getLobbies());
+        updateLobbyList(allLobbiesResponse.getLobbies());
+    }
+
+    /**
+     * Updates the joinOrCreate lobby list according to the list given
+     *
+     * This method clears the entire lobby list and then adds the name of each lobby, which contains not the loggedInUser
+     * in the list given to the joinOrCreate lobby list. If there is no lobby list, then it creates one.
+     *
+     * @implNote The code inside this Method has to run in the JavaFX-application
+     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param lobbyList A list of LobbyDTO objects including all currently open lobbies
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @since 2022-11-30
+     */
+    private void updateLobbyList(List<LobbyDTO> lobbyList) {
+        // Attention: This must be done on the FX Thread!
+        Platform.runLater(() -> {
+            if (lobbies == null) {
+                lobbies = FXCollections.observableArrayList();
+                lobbiesView.setItems(lobbies);
+            }
+            lobbies.clear();
+            lobbyList.forEach(u -> {
+                if (!u.getOwner().equals(loggedInUser) && !u.getUsers().contains(loggedInUser)) {
+                    lobbies.add(u.getName());
+                }
+            });
+        });
+    }
+
+    // -----------------------------------------------------
+    // Lobby Join Methods
+    // -----------------------------------------------------
 
     /**
      * Handles lobby join exceptions

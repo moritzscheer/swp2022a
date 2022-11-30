@@ -9,10 +9,8 @@ import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyCreatedExceptionResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
+import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
+import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.UserDTO;
@@ -167,6 +165,25 @@ public class LobbyService extends AbstractService {
         }
 
         // TODO: error handling not existing lobby
+    }
+
+    /**
+     * Handles RetrieveAllOnlineLobbiesRequest found on the EventBus
+     *
+     * If a RetrieveAllOnlineLobbiesRequest is detected on the EventBus, this method
+     * is called. It posts a AllOnlineLobbiesResponse containing lobby objects for
+     * every open lobby on the EvenBus.
+     *
+     * @param msg RetrieveAllOnlineLobbiesRequest found on the EventBus
+     * @see de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest
+     * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @since 2022-11-30
+     */
+    @Subscribe
+    public void onRetrieveAllOnlineLobbiesRequest(RetrieveAllOnlineLobbiesRequest msg) {
+        AllOnlineLobbiesResponse response = new AllOnlineLobbiesResponse(lobbyManagement.getLobbies().values());
+        response.initWithMessage(msg);
+        post(response);
     }
 
 }
