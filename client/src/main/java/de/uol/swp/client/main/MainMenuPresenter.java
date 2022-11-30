@@ -149,41 +149,29 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method called when the create lobby button is pressed
+     * Method called when the multiplayer lobby button is pressed
      *
-     * If the create lobby button is pressed, this method requests the lobby service
-     * to create a new lobby. Therefore it currently uses the lobby name "test"
-     * and an user called "ich"
+     * If the multiplayer button is pressed, it posts an ShowJoinOrCreateViewEvent Object to the Eventbus.
      *
-     * @param event The ActionEvent created by pressing the create lobby button
+     * @param actionEvent The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2019-11-20
+     * @since 2022-11-30
      */
-    //@FXML
-    //void onCreateLobby(ActionEvent event) {
-    //    lobbyService.createNewLobby("test", new UserDTO("ich", "", ""), false, "", 8);
-    //}
-
-    /**
-     * Method called when the join lobby button is pressed
-     *
-     * If the join lobby button is pressed, this method requests the lobby service
-     * to join a specified lobby. Therefore it currently uses the lobby name "test"
-     * and an user called "ich"
-     *
-     * @param event The ActionEvent created by pressing the join lobby button
-     * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2019-11-20
-     */
-    @FXML
-    void onJoinLobby(ActionEvent event) {
-        lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
-    }
-
     @FXML
      void onMultiplayer(ActionEvent actionEvent) {
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
+
+    /**
+     * Method called when the singleplayer button is pressed
+     *
+     * If the singleplayer button is pressed, this method requests the lobby service
+     * to create a specified lobby. Therefore it uses as the parameter  name and password the value null.
+     *
+     * @param event The ActionEvent created by pressing the join lobby button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-30
+     */
     @FXML
     void onSingleplayer(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);

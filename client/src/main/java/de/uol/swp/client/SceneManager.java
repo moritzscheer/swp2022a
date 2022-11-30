@@ -7,12 +7,12 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
-import de.uol.swp.client.lobby.Presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
-import de.uol.swp.client.lobby.Presenter.JoinOrCreatePresenter;
+import de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
-import de.uol.swp.client.lobby.Presenter.CreateLobbyPresenter;
+import de.uol.swp.client.lobby.presenter.CreateLobbyPresenter;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
@@ -161,6 +161,16 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Initializes the lobby view
+     *
+     * If the lobbyScene is null it gets set to a new scene containing
+     * a pane showing the lobby view as specified by the lobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @since 2022-11-30
+     */
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);
@@ -169,6 +179,16 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Initializes the joinOrCreate view
+     *
+     * If the joinOrCreateScene is null it gets set to a new scene containing
+     * a pane showing the joinOrCreate view as specified by the JoinOrCreateView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
@@ -177,6 +197,16 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Initializes the createLobby view
+     *
+     * If the createLobbyScene is null it gets set to a new scene containing
+     * a pane showing the createLobby view as specified by the CreateLobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
     private void initCreateLobbyView() throws IOException {
         if (createLobbyScene == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
@@ -295,7 +325,7 @@ public class SceneManager {
      * @since 2022-11-19
      */
     @Subscribe
-    public void onFindCreateCanceledEvent(JoinOrCreateCanceledEvent event){
+    public void onJoinOrCreateCanceledEvent(JoinOrCreateCanceledEvent event){
         showScene(lastScene, lastTitle);
     }
 
@@ -348,7 +378,7 @@ public class SceneManager {
      * @since 2022-11-17
      */
     @Subscribe
-    public void onCreateLobbyEvent(ShowCreateLobbyViewEvent event){
+    public void onShowCreateLobbyViewEvent(ShowCreateLobbyViewEvent event){
         showCreateLobbyScreen();
     }
 
@@ -469,14 +499,38 @@ public class SceneManager {
         showScene(registrationScene,"Registration");
     }
 
+    /**
+     * Shows the joinOrCreate screen
+     *
+     * Switches the current Scene to the joinOrCreateScene and sets the title of
+     * the window to "Lobbies"
+     *
+     * @since 2022-11-30
+     */
     public void showJoinOrCreateScreen() {
         showScene(joinOrCreateScene,"Lobbies");
     }
 
+    /**
+     * Shows the createLobby screen
+     *
+     * Switches the current Scene to the createLobbyScene and sets the title of
+     * the window to "Create Lobby"
+     *
+     * @since 2022-11-30
+     */
     public void showCreateLobbyScreen() {
         showScene(createLobbyScene,"Create Lobby");
     }
 
+    /**
+     * Shows the lobby screen
+     *
+     * Switches the current Scene to the lobbyScene and sets the title of
+     * the window to "Lobby"
+     *
+     * @since 2022-11-30
+     */
     public void showLobbyViewScreen() {
         showScene(lobbyScene,"Lobby");
     }

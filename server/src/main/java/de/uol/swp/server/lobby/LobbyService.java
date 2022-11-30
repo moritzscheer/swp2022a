@@ -10,7 +10,7 @@ import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyCreatedExceptionResponse;
+import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.UserDTO;
@@ -64,7 +64,7 @@ public class LobbyService extends AbstractService {
      * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
      * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
      * @see de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse
-     * @see de.uol.swp.common.lobby.response.LobbyCreatedExceptionResponse
+     * @see de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse
      * @since 2022-11-24
      */
     @Subscribe

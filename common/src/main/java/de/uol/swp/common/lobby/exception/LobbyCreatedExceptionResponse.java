@@ -1,8 +1,9 @@
-package de.uol.swp.common.lobby.response;
+package de.uol.swp.common.lobby.exception;
 
+import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
 import java.util.Objects;
 
-public class LobbyCreatedExceptionResponse extends AbstractLobbyResponse{
+public class LobbyCreatedExceptionResponse extends AbstractLobbyResponse {
 
     private final String message;
 

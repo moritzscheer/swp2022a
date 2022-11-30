@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" styleClass="\@../css/swp.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.Presenter.LobbyPresenter">
+<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.LobbyPresenter">
     <GridPane id="grid" layoutX="25.0" layoutY="25.0" prefHeight="850.0" prefWidth="1550.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1050.0" minWidth="10.0" prefWidth="1050.0" />

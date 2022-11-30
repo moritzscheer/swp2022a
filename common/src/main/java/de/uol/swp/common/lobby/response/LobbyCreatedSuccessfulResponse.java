@@ -42,6 +42,6 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
     }
 
     public Integer getLobbyID() {
-        return this.lobbyID;
+        return lobbyID;
     }
 }
