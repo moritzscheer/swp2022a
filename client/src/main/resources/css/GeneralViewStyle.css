@@ -31,6 +31,13 @@
     -fx-border-width: 6;
 }
 
+.listView{
+    -fx-background-color: D9D9D9;
+}
+.map{
+    -fx-effect: bloom;
+}
+
 
 
 
@@ -96,7 +103,7 @@
     In this section you can change the style the LobbyView.
  */
 
-#lobbyButton{
+.lobbyButton{
     -fx-background-color: #B22222;
     -fx-text-fill: #000000;
     -fx-background-radius: 5;
@@ -106,9 +113,11 @@
     -fx-pref-height: 40px;
     -fx-min-height: 40px;
 }
-#gameMap{
-    -fx-border-color: black;
+
+.InnerBoxBackground{
+    -fx-background-color: black;
 }
+
 
 /**
     In this section you can change the style the InGameViewView.

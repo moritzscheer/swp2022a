@@ -19,25 +19,38 @@
       </ImageView>
       <Pane layoutX="25.0" layoutY="25.0" prefHeight="450.0" prefWidth="850.0" styleClass="InnerBox">
          <children>
-            <Label layoutX="344.0" layoutY="21.0" styleClass="header" text="LobbyName" />
+            <Label alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="45.0" prefWidth="823.0" styleClass="header" text="LobbyName" />
             <Line endX="720.3333740234375" endY="2.0000076293945312" layoutX="114.0" layoutY="65.0" startX="-100.0" startY="2.0" strokeWidth="2.0" />
-            <Label layoutX="14.0" layoutY="68.0" styleClass="header" text="Player" />
-            <ListView layoutX="14.0" layoutY="110.0" prefHeight="329.0" prefWidth="823.0" />
-            <Label layoutX="687.0" layoutY="68.0" styleClass="header" text="Online:" />
-            <Label layoutX="808.0" layoutY="68.0" styleClass="header" text="/8" />
-            <Label layoutX="791.0" layoutY="68.0" styleClass="header" text="1" />
+            <Label layoutX="14.0" layoutY="21.0" styleClass="header" text="Player" />
+            <ListView fx:id="playerList" layoutX="14.0" layoutY="70.0" prefHeight="372.0" prefWidth="823.0" styleClass="listView" />
+            <Label layoutX="688.0" layoutY="21.0" styleClass="header" text="Online:" />
+            <Label layoutX="809.0" layoutY="21.0" styleClass="header" text="/8" />
+            <Label layoutX="792.0" layoutY="21.0" styleClass="header" text="1" />
+            <Label layoutX="384.0" layoutY="225.0" text="player list" />
          </children>
       </Pane>
       <Pane layoutX="25.0" layoutY="485.0" prefHeight="340.0" prefWidth="850.0" styleClass="InnerBox">
          <children>
-            <TextField layoutX="14.0" layoutY="301.0" prefHeight="25.0" prefWidth="823.0" />
-            <ListView layoutX="14.0" layoutY="11.0" prefHeight="283.0" prefWidth="823.0" />
+            <TextField fx:id="chatInput" layoutX="14.0" layoutY="301.0" prefHeight="25.0" prefWidth="822.0" />
+            <ListView fx:id="chatOutput" layoutX="14.0" layoutY="11.0" prefHeight="283.0" prefWidth="823.0" styleClass="listView" />
+            <Label layoutX="405.0" layoutY="101.0" text="chat" />
          </children></Pane>
       <Pane layoutX="885.0" layoutY="25.0" prefHeight="800.0" prefWidth="690.0" styleClass="InnerBox">
          <children>
-            <ImageView fitHeight="329.0" fitWidth="329.0" layoutX="16.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" />
-            <Line endX="564.6666259765625" endY="2.0000076293945312" layoutX="107.0" layoutY="65.0" startX="-90.0" startY="2.0000076293945312" strokeWidth="2.0" />
-            <Label layoutX="16.0" layoutY="66.0" styleClass="header" text="Map" />
+            <Pane layoutX="20.0" layoutY="65.0" prefHeight="356.0" prefWidth="650.0" styleClass="InnerBoxBackground">
+               <children>
+                  <ImageView fitHeight="350.0" fitWidth="350.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" styleClass="map">
+                     <image>
+                        <Image url="@../images/Map2.png" />
+                     </image>
+                  </ImageView>
+                  <ListView fx:id="mapList" layoutX="356.0" layoutY="3.0" prefHeight="350.0" prefWidth="291.0" styleClass="listView" />
+                  <Label layoutX="471.0" layoutY="163.0" text="map list" />
+               </children>
+            </Pane>
+            <Label layoutX="20.0" layoutY="20.0" styleClass="header" text="Map:" />
+            <Label layoutX="20.0" layoutY="440.0" styleClass="header" text="Game rules" />
+            <Label layoutX="94.0" layoutY="20.0" prefHeight="45.0" prefWidth="577.0" styleClass="header" text="current map name" />
          </children></Pane>
       <Button id="lobbyButton" layoutX="1350.0" layoutY="835.0" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="GO!" />
       <Button id="lobbyButton" layoutX="50.0" layoutY="835.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="back" />
