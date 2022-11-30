@@ -15,6 +15,8 @@ public class CreditPresenter extends AbstractPresenter {
      *
      */
 
+    public static final String FXML = "/fxml/CreditView.fxml";
+
     /**
      * Default Constructor
      *
