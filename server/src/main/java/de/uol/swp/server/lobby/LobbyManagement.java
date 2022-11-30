@@ -2,7 +2,7 @@ package de.uol.swp.server.lobby;
 
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,25 +17,36 @@ import java.util.Optional;
  * @since 2019-10-08
  */
 public class LobbyManagement {
-
-    private final Map<String, Lobby> lobbies = new HashMap<>();
+    private String name;
+    private Integer lobbyID = 1;
+    private final Map<Integer, Lobby> lobbies = new HashMap<>();
 
     /**
-     * Creates a new lobby and adds it to the list
+     * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
+     * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name containing:
+     * (name of the owner)-Singleplayer-(counter)
      *
-     * @implNote the primary key of the lobbies is the name therefore the name has
-     *           to be unique
+     * @implNote the primary key of the lobbies is the name therefore the name has to be unique
+     *
      * @param name the name of the lobby to create
      * @param owner the user who wants to create a lobby
+     * @param isMultiplayer true if multiplayer, false if singleplayer
      * @see de.uol.swp.common.user.User
      * @throws IllegalArgumentException name already taken
-     * @since 2019-10-08
+     * @since 2022-11-17
      */
-    public void createLobby(String name, User owner) {
-        if (lobbies.containsKey(name)) {
-            throw new IllegalArgumentException("Lobby name " + name + " already exists!");
+    public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
+        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
+
+        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
+            if(entry.getValue().getName() != null) {
+                if (entry.getValue().getName().equals(name)) {
+                    throw new IllegalArgumentException("Lobby name " + name + " already exists!");
+                }
+            }
         }
-        lobbies.put(name, new LobbyDTO(name, owner));
+        lobbies.put(lobbyID, new LobbyDTO(name, owner, password, true));
+        this.name = name;
     }
 
     /**
@@ -69,5 +80,12 @@ public class LobbyManagement {
         return Optional.empty();
     }
 
+    public Integer getlobbyID() {
+        return this.lobbyID;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
 }

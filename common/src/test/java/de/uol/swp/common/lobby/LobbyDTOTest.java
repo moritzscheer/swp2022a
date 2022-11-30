@@ -33,8 +33,12 @@ class LobbyDTOTest {
         Collections.sort(users);
     }
 
+    // -----------------------------------------------------
+    // Create Lobby Tests
+    // -----------------------------------------------------
+
     /**
-     * This test check whether a lobby is created correctly
+     * This test check whether a multiplayer lobby is created correctly
      *
      * If the variables are not set correctly the test fails
      *
@@ -42,13 +46,26 @@ class LobbyDTOTest {
      */
     @Test
     void createLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobbyMP = new LobbyDTO("test", defaultUser, "1234", true);
 
-        assertEquals("test", lobby.getName());
-        assertEquals(1, lobby.getUsers().size());
-        assertEquals(defaultUser, lobby.getUsers().iterator().next());
+        assertEquals("test", lobbyMP.getName());
+        assertEquals(1, lobbyMP.getUsers().size());
+        assertEquals(defaultUser, lobbyMP.getUsers().iterator().next());
+        assertEquals("1234", lobbyMP.getPassword());
+        assertEquals(true, lobbyMP.isMultiplayer());
 
+        Lobby lobbySP = new LobbyDTO(null, defaultUser, null, false);
+
+        assertEquals(null, lobbySP.getName());
+        assertEquals(1, lobbySP.getUsers().size());
+        assertEquals(defaultUser, lobbySP.getUsers().iterator().next());
+        assertEquals(null, lobbySP.getPassword());
+        assertEquals(false, lobbySP.isMultiplayer());
     }
+
+    // -----------------------------------------------------
+    // Join User Lobby Tests
+    // -----------------------------------------------------
 
     /**
      * This test check whether a user can join a lobby
@@ -60,7 +77,7 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
 
         lobby.joinUser(users.get(0));
         assertEquals(2,lobby.getUsers().size());
@@ -84,7 +101,7 @@ class LobbyDTOTest {
      */
     @Test
     void leaveUserLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
         users.forEach(lobby::joinUser);
 
         assertEquals(lobby.getUsers().size(), users.size() + 1);
@@ -104,7 +121,7 @@ class LobbyDTOTest {
      */
     @Test
     void removeOwnerFromLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
         users.forEach(lobby::joinUser);
 
         lobby.leaveUser(defaultUser);
@@ -124,7 +141,7 @@ class LobbyDTOTest {
      */
     @Test
     void updateOwnerTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
         users.forEach(lobby::joinUser);
 
         lobby.updateOwner(users.get(6));
@@ -142,7 +159,7 @@ class LobbyDTOTest {
      */
     @Test
     void assureNonEmptyLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser);
+        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
 
         assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
     }
