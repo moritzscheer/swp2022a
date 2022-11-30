@@ -1,7 +1,5 @@
 package de.uol.swp.client.main.event;
 
-import de.uol.swp.common.user.User;
-
 /**
  * Event used to show the main menu window
  *
@@ -10,9 +8,8 @@ import de.uol.swp.common.user.User;
  *
  * @author Tommy Dang
  * @see de.uol.swp.client.SceneManager
- * @since 2022-11-27
+ * @since 2022-11-29
  *
  */
 public class ShowMainMenuViewEvent {
-
 }
