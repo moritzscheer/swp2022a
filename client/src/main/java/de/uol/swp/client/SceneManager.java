@@ -40,7 +40,7 @@ public class SceneManager {
     static final String STYLE_SHEET = "css/swp.css";
 
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
-    static final String BASE_VIEW_STYLE_SHEET = "css/GenerellViewStyle";
+    static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle";
 
     private final Stage primaryStage;
     private Scene loginScene;
