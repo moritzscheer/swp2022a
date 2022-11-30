@@ -7,10 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 
-<AnchorPane id="Background" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19"
+<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.main.MainMenuPresenter">
 
-
+   <ImageView id="backgroundImage" fitHeight="900.0" fitWidth="1600.0" styleClass="backgroundImage">
+      <image>
+         <Image url="@../images/BackgroundWithLogo.png" />
+      </image>
+   </ImageView>
 
    <FlowPane layoutX="640.0" layoutY="296.0" prefHeight="200.0" prefWidth="200.0" vgap="15.0">
       <children>
@@ -18,7 +22,7 @@
          <Button fx:id="mehrspielerButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Mehrspieler"></Button>
          <Button fx:id="einstellungenButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Einstellungen"></Button>
          <Button fx:id="kontoButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Konto"></Button>
-         <Button fx:id="creditsButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" text="Credits"></Button>
+         <Button fx:id="creditsButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="321.0" onAction="#onCreditButtonPressed" text="Credits"></Button>
          <Button fx:id="spielregelnButton" mnemonicParsing="false" prefHeight="44.0" prefWidth="321.0" text="Spielregeln" onAction="#onRulebookButtonPressed"></Button>
          <Button fx:id="logoutButton" mnemonicParsing="false" prefHeight="44.0" prefWidth="321.0" text="Logout"></Button>
       </children>

@@ -7,6 +7,8 @@ import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.credit.CreditPresenter;
+import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
@@ -42,11 +44,13 @@ public class SceneManager {
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
     static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle.css";
 
+
     private final Stage primaryStage;
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
     private Scene mainScene;
+    private Scene creditScene;
     private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
@@ -71,6 +75,7 @@ public class SceneManager {
     private void initViews() throws IOException {
         initLoginView();
         initMainView();
+        initCreditView();
         initRulebookView();
         initRegistrationView();
     }
@@ -134,6 +139,25 @@ public class SceneManager {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
             rulebookScene = new Scene(rootPane);
             rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the credit view
+     *
+     * If the creditScene is null it gets set to a new scene containing the
+     * a pane showing the credit view as specified by the CreditView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.credit.CreditPresenter
+     * @since 2022-11-29
+     */
+    private void initCreditView() throws IOException {
+        if (creditScene == null) {
+            Parent rootPane = initPresenter(CreditPresenter.FXML);
+            creditScene = new Scene(rootPane);
+            creditScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -181,11 +205,28 @@ public class SceneManager {
      *
      * @param event The ShowMainMenuViewEvent detected on the EventBus
      * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
-     * @since 2019-09-03
+     * @since 2022-11-09
      */
     @Subscribe
     public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
         showScene(lastScene, lastTitle);
+    }
+
+
+    /**
+     * Handles ShowCreditViewEvent detected on the EventBus
+     *
+     * If a ShowCreditViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the credit
+     * screen.
+     *
+     * @param event The ShowCreditViewEvent detected on the EventBus
+     * @see de.uol.swp.client.credit.event.ShowCreditViewEvent
+     * @since 2022-11-29
+     */
+    @Subscribe
+    public void onShowCreditViewEvent(ShowCreditViewEvent event){
+        showCreditScreen();
     }
 
 
@@ -365,6 +406,18 @@ public class SceneManager {
      */
     public void showRulebookScreen() {
         showScene(rulebookScene, "Die Spielregeln");
+    }
+
+    /**
+     * Shows the credit screen
+     *
+     * Switches the main menu Scene to the creditScene and sets the title of
+     * the window to "Die Credits"
+     *
+     * @since 2022-11-29
+     */
+    public void showCreditScreen() {
+        showScene(creditScene, "Die Credits");
     }
 
     /**

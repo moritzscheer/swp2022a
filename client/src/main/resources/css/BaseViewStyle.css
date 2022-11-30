@@ -26,9 +26,6 @@
     -fx-border-width: 6;
 }
 
-#PartingLine{
-    -fx-stroke-width: 3.0;
-}
 
 #Headline{
     -fx-stroke-type: OUTSIDE;
@@ -56,7 +53,9 @@
 /**
     In this section you can change the style the MainMenuView.
  */
+.FlowPane{
 
+}
 
 /**
     In this section you can change the style the OptionView.
