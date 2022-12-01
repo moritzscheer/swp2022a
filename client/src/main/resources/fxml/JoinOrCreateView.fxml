@@ -17,23 +17,16 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            
             <Button id="cancelButton" layoutX="112.0" layoutY="44.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" text="Cancel">
                <font>
                   <Font size="18.0" />
                </font>
             </Button>
-                 <Button id="cancelButton" layoutX="112.0" layoutY="44.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" text="Cancel">
-                  <font>
-                     <Font size="18.0" />
-                  </font>
-               </Button>
-               <Button layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#onButtonSubmitPressed" text="Button" />
-               <Label layoutX="400.0" layoutY="27.0" text="Name" />
-               <Label layoutX="401.0" layoutY="66.0" text="Passwort" />
-               <TextField fx:id="textFieldName" layoutX="484.0" layoutY="22.0" />
-               <TextField fx:id="textFieldPassword" layoutX="485.0" layoutY="61.0" />
-            </children>
+            <Button layoutX="661.0" layoutY="40.0" mnemonicParsing="false" onAction="#onButtonSubmitPressed" text="Button" />
+            <Label layoutX="400.0" layoutY="27.0" text="Name" />
+            <Label layoutX="401.0" layoutY="66.0" text="Passwort" />
+            <TextField fx:id="textFieldName" layoutX="484.0" layoutY="22.0" />
+            <TextField fx:id="textFieldPassword" layoutX="485.0" layoutY="61.0" />
          </AnchorPane>
       </bottom>
       <left>

@@ -29,18 +29,15 @@ import org.apache.logging.log4j.Logger;
 public class LobbyPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/LobbyView.fxml";
-
     private static final Logger LOG = LogManager.getLogger(LobbyPresenter.class);
-
-    private ObservableList<String> users;
-
-    private Integer lobbyID;
-    private User owner;
 
     private User loggedInUser;
 
+    private Integer lobbyID;
     private String lobbyName;
-
+    private User owner;
+    private ObservableList<String> users;
+    private String password;
     private Boolean isMultiplayer;
 
     @Inject
@@ -81,11 +78,12 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
         LOG.info("Lobby " + message.getName() + " created successful");
-        this.isMultiplayer = message.isMultiplayer();
         this.loggedInUser = message.getUser();
-        this.owner = message.getUser();
+        this.lobbyID = message.getLobby().getLobbyID();
         this.lobbyName = message.getName();
-        this.lobbyID = message.getLobbyID();
+        this.owner = message.getUser();
+        this.password = message.getLobby().getPassword();
+        this.isMultiplayer = message.getLobby().isMultiplayer();
         eventBus.post(new ShowLobbyViewEvent());
     }
 
@@ -100,11 +98,13 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        this.isMultiplayer = message.isMultiplayer();
-        this.loggedInUser = message.getUser();
-        this.lobbyName = message.getName();
-        this.lobbyID = message.getLobbyID();
         LOG.info("Lobby " + message.getName() + " successfully joined");
+        this.loggedInUser = message.getUser();
+        this.lobbyID = message.getLobby().getLobbyID();
+        this.lobbyName = message.getName();
+        this.owner = message.getLobby().getOwner();
+        this.password = message.getLobby().getPassword();
+        this.isMultiplayer = message.getLobby().isMultiplayer();
         eventBus.post(new ShowLobbyViewEvent());
     }
 

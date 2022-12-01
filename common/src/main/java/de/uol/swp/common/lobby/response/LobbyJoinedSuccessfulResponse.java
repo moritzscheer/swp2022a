@@ -1,27 +1,24 @@
 package de.uol.swp.common.lobby.response;
 
+import de.uol.swp.common.lobby.Lobby;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
 
 public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
 
-    private Integer lobbyID;
-    private Boolean multiplayer;
-    public LobbyJoinedSuccessfulResponse(String name, UserDTO user, Integer lobbyID) {
-        super(name, user);
-        this.multiplayer = multiplayer;
-        this.lobbyID = lobbyID;
-    }
+    private final LobbyDTO lobby;
 
-    /**
-     * Getter for the User variable
-     *
-     * @return User object of the user who successfully logged in
-     * @since 2019-08-07
-     */
-    public UserDTO getUserDTO() {
-        return getUser();
+    public LobbyJoinedSuccessfulResponse(Lobby lobby, UserDTO user) {
+        super(lobby.getName(), user);
+
+        this.lobby = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), lobby.getPassword(), lobby.isMultiplayer());
+        for (User users : lobby.getUsers()) {
+            if (!users.equals(this.lobby.getOwner()))
+                this.lobby.getUsers().add(UserDTO.createWithoutPassword(users));
+        }
     }
 
     @Override
@@ -37,11 +34,7 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
         return Objects.hash(user);
     }
 
-    public Boolean isMultiplayer() {
-        return multiplayer;
-    }
-
-    public Integer getLobbyID() {
-        return this.lobbyID;
+    public LobbyDTO getLobby() {
+        return lobby;
     }
 }
