@@ -1,19 +1,19 @@
-package de.uol.swp.common.lobby.message;
+package de.uol.swp.common.lobby.response;
 
-import de.uol.swp.common.message.AbstractRequestMessage;
+import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
 
 /**
- * Base class of all lobby request messages. Basic handling of lobby data.
+ * Base class of all lobby response messages. Basic handling of lobby data.
  *
  * @see de.uol.swp.common.user.User
  * @see de.uol.swp.common.message.AbstractRequestMessage
  * @author Marco Grawunder
- * @since 2019-10-08
+ * @since 2022-11-17
  */
-public class AbstractLobbyRequest extends AbstractRequestMessage {
+public class AbstractLobbyResponse extends AbstractResponseMessage {
 
     String name;
     UserDTO user;
@@ -22,9 +22,9 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * Default constructor
      *
      * @implNote this constructor is needed for serialization
-     * @since 2019-10-08
+     * @since 2022-11-16
      */
-    public AbstractLobbyRequest() {
+    public AbstractLobbyResponse() {
     }
 
     /**
@@ -32,9 +32,9 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      *
      * @param name name of the lobby
      * @param user user responsible for the creation of this message
-     * @since 2019-10-08
+     * @since 2022-11-16
      */
-    public AbstractLobbyRequest(String name, UserDTO user) {
+    public AbstractLobbyResponse(String name, UserDTO user) {
         this.name = name;
         this.user = user;
     }
@@ -43,7 +43,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * Getter for the name variable
      *
      * @return String containing the lobby's name
-     * @since 2019-10-08
+     * @since 2022-11-16
      */
     public String getName() {
         return name;
@@ -53,7 +53,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * Setter for the name variable
      *
      * @param name  String containing the lobby's name
-     * @since 2019-10-08
+     * @since 2022-11-16
      */
     public void setName(String name) {
         this.name = name;
@@ -63,7 +63,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * Getter for the user variable
      *
      * @return User responsible for the creation of this message
-     * @since 2019-10-08
+     * @since 2022-11-16
      */
     public UserDTO getUser() {
         return user;
@@ -83,7 +83,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AbstractLobbyRequest that = (AbstractLobbyRequest) o;
+        AbstractLobbyResponse that = (AbstractLobbyResponse) o;
         return Objects.equals(name, that.name) &&
                 Objects.equals(user, that.user);
     }

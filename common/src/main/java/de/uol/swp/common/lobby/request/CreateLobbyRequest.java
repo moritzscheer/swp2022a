@@ -1,4 +1,4 @@
-package de.uol.swp.common.lobby.message;
+package de.uol.swp.common.lobby.request;
 
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -6,12 +6,15 @@ import de.uol.swp.common.user.UserDTO;
 /**
  * Request sent to the server when a user wants to create a new lobby
  *
- * @see de.uol.swp.common.lobby.message.AbstractLobbyRequest
+ * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
  * @see de.uol.swp.common.user.User
  * @author Marco Grawunder
  * @since 2019-10-08
  */
 public class CreateLobbyRequest extends AbstractLobbyRequest {
+
+    private Boolean multiplayer;
+    private String password;       //passwort of the lobby
 
     /**
      * Default constructor
@@ -29,8 +32,10 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
      * @param owner User trying to create the lobby
      * @since 2019-10-08
      */
-    public CreateLobbyRequest(String name, UserDTO owner) {
+    public CreateLobbyRequest(String name, UserDTO owner, Boolean multiplayer, String password) {
         super(name, owner);
+        this.multiplayer = multiplayer;
+        this.password = password;
     }
 
     /**
@@ -52,5 +57,10 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     public User getOwner() {
         return getUser();
     }
-
+    public Boolean isMultiplayer() {
+        return multiplayer;
+    }
+    public String getPassword() {
+        return password;
+    }
 }

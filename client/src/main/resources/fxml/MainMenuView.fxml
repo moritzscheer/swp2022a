@@ -43,7 +43,7 @@
             <Font name="Comic Sans MS" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="logoutButton" onAction="#onLogoutButtonPressed"  alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="441.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER">
+      <Button fx:id="logoutButton" onAction="#onLogout"  alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="441.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>
