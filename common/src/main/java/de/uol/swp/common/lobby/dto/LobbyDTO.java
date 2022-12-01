@@ -49,6 +49,17 @@ public class LobbyDTO implements Lobby {
         return name;
     }
 
+    /**
+     * Handles User that wants to join the lobby.
+     *
+     * if the lobby is set to multiplayer, it checks if the right condition is set. If the lobby size is 8 or greater
+     * this method throws an IllegalArgumentException e. If the password typed in is correct the User is added to the
+     * users Set. Else an exception is thrown. If isMultiplayer is false it throws an IllegalArgumentException e.
+     *
+     * @param user The User that wants to join the lobby.
+     * @param password the password typed in, to join the lobby.
+     * @since 2022-12-01
+     */
     @Override
     public void joinUser(User user, String password) {
         if(isMultiplayer()) {
@@ -85,26 +96,56 @@ public class LobbyDTO implements Lobby {
         this.owner = user;
     }
 
+    /**
+     * Getter for the current lobby owner
+     *
+     * @return User containing lobby owner data
+     * @since 2022-12-01
+     */
     @Override
     public User getOwner() {
         return owner;
     }
 
+    /**
+     * Getter for the Set of users
+     *
+     * @return Set containing the user data in the lobby
+     * @since 2022-12-01
+     */
     @Override
     public Set<User> getUsers() {
         return Collections.unmodifiableSet(users);
     }
 
+    /**
+     * Getter for the lobby password
+     *
+     * @return String containing the lobby password
+     * @since 2022-12-01
+     */
     @Override
     public String getPassword() {
         return this.password;
     }
 
+    /**
+     * Getter for multiplayer status
+     *
+     * @return Boolean true if multiplayer, false if singleplayer
+     * @since 2022-12-01
+     */
     @Override
     public Boolean isMultiplayer() {
         return this.multiplayer;
     }
 
+    /**
+     * Getter for the current LobbyID
+     *
+     * @return Integer containing the ID
+     * @since 2022-12-01
+     */
     public Integer getLobbyID() {
         return this.lobbyID;
     }

@@ -34,6 +34,12 @@ public class LobbyJoinUserRequest extends AbstractLobbyRequest {
         this.password = password;
     }
 
+    /**
+     * Getter for the lobby password
+     *
+     * @return String containing the lobby password
+     * @since 2022-12-01
+     */
     public String getPassword() {
         return this.password;
     }

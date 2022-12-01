@@ -1,4 +1,6 @@
-package de.uol.swp.common.lobby.response;
+package de.uol.swp.common.lobby.exception;
+
+import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
 
 import java.util.Objects;
 

@@ -82,10 +82,22 @@ public class LobbyManagement {
         return Optional.empty();
     }
 
+    /**
+     * Getter for the current LobbyID
+     *
+     * @return Integer containing the ID
+     * @since 2022-12-01
+     */
     public Integer getlobbyID() {
         return this.lobbyID;
     }
 
+    /**
+     * Getter for lobby name
+     *
+     * @return String containing the lobby name
+     * @since 2022-12-01
+     */
     public String getName() {
         return this.name;
     }
