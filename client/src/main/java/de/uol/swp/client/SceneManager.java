@@ -242,6 +242,10 @@ public class SceneManager {
         }
     }
 
+    // -----------------------------------------------------
+    // MainManu_Events
+    // -----------------------------------------------------
+
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
@@ -303,14 +307,9 @@ public class SceneManager {
         showError(event.getMessage());
     }
     @Subscribe
-    public void onChangeAccountOptions(ShowAccountOptionsViewEvent event) {
+    public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
         showAccountView();
     }
-
-
-    // -----------------------------------------------------
-    // MainManu_Events
-    // -----------------------------------------------------
 
     /**
      * Handles ShowMainMenuViewEvent detected on the EventBus
@@ -518,6 +517,15 @@ public class SceneManager {
     public void showLoginScreen() {
         showScene(loginScene,"Login");
     }
+
+    /**
+     * Shows the account screen
+     *
+     * Switches the current Scene to the accountScene and sets the title of
+     * the window to "Account options"
+     *
+     * @since 2022-12-01
+     */
     public void showAccountView() {
         showScene(changeAccountOptionsScene, "Account options");
     }
