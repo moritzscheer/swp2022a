@@ -9,7 +9,7 @@ import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
-import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
+import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;

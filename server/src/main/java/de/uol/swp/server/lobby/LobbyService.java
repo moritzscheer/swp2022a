@@ -10,8 +10,8 @@ import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyCreatedExceptionResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
+import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
+import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.message.ResponseMessage;
@@ -97,7 +97,7 @@ public class LobbyService extends AbstractService {
      * If a LobbyJoinUserRequest is detected on the EventBus, this method is called.
      * It adds a user to a Lobby stored in the LobbyManagement and sends a UserJoinedLobbyMessage
      * to every user in the lobby and a LobbyJoinedSuccessfulResponse to the Client that send the request.
-     * If no lobby was found or the password is wrong a LobbyJoinedExceptionResponse is sent to the client.
+     * If no lobby was found, the password is wrong or the lobby is full a LobbyJoinedExceptionResponse is sent to the client.
      *
      * @param lobbyJoinUserRequest The LobbyJoinUserRequest found on the EventBus
      * @see de.uol.swp.common.lobby.Lobby
