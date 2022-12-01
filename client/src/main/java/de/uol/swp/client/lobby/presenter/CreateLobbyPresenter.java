@@ -21,7 +21,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/CreateLobbyView.fxml";
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
+
     private User loggedInUser;
+
     @Inject
     private LobbyService lobbyService;
     @FXML
@@ -32,6 +34,14 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     private TextField passwordField;
     @FXML
     private Label errorMessage;
+
+    /**
+     * Default Constructor
+     * @since 2022-11-15
+     */
+    public CreateLobbyPresenter() {
+        // needed for javafx
+    }
 
     /**
      * Handles successful login
