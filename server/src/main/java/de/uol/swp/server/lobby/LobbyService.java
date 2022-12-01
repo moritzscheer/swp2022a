@@ -5,13 +5,13 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
+import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
-import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -71,9 +71,8 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
-        if (LOG.isDebugEnabled()){
-            LOG.debug("Got new lobby message with {}", createLobbyRequest.getUser());
-        }
+        LOG.debug("Got new lobby message from User {}", createLobbyRequest.getUser().getUsername());
+
         ResponseMessage returnMessage;
         try {
             lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.getPassword(), createLobbyRequest.isMultiplayer());

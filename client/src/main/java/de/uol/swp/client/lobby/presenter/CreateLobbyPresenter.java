@@ -9,7 +9,6 @@ import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,10 +21,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/CreateLobbyView.fxml";
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
+    private User loggedInUser;
     @Inject
     private LobbyService lobbyService;
-    private ObservableList<String> users;
-    private User loggedInUser;
     @FXML
     private ListView<String> usersView;
     @FXML
