@@ -3,7 +3,6 @@ package de.uol.swp.server.usermanagement.store;
 import com.google.common.base.Strings;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-
 import java.util.*;
 
 /**
@@ -48,8 +47,11 @@ public class MainMemoryBasedUserStore extends AbstractUserStore implements UserS
         if (Strings.isNullOrEmpty(username)){
             throw new IllegalArgumentException("Username must not be null");
         }
-        User usr = new UserDTO(username, hash(password), eMail);
+        String passwordHash = hash(password);
+
+        User usr = new UserDTO(username, passwordHash, eMail);
         users.put(username, usr);
+
         return usr;
     }
 
