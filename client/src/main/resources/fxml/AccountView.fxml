@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,23 +16,40 @@
             <Image url="@../images/Background3x3Matrix.png" />
          </image>
       </ImageView>
-      <AnchorPane id="anchorPaneTwo" layoutX="88.0" layoutY="129.0" prefHeight="185.0" prefWidth="425.0" stylesheets="@../css/BaseViewStyle.css">
+      <AnchorPane id="anchorPaneTwo" layoutX="88.0" layoutY="129.0" prefHeight="262.0" prefWidth="425.0" stylesheets="@../css/BaseViewStyle.css">
          <children>
-            <Button fx:id="PasswordResetButton" layoutX="29.0" layoutY="68.0" mnemonicParsing="false" onAction="#onPasswordResetButtonPressed" prefHeight="43.0" prefWidth="367.0" stylesheets="@../css/BaseViewStyle.css" text="Passwort zurücksetzen" textAlignment="CENTER">
+            <Button fx:id="PasswordResetButton" layoutX="23.0" layoutY="64.0" mnemonicParsing="false" onAction="#onPasswordResetButtonPressed" prefHeight="43.0" prefWidth="184.0" stylesheets="@../css/BaseViewStyle.css" text="Reset Password" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="DeleteAccountButton" layoutX="29.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteAccountButtonPressed" prefHeight="43.0" prefWidth="367.0" stylesheets="@../css/BaseViewStyle.css" text="Benutzerkonto löschen" textAlignment="CENTER">
+            <Button fx:id="DeleteAccountButton" layoutX="23.0" layoutY="14.0" mnemonicParsing="false" onAction="#onDeleteAccountButtonPressed" prefHeight="43.0" prefWidth="380.0" stylesheets="@../css/BaseViewStyle.css" text="Delete Account" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="BackButton" layoutX="29.0" layoutY="121.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="43.0" prefWidth="367.0" stylesheets="@../css/BaseViewStyle.css" text="Zurück zum Hauptmenü" textAlignment="CENTER">
+            <Button fx:id="BackButton" layoutX="23.0" layoutY="204.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="43.0" prefWidth="380.0" stylesheets="@../css/BaseViewStyle.css" text="Back to Main" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>
             </Button>
+            <Label id="email" layoutX="29.0" layoutY="121.0" stylesheets="@../css/BaseViewStyle.css" text="Email">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label id="password" layoutX="29.0" layoutY="154.0" stylesheets="@../css/BaseViewStyle.css" text="Password">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="EmailResetButton" layoutX="219.0" layoutY="64.0" mnemonicParsing="false" onAction="#onEmailResetButtonPressed" prefWidth="184.0" text="Reset Email">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <PasswordField fx:id="passwordField" layoutX="145.0" layoutY="157.0" prefHeight="25.0" prefWidth="260.0" />
+            <TextField fx:id="emailField" layoutX="145.0" layoutY="123.0" prefHeight="25.0" prefWidth="260.0" />
          </children>
       </AnchorPane>
    </children>

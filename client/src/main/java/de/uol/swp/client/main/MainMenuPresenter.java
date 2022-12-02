@@ -37,12 +37,14 @@ public class MainMenuPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/MainMenuView.fxml";
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
+
     public Button singleplayerButton;
 
     private ObservableList<String> users;
 
     private User loggedInUser;
 
+    private static final ShowAccountOptionsViewEvent  showAccountOptionMessage = new ShowAccountOptionsViewEvent();
     @Inject
     private LobbyService lobbyService;
 
@@ -212,8 +214,8 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     @FXML
-    void onChangeAccountOptions(ActionEvent event) {
-        eventBus.post(new ShowAccountOptionsViewEvent());
+    void onAccountButtonPressed(ActionEvent event) {
+        eventBus.post(showAccountOptionMessage);
     }
 
 

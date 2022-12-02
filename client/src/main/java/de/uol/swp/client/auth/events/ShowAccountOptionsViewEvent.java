@@ -1,5 +1,7 @@
 package de.uol.swp.client.auth.events;
 
+import de.uol.swp.common.user.User;
+
 /**
  * Event used to show the account options in the main menu
  *
@@ -14,4 +16,16 @@ package de.uol.swp.client.auth.events;
 
 public class ShowAccountOptionsViewEvent {
 
+
+    //private final User user;
+
+    public ShowAccountOptionsViewEvent(){
+    }
+    //public ShowAccountOptionsViewEvent(User user) {
+      //  this.user = user;
+   // }
+
+    //public User getUser() {
+      //  return this.user;
+    //}
 }

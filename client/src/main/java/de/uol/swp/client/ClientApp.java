@@ -11,8 +11,10 @@ import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
+import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
+import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
 import de.uol.swp.common.user.response.UserDroppedResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
@@ -225,6 +227,41 @@ public class ClientApp extends Application implements ConnectionListener {
 		sceneManager.showLoginScreen();
 	}
 
+	/**
+	 * Handles the switch from account view to main-menu
+	 *
+	 * If an onReturnToMainMenuRequest object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the main-menu window.
+	 *
+	 * @param message The ReturnToMainMenuRequest object detected on the EventBus
+	 * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
+	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+	 * @since 2022-12-02
+	 */
+	@Subscribe
+	public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
+		LOG.debug("user  {}", message.getLoggedInUser().getUsername());
+		this.user = message.getLoggedInUser();
+		sceneManager.showMainScreen(user);
+	}
+	/**
+	 * Handles User-Updates
+	 *
+	 * If an onUpdatedUserSuccessfulResponse object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the main-menu window.
+	 *
+	 * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
+	 * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+	 * @since 2022-12-02
+	 */
+	@Subscribe
+	public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
+		LOG.debug("user  {}", message.getUpdatedUser().getUsername());
+		this.user = message.getUpdatedUser();
+		sceneManager.showMainScreen(user);
+	}
+
 
 	/**
 	 * Handles errors produced by the EventBus
@@ -245,6 +282,8 @@ public class ClientApp extends Application implements ConnectionListener {
 	public void exceptionOccurred(String e) {
 		sceneManager.showServerError(e);
 	}
+
+
 
 	// -----------------------------------------------------
 	// JavFX Help method

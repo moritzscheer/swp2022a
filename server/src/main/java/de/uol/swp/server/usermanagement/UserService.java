@@ -10,7 +10,11 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.request.DropUserRequest;
 import de.uol.swp.common.user.request.RegisterUserRequest;
+import de.uol.swp.common.user.request.ShowAccountOptionsRequest;
+import de.uol.swp.common.user.request.UpdateUserRequest;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
+import de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse;
+import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
 import de.uol.swp.common.user.response.UserDroppedResponse;
 import de.uol.swp.server.AbstractService;
 import org.apache.logging.log4j.LogManager;
@@ -106,6 +110,66 @@ public class UserService extends AbstractService {
         }catch (Exception e){
             LOG.error(e);
             returnMessage = new RegistrationExceptionMessage("Cannot drop user "+msg.getUser()+" "+e.getMessage());
+        }
+        msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
+    }
+
+    /**
+     * Handles onShowAccountOptionsRequest found on the EventBus
+     *
+     * If an onShowAccountOptionsRequest is detected on the EventBus, this method is called.
+     * It tries to open the account view. If this succeeds a
+     * ShowAccountOptionsSuccessfulResponse is posted on the EventBus.
+     *
+     * @param msg The ShowAccountOptionsRequest found on the EventBus
+     * @see de.uol.swp.common.user.request.ShowAccountOptionsRequest
+     * @see de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @since 2022-12-02
+     */
+    @Subscribe
+    private void onShowAccountOptionsRequest(ShowAccountOptionsRequest msg){
+        if (LOG.isDebugEnabled()){
+            LOG.debug("Got new account options message with {}", msg.getLoggedInUser());
+        }
+        ResponseMessage returnMessage;
+        try {
+            returnMessage = new ShowAccountOptionsSuccessfulResponse(msg.getLoggedInUser());
+        }catch (Exception e){
+            LOG.error(e);
+            returnMessage = new RegistrationExceptionMessage("Cannot show the account view for user "+msg.getLoggedInUser()+" "+e.getMessage());
+        }
+        msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
+    }
+
+    /**
+     * Handles onUpdateUserRequest found on the EventBus
+     *
+     * If a onUpdateUserRequest is detected on the EventBus, this method is called.
+     * It tries to update a new user via the UserManagement. If this succeeds a
+     * UpdatedUserSuccessfulResponse is posted on the EventBus.
+     *
+     * @param msg The UpdateUserRequest found on the EventBus
+     * @see de.uol.swp.server.usermanagement.UserManagement#updateUser(User)
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @since 2019-09-02
+     */
+    @Subscribe
+    private void onUpdateUserRequest(UpdateUserRequest msg){
+        if (LOG.isDebugEnabled()){
+            LOG.debug("Got new update message with {}", msg.getUser().getUsername());
+        }
+        ResponseMessage returnMessage;
+        try {
+            userManagement.updateUser(msg.getUser());
+            returnMessage = new UpdatedUserSuccessfulResponse(msg.getUser());
+        }catch (Exception e){
+            LOG.error(e);
+            returnMessage = new RegistrationExceptionMessage("Cannot update user "+msg.getUser().getUsername()+" "+e.getMessage());
         }
         msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
