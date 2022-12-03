@@ -306,6 +306,18 @@ public class SceneManager {
     public void onRegistrationErrorEvent(RegistrationErrorEvent event) {
         showError(event.getMessage());
     }
+
+    /**
+     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     *
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
+     * called. It shows the AccountOptionView.
+     *
+     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @since 2022-12-03
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
     @Subscribe
     public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
         showAccountView();
