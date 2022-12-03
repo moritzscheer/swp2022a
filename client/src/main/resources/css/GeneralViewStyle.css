@@ -100,7 +100,7 @@
     In this section you can change the style the LobbyView.
  */
 
-.lobbyButton{
+#lobbyButton{
     -fx-background-color: #B22222;
     -fx-text-fill: #000000;
     -fx-background-radius: 5;
@@ -114,7 +114,6 @@
 .InnerBoxBackground{
     -fx-background-color: black;
 }
-
 
 /**
     In this section you can change the style the InGameViewView.

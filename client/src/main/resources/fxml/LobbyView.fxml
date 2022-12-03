@@ -40,10 +40,7 @@
          <children>
             <Pane layoutX="20.0" layoutY="65.0" prefHeight="356.0" prefWidth="650.0" styleClass="InnerBoxBackground">
                <children>
-                  <ImageView fitHeight="350.0" fitWidth="350.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" styleClass="map">
-                     <image>
-                        <Image url="@../images/Map2.png" />
-                     </image>
+                  <ImageView fitHeight="350.0" fitWidth="350.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                   </ImageView>
                   <ListView fx:id="mapList" layoutX="356.0" layoutY="3.0" prefHeight="350.0" prefWidth="291.0" styleClass="listView" />
                   <Label layoutX="471.0" layoutY="163.0" text="map list" />
