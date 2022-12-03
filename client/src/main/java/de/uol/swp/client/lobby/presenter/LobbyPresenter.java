@@ -99,6 +99,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         LOG.info("You successfully joined the Lobby " + message.getName());
+        eventBus.post(new ShowLobbyViewEvent());
         this.loggedInUser = message.getUser();
         this.lobbyID = message.getLobby().getLobbyID();
         this.lobbyName = message.getName();
@@ -106,7 +107,7 @@ public class LobbyPresenter extends AbstractPresenter {
         this.password = message.getLobby().getPassword();
         this.isMultiplayer = message.getLobby().isMultiplayer();
         updateUsersList(message.getLobby().getUsers());
-        eventBus.post(new ShowLobbyViewEvent());
+
     }
 
     /**
