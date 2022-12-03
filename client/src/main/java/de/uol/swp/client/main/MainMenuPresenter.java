@@ -3,6 +3,7 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.common.user.User;
@@ -16,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,10 +38,13 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
 
+    public Button singleplayerButton;
+
     private ObservableList<String> users;
 
     private User loggedInUser;
 
+    private static final ShowAccountOptionsViewEvent  showAccountOptionMessage = new ShowAccountOptionsViewEvent();
     @Inject
     private LobbyService lobbyService;
 
@@ -207,4 +212,24 @@ public class MainMenuPresenter extends AbstractPresenter {
     void onSingleplayer(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
+
+    /**
+     * Method called when the AccountOption button is pressed
+     *
+     * If the AccountOption button is pressed, this method post on the bus a
+     * ShowAccountOptionMessage. This request is received by the SceneManager,
+     * which changes the screen to AccountOptionView screen.
+     *
+     * @param event The ActionEvent created by pressing the AccountOption button
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-11-30
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
+    @FXML
+    void onAccountOptionButtonPressed(ActionEvent event) {
+        eventBus.post(showAccountOptionMessage);
+    }
+
+
 }

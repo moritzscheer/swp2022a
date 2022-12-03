@@ -6,7 +6,9 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
+import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter;
@@ -45,7 +47,9 @@ public class SceneManager {
 
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
+
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
+    static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle";
 
     private final Stage primaryStage;
     private Scene loginScene;
@@ -57,12 +61,16 @@ public class SceneManager {
     private Scene mainScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
+
+    private Scene changeAccountOptionsScene;
+
     private final Injector injector;
 
     @Inject
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
+        primaryStage.setResizable(false);
         this.injector = injected;
         initViews();
     }
@@ -77,10 +85,12 @@ public class SceneManager {
         initLoginView();
         initMainView();
         initRegistrationView();
+        initAccountOptionsView();
         initLobbyView();
         initJoinOrCreateView();
         initCreateLobbyView();
     }
+
 
     /**
      * Subroutine creating parent panes from FXML files
@@ -120,9 +130,9 @@ public class SceneManager {
      */
     private void initMainView() throws IOException {
         if (mainScene == null) {
-            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = new Scene(rootPane, 800, 600);
-            mainScene.getStylesheets().add(STYLE_SHEET);
+           Parent rootPane = initPresenter(MainMenuPresenter.FXML);
+            mainScene = new Scene(rootPane, 600, 600);
+            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -138,8 +148,8 @@ public class SceneManager {
     private void initLoginView() throws IOException {
         if (loginScene == null) {
             Parent rootPane = initPresenter(LoginPresenter.FXML);
-            loginScene = new Scene(rootPane, 400, 200);
-            loginScene.getStylesheets().add(STYLE_SHEET);
+            loginScene = new Scene(rootPane);
+            loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -158,6 +168,23 @@ public class SceneManager {
             Parent rootPane = initPresenter(RegistrationPresenter.FXML);
             registrationScene = new Scene(rootPane, 400,200);
             registrationScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the account view
+     *
+     * If the changeAccountOptionsScene is null it gets set to a new scene containing the
+     * pane showing the account view as specified by the AccountView FXML file.
+     *
+     * @see de.uol.swp.client.main.AccountMenuPresenter
+     * @since 2022-11-25
+     */
+    private void initAccountOptionsView() throws IOException {
+        if(changeAccountOptionsScene == null) {
+            Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
+            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -214,6 +241,10 @@ public class SceneManager {
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
+
+    // -----------------------------------------------------
+    // MainManu_Events
+    // -----------------------------------------------------
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -276,9 +307,21 @@ public class SceneManager {
         showError(event.getMessage());
     }
 
-    // -----------------------------------------------------
-    // MainManu_Events
-    // -----------------------------------------------------
+    /**
+     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     *
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
+     * called. It shows the AccountOptionView.
+     *
+     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @since 2022-12-03
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
+    @Subscribe
+    public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
+        showAccountView();
+    }
 
     /**
      * Handles ShowMainMenuViewEvent detected on the EventBus
@@ -485,6 +528,18 @@ public class SceneManager {
      */
     public void showLoginScreen() {
         showScene(loginScene,"Login");
+    }
+
+    /**
+     * Shows the account screen
+     *
+     * Switches the current Scene to the accountScene and sets the title of
+     * the window to "Account options"
+     *
+     * @since 2022-12-01
+     */
+    public void showAccountView() {
+        showScene(changeAccountOptionsScene, "Account options");
     }
 
     /**

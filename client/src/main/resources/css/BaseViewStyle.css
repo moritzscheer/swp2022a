@@ -1,0 +1,42 @@
+/*
+This CSS-Style is for the main menu
+ */
+.button{
+    -fx-background-color: #b22222;
+    -fx-text-fill: #C0C0C0;
+    -fx-background-position: center;
+    -fx-alignment: center;
+    -fx-background-size: 90 0 0 90;
+}
+.button:hover{
+    -fx-background-color: #8b0000;
+}
+/*
+This CSS-Style is for the login
+ */
+#anchorPaneOne{
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 25px;
+}
+#nameLogin{
+    -fx-text-fill: #b22222;
+}
+#passwordLogin{
+    -fx-text-fill: #b22222;
+}
+/*
+This CSS-Style is for the AccountView
+ */
+#anchorPaneTwo{
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 25px;
+}
+#email{
+    -fx-text-fill: #b22222;
+}
+#password{
+    -fx-text-fill: #b22222;
+}
+
+
+
