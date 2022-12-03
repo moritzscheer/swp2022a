@@ -2,6 +2,7 @@ package de.uol.swp.common.lobby.dto;
 
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -55,6 +56,25 @@ public class LobbyDTO implements Lobby {
      */
     public static LobbyDTO createWithoutPassword(Lobby lobby) {
         return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), null, true);
+    }
+
+    /**
+     * Copy constructor leaving password variable empty of user
+     *
+     * This constructor is used for the player list in the lobby, because it would be a major security
+     * flaw to send all user data including passwords to everyone.
+     *
+     * @param lobby Lobby object to copy the values of
+     * @return LobbyDTO copy of Lobby object having the password variable left empty
+     * @since 2022-11-30
+     */
+    public LobbyDTO createWithoutUserPassword(Lobby lobby) {
+        LobbyDTO tmp = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), true);
+        for (User users : lobby.getUsers()) {
+            if(!users.equals(lobby.getOwner()))
+                tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
+        }
+        return tmp;
     }
 
     @Override

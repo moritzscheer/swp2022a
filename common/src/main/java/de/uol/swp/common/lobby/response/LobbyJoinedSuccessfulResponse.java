@@ -1,8 +1,6 @@
 package de.uol.swp.common.lobby.response;
 
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
@@ -11,14 +9,16 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
 
     private final LobbyDTO lobby;
 
-    public LobbyJoinedSuccessfulResponse(Lobby lobby, UserDTO user) {
+    /**
+     * Constructor
+     *
+     * @param lobby The name the lobby should have
+     * @param user The user who created the lobby and therefore shall be the owner
+     * @since 2022-12-03
+     */
+    public LobbyJoinedSuccessfulResponse(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
-
-        this.lobby = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), lobby.isMultiplayer());
-        for (User users : lobby.getUsers()) {
-            if(!user.equals(lobby.getOwner()))
-                this.lobby.getUsers().add(UserDTO.createWithoutPassword(users));
-        }
+        this.lobby = lobby.createWithoutUserPassword(lobby);
     }
 
     @Override
@@ -34,6 +34,12 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
         return Objects.hash(user);
     }
 
+    /**
+     * Getter for LobbyDTO
+     *
+     * @return LobbyDTO containing the lobby
+     * @since 2022-12-03
+     */
     public LobbyDTO getLobby() {
         return lobby;
     }

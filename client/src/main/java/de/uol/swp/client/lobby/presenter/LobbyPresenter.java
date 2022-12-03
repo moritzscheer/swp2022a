@@ -143,9 +143,6 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2019-08-29
      */
     private void updateUsersList(Set<User> userList) {
-        for(User user : userList) {
-            System.out.println(user.getUsername());
-        }
         // Attention: This must be done on the FX Thread!
         Platform.runLater(() -> {
             if (users == null) {
