@@ -3,7 +3,7 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.common.user.User;
@@ -213,8 +213,21 @@ public class MainMenuPresenter extends AbstractPresenter {
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 
+    /**
+     * Method called when the AccountOption button is pressed
+     *
+     * If the AccountOption button is pressed, this method post on the bus a
+     * ShowAccountOptionMessage. This request is received by the SceneManager,
+     * which changes the screen to AccountOptionView screen.
+     *
+     * @param event The ActionEvent created by pressing the AccountOption button
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-11-30
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
     @FXML
-    void onAccountButtonPressed(ActionEvent event) {
+    void onAccountOptionButtonPressed(ActionEvent event) {
         eventBus.post(showAccountOptionMessage);
     }
 

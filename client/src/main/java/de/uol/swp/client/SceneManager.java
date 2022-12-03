@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
-import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.lobby.presenter.LobbyPresenter;

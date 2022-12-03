@@ -212,7 +212,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles User Drop
 	 *
-	 * If an onUserDroppedMessage object is detected on the EventBus this
+	 * If an UserDroppedMessage object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the login window. If
 	 * the loglevel is set to INFO or higher "User {response} dropped." is written
 	 * to the log.
@@ -230,7 +230,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles the switch from account view to main-menu
 	 *
-	 * If an onReturnToMainMenuRequest object is detected on the EventBus this
+	 * If an ReturnToMainMenuRequest object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
 	 * @param message The ReturnToMainMenuRequest object detected on the EventBus
@@ -247,7 +247,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles User-Updates
 	 *
-	 * If an onUpdatedUserSuccessfulResponse object is detected on the EventBus this
+	 * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
 	 * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
