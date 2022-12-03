@@ -4,9 +4,7 @@ import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Manages creation, deletion and storing of lobbies
@@ -19,33 +17,32 @@ import java.util.Optional;
 public class LobbyManagement {
     private String name;
     private Integer lobbyID = 1;
-    private final Map<Integer, Lobby> lobbies = new HashMap<>();
+    private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
      * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
-     * @implNote the primary key of the lobbies is the name therefore the name has to be unique
-     *
-     * @param name the name of the lobby to create
-     * @param owner the user who wants to create a lobby
+     * @param name          the name of the lobby to create
+     * @param owner         the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
-     * @see de.uol.swp.common.user.User
      * @throws IllegalArgumentException name already taken
+     * @implNote the primary key of the lobbies is the name therefore the name has to be unique
+     * @see de.uol.swp.common.user.User
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
         while (lobbies.containsKey(lobbyID)) {lobbyID++;}
 
-        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
-            if(entry.getValue().getName() != null) {
+        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+            if (entry.getValue().getName() != null) {
                 if (entry.getValue().getName().equals(name)) {
                     throw new IllegalArgumentException("Lobby name " + name + " already exists!");
                 }
             }
         }
-        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, true));
+        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer));
         this.name = name;
     }
 
@@ -73,8 +70,8 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public Optional<Lobby> getLobby(String name) {
-        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
-            if(entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
+        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+            if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
                 Lobby lobby = lobbies.get(entry.getKey());
                 return Optional.of(lobby);
             }
@@ -83,23 +80,32 @@ public class LobbyManagement {
     }
 
     /**
-     * Getter for the current LobbyID
+     * getter for the current lobbyID
      *
-     * @return Integer containing the ID
-     * @since 2022-12-01
+     * @return Integer Value containing the current lobbyID
+     * @since 2022-11-30
      */
     public Integer getlobbyID() {
         return this.lobbyID;
     }
 
     /**
-     * Getter for lobby name
+     * getter for the current lobbyName
      *
-     * @return String containing the lobby name
-     * @since 2022-12-01
+     * @return String Value containing the current lobbyName
+     * @since 2022-11-30
      */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * getter for the lobby List
+     *
+     * @return Map<Integer, LobbyDTO> containing all the open lobbies
+     * @since 2022-11-30
+     */
+    public Map<Integer, LobbyDTO> getLobbies() {
+        return this.lobbies;
+    }
 }
