@@ -10,6 +10,7 @@ import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
+import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -42,7 +43,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private ObservableList<String> lobbies;
     private User loggedInUser;
     @FXML
-    private ListView<String> lobbyView;
+    private ListView<String> lobbiesView;
     @FXML
     private TextField textFieldName;
     @FXML
