@@ -14,9 +14,10 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
     public LobbyJoinedSuccessfulResponse(Lobby lobby, UserDTO user) {
         super(lobby.getName(), user);
 
-        this.lobby = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), null, lobby.getPassword(), lobby.isMultiplayer());
+        this.lobby = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), lobby.isMultiplayer());
         for (User users : lobby.getUsers()) {
-            this.lobby.getUsers().add(UserDTO.createWithoutPassword(users));
+            if(!user.equals(lobby.getOwner()))
+                this.lobby.getUsers().add(UserDTO.createWithoutPassword(users));
         }
     }
 
