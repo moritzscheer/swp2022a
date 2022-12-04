@@ -96,7 +96,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onButtonBackPressed(ActionEvent actionEvent) {
+    private void onBackButtonPressed(ActionEvent actionEvent) {
         // leave user
     }
 
@@ -109,7 +109,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onButtonStartPressed(ActionEvent actionEvent) {
+    private void onStartButtonPressed(ActionEvent actionEvent) {
         // start game
     }
 }
