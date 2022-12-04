@@ -15,7 +15,7 @@ import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
-import de.uol.swp.common.user.response.UserDroppedResponse;
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -212,17 +212,17 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles User Drop
 	 *
-	 * If an UserDroppedMessage object is detected on the EventBus this
+	 * If an UserDroppedSuccessfulResponse object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the login window. If
 	 * the loglevel is set to INFO or higher "User {response} dropped." is written
 	 * to the log.
 	 *
-	 * @param response The UserDroppedResponse object detected on the EventBus
+	 * @param response The UserDroppedSuccessfulResponse object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
 	 * @since 2022-11-08
 	 */
 	@Subscribe
-	void onUserDroppedResponse(UserDroppedResponse response){
+	void onUserDroppedSuccessfulResponse(UserDroppedSuccessfulResponse response){
 		LOG.info("User {} has been dropped.", response.getUsername());
 		sceneManager.showLoginScreen();
 	}

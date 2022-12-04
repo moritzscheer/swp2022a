@@ -15,7 +15,7 @@ import de.uol.swp.common.user.request.UpdateUserRequest;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
-import de.uol.swp.common.user.response.UserDroppedResponse;
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import de.uol.swp.server.AbstractService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -106,7 +106,7 @@ public class UserService extends AbstractService {
         ResponseMessage returnMessage;
         try {
             userManagement.dropUser(msg.getUser());
-            returnMessage = new UserDroppedResponse(msg.getUsername());
+            returnMessage = new UserDroppedSuccessfulResponse(msg.getUsername());
         }catch (Exception e){
             LOG.error(e);
             returnMessage = new RegistrationExceptionMessage("Cannot drop user "+msg.getUser()+" "+e.getMessage());
