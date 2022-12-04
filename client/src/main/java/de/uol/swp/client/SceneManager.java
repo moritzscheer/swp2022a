@@ -217,23 +217,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowMainMenuViewEvent detected on the EventBus
-     *
-     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the main menu
-     * screen.
-     *
-     * @param event The ShowMainMenuViewEvent detected on the EventBus
-     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
-     * @since 2022-11-09
-     */
-    @Subscribe
-    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
-        showScene(lastScene, lastTitle);
-    }
-
-
-    /**
      * Handles ShowCreditViewEvent detected on the EventBus
      *
      * If a ShowCreditViewEvent is detected on the EventBus, this method gets
