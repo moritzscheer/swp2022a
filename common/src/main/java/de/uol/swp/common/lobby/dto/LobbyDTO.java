@@ -22,6 +22,8 @@ public class LobbyDTO implements Lobby {
     private final String name;
     private User owner;
     private final Set<User> users = new TreeSet<>();
+    private final String password;
+    private final Boolean multiplayer;
 
     /**
      * Constructor
@@ -31,10 +33,12 @@ public class LobbyDTO implements Lobby {
      *                owner
      * @since 2019-10-08
      */
-    public LobbyDTO(String name, User creator) {
+    public LobbyDTO(String name, User creator, String password, Boolean multiplayer) {
         this.name = name;
         this.owner = creator;
         this.users.add(creator);
+        this.password = password;
+        this.multiplayer = multiplayer;
     }
 
     @Override
@@ -78,4 +82,13 @@ public class LobbyDTO implements Lobby {
         return Collections.unmodifiableSet(users);
     }
 
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public Boolean isMultiplayer() {
+        return this.multiplayer;
+    }
 }
