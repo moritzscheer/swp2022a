@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/GeneralViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.Presenter.LobbyPresenter">
+<AnchorPane id="lobbyBackground" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.LobbyPresenter">
    <children>
       <ImageView id="backgroundImage" fitHeight="900.0" fitWidth="1600.0" styleClass="backgroundImage">
          <image>

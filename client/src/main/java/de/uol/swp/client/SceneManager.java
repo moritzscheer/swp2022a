@@ -159,7 +159,6 @@ public class SceneManager {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
             rulebookScene = new Scene(rootPane);
             rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
-            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
