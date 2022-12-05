@@ -90,6 +90,8 @@ public class AccountMenuPresenter extends AbstractPresenter {
     public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
         this.loggedInUser = message.getUpdatedUser();
     }
+    // TODO
+    // fix: call user service (client side) instead of creating request directly
 
     /**
      * Method called when the delete account button is pressed
@@ -105,7 +107,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onDeleteAccountButtonPressed(ActionEvent event) {
-        eventBus.post(new DropUserRequest(loggedInUser));
+        eventBus.post(new DropUserRequest(loggedInUser)); // TODO
     }
 
     /**
@@ -128,7 +130,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
             UserDTO userToUpdate = new UserDTO(loggedInUser.getUsername(),passwordField.getText(),loggedInUser.getEMail());
             userService.dropUser(loggedInUser);
             userService.createUser(userToUpdate);
-            eventBus.post(new UpdateUserRequest(userToUpdate));
+            eventBus.post(new UpdateUserRequest(userToUpdate)); // TODO
             passwordField.clear();
         }
     }
@@ -151,7 +153,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
             UserDTO userToUpdate = new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), emailField.getText());
             userService.dropUser(loggedInUser);
             userService.createUser(userToUpdate);
-            eventBus.post(new UpdateUserRequest(userToUpdate));
+            eventBus.post(new UpdateUserRequest(userToUpdate)); // TODO
             emailField.clear();
         }
 
@@ -169,7 +171,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
      *
      */
     @FXML
-    private void onBackButtonPressed(ActionEvent event) {
+    private void onReturnButtonPressed(ActionEvent event) {
         eventBus.post(new ReturnToMainMenuRequest(loggedInUser));
     }
 

@@ -320,7 +320,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
-        showAccountView();
+        showAccountOptionScreen();
     }
 
     /**
@@ -538,7 +538,7 @@ public class SceneManager {
      *
      * @since 2022-12-01
      */
-    public void showAccountView() {
+    public void showAccountOptionScreen() {
         showScene(changeAccountOptionsScene, "Account options");
     }
 
