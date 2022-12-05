@@ -10,11 +10,11 @@ import de.uol.swp.common.user.User;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2022-11-08
  */
-public class UserDroppedResponse extends AbstractResponseMessage {
+public class UserDroppedSuccessfulResponse extends AbstractResponseMessage {
 
     private final String userDropped;
 
-    public UserDroppedResponse(String user){
+    public UserDroppedSuccessfulResponse(String user){
         this.userDropped = user;
     }
 

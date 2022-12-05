@@ -1,4 +1,4 @@
-package de.uol.swp.client.auth.events;
+package de.uol.swp.client.main.event;
 
 import de.uol.swp.common.user.User;
 
@@ -15,17 +15,6 @@ import de.uol.swp.common.user.User;
  */
 
 public class ShowAccountOptionsViewEvent {
-
-
-    //private final User user;
-
     public ShowAccountOptionsViewEvent(){
     }
-    //public ShowAccountOptionsViewEvent(User user) {
-      //  this.user = user;
-   // }
-
-    //public User getUser() {
-      //  return this.user;
-    //}
 }

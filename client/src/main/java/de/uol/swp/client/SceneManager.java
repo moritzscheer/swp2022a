@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
-import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.lobby.presenter.LobbyPresenter;
@@ -306,9 +306,21 @@ public class SceneManager {
     public void onRegistrationErrorEvent(RegistrationErrorEvent event) {
         showError(event.getMessage());
     }
+
+    /**
+     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     *
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
+     * called. It shows the AccountOptionView.
+     *
+     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @since 2022-12-03
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
     @Subscribe
     public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
-        showAccountView();
+        showAccountOptionScreen();
     }
 
     /**
@@ -526,7 +538,7 @@ public class SceneManager {
      *
      * @since 2022-12-01
      */
-    public void showAccountView() {
+    public void showAccountOptionScreen() {
         showScene(changeAccountOptionsScene, "Account options");
     }
 

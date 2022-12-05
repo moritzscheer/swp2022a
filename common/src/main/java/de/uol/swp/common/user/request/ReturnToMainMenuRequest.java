@@ -16,9 +16,9 @@ public class ReturnToMainMenuRequest extends AbstractRequestMessage {
 
     private User loggedInUser;
 
-public ReturnToMainMenuRequest(User loggedInUser){
-    this.loggedInUser = loggedInUser;
-}
+    public ReturnToMainMenuRequest(User loggedInUser){
+        this.loggedInUser = loggedInUser;
+    }
 
     public User getLoggedInUser() {
         return loggedInUser;

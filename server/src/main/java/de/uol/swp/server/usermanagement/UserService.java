@@ -15,7 +15,7 @@ import de.uol.swp.common.user.request.UpdateUserRequest;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
-import de.uol.swp.common.user.response.UserDroppedResponse;
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import de.uol.swp.server.AbstractService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -84,9 +84,9 @@ public class UserService extends AbstractService {
     }
 
     /**
-     * Handles onDropUserRequest found on the EventBus
+     * Handles DropUserRequest found on the EventBus
      *
-     * If a onDropUserRequest is detected on the EventBus, this method is called.
+     * If a DropUserRequest is detected on the EventBus, this method is called.
      * It tries to create a new user via the UserManagement. If this succeeds a
      * RegistrationSuccessfulResponse is posted on the EventBus otherwise a RegistrationExceptionMessage
      * gets posted there.
@@ -106,7 +106,7 @@ public class UserService extends AbstractService {
         ResponseMessage returnMessage;
         try {
             userManagement.dropUser(msg.getUser());
-            returnMessage = new UserDroppedResponse(msg.getUsername());
+            returnMessage = new UserDroppedSuccessfulResponse(msg.getUsername());
         }catch (Exception e){
             LOG.error(e);
             returnMessage = new RegistrationExceptionMessage("Cannot drop user "+msg.getUser()+" "+e.getMessage());
@@ -116,9 +116,9 @@ public class UserService extends AbstractService {
     }
 
     /**
-     * Handles onShowAccountOptionsRequest found on the EventBus
+     * Handles ShowAccountOptionsRequest found on the EventBus
      *
-     * If an onShowAccountOptionsRequest is detected on the EventBus, this method is called.
+     * If an ShowAccountOptionsRequest is detected on the EventBus, this method is called.
      * It tries to open the account view. If this succeeds a
      * ShowAccountOptionsSuccessfulResponse is posted on the EventBus.
      *
@@ -145,9 +145,9 @@ public class UserService extends AbstractService {
     }
 
     /**
-     * Handles onUpdateUserRequest found on the EventBus
+     * Handles UpdateUserRequest found on the EventBus
      *
-     * If a onUpdateUserRequest is detected on the EventBus, this method is called.
+     * If a UpdateUserRequest is detected on the EventBus, this method is called.
      * It tries to update a new user via the UserManagement. If this succeeds a
      * UpdatedUserSuccessfulResponse is posted on the EventBus.
      *
