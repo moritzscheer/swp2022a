@@ -1,5 +1,7 @@
 package de.uol.swp.client.auth.events;
 
+import de.uol.swp.common.user.User;
+
 /**
  * Event used to show the login window
  *
@@ -12,4 +14,15 @@ package de.uol.swp.client.auth.events;
  *
  */
 public class ShowLoginViewEvent {
+
+
+    private final User user;
+    public ShowLoginViewEvent(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
 }
+

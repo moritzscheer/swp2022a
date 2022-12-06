@@ -1,21 +1,26 @@
+
 /**
     This is the general section to style all class across the views. Please note changes will apply to all views.
  */
 
 .button{
     -fx-background-color: #B22222;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #C0C0C0;
     -fx-background-radius: 5;
     -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 .button:hover{
-    -fx-background-color: #C45050;
+    -fx-background-color: #8b0000;
     -fx-background-radius: 5;
 }
 
 .label{
     -fx-font-size: 20px;
+}
+
+.header{
+    -fx-font-size: 30px;
 }
 
 #InnerBox{
@@ -26,6 +31,66 @@
     -fx-border-width: 6;
 }
 
+.listView {
+    -fx-background-color: D9D9D9;
+}
+
+/*
+This CSS-Style is for the login
+ */
+#anchorPaneOne{
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 25px;
+}
+#nameLogin{
+    -fx-text-fill: #b22222;
+}
+#passwordLogin{
+    -fx-text-fill: #b22222;
+}
+
+/*
+This CSS-Style is for the AccountView
+ */
+
+
+/**
+    In this section you can change the style the LoginView.
+ */
+#anchorPaneOne{
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 25px;
+}
+#nameLogin{
+    -fx-text-fill: #b22222;
+}
+#passwordLogin{
+    -fx-text-fill: #b22222;
+}
+
+
+/**
+    In this section you can change the style the RegistrationView.
+ */
+
+/**
+    In this section you can change the style the OptionView.
+ */
+
+
+/**
+    In this section you can change the style the AccountView.
+ */
+#anchorPaneTwo{
+    -fx-background-color: #D9D9D9;
+    -fx-background-radius: 25px;
+}
+#email{
+    -fx-text-fill: #b22222;
+}
+#password{
+    -fx-text-fill: #b22222;
+}
 
 #Headline{
     -fx-stroke-type: OUTSIDE;
@@ -38,34 +103,6 @@
     -fx-background-image: url("/images/BackgroundWithLogo.png");
     -fx-background-size: 1600 900;
 }
-
-/**
-    In this section you can change the style the LoginView.
- */
-
-
-
-/**
-    In this section you can change the style the RegistrationView.
- */
-
-
-/**
-    In this section you can change the style the MainMenuView.
- */
-.FlowPane{
-
-}
-
-/**
-    In this section you can change the style the OptionView.
- */
-
-
-/**
-    In this section you can change the style the AccountView.
- */
-
 
 /**
     In this section you can change the style the GerneralErrorView.
@@ -100,7 +137,20 @@
 /**
     In this section you can change the style the LobbyView.
  */
+#lobbyButton{
+    -fx-background-color: #B22222;
+    -fx-text-fill: #000000;
+    -fx-background-radius: 5;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-max-height: 40px;
+    -fx-pref-height: 40px;
+    -fx-min-height: 40px;
+}
 
+.InnerBoxBackground{
+    -fx-background-color: black;
+}
 
 /**
     In this section you can change the style the InGameViewView.

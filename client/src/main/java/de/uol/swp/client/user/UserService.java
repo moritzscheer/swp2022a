@@ -66,7 +66,8 @@ public class UserService implements ClientUserService {
 	 * @param user The user to remove
 	 */
     public void dropUser(User user) {
-        //TODO: Implement me
+		DropUserRequest request = new DropUserRequest(user);
+		bus.post(request);
     }
 
 	@Override
