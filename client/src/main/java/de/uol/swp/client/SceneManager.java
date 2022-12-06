@@ -6,9 +6,19 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
+import de.uol.swp.client.main.AccountMenuPresenter;
+import de.uol.swp.client.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
+import de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
+import de.uol.swp.client.lobby.presenter.CreateLobbyPresenter;
+import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
@@ -41,19 +51,24 @@ public class SceneManager {
 
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
+
     static final String DIALOG_STYLE_SHEET = "css/myDialog.css";
     static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle.css";
-
 
     private final Stage primaryStage;
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
+    private Scene lobbyScene;
+    private Scene joinOrCreateScene;
+    private Scene createLobbyScene;
     private Scene mainScene;
     private Scene creditScene;
     private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
+
+    private Scene changeAccountOptionsScene;
 
     private final Injector injector;
 
@@ -78,7 +93,12 @@ public class SceneManager {
         initCreditView();
         initRulebookView();
         initRegistrationView();
+        initAccountOptionsView();
+        initLobbyView();
+        initJoinOrCreateView();
+        initCreateLobbyView();
     }
+
 
     /**
      * Subroutine creating parent panes from FXML files
@@ -173,7 +193,7 @@ public class SceneManager {
         if (loginScene == null) {
             Parent rootPane = initPresenter(LoginPresenter.FXML);
             loginScene = new Scene(rootPane);
-            loginScene.getStylesheets().add(STYLE_SHEET);
+            loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
@@ -194,23 +214,6 @@ public class SceneManager {
             registrationScene.getStylesheets().add(STYLE_SHEET);
         }
     }
-
-    /**
-     * Handles ShowMainMenuViewEvent detected on the EventBus
-     *
-     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the main menu
-     * screen.
-     *
-     * @param event The ShowMainMenuViewEvent detected on the EventBus
-     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
-     * @since 2022-11-09
-     */
-    @Subscribe
-    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
-        showScene(lastScene, lastTitle);
-    }
-
 
     /**
      * Handles ShowCreditViewEvent detected on the EventBus
@@ -245,6 +248,81 @@ public class SceneManager {
         showRulebookScreen();
     }
 
+
+    /**
+     * Initializes the account view
+     *
+     * If the changeAccountOptionsScene is null it gets set to a new scene containing the
+     * pane showing the account view as specified by the AccountView FXML file.
+     *
+     * @see de.uol.swp.client.main.AccountMenuPresenter
+     * @since 2022-11-25
+     */
+    private void initAccountOptionsView() throws IOException {
+        if(changeAccountOptionsScene == null) {
+            Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
+            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the lobby view
+     *
+     * If the lobbyScene is null it gets set to a new scene containing
+     * a pane showing the lobby view as specified by the lobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @since 2022-11-30
+     */
+    private void initLobbyView() throws IOException {
+        if (lobbyScene == null){
+            Parent rootPane = initPresenter(LobbyPresenter.FXML);
+            lobbyScene = new Scene(rootPane, 1600,900);
+            lobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the joinOrCreate view
+     *
+     * If the joinOrCreateScene is null it gets set to a new scene containing
+     * a pane showing the joinOrCreate view as specified by the JoinOrCreateView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
+    private void initJoinOrCreateView() throws IOException {
+        if (joinOrCreateScene == null){
+            Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
+            joinOrCreateScene = new Scene(rootPane, 1600,900);
+            joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the createLobby view
+     *
+     * If the createLobbyScene is null it gets set to a new scene containing
+     * a pane showing the createLobby view as specified by the CreateLobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
+    private void initCreateLobbyView() throws IOException {
+        if (createLobbyScene == null){
+            Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
+            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    // -----------------------------------------------------
+    // MainManu_Events
+    // -----------------------------------------------------
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -308,6 +386,128 @@ public class SceneManager {
     }
 
     /**
+     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     *
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
+     * called. It shows the AccountOptionView.
+     *
+     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @since 2022-12-03
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
+    @Subscribe
+    public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
+        showAccountView();
+    }
+
+    /**
+     * Handles ShowMainMenuViewEvent detected on the EventBus
+     *
+     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the main manu screen.
+     *
+     * @param event The ShowMainMenuViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
+     * @since 2022-11-22
+     */
+    @Subscribe
+    public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
+        showMainScreen(event.getUser());
+    }
+
+    // -----------------------------------------------------
+    // FindCreate_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles ShowFindCreateViewEvent detected on the EventBus
+     *
+     * If a ShowFindCreateViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The ShowFindCreateViewEvent detected on the EventBus
+     * @see ShowJoinOrCreateViewEvent
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onShowFindCreateViewEvent(ShowJoinOrCreateViewEvent event){
+        showJoinOrCreateScreen();
+    }
+
+    /**
+     * Handles FindCreateCanceledEvent detected on the EventBus
+     *
+     * If a FindCreateCanceledEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The FindCreateCanceledEvent detected on the EventBus
+     * @see JoinOrCreateCanceledEvent
+     * @since 2022-11-19
+     */
+    @Subscribe
+    public void onJoinOrCreateCanceledEvent(JoinOrCreateCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    // -----------------------------------------------------
+    // Lobby_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles ShowLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The ShowLobbyViewEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
+     * @since 2022-11-15
+     */
+    @Subscribe
+    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
+        showLobbyViewScreen();
+    }
+
+    // -----------------------------------------------------
+    // CreateLobby_Events
+    // -----------------------------------------------------
+
+    /**
+     * Handles CreateLobbyCanceledEvent detected on the EventBus
+     *
+     * If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The CreateLobbyCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent
+     * @since 2022-11-15
+     */
+    @Subscribe
+    public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
+        showScene(lastScene, lastTitle);
+    }
+
+    /**
+     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
+     * @since 2022-11-17
+     */
+    @Subscribe
+    public void onShowCreateLobbyViewEvent(ShowCreateLobbyViewEvent event){
+        showCreateLobbyScreen();
+    }
+
+    // -----------------------------------------------------
+    // Error methods
+    // -----------------------------------------------------
+
+    /**
      * Shows an error message inside an error alert
      *
      * @param message The type of error to be shown
@@ -362,6 +562,7 @@ public class SceneManager {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
+            primaryStage.centerOnScreen();
         });
     }
 
@@ -404,7 +605,7 @@ public class SceneManager {
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
-        showScene(rulebookScene, "Die Spielregeln");
+        showScene(rulebookScene, "Rulebook");
     }
 
     /**
@@ -416,7 +617,7 @@ public class SceneManager {
      * @since 2022-11-29
      */
     public void showCreditScreen() {
-        showScene(creditScene, "Die Credits");
+        showScene(creditScene, "Credits");
     }
 
     /**
@@ -432,6 +633,18 @@ public class SceneManager {
     }
 
     /**
+     * Shows the account screen
+     *
+     * Switches the current Scene to the accountScene and sets the title of
+     * the window to "Account options"
+     *
+     * @since 2022-12-01
+     */
+    public void showAccountView() {
+        showScene(changeAccountOptionsScene, "Account options");
+    }
+
+    /**
      * Shows the registration screen
      *
      * Switches the current Scene to the registrationScene and sets the title of
@@ -442,4 +655,41 @@ public class SceneManager {
     public void showRegistrationScreen() {
         showScene(registrationScene,"Registration");
     }
+
+    /**
+     * Shows the joinOrCreate screen
+     *
+     * Switches the current Scene to the joinOrCreateScene and sets the title of
+     * the window to "Lobbies"
+     *
+     * @since 2022-11-30
+     */
+    public void showJoinOrCreateScreen() {
+        showScene(joinOrCreateScene,"Lobbies");
+    }
+
+    /**
+     * Shows the createLobby screen
+     *
+     * Switches the current Scene to the createLobbyScene and sets the title of
+     * the window to "Create Lobby"
+     *
+     * @since 2022-11-30
+     */
+    public void showCreateLobbyScreen() {
+        showScene(createLobbyScene,"Create Lobby");
+    }
+
+    /**
+     * Shows the lobby screen
+     *
+     * Switches the current Scene to the lobbyScene and sets the title of
+     * the window to "Lobby"
+     *
+     * @since 2022-11-30
+     */
+    public void showLobbyViewScreen() {
+        showScene(lobbyScene,"Lobby");
+    }
+
 }
