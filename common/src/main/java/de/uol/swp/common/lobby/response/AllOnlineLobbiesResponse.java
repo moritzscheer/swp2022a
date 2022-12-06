@@ -29,6 +29,7 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * Default Constructor
      *
      * @implNote this constructor is needed for serialization
+     * @author Moritz Scheer
      * @since 2022-11-29
      */
     public AllOnlineLobbiesResponse(){
@@ -44,22 +45,13 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * variable set to an empty String.
      *
      * @param lobbies Collection of all users currently logged in
+     * @author Moritz Scheer
      * @since 2022-11-29
      */
     public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbies) {
         for (Lobby lobby : lobbies) {
             this.lobbies.add(LobbyDTO.createWithoutPassword(lobby));
         }
-    }
-
-    /**
-     * Getter for the list of users currently logged in
-     *
-     * @return list of users currently logged in
-     * @since 2022-11-29
-     */
-    public List<LobbyDTO> getLobbies() {
-        return lobbies;
     }
 
     @Override
@@ -74,5 +66,16 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), lobbies);
+    }
+
+    /**
+     * Getter for the list of users currently logged in
+     *
+     * @return list of users currently logged in
+     * @author Moritz Scheer
+     * @since 2022-11-29
+     */
+    public List<LobbyDTO> getLobbies() {
+        return lobbies;
     }
 }

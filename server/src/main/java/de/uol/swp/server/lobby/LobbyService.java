@@ -70,6 +70,7 @@ public class LobbyService extends AbstractService {
      * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
      * @see de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse
      * @see de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse
+     * @author Moritz Scheer
      * @since 2022-11-24
      */
     @Subscribe
@@ -105,6 +106,7 @@ public class LobbyService extends AbstractService {
      * @param lobbyJoinUserRequest The LobbyJoinUserRequest found on the EventBus
      * @see de.uol.swp.common.lobby.Lobby
      * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @author Moritz Scheer & Maxim Erden
      * @since 2019-10-08
      */
     @Subscribe
@@ -185,6 +187,7 @@ public class LobbyService extends AbstractService {
      * @param msg RetrieveAllOnlineLobbiesRequest found on the EventBus
      * @see de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest
      * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     @Subscribe

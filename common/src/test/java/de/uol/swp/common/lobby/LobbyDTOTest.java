@@ -42,6 +42,7 @@ class LobbyDTOTest {
      *
      * If the variables are not set correctly the test fails
      *
+     * @author Moritz Scheer
      * @since 2019-10-08
      */
     @Test
@@ -73,8 +74,9 @@ class LobbyDTOTest {
      * The test fails if the size of the user list of the lobby does not get bigger
      * or a user who joined is not in the list.
      *
-     * Else the test fails, if a user can join a singleplayer lobby or puts in an incorrect password.
+     * Else the test fails, if a user can join a singleplayer lobby or puts in an incorrect password.+
      *
+     * @author Moritz Scheer
      * @since 2019-10-08
      */
     @Test
@@ -85,18 +87,27 @@ class LobbyDTOTest {
         assertEquals(2,lobbyMP.getUsers().size());
         assertTrue(lobbyMP.getUsers().contains(users.get(0)));
 
-        lobbyMP.joinUser(users.get(0), "1234");
-        assertEquals(2, lobbyMP.getUsers().size());
-
         lobbyMP.joinUser(users.get(1),"1234");
         assertEquals(3,lobbyMP.getUsers().size());
         assertTrue(lobbyMP.getUsers().contains(users.get(1)));
 
+        //password is incorrect
         assertThrows(IllegalArgumentException.class, () -> lobbyMP.joinUser(users.get(2), "4321"));
+
+        lobbyMP.joinUser(users.get(2),"1234");
+        lobbyMP.joinUser(users.get(3),"1234");
+        lobbyMP.joinUser(users.get(4),"1234");
+        lobbyMP.joinUser(users.get(5),"1234");
+        lobbyMP.joinUser(users.get(6),"1234");
+
+        //lobby is full
+        assertThrows(IllegalArgumentException.class, () -> lobbyMP.joinUser(notInLobbyUser, "4321"));
+
 
 
         Lobby lobbySP = new LobbyDTO(2, null, defaultUser, null, false);
 
+        //cannot join singleplayer lobby
         assertThrows(IllegalArgumentException.class, () -> lobbySP.joinUser(users.get(2), "4321"));
     }
 

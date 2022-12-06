@@ -5,6 +5,14 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.util.Objects;
 
+/**
+ * Response sent to the Client with all the lobby data in it
+ *
+ * @see de.uol.swp.common.lobby.Lobby
+ * @see de.uol.swp.common.lobby.response.AbstractLobbyResponse
+ * @author Moritz Scheer
+ * @since 2022-11-17
+ */
 public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
 
     private final LobbyDTO lobby;
@@ -12,8 +20,8 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
     /**
      * Constructor
      *
-     * @param lobby The name the lobby should have
-     * @param user The user who created the lobby and therefore shall be the owner
+     * @param lobby The name of the lobby that the player wants to join in
+     * @param user The user who wants to join the lobby
      * @since 2022-12-03
      */
     public LobbyJoinedSuccessfulResponse(LobbyDTO lobby, UserDTO user) {

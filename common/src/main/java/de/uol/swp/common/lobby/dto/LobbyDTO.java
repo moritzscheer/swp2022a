@@ -77,6 +77,12 @@ public class LobbyDTO implements Lobby {
         return tmp;
     }
 
+    /**
+     * Getter for the lobby Name
+     *
+     * @return String containing the lobby Name of the lobby
+     * @since 2022-12-06
+     */
     @Override
     public String getName() {
         return name;
@@ -121,6 +127,15 @@ public class LobbyDTO implements Lobby {
         }
     }
 
+    /**
+     * Handles updating owner.
+     *
+     * If the user given from the parameter is not in the lobby, an IllegalArgumentException is thrown. If not the user
+     * is set to the current owner of the lobby.
+     *
+     * @param user containing the User that wants to become the owner
+     * @since 2022-12-06
+     */
     @Override
     public void updateOwner(User user) {
         if (!this.users.contains(user)) {

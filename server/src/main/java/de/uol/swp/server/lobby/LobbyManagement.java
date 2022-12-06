@@ -30,6 +30,7 @@ public class LobbyManagement {
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
      * @see de.uol.swp.common.user.User
+     * @author Moritz Scheer & Maxim Erden
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
@@ -67,6 +68,7 @@ public class LobbyManagement {
      * @param name String containing the name of the lobby to search for
      * @return either empty Optional or Optional containing the lobby
      * @see Optional
+     * @author Moritz Scheer
      * @since 2019-10-08
      */
     public Optional<Lobby> getLobby(String name) {
@@ -83,6 +85,7 @@ public class LobbyManagement {
      * getter for the current lobbyID
      *
      * @return Integer Value containing the current lobbyID
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     public Integer getlobbyID() {
@@ -93,6 +96,7 @@ public class LobbyManagement {
      * getter for the current lobbyName
      *
      * @return String Value containing the current lobbyName
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     public String getName() {
@@ -103,6 +107,7 @@ public class LobbyManagement {
      * getter for the lobby List
      *
      * @return Map<Integer, LobbyDTO> containing all the open lobbies
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     public Map<Integer, LobbyDTO> getLobbies() {
