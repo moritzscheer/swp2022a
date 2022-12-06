@@ -597,27 +597,27 @@ public class SceneManager {
     }
 
     /**
-     * Shows the rulebook screenn
+     * Shows the rulebook screen
      *
      * Switches the main menu Scene to the rulebookScene and sets the title of
-     * the window to "Die Spielregeln"
+     * the window to "Rulebook"
      *
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
-        showScene(rulebookScene, "Die Spielregeln");
+        showScene(rulebookScene, "Rulebook");
     }
 
     /**
      * Shows the credit screen
      *
      * Switches the main menu Scene to the creditScene and sets the title of
-     * the window to "Die Credits"
+     * the window to "Credits"
      *
      * @since 2022-11-29
      */
     public void showCreditScreen() {
-        showScene(creditScene, "Die Credits");
+        showScene(creditScene, "Credits");
     }
 
     /**
