@@ -18,7 +18,7 @@
         </image>
     </ImageView>
 
-    <AnchorPane id="InnerBox" layoutX="587.0" layoutY="350.0" prefHeight="261.0" prefWidth="429.0">
+    <AnchorPane layoutX="587.0" layoutY="350.0" prefHeight="261.0" prefWidth="429.0" styleClass="InnerBox">
       <children>
           <Label layoutX="58.0" layoutY="35.0" prefHeight="36.0" prefWidth="127.0" text="Login:" />
           <TextField id="loginField" fx:id="loginField" layoutX="210.0" layoutY="35.0" prefHeight="36.0" prefWidth="167.0" promptText="Your name">

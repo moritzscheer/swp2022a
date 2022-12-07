@@ -17,7 +17,7 @@
         </image>
     </ImageView>
 
-    <AnchorPane id="InnerBox" layoutX="384.0" layoutY="42.0" prefHeight="817.0" prefWidth="832.0" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="384.0" AnchorPane.rightAnchor="384.0" AnchorPane.topAnchor="42.0">
+    <AnchorPane styleClass="InnerBox" layoutX="384.0" layoutY="42.0" prefHeight="817.0" prefWidth="832.0" AnchorPane.bottomAnchor="41.0" AnchorPane.leftAnchor="384.0" AnchorPane.rightAnchor="384.0" AnchorPane.topAnchor="42.0">
       <children>
          <Line id="PartingLine" endX="337.0" layoutX="372.0" layoutY="111.0" startX="-250.0" />
          <Text id="Headline" layoutX="299.0" layoutY="96.0" text="Rulebook" wrappingWidth="233.212890625">

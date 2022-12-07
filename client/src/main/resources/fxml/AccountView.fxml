@@ -16,7 +16,7 @@
             <Image url="@../images/Background3x3Matrix.png" />
          </image>
       </ImageView>
-      <AnchorPane id="anchorPaneTwo" layoutX="88.0" layoutY="129.0" prefHeight="262.0" prefWidth="425.0" stylesheets="@../css/BaseViewStyle.css">
+      <AnchorPane styleClass="InnerBox" layoutX="88.0" layoutY="129.0" prefHeight="262.0" prefWidth="425.0" stylesheets="@../css/BaseViewStyle.css">
          <children>
             <Button fx:id="PasswordResetButton" layoutX="23.0" layoutY="64.0" mnemonicParsing="false" onAction="#onPasswordResetButtonPressed" prefHeight="43.0" prefWidth="184.0" stylesheets="@../css/BaseViewStyle.css" text="Reset Password" textAlignment="CENTER">
                <font>
