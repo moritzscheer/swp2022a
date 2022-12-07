@@ -39,10 +39,6 @@
 /**
     In this section you can change the style the LoginView.
  */
-#anchorPaneOne{
-    -fx-background-color: #D9D9D9;
-    -fx-background-radius: 25px;
-}
 #nameLogin{
     -fx-text-fill: #b22222;
 }
@@ -59,10 +55,6 @@
 /**
     In this section you can change the style the AccountView.
  */
-#anchorPaneTwo{
-    -fx-background-color: #D9D9D9;
-    -fx-background-radius: 25px;
-}
 #email{
     -fx-text-fill: #b22222;
 }
