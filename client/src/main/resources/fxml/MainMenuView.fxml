@@ -13,12 +13,12 @@
             <Image url="@../images/Background2x2Matrix.png" />
          </image>
       </ImageView>
-      <Button fx:id="singleplayerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="201.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Single player" textAlignment="CENTER">
+      <Button fx:id="singleplayerButton"  onAction="#onSingleplayerButtonPressed" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="201.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Single player" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="multiplayerButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer" textAlignment="CENTER">
+      <Button fx:id="multiplayerButton" onAction="#onMultiplayerButtonPressed" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>

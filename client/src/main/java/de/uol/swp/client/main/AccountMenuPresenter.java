@@ -90,8 +90,6 @@ public class AccountMenuPresenter extends AbstractPresenter {
     public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
         this.loggedInUser = message.getUpdatedUser();
     }
-    // TODO
-    // fix: call user service (client side) instead of creating request directly
 
     /**
      * Method called when the delete account button is pressed
@@ -107,7 +105,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onDeleteAccountButtonPressed(ActionEvent event) {
-        eventBus.post(new DropUserRequest(loggedInUser)); // TODO
+        userService.dropUser(loggedInUser); // call userService (client side), instead of creating request directly
     }
 
     /**

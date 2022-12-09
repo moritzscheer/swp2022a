@@ -196,7 +196,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-     void onMultiplayer(ActionEvent actionEvent) {
+     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -204,14 +204,14 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Method called when the singleplayer button is pressed
      *
      * If the singleplayer button is pressed, this method requests the lobby service
-     * to create a specified lobby. Therefore it uses as the parameter  name and password the value null.
+     * to create a specified lobby. Therefore, it uses as the parameter  name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService
      * @since 2022-11-30
      */
     @FXML
-    void onSingleplayer(ActionEvent event){
+    void onSingleplayerButtonPressed(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 
