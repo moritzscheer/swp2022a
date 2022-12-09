@@ -16,7 +16,7 @@
          <Image url="@../images/Background3x3Matrix.png" />
       </image>
    </ImageView>
-   <AnchorPane id="anchorPaneOne" layoutX="106.0" layoutY="145.0" prefHeight="193.0" prefWidth="395.0" stylesheets="@../css/BaseViewStyle.css">
+   <AnchorPane styleClass="InnerBox" layoutX="106.0" layoutY="145.0" prefHeight="193.0" prefWidth="395.0" stylesheets="@../css/BaseViewStyle.css">
       <children>
          <Label id="nameLogin" layoutX="16.0" layoutY="17.0" stylesheets="@../css/BaseViewStyle.css" text="Login" textAlignment="CENTER">
             <font>
