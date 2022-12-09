@@ -3,8 +3,10 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -231,5 +233,31 @@ public class MainMenuPresenter extends AbstractPresenter {
         eventBus.post(showAccountOptionMessage);
     }
 
+    /**
+     * Method called when the credit button is pressed
+     *
+     * If the credit button is pressed, it changes the scene from main menu to credit.
+     *
+     * @param event The ActionEvent created by pressing the credit button
+     * @see de.uol.swp.client.credit
+     * @since 2022-11-29
+     */
+    @FXML
+    void onCreditButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowCreditViewEvent());
+    }
+    /**
+     * Method called when the rulebook button is pressed
+     *
+     * If the rulebook button is pressed, it changes the scene from main menu to rulebook.
+     *
+     * @param event The ActionEvent created by pressing the rulebook button
+     * @see de.uol.swp.client.rulebook
+     * @since 2022-11-27
+     */
+    @FXML
+    void onRulebookButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowRulebookViewEvent());
+    }
 
 }
