@@ -4,7 +4,6 @@ import de.uol.swp.common.SerializationTestHelper;
 import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
-import de.uol.swp.common.user.exception.ViewExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.message.UsersListMessage;
@@ -15,7 +14,6 @@ import de.uol.swp.common.user.request.RetrieveAllOnlineUsersRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 import java.util.List;
 

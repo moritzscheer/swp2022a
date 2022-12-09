@@ -4,26 +4,20 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.uol.swp.common.message.MessageContext;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.exception.DropUserExceptionMessage;
-import de.uol.swp.common.user.exception.ViewExceptionMessage;
 import de.uol.swp.common.user.request.DropUserRequest;
 import de.uol.swp.common.user.request.RegisterUserRequest;
-import de.uol.swp.common.user.request.ShowAccountOptionsRequest;
 import de.uol.swp.common.user.request.UpdateUserRequest;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
-import de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
 import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import de.uol.swp.server.AbstractService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Optional;
 
 /**
  * Mapping vom event bus calls to user management calls
@@ -114,37 +108,6 @@ public class UserService extends AbstractService {
         }catch (Exception e){
             LOG.error(e);
             returnMessage = new DropUserExceptionMessage("Cannot drop user "+msg.getUser()+" "+e.getMessage());
-        }
-        msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
-        post(returnMessage);
-    }
-
-    /**
-     * Handles ShowAccountOptionsRequest found on the EventBus
-     *
-     * If an ShowAccountOptionsRequest is detected on the EventBus, this method is called.
-     * It tries to open the account view. If this succeeds a
-     * ShowAccountOptionsSuccessfulResponse is posted on the EventBus otherwise a
-     * ViewExceptionMessage gets posted there.
-     *
-     * @param msg The ShowAccountOptionsRequest found on the EventBus
-     * @see de.uol.swp.common.user.request.ShowAccountOptionsRequest
-     * @see de.uol.swp.common.user.response.ShowAccountOptionsSuccessfulResponse
-     * @see de.uol.swp.common.user.exception.ViewExceptionMessage
-     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
-     * @since 2022-12-02
-     */
-    @Subscribe
-    private void onShowAccountOptionsRequest(ShowAccountOptionsRequest msg){
-        if (LOG.isDebugEnabled()){
-            LOG.debug("Got new account options request with {}", msg.getLoggedInUser());
-        }
-        ResponseMessage returnMessage;
-        try {
-            returnMessage = new ShowAccountOptionsSuccessfulResponse(msg.getLoggedInUser());
-        }catch (Exception e){
-            LOG.error(e);
-            returnMessage = new ViewExceptionMessage("Cannot show the account view for user "+msg.getLoggedInUser()+" "+e.getMessage());
         }
         msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
