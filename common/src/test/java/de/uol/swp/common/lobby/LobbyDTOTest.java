@@ -46,13 +46,21 @@ class LobbyDTOTest {
      */
     @Test
     void createLobbyTest() {
-        Lobby lobby = new LobbyDTO("test", defaultUser, "1234", true);
+        Lobby lobbyMP = new LobbyDTO("test", defaultUser, "1234", true);
 
-        assertEquals("test", lobby.getName());
-        assertEquals(1, lobby.getUsers().size());
-        assertEquals(defaultUser, lobby.getUsers().iterator().next());
-        assertEquals("1234", lobby.getPassword());
-        assertEquals(true, lobby.isMultiplayer());
+        assertEquals("test", lobbyMP.getName());
+        assertEquals(1, lobbyMP.getUsers().size());
+        assertEquals(defaultUser, lobbyMP.getUsers().iterator().next());
+        assertEquals("1234", lobbyMP.getPassword());
+        assertEquals(true, lobbyMP.isMultiplayer());
+
+        Lobby lobbySP = new LobbyDTO(null, defaultUser, null, false);
+
+        assertEquals(null, lobbySP.getName());
+        assertEquals(1, lobbySP.getUsers().size());
+        assertEquals(defaultUser, lobbySP.getUsers().iterator().next());
+        assertEquals(null, lobbySP.getPassword());
+        assertEquals(false, lobbySP.isMultiplayer());
     }
 
     // -----------------------------------------------------

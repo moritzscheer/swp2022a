@@ -18,7 +18,8 @@ import java.util.Optional;
  */
 public class LobbyManagement {
     private String name;
-    private final Map<String, Lobby> lobbies = new HashMap<>();
+    private Integer lobbyID = 1;
+    private final Map<Integer, Lobby> lobbies = new HashMap<>();
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
@@ -35,38 +36,17 @@ public class LobbyManagement {
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
-        if (isMultiplayer) {
-            if (lobbies.containsKey(name)) {
-                throw new IllegalArgumentException("Lobby name " + name + " already exists!");
-            } else {
-                this.name = name;
-                lobbies.put(name, new LobbyDTO(name, owner, password, true));
-                System.out.println("Lobby '" + name + "' from User '" + owner.getUsername() + "' was created");
+        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
+
+        for (Map.Entry<Integer, Lobby> entry : lobbies.entrySet()) {
+            if(entry.getValue().getName() != null) {
+                if (entry.getValue().getName().equals(name)) {
+                    throw new IllegalArgumentException("Lobby name " + name + " already exists!");
+                }
             }
-        } else {
-            this.name = createSinglePlayerName(owner);
-            lobbies.put(this.name, new LobbyDTO(this.name, owner, "", false));
-            System.out.println("Lobby '" + this.name + "' from User '" + owner.getUsername() + "' was created");
         }
-    }
-
-    /**
-     * creates an unique Singleplayer Name containing: (name of the owner)-Singleplayer-(counter)
-     *
-     * @param owner the user who wants to create a lobby
-     * @see de.uol.swp.common.user.User
-     * @return created singlePlayerName
-     * @since 2022-11-21
-     */
-    private String createSinglePlayerName(UserDTO owner) {
-        int counter = 1;
-        String singlePlayerName = owner.getUsername() + "-SinglePlayer-" + counter;
-
-        while(lobbies.containsKey(singlePlayerName)) {
-            counter++;
-            singlePlayerName = owner.getUsername() + "-SinglePlayer-" + counter;
-        }
-        return singlePlayerName;
+        lobbies.put(lobbyID, new LobbyDTO(name, owner, password, true));
+        this.name = name;
     }
 
     /**
@@ -98,6 +78,10 @@ public class LobbyManagement {
             return Optional.of(lobby);
         }
         return Optional.empty();
+    }
+
+    public Integer getlobbyID() {
+        return this.lobbyID;
     }
 
     public String getName() {

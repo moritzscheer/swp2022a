@@ -1,7 +1,9 @@
 package de.uol.swp.common.user;
 
 import de.uol.swp.common.SerializationTestHelper;
+import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.message.UsersListMessage;
@@ -49,6 +51,9 @@ class UserMessageSerializableTest {
                 RegisterUserRequest.class));
         assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new RetrieveAllOnlineUsersRequest(),
                 RetrieveAllOnlineUsersRequest.class));
-
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new DropUserExceptionMessage("Error"),
+                DropUserExceptionMessage.class));
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UpdateUserExceptionMessage("Error"),
+                UpdateUserExceptionMessage.class));
     }
 }
