@@ -3,8 +3,11 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.auth.events.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.credit.event.ShowCreditViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -36,12 +39,14 @@ public class MainMenuPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/MainMenuView.fxml";
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
+
     public Button singleplayerButton;
 
     private ObservableList<String> users;
 
     private User loggedInUser;
 
+    private static final ShowAccountOptionsViewEvent  showAccountOptionMessage = new ShowAccountOptionsViewEvent();
     @Inject
     private LobbyService lobbyService;
 
@@ -151,7 +156,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-08
      */
     @FXML
-    private void onLogoutButtonPressed(ActionEvent event) {
+    private void onLogout(ActionEvent event) {
         userService.logout(loggedInUser);
     }
 
@@ -182,41 +187,77 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method called when the create lobby button is pressed
+     * Method called when the multiplayer lobby button is pressed
      *
-     * If the create lobby button is pressed, this method requests the lobby service
-     * to create a new lobby. Therefore it currently uses the lobby name "test"
-     * and an user called "ich"
+     * If the multiplayer button is pressed, it posts an ShowJoinOrCreateViewEvent Object to the Eventbus.
      *
-     * @param event The ActionEvent created by pressing the create lobby button
+     * @param actionEvent The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2019-11-20
+     * @since 2022-11-30
      */
     @FXML
-    void onCreateLobby(ActionEvent event) {
-        lobbyService.createNewLobby("test", new UserDTO("ich", "", ""));
+     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
+        eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
     /**
-     * Method called when the join lobby button is pressed
+     * Method called when the singleplayer button is pressed
      *
-     * If the join lobby button is pressed, this method requests the lobby service
-     * to join a specified lobby. Therefore it currently uses the lobby name "test"
-     * and an user called "ich"
+     * If the singleplayer button is pressed, this method requests the lobby service
+     * to create a specified lobby. Therefore, it uses as the parameter  name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2019-11-20
+     * @since 2022-11-30
      */
     @FXML
-    void onJoinLobby(ActionEvent event) {
-        lobbyService.joinLobby("test", new UserDTO("ich", "", ""));
+    void onSingleplayerButtonPressed(ActionEvent event){
+        lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 
+    /**
+     * Method called when the AccountOption button is pressed
+     *
+     * If the AccountOption button is pressed, this method post on the bus a
+     * ShowAccountOptionMessage. This request is received by the SceneManager,
+     * which changes the screen to AccountOptionView screen.
+     *
+     * @param event The ActionEvent created by pressing the AccountOption button
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-11-30
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
     @FXML
-    void onChangeAccountOptions(ActionEvent event) {
-        eventBus.post(new ShowAccountOptionsViewEvent());
+    void onAccountOptionButtonPressed(ActionEvent event) {
+        eventBus.post(showAccountOptionMessage);
     }
 
+    /**
+     * Method called when the credit button is pressed
+     *
+     * If the credit button is pressed, it changes the scene from main menu to credit.
+     *
+     * @param event The ActionEvent created by pressing the credit button
+     * @see de.uol.swp.client.credit
+     * @since 2022-11-29
+     */
+    @FXML
+    void onCreditButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowCreditViewEvent());
+    }
+    /**
+     * Method called when the rulebook button is pressed
+     *
+     * If the rulebook button is pressed, it changes the scene from main menu to rulebook.
+     *
+     * @param event The ActionEvent created by pressing the rulebook button
+     * @see de.uol.swp.client.rulebook
+     * @since 2022-11-27
+     */
+    @FXML
+    void onRulebookButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowRulebookViewEvent());
+    }
 
 }

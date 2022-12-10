@@ -64,4 +64,19 @@ public interface Lobby {
      */
     Set<User> getUsers();
 
+    /**
+     * Getter for the Password of the lobby
+     *
+     * @return A String containing the password of this lobby
+     * @since 2022-111-22
+     */
+    String getPassword();
+
+    /**
+     * Getter for gamemode of the lobby
+     *
+     * @return a Boolean.If true, the lobby is a multiplayer lobby, if false, the lobby is a singleplayer lobby
+     * @since 2022-111-22
+     */
+    Boolean isMultiplayer();
 }
