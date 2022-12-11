@@ -22,6 +22,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
@@ -233,5 +234,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @FXML
     void onButtonSubmitPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(textFieldName.getText(), (UserDTO) loggedInUser, textFieldPassword.getText());
+    }
+
+    public void handleMouseClick(MouseEvent mouseEvent) {
     }
 }
