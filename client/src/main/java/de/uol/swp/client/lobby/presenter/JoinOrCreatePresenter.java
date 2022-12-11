@@ -340,7 +340,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * This Method is called when the Cancel Button in the Passwordview is pressed and acts like a back button
      * It changes the current passwordView so that the passwordview isnt visible anymore
      *
-     *
      * @param actionEvent The ActionEvent is created when you press the cancel button in the PasswordView
      * @author Maxim Erden
      * @since 2022-12-11
