@@ -236,6 +236,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         lobbyService.joinLobby(textFieldName.getText(), (UserDTO) loggedInUser, textFieldPassword.getText());
     }
 
-    public void handleMouseClick(MouseEvent mouseEvent) {
+    public void handleMouseClick(MouseEvent click) {
+
+        if (click.getClickCount() == 2) {
+            lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
+        }
     }
 }
