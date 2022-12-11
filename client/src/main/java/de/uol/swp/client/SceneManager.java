@@ -27,6 +27,8 @@ import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
 import de.uol.swp.client.rulebook.RulebookPresenter;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
+import de.uol.swp.client.setting.SettingPresenter;
+import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -64,6 +66,7 @@ public class SceneManager {
     private Scene createLobbyScene;
     private Scene mainScene;
     private Scene creditScene;
+    private Scene settingScene;
     private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
@@ -92,6 +95,7 @@ public class SceneManager {
         initMainView();
         initCreditView();
         initRulebookView();
+        initSettingView();
         initRegistrationView();
         initAccountOptionsView();
         initLobbyView();
@@ -181,6 +185,24 @@ public class SceneManager {
     }
 
     /**
+     * Initializes the setting view
+     *
+     * If the settingScene is null it gets set to a new scene containing the
+     * a pane showing the setting view as specified by the SettingView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.setting.SettingPresenter
+     * @since 2022-12-11
+     */
+    private void initSettingView() throws IOException {
+        if (settingScene == null) {
+            Parent rootPane = initPresenter(SettingPresenter.FXML);
+            settingScene = new Scene(rootPane);
+            settingScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
      * Initializes the login view
      *
      * If the loginScene is null it gets set to a new scene containing the
@@ -246,6 +268,23 @@ public class SceneManager {
     @Subscribe
     public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
         showRulebookScreen();
+    }
+
+
+    /**
+     * Handles ShowRulebookViewEvent detected on the EventBus
+     *
+     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the rulebook
+     * screen.
+     *
+     * @param event The ShowRulebookViewEvent detected on the EventBus
+     * @see de.uol.swp.client.setting.event.ShowSettingViewEvent
+     * @since 2022-11-27
+     */
+    @Subscribe
+    public void onShowSettingViewEvent(ShowSettingViewEvent event){
+        showSettingScreen();
     }
 
 
@@ -618,6 +657,18 @@ public class SceneManager {
      */
     public void showCreditScreen() {
         showScene(creditScene, "Credits");
+    }
+
+    /**
+     * Shows the setting screen
+     *
+     * Switches the main menu Scene to the settingScene and sets the title of
+     * the window to "Settings"
+     *
+     * @since 2022-12-11
+     */
+    public void showSettingScreen() {
+        showScene(settingScene, "Settings");
     }
 
     /**

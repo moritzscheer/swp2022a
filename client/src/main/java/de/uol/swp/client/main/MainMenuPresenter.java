@@ -8,7 +8,7 @@ import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
-import de.uol.swp.client.setting.ShowSettingViewEvent;
+import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;

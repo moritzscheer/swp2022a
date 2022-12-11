@@ -1,4 +1,4 @@
-package de.uol.swp.client.setting;
+package de.uol.swp.client.setting.event;
 
 /**
  * Event used to show the setting window
