@@ -20,12 +20,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.List;
+import javafx.scene.layout.AnchorPane;
 
 /**
  * Manages the joinOrCreate window
@@ -44,6 +46,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     private ObservableList<String> lobbies;
 
+
+    @FXML
+    private Label LabelPasswordView;
+
     @Inject
     private LobbyService lobbyService;
     @FXML
@@ -52,6 +58,13 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private TextField textFieldName;
     @FXML
     private TextField textFieldPassword;
+
+
+    @FXML
+    private AnchorPane AnchorPanePassword;
+
+    @FXML
+    private AnchorPane AnchorPaneBottomView;
 
     /**
      * Default Constructor
@@ -231,15 +244,46 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @author Maxim Erden
      * @since 2022-11-30
      */
+
+
+
     @FXML
-    void onButtonSubmitPressed(ActionEvent actionEvent) {
-        lobbyService.joinLobby(textFieldName.getText(), (UserDTO) loggedInUser, textFieldPassword.getText());
+    void onButtonJoinLobbyInJoinorCreateViewPressed(ActionEvent actionEvent) {
+        if(lobbiesView.getSelectionModel().getSelectedItem() == null){
+            return;
+        }
+        updatePasswordView();
     }
 
     public void handleMouseClick(MouseEvent click) {
 
         if (click.getClickCount() == 2) {
-            lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
+            updatePasswordView();
         }
+    }
+
+    public void updatePasswordView(){
+        if(!AnchorPanePassword.isVisible()) {
+            LabelPasswordView.setText("Join Lobby "+ lobbiesView.getSelectionModel().getSelectedItem());
+            lobbiesView.setMouseTransparent(true);
+            lobbiesView.setFocusTraversable(false);
+            AnchorPanePassword.setVisible(true);
+            AnchorPaneBottomView.setVisible(false);
+        }
+        else{
+            lobbiesView.setMouseTransparent(false);
+            lobbiesView.setFocusTraversable(true);
+            AnchorPanePassword.setVisible(false);
+            AnchorPaneBottomView.setVisible(true);
+
+        }
+    }
+
+    public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
+        lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
+    }
+
+    public void onButtonPasswordViewCancelButtonPressed(ActionEvent actionEvent) {
+        updatePasswordView();
     }
 }
