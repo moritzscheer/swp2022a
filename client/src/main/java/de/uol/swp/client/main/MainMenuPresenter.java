@@ -8,6 +8,7 @@ import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.setting.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -246,6 +247,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     void onCreditButtonPressed(ActionEvent event) {
         eventBus.post(new ShowCreditViewEvent());
     }
+
     /**
      * Method called when the rulebook button is pressed
      *
@@ -258,6 +260,20 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     void onRulebookButtonPressed(ActionEvent event) {
         eventBus.post(new ShowRulebookViewEvent());
+    }
+
+    /**
+     * Method called when the setting button is pressed
+     *
+     * If the setting button is pressed, it changes the scene from main menu to setting.
+     *
+     * @param event The ActionEvent created by pressing the setting button
+     * @see de.uol.swp.client.setting
+     * @since 2022-11-27
+     */
+    @FXML
+    void onSettingButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowSettingViewEvent());
     }
 
 }
