@@ -16,6 +16,6 @@
     </ImageView>
 
 
-    <Button layoutX="52.0" layoutY="815.0" mnemonicParsing="false" text="Back" />
+    <Button layoutX="52.0" layoutY="815.0" mnemonicParsing="false" text="Back" onAction="#onBackButtonPressed"/>
 
 </AnchorPane>
