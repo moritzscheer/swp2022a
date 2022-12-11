@@ -50,6 +50,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @FXML
     private Label LabelPasswordView;
 
+    @FXML
+    private Label errorMessage;
+
     @Inject
     private LobbyService lobbyService;
     @FXML
@@ -194,6 +197,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedExceptionResponse(LobbyJoinedExceptionResponse message) {
+        errorMessage.setVisible(true);
         LOG.error("Lobby join error {}", message);
     }
 
@@ -275,12 +279,16 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
             lobbiesView.setFocusTraversable(true);
             AnchorPanePassword.setVisible(false);
             AnchorPaneBottomView.setVisible(true);
+            textFieldPassword.clear();
+            errorMessage.setVisible(false);
 
         }
     }
 
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
+        textFieldPassword.clear();
+        errorMessage.setVisible(true);
     }
 
     public void onButtonPasswordViewCancelButtonPressed(ActionEvent actionEvent) {

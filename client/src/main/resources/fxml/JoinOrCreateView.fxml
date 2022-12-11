@@ -49,6 +49,7 @@
                   <Button layoutX="378.0" layoutY="242.0" mnemonicParsing="false" onAction="#onButtonJoinLobbyButtonPressed" text="Join Lobby" />
                   <Label layoutX="17.0" layoutY="198.0" prefHeight="15.0" prefWidth="135.0" text="Enter Lobby Password:" />
                   <Label fx:id="LabelPasswordView" layoutX="195.0" layoutY="76.0" text="Join Lobby XYZ" />
+                  <Label fx:id= "errorMessage" layoutX="362.0" layoutY="217.0" text="Incorrect Password!" visible="false" />
                </children>
             </AnchorPane>
          </AnchorPane>
