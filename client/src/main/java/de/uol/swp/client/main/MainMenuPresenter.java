@@ -189,7 +189,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-     void onMultiplayer(ActionEvent actionEvent) {
+     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
         lobbyService.retrieveAllLobbies();
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
