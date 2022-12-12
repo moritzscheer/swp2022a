@@ -205,7 +205,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    void onSingleplayer(ActionEvent event){
+    void onSingleplayerButtonPressed(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 }
