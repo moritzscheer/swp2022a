@@ -57,16 +57,16 @@
                   <Insets left="5.0" top="5.0" />
                </GridPane.margin>
             <children>
-                  <Button id="buttonGameSettings" fx:id="buttonGameSettings" alignment="TOP_LEFT" layoutX="180.0" mnemonicParsing="false" text="game-settings">
+                  <Button id="buttonGameSettings" fx:id="buttonGameSettings" alignment="TOP_LEFT" layoutX="180.0" mnemonicParsing="false" text="Game-Settings">
                   <font>
                      <Font size="18.0" />
                   </font>
                </Button>
-                  <Button id="buttonStart" fx:id="buttonStart" layoutX="380.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="start">
+                  <Button id="buttonStart" fx:id="buttonStart" layoutX="380.0" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" prefWidth="100.0" text="Start">
                   <font>
                      <Font size="18.0" />
                   </font></Button>
-                  <Button id="buttonBack" maxHeight="40.0" maxWidth="100.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onButtonBackPressed" prefHeight="40.0" prefWidth="100.0" text="back">
+                  <Button id="buttonBack" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false"  prefHeight="40.0" prefWidth="119.0" text="Leave lobby">
                   <font>
                      <Font size="18.0" />
                   </font></Button>
