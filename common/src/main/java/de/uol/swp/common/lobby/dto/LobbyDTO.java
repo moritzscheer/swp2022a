@@ -54,8 +54,12 @@ public class LobbyDTO implements Lobby {
      * @return LobbyDTO copy of Lobby object having the password variable left empty
      * @since 2022-11-30
      */
-    public static LobbyDTO createWithoutPassword(Lobby lobby) {
-        return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), null, true);
+    public LobbyDTO createWithoutPassword(Lobby lobby) {
+        createWithoutUserPassword(lobby);
+        if(lobby.getPassword() != "") {
+            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), null, true);
+        }
+        return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), lobby.getPassword(), true);
     }
 
     /**

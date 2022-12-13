@@ -54,12 +54,4 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
     public LobbyDTO getLobby() {
         return lobby;
     }
-
-    public Boolean isMultiplayer() {
-        return lobby.isMultiplayer();
-    }
-
-    public Integer getLobbyID() {
-        return lobby.getLobbyID();
-    }
 }

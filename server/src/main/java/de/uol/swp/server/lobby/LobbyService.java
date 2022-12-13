@@ -83,9 +83,9 @@ public class LobbyService extends AbstractService {
 
             //sends a message to all clients (for the lobby list) and sends a response to the client that send the request
             if(createLobbyRequest.isMultiplayer()) {
-                sendToAll(new LobbyCreatedMessage(createLobbyRequest.getName(), (UserDTO) createLobbyRequest.getOwner()));
+                sendToAll(new LobbyCreatedMessage(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), (UserDTO) createLobbyRequest.getOwner()));
             }
-            returnMessage = new LobbyCreatedSuccessfulResponse(lobbyManagement.getLobby(createLobbyRequest.getName()).get(), createLobbyRequest.getUser());
+            returnMessage = new LobbyCreatedSuccessfulResponse(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), createLobbyRequest.getUser());
         } catch (IllegalArgumentException e) {
             LOG.error(e);
             returnMessage = new LobbyCreatedExceptionResponse("Cannot create Lobby. " + e.getMessage());

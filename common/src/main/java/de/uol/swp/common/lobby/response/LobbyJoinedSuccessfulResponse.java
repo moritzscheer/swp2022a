@@ -46,6 +46,7 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
      * Getter for LobbyDTO
      *
      * @return LobbyDTO containing the lobby
+     * @author Moritz Scheer
      * @since 2022-12-03
      */
     public LobbyDTO getLobby() {

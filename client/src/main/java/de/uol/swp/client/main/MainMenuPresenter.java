@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -207,5 +208,20 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     void onSingleplayerButtonPressed(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
+    }
+
+    @FXML
+    public void onAccountOptionButtonPressed(ActionEvent actionEvent) {
+        eventBus.post(new ShowAccountOptionsViewEvent());
+    }
+
+    @FXML
+    public void onCreditButtonPressed(ActionEvent actionEvent) {
+
+    }
+
+    @FXML
+    public void onRulebookButtonPressed(ActionEvent actionEvent) {
+
     }
 }

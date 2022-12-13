@@ -41,16 +41,14 @@
             <BorderPane.margin>
                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
-            <ListView fx:id="lobbiesView" onMouseClicked="#handleMouseClick" prefHeight="737.0" prefWidth="1484.0" />
+            <ListView fx:id="lobbiesView" onMouseClicked="#onMouseClick" prefHeight="737.0" prefWidth="1484.0" />
             <AnchorPane fx:id="AnchorPanePassword" layoutX="470.0" layoutY="183.0" prefHeight="294.0" prefWidth="488.0" style="-fx-border-color: BLACK; -fx-background-color: GREY;" visible="false">
-               <children>
-                  <PasswordField fx:id="textFieldPassword" layoutX="162.0" layoutY="194.0" />
-                  <Button layoutX="51.0" layoutY="243.0" mnemonicParsing="false" onAction="#onButtonPasswordViewCancelButtonPressed" text="Cancel" />
-                  <Button layoutX="378.0" layoutY="242.0" mnemonicParsing="false" onAction="#onButtonJoinLobbyButtonPressed" text="Join Lobby" />
-                  <Label layoutX="17.0" layoutY="198.0" prefHeight="15.0" prefWidth="135.0" text="Enter Lobby Password:" />
-                  <Label fx:id="LabelPasswordView" layoutX="195.0" layoutY="76.0" text="Join Lobby XYZ" />
-                  <Label fx:id= "errorMessage" layoutX="362.0" layoutY="217.0" text="Incorrect Password!" visible="false" />
-               </children>
+               <PasswordField fx:id="textFieldPassword" layoutX="162.0" layoutY="194.0" />
+               <Button layoutX="51.0" layoutY="243.0" mnemonicParsing="false" onAction="#onButtonPasswordViewCancelButtonPressed" text="Cancel" />
+               <Button layoutX="378.0" layoutY="242.0" mnemonicParsing="false" onAction="#onButtonJoinLobbyButtonPressed" text="Join Lobby" />
+               <Label layoutX="17.0" layoutY="198.0" prefHeight="15.0" prefWidth="135.0" text="Enter Lobby Password:" />
+               <Label fx:id="LabelPasswordView" layoutX="195.0" layoutY="76.0" text="Join Lobby XYZ" />
+               <Label fx:id= "errorMessage" layoutX="362.0" layoutY="217.0" text="Incorrect Password!" visible="false" />
             </AnchorPane>
          </AnchorPane>
       </center>

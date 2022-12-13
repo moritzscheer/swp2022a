@@ -49,8 +49,8 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * @since 2022-11-29
      */
     public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbies) {
-        for (Lobby lobby : lobbies) {
-            this.lobbies.add(LobbyDTO.createWithoutPassword(lobby));
+        for (LobbyDTO lobby : lobbies) {
+            this.lobbies.add(lobby.createWithoutPassword(lobby));
         }
     }
 

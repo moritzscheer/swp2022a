@@ -15,8 +15,8 @@ import java.util.*;
  * @since 2019-10-08
  */
 public class LobbyManagement {
-    private String name;
     private Integer lobbyID = 1;
+    private Integer currentLobbyID;
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
     /**
@@ -37,14 +37,13 @@ public class LobbyManagement {
         while (lobbies.containsKey(lobbyID)) {lobbyID++;}
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getValue().getName() != null) {
-                if (entry.getValue().getName().equals(name)) {
-                    throw new IllegalArgumentException("Lobby name " + name + " already exists!");
-                }
+            if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
+                throw new IllegalArgumentException("Lobby name " + name + " already exists!");
             }
         }
         lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer));
-        this.name = name;
+        this.currentLobbyID = lobbyID;
+        this.lobbyID = 1;
     }
 
     /**
@@ -82,25 +81,33 @@ public class LobbyManagement {
     }
 
     /**
+     * Searches for the lobby with the requested lobbyID
+     *
+     * @param lobbyID Integer containing the lobbyID of the lobby to search for
+     * @return either empty Optional or Optional containing the lobby
+     * @see Optional
+     * @author Moritz Scheer
+     * @since 2022-12-13
+     */
+    public Optional<LobbyDTO> getLobby(Integer lobbyID) {
+        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+            if (entry.getKey().equals(lobbyID)) {
+                LobbyDTO lobby = lobbies.get(entry.getKey());
+                return Optional.of(lobby);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * getter for the current lobbyID
      *
      * @return Integer Value containing the current lobbyID
      * @author Moritz Scheer
      * @since 2022-11-30
      */
-    public Integer getlobbyID() {
-        return this.lobbyID;
-    }
-
-    /**
-     * getter for the current lobbyName
-     *
-     * @return String Value containing the current lobbyName
-     * @author Moritz Scheer
-     * @since 2022-11-30
-     */
-    public String getName() {
-        return this.name;
+    public Integer getCurrentLobbyID() {
+        return this.currentLobbyID;
     }
 
     /**
@@ -111,6 +118,13 @@ public class LobbyManagement {
      * @since 2022-11-30
      */
     public Map<Integer, LobbyDTO> getLobbies() {
-        return this.lobbies;
+        Map<Integer, LobbyDTO> tmp = new HashMap<>();
+
+        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+            if (entry.getValue().getName() != null) {
+                tmp.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return tmp;
     }
 }
