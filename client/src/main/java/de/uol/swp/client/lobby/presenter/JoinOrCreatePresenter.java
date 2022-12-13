@@ -55,7 +55,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @FXML
     private Label LabelPasswordView;
     @FXML
-    private Label errorMessage;
+    private Label errorMessagePasswordIncorrect;
+    @FXML
+    private Label errorMessageLobbyFull;
     @FXML
     private ListView<String> lobbiesView;
     @FXML
@@ -144,8 +146,13 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedExceptionResponse(LobbyJoinedExceptionResponse message) {
-        errorMessage.setVisible(true);
+        if(message.toString().contains("already full")) {
+            errorMessageLobbyFull.setVisible(true);
+        } else {
+            errorMessagePasswordIncorrect.setVisible(true);
+        }
         LOG.error("Lobby join error {}", message);
+
     }
 
     // -----------------------------------------------------
@@ -273,7 +280,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public void onMouseClick(MouseEvent click) {
         if (click.getClickCount() == 2 && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("")) {
+            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword() == "") {
                 lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
             } else {
                 updatePasswordView();
@@ -306,7 +313,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
             AnchorPanePassword.setVisible(false);
             AnchorPaneBottomView.setVisible(true);
             textFieldPassword.clear();
-            errorMessage.setVisible(false);
+            errorMessagePasswordIncorrect.setVisible(false);
+            errorMessageLobbyFull.setVisible(false);
         }
     }
 

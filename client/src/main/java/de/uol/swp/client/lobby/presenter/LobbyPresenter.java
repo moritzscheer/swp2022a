@@ -117,6 +117,7 @@ public class LobbyPresenter extends AbstractPresenter {
 
         //safe information in the Client
         loggedInUser = message.getUser();
+        System.out.println(message.getLobby().getOwner().getUsername());
         updateInformation(message.getLobby());
 
         eventBus.post(new ShowLobbyViewEvent());
