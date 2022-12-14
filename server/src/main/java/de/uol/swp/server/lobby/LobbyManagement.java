@@ -52,16 +52,13 @@ public class LobbyManagement {
     /**
      * Deletes lobby with requested name
      *
-     * @param name String containing the name of the lobby to delete
+     * @param lobbyID Integer containing the name of the lobby to delete
      * @throws IllegalArgumentException there exists no lobby with the  requested
      *                                  name
      * @since 2019-10-08
      */
-    public void dropLobby(String name) {
-        if (!lobbies.containsKey(name)) {
-            throw new IllegalArgumentException("Lobby name " + name + " not found!");
-        }
-        lobbies.remove(name);
+    public void dropLobby(Integer lobbyID) {
+        lobbies.remove(lobbyID);
     }
 
     /**

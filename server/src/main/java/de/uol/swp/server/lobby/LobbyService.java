@@ -5,12 +5,15 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.UserDTO;
@@ -125,12 +128,31 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onLobbyLeaveUserRequest(LobbyLeaveUserRequest lobbyLeaveUserRequest) {
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyLeaveUserRequest.getName());
+        ResponseMessage returnMessage = null;
 
         if (lobby.isPresent()) {
-            lobby.get().leaveUser(lobbyLeaveUserRequest.getUser());
-            sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
+            try {
+                lobby.get().leaveUser(lobbyLeaveUserRequest.getUser());
+                if(lobbyLeaveUserRequest.isMultiplayer()) {
+                    sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
+                }
+                returnMessage = new LobbyLeaveUserResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
+            }catch (IllegalArgumentException e){
+                dropLobby(lobbyLeaveUserRequest);
+                returnMessage = new LobbyDroppedResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
+                if (lobbyLeaveUserRequest.isMultiplayer()){
+                    sendToAll(new LobbyDroppedMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
+                }
+            }
+        }else {
+            returnMessage = new LobbyDroppedResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
         }
-        // TODO: error handling not existing lobby
+        lobbyLeaveUserRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
+        post(returnMessage);
+    }
+
+    private void dropLobby(LobbyLeaveUserRequest lobbyLeaveUserRequest){
+            lobbyManagement.dropLobby(lobbyLeaveUserRequest.getLobbyID());
     }
 
     /**

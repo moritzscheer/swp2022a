@@ -66,7 +66,7 @@
                   <font>
                      <Font size="18.0" />
                   </font></Button>
-                  <Button id="buttonBack" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false"  prefHeight="40.0" prefWidth="119.0" text="Leave lobby">
+                  <Button id="buttonBack" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onButtonBackPressed" prefHeight="40.0" prefWidth="119.0" text="Leave lobby">
                   <font>
                      <Font size="18.0" />
                   </font></Button>
@@ -85,6 +85,27 @@
                <GridPane.margin>
                   <Insets bottom="5.0" left="5.0" top="5.0" />
                </GridPane.margin>
+            <children>
+               <AnchorPane fx:id="infoBox" layoutX="73.0" layoutY="182.0" prefHeight="129.0" prefWidth="285.0" style="-fx-background-color: grey;" visible="false">
+                  <children>
+                     <Button id="buttonBack" fx:id="yesButton" layoutY="72.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Button>
+                     <Button id="buttonBack" fx:id="noButton" layoutX="126.0" layoutY="72.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButoonPressed" prefHeight="40.0" prefWidth="119.0" text="No" visible="false">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Button>
+                     <Label fx:id="infoLabel" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="271.0" text="Do you want to leave the Lobby?" visible="false">
+                        <font>
+                           <Font size="18.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </AnchorPane>
+            </children>
             </AnchorPane>
             <TextField id="textField" maxHeight="-Infinity" prefHeight="300.0" style="-fx-border-color: black;" text="Chat" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <GridPane.margin>

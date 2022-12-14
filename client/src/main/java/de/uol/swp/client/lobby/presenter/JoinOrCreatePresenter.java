@@ -7,8 +7,12 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
+import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -103,4 +107,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     void onCreateLobbyButtonPressed(ActionEvent actionEvent) {
         eventBus.post(new ShowCreateLobbyViewEvent());
     }
+
+    @FXML
+    private void onLobbyDroppedMessage(LobbyDroppedMessage message){
+
+    }
+
+
 }

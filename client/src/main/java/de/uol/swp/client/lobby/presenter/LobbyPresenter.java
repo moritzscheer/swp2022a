@@ -4,15 +4,21 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +45,7 @@ public class LobbyPresenter extends AbstractPresenter {
 
     private String lobbyName;
 
-    private Boolean isMultiplayer;
+    private Boolean multiplayer;
 
     @Inject
     private LobbyService lobbyService;
@@ -55,9 +61,15 @@ public class LobbyPresenter extends AbstractPresenter {
 
     @FXML
     private Label labelMapName;
-
     @FXML
-    private Button buttonBack;
+    private AnchorPane infoBox;
+    @FXML
+    private Button yesButton;
+    @FXML
+    private Button noButton;
+    @FXML
+    private Label infoLabel;
+
 
     /**
      * Default Constructor
@@ -79,12 +91,26 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
         LOG.info("Lobby " + message.getName() + " created successful");
-        this.isMultiplayer = message.isMultiplayer();
+        this.multiplayer = message.isMultiplayer();
         this.loggedInUser = message.getUser();
         this.owner = message.getUser();
         this.lobbyName = message.getName();
         this.lobbyID = message.getLobbyID();
         eventBus.post(new ShowLobbyViewEvent());
+    }
+
+    private void updateInfoBox(){
+        if(!infoBox.isVisible()){
+            infoBox.setVisible(true);
+            yesButton.setVisible(true);
+            noButton.setVisible(true);
+            infoLabel.setVisible(true);
+        }else {
+            infoBox.setVisible(false);
+            yesButton.setVisible(false);
+            noButton.setVisible(false);
+            infoLabel.setVisible(false);
+        }
     }
 
     /**
@@ -98,6 +124,18 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onButtonBackPressed(ActionEvent actionEvent) {
         // leave user
+      updateInfoBox();
+    }
+
+    @FXML
+    private void onYesButtonPressed(ActionEvent actionEvent){
+        lobbyService.leaveLobby(lobbyName,(UserDTO) loggedInUser, lobbyID, multiplayer);
+
+    }
+
+    @FXML
+    private void onNoButoonPressed(ActionEvent actionEvent){
+        updateInfoBox();
     }
 
     /**
@@ -111,5 +149,29 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onButtonStartPressed(ActionEvent actionEvent) {
         // start game
+    }
+    @FXML
+    private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
+
+    }
+    @FXML
+    void onLobbyDroppedResponse(LobbyDroppedResponse response){
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        lobbyID = null;
+        owner = null;
+        loggedInUser = null;
+        lobbyName = null;
+        multiplayer = null;
+        System.out.println("test1");
+    }
+    @FXML
+    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse response){
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        lobbyID = null;
+        owner = null;
+        loggedInUser = null;
+        lobbyName = null;
+        multiplayer = null;
+        System.out.println("test2");
     }
 }

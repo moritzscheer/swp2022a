@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -39,8 +40,8 @@ public class LobbyService {
      * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
      * @since 2019-11-20
      */
-    public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
-        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, isMultiplayer, password);
+    public void createNewLobby(String name, UserDTO user, Boolean multiplayer, String password) {
+        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, multiplayer, password);
         eventBus.post(createLobbyRequest);
     }
 
@@ -56,4 +57,10 @@ public class LobbyService {
         LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
         eventBus.post(joinUserRequest);
     }
+
+    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean isMultiplayer){
+        LobbyLeaveUserRequest leaveUserRequest = new LobbyLeaveUserRequest(name, user, lobbyID, isMultiplayer);
+        eventBus.post(leaveUserRequest);
+    }
+
 }
