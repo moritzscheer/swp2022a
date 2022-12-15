@@ -79,10 +79,32 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
+
+        /**
+         * Enables the screen to be resizeable
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
         primaryStage.setResizable(true);
+
+        /**
+         * Set the screen in maximized window
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
         primaryStage.setMaximized(true);
+
+        /**
+         * Gets the current width and height of screen of its user
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
         screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
         screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
         this.injector = injected;
         initViews();
     }
