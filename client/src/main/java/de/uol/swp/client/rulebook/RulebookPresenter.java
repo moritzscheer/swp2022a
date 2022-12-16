@@ -11,6 +11,9 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * Manages the rulebook window
@@ -25,6 +28,7 @@ public class RulebookPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/RulebookView.fxml";
     private User loggedInUser;
 
+
     /**
      * Default Constructor
      *
@@ -32,6 +36,7 @@ public class RulebookPresenter extends AbstractPresenter {
      */
     public RulebookPresenter() {
     }
+
 
     /**
      * Handles successful login
