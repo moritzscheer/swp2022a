@@ -14,6 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="Background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.main.AccountMenuPresenter">
+
    <children>
       <HBox alignment="CENTER" layoutX="209.0" layoutY="136.0" prefHeight="217.0" prefWidth="699.0" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="111.0">
          <children>
@@ -24,6 +25,7 @@
             </VBox>
          </children>
       </HBox>
+
       <HBox alignment="CENTER" layoutX="344.0" layoutY="365.0" prefHeight="262.0" prefWidth="430.0" AnchorPane.bottomAnchor="163.0" AnchorPane.leftAnchor="344.0" AnchorPane.rightAnchor="343.0" AnchorPane.topAnchor="365.0">
          <children>
             <VBox alignment="CENTER" prefHeight="262.0" prefWidth="430.0">
