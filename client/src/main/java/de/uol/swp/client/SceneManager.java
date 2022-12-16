@@ -292,7 +292,7 @@ public class SceneManager {
     private void initAccountOptionsView() throws IOException {
         if(changeAccountOptionsScene == null) {
             Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
-            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
