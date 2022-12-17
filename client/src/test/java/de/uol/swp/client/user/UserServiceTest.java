@@ -220,7 +220,16 @@ class UserServiceTest {
         UserService userService = new UserService(bus);
         userService.dropUser(defaultUser);
 
-        // TODO: Add when method is implemented
+        lock.await(1000, TimeUnit.MILLISECONDS);
+
+        assertTrue(event instanceof DropUserRequest);
+
+        DropUserRequest request = (DropUserRequest) event;
+
+        assertEquals(request.getUser().getUsername(), defaultUser.getUsername());
+        assertEquals(request.getUser().getPassword(), defaultUser.getPassword());
+        assertEquals(request.getUser().getEMail(), defaultUser.getEMail());
+        assertFalse(request.authorizationNeeded());
     }
 
     /**
