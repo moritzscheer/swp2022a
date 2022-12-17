@@ -30,10 +30,12 @@ import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -76,7 +78,6 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
-       // primaryStage.setResizable(false);
         this.injector = injected;
         initViews();
     }
@@ -98,6 +99,7 @@ public class SceneManager {
         initJoinOrCreateView();
         initCreateLobbyView();
     }
+
 
 
     /**
@@ -276,6 +278,7 @@ public class SceneManager {
      * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
      * @since 2022-11-30
      */
+    private Rectangle2D bounds = Screen.getPrimary().getBounds();
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);

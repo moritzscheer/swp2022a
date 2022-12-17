@@ -21,6 +21,7 @@ import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
 import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -348,6 +349,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+
 	}
 
 }
