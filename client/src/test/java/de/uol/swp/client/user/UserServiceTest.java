@@ -213,7 +213,8 @@ class UserServiceTest {
      * This test case has to be implemented after the respective dropUser method
      * has been implemented
      *
-     * @since 2019-10-10
+     * @since 2022-12-17
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
      */
     @Test
     void dropUserTest() throws InterruptedException {
