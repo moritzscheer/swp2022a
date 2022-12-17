@@ -216,7 +216,7 @@ class UserServiceTest {
      * @since 2019-10-10
      */
     @Test
-    void dropUserTest() {
+    void dropUserTest() throws InterruptedException {
         UserService userService = new UserService(bus);
         userService.dropUser(defaultUser);
 
