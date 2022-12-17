@@ -7,8 +7,6 @@
     -fx-background-color: #B22222;
     -fx-text-fill: #C0C0C0;
     -fx-background-radius: 5;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
 }
 .button:hover{
     -fx-background-color: #8b0000;
@@ -42,10 +40,17 @@
 #nameLogin{
     -fx-text-fill: #b22222;
 }
+
 #passwordLogin{
     -fx-text-fill: #b22222;
 }
 
+#LogoBox{
+    -fx-background-image: url("/images/LogoOnly.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
 
 /**
     In this section you can change the style the RegistrationView.
@@ -70,8 +75,11 @@
 }
 
 #Background{
-    -fx-background-image: url("/images/BackgroundWithLogo.png");
-    -fx-background-size: 1600 900;
+    -fx-background-image: url("/images/BackgroundWithoutLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+
 }
 
 /**

@@ -34,10 +34,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
@@ -67,8 +69,9 @@ public class SceneManager {
     private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
-
     private Scene changeAccountOptionsScene;
+    private double screenSizeWidth;
+    private double screenSizeHeight;
 
     private final Injector injector;
 
@@ -76,10 +79,38 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
-        primaryStage.setResizable(false);
+
+        /**
+         * Enables the screen to be resizeable
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        primaryStage.setResizable(true);
+
+        /**
+         * Set the screen in maximized window
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        primaryStage.setMaximized(true);
+
+        /**
+         * Gets the current width and height of screen of its user
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
+        screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
         this.injector = injected;
         initViews();
     }
+
+
+
 
     /**
      * Subroutine to initialize all views
@@ -192,7 +223,7 @@ public class SceneManager {
     private void initLoginView() throws IOException {
         if (loginScene == null) {
             Parent rootPane = initPresenter(LoginPresenter.FXML);
-            loginScene = new Scene(rootPane);
+            loginScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
@@ -210,7 +241,7 @@ public class SceneManager {
     private void initRegistrationView() throws IOException {
         if (registrationScene == null){
             Parent rootPane = initPresenter(RegistrationPresenter.FXML);
-            registrationScene = new Scene(rootPane);
+            registrationScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             registrationScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -261,7 +292,7 @@ public class SceneManager {
     private void initAccountOptionsView() throws IOException {
         if(changeAccountOptionsScene == null) {
             Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
-            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
