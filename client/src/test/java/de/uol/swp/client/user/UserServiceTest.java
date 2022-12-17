@@ -152,7 +152,7 @@ class UserServiceTest {
      * If this happens within one second, it checks if the user in the request object
      * is the same as the default user and if authorization is needed.
      * Authorization should not be needed.
-     * If any of these checks fail or the method takes to long, this test is unsuccessful.
+     * If any of these checks fail or the method takes too long, this test is unsuccessful.
      *
      * @throws InterruptedException thrown by lock.await()
      * @since 2019-10-10
@@ -185,7 +185,7 @@ class UserServiceTest {
      * If this happens within one second, it checks if the user in the request object
      * is the same as the default user and if authorization is needed.
      * Authorization should be needed.
-     * If any of these checks fail or the method takes to long, this test is unsuccessful.
+     * If any of these checks fail or the method takes too long, this test is unsuccessful.
      *
      * @throws InterruptedException thrown by lock.await()
      * @since 2019-10-10
@@ -210,9 +210,16 @@ class UserServiceTest {
     /**
      * Test for the dropUser routine
      *
-     * This test case has to be implemented after the respective dropUser method
-     * has been implemented
+     * This Test creates a new UserService object registered to the EventBus of
+     * this test class. It then calls the dropUser function of the object using
+     * the defaultUser as parameter and waits for it to post an dropUserRequest
+     * object on the EventBus.
+     * If this happens within one second, it checks if the user in the request object
+     * is the same as the default user and if authorization is needed.
+     * Authorization should be not needed, since the user does not exist anymore.
+     * If any of these checks fail or the method takes too long, this test is unsuccessful.
      *
+     * @throws InterruptedException thrown by lock.await()
      * @since 2022-12-17
      * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
      */
