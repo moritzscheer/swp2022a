@@ -52,44 +52,44 @@
                         <Insets />
                      </opaqueInsets>
                      <children>
-                        <Button fx:id="singleplayerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSingleplayerButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Single player" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
+                        <Button fx:id="singleplayerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSingleplayerButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Singleplayer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="multiplayerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMultiplayerButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="optionsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Settings" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAccountOptionButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Account" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="creditsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreditButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Credits" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="ruleBookButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRulebookButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Game rules" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLogout" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="6" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                         <Button fx:id="logoutButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
                            <font>
-                              <Font name="Comic Sans MS" size="16.0" />
+                              <Font name="sans-serif" size="16.0" />
                            </font>
                         </Button>
                      </children>
