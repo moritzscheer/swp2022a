@@ -11,6 +11,5 @@ package de.uol.swp.client.lobby.event;
  * @since 2022-15-11
  *
  */
-
 public class ShowLobbyViewEvent {
 }

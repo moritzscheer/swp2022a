@@ -331,7 +331,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
         textFieldPassword.clear();
-       // errorMessage.setVisible(true);
     }
 
     /**
