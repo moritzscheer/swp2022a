@@ -12,6 +12,8 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class UserLeftLobbyMessage extends AbstractLobbyMessage {
 
+    private UserDTO newOwner;
+
     /**
      * Default constructor
      *
@@ -26,9 +28,21 @@ public class UserLeftLobbyMessage extends AbstractLobbyMessage {
      *
      * @param lobbyName name of the lobby
      * @param user user who left the lobby
+     * @param newOwner new lobby owner
      * @since 2019-10-08
      */
-    public UserLeftLobbyMessage(String lobbyName, UserDTO user) {
+    public UserLeftLobbyMessage(String lobbyName, UserDTO user, UserDTO newOwner) {
         super(lobbyName, user);
+        this.newOwner = newOwner;
+    }
+
+    /**
+     * getter for the new Lobby owner
+     *
+     * @author Moritz Scheer
+     * @since 2019-10-08
+     */
+    public UserDTO getNewOwner() {
+        return newOwner;
     }
 }

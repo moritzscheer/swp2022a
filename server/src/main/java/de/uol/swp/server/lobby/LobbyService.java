@@ -7,7 +7,6 @@ import com.google.inject.Singleton;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
@@ -158,7 +157,7 @@ public class LobbyService extends AbstractService {
             try {
                 lobby.get().leaveUser(lobbyLeaveUserRequest.getUser());
                 if(lobbyLeaveUserRequest.isMultiplayer()) {
-                    sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
+                    sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), (UserDTO) lobby.get().getOwner()));
                 }
                 returnMessage = new LobbyLeaveUserResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
             }catch (IllegalArgumentException e){

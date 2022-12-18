@@ -6,6 +6,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -79,6 +80,10 @@ public class LobbyPresenter extends AbstractPresenter {
     private Button noButton;
     @FXML
     private Label infoLabel;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button backButton;
 
 
     /**
@@ -111,7 +116,7 @@ public class LobbyPresenter extends AbstractPresenter {
         loggedInUser = message.getUser();
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(loggedInUser));
     }
 
     /**
@@ -130,10 +135,65 @@ public class LobbyPresenter extends AbstractPresenter {
 
         //safe information in the Client
         loggedInUser = message.getUser();
-        System.out.println(message.getLobby().getOwner().getUsername());
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(loggedInUser));
+    }
+
+    /**
+     * Handles when a lobby is dropped
+     *
+     * If a LobbyDroppedResponse is posted to the EventBus the
+     * lobby specific variable are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param response the LobbyDroppedResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyDroppedResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyDroppedResponse(LobbyDroppedResponse response){
+        if(multiplayer) {
+            eventBus.post(new ShowJoinOrCreateViewEvent());
+        } else {
+            eventBus.post(new ShowMainMenuViewEvent(response.getUser()));
+        }
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Handles when a user leave the lobby
+     *
+     * If a LobbyLeaveUserResponse is posted to the EventBus the
+     * user's specific variable to the lobby are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param response the LobbyLeaveUserResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse response){
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Delete the lobby date
+     *
+     * @author Daniel Merzo
+     * @since 2022-12-18
+     */
+    private void deleteLobbyData() {
+        lobbyID = null;
+        owner = null;
+        loggedInUser = null;
+        lobbyName = null;
+        multiplayer = null;
     }
 
     /**
@@ -150,7 +210,7 @@ public class LobbyPresenter extends AbstractPresenter {
         lobbyName = message.getName();
         owner = message.getOwner();
         password = message.getPassword();
-        isMultiplayer = message.isMultiplayer();
+        multiplayer = message.isMultiplayer();
         slots = message.getUsers().size();
 
         //display data in GUI
@@ -173,7 +233,7 @@ public class LobbyPresenter extends AbstractPresenter {
      *
      * If a new UserJoinedLobbyMessage object is posted to the EventBus the name of the newly
      * joined user is appended to the user list in the lobby.
-     * Furthermore if the LOG-Level is set to DEBUG the message "New user {@literal
+     * Furthermore, if the LOG-Level is set to DEBUG the message "New user {@literal
      * <Username>} joined the lobby." is displayed in the log.
      *
      * @param message the UserJoinedLobbyMessage object seen on the EventBus
@@ -186,8 +246,32 @@ public class LobbyPresenter extends AbstractPresenter {
         Platform.runLater(() -> {
             if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
                 users.add(message.getUser().getUsername());
+
                 slots++;
                 textFieldOnlineUsers.setText(String.valueOf(slots));
+        });
+    }
+
+    /**
+     * Handles when a user left the Lobby
+     *
+     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
+        Platform.runLater(() -> {
+            users.remove(message.getUser().getUsername());
+
+            slots--;
+            textFieldOnlineUsers.setText(String.valueOf(slots));
+
+            owner = message.getNewOwner();
+            textFieldOwner.setText(owner.getUsername());
         });
     }
 
@@ -220,28 +304,6 @@ public class LobbyPresenter extends AbstractPresenter {
     // -----------------------------------------------------
     // ActionEvents
     // -----------------------------------------------------
-
-    /**
-     * Auxiliary method for the visibility of the infoBox
-     *
-     * If this method is called, it is possible to make the elements of a scene visible or invisible.
-     *
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    private void updateInfoBox(){
-        if(!infoBox.isVisible()){
-            infoBox.setVisible(true);
-            yesButton.setVisible(true);
-            noButton.setVisible(true);
-            infoLabel.setVisible(true);
-        }else {
-            infoBox.setVisible(false);
-            yesButton.setVisible(false);
-            noButton.setVisible(false);
-            infoLabel.setVisible(false);
-        }
-    }
 
     /**
      * Method called when the cancel button is pressed
@@ -282,8 +344,34 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-12-15
      */
     @FXML
-    private void onNoButoonPressed(ActionEvent actionEvent){
+    private void onNoButtonPressed(ActionEvent actionEvent){
         updateInfoBox();
+    }
+
+    /**
+     * Auxiliary method for the visibility of the infoBox
+     *
+     * If this method is called, it is possible to make the elements of a scene visible or invisible.
+     *
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    private void updateInfoBox(){
+        if(!infoBox.isVisible()){
+            infoBox.setVisible(true);
+            yesButton.setVisible(true);
+            noButton.setVisible(true);
+            infoLabel.setVisible(true);
+            startButton.setDisable(true);
+            backButton.setDisable(true);
+        }else {
+            infoBox.setVisible(false);
+            yesButton.setVisible(false);
+            noButton.setVisible(false);
+            infoLabel.setVisible(false);
+            startButton.setDisable(false);
+            backButton.setDisable(false);
+        }
     }
 
     /**
@@ -299,63 +387,7 @@ public class LobbyPresenter extends AbstractPresenter {
         // start game
     }
 
-    /**
-     * Handles when a user left the Lobby
-     *
-     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
-     *
-     * @param message the UserLeftLobbyMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    @FXML
-    private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
 
-    }
 
-    /**
-     * Handles when a lobby is dropped
-     *
-     * If a LobbyDroppedResponse is posted to the EventBus the
-     * lobby specific variable are set to null and
-     * the ShowJoinOrCreateViewEvent is triggered.
-     *
-     * @param response the LobbyDroppedResponse object seen on the EventBus
-     * @see de.uol.swp.common.lobby.response.LobbyDroppedResponse
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    @Subscribe
-    void onLobbyDroppedResponse(LobbyDroppedResponse response){
-        eventBus.post(new ShowJoinOrCreateViewEvent());
-        lobbyID = null;
-        owner = null;
-        loggedInUser = null;
-        lobbyName = null;
-        multiplayer = null;
-        System.out.println("test1");
-    }
 
-    /**
-     * Handles when a user leave the lobby
-     *
-     * If a LobbyLeaveUserResponse is posted to the EventBus the
-     * user's specific variable to the lobby are set to null and
-     * the ShowJoinOrCreateViewEvent is triggered.
-     *
-     * @param response the LobbyLeaveUserResponse object seen on the EventBus
-     * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    @Subscribe
-    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse response){
-        eventBus.post(new ShowJoinOrCreateViewEvent());
-        lobbyID = null;
-        owner = null;
-        loggedInUser = null;
-        lobbyName = null;
-        multiplayer = null;
-    }
 }

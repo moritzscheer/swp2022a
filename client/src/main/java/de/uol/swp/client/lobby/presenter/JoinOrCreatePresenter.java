@@ -7,16 +7,12 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
-import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
-import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
 import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
-import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
-import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -213,6 +209,23 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         });
     }
 
+    /**
+     * Handles when a Lobby dropped
+     *
+     * If a LobbyDroppedMessage is posted to the EventBus this method is called.
+     *
+     * @param message the LobbyDroppedMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    private void onLobbyDroppedMessage(LobbyDroppedMessage message){
+        Platform.runLater(() -> {
+            lobbiesList.remove(message.getName());
+        });
+    }
+
     // -----------------------------------------------------
     // ActionEvents
     // -----------------------------------------------------
@@ -350,20 +363,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         updatePasswordView();
     }
 
-    /**
-     * Handles when a Lobby dropped
-     *
-     * If a LobbyDroppedMessage is posted to the EventBus this method is called.
-     *
-     * @param message the LobbyDroppedMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    @Subscribe
-    private void onLobbyDroppedMessage(LobbyDroppedMessage message){
 
-    }
 
 
 }
