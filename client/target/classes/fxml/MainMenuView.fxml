@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="600.0" maxWidth="600.0" prefHeight="600.0" prefWidth="600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.main.MainMenuPresenter">
+   <children>
+      <ImageView id="backgroundImage" fitHeight="600.0" fitWidth="600.0" styleClass="backgroundImage">
+         <image>
+            <Image url="@../images/Background2x2Matrix.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="singleplayerButton"  onAction="#onSingleplayerButtonPressed" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="201.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Single player" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="multiplayerButton" onAction="#onMultiplayerButtonPressed" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="241.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="optionsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="281.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Settings" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="321.0" mnemonicParsing="false" onAction="#onAccountOptionButtonPressed" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Account" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="creditsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="361.0" mnemonicParsing="false" onAction="#onCreditButtonPressed" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Credits" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="ruleBookButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="401.0" mnemonicParsing="false" onAction="#onRulebookButtonPressed" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Game rules" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+      <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="441.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER">
+         <font>
+            <Font name="Comic Sans MS" size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
