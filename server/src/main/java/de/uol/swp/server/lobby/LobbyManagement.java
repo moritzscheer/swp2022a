@@ -50,11 +50,10 @@ public class LobbyManagement {
     }
 
     /**
-     * Deletes lobby with requested name
+     * Deletes lobby with requested lobbyID
      *
      * @param lobbyID Integer containing the name of the lobby to delete
-     * @throws IllegalArgumentException there exists no lobby with the  requested
-     *                                  name
+     * @author Daniel Merzo, Moritz Scheer
      * @since 2019-10-08
      */
     public void dropLobby(Integer lobbyID) {

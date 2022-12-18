@@ -58,8 +58,19 @@ public class LobbyService {
         eventBus.post(joinUserRequest);
     }
 
-    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean isMultiplayer){
-        LobbyLeaveUserRequest leaveUserRequest = new LobbyLeaveUserRequest(name, user, lobbyID, isMultiplayer);
+    /**
+     * Posts a request to leave a specified lobby on the EventBus
+     *
+     * @param name Name of the lobby the user wants to join
+     * @param user User who wants to join the lobby
+     * @param lobbyID To identify the lobby with a unique key
+     * @param multiplayer Boolean value to query if the user is in the multiplayer
+     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @author Daniel Merzo, Moritz Scheer
+     * @since 2022-12-15
+     */
+    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
+        LobbyLeaveUserRequest leaveUserRequest = new LobbyLeaveUserRequest(name, user, lobbyID, multiplayer);
         eventBus.post(leaveUserRequest);
     }
 

@@ -151,6 +151,16 @@ public class LobbyService extends AbstractService {
         post(returnMessage);
     }
 
+    /**
+     * Auxiliary method to drop a Lobby
+     *
+     * Send a request that the user exits from the lobby with the corresponding lobbyID
+     *
+     * @param lobbyLeaveUserRequest The LobbyJoinUserRequest found on the EventBus
+     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @author Daniel Merzo, Moritz Scheer
+     * @since 2022-12-15
+     */
     private void dropLobby(LobbyLeaveUserRequest lobbyLeaveUserRequest){
             lobbyManagement.dropLobby(lobbyLeaveUserRequest.getLobbyID());
     }

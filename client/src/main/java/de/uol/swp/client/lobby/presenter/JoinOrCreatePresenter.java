@@ -8,6 +8,7 @@ import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
@@ -108,7 +109,17 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         eventBus.post(new ShowCreateLobbyViewEvent());
     }
 
-    @FXML
+    /**
+     * Handles when a Lobby dropped
+     *
+     * If a LobbyDroppedMessage is posted to the EventBus this method is called.
+     *
+     * @param message the LobbyDroppedMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
     private void onLobbyDroppedMessage(LobbyDroppedMessage message){
 
     }
