@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 
 /**
  * Manages the login window

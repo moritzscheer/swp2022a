@@ -1,19 +1,13 @@
 package de.uol.swp.client.rulebook;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
-import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 
 /**
  * Manages the rulebook window
