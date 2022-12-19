@@ -1,13 +1,12 @@
-package de.uol.swp.common.lobby.chat.message;
+package de.uol.swp.common.chat.message;
 
-import de.uol.swp.common.lobby.chat.TextChatChannelDTO;
-import de.uol.swp.common.lobby.chat.TextChatMessage;
-import de.uol.swp.common.message.AbstractMessage;
+import de.uol.swp.common.chat.TextChatChannelDTO;
+import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.message.AbstractServerMessage;
 
 public class NewTextChatMessageMessage extends AbstractServerMessage {
-    private TextChatChannelDTO channel;
-    private TextChatMessage message;
+    private final TextChatChannelDTO channel;
+    private final TextChatMessage message;
 
     public NewTextChatMessageMessage(TextChatChannelDTO channel, TextChatMessage message) {
         this.channel = channel;

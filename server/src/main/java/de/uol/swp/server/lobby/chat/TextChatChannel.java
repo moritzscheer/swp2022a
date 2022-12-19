@@ -1,9 +1,9 @@
 package de.uol.swp.server.lobby.chat;
 
 import com.google.common.eventbus.EventBus;
-import de.uol.swp.common.lobby.chat.TextChatChannelDTO;
-import de.uol.swp.common.lobby.chat.TextChatMessage;
-import de.uol.swp.common.lobby.chat.message.NewTextChatMessageMessage;
+import de.uol.swp.common.chat.TextChatChannelDTO;
+import de.uol.swp.common.chat.TextChatMessage;
+import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.user.Session;
 
 import java.util.ArrayList;

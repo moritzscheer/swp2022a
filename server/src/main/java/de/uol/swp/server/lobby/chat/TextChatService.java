@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.uol.swp.common.lobby.chat.message.SendTextChatMessageRequest;
+import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
 import de.uol.swp.server.AbstractService;
@@ -57,8 +57,12 @@ public class TextChatService extends AbstractService {
 
     @Subscribe
     private void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
+        if(!channelList.containsKey(message.getChannel().getUUID())) return;
         TextChatChannel channel = channelList.get(message.getChannel().getUUID());
-        String sender = message.getSender().getUsername();
+        Optional<Session> senderSession = message.getSession();
+
+        if(!senderSession.isPresent()) return;
+        String sender = senderSession.get().getUser().getUsername();
         String text = message.getMessage();
 
         channel.addUserTextMessage(sender, text);
@@ -75,5 +79,9 @@ public class TextChatService extends AbstractService {
         TextChatChannel channel = new TextChatChannel(id, eventBus);
         channelList.put(id, channel);
         return id;
+    }
+
+    public void closeTextChatChannel(UUID id){
+
     }
 }

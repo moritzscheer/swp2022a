@@ -1,8 +1,10 @@
-package de.uol.swp.client.lobby.chat;
+package de.uol.swp.client.chat;
 
 import com.google.common.eventbus.EventBus;
-import de.uol.swp.common.lobby.chat.TextChatMessage;
-import de.uol.swp.common.lobby.chat.message.SendTextChatMessageRequest;
+import com.google.common.eventbus.Subscribe;
+import de.uol.swp.common.chat.TextChatMessage;
+import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
+import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -24,14 +26,20 @@ public class TextChatChannel {
         return out;
     }
 
-    TextChatChannel(UUID id, EventBus eventBus){
+    public TextChatChannel(UUID id, EventBus eventBus){
         ID = id;
         this.eventBus = eventBus;
         chatHistory = new ArrayList<>();
     }
 
-    public void sendTextMessage(String text){
-        SendTextChatMessageRequest messageRequest = new SendTextChatMessageRequest();
+    public void sendTextMessage(UUID channelID, String text){
+        SendTextChatMessageRequest messageRequest = new SendTextChatMessageRequest(channelID, text);
+        eventBus.post(messageRequest);
+    }
 
+    @Subscribe
+    private void onNewTextChatMessageMessage(NewTextChatMessageMessage message){
+        if(message.getChannel().getUUID() != ID) return;
+        chatHistory.add(message.getMessage());
     }
 }

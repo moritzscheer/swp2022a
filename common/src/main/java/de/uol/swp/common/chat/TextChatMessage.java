@@ -1,11 +1,8 @@
-package de.uol.swp.common.lobby.chat;
-
-import java.util.Date;
+package de.uol.swp.common.chat;
 
 public class TextChatMessage {
-    private String message;
-    private String senderString;
-    private Date sendTime;
+    private final String message;
+    private final String senderString;
 
     public TextChatMessage(String message, String senderString) {
         this.message = message;
