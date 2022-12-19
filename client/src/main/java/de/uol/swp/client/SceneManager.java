@@ -417,37 +417,37 @@ public class SceneManager {
     }
 
     // -----------------------------------------------------
-    // FindCreate_Events
+    // JoinOrCreate_Events
     // -----------------------------------------------------
 
     /**
-     * Handles ShowFindCreateViewEvent detected on the EventBus
+     * Handles ShowJoinOrCreateViewEvent detected on the EventBus
      *
-     * If a ShowFindCreateViewEvent is detected on the EventBus, this method gets
+     * If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets
      * called.
      *
-     * @param event The ShowFindCreateViewEvent detected on the EventBus
-     * @see ShowJoinOrCreateViewEvent
+     * @param event The ShowJoinOrCreateViewEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent
      * @since 2022-11-17
      */
     @Subscribe
-    public void onShowFindCreateViewEvent(ShowJoinOrCreateViewEvent event){
+    public void onShowJoinOrCreateViewEvent(ShowJoinOrCreateViewEvent event){
         showJoinOrCreateScreen();
     }
 
     /**
-     * Handles FindCreateCanceledEvent detected on the EventBus
+     * Handles JoinOrCreateCanceledEvent detected on the EventBus
      *
-     * If a FindCreateCanceledEvent is detected on the EventBus, this method gets
+     * If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets
      * called.
      *
-     * @param event The FindCreateCanceledEvent detected on the EventBus
-     * @see JoinOrCreateCanceledEvent
+     * @param event The JoinOrCreateCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent
      * @since 2022-11-19
      */
     @Subscribe
     public void onJoinOrCreateCanceledEvent(JoinOrCreateCanceledEvent event){
-        showScene(lastScene, lastTitle);
+        showScene(mainScene, event.getUser().getUsername());
     }
 
     // -----------------------------------------------------

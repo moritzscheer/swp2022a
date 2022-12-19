@@ -2,6 +2,7 @@ package de.uol.swp.common.lobby;
 
 import de.uol.swp.common.user.User;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
@@ -14,7 +15,7 @@ import java.util.Set;
  * @see de.uol.swp.common.lobby.dto.LobbyDTO
  * @since 2019-10-08
  */
-public interface Lobby {
+public interface Lobby extends Serializable{
 
     /**
      * Getter for the lobby's name
@@ -46,7 +47,7 @@ public interface Lobby {
      * @param user The new user to add to the lobby
      * @since 2019-10-08
      */
-    void joinUser(User user);
+    void joinUser(User user, String password);
 
     /**
      * Removes an user from the lobby
@@ -68,7 +69,7 @@ public interface Lobby {
      * Getter for the Password of the lobby
      *
      * @return A String containing the password of this lobby
-     * @since 2022-111-22
+     * @since 2022-11-22
      */
     String getPassword();
 
@@ -76,7 +77,15 @@ public interface Lobby {
      * Getter for gamemode of the lobby
      *
      * @return a Boolean.If true, the lobby is a multiplayer lobby, if false, the lobby is a singleplayer lobby
-     * @since 2022-111-22
+     * @since 2022-11-22
      */
     Boolean isMultiplayer();
+
+    /**
+     * Getter for lobbyID of the lobby
+     *
+     * @return an Integer containing the lobby ID
+     * @since 2022-11-22
+     */
+    Integer getLobbyID();
 }
