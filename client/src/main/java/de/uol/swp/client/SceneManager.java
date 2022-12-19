@@ -76,7 +76,6 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
-        primaryStage.setResizable(false);
         this.injector = injected;
         initViews();
     }
@@ -98,6 +97,7 @@ public class SceneManager {
         initJoinOrCreateView();
         initCreateLobbyView();
     }
+
 
 
     /**
