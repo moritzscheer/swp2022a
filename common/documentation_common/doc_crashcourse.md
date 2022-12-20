@@ -1,4 +1,4 @@
-#Crashkurs
+# Crashkurs
 Das ist ein Dokument für einen Crashkurs wie man mit dem markdown in IntelliJ umgeht. Hier findet ihr alle nötigen Informationen, die benötigt werden um ein Dokument zu schreiben. 
 
 ======================================
