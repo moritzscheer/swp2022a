@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -37,7 +38,8 @@ public class LobbyService {
      * @param name Name chosen for the new lobby
      * @param user User who wants to create the new lobby
      * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
-     * @since 2019-11-20
+     * @author Moritz Scheer
+     * @since 2022-11-23
      */
     public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
         CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, isMultiplayer, password);
@@ -50,10 +52,23 @@ public class LobbyService {
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
      * @see de.uol.swp.common.lobby.request.LobbyJoinUserRequest
-     * @since 2019-11-20
+     * @author Moritz Scheer
+     * @since 2022-11-27
      */
-    public void joinLobby(String name, UserDTO user) {
-        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user);
+    public void joinLobby(String name, UserDTO user, String password) {
+        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
         eventBus.post(joinUserRequest);
+    }
+
+    /**
+     * Posts a request to retrieve all lobbies on the EventBus
+     *
+     * @see de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest
+     * @author Moritz Scheer
+     * @since 2022-11-30
+     */
+    public void retrieveAllLobbies() {
+        RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest = new RetrieveAllOnlineLobbiesRequest();
+        eventBus.post(retrieveAllLobbiesRequest);
     }
 }

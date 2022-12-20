@@ -23,7 +23,7 @@
             <Font name="Comic Sans MS" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="settingButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="281.0" mnemonicParsing="false" onAction="#onSettingButtonPressed" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Settings" textAlignment="CENTER">
+      <Button fx:id="optionsButton" alignment="CENTER" contentDisplay="CENTER" layoutX="211.0" layoutY="281.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="178.0" stylesheets="@../css/BaseViewStyle.css" text="Settings" textAlignment="CENTER">
          <font>
             <Font name="Comic Sans MS" size="16.0" />
          </font>

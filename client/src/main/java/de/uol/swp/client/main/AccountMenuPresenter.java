@@ -105,7 +105,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onDeleteAccountButtonPressed(ActionEvent event) {
-        eventBus.post(new DropUserRequest(loggedInUser));
+        userService.dropUser(loggedInUser); // call userService (client side), instead of creating request directly
     }
 
     /**
@@ -128,7 +128,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
             UserDTO userToUpdate = new UserDTO(loggedInUser.getUsername(),passwordField.getText(),loggedInUser.getEMail());
             userService.dropUser(loggedInUser);
             userService.createUser(userToUpdate);
-            eventBus.post(new UpdateUserRequest(userToUpdate));
+            eventBus.post(new UpdateUserRequest(userToUpdate)); // TODO
             passwordField.clear();
         }
     }
@@ -151,7 +151,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
             UserDTO userToUpdate = new UserDTO(loggedInUser.getUsername(), loggedInUser.getPassword(), emailField.getText());
             userService.dropUser(loggedInUser);
             userService.createUser(userToUpdate);
-            eventBus.post(new UpdateUserRequest(userToUpdate));
+            eventBus.post(new UpdateUserRequest(userToUpdate)); // TODO
             emailField.clear();
         }
 
@@ -169,7 +169,7 @@ public class AccountMenuPresenter extends AbstractPresenter {
      *
      */
     @FXML
-    private void onBackButtonPressed(ActionEvent event) {
+    private void onReturnButtonPressed(ActionEvent event) {
         eventBus.post(new ReturnToMainMenuRequest(loggedInUser));
     }
 

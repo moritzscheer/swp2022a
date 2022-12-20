@@ -28,7 +28,7 @@
                   <Font size="20.0" />
                </font>
             </Button>
-            <Button fx:id="BackButton" layoutX="23.0" layoutY="204.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="43.0" prefWidth="380.0" stylesheets="@../css/BaseViewStyle.css" text="Back to Main" textAlignment="CENTER">
+            <Button fx:id="BackButton" layoutX="23.0" layoutY="204.0" mnemonicParsing="false" onAction="#onReturnButtonPressed" prefHeight="43.0" prefWidth="380.0" stylesheets="@../css/BaseViewStyle.css" text="Return to Main" textAlignment="CENTER">
                <font>
                   <Font size="20.0" />
                </font>

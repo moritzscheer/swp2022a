@@ -6,17 +6,18 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
-import de.uol.swp.common.user.response.UserDroppedResponse;
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import io.netty.channel.Channel;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -147,6 +148,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 *
 	 * @param message The LoginSuccessfulResponse object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
 	 * @since 2017-03-17
 	 */
 	@Subscribe
@@ -166,6 +168,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 *
 	 * @param message The RegistrationExceptionMessage object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.exception.RegistrationExceptionMessage
 	 * @since 2019-09-02
 	 */
 	@Subscribe
@@ -184,6 +187,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 *
 	 * @param message The RegistrationSuccessfulResponse object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.response.RegistrationSuccessfulResponse
 	 * @since 2019-09-02
 	 */
 	@Subscribe
@@ -202,6 +206,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 *
 	 * @param message The UserLoggedOutMessage object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.message.UserLoggedOutMessage
 	 * @since 2022-11-08
 	 */
 	@Subscribe
@@ -211,19 +216,40 @@ public class ClientApp extends Application implements ConnectionListener {
 	}
 
 	/**
-	 * Handles User Drop
+	 * Handles unsuccessful User-Drops
 	 *
-	 * If an UserDroppedMessage object is detected on the EventBus this
+	 * If an DropUserExceptionMessage object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the sever error alert.
+	 * If the loglevel is set to Error or higher "Drop User error " and the
+	 * error message are written to the log.
+	 *
+	 * @param message The DropUserExceptionMessage object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.exception.DropUserExceptionMessage
+	 * @since 2022-12-08
+	 * @author Maria Eduarda Costa Leite Andrade
+	 */
+	 @Subscribe
+	 public void onDropUserExceptionMessage(DropUserExceptionMessage message){
+		 sceneManager.showServerError(String.format("Drop user error %s", message));
+		 LOG.error("Drop user error {}", message);
+	 }
+
+	/**
+	 * Handles successful User-Drops
+	 *
+	 * If an UserDroppedSuccessfulResponse object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the login window. If
 	 * the loglevel is set to INFO or higher "User {response} dropped." is written
 	 * to the log.
 	 *
-	 * @param response The UserDroppedResponse object detected on the EventBus
+	 * @param response The UserDroppedSuccessfulResponse object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
 	 * @since 2022-11-08
 	 */
 	@Subscribe
-	void onUserDroppedResponse(UserDroppedResponse response){
+	void onUserDroppedSuccessfulResponse(UserDroppedSuccessfulResponse response){
 		LOG.info("User {} has been dropped.", response.getUsername());
 		sceneManager.showLoginScreen();
 	}
@@ -235,6 +261,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
 	 * @param message The ReturnToMainMenuRequest object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
 	 * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
 	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
 	 * @since 2022-12-02
@@ -245,13 +272,35 @@ public class ClientApp extends Application implements ConnectionListener {
 		this.user = message.getLoggedInUser();
 		sceneManager.showMainScreen(user);
 	}
+
 	/**
-	 * Handles User-Updates
+	 * Handles unsuccessful User-Updates
+	 *
+	 * If an UpdateUserExceptionMessage object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the sever error alert.
+	 * If the loglevel is set to Error or higher "Update user error " and the
+	 * error message are written to the log.
+	 *
+	 * @param message The UpdateUserExceptionMessage object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
+	 * @see de.uol.swp.common.user.exception.UpdateUserExceptionMessage
+	 * @since 2022-12-08
+	 * @author Maria Eduarda Costa Leite Andrade
+	 */
+	 @Subscribe
+	 public void onUpdateUserExceptionMessage(UpdateUserExceptionMessage message){
+		 sceneManager.showServerError(String.format("Update user error %s", message));
+		 LOG.error("Update user error {}", message);
+	 }
+
+	/**
+	 * Handles successful User-Updates
 	 *
 	 * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
 	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
 	 * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
+	 * @see de.uol.swp.client.SceneManager
 	 * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
 	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
 	 * @since 2022-12-02
@@ -298,6 +347,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+
 	}
 
 }

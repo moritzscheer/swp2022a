@@ -4,10 +4,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -20,7 +20,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,8 +39,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/MainMenuView.fxml";
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
-
-    public Button singleplayerButton;
 
     private ObservableList<String> users;
 
@@ -197,7 +194,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-     void onMultiplayer(ActionEvent actionEvent) {
+     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
+        lobbyService.retrieveAllLobbies();
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -212,7 +210,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    void onSingleplayer(ActionEvent event){
+    void onSingleplayerButtonPressed(ActionEvent event){
         lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
     }
 

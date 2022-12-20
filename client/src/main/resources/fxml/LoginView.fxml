@@ -10,19 +10,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
+<AnchorPane styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
    <ImageView fitHeight="400.0" fitWidth="606.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/Background3x3Matrix.png" />
       </image>
    </ImageView>
-   <AnchorPane styleClass="InnerBox" layoutX="106.0" layoutY="145.0" prefHeight="193.0" prefWidth="395.0" stylesheets="@../css/BaseViewStyle.css">
+   <AnchorPane layoutX="106.0" layoutY="145.0" prefHeight="193.0" prefWidth="395.0" styleClass="InnerBox" stylesheets="@../css/BaseViewStyle.css">
       <children>
          <Label id="nameLogin" layoutX="16.0" layoutY="17.0" stylesheets="@../css/BaseViewStyle.css" text="Login" textAlignment="CENTER">
             <font>
                <Font size="20.0" />
             </font></Label>
-         <TextField id="loginField" fx:id="loginField" layoutX="128.0" layoutY="21.0" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css">
+         <TextField id="loginField" fx:id="loginField" layoutX="128.0" layoutY="17.0" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css">
             <tooltip>
                <Tooltip text="Enter your login here" />
             </tooltip>
