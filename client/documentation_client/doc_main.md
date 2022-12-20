@@ -1,33 +1,3 @@
-# Beispiel	
-
-
-Das [Hauptmenü](#linkchapter) ist in acht gleichgroße Buttons aufgeteilt, diese sind mit einem roten Hintergrund und einer silbernen Schrift hinterlegt. Die Anordnung der Buttons ist zentriert und befindet sich unterhalb der Spieleüberschrift. Als Hintergrundbild haben wir eine Spielfeldkarte ausgewählt, die somit einen ersten Eindruck vom Spiel erzeugen soll.
-
-Befehl:
-
-`sudo apt update`
-
-Picture:
-
-![Name of Pic](src/main/java/de/uol/swp/client/main/diagrams/AccountOptionsDiagram.png)
-
-```java
-acountButtonPressed()
-    userService.updateUser();
-    int a;
-``` 
-
-```py
-def func():
-    var = 1
-```  
-
-# LinkChapter	
-Das Hauptmenüfenster begrüßt den User mit seinem Namen und lässt sich nicht maximieren.
-....
-
-
-
 # Hauptmenü	
 17.12.22
 
@@ -49,8 +19,3 @@ Unter dem Button „Credits“ findet man alle Ersteller bzw. Entwickler des Spi
 Damit jeder User sich mit den Spielregeln vertraut machen kann, existiert ein Regelwerk unter dem Button „Game rules“. Dort lassen sich alle Regeln für den Spieler, die Spielerinn nachlesen und gegebenenfalls Tipps und Tricks recherchieren.
 
 Der Button „Logout“ dient dem Ausloggen des derzeit eingeloggten Users und verweist diesen wieder in das Login-Fenster. Um das gesamte Spiel schließen zu können, haben wir einen „Exit“ – Button an unterster Stelle unsere Top-Down- Anordnung positioniert.
-
-
-# Lobby
-
-# So weiter
