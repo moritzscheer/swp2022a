@@ -11,11 +11,12 @@ import de.uol.swp.common.user.UserDTO;
  * @since 2022-12-15
  */
 public class LobbyDroppedMessage extends AbstractLobbyMessage{
+
     /**
      * Default constructor
      *
      * @implNote this constructor is needed for serialization
-     * @since 2022-12-15
+     * @since 2019-10-08
      */
     public LobbyDroppedMessage() {
     }
@@ -24,10 +25,11 @@ public class LobbyDroppedMessage extends AbstractLobbyMessage{
      * Constructor
      *
      * @param lobbyName name of the lobby
-     * @param user user who left the lobby
-     * @since 2022-12-15
+     * @param user user who joined the lobby
+     * @since 2019-10-08
      */
     public LobbyDroppedMessage(String lobbyName, UserDTO user) {
         super(lobbyName, user);
     }
+
 }

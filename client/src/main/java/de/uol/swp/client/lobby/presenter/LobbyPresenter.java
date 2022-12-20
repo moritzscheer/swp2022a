@@ -8,6 +8,7 @@ import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
@@ -56,8 +57,6 @@ public class LobbyPresenter extends AbstractPresenter {
     @Inject
     private LobbyService lobbyService;
 
-    @FXML
-    private Label labelPlayer;
     @FXML
     private ListView<String> usersView;
     @FXML
@@ -110,7 +109,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        LOG.info("Lobby " + message.getName() + " created successful");
+        LOG.info("Lobby " + message.getName() + " successfully created");
 
         //safe information in the Client
         loggedInUser = message.getUser();
@@ -147,17 +146,18 @@ public class LobbyPresenter extends AbstractPresenter {
      * lobby specific variable are set to null and
      * the ShowJoinOrCreateViewEvent is triggered.
      *
-     * @param response the LobbyDroppedResponse object seen on the EventBus
+     * @param message the LobbyDroppedResponse object seen on the EventBus
      * @see de.uol.swp.common.lobby.response.LobbyDroppedResponse
      * @author Daniel Merzo
      * @since 2022-12-15
      */
     @Subscribe
-    void onLobbyDroppedResponse(LobbyDroppedResponse response){
+    void onLobbyDroppedResponse(LobbyDroppedResponse message){
+        LOG.info("Lobby " + message.getName() + " successfully deleted");
         if(multiplayer) {
             eventBus.post(new ShowJoinOrCreateViewEvent());
         } else {
-            eventBus.post(new ShowMainMenuViewEvent(response.getUser()));
+            eventBus.post(new ShowMainMenuViewEvent(message.getUser()));
         }
         deleteLobbyData();
         lobbyService.retrieveAllLobbies();
@@ -170,13 +170,34 @@ public class LobbyPresenter extends AbstractPresenter {
      * user's specific variable to the lobby are set to null and
      * the ShowJoinOrCreateViewEvent is triggered.
      *
-     * @param response the LobbyLeaveUserResponse object seen on the EventBus
+     * @param message the LobbyLeaveUserResponse object seen on the EventBus
      * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
      * @author Daniel Merzo
      * @since 2022-12-15
      */
     @Subscribe
-    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse response){
+    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message){
+        LOG.info("Lobby " + message.getName() + " successfully left");
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Handles when the lobby was not found
+     *
+     * If a LobbyLeaveExceptionResponse is posted to the EventBus the
+     * user's specific variable to the lobby are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param message the LobbyLeaveUserResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyLeaveExceptionResponse(LobbyLeaveExceptionResponse message){
+        LOG.error(message.toString());
         eventBus.post(new ShowJoinOrCreateViewEvent());
         deleteLobbyData();
         lobbyService.retrieveAllLobbies();
@@ -264,6 +285,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
+        LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
         Platform.runLater(() -> {
             users.remove(message.getUser().getUsername());
 
@@ -283,8 +305,8 @@ public class LobbyPresenter extends AbstractPresenter {
      * this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged in
+     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged-in
      *                 users
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29

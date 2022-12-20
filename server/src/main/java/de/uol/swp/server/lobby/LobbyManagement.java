@@ -21,7 +21,7 @@ public class LobbyManagement {
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
-     * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name containing:
+     * createSinglePlayerName is beeing called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
      * @param name          the name of the lobby to create
@@ -107,7 +107,7 @@ public class LobbyManagement {
     }
 
     /**
-     * getter for the lobby List
+     * getter for all lobby
      *
      * @return Map<Integer, LobbyDTO> containing all the open lobbies
      * @author Moritz Scheer
@@ -117,8 +117,24 @@ public class LobbyManagement {
         Map<Integer, LobbyDTO> tmp = new HashMap<>();
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+            tmp.put(entry.getKey(), entry.getValue().createWithoutUserPassword(entry.getValue()));
+        }
+        return tmp;
+    }
+
+    /**
+     * getter for the lobby List
+     *
+     * @return Map<Integer, LobbyDTO> containing all the open multiplayer lobbies
+     * @author Moritz Scheer
+     * @since 2022-11-30
+     */
+    public Map<Integer, LobbyDTO> getMultiplayerLobbies() {
+        Map<Integer, LobbyDTO> tmp = new HashMap<>();
+
+        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null) {
-                tmp.put(entry.getKey(), entry.getValue());
+                tmp.put(entry.getKey(), entry.getValue().createWithoutUserPassword(entry.getValue()));
             }
         }
         return tmp;
