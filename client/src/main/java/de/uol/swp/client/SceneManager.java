@@ -272,13 +272,13 @@ public class SceneManager {
 
 
     /**
-     * Handles ShowRulebookViewEvent detected on the EventBus
+     * Handles ShowSettingViewEvent detected on the EventBus
      *
-     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the rulebook
+     * If a ShowSettingViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the setting
      * screen.
      *
-     * @param event The ShowRulebookViewEvent detected on the EventBus
+     * @param event The ShowSettingViewEvent detected on the EventBus
      * @see de.uol.swp.client.setting.event.ShowSettingViewEvent
      * @since 2022-11-27
      */
