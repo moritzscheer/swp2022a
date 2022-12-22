@@ -27,6 +27,7 @@ public class LoginPresenter extends AbstractPresenter {
     @FXML
     private TextField loginField;
 
+
     /**
      * Default Constructor
      * @since 2019-08-18

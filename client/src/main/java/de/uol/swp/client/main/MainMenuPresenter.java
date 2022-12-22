@@ -4,10 +4,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -19,7 +19,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,8 +38,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/MainMenuView.fxml";
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
-
-    public Button singleplayerButton;
 
     private ObservableList<String> users;
 
@@ -197,6 +194,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
      void onMultiplayerButtonPressed(ActionEvent actionEvent) {
+        lobbyService.retrieveAllLobbies();
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -204,7 +202,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Method called when the singleplayer button is pressed
      *
      * If the singleplayer button is pressed, this method requests the lobby service
-     * to create a specified lobby. Therefore, it uses as the parameter  name and password the value null.
+     * to create a specified lobby. Therefore it uses as the parameter  name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService

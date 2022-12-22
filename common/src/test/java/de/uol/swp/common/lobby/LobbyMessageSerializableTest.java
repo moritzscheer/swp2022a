@@ -18,7 +18,7 @@ class LobbyMessageSerializableTest {
     void testLobbyMessagesSerializable() {
         assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new CreateLobbyRequest("test", defaultUser, true, "1234"),
                 CreateLobbyRequest.class));
-        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LobbyJoinUserRequest("test", defaultUser),
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LobbyJoinUserRequest("test", defaultUser, "1234"),
                 LobbyJoinUserRequest.class));
         assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LobbyLeaveUserRequest("test", defaultUser),
                 LobbyLeaveUserRequest.class));

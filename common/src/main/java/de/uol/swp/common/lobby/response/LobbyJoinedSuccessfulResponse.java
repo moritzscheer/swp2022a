@@ -1,6 +1,5 @@
 package de.uol.swp.common.lobby.response;
 
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
@@ -14,28 +13,27 @@ import java.util.Objects;
  * @author Moritz Scheer
  * @since 2022-11-17
  */
-public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
+public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
 
     private final LobbyDTO lobby;
 
     /**
      * Constructor
      *
-     * @param lobby The name the lobby should have
-     * @param user The user who created the lobby and therefore shall be the owner
-     * @author Moritz Scheer
-     * @since 2022-12-01
+     * @param lobby The name of the lobby that the player wants to join in
+     * @param user The user who wants to join the lobby
+     * @since 2022-12-03
      */
-    public LobbyCreatedSuccessfulResponse(Lobby lobby, UserDTO user) {
+    public LobbyJoinedSuccessfulResponse(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
-        this.lobby = (LobbyDTO) lobby;
+        this.lobby = lobby.createWithoutUserPassword(lobby);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        LobbyCreatedSuccessfulResponse that = (LobbyCreatedSuccessfulResponse) o;
+        LobbyJoinedSuccessfulResponse that = (LobbyJoinedSuccessfulResponse) o;
         return Objects.equals(user, that.user);
     }
 
@@ -45,11 +43,11 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
     }
 
     /**
-     * Getter for the lobby variable
+     * Getter for LobbyDTO
      *
-     * @return LobbyDTO object of the lobby
+     * @return LobbyDTO containing the lobby
      * @author Moritz Scheer
-     * @since 2022-12-01
+     * @since 2022-12-03
      */
     public LobbyDTO getLobby() {
         return lobby;

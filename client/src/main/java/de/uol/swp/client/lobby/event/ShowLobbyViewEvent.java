@@ -13,7 +13,6 @@ import javafx.scene.Parent;
  * @since 2022-15-11
  *
  */
-
 public class ShowLobbyViewEvent {
 
     private Integer lobbyID;

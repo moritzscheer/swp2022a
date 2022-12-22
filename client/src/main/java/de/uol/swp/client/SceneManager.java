@@ -61,22 +61,25 @@ public class SceneManager {
     static final String BASE_VIEW_STYLE_SHEET = "css/BaseViewStyle.css";
 
     private final Stage primaryStage;
-    private Scene loginScene;
+
     private String lastTitle;
+
+    private Scene lastScene = null;
+    private Scene currentScene = null;
+    private Scene loginScene;
     private Scene registrationScene;
+    private Scene tabScene;
+
+    private Parent lastParent == null;
+    private Parent currentParent == null;
     private Parent lobbyScene;
     private Parent joinOrCreateScene;
     private Parent createLobbyScene;
     private Parent mainScene;
-    private Scene tabScene;
     private Parent creditScene;
     private Parent rulebookScene;
-    private Parent lastParent;
-    private Parent currentParent;
-    private Scene lastScene = null;
-    private Scene currentScene = null;
-
     private Parent changeAccountOptionsScene;
+
     private final Injector injector;
 
     @Inject
@@ -84,7 +87,6 @@ public class SceneManager {
         eventBus.register(this);
         this.eventBus = eventBus;
         this.primaryStage = primaryStage;
-        primaryStage.setResizable(false);
         this.injector = injected;
         initViews();
     }
@@ -107,6 +109,7 @@ public class SceneManager {
         initJoinOrCreateView();
         initCreateLobbyView();
     }
+
 
 
     /**
@@ -230,40 +233,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowCreditViewEvent detected on the EventBus
-     *
-     * If a ShowCreditViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the credit
-     * screen.
-     *
-     * @param event The ShowCreditViewEvent detected on the EventBus
-     * @see de.uol.swp.client.credit.event.ShowCreditViewEvent
-     * @since 2022-11-29
-     */
-    @Subscribe
-    public void onShowCreditViewEvent(ShowCreditViewEvent event){
-        showCreditScreen();
-    }
-
-
-    /**
-     * Handles ShowRulebookViewEvent detected on the EventBus
-     *
-     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets
-     * called. It calls a method to switch the current screen to the rulebook
-     * screen.
-     *
-     * @param event The ShowRulebookViewEvent detected on the EventBus
-     * @see de.uol.swp.client.rulebook.event.ShowRulebookViewEvent
-     * @since 2022-11-27
-     */
-    @Subscribe
-    public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
-        showRulebookScreen();
-    }
-
-
-    /**
      * Initializes the account view
      *
      * If the changeAccountOptionsScene is null it gets set to a new scene containing the
@@ -331,8 +300,41 @@ public class SceneManager {
     }
 
     // -----------------------------------------------------
-    // MainManu_Events
+    // Subscriber methods
     // -----------------------------------------------------
+
+    /**
+     * Handles ShowCreditViewEvent detected on the EventBus
+     *
+     * If a ShowCreditViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the credit
+     * screen.
+     *
+     * @param event The ShowCreditViewEvent detected on the EventBus
+     * @see de.uol.swp.client.credit.event.ShowCreditViewEvent
+     * @since 2022-11-29
+     */
+    @Subscribe
+    public void onShowCreditViewEvent(ShowCreditViewEvent event){
+        showCreditScreen();
+    }
+
+
+    /**
+     * Handles ShowRulebookViewEvent detected on the EventBus
+     *
+     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the rulebook
+     * screen.
+     *
+     * @param event The ShowRulebookViewEvent detected on the EventBus
+     * @see de.uol.swp.client.rulebook.event.ShowRulebookViewEvent
+     * @since 2022-11-27
+     */
+    @Subscribe
+    public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
+        showRulebookScreen();
+    }
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -426,18 +428,14 @@ public class SceneManager {
         showMainScreen();
     }
 
-    // -----------------------------------------------------
-    // FindCreate_Events
-    // -----------------------------------------------------
-
     /**
-     * Handles ShowFindCreateViewEvent detected on the EventBus
+     * Handles ShowJoinOrCreateViewEvent detected on the EventBus
      *
-     * If a ShowFindCreateViewEvent is detected on the EventBus, this method gets
+     * If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets
      * called.
      *
-     * @param event The ShowFindCreateViewEvent detected on the EventBus
-     * @see ShowJoinOrCreateViewEvent
+     * @param event The ShowJoinOrCreateViewEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent
      * @since 2022-11-17
      */
     @Subscribe
@@ -446,23 +444,19 @@ public class SceneManager {
     }
 
     /**
-     * Handles FindCreateCanceledEvent detected on the EventBus
+     * Handles JoinOrCreateCanceledEvent detected on the EventBus
      *
-     * If a FindCreateCanceledEvent is detected on the EventBus, this method gets
+     * If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets
      * called.
      *
-     * @param event The FindCreateCanceledEvent detected on the EventBus
-     * @see JoinOrCreateCanceledEvent
+     * @param event The JoinOrCreateCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent
      * @since 2022-11-19
      */
     @Subscribe
     public void onJoinOrCreateCanceledEvent(JoinOrCreateCanceledEvent event){
         showMainScreen();
     }
-
-    // -----------------------------------------------------
-    // Lobby_Events
-    // -----------------------------------------------------
 
     /**
      * Handles ShowLobbyViewEvent detected on the EventBus
@@ -478,10 +472,6 @@ public class SceneManager {
     public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
         showLobbyViewScreen(event.getLobbyID(), event.getLobbyName(), event.isMultiplayer());
     }
-
-    // -----------------------------------------------------
-    // CreateLobby_Events
-    // -----------------------------------------------------
 
     /**
      * Handles CreateLobbyCanceledEvent detected on the EventBus
@@ -622,6 +612,35 @@ public class SceneManager {
     }
 
     /**
+     * Shows the registration screen
+     *
+     * Switches the current Scene to the registrationScene and sets the title of
+     * the window to "Registration"
+     *
+     * @since 2019-09-03
+     */
+    public void showRegistrationScreen() {
+        showScene(registrationScene,"Registration");
+    }
+
+    /**
+     * Shows the login screen
+     *
+     * Switches the current Scene to the loginScene and sets the title of
+     * the window to "Login"
+     *
+     * @since 2019-09-03
+     */
+    public void showLoginScreen() {
+        showScene(loginScene,"Login");
+    }
+
+    public void showTabScreen(User user) {
+        showScene(tabScene, "User: " + user.getUsername());
+        showNode(0, mainScene);
+    }
+
+    /**
      * Shows the main menu
      *
      * Switches the current Scene to the mainScene and sets the title of
@@ -658,18 +677,6 @@ public class SceneManager {
     }
 
     /**
-     * Shows the login screen
-     *
-     * Switches the current Scene to the loginScene and sets the title of
-     * the window to "Login"
-     *
-     * @since 2019-09-03
-     */
-    public void showLoginScreen() {
-        showScene(loginScene,"Login");
-    }
-
-    /**
      * Shows the account screen
      *
      * Switches the current Scene to the accountScene and sets the title of
@@ -679,18 +686,6 @@ public class SceneManager {
      */
     public void showAccountOptionScreen() {
         showNode(0, changeAccountOptionsScene);
-    }
-
-    /**
-     * Shows the registration screen
-     *
-     * Switches the current Scene to the registrationScene and sets the title of
-     * the window to "Registration"
-     *
-     * @since 2019-09-03
-     */
-    public void showRegistrationScreen() {
-        showScene(registrationScene,"Registration");
     }
 
     /**
@@ -730,8 +725,5 @@ public class SceneManager {
         showNode(0, mainScene);
     }
 
-    public void showTabScreen(User user) {
-        showScene(tabScene, "User: " + user.getUsername());
-        showNode(0, mainScene);
-    }
+
 }
