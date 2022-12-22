@@ -86,7 +86,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
 
         /**
          * Set the screen in maximized window
@@ -94,7 +94,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(false);
+        primaryStage.setMaximized(true);
 
         /**
          * Gets the current width and height of screen of its user
@@ -223,7 +223,7 @@ public class SceneManager {
     private void initLoginView() throws IOException {
         if (loginScene == null) {
             Parent rootPane = initPresenter(LoginPresenter.FXML);
-            loginScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            loginScene = new Scene(rootPane);
             loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
