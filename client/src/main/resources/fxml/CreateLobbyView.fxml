@@ -5,7 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="196.0" prefWidth="407.0" styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.CreateLobbyPresenter">
+<AnchorPane prefHeight="196.0" prefWidth="407.0" styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.CreateLobbyPresenter">
     <Label layoutX="43.0" layoutY="60.0" text="Room Name" />
     <TextField id="nameField" fx:id="nameField" layoutX="142.0" layoutY="56.0" promptText="Enter Room Name">
 

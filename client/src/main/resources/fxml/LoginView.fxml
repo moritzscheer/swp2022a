@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
+<AnchorPane styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
    <ImageView fitHeight="400.0" fitWidth="606.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@../images/Background3x3Matrix.png" />
