@@ -14,7 +14,7 @@
 }
 
 .label{
-    -fx-font-size: 20px;
+    -fx-font-size: auto;
 }
 
 .header{
