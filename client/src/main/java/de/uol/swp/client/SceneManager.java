@@ -86,7 +86,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
 
         /**
          * Set the screen in maximized window
@@ -94,7 +94,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
 
         /**
          * Gets the current width and height of screen of its user
@@ -170,7 +170,7 @@ public class SceneManager {
     private void initMainView() throws IOException {
         if (mainScene == null) {
            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = new Scene(rootPane);
+            mainScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
@@ -188,7 +188,7 @@ public class SceneManager {
     private void initRulebookView() throws IOException {
         if (rulebookScene == null) {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookScene = new Scene(rootPane);
+            rulebookScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
@@ -206,7 +206,7 @@ public class SceneManager {
     private void initCreditView() throws IOException {
         if (creditScene == null) {
             Parent rootPane = initPresenter(CreditPresenter.FXML);
-            creditScene = new Scene(rootPane);
+            creditScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             creditScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
@@ -310,7 +310,7 @@ public class SceneManager {
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);
-            lobbyScene = new Scene(rootPane, 1600,900);
+            lobbyScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             lobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -328,7 +328,7 @@ public class SceneManager {
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateScene = new Scene(rootPane, 1600,900);
+            joinOrCreateScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -346,7 +346,7 @@ public class SceneManager {
     private void initCreateLobbyView() throws IOException {
         if (createLobbyScene == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
