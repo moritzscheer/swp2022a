@@ -71,11 +71,17 @@
                       <Insets />
                   </GridPane.margin>
               </Label>
-              <PasswordField id="passwordField" fx:id="passwordField" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-              <TextField id="loginField" fx:id="loginField" maxWidth="150.0" prefHeight="25.0" prefWidth="150.0" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+              <PasswordField id="passwordField" fx:id="passwordField" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></PasswordField>
+              <TextField id="loginField" fx:id="loginField" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                   <tooltip>
                       <Tooltip text="Enter your login here" />
                   </tooltip>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
               </TextField>
          </children>
       </GridPane>
