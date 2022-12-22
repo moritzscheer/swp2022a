@@ -1,31 +1,25 @@
-package de.uol.swp.client.lobby.event;
+package de.uol.swp.client.tab.event;
 
 import javafx.scene.Parent;
 
-/**
- * * Event used to show the Lobby window
- *
- * In order to show the Lobby window using this event, post an instance of it
- * onto the eventBus the SceneManager is subscribed to.
- *
- * @author Moritz Scheer
- * @see de.uol.swp.client.SceneManager
- * @since 2022-15-11
- *
- */
-
-public class ShowLobbyViewEvent {
+public class ShowNewTabEvent {
 
     private Integer lobbyID;
     private String lobbyName;
     private Boolean multiplayer;
+    private Parent parent;
 
-    public ShowLobbyViewEvent(Integer lobbyID, String lobbyName, Boolean multiplayer) {
+
+    public ShowNewTabEvent(Integer lobbyID, String lobbyName, Boolean multiplayer, Parent parent) {
         this.lobbyID = lobbyID;
         this.lobbyName = lobbyName;
         this.multiplayer = multiplayer;
+        this.parent = parent;
     }
 
+    public Parent getParent() {
+        return parent;
+    }
     public Integer getLobbyID() {
         return lobbyID;
     }

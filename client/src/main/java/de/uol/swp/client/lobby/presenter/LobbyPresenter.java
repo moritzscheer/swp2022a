@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
@@ -64,8 +66,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * Default Constructor
      * @since 2022-11-15
      */
-    public LobbyPresenter() {
-        // needed for javafx
+    public LobbyPresenter(LobbyDTO lobby) {
     }
 
     /**
@@ -85,7 +86,7 @@ public class LobbyPresenter extends AbstractPresenter {
         this.owner = message.getUser();
         this.lobbyName = message.getName();
         this.lobbyID = message.getLobbyID();
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(message.getLobbyID(), message.getName(), message.isMultiplayer()));
     }
 
     /**

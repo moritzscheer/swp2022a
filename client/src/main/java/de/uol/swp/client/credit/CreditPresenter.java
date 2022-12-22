@@ -59,6 +59,6 @@ public class CreditPresenter extends AbstractPresenter {
      */
     @FXML
     void onBackButtonPressed(ActionEvent event){
-        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
+        eventBus.post(new ShowMainMenuViewEvent());
     }
 }

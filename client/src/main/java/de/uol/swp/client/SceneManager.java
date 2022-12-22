@@ -27,6 +27,10 @@ import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
 import de.uol.swp.client.rulebook.RulebookPresenter;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
+import de.uol.swp.client.tab.ShowTabViewEvent;
+import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.tab.event.ShowNewNodeEvent;
+import de.uol.swp.client.tab.event.ShowNewTabEvent;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -49,6 +53,7 @@ import java.net.URL;
  */
 public class SceneManager {
 
+    private EventBus eventBus;
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
 
@@ -59,22 +64,25 @@ public class SceneManager {
     private Scene loginScene;
     private String lastTitle;
     private Scene registrationScene;
-    private Scene lobbyScene;
-    private Scene joinOrCreateScene;
-    private Scene createLobbyScene;
-    private Scene mainScene;
-    private Scene creditScene;
-    private Scene rulebookScene;
+    private Parent lobbyScene;
+    private Parent joinOrCreateScene;
+    private Parent createLobbyScene;
+    private Parent mainScene;
+    private Scene tabScene;
+    private Parent creditScene;
+    private Parent rulebookScene;
+    private Parent lastParent;
+    private Parent currentParent;
     private Scene lastScene = null;
     private Scene currentScene = null;
 
-    private Scene changeAccountOptionsScene;
-
+    private Parent changeAccountOptionsScene;
     private final Injector injector;
 
     @Inject
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
+        this.eventBus = eventBus;
         this.primaryStage = primaryStage;
         primaryStage.setResizable(false);
         this.injector = injected;
@@ -89,10 +97,11 @@ public class SceneManager {
      */
     private void initViews() throws IOException {
         initLoginView();
+        initRegistrationView();
+        initTabView();
         initMainView();
         initCreditView();
         initRulebookView();
-        initRegistrationView();
         initAccountOptionsView();
         initLobbyView();
         initJoinOrCreateView();
@@ -129,7 +138,7 @@ public class SceneManager {
     /**
      * Initializes the main menu view
      *
-     * If the mainScene is null it gets set to a new scene containing the
+     * If the mainScene is null it gets set to a new scene containing
      * a pane showing the main menu view as specified by the MainMenuView
      * FXML file.
      *
@@ -138,16 +147,23 @@ public class SceneManager {
      */
     private void initMainView() throws IOException {
         if (mainScene == null) {
-           Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = new Scene(rootPane);
-            mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
+            mainScene = rootPane;
+        }
+    }
+
+    private void initTabView() throws IOException {
+        if (tabScene == null) {
+            Parent rootPane = initPresenter(TabPresenter.FXML);
+            tabScene = new Scene(rootPane, 1600,900);
+            tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
     /**
      * Initializes the rulebook view
      *
-     * If the rulebookScene is null it gets set to a new scene containing the
+     * If the rulebookScene is null it gets set to a new scene containing
      * a pane showing the rulebook view as specified by the RulebookView
      * FXML file.
      *
@@ -157,15 +173,14 @@ public class SceneManager {
     private void initRulebookView() throws IOException {
         if (rulebookScene == null) {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookScene = new Scene(rootPane);
-            rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+            rulebookScene = rootPane;
         }
     }
 
     /**
      * Initializes the credit view
      *
-     * If the creditScene is null it gets set to a new scene containing the
+     * If the creditScene is null it gets set to a new scene containing
      * a pane showing the credit view as specified by the CreditView
      * FXML file.
      *
@@ -175,15 +190,14 @@ public class SceneManager {
     private void initCreditView() throws IOException {
         if (creditScene == null) {
             Parent rootPane = initPresenter(CreditPresenter.FXML);
-            creditScene = new Scene(rootPane);
-            creditScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+            creditScene = rootPane;
         }
     }
 
     /**
      * Initializes the login view
      *
-     * If the loginScene is null it gets set to a new scene containing the
+     * If the loginScene is null it gets set to a new scene containing
      * a pane showing the login view as specified by the LoginView FXML file.
      *
      * @see de.uol.swp.client.auth.LoginPresenter
@@ -200,7 +214,7 @@ public class SceneManager {
     /**
      * Initializes the registration view
      *
-     * If the registrationScene is null it gets set to a new scene containing the
+     * If the registrationScene is null it gets set to a new scene containing
      * a pane showing the registration view as specified by the RegistrationView
      * FXML file.
      *
@@ -261,8 +275,7 @@ public class SceneManager {
     private void initAccountOptionsView() throws IOException {
         if(changeAccountOptionsScene == null) {
             Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
-            changeAccountOptionsScene = new Scene(rootPane);
-            changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+            changeAccountOptionsScene = rootPane;
         }
     }
 
@@ -279,8 +292,7 @@ public class SceneManager {
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);
-            lobbyScene = new Scene(rootPane, 1600,900);
-            lobbyScene.getStylesheets().add(STYLE_SHEET);
+            lobbyScene = rootPane;
         }
     }
 
@@ -297,8 +309,7 @@ public class SceneManager {
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateScene = new Scene(rootPane, 1600,900);
-            joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
+            joinOrCreateScene = rootPane;
         }
     }
 
@@ -315,8 +326,7 @@ public class SceneManager {
     private void initCreateLobbyView() throws IOException {
         if (createLobbyScene == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyScene = new Scene(rootPane, 400,200);
-            createLobbyScene.getStylesheets().add(STYLE_SHEET);
+            createLobbyScene = rootPane;
         }
     }
 
@@ -374,7 +384,7 @@ public class SceneManager {
      * Handles RegistrationErrorEvent detected on the EventBus
      *
      * If a RegistrationErrorEvent is detected on the EventBus, this method gets
-     * called. It shows the error message of the event in a error alert.
+     * called. It shows the error message of the event in an error alert.
      *
      * @param event The RegistrationErrorEvent detected on the EventBus
      * @see de.uol.swp.client.register.event.RegistrationErrorEvent
@@ -413,7 +423,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowMainMenuViewEvent(ShowMainMenuViewEvent event){
-        showMainScreen(event.getUser());
+        showMainScreen();
     }
 
     // -----------------------------------------------------
@@ -431,7 +441,7 @@ public class SceneManager {
      * @since 2022-11-17
      */
     @Subscribe
-    public void onShowFindCreateViewEvent(ShowJoinOrCreateViewEvent event){
+    public void onShowJoinOrCreateViewEvent(ShowJoinOrCreateViewEvent event){
         showJoinOrCreateScreen();
     }
 
@@ -447,7 +457,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onJoinOrCreateCanceledEvent(JoinOrCreateCanceledEvent event){
-        showScene(lastScene, lastTitle);
+        showMainScreen();
     }
 
     // -----------------------------------------------------
@@ -466,7 +476,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
-        showLobbyViewScreen();
+        showLobbyViewScreen(event.getLobbyID(), event.getLobbyName(), event.isMultiplayer());
     }
 
     // -----------------------------------------------------
@@ -485,7 +495,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onCreateLobbyCanceledEvent(CreateLobbyCanceledEvent event){
-        showScene(lastScene, lastTitle);
+        showJoinOrCreateScreen();
     }
 
     /**
@@ -501,6 +511,22 @@ public class SceneManager {
     @Subscribe
     public void onShowCreateLobbyViewEvent(ShowCreateLobbyViewEvent event){
         showCreateLobbyScreen();
+    }
+
+    /**
+     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     *
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
+     * called. It shows the AccountOptionView.
+     *
+     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
+     * @since 2022-12-03
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     */
+    @Subscribe
+    public void onShowTabViewEvent(ShowTabViewEvent event) {
+        showTabScreen(event.getUser());
     }
 
     // -----------------------------------------------------
@@ -566,6 +592,17 @@ public class SceneManager {
         });
     }
 
+    private void showNode(final int Tab, final Parent parent) {
+        this.lastParent = currentParent;
+        this.lastTitle = primaryStage.getTitle();
+        this.currentParent = parent;
+        eventBus.post(new ShowNewNodeEvent(Tab, parent));
+    }
+
+    private void openNewTab(Integer lobbyID, String lobbyName, Boolean multiplayer, final Parent parent) {
+        eventBus.post(new ShowNewTabEvent(lobbyID, lobbyName, multiplayer, parent));
+    }
+
     /**
      * Shows the login error alert
      *
@@ -592,8 +629,8 @@ public class SceneManager {
      *
      * @since 2019-09-03
      */
-    public void showMainScreen(User currentUser) {
-        showScene(mainScene, "Welcome " + currentUser.getUsername());
+    public void showMainScreen() {
+        showNode(0, mainScene);
     }
 
     /**
@@ -605,7 +642,7 @@ public class SceneManager {
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
-        showScene(rulebookScene, "Rulebook");
+        showNode(0, rulebookScene);
     }
 
     /**
@@ -617,7 +654,7 @@ public class SceneManager {
      * @since 2022-11-29
      */
     public void showCreditScreen() {
-        showScene(creditScene, "Credits");
+        showNode(0, creditScene);
     }
 
     /**
@@ -641,7 +678,7 @@ public class SceneManager {
      * @since 2022-12-01
      */
     public void showAccountOptionScreen() {
-        showScene(changeAccountOptionsScene, "Account options");
+        showNode(0, changeAccountOptionsScene);
     }
 
     /**
@@ -665,7 +702,7 @@ public class SceneManager {
      * @since 2022-11-30
      */
     public void showJoinOrCreateScreen() {
-        showScene(joinOrCreateScene,"Lobbies");
+        showNode(0, joinOrCreateScene);
     }
 
     /**
@@ -677,7 +714,7 @@ public class SceneManager {
      * @since 2022-11-30
      */
     public void showCreateLobbyScreen() {
-        showScene(createLobbyScene,"Create Lobby");
+        showNode(0, createLobbyScene);
     }
 
     /**
@@ -688,8 +725,13 @@ public class SceneManager {
      *
      * @since 2022-11-30
      */
-    public void showLobbyViewScreen() {
-        showScene(lobbyScene,"Lobby");
+    public void showLobbyViewScreen(Integer lobbyID, String lobbyName, Boolean multiplayer) {
+        openNewTab(lobbyID, lobbyName, multiplayer, lobbyScene);
+        showNode(0, mainScene);
     }
 
+    public void showTabScreen(User user) {
+        showScene(tabScene, "User: " + user.getUsername());
+        showNode(0, mainScene);
+    }
 }
