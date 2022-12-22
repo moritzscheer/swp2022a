@@ -6,7 +6,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -348,6 +347,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	 */
 	public static void main(String[] args) {
 		launch(args);
+
 	}
 
 }
