@@ -197,7 +197,7 @@ public class SceneManager {
     private void initRulebookView() throws IOException {
         if (rulebookScene == null) {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            rulebookScene = new Scene(rootPane);
             rulebookScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
