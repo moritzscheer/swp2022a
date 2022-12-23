@@ -215,7 +215,7 @@ public class SceneManager {
     private void initCreditView() throws IOException {
         if (creditScene == null) {
             Parent rootPane = initPresenter(CreditPresenter.FXML);
-            creditScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            creditScene = new Scene(rootPane);
             creditScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
