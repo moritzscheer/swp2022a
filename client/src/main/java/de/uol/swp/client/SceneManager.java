@@ -466,7 +466,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
-        showLobbyViewScreen();
+        showLobbyViewScreen(event.getUser());
     }
 
     // -----------------------------------------------------
@@ -562,7 +562,6 @@ public class SceneManager {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
-            primaryStage.centerOnScreen();
         });
     }
 
@@ -688,8 +687,8 @@ public class SceneManager {
      *
      * @since 2022-11-30
      */
-    public void showLobbyViewScreen() {
-        showScene(lobbyScene,"Lobby");
+    public void showLobbyViewScreen(User currentUser) {
+        showScene(lobbyScene,"Lobby " + currentUser.getUsername());
     }
 
 }
