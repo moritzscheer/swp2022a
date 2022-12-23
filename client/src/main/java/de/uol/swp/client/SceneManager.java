@@ -76,6 +76,8 @@ public class SceneManager {
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
         eventBus.register(this);
         this.primaryStage = primaryStage;
+        primaryStage.setMinWidth(1000);
+        primaryStage.setMinHeight(600);
         this.injector = injected;
         initViews();
     }
@@ -315,7 +317,7 @@ public class SceneManager {
     private void initCreateLobbyView() throws IOException {
         if (createLobbyScene == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene = new Scene(rootPane);
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
