@@ -94,7 +94,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
 
         /**
          * Gets the current width and height of screen of its user
@@ -111,8 +111,8 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-23
          */
-        primaryStage.setMinWidth(600);
-        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(1000);
+        primaryStage.setMinHeight(600);
 
         this.injector = injected;
         initViews();
@@ -250,7 +250,7 @@ public class SceneManager {
     private void initRegistrationView() throws IOException {
         if (registrationScene == null){
             Parent rootPane = initPresenter(RegistrationPresenter.FXML);
-            registrationScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            registrationScene = new Scene(rootPane);
             registrationScene.getStylesheets().add(STYLE_SHEET);
         }
     }
