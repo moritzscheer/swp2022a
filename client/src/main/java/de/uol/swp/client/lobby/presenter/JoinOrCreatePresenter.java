@@ -24,12 +24,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javafx.scene.layout.AnchorPane;
 
 /**
  * Manages the joinOrCreate window
@@ -65,9 +65,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @FXML
     private TextField textFieldPassword;
     @FXML
-    private AnchorPane AnchorPanePassword;
+    private GridPane gridPanePassword;
     @FXML
-    private AnchorPane AnchorPaneBottomView;
+    private GridPane AnchorPaneBottomView;
 
     /**
      * Default Constructor
@@ -300,17 +300,17 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     private void updatePasswordView(){
-        if(!AnchorPanePassword.isVisible()) {
+        if(!gridPanePassword.isVisible()) {
             LabelPasswordView.setText("Join Lobby "+ lobbiesView.getSelectionModel().getSelectedItem());
             lobbiesView.setMouseTransparent(true);
             lobbiesView.setFocusTraversable(false);
-            AnchorPanePassword.setVisible(true);
+            gridPanePassword.setVisible(true);
             AnchorPaneBottomView.setVisible(false);
         }
         else{
             lobbiesView.setMouseTransparent(false);
             lobbiesView.setFocusTraversable(true);
-            AnchorPanePassword.setVisible(false);
+            gridPanePassword.setVisible(false);
             AnchorPaneBottomView.setVisible(true);
             textFieldPassword.clear();
             errorMessagePasswordIncorrect.setVisible(false);

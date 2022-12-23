@@ -297,7 +297,7 @@ public class SceneManager {
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateScene = new Scene(rootPane, 1600,900);
+            joinOrCreateScene = new Scene(rootPane);
             joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
         }
     }
