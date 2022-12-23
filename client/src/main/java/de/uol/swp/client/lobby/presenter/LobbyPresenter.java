@@ -5,15 +5,26 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.common.game.Map;
+import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
+import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
+import de.uol.swp.common.user.response.AllUsersInLobbyResponse;
+import de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,13 +65,16 @@ public class LobbyPresenter extends AbstractPresenter {
     private ListView<String> usersView;
 
     @FXML
-    private Label labelMap;
-
-    @FXML
-    private Label labelMapName;
-
-    @FXML
     private Button buttonBack;
+
+    @FXML
+    private ListView<Map> mapList;
+
+    @FXML
+    private Label textFieldMapName;
+
+    @FXML
+    private ImageView mapThumb;
 
     /**
      * Default Constructor
@@ -87,6 +101,17 @@ public class LobbyPresenter extends AbstractPresenter {
         this.owner = message.getUser();
         this.lobbyName = message.getName();
         this.lobbyID = message.getLobbyID();
+
+        this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
+        ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
+            int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
+            textFieldMapName.setText(new Map(mapIndex).getName());
+            mapThumb.setImage(new Image(new Map(mapIndex).getImageResource().toString()));
+        };
+        this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
+
+        this.textFieldMapName.setText("None");
+
         eventBus.post(new ShowLobbyViewEvent());
     }
 

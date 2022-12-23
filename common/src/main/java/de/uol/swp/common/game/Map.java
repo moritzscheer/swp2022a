@@ -1,5 +1,7 @@
 package de.uol.swp.common.game;
 
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +21,20 @@ public class Map {
         return mapList.get(mapIndex).name;
     }
 
-    // TODO: Set the prefix needed to the image name to find the image file
-    public String getImagePath() {
-        return mapList.get(mapIndex).imageName;
+    public Path getImagePath() {
+        URL resPath = this.getImageResource();
+        try {
+            return Path.of(resPath.toURI().getPath());
+        }
+        catch(java.net.URISyntaxException e)
+        {
+            return Path.of(".");
+        }
+    }
+
+    public URL getImageResource() {
+        String imgName = mapList.get(mapIndex).imageName;
+        return this.getClass().getClassLoader().getResource("./mapImages/" + imgName);
     }
 
     public int getIndex() {
