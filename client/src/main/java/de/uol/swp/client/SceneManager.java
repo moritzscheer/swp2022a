@@ -105,6 +105,15 @@ public class SceneManager {
         screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
         screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
 
+        /**
+         * Set the minimum size of the stage
+         *
+         * @author Tommy Dang
+         * @since 2022-12-23
+         */
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
+
         this.injector = injected;
         initViews();
     }
