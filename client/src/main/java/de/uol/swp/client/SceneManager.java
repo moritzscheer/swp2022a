@@ -29,9 +29,10 @@ import de.uol.swp.client.rulebook.RulebookPresenter;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.tab.ShowTabViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.tab.event.CreateNewLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNewNodeEvent;
-import de.uol.swp.client.tab.event.ShowNewTabEvent;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -70,8 +71,8 @@ public class SceneManager {
     private Scene registrationScene;
     private Scene tabScene;
 
-    private Parent lastParent == null;
-    private Parent currentParent == null;
+    private Parent lastParent;
+    private Parent currentParent;
     private Parent lobbyScene;
     private Parent joinOrCreateScene;
     private Parent createLobbyScene;
@@ -138,63 +139,18 @@ public class SceneManager {
         return rootPane;
     }
 
-    /**
-     * Initializes the main menu view
-     *
-     * If the mainScene is null it gets set to a new scene containing
-     * a pane showing the main menu view as specified by the MainMenuView
-     * FXML file.
-     *
-     * @see de.uol.swp.client.main.MainMenuPresenter
-     * @since 2019-09-03
-     */
-    private void initMainView() throws IOException {
-        if (mainScene == null) {
-            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = rootPane;
+    private Parent initLobbyPresenter(String fxmlFile, ModuleLayer.Controller controller) throws IOException {
+        Parent rootPane;
+        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        try {
+            URL url = getClass().getResource(fxmlFile);
+            LOG.debug("Loading {}", url);
+            loader.setLocation(url);
+            rootPane = loader.load();
+        } catch (Exception e) {
+            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-    }
-
-    private void initTabView() throws IOException {
-        if (tabScene == null) {
-            Parent rootPane = initPresenter(TabPresenter.FXML);
-            tabScene = new Scene(rootPane, 1600,900);
-            tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
-        }
-    }
-
-    /**
-     * Initializes the rulebook view
-     *
-     * If the rulebookScene is null it gets set to a new scene containing
-     * a pane showing the rulebook view as specified by the RulebookView
-     * FXML file.
-     *
-     * @see de.uol.swp.client.rulebook.RulebookPresenter
-     * @since 2022-11-27
-     */
-    private void initRulebookView() throws IOException {
-        if (rulebookScene == null) {
-            Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookScene = rootPane;
-        }
-    }
-
-    /**
-     * Initializes the credit view
-     *
-     * If the creditScene is null it gets set to a new scene containing
-     * a pane showing the credit view as specified by the CreditView
-     * FXML file.
-     *
-     * @see de.uol.swp.client.credit.CreditPresenter
-     * @since 2022-11-29
-     */
-    private void initCreditView() throws IOException {
-        if (creditScene == null) {
-            Parent rootPane = initPresenter(CreditPresenter.FXML);
-            creditScene = rootPane;
-        }
+        return rootPane;
     }
 
     /**
@@ -229,6 +185,65 @@ public class SceneManager {
             Parent rootPane = initPresenter(RegistrationPresenter.FXML);
             registrationScene = new Scene(rootPane);
             registrationScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    private void initTabView() throws IOException {
+        if (tabScene == null) {
+            Parent rootPane = initPresenter(TabPresenter.FXML);
+            tabScene = new Scene(rootPane, 1600,900);
+            tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the main menu view
+     *
+     * If the mainScene is null it gets set to a new scene containing
+     * a pane showing the main menu view as specified by the MainMenuView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.main.MainMenuPresenter
+     * @since 2019-09-03
+     */
+    private void initMainView() throws IOException {
+        if (mainScene == null) {
+            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
+            mainScene = rootPane;
+        }
+    }
+
+    /**
+     * Initializes the rulebook view
+     *
+     * If the rulebookScene is null it gets set to a new scene containing
+     * a pane showing the rulebook view as specified by the RulebookView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.rulebook.RulebookPresenter
+     * @since 2022-11-27
+     */
+    private void initRulebookView() throws IOException {
+        if (rulebookScene == null) {
+            Parent rootPane = initPresenter(RulebookPresenter.FXML);
+            rulebookScene = rootPane;
+        }
+    }
+
+    /**
+     * Initializes the credit view
+     *
+     * If the creditScene is null it gets set to a new scene containing
+     * a pane showing the credit view as specified by the CreditView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.credit.CreditPresenter
+     * @since 2022-11-29
+     */
+    private void initCreditView() throws IOException {
+        if (creditScene == null) {
+            Parent rootPane = initPresenter(CreditPresenter.FXML);
+            creditScene = rootPane;
         }
     }
 
@@ -470,7 +485,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
-        showLobbyViewScreen(event.getLobbyID(), event.getLobbyName(), event.isMultiplayer());
+        showLobbyViewScreen(event.getLobby());
     }
 
     /**
@@ -582,15 +597,15 @@ public class SceneManager {
         });
     }
 
-    private void showNode(final int Tab, final Parent parent) {
+    private void showNode(int Tab, final Parent parent) {
         this.lastParent = currentParent;
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
         eventBus.post(new ShowNewNodeEvent(Tab, parent));
     }
 
-    private void openNewTab(Integer lobbyID, String lobbyName, Boolean multiplayer, final Parent parent) {
-        eventBus.post(new ShowNewTabEvent(lobbyID, lobbyName, multiplayer, parent));
+    private void createNewLobbyTab(LobbyDTO lobby, final Parent parent) {
+        eventBus.post(new CreateNewLobbyTabEvent(lobby, parent));
     }
 
     /**
@@ -610,6 +625,10 @@ public class SceneManager {
             showLoginScreen();
         });
     }
+
+    // -----------------------------------------------------
+    // showScene methods
+    // -----------------------------------------------------
 
     /**
      * Shows the registration screen
@@ -720,8 +739,8 @@ public class SceneManager {
      *
      * @since 2022-11-30
      */
-    public void showLobbyViewScreen(Integer lobbyID, String lobbyName, Boolean multiplayer) {
-        openNewTab(lobbyID, lobbyName, multiplayer, lobbyScene);
+    public void showLobbyViewScreen(LobbyDTO lobby) {
+        createNewLobbyTab(lobby, lobbyScene);
         showNode(0, mainScene);
     }
 

@@ -1,5 +1,6 @@
 package de.uol.swp.client.lobby.event;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.scene.Parent;
 
 /**
@@ -15,25 +16,13 @@ import javafx.scene.Parent;
  */
 public class ShowLobbyViewEvent {
 
-    private Integer lobbyID;
-    private String lobbyName;
-    private Boolean multiplayer;
+    private LobbyDTO lobby;
 
-    public ShowLobbyViewEvent(Integer lobbyID, String lobbyName, Boolean multiplayer) {
-        this.lobbyID = lobbyID;
-        this.lobbyName = lobbyName;
-        this.multiplayer = multiplayer;
+    public ShowLobbyViewEvent(LobbyDTO lobby) {
+        this.lobby = lobby;
     }
 
-    public Integer getLobbyID() {
-        return lobbyID;
-    }
-
-    public String getLobbyName() {
-        return lobbyName;
-    }
-
-    public Boolean isMultiplayer() {
-        return multiplayer;
+    public LobbyDTO getLobby() {
+        return lobby;
     }
 }

@@ -98,7 +98,7 @@ public class LobbyPresenter extends AbstractPresenter {
         loggedInUser = message.getUser();
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
     }
 
     /**
@@ -120,7 +120,7 @@ public class LobbyPresenter extends AbstractPresenter {
         System.out.println(message.getLobby().getOwner().getUsername());
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
     }
 
     /**
