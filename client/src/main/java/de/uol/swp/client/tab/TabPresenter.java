@@ -2,8 +2,10 @@ package de.uol.swp.client.tab;
 
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.SceneManager;
+import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.tab.event.CreateNewLobbyTabEvent;
@@ -25,6 +27,8 @@ public class TabPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/TabView.fxml";
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
 
+    @Inject
+    private LobbyService lobbyService;
     @FXML
     private TabPane tabPane;
     private Map<Integer, Tab> lobbiesTabs = new HashMap<>();
@@ -63,7 +67,7 @@ public class TabPresenter extends AbstractPresenter {
                 });
                 tabPane.getTabs().add(tab);
                 lobbiesTabs.put(event.getLobby().getLobbyID(), tab);
-                tabPane.getSelectionModel().select(tab);
+                //tabPane.getSelectionModel().select(tab);
             } catch(Exception e) {
                 e.printStackTrace();
             }

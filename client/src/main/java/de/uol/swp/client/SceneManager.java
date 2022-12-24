@@ -81,6 +81,7 @@ public class SceneManager {
     private Parent rulebookScene;
     private Parent changeAccountOptionsScene;
 
+    private LobbyPresenter lobbyPresenter;
     private final Injector injector;
 
     @Inject
@@ -139,9 +140,10 @@ public class SceneManager {
         return rootPane;
     }
 
-    private Parent initLobbyPresenter(String fxmlFile, ModuleLayer.Controller controller) throws IOException {
+    private Parent initLobbyPresenter(String fxmlFile) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        loader.setController(injector.getInstance(LobbyPresenter.class));
         try {
             URL url = getClass().getResource(fxmlFile);
             LOG.debug("Loading {}", url);
@@ -275,7 +277,7 @@ public class SceneManager {
      */
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
-            Parent rootPane = initPresenter(LobbyPresenter.FXML);
+            Parent rootPane = initLobbyPresenter(LobbyPresenter.FXML);
             lobbyScene = rootPane;
         }
     }
@@ -484,7 +486,8 @@ public class SceneManager {
      * @since 2022-11-15
      */
     @Subscribe
-    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
+    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) throws IOException {
+        initLobbyView();
         showLobbyViewScreen(event.getLobby());
     }
 

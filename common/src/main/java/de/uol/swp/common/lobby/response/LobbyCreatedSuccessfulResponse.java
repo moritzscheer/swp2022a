@@ -31,19 +31,6 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
         this.lobby = (LobbyDTO) lobby;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LobbyCreatedSuccessfulResponse that = (LobbyCreatedSuccessfulResponse) o;
-        return Objects.equals(user, that.user);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(user);
-    }
-
     /**
      * Getter for the lobby variable
      *

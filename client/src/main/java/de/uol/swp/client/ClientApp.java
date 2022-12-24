@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
+import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -54,6 +55,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	private EventBus eventBus;
 
 	private SceneManager sceneManager;
+
 
 	// -----------------------------------------------------
 	// Java FX Methods

@@ -2,7 +2,10 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.LobbyPresenterFactory;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -31,7 +34,7 @@ import java.util.List;
  * @since 2022-11-15
  *
  */
-public class LobbyPresenter extends AbstractPresenter {
+public class LobbyPresenter extends AbstractPresenter{
 
     public static final String FXML = "/fxml/LobbyView.fxml";
     private static final Logger LOG = LogManager.getLogger(LobbyPresenter.class);
@@ -68,12 +71,14 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private Button buttonBack;
 
+    @Inject Provider<LobbyPresenter> lobbyPresenterProvider;
+
     /**
      * Default Constructor
      * @since 2022-11-15
      */
+
     public LobbyPresenter() {
-        // needed for javafx
     }
 
     // -----------------------------------------------------
@@ -92,13 +97,15 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        LOG.info("Lobby " + message.getName() + " created successful");
+        Platform.runLater(() -> {
+            LOG.info("Lobby " + message.getName() + " created successful");
 
-        //safe information in the Client
-        loggedInUser = message.getUser();
-        updateInformation(message.getLobby());
+            //safe information in the Client
+            loggedInUser = message.getUser();
+            updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
+            eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
+        });
     }
 
     /**
@@ -113,14 +120,16 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        LOG.info("Lobby " + message.getName() + " successfully joined");
+        Platform.runLater(() -> {
+            LOG.info("Lobby " + message.getName() + " successfully joined");
 
-        //safe information in the Client
-        loggedInUser = message.getUser();
-        System.out.println(message.getLobby().getOwner().getUsername());
-        updateInformation(message.getLobby());
+            //safe information in the Client
+            loggedInUser = message.getUser();
+            System.out.println(message.getLobby().getOwner().getUsername());
+            updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
+            eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
+        });
     }
 
     /**
@@ -234,4 +243,5 @@ public class LobbyPresenter extends AbstractPresenter {
     private void onStartButtonPressed(ActionEvent actionEvent) {
         // start game
     }
+
 }

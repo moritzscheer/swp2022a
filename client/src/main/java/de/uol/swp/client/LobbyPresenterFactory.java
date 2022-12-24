@@ -1,5 +1,7 @@
 package de.uol.swp.client;
 
+import de.uol.swp.client.lobby.presenter.LobbyPresenter;
+
 /**
  * Factory for use of injecting the ClientConnection via giuce
  *
@@ -12,11 +14,9 @@ public interface LobbyPresenterFactory {
     /**
      * Creates an instance of the class ClientConnection
      *
-     * @param host Hostname of the server the sever application is running on
-     * @param port The port the server application is listening on
      * @return The ClientConnection object the application is using
      * @see de.uol.swp.client.ClientConnection
      * @since 2019-09-19
      */
-    ClientConnection create(String host, int port);
+    LobbyPresenter create();
 }

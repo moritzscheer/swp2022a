@@ -2,9 +2,12 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
+import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -23,7 +26,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
 
     private User loggedInUser;
-
+    private Injector injector;
     @Inject
     private LobbyService lobbyService;
     @FXML
@@ -40,8 +43,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      * @author Maxim Erden
      * @since 2022-11-15
      */
-    public CreateLobbyPresenter() {
-        // needed for javafx
+    @Inject
+    public CreateLobbyPresenter(Injector injector) {
+        this.injector = injector;
     }
 
     /**
@@ -109,6 +113,8 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
+
+        //System.out.println(injector.getInstance(LobbyPresenter.class));
         lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
     }
 }

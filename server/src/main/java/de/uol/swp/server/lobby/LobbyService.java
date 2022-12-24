@@ -76,7 +76,6 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
         LOG.debug("Got new lobby message from User {}", createLobbyRequest.getUser().getUsername());
-
         ResponseMessage returnMessage;
         try {
             lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.getPassword(), createLobbyRequest.isMultiplayer());
