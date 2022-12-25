@@ -1,7 +1,7 @@
 package de.uol.swp.client.lobby.event;
 
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import javafx.scene.Parent;
+import de.uol.swp.common.user.UserDTO;
 
 /**
  * * Event used to show the Lobby window
@@ -16,13 +16,19 @@ import javafx.scene.Parent;
  */
 public class ShowLobbyViewEvent {
 
-    private LobbyDTO lobby;
+    private final LobbyDTO lobby;
+    private final UserDTO user;
 
-    public ShowLobbyViewEvent(LobbyDTO lobby) {
+    public ShowLobbyViewEvent(LobbyDTO lobby, UserDTO user) {
         this.lobby = lobby;
+        this.user = user;
     }
 
     public LobbyDTO getLobby() {
         return lobby;
+    }
+
+    public UserDTO getUser() {
+        return user;
     }
 }

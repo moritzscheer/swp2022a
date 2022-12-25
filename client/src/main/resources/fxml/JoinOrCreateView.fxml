@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane prefHeight="870.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter">
+<GridPane prefHeight="870.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css"
+          xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="10.0" minHeight="10.0" percentHeight="8.0" prefHeight="10.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="25.0" vgrow="SOMETIMES"/>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="10.0" minHeight="10.0" percentHeight="8.0" prefHeight="10.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <children>
-        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="InnerBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <children>
-                <ListView layoutX="14.0" layoutY="14.0" maxHeight="700.0" prefWidth="1525.0" styleClass="listView" />
-            </children>
-        </Pane>
-        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="InnerBox" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
-            <children>
-
-                <Button id="cancelButton" contentDisplay="CENTER" layoutX="14.0" layoutY="13.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" text="Cancel">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Button>
-                <Button id="createLobbyButton" layoutX="1384.0" layoutY="14.0" mnemonicParsing="false" onAction="#onCreateLobbyButtonPressed" text="Create Lobby">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </Button>
-            </children>
-        </Pane>
-    </children>
+    <Pane prefHeight="200.0" prefWidth="200.0" styleClass="InnerBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <ListView fx:id="lobbiesView" layoutX="14.0" layoutY="14.0" maxHeight="700.0" onMouseClicked="#onMouseClick"
+                  prefWidth="1525.0" styleClass="listView"/>
+        <AnchorPane fx:id="AnchorPanePassword" layoutX="470.0" layoutY="183.0" prefHeight="294.0" prefWidth="488.0"
+                    style="-fx-border-color: BLACK; -fx-background-color: GREY;" visible="false">
+            <PasswordField fx:id="textFieldPassword" layoutX="162.0" layoutY="194.0"/>
+            <Button layoutX="51.0" layoutY="243.0" mnemonicParsing="false"
+                    onAction="#onButtonPasswordViewCancelButtonPressed" text="Cancel"/>
+            <Button layoutX="378.0" layoutY="242.0" mnemonicParsing="false"
+                    onAction="#onButtonJoinLobbyButtonPressed" text="Join Lobby"/>
+            <Label layoutX="17.0" layoutY="198.0" prefHeight="15.0" prefWidth="135.0" text="Enter Lobby Password:"/>
+            <Label fx:id="LabelPasswordView" layoutX="195.0" layoutY="76.0" text="Join Lobby XYZ"/>
+            <Label fx:id="errorMessagePasswordIncorrect" layoutX="362.0" layoutY="217.0" text="Incorrect Password!"
+                   visible="false"/>
+            <Label fx:id="errorMessageLobbyFull" layoutX="362.0" layoutY="217.0" text="Lobby is already full!"
+                   visible="false"/>
+        </AnchorPane>
+    </Pane>
+    <Pane fx:id="GridPaneBottom" prefHeight="200.0" prefWidth="200.0" styleClass="InnerBox" GridPane.columnIndex="1"
+          GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+        <Button id="cancelButton" contentDisplay="CENTER" layoutX="14.0" layoutY="13.0" mnemonicParsing="false"
+                onAction="#onCancelButtonPressed" text="Cancel">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+        <Button id="createLobbyButton" layoutX="1384.0" layoutY="14.0" mnemonicParsing="false"
+                onAction="#onCreateLobbyButtonPressed" text="Create Lobby">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+    </Pane>
 </GridPane>

@@ -6,9 +6,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
+import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
@@ -314,6 +316,14 @@ public class ClientApp extends Application implements ConnectionListener {
 		sceneManager.showMainScreen();
 	}
 
+	@Subscribe
+	public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
+		eventBus.post(new ShowLobbyViewEvent(message.getLobby(), message.getUser()));
+	}
+	@Subscribe
+	public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
+		eventBus.post(new ShowLobbyViewEvent(message.getLobby(), message.getUser()));
+	}
 
 	/**
 	 * Handles errors produced by the EventBus

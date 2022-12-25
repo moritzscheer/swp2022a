@@ -3,11 +3,9 @@ package de.uol.swp.client.lobby.presenter;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -97,6 +95,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     void onCancelButtonPressed(ActionEvent actionEvent) {
+        errorMessage.setVisible(false);
+        nameField.clear();
+        passwordField.clear();
         eventBus.post(new CreateLobbyCanceledEvent());
     }
 

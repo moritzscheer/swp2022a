@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import de.uol.swp.client.*;
-import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.client.user.UserService;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +25,6 @@ public class ClientModule extends AbstractModule {
                 build(SceneManagerFactory.class));
         install(new FactoryModuleBuilder().implement(ClientConnection.class, ClientConnection.class).
                 build(ClientConnectionFactory.class));
-
-        bind(LobbyPresenter.class);
-
         bind(FXMLLoader.class).toProvider(FXMLLoaderProvider.class);
         bind(EventBus.class).toInstance(eventBus);
         bind(ClientUserService.class).to(UserService.class);

@@ -31,7 +31,7 @@ public class TabPresenter extends AbstractPresenter {
     private LobbyService lobbyService;
     @FXML
     private TabPane tabPane;
-    private Map<Integer, Tab> lobbiesTabs = new HashMap<>();
+    private final Map<Integer, Tab> lobbiesTabs = new HashMap<>();
 
     // -----------------------------------------------------
     // Node methods
@@ -39,9 +39,7 @@ public class TabPresenter extends AbstractPresenter {
 
     @Subscribe
     public void onShowNewNodeEvent(ShowNewNodeEvent event) {
-        Platform.runLater(() -> {
-            tabPane.getTabs().get(event.getTab()).setContent(event.getParent());
-        });
+        Platform.runLater(() -> tabPane.getTabs().get(event.getTab()).setContent(event.getParent()));
     }
 
     // -----------------------------------------------------
@@ -55,19 +53,16 @@ public class TabPresenter extends AbstractPresenter {
         Platform.runLater(() -> {
             try {
                 tab.setContent(event.getParent());
-                tab.setOnClosed(new EventHandler<Event>() {
-                    @Override
-                    public void handle(Event event2) {
-                        if(event.getLobby().isMultiplayer()) {
-                            eventBus.post(new ShowJoinOrCreateViewEvent());
-                        } else {
-                            eventBus.post(new ShowMainMenuViewEvent());
-                        }
+                tab.setOnClosed(event2 -> {
+                    if(event.getLobby().isMultiplayer()) {
+                        eventBus.post(new ShowJoinOrCreateViewEvent());
+                    } else {
+                        eventBus.post(new ShowMainMenuViewEvent());
                     }
                 });
                 tabPane.getTabs().add(tab);
                 lobbiesTabs.put(event.getLobby().getLobbyID(), tab);
-                //tabPane.getSelectionModel().select(tab);
+                tabPane.getSelectionModel().select(tab);
             } catch(Exception e) {
                 e.printStackTrace();
             }

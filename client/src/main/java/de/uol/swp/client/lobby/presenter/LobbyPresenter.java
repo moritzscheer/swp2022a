@@ -2,17 +2,12 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.LobbyPresenterFactory;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,7 +36,7 @@ public class LobbyPresenter extends AbstractPresenter{
 
     private User loggedInUser;
 
-    private Integer lobbyID;
+    private final Integer lobbyID;
     private String lobbyName;
     private User owner;
     private ObservableList<String> users;
@@ -71,14 +66,12 @@ public class LobbyPresenter extends AbstractPresenter{
     @FXML
     private Button buttonBack;
 
-    @Inject Provider<LobbyPresenter> lobbyPresenterProvider;
-
     /**
      * Default Constructor
      * @since 2022-11-15
      */
-
-    public LobbyPresenter() {
+    public LobbyPresenter(Integer lobbyID) {
+        this.lobbyID = lobbyID;
     }
 
     // -----------------------------------------------------
@@ -86,54 +79,7 @@ public class LobbyPresenter extends AbstractPresenter{
     // -----------------------------------------------------
 
     /**
-     * Handles created Lobbies
-     *
-     * If an LobbyCreatedResponse object is detected on the EventBus this
-     * method is called. It saves the current information on the Lobby in the Client.
-     *
-     * @param message The LobbyCreatedResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-11-17
-     */
-    @Subscribe
-    public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        Platform.runLater(() -> {
-            LOG.info("Lobby " + message.getName() + " created successful");
-
-            //safe information in the Client
-            loggedInUser = message.getUser();
-            updateInformation(message.getLobby());
-
-            eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
-        });
-    }
-
-    /**
-     * Handles joined Lobbies
-     *
-     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this
-     * method is called. It saves the current information on the Lobby in the Client.
-     *
-     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-13
-     */
-    @Subscribe
-    public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        Platform.runLater(() -> {
-            LOG.info("Lobby " + message.getName() + " successfully joined");
-
-            //safe information in the Client
-            loggedInUser = message.getUser();
-            System.out.println(message.getLobby().getOwner().getUsername());
-            updateInformation(message.getLobby());
-
-            eventBus.post(new ShowLobbyViewEvent(message.getLobby()));
-        });
-    }
-
-    /**
-     * helper methods for ResponseMessages
+     * method to safe the information
      *
      * It saves the current information of the lobby in the presenter.
      *
@@ -141,8 +87,9 @@ public class LobbyPresenter extends AbstractPresenter{
      * @author Moritz Scheer
      * @since 2022-12-13
      */
-    private void updateInformation(LobbyDTO message) {
-        lobbyID = message.getLobbyID();
+    public void updateInformation(LobbyDTO message, UserDTO user) {
+        loggedInUser = user;
+
         lobbyName = message.getName();
         owner = message.getOwner();
         password = message.getPassword();
@@ -178,13 +125,15 @@ public class LobbyPresenter extends AbstractPresenter{
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
-        Platform.runLater(() -> {
-            if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
-                users.add(message.getUser().getUsername());
+        if(message.getLobbyID().equals(lobbyID)) {
+            LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
+            Platform.runLater(() -> {
+                if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
+                    users.add(message.getUser().getUsername());
                 slots++;
                 textFieldOnlineUsers.setText(String.valueOf(slots));
-        });
+            });
+        }
     }
 
     /**

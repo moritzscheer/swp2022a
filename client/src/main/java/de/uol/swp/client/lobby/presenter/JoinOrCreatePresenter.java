@@ -24,6 +24,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
@@ -67,7 +68,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @FXML
     private AnchorPane AnchorPanePassword;
     @FXML
-    private AnchorPane AnchorPaneBottomView;
+    private Pane GridPaneBottom;
 
     /**
      * Default Constructor
@@ -280,8 +281,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public void onMouseClick(MouseEvent click) {
         if (click.getClickCount() == 2 && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("")) {
+            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword() == "") {
                 lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
+                updatePasswordView();
             } else {
                 updatePasswordView();
             }
@@ -305,13 +307,13 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
             lobbiesView.setMouseTransparent(true);
             lobbiesView.setFocusTraversable(false);
             AnchorPanePassword.setVisible(true);
-            AnchorPaneBottomView.setVisible(false);
+            GridPaneBottom.setVisible(false);
         }
         else{
             lobbiesView.setMouseTransparent(false);
             lobbiesView.setFocusTraversable(true);
             AnchorPanePassword.setVisible(false);
-            AnchorPaneBottomView.setVisible(true);
+            GridPaneBottom.setVisible(true);
             textFieldPassword.clear();
             errorMessagePasswordIncorrect.setVisible(false);
             errorMessageLobbyFull.setVisible(false);
@@ -331,6 +333,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, textFieldPassword.getText());
         textFieldPassword.clear();
+        updatePasswordView();
     }
 
     /**

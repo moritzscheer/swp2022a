@@ -12,6 +12,8 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
 
+    private Integer lobbyID;
+
     /**
      * Default constructor
      *
@@ -28,7 +30,12 @@ public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
      * @param user user who joined the lobby
      * @since 2019-10-08
      */
-    public UserJoinedLobbyMessage(String lobbyName, UserDTO user) {
+    public UserJoinedLobbyMessage(Integer lobbyID, String lobbyName, UserDTO user) {
         super(lobbyName, user);
+        this.lobbyID = lobbyID;
+    }
+
+    public Integer getLobbyID() {
+        return lobbyID;
     }
 }

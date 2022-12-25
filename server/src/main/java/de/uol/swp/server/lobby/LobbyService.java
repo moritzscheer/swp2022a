@@ -119,7 +119,7 @@ public class LobbyService extends AbstractService {
                 lobby.get().joinUser(lobbyJoinUserRequest.getUser(), lobbyJoinUserRequest.getPassword());
 
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
-                sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
+                sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobby.get().getLobbyID(), lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
                 returnMessage = new LobbyJoinedSuccessfulResponse((LobbyDTO) lobby.get(), lobbyJoinUserRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {

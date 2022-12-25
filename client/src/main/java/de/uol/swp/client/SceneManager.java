@@ -107,7 +107,6 @@ public class SceneManager {
         initCreditView();
         initRulebookView();
         initAccountOptionsView();
-        initLobbyView();
         initJoinOrCreateView();
         initCreateLobbyView();
     }
@@ -140,10 +139,11 @@ public class SceneManager {
         return rootPane;
     }
 
-    private Parent initLobbyPresenter(String fxmlFile) throws IOException {
+    private Parent initLobbyPresenter(String fxmlFile, Integer lobbyID) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        loader.setController(injector.getInstance(LobbyPresenter.class));
+        lobbyPresenter = new LobbyPresenter(lobbyID);
+        loader.setController(lobbyPresenter);
         try {
             URL url = getClass().getResource(fxmlFile);
             LOG.debug("Loading {}", url);
@@ -275,11 +275,9 @@ public class SceneManager {
      * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
      * @since 2022-11-30
      */
-    private void initLobbyView() throws IOException {
-        if (lobbyScene == null){
-            Parent rootPane = initLobbyPresenter(LobbyPresenter.FXML);
-            lobbyScene = rootPane;
-        }
+    private void initLobbyView(Integer lobbyID) throws IOException {
+        Parent rootPane = initLobbyPresenter(LobbyPresenter.FXML, lobbyID);
+        lobbyScene = rootPane;
     }
 
     /**
@@ -487,7 +485,8 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowLobbyViewEvent(ShowLobbyViewEvent event) throws IOException {
-        initLobbyView();
+        initLobbyView(event.getLobby().getLobbyID());
+        lobbyPresenter.updateInformation(event.getLobby(), event.getUser());
         showLobbyViewScreen(event.getLobby());
     }
 
@@ -744,7 +743,7 @@ public class SceneManager {
      */
     public void showLobbyViewScreen(LobbyDTO lobby) {
         createNewLobbyTab(lobby, lobbyScene);
-        showNode(0, mainScene);
+        //showNode(0, mainScene);
     }
 
 
