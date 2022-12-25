@@ -111,8 +111,6 @@ public class SceneManager {
         initCreateLobbyView();
     }
 
-
-
     /**
      * Subroutine creating parent panes from FXML files
      *
@@ -595,7 +593,6 @@ public class SceneManager {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
-            primaryStage.centerOnScreen();
         });
     }
 
@@ -743,8 +740,6 @@ public class SceneManager {
      */
     public void showLobbyViewScreen(LobbyDTO lobby) {
         createNewLobbyTab(lobby, lobbyScene);
-        //showNode(0, mainScene);
     }
-
 
 }

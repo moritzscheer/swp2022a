@@ -12,6 +12,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
+import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -61,8 +62,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private Label errorMessageLobbyFull;
     @FXML
     private ListView<String> lobbiesView;
-    @FXML
-    private TextField textFieldName;
     @FXML
     private TextField textFieldPassword;
     @FXML
@@ -172,11 +171,30 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
-        LOG.info("User " + message.getUser().getUsername() + " created the lobby " + message.getName());
         Platform.runLater(() -> {
             lobbiesMap.put(message.getName(), message.getLobby());
             if(lobbiesList != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
                 lobbiesList.add(message.getName());
+                LOG.info("User " + message.getUser().getUsername() + " created the lobby " + message.getName());
+        });
+    }
+
+    /**
+     * Handles when a Lobby dropped
+     *
+     * If a LobbyDroppedMessage is posted to the EventBus this method is called.
+     *
+     * @param message the LobbyDroppedMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    private void onLobbyDroppedMessage(LobbyDroppedMessage message){
+        Platform.runLater(() -> {
+            lobbiesMap.remove(message.getName());
+            lobbiesList.remove(message.getName());
+            LOG.info("User " + message.getUser().getUsername() + " deleted the lobby " + message.getName());
         });
     }
 
@@ -338,7 +356,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     /**
      * This Method is called when the Cancel Button in the PasswordView is pressed and acts like a back button
-     * It changes the current passwordView so that the passwordView is not visible anymore
+     * It changes the current passwordView so that the PasswordView is not visible anymore
      *
      * @param actionEvent The ActionEvent is created when you press the cancel button in the PasswordView
      * @author Maxim Erden

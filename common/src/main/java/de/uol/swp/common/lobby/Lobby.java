@@ -18,30 +18,6 @@ import java.util.Set;
 public interface Lobby extends Serializable{
 
     /**
-     * Getter for the lobby's name
-     *
-     * @return A String containing the name of the lobby
-     * @since 2019-10-08
-     */
-    String getName();
-
-    /**
-     * Changes the owner of the lobby
-     *
-     * @param user The user who should be the new owner
-     * @since 2019-10-08
-     */
-    void updateOwner(User user);
-
-    /**
-     * Getter for the current owner of the lobby
-     *
-     * @return A User object containing the owner of the lobby
-     * @since 2019-10-08
-     */
-    User getOwner();
-
-    /**
      * Adds a new user to the lobby
      *
      * @param user The new user to add to the lobby
@@ -56,6 +32,30 @@ public interface Lobby extends Serializable{
      * @since 2019-10-08
      */
     void leaveUser(User user);
+
+    /**
+     * Changes the owner of the lobby
+     *
+     * @param user The user who should be the new owner
+     * @since 2019-10-08
+     */
+    void updateOwner(User user);
+
+    /**
+     * Getter for the lobby's name
+     *
+     * @return A String containing the name of the lobby
+     * @since 2019-10-08
+     */
+    String getName();
+
+    /**
+     * Getter for the current owner of the lobby
+     *
+     * @return A User object containing the owner of the lobby
+     * @since 2019-10-08
+     */
+    User getOwner();
 
     /**
      * Getter for all users in the lobby
