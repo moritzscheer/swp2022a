@@ -14,14 +14,13 @@
       </ImageView>
       <Pane layoutX="25.0" layoutY="25.0" prefHeight="450.0" prefWidth="850.0" styleClass="InnerBox">
          <children>
-            <Label fx:id="textFieldLobbyName" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="45.0" prefWidth="823.0" styleClass="header" text="LobbyName" />
+            <Label fx:id="textFieldLobbyName" alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="45.0" prefWidth="823.0" styleClass="header" text="lobbyName" />
             <Line endX="720.3333740234375" endY="2.0000076293945312" layoutX="114.0" layoutY="65.0" startX="-100.0" startY="2.0" strokeWidth="2.0" />
             <Label layoutX="14.0" layoutY="21.0" styleClass="header" text="Player" />
-            <ListView fx:id="playerList" layoutX="14.0" layoutY="70.0" prefHeight="372.0" prefWidth="823.0" styleClass="listView" />
-            <Label layoutX="688.0" layoutY="21.0" styleClass="header" text="Online:" />
+            <ListView fx:id="usersView" layoutX="14.0" layoutY="70.0" prefHeight="372.0" prefWidth="823.0" styleClass="listView" />
+            <Label layoutX="680.0" layoutY="21.0" styleClass="header" text="Online:" />
             <Label layoutX="809.0" layoutY="21.0" styleClass="header" text="/8" />
-            <Label fx:id="textFieldOnlineUsers" layoutX="792.0" layoutY="21.0" styleClass="header" text="1" />
-            <Label layoutX="384.0" layoutY="225.0" text="player list" />
+            <Label fx:id="textFieldOnlineUsers" layoutX="792.0" layoutY="21.0" styleClass="header" />
          </children>
       </Pane>
       <Pane layoutX="25.0" layoutY="485.0" prefHeight="340.0" prefWidth="850.0" styleClass="InnerBox">
