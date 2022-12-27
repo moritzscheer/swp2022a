@@ -1,10 +1,9 @@
 package de.uol.swp.client;
 
-import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import javafx.stage.Stage;
 
 /**
- * Factory for use of injecting the SceneManager via giuce
+ * Factory for use of injecting the SceneManager via guice
  *
  * @author Marco Grawunder
  * @see de.uol.swp.client.di.ClientModule

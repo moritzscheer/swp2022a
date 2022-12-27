@@ -10,30 +10,31 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="Background" prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css"
-            xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.register.RegistrationPresenter">
+            xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.register.RegistrationPresenter">
 
     <ImageView id="backgroundImage" fitHeight="900.0" fitWidth="1600.0" styleClass="backgroundImage">
-        <image>
-            <Image url="@../images/BackgroundWithLogo.png" />
-        </image>
+        <Image url="@../images/BackgroundWithLogo.png"/>
     </ImageView>
 
     <AnchorPane layoutX="587.0" layoutY="350.0" prefHeight="261.0" prefWidth="429.0" styleClass="InnerBox">
-      <children>
-          <Label layoutX="58.0" layoutY="35.0" prefHeight="36.0" prefWidth="127.0" text="Login:" />
-          <TextField id="loginField" fx:id="loginField" layoutX="210.0" layoutY="35.0" prefHeight="36.0" prefWidth="167.0" promptText="Your name">
-              <tooltip>
-                  <Tooltip text="Enter your name here" />
-              </tooltip>
-          </TextField>
-          <PasswordField id="passwordField" fx:id="passwordField1" layoutX="210.0" layoutY="89.0" prefHeight="36.0" prefWidth="167.0" promptText="Enter password" />
-          <PasswordField id="passwordField" fx:id="passwordField2" layoutX="210.0" layoutY="144.0" prefHeight="36.0" prefWidth="167.0" promptText="Repeat password" />
+        <Label layoutX="58.0" layoutY="35.0" prefHeight="36.0" prefWidth="127.0" text="Login:"/>
+        <TextField id="loginField" fx:id="loginField" layoutX="210.0" layoutY="35.0" prefHeight="36.0" prefWidth="167.0"
+                   promptText="Your name">
+            <tooltip>
+                <Tooltip text="Enter your name here"/>
+            </tooltip>
+        </TextField>
+        <PasswordField id="passwordField" fx:id="passwordField1" layoutX="210.0" layoutY="89.0" prefHeight="36.0"
+                       prefWidth="167.0" promptText="Enter password"/>
+        <PasswordField id="passwordField" fx:id="passwordField2" layoutX="210.0" layoutY="144.0" prefHeight="36.0"
+                       prefWidth="167.0" promptText="Repeat password"/>
 
-          <Button id="registerButton" defaultButton="true" layoutX="235.0" layoutY="196.0" mnemonicParsing="false" onAction="#onRegisterButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Register" />
-          <Button id="cancelButton" layoutX="58.0" layoutY="196.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Cancel" />
-      
-          <Label layoutX="58.0" layoutY="89.0" prefHeight="36.0" prefWidth="127.0" text="Password:" />
-          <Label layoutX="58.0" layoutY="144.0" prefHeight="36.0" prefWidth="127.0" text="Password:" />
-      </children>
-   </AnchorPane>
+        <Button id="registerButton" defaultButton="true" layoutX="235.0" layoutY="196.0" mnemonicParsing="false"
+                onAction="#onRegisterButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Register"/>
+        <Button id="cancelButton" layoutX="58.0" layoutY="196.0" mnemonicParsing="false"
+                onAction="#onCancelButtonPressed" prefHeight="43.0" prefWidth="142.0" text="Cancel"/>
+
+        <Label layoutX="58.0" layoutY="89.0" prefHeight="36.0" prefWidth="127.0" text="Password:"/>
+        <Label layoutX="58.0" layoutY="144.0" prefHeight="36.0" prefWidth="127.0" text="Password:"/>
+    </AnchorPane>
 </AnchorPane>

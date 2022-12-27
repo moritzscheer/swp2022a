@@ -12,7 +12,6 @@ import de.uol.swp.common.user.UserDTO;
  * @author Moritz Scheer
  * @see de.uol.swp.client.SceneManager
  * @since 2022-15-11
- *
  */
 public class ShowLobbyViewEvent {
 

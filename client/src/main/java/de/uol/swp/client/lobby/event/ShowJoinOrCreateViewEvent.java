@@ -9,7 +9,6 @@ package de.uol.swp.client.lobby.event;
  * @author Moritz Scheer
  * @see de.uol.swp.client.SceneManager
  * @since 2022-18-12
- *
  */
 public class ShowJoinOrCreateViewEvent {
 }

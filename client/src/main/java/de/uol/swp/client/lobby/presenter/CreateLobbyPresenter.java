@@ -24,7 +24,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
 
     private User loggedInUser;
-    private Injector injector;
+    private final Injector injector;
     @Inject
     private LobbyService lobbyService;
     @FXML
@@ -34,7 +34,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     @FXML
     private TextField passwordField;
     @FXML
-    private Label errorMessage;
+    private Label errorMessage1;
+    @FXML
+    private Label errorMessage2;
 
     /**
      * Default Constructor
@@ -76,7 +78,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyCreatedExceptionMessage(LobbyCreatedExceptionResponse message) {
-        errorMessage.setVisible(true);
+        errorMessage1.setVisible(true);
         LOG.error("Lobby create error {}", message);
     }
 
@@ -95,9 +97,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     void onCancelButtonPressed(ActionEvent actionEvent) {
-        errorMessage.setVisible(false);
-        nameField.clear();
-        passwordField.clear();
+        backToDefault();
         eventBus.post(new CreateLobbyCanceledEvent());
     }
 
@@ -114,6 +114,28 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
-        lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
+        if(!nameField.getText().isBlank()) {
+            lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
+            backToDefault();
+        } else {
+            errorMessage1.setVisible(false);
+            errorMessage2.setVisible(true);
+        }
+    }
+
+    /**
+     * helper method to set the label and textField Nodes back to default
+     *
+     * This Method sets the label and textField Nodes back to default
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    private void backToDefault() {
+        errorMessage1.setVisible(false);
+        errorMessage2.setVisible(false);
+
+        nameField.clear();
+        passwordField.clear();
     }
 }

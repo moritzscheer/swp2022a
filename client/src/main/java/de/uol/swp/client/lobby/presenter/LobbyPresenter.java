@@ -1,11 +1,10 @@
 package de.uol.swp.client.lobby.presenter;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -83,13 +82,10 @@ public class LobbyPresenter extends AbstractPresenter {
      * Default Constructor
      * @since 2022-11-15
      */
-    public LobbyPresenter(Integer lobbyID) {
+    @Inject
+    public LobbyPresenter(@Assisted Integer lobbyID) {
         this.lobbyID = lobbyID;
     }
-
-    // -----------------------------------------------------
-    // Responses
-    // -----------------------------------------------------
 
     /**
      * method to safe the information
@@ -138,12 +134,12 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        System.out.println("1111111111111111");
         if(message.getLobbyID().equals(lobbyID)) {
             LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
             Platform.runLater(() -> {
-                if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
+                if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername())) {
                     users.add(message.getUser().getUsername());
+                }
                 slots++;
                 textFieldOnlineUsers.setText(String.valueOf(slots));
             });
@@ -232,6 +228,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onYesButtonPressed(ActionEvent actionEvent){
         lobbyService.leaveLobby(lobbyName,(UserDTO) loggedInUser, lobbyID, multiplayer);
+        lobbyService.retrieveAllLobbies();
         updateInfoBox();
     }
 

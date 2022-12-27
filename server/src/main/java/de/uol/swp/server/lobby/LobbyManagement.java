@@ -21,7 +21,7 @@ public class LobbyManagement {
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
-     * createSinglePlayerName is beeing called, which creates a unique Singleplayer Name containing:
+     * createSinglePlayerName is being called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
      * @param name          the name of the lobby to create

@@ -1,7 +1,6 @@
 package de.uol.swp.common.lobby.response;
 
 import de.uol.swp.common.message.AbstractResponseMessage;
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,7 +38,7 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * This constructor generates a new List of the logged in users from the given
+     * This constructor generates a new List of the logged-in users from the given
      * Collection. The significant difference between the two being that the new
      * List contains copies of the User objects. These copies have their password
      * variable set to an empty String.

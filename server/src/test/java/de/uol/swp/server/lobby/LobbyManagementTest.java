@@ -6,7 +6,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SuppressWarnings("UnstableApiUsage")
 public class LobbyManagementTest {
 
     final LobbyManagement lobbyManagement = new LobbyManagement();
@@ -121,10 +120,10 @@ public class LobbyManagementTest {
     @Test
     void getCurrentLobbyIDTest() {
         lobbyManagement.createLobby(null, defaultUser, null, false);
-        assertNotEquals("1", lobbyManagement.getCurrentLobbyID());
+        assertNotEquals(1, lobbyManagement.getCurrentLobbyID());
 
         lobbyManagement.createLobby("lobby1", defaultUser, "1234", true);
-        assertNotEquals("2", lobbyManagement.getCurrentLobbyID());
+        assertNotEquals(2, lobbyManagement.getCurrentLobbyID());
     }
 
     /**

@@ -4,8 +4,6 @@ import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
-import java.util.Objects;
-
 /**
  * Response sent to the Client with all the lobby data in it
  *

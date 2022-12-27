@@ -6,13 +6,10 @@
 <?import javafx.scene.image.Image?>
 
 
-<AnchorPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.option.OptionPresenter">
+<AnchorPane prefHeight="770.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.option.OptionPresenter">
 
     <ImageView id="backgroundImage" fitHeight="900.0" fitWidth="1600.0" styleClass="backgroundImage">
-        <image>
-            <Image url="@../images/BackgroundWithoutLogo.png" />
-        </image>
+        <Image url="@../images/BackgroundWithoutLogo.png"/>
     </ImageView>
 
 

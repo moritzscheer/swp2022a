@@ -13,6 +13,8 @@ import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
 import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -154,6 +156,24 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         LOG.error("Lobby join error {}", message);
 
     }
+    @Subscribe
+    public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
+        Platform.runLater(() -> {
+            if(lobbiesList != null && loggedInUser != null && message.getLobby().getUsers().contains(loggedInUser)) {
+                lobbiesList.remove(message.getName());
+            }
+        });
+    }
+
+    @Subscribe
+    public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
+        Platform.runLater(() -> {
+            if(lobbiesList != null && loggedInUser != null) {
+                lobbiesList.add(message.getName());
+            }
+        });
+    }
+
 
     // -----------------------------------------------------
     // Messages
@@ -173,9 +193,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
         Platform.runLater(() -> {
             lobbiesMap.put(message.getName(), message.getLobby());
-            if(lobbiesList != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
+            if(lobbiesList != null && loggedInUser != null && !message.getLobby().getUsers().contains(loggedInUser)) {
                 lobbiesList.add(message.getName());
                 LOG.info("User " + message.getUser().getUsername() + " created the lobby " + message.getName());
+            }
         });
     }
 
@@ -192,9 +213,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @Subscribe
     private void onLobbyDroppedMessage(LobbyDroppedMessage message){
         Platform.runLater(() -> {
-            lobbiesMap.remove(message.getName());
-            lobbiesList.remove(message.getName());
-            LOG.info("User " + message.getUser().getUsername() + " deleted the lobby " + message.getName());
+            if(lobbiesList != null && loggedInUser != null && !message.getUser().equals(loggedInUser)) {
+                lobbiesMap.remove(message.getName());
+                lobbiesList.remove(message.getName());
+                LOG.info("User " + message.getUser().getUsername() + " deleted the lobby " + message.getName());
+            }
         });
     }
 
@@ -299,7 +322,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public void onMouseClick(MouseEvent click) {
         if (click.getClickCount() == 2 && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("WITHOUTPASSWORD")) {
+            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("WITHOUT_PASSWORD")) {
                 lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
             } else {
                 updatePasswordView();

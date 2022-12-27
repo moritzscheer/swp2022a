@@ -36,7 +36,7 @@ public class ServerHandler implements ServerHandlerDelegate {
     private final List<MessageContext> connectedClients = new CopyOnWriteArrayList<>();
 
     /**
-     * Clients with logged in sessions
+     * Clients with logged-in sessions
      */
     private final Map<MessageContext, Session> activeSessions = new HashMap<>();
 
@@ -282,7 +282,7 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Gets the Session for a given MessageContext
      *
-     * @param ctx The MeesageContext
+     * @param ctx The MessageContext
      * @see de.uol.swp.common.user.Session
      * @see de.uol.swp.common.message.MessageContext
      * @return Optional containing the Session if found

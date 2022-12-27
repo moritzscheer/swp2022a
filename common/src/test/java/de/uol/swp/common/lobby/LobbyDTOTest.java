@@ -51,7 +51,7 @@ class LobbyDTOTest {
         assertEquals(1, lobby.getLobbyID());
         assertEquals("lobby", lobby.getName());
         assertEquals(defaultUser, lobby.getOwner());
-        assertEquals("WITHPASSWORD", lobby.getPassword());
+        assertEquals("WITH_PASSWORD", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
 
         LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true);
@@ -60,7 +60,7 @@ class LobbyDTOTest {
         assertEquals(1, lobby2.getLobbyID());
         assertEquals("lobby", lobby2.getName());
         assertEquals(defaultUser, lobby2.getOwner());
-        assertEquals("WITHOUTPASSWORD", lobby2.getPassword());
+        assertEquals("WITHOUT_PASSWORD", lobby2.getPassword());
         assertEquals(true, lobby2.isMultiplayer());
     }
 
@@ -152,7 +152,7 @@ class LobbyDTOTest {
     /**
      * This test check whether a user can join a lobby when it is full
      *
-     * The test fails, if the user can join the lobby, when the lobbyslot of 8 is reached.
+     * The test fails, if the user can join the lobby, when the lobby slot of 8 is reached.
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -297,7 +297,7 @@ class LobbyDTOTest {
     }
 
     /**
-     * This test gets the gamemode status of the lobby
+     * This test gets the game mode status of the lobby
      *
      * @author Moritz Scheer
      * @since 2022-12-20

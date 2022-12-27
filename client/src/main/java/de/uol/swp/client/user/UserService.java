@@ -58,9 +58,9 @@ public class UserService implements ClientUserService {
 	}
 
 	/**
-	 * Method to delete an users account
+	 * Method to delete a users account
 	 *
-	 * This method should send a request to delete an users account, but being not
+	 * This method should send a request to delete a users account, but being not
 	 * implemented, it currently does nothing.
 	 *
 	 * @param user The user to remove

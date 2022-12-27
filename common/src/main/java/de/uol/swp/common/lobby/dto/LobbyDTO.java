@@ -57,9 +57,9 @@ public class LobbyDTO implements Lobby {
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
         if(tmp.getPassword().equals("")) {
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "WITHOUTPASSWORD", true);
+            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "WITHOUT_PASSWORD", true);
         } else {
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "WITHPASSWORD", true);
+            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "WITH_PASSWORD", true);
         }
     }
 

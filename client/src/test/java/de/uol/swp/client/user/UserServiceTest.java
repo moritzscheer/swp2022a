@@ -75,7 +75,7 @@ class UserServiceTest {
     }
 
     /**
-     * Subroutine used for tests that need a logged in user
+     * Subroutine used for tests that need a logged-in user
      *
      * This subroutine creates a new UserService object registered to the EventBus
      * of this test class and class the objects login method for the default user.
@@ -118,7 +118,7 @@ class UserServiceTest {
      * UserService object registered to the EventBus of this test class. It then
      * calls the logout function of the object using the defaultUser as parameter
      * and waits for it to post an LogoutRequest object on the EventBus. It then
-     * checks if authorization is needed to logout the user.
+     * checks if authorization is needed to log out the user.
      * The test fails if no LogoutRequest is posted within one second or the request
      * says that no authorization is needed
      *

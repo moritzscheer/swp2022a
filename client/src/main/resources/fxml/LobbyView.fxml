@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 
-<GridPane prefHeight="900.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="770.0" prefWidth="1600.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" >
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -62,17 +70,11 @@
             <Label layoutX="405.0" layoutY="101.0" text="chat" />
         </Pane>
     </GridPane>
-    <Button id="lobbyButton" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-    <Button id="lobbyButton" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <AnchorPane fx:id="infoBox" layoutX="650.0" layoutY="325.0" prefHeight="150.0" prefWidth="300.0"
-                style="-fx-background-color: grey;" visible="false">
-        <Button id="buttonBack" fx:id="yesButton" alignment="CENTER" layoutX="14.0" layoutY="65.0" maxHeight="40.0"
-                maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false"
-                onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false"/>
-        <Button id="buttonBack" fx:id="noButton" alignment="CENTER" layoutX="151.0" layoutY="65.0" maxHeight="40.0"
-                maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed"
-                prefHeight="40.0" prefWidth="119.0" text="No" visible="false"/>
-        <Label fx:id="infoLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="271.0"
-               text="Do you want to leave the Lobby?" visible="false"/>
+    <Button id="lobbyButton" fx:id="startButton" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+    <Button id="lobbyButton" fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <AnchorPane fx:id="infoBox" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: grey;" translateX="600.0" translateY="400.0" visible="false">
+        <Button id="lobbyButton" fx:id="yesButton" alignment="CENTER" layoutX="240.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false" />
+        <Button id="lobbyButton" fx:id="noButton" alignment="CENTER" layoutX="40.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed" prefHeight="40.0" prefWidth="119.0" text="No" visible="false" />
+        <Label fx:id="infoLabel" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Do you want to leave the Lobby?" visible="false" />
     </AnchorPane>
 </GridPane>

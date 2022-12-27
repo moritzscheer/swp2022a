@@ -18,7 +18,6 @@ import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
 import de.uol.swp.client.lobby.presenter.CreateLobbyPresenter;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
@@ -27,13 +26,18 @@ import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
 import de.uol.swp.client.rulebook.RulebookPresenter;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
-import de.uol.swp.client.tab.ShowTabViewEvent;
+import de.uol.swp.client.tab.event.ShowTabViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
-import de.uol.swp.client.tab.event.CreateNewLobbyTabEvent;
-import de.uol.swp.client.tab.event.ShowNewNodeEvent;
-import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
+import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
+import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
+import de.uol.swp.client.tab.event.ShowNodeEvent;
+import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -55,7 +59,7 @@ import java.net.URL;
  */
 public class SceneManager {
 
-    private EventBus eventBus;
+    private final EventBus eventBus;
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
     static final String STYLE_SHEET = "css/swp.css";
 
@@ -74,16 +78,18 @@ public class SceneManager {
 
     private Parent lastParent;
     private Parent currentParent;
-    private Parent lobbyScene;
-    private Parent joinOrCreateScene;
-    private Parent createLobbyScene;
-    private Parent mainScene;
-    private Parent creditScene;
-    private Parent rulebookScene;
-    private Parent changeAccountOptionsScene;
+    private Parent lobbyParent;
+    private Parent joinOrCreateParent;
+    private Parent createLobbyParent;
+    private Parent mainParent;
+    private Parent creditParent;
+    private Parent rulebookParent;
+    private Parent changeAccountOptionsParent;
 
     private LobbyPresenter lobbyPresenter;
     private final Injector injector;
+    @Inject
+    private LobbyPresenterFactory lobbyPresenterFactory;
 
     @Inject
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
@@ -138,13 +144,26 @@ public class SceneManager {
         return rootPane;
     }
 
-    private Parent initLobbyPresenter(String fxmlFile, Integer lobbyID) throws IOException {
+    /**
+     * Subroutine creating parent panes from FXML files for Lobbies
+     *
+     * This Method tries to create a parent pane from the FXML file specified by
+     * the URL String given to it. Also, a new instance of the LobbyPresenter is being created by the
+     * LobbyPresenterFactory which is set to the controller of the Parent. If the LOG-Level is set to Debug or
+     * higher loading is written to the LOG.
+     * If it fails to load the view a RuntimeException is thrown.
+     *
+     * @param lobbyID Integer containing the lobbyID
+     * @return view loaded from FXML or null
+     * @since 2022-12-27
+     */
+    private Parent initLobbyPresenter(Integer lobbyID) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        lobbyPresenter = new LobbyPresenter(lobbyID);
+        lobbyPresenter = lobbyPresenterFactory.create(lobbyID);
         loader.setController(lobbyPresenter);
         try {
-            URL url = getClass().getResource(fxmlFile);
+            URL url = getClass().getResource(LobbyPresenter.FXML);
             LOG.debug("Loading {}", url);
             loader.setLocation(url);
             rootPane = loader.load();
@@ -189,10 +208,21 @@ public class SceneManager {
         }
     }
 
+    /**
+     * Initializes the tab view
+     *
+     * If the tabScene is null it gets set to a new scene containing
+     * a pane showing the tab view as specified by the TabView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
     private void initTabView() throws IOException {
         if (tabScene == null) {
             Parent rootPane = initPresenter(TabPresenter.FXML);
-            tabScene = new Scene(rootPane, 1600,800);
+            tabScene = new Scene(rootPane, 1600,880);
             tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
@@ -200,117 +230,178 @@ public class SceneManager {
     /**
      * Initializes the main menu view
      *
-     * If the mainScene is null it gets set to a new scene containing
-     * a pane showing the main menu view as specified by the MainMenuView
-     * FXML file.
+     * If the mainParent is null it gets set to a new Parent showing the main menu view
+     * as specified by the MainMenuView FXML file.
      *
      * @see de.uol.swp.client.main.MainMenuPresenter
-     * @since 2019-09-03
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initMainView() throws IOException {
-        if (mainScene == null) {
-            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = rootPane;
+        if (mainParent == null) {
+            mainParent = initPresenter(MainMenuPresenter.FXML);
         }
     }
 
     /**
-     * Initializes the rulebook view
+     * Initializes the rule book view
      *
-     * If the rulebookScene is null it gets set to a new scene containing
-     * a pane showing the rulebook view as specified by the RulebookView
-     * FXML file.
+     * If the rulebookParent is null it gets set to a new Parent showing the rule book view
+     * as specified by the RuleBookView FXML file.
      *
      * @see de.uol.swp.client.rulebook.RulebookPresenter
-     * @since 2022-11-27
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initRulebookView() throws IOException {
-        if (rulebookScene == null) {
+        if (rulebookParent == null) {
             Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookScene = rootPane;
+            rulebookParent = rootPane;
         }
     }
 
     /**
      * Initializes the credit view
      *
-     * If the creditScene is null it gets set to a new scene containing
-     * a pane showing the credit view as specified by the CreditView
-     * FXML file.
+     * If the creditParent is null it gets set to a new Parent showing the credit view
+     * as specified by the RuleBookView FXML file.
      *
      * @see de.uol.swp.client.credit.CreditPresenter
-     * @since 2022-11-29
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initCreditView() throws IOException {
-        if (creditScene == null) {
-            Parent rootPane = initPresenter(CreditPresenter.FXML);
-            creditScene = rootPane;
+        if (creditParent == null) {
+            creditParent = initPresenter(CreditPresenter.FXML);
         }
     }
 
     /**
-     * Initializes the account view
+     * Initializes the change account option view
      *
-     * If the changeAccountOptionsScene is null it gets set to a new scene containing the
-     * pane showing the account view as specified by the AccountView FXML file.
+     * If the changeAccountOptionsParent is null it gets set to a new Parent showing the change account option view
+     * as specified by the changeAccountOptionView FXML file.
      *
      * @see de.uol.swp.client.main.AccountMenuPresenter
-     * @since 2022-11-25
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initAccountOptionsView() throws IOException {
-        if(changeAccountOptionsScene == null) {
-            Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
-            changeAccountOptionsScene = rootPane;
+        if(changeAccountOptionsParent == null) {
+            changeAccountOptionsParent = initPresenter(AccountMenuPresenter.FXML);
         }
     }
 
     /**
      * Initializes the lobby view
      *
-     * If the lobbyScene is null it gets set to a new scene containing
-     * a pane showing the lobby view as specified by the lobbyView
-     * FXML file.
+     * If the lobbyParent is null it gets set to a new Parent showing the lobby view
+     * as specified by the LobbyView FXML file.
      *
      * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
-     * @since 2022-11-30
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initLobbyView(Integer lobbyID) throws IOException {
-        Parent rootPane = initLobbyPresenter(LobbyPresenter.FXML, lobbyID);
-        lobbyScene = rootPane;
+        lobbyParent = initLobbyPresenter(lobbyID);
     }
 
     /**
-     * Initializes the joinOrCreate view
+     * Initializes the join or create view
      *
-     * If the joinOrCreateScene is null it gets set to a new scene containing
-     * a pane showing the joinOrCreate view as specified by the JoinOrCreateView
-     * FXML file.
+     * If the lobbyParent is null it gets set to a new Parent showing the join or create view
+     * as specified by the JoinOrCreate FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @since 2022-11-30
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initJoinOrCreateView() throws IOException {
-        if (joinOrCreateScene == null){
+        if (joinOrCreateParent == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateScene = rootPane;
+            joinOrCreateParent = rootPane;
         }
     }
 
     /**
-     * Initializes the createLobby view
+     * Initializes the create lobby view
      *
-     * If the createLobbyScene is null it gets set to a new scene containing
-     * a pane showing the createLobby view as specified by the CreateLobbyView
-     * FXML file.
+     * If the lobbyParent is null it gets set to a new Parent showing the join or create lobby view
+     * as specified by the CreateLobby FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @since 2022-11-30
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {
-        if (createLobbyScene == null){
+        if (createLobbyParent == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyScene = rootPane;
+            createLobbyParent = rootPane;
         }
+    }
+
+    // -----------------------------------------------------
+    // Response methods
+    // -----------------------------------------------------
+
+    /**
+     * Handles successfully created Lobbies
+     *
+     * If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this
+     * method is called. It calls a private method to set up a tab.
+     *
+     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
+        setLobbyTab(message.getLobby(), message.getUser());
+    }
+
+    /**
+     * Handles successfully joined Lobbies
+     *
+     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this
+     * method is called. It calls a private method to set up a tab.
+     *
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
+        setLobbyTab(message.getLobby(), message.getUser());
+    }
+
+    /**
+     * Handles successfully left Lobbies
+     *
+     * If an LobbyLeaveUserResponse object is detected on the EventBus this
+     * method is called. It calls a private method to close a tab.
+     *
+     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
+        deleteLobbyTab(message.getLobbyID());
+    }
+
+    /**
+     * Handles successfully dropped Lobbies
+     *
+     * If an LobbyDroppedResponse object is detected on the EventBus this
+     * method is called. It calls a private method to close a tab.
+     *
+     * @param message The LobbyDroppedResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyDroppedResponse(LobbyDroppedResponse message) {
+        deleteLobbyTab(message.getLobbyID());
     }
 
     // -----------------------------------------------------
@@ -473,23 +564,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowLobbyViewEvent detected on the EventBus
-     *
-     * If a ShowLobbyViewEvent is detected on the EventBus, this method gets
-     * called.
-     *
-     * @param event The ShowLobbyViewEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowLobbyViewEvent
-     * @since 2022-11-15
-     */
-    @Subscribe
-    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) throws IOException {
-        initLobbyView(event.getLobby().getLobbyID());
-        lobbyPresenter.updateInformation(event.getLobby(), event.getUser());
-        showLobbyViewScreen(event.getLobby());
-    }
-
-    /**
      * Handles CreateLobbyCanceledEvent detected on the EventBus
      *
      * If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets
@@ -520,15 +594,15 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowAccountOptionsViewEvent detected on the EventBus
+     * Handles ShowTabViewEvent detected on the EventBus
      *
-     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets
-     * called. It shows the AccountOptionView.
+     * If a ShowTabViewEvent is detected on the EventBus, this method gets
+     * called. It shows the TabView.
      *
-     * @param event The ShowAccountOptionsViewEvent detected on the EventBus
-     * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
-     * @since 2022-12-03
-     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @param event The ShowTabViewEvent detected on the EventBus
+     * @see de.uol.swp.client.tab.event.ShowTabViewEvent
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
     @Subscribe
     public void onShowTabViewEvent(ShowTabViewEvent event) {
@@ -597,15 +671,22 @@ public class SceneManager {
         });
     }
 
-    private void showNode(int Tab, final Parent parent) {
+    /**
+     * Switches the current Parent in the current tab that is given to
+     *
+     * The current scene and title are saved in the lastScene and lastTitle variables,
+     * before the new scene and title are set and shown.
+     *
+     * @param tab Integer containing the lobbyID and also the tabID
+     * @param parent New Parent to show
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    private void showNode(int tab, Parent parent) {
         this.lastParent = currentParent;
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
-        eventBus.post(new ShowNewNodeEvent(Tab, parent));
-    }
-
-    private void createNewLobbyTab(LobbyDTO lobby, final Parent parent) {
-        eventBus.post(new CreateNewLobbyTabEvent(lobby, parent));
+        eventBus.post(new ShowNodeEvent(tab, parent));
     }
 
     /**
@@ -654,9 +735,17 @@ public class SceneManager {
         showScene(loginScene,"Login");
     }
 
+    /**
+     * Shows the tab screen
+     *
+     * Switches the current Scene to the tabScene and sets the title of
+     * the window to "User: (username)" and also show the main menu node in the tabScene.
+     *
+     * @since 2019-09-03
+     */
     public void showTabScreen(User user) {
         showScene(tabScene, "User: " + user.getUsername());
-        showNode(0, mainScene);
+        showNode(0, mainParent);
     }
 
     /**
@@ -668,7 +757,7 @@ public class SceneManager {
      * @since 2019-09-03
      */
     public void showMainScreen() {
-        showNode(0, mainScene);
+        showNode(0, mainParent);
     }
 
     /**
@@ -680,7 +769,7 @@ public class SceneManager {
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
-        showNode(0, rulebookScene);
+        showNode(0, rulebookParent);
     }
 
     /**
@@ -692,7 +781,7 @@ public class SceneManager {
      * @since 2022-11-29
      */
     public void showCreditScreen() {
-        showNode(0, creditScene);
+        showNode(0, creditParent);
     }
 
     /**
@@ -704,7 +793,7 @@ public class SceneManager {
      * @since 2022-12-01
      */
     public void showAccountOptionScreen() {
-        showNode(0, changeAccountOptionsScene);
+        showNode(0, changeAccountOptionsParent);
     }
 
     /**
@@ -716,7 +805,7 @@ public class SceneManager {
      * @since 2022-11-30
      */
     public void showJoinOrCreateScreen() {
-        showNode(0, joinOrCreateScene);
+        showNode(0, joinOrCreateParent);
     }
 
     /**
@@ -728,19 +817,50 @@ public class SceneManager {
      * @since 2022-11-30
      */
     public void showCreateLobbyScreen() {
-        showNode(0, createLobbyScene);
+        showNode(0, createLobbyParent);
     }
 
     /**
-     * Shows the lobby screen
+     * helper method to set up the lobby view
      *
-     * Switches the current Scene to the lobbyScene and sets the title of
-     * the window to "Lobby"
+     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it saves all the current
+     * information in the lobbyPresenter and posts an Event on the Eventbus to create a tab in the TabPresenter.
      *
-     * @since 2022-11-30
+     * @author Moritz Scheer
+     * @since 2022-12-27
      */
-    public void showLobbyViewScreen(LobbyDTO lobby) {
-        createNewLobbyTab(lobby, lobbyScene);
+    private void setLobbyTab(LobbyDTO lobby, UserDTO user) {
+        try {
+            // load File and Controller
+            initLobbyView(lobby.getLobbyID());
+
+            // update Information in Controller
+            lobbyPresenter.updateInformation(lobby, user);
+
+            // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
+            if(lobby.isMultiplayer()) {
+                showJoinOrCreateScreen();
+            } else {
+                showMainScreen();
+            }
+
+            // create new Tab and switch to the tab
+            eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * helper method to delete a lobby view
+     *
+     * This method posts an Event on the Eventbus to delete a tab in the TabPresenter.
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    private void deleteLobbyTab(Integer lobbyID) {
+        eventBus.post(new DeleteLobbyTabEvent(lobbyID));
+    }
 }

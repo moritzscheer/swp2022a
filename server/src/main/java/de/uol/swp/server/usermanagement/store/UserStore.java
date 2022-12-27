@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface to unify different kinds of UserStores in order to able to exchange
+ * Interface to unify different kinds of UserStores in order to be able to exchange
  * them easily.
  *
  * @author Marco Grawunder

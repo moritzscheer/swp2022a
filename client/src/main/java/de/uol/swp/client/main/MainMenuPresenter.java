@@ -68,11 +68,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles new logged in users
+     * Handles new logged-in users
      *
      * If a new UserLoggedInMessage object is posted to the EventBus the name of the newly
-     * logged in user is appended to the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "New user {@literal
+     * logged-in user is appended to the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "New user {@literal
      * <Username>} logged in." is displayed in the log.
      *
      * @param message the UserLoggedInMessage object seen on the EventBus
@@ -90,11 +90,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles new logged out users
+     * Handles new logged-out users
      *
      * If a new UserLoggedOutMessage object is posted to the EventBus the name of the newly
-     * logged out user is removed from the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "User {@literal
+     * logged-out user is removed from the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "User {@literal
      * <Username>} logged out." is displayed in the log.
      *
      * @param message the UserLoggedOutMessage object seen on the EventBus
@@ -111,9 +111,9 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Handles new list of users
      *
      * If a new AllOnlineUsersResponse object is posted to the EventBus the names
-     * of currently logged in users are put onto the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "Update of user
-     * list" with the names of all currently logged in users is displayed in the
+     * of currently logged-in users are put onto the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "Update of user
+     * list" with the names of all currently logged-in users is displayed in the
      * log.
      *
      * @param allUsersResponse the AllOnlineUsersResponse object seen on the EventBus
@@ -130,7 +130,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Method called when the Delete User button is pressed
      *
      * If the Delete User button is pressed, this method requests the user service
-     * first to logout the user, then to drop the user.
+     * first to log out the user, then to drop the user.
      *
      * @param event The ActionEvent created by pressing the Delete User button
      * @see de.uol.swp.client.lobby.LobbyService
@@ -165,8 +165,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      * this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged in
+     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged-in
      *                 users
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29
@@ -202,7 +202,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Method called when the singleplayer button is pressed
      *
      * If the singleplayer button is pressed, this method requests the lobby service
-     * to create a specified lobby. Therefore it uses as the parameter  name and password the value null.
+     * to create a specified lobby. Therefore, it uses as the parameter  name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
      * @see de.uol.swp.client.lobby.LobbyService

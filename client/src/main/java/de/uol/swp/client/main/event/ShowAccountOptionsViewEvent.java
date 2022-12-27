@@ -1,7 +1,5 @@
 package de.uol.swp.client.main.event;
 
-import de.uol.swp.common.user.User;
-
 /**
  * Event used to show the account options in the main menu
  *

@@ -14,7 +14,7 @@ import de.uol.swp.common.user.UserDTO;
 public class CreateLobbyRequest extends AbstractLobbyRequest {
 
     private Boolean multiplayer;
-    private String password;       //passwort of the lobby
+    private String password;
 
     /**
      * Default constructor

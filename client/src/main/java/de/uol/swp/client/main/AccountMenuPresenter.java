@@ -7,7 +7,6 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.request.DropUserRequest;
 import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
 import de.uol.swp.common.user.request.UpdateUserRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;

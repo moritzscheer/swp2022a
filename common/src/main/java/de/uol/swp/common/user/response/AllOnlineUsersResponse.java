@@ -39,7 +39,7 @@ public class AllOnlineUsersResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * This constructor generates a new List of the logged in users from the given
+     * This constructor generates a new List of the logged-in users from the given
      * Collection. The significant difference between the two being that the new
      * List contains copies of the User objects. These copies have their password
      * variable set to an empty String.

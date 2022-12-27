@@ -6,11 +6,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
@@ -49,6 +47,8 @@ public class ClientApp extends Application implements ConnectionListener {
 	private int port;
 
 	private ClientUserService userService;
+
+	private LobbyService lobbyService;
 
 	private User user;
 
@@ -93,6 +93,9 @@ public class ClientApp extends Application implements ConnectionListener {
 
         // get user service from guice, is needed for logout
         this.userService = injector.getInstance(ClientUserService.class);
+
+		// get lobby service from guice
+		this.lobbyService = injector.getInstance(LobbyService.class);
 
         // get event bus from guice
 		eventBus = injector.getInstance(EventBus.class);
@@ -203,7 +206,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles Logout
 	 *
-	 * If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+	 * If an UserLoggedOutMessage object is detected on the EventBus this
   	 * method is called. It tells the SceneManager to show the login window. If
   	 * the loglevel is set to INFO or higher "User {username} logged out." is written
   	 * to the log.
@@ -314,15 +317,6 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.debug("user  {}", message.getUpdatedUser().getUsername());
 		this.user = message.getUpdatedUser();
 		sceneManager.showMainScreen();
-	}
-
-	@Subscribe
-	public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-		eventBus.post(new ShowLobbyViewEvent(message.getLobby(), message.getUser()));
-	}
-	@Subscribe
-	public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-		eventBus.post(new ShowLobbyViewEvent(message.getLobby(), message.getUser()));
 	}
 
 	/**
