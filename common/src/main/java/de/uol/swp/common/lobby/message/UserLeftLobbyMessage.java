@@ -31,8 +31,8 @@ public class UserLeftLobbyMessage extends AbstractLobbyMessage {
      * @param newOwner new lobby owner
      * @since 2019-10-08
      */
-    public UserLeftLobbyMessage(String lobbyName, UserDTO user, UserDTO newOwner) {
-        super(lobbyName, user);
+    public UserLeftLobbyMessage(Integer lobbyID, String lobbyName, UserDTO user, UserDTO newOwner) {
+        super(lobbyID, lobbyName, user);
         this.newOwner = newOwner;
     }
 

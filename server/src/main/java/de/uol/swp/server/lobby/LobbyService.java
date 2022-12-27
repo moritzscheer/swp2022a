@@ -161,7 +161,7 @@ public class LobbyService extends AbstractService {
 
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
                 if(lobbyLeaveUserRequest.isMultiplayer()) {
-                    sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), (UserDTO) lobby.get().getOwner()));
+                    sendToAllInLobby(lobbyLeaveUserRequest.getName(), new UserLeftLobbyMessage(lobby.get().getLobbyID(), lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), (UserDTO) lobby.get().getOwner()));
                 }
                 returnMessage = new LobbyLeaveUserResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
             } catch (IllegalArgumentException e) {
@@ -169,7 +169,7 @@ public class LobbyService extends AbstractService {
 
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
                 if (lobbyLeaveUserRequest.isMultiplayer()){
-                    sendToAll(new LobbyDroppedMessage(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
+                    sendToAll(new LobbyDroppedMessage(lobby.get().getLobbyID(), lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser()));
                 }
                 returnMessage = new LobbyDroppedResponse(lobbyLeaveUserRequest.getName(), lobbyLeaveUserRequest.getUser(), lobbyLeaveUserRequest.getLobbyID());
             }

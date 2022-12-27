@@ -19,7 +19,7 @@ public class LobbyCreatedMessage extends AbstractLobbyMessage {
      * @since 2022-11-29
      */
     public LobbyCreatedMessage(LobbyDTO lobby, UserDTO user) {
-        super(lobby.getName(), user);
+        super(lobby.getLobbyID(), lobby.getName(), user);
         this.lobby = lobby.createWithoutPassword(lobby);
     }
 

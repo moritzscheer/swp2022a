@@ -10,6 +10,9 @@ import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.tab.event.CreateNewLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNewNodeEvent;
+import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -27,11 +30,17 @@ public class TabPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/TabView.fxml";
     static final Logger LOG = LogManager.getLogger(SceneManager.class);
 
+    private User loggedInUser;
     @Inject
     private LobbyService lobbyService;
     @FXML
     private TabPane tabPane;
     private final Map<Integer, Tab> lobbiesTabs = new HashMap<>();
+
+    @Subscribe
+    public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
+        this.loggedInUser = message.getUser();
+    }
 
     // -----------------------------------------------------
     // Node methods
@@ -56,6 +65,7 @@ public class TabPresenter extends AbstractPresenter {
                 tab.setOnClosed(event2 -> {
                     if(event.getLobby().isMultiplayer()) {
                         eventBus.post(new ShowJoinOrCreateViewEvent());
+                        lobbyService.leaveLobby(event.getLobby().getName(), (UserDTO) loggedInUser, event.getLobby().getLobbyID(), true);
                     } else {
                         eventBus.post(new ShowMainMenuViewEvent());
                     }

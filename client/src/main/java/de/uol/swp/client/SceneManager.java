@@ -31,6 +31,7 @@ import de.uol.swp.client.tab.ShowTabViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.CreateNewLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNewNodeEvent;
+import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.application.Platform;
@@ -191,7 +192,7 @@ public class SceneManager {
     private void initTabView() throws IOException {
         if (tabScene == null) {
             Parent rootPane = initPresenter(TabPresenter.FXML);
-            tabScene = new Scene(rootPane, 1600,900);
+            tabScene = new Scene(rootPane, 1600,800);
             tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }

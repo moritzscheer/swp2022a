@@ -51,8 +51,17 @@ class LobbyDTOTest {
         assertEquals(1, lobby.getLobbyID());
         assertEquals("lobby", lobby.getName());
         assertEquals(defaultUser, lobby.getOwner());
-        assertEquals(null, lobby.getPassword());
+        assertEquals("WITHPASSWORD", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
+
+        LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true);
+        lobby2 = lobby2.createWithoutPassword(lobby2);
+
+        assertEquals(1, lobby2.getLobbyID());
+        assertEquals("lobby", lobby2.getName());
+        assertEquals(defaultUser, lobby2.getOwner());
+        assertEquals("WITHOUTPASSWORD", lobby2.getPassword());
+        assertEquals(true, lobby2.isMultiplayer());
     }
 
     /**

@@ -299,9 +299,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public void onMouseClick(MouseEvent click) {
         if (click.getClickCount() == 2 && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword() == "") {
+            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("WITHOUTPASSWORD")) {
                 lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
-                updatePasswordView();
             } else {
                 updatePasswordView();
             }

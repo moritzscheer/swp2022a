@@ -12,8 +12,6 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
 
-    private Integer lobbyID;
-
     /**
      * Default constructor
      *
@@ -31,11 +29,7 @@ public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
      * @since 2019-10-08
      */
     public UserJoinedLobbyMessage(Integer lobbyID, String lobbyName, UserDTO user) {
-        super(lobbyName, user);
-        this.lobbyID = lobbyID;
+        super(lobbyID, lobbyName, user);
     }
 
-    public Integer getLobbyID() {
-        return lobbyID;
-    }
 }

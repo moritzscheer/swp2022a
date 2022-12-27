@@ -114,8 +114,6 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
-
-        //System.out.println(injector.getInstance(LobbyPresenter.class));
         lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
     }
 }

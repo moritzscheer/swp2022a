@@ -1,25 +1,18 @@
 package de.uol.swp.client.lobby.presenter;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
-import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
+import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
-import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import de.uol.swp.common.user.UserDTO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -145,6 +138,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
+        System.out.println("1111111111111111");
         if(message.getLobbyID().equals(lobbyID)) {
             LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
             Platform.runLater(() -> {
@@ -168,16 +162,18 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
-        LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
-        Platform.runLater(() -> {
-            users.remove(message.getUser().getUsername());
+        if(message.getLobbyID().equals(lobbyID)) {
+            LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
+            Platform.runLater(() -> {
+                users.remove(message.getUser().getUsername());
 
-            slots--;
-            textFieldOnlineUsers.setText(String.valueOf(slots));
+                slots--;
+                textFieldOnlineUsers.setText(String.valueOf(slots));
 
-            owner = message.getNewOwner();
-            textFieldOwner.setText(owner.getUsername());
-        });
+                owner = message.getNewOwner();
+                textFieldOwner.setText(owner.getUsername());
+            });
+        }
     }
 
     /**

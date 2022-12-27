@@ -28,8 +28,8 @@ public class LobbyDroppedMessage extends AbstractLobbyMessage{
      * @param user user who joined the lobby
      * @since 2019-10-08
      */
-    public LobbyDroppedMessage(String lobbyName, UserDTO user) {
-        super(lobbyName, user);
+    public LobbyDroppedMessage(Integer lobbyID, String lobbyName, UserDTO user) {
+        super(lobbyID, lobbyName, user);
     }
 
 }
