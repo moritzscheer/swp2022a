@@ -140,25 +140,25 @@ public class LobbyManagementTest {
 
         assertEquals(4, lobbyManagement.getLobbies().size());
 
-        assertEquals("lobby1", lobbyManagement.getLobbies().get(1).getName());
-        assertEquals(users.get(0), lobbyManagement.getLobbies().get(1).getOwner());
-        assertEquals("1234", lobbyManagement.getLobbies().get(1).getPassword());
+        assertEquals("lobby1", lobbyManagement.getLobbies().get(0).getName());
+        assertEquals(users.get(0), lobbyManagement.getLobbies().get(0).getOwner());
+        assertEquals("1234", lobbyManagement.getLobbies().get(0).getPassword());
+        assertEquals(true, lobbyManagement.getLobbies().get(0).isMultiplayer());
+
+        assertEquals("lobby2", lobbyManagement.getLobbies().get(1).getName());
+        assertEquals(users.get(1), lobbyManagement.getLobbies().get(1).getOwner());
+        assertEquals("4321", lobbyManagement.getLobbies().get(1).getPassword());
         assertEquals(true, lobbyManagement.getLobbies().get(1).isMultiplayer());
 
-        assertEquals("lobby2", lobbyManagement.getLobbies().get(2).getName());
-        assertEquals(users.get(1), lobbyManagement.getLobbies().get(2).getOwner());
-        assertEquals("4321", lobbyManagement.getLobbies().get(2).getPassword());
-        assertEquals(true, lobbyManagement.getLobbies().get(2).isMultiplayer());
+        assertEquals(null, lobbyManagement.getLobbies().get(2).getName());
+        assertEquals(users.get(0), lobbyManagement.getLobbies().get(2).getOwner());
+        assertEquals(null, lobbyManagement.getLobbies().get(2).getPassword());
+        assertEquals(false, lobbyManagement.getLobbies().get(2).isMultiplayer());
 
         assertEquals(null, lobbyManagement.getLobbies().get(3).getName());
-        assertEquals(users.get(0), lobbyManagement.getLobbies().get(3).getOwner());
+        assertEquals(users.get(1), lobbyManagement.getLobbies().get(3).getOwner());
         assertEquals(null, lobbyManagement.getLobbies().get(3).getPassword());
         assertEquals(false, lobbyManagement.getLobbies().get(3).isMultiplayer());
-
-        assertEquals(null, lobbyManagement.getLobbies().get(4).getName());
-        assertEquals(users.get(1), lobbyManagement.getLobbies().get(4).getOwner());
-        assertEquals(null, lobbyManagement.getLobbies().get(4).getPassword());
-        assertEquals(false, lobbyManagement.getLobbies().get(4).isMultiplayer());
     }
 
     /**
@@ -175,7 +175,7 @@ public class LobbyManagementTest {
 
         assertEquals(2, lobbyManagement.getMultiplayerLobbies().size());
 
-        assertEquals(users.get(0), lobbyManagement.getLobbies().get(1).getOwner());
-        assertEquals(users.get(1), lobbyManagement.getLobbies().get(2).getOwner());
+        assertEquals(users.get(0), lobbyManagement.getLobbies().get(0).getOwner());
+        assertEquals(users.get(1), lobbyManagement.getLobbies().get(1).getOwner());
     }
 }
