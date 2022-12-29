@@ -8,6 +8,7 @@ import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
+import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -44,6 +45,9 @@ public class MainMenuPresenter extends AbstractPresenter {
     private User loggedInUser;
 
     private static final ShowAccountOptionsViewEvent  showAccountOptionMessage = new ShowAccountOptionsViewEvent();
+
+    @Inject
+    private TabPresenter tabPresenter;
     @Inject
     private LobbyService lobbyService;
 
@@ -154,7 +158,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onLogout(ActionEvent event) {
-        userService.logout(loggedInUser);
+        tabPresenter.updateInfoBox();
     }
 
     /**
@@ -210,7 +214,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     void onSingleplayerButtonPressed(ActionEvent event){
-        lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
+        lobbyService.createNewLobby("Singleplayer", (UserDTO) loggedInUser, false, null);
     }
 
     /**

@@ -9,16 +9,9 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
-import de.uol.swp.common.lobby.request.CreateLobbyRequest;
-import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
-import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
 import de.uol.swp.common.lobby.response.*;
-import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
-import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.UserDTO;
@@ -78,8 +71,6 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
-        LOG.debug("Got new lobby message from User: {}", createLobbyRequest.getUser().getUsername());
-
         ResponseMessage returnMessage;
         try {
             lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.getPassword(), createLobbyRequest.isMultiplayer());
@@ -114,7 +105,6 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onLobbyJoinUserRequest(LobbyJoinUserRequest lobbyJoinUserRequest) {
-        LOG.debug("Got new lobby message from User {}", lobbyJoinUserRequest.getUser().getUsername());
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyJoinUserRequest.getName());
 
         ResponseMessage returnMessage;
@@ -151,7 +141,6 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onLobbyLeaveUserRequest(LobbyLeaveUserRequest lobbyLeaveUserRequest) {
-        LOG.debug("Got new lobby message from User {}", lobbyLeaveUserRequest.getUser().getUsername());
         Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyLeaveUserRequest.getName());
 
         ResponseMessage returnMessage;
@@ -191,7 +180,7 @@ public class LobbyService extends AbstractService {
      * @since 2022-12-15
      */
     private void dropLobby(LobbyLeaveUserRequest lobbyLeaveUserRequest){
-            lobbyManagement.dropLobby(lobbyLeaveUserRequest.getLobbyID());
+        lobbyManagement.dropLobby(lobbyLeaveUserRequest.getLobbyID());
     }
 
     /**
@@ -229,7 +218,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onRetrieveAllOnlineLobbiesRequest(RetrieveAllOnlineLobbiesRequest msg) {
-        AllOnlineLobbiesResponse response = new AllOnlineLobbiesResponse(lobbyManagement.getMultiplayerLobbies().values());
+        AllOnlineLobbiesResponse response = new AllOnlineLobbiesResponse(lobbyManagement.getMultiplayerLobbies());
         response.initWithMessage(msg);
         post(response);
     }

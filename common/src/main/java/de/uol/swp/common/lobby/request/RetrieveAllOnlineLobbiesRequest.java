@@ -14,7 +14,4 @@ import de.uol.swp.common.message.AbstractRequestMessage;
  */
 
 public class RetrieveAllOnlineLobbiesRequest extends AbstractRequestMessage {
-
-
-
 }

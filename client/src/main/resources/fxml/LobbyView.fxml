@@ -72,9 +72,4 @@
     </GridPane>
     <Button id="lobbyButton" fx:id="startButton" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2" />
     <Button id="lobbyButton" fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-    <AnchorPane fx:id="infoBox" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: grey;" translateX="600.0" translateY="400.0" visible="false">
-        <Button id="lobbyButton" fx:id="yesButton" alignment="CENTER" layoutX="240.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false" />
-        <Button id="lobbyButton" fx:id="noButton" alignment="CENTER" layoutX="40.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed" prefHeight="40.0" prefWidth="119.0" text="No" visible="false" />
-        <Label fx:id="infoLabel" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Do you want to leave the Lobby?" visible="false" />
-    </AnchorPane>
 </GridPane>

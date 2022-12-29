@@ -1,13 +1,11 @@
 package de.uol.swp.client.lobby.presenter;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
@@ -30,9 +28,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import java.util.HashMap;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -51,19 +49,19 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private User loggedInUser;
 
     private ObservableList<String> lobbiesList;
-    private final Map<String, LobbyDTO> lobbiesMap = new HashMap<>();
+    private final List<String> lobbiesWithOutPassword = new ArrayList<>();
 
     @Inject
     private LobbyService lobbyService;
 
+    @FXML
+    private ListView<String> lobbiesView;
     @FXML
     private Label LabelPasswordView;
     @FXML
     private Label errorMessagePasswordIncorrect;
     @FXML
     private Label errorMessageLobbyFull;
-    @FXML
-    private ListView<String> lobbiesView;
     @FXML
     private TextField textFieldPassword;
     @FXML
@@ -77,20 +75,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public JoinOrCreatePresenter() {
         // needed for javafx
-    }
-
-    /**
-     * Constructor
-     *
-     * @param eventBus The EventBus set in ClientModule
-     * @param userService The injected ClientUserService
-     * @see de.uol.swp.client.di.ClientModule
-     * @author Maxim Erden
-     * @since 2019-09-18
-     */
-    @Inject
-    public JoinOrCreatePresenter(EventBus eventBus, ClientUserService userService) {
-        setEventBus(eventBus);
     }
 
     // -----------------------------------------------------
@@ -129,9 +113,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onAllOnlineLobbiesResponse(AllOnlineLobbiesResponse allLobbiesResponse) {
-        LOG.debug("Update of lobby list {}", allLobbiesResponse.getLobbies());
-
-        for (LobbyDTO lobby : allLobbiesResponse.getLobbies()) { lobbiesMap.put(lobby.getName(), lobby); }
+        LOG.info("Update of lobby list {}", allLobbiesResponse.getLobbies());
+        for(LobbyDTO lobbies : allLobbiesResponse.getLobbiesWithoutPassword()) { lobbiesWithOutPassword.add(lobbies.getName()); }
         updateLobbyList(allLobbiesResponse.getLobbies());
     }
 
@@ -148,28 +131,50 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedExceptionResponse(LobbyJoinedExceptionResponse message) {
+        LOG.error("Lobby join error {}", message);
         if(message.toString().contains("already full")) {
             errorMessageLobbyFull.setVisible(true);
         } else {
             errorMessagePasswordIncorrect.setVisible(true);
         }
-        LOG.error("Lobby join error {}", message);
-
     }
+
+    /**
+     * Handles successfully joined lobbies
+     *
+     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this
+     * method is called.
+     *
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         Platform.runLater(() -> {
-            if(lobbiesList != null && loggedInUser != null && message.getLobby().getUsers().contains(loggedInUser)) {
+            if(lobbiesList != null && loggedInUser != null ) {
                 lobbiesList.remove(message.getName());
+                lobbiesWithOutPassword.remove(message.getName());
             }
         });
     }
 
+    /**
+     * Handles successfully left lobbies
+     *
+     * If an LobbyLeaveUserResponse object is detected on the EventBus this
+     * method is called.
+     *
+     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
     @Subscribe
     public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
         Platform.runLater(() -> {
             if(lobbiesList != null && loggedInUser != null) {
                 lobbiesList.add(message.getName());
+                lobbiesWithOutPassword.add(message.getName());
             }
         });
     }
@@ -192,10 +197,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     @Subscribe
     public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
         Platform.runLater(() -> {
-            lobbiesMap.put(message.getName(), message.getLobby());
             if(lobbiesList != null && loggedInUser != null && !message.getLobby().getUsers().contains(loggedInUser)) {
                 lobbiesList.add(message.getName());
-                LOG.info("User " + message.getUser().getUsername() + " created the lobby " + message.getName());
+                lobbiesWithOutPassword.add(message.getName());
             }
         });
     }
@@ -214,9 +218,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private void onLobbyDroppedMessage(LobbyDroppedMessage message){
         Platform.runLater(() -> {
             if(lobbiesList != null && loggedInUser != null && !message.getUser().equals(loggedInUser)) {
-                lobbiesMap.remove(message.getName());
                 lobbiesList.remove(message.getName());
-                LOG.info("User " + message.getUser().getUsername() + " deleted the lobby " + message.getName());
+                lobbiesWithOutPassword.remove(message.getName());
             }
         });
     }
@@ -301,7 +304,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @author Maxim Erden
      * @since 2022-12-11
      */
-
     @FXML
     void onButtonJoinLobbyInJoinOrCreateViewPressed(ActionEvent actionEvent) {
         if(lobbiesView.getSelectionModel().getSelectedItem() == null){
@@ -315,18 +317,21 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * it opens the PasswordView where you need to put in the password in require
      * to join the selected Lobby
      *
-     *
      * @param click The MouseEvent generated by double-clicking the Listview
      * @author Maxim Erden
      * @since 2022-12-11
      */
     public void onMouseClick(MouseEvent click) {
+        String selectedLobby = lobbiesView.getSelectionModel().getSelectedItem();
+
         if (click.getClickCount() == 2 && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword().equals("WITHOUT_PASSWORD")) {
-                lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
-            } else {
-                updatePasswordView();
+            for(String lobbyWithoutPassword : lobbiesWithOutPassword) {
+                if(lobbyWithoutPassword.equals(selectedLobby)) {
+                    lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem(), (UserDTO) loggedInUser, "");
+                    updatePasswordView();
+                }
             }
+            updatePasswordView();
         }
     }
 

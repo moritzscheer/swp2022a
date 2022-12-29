@@ -23,6 +23,7 @@ import java.util.Objects;
 public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
 
     private final ArrayList<LobbyDTO> lobbies = new ArrayList<>();
+    private final ArrayList<LobbyDTO> lobbiesWithoutPassword = new ArrayList<>();
 
     /**
      * Default Constructor
@@ -43,12 +44,15 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * List contains copies of the User objects. These copies have their password
      * variable set to an empty String.
      *
-     * @param lobbies Collection of all users currently logged in
+     * @param lobbyCollection Collection of all users currently logged in
      * @author Moritz Scheer
      * @since 2022-11-29
      */
-    public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbies) {
-        for (LobbyDTO lobby : lobbies) {
+    public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbyCollection) {
+        for (LobbyDTO lobby : lobbyCollection) {
+            if(lobby.getPassword().equals("")) {
+                lobbiesWithoutPassword.add(lobby);
+            }
             this.lobbies.add(lobby.createWithoutPassword(lobby));
         }
     }
@@ -68,13 +72,24 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     }
 
     /**
-     * Getter for the list of users currently logged in
+     * Getter for the list of lobbies
      *
-     * @return list of users currently logged in
+     * @return list of lobbies
      * @author Moritz Scheer
      * @since 2022-11-29
      */
     public List<LobbyDTO> getLobbies() {
         return lobbies;
+    }
+
+    /**
+     * Getter for the list of lobbies with no password
+     *
+     * @return list of lobbies with no password
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public List<LobbyDTO> getLobbiesWithoutPassword() {
+        return lobbiesWithoutPassword;
     }
 }

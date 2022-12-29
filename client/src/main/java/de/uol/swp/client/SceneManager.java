@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
+import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
@@ -86,10 +87,13 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
 
-    private LobbyPresenter lobbyPresenter;
-    private final Injector injector;
+    @Inject
+    private LobbyService lobbyService;
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
+    private LobbyPresenter lobbyPresenter;
+
+    private final Injector injector;
 
     @Inject
     public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage) throws IOException {
@@ -290,20 +294,6 @@ public class SceneManager {
         if(changeAccountOptionsParent == null) {
             changeAccountOptionsParent = initPresenter(AccountMenuPresenter.FXML);
         }
-    }
-
-    /**
-     * Initializes the lobby view
-     *
-     * If the lobbyParent is null it gets set to a new Parent showing the lobby view
-     * as specified by the LobbyView FXML file.
-     *
-     * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    private void initLobbyView(Integer lobbyID) throws IOException {
-        lobbyParent = initLobbyPresenter(lobbyID);
     }
 
     /**
@@ -832,10 +822,11 @@ public class SceneManager {
     private void setLobbyTab(LobbyDTO lobby, UserDTO user) {
         try {
             // load File and Controller
-            initLobbyView(lobby.getLobbyID());
+            lobbyParent = initLobbyPresenter(lobby.getLobbyID());
 
             // update Information in Controller
             lobbyPresenter.updateInformation(lobby, user);
+            //lobbyPresenter.setEventBus(eventBus);
 
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
             if(lobby.isMultiplayer()) {
@@ -846,7 +837,6 @@ public class SceneManager {
 
             // create new Tab and switch to the tab
             eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
-
         } catch (IOException e) {
             e.printStackTrace();
         }

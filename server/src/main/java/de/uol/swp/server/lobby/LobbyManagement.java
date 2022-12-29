@@ -109,34 +109,34 @@ public class LobbyManagement {
     /**
      * getter for all lobby
      *
-     * @return Map<Integer, LobbyDTO> containing all the open lobbies
+     * @return List<LobbyDTO> containing all the open lobbies
      * @author Moritz Scheer
      * @since 2022-11-30
      */
-    public Map<Integer, LobbyDTO> getLobbies() {
-        Map<Integer, LobbyDTO> tmp = new HashMap<>();
+    public List<LobbyDTO> getLobbies() {
+        List<LobbyDTO> list = new ArrayList<>();
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            tmp.put(entry.getKey(), entry.getValue().createWithoutUserPassword(entry.getValue()));
+            list.add(entry.getValue().createWithoutUserPassword(entry.getValue()));
         }
-        return tmp;
+        return list;
     }
 
     /**
      * getter for the lobby List
      *
-     * @return Map<Integer, LobbyDTO> containing all the open multiplayer lobbies
+     * @return List<LobbyDTO> containing all the open multiplayer lobbies
      * @author Moritz Scheer
      * @since 2022-11-30
      */
-    public Map<Integer, LobbyDTO> getMultiplayerLobbies() {
-        Map<Integer, LobbyDTO> tmp = new HashMap<>();
+    public List<LobbyDTO> getMultiplayerLobbies() {
+        List<LobbyDTO> list = new ArrayList<>();
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getValue().getName() != null) {
-                tmp.put(entry.getKey(), entry.getValue().createWithoutUserPassword(entry.getValue()));
+            if (entry.getValue().isMultiplayer()) {
+                list.add(entry.getValue().createWithoutUserPassword(entry.getValue()));
             }
         }
-        return tmp;
+        return list;
     }
 }
