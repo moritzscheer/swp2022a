@@ -45,10 +45,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
@@ -92,6 +94,8 @@ public class SceneManager {
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
     private LobbyPresenter lobbyPresenter;
+    private double screenSizeWidth;
+    private double screenSizeHeight;
 
     private final Injector injector;
 
@@ -100,6 +104,41 @@ public class SceneManager {
         eventBus.register(this);
         this.eventBus = eventBus;
         this.primaryStage = primaryStage;
+
+        /**
+         * Enables the screen to be resizeable
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        primaryStage.setResizable(true);
+
+        /**
+         * Set the screen in maximized window
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        primaryStage.setMaximized(false);
+
+        /**
+         * Gets the current width and height of screen of its user
+         *
+         * @author Tommy Dang
+         * @since 2022-12-15
+         */
+        screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
+        screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
+
+        /**
+         * Set the minimum size of the stage
+         *
+         * @author Tommy Dang
+         * @since 2022-12-23
+         */
+        primaryStage.setMinWidth(1000);
+        primaryStage.setMinHeight(600);
+
         this.injector = injected;
         initViews();
     }
@@ -226,7 +265,7 @@ public class SceneManager {
     private void initTabView() throws IOException {
         if (tabScene == null) {
             Parent rootPane = initPresenter(TabPresenter.FXML);
-            tabScene = new Scene(rootPane, 1600,880);
+            tabScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
             tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
