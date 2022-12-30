@@ -9,7 +9,7 @@ repos:
     rev: v1.4.2
     hooks:
     - id: pretty-format-java
-      args: [--autofix --aosp]
+      args: [--autofix, --aosp]
 -   repo: https://github.com/comkieffer/pre-commit-xmllint.git
     rev: 1.0.0
     hooks:
