@@ -104,6 +104,12 @@ https://www.digitalocean.com/community/questions/how-to-fix-docker-got-permissio
 
 
 
+### READ MORE
+
+[Google Java Format](https://github.com/google/google-java-format/wiki/FAQ)
+
+[Google Java Format 2](https://github.com/marketplace/actions/google-java-format)
+
 ### Testing other hooks
 
 `.pre-commit-config.yaml`
