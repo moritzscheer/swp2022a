@@ -24,7 +24,7 @@
                      <Font size="18.0" />
                   </font>
                </Button>
-               <Button layoutX="1310.0" layoutY="44.0" mnemonicParsing="false" onAction="#onButtonJoinLobbyInJoinorCreateViewPressed" prefHeight="39.0" prefWidth="107.0" text="Join Lobby" />
+               <Button layoutX="1310.0" layoutY="44.0" mnemonicParsing="false" onAction="#onButtonJoinLobbyInJoinOrCreateViewPressed" prefHeight="39.0" prefWidth="107.0" text="Join Lobby" />
 
 
          </AnchorPane>

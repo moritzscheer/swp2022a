@@ -1,5 +1,7 @@
 package de.uol.swp.client.lobby.event;
 
+import de.uol.swp.common.user.User;
+
 /**
  * * Event used to show the Lobby window
  *
@@ -10,4 +12,15 @@ package de.uol.swp.client.lobby.event;
  * @see de.uol.swp.client.SceneManager
  * @since 2022-15-11
  */
-public class ShowLobbyViewEvent {}
+public class ShowLobbyViewEvent {
+
+    private final User user;
+
+    public ShowLobbyViewEvent(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
+}

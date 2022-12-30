@@ -81,23 +81,12 @@ public class LobbyDTO implements Lobby {
                         lobby.getName(),
                         lobby.getOwner().getWithoutPassword(),
                         lobby.getPassword(),
-                        true);
+                        lobby.isMultiplayer());
         for (User users : lobby.getUsers()) {
             if (!users.equals(lobby.getOwner()))
                 tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
         }
         return tmp;
-    }
-
-    /**
-     * Getter for the lobby Name
-     *
-     * @return String containing the lobby Name of the lobby
-     * @since 2022-12-06
-     */
-    @Override
-    public String getName() {
-        return name;
     }
 
     /**
@@ -159,6 +148,17 @@ public class LobbyDTO implements Lobby {
     }
 
     /**
+     * Getter for the lobby Name
+     *
+     * @return String containing the lobby Name of the lobby
+     * @since 2022-12-06
+     */
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    /**
      * Getter for the current lobby owner
      *
      * @return User containing lobby owner data
@@ -208,6 +208,7 @@ public class LobbyDTO implements Lobby {
      * @return Integer containing the ID
      * @since 2022-12-01
      */
+    @Override
     public Integer getLobbyID() {
         return this.lobbyID;
     }

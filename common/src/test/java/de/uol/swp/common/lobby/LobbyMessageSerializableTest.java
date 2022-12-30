@@ -27,7 +27,7 @@ class LobbyMessageSerializableTest {
                         LobbyJoinUserRequest.class));
         assertTrue(
                 SerializationTestHelper.checkSerializableAndDeserializable(
-                        new LobbyLeaveUserRequest("test", defaultUser),
+                        new LobbyLeaveUserRequest("test", defaultUser, 1, true),
                         LobbyLeaveUserRequest.class));
         assertTrue(
                 SerializationTestHelper.checkSerializableAndDeserializable(
@@ -35,6 +35,7 @@ class LobbyMessageSerializableTest {
                         UserJoinedLobbyMessage.class));
         assertTrue(
                 SerializationTestHelper.checkSerializableAndDeserializable(
-                        new UserLeftLobbyMessage("test", defaultUser), UserLeftLobbyMessage.class));
+                        new UserLeftLobbyMessage("test", defaultUser, new UserDTO("", "", "")),
+                        UserLeftLobbyMessage.class));
     }
 }

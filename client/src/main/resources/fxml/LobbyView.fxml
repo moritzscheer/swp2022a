@@ -56,7 +56,14 @@
             <Label fx:id="textFieldOwner" layoutX="200.0" layoutY="480.0" text="Owner" />
             <Spinner fx:id="spinnerCheckpoints" layoutX="200.0" layoutY="563.0" prefHeight="25.0" prefWidth="70.0" />
          </children></Pane>
-      <Button id="lobbyButton" layoutX="1350.0" layoutY="835.0" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" />
-      <Button id="lobbyButton" layoutX="50.0" layoutY="835.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" />
+      <Button id="lobbyButton" fx:id="startButton" layoutX="1350.0" layoutY="835.0" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" />
+      <Button id="lobbyButton" fx:id="backButton" layoutX="50.0" layoutY="835.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" />
+       <AnchorPane fx:id="infoBox" layoutX="623.0" layoutY="361.0" prefHeight="150.0" prefWidth="300.0" style="-fx-background-color: grey;" visible="false">
+           <children>
+               <Button id="buttonBack" fx:id="yesButton" alignment="CENTER" layoutX="14.0" layoutY="65.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false" />
+               <Button id="buttonBack" fx:id="noButton" alignment="CENTER" layoutX="151.0" layoutY="65.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed" prefHeight="40.0" prefWidth="119.0" text="No" visible="false" />
+               <Label fx:id="infoLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="27.0" prefWidth="271.0" text="Do you want to leave the Lobby?" visible="false" />
+           </children>
+       </AnchorPane>
    </children>
 </AnchorPane>

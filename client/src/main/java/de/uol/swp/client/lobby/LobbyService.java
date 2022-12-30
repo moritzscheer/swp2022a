@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
 import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
 import de.uol.swp.common.user.UserDTO;
 
@@ -41,9 +42,9 @@ public class LobbyService {
      * @author Moritz Scheer
      * @since 2022-11-23
      */
-    public void createNewLobby(String name, UserDTO user, Boolean isMultiplayer, String password) {
+    public void createNewLobby(String name, UserDTO user, Boolean multiplayer, String password) {
         CreateLobbyRequest createLobbyRequest =
-                new CreateLobbyRequest(name, user, isMultiplayer, password);
+                new CreateLobbyRequest(name, user, multiplayer, password);
         eventBus.post(createLobbyRequest);
     }
 
@@ -59,6 +60,23 @@ public class LobbyService {
     public void joinLobby(String name, UserDTO user, String password) {
         LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
         eventBus.post(joinUserRequest);
+    }
+
+    /**
+     * Posts a request to leave a specified lobby on the EventBus
+     *
+     * @param name Name of the lobby the user wants to join
+     * @param user User who wants to join the lobby
+     * @param lobbyID To identify the lobby with a unique key
+     * @param multiplayer Boolean value to query if the user is in the multiplayer
+     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @author Daniel Merzo, Moritz Scheer
+     * @since 2022-12-15
+     */
+    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer) {
+        LobbyLeaveUserRequest leaveUserRequest =
+                new LobbyLeaveUserRequest(name, user, lobbyID, multiplayer);
+        eventBus.post(leaveUserRequest);
     }
 
     /**

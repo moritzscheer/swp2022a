@@ -22,13 +22,11 @@ class LobbyDTOTest {
 
     private static final User defaultUser = new UserDTO("marco", "marco", "marco@grawunder.de");
     private static final User notInLobbyUser = new UserDTO("no", "marco", "no@grawunder.de");
-
-    private static final int NO_USERS = 7;
     private static final List<UserDTO> users;
 
     static {
         users = new ArrayList<>();
-        for (int i = 0; i < NO_USERS; i++) {
+        for (int i = 0; i < 7; i++) {
             users.add(new UserDTO("marco" + i, "marco" + i, "marco" + i + "@grawunder.de"));
         }
         Collections.sort(users);
@@ -39,89 +37,145 @@ class LobbyDTOTest {
     // -----------------------------------------------------
 
     /**
-     * This test check whether a multiplayer lobby is created correctly
+     * This test check whether the createWithoutPassword method creates the lobby correctly
      *
-     * <p>If the variables are not set correctly the test fails
+     * <p>The test fails, if the lobby password is still set
      *
      * @author Moritz Scheer
-     * @since 2019-10-08
+     * @since 2022-12-20
      */
     @Test
-    void createLobbyTest() {
-        Lobby lobbyMP = new LobbyDTO(1, "test", defaultUser, "1234", true);
+    void createWithoutPasswordTest() {
+        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true);
+        lobby = lobby.createWithoutPassword(lobby);
 
-        assertEquals("test", lobbyMP.getName());
-        assertEquals(1, lobbyMP.getUsers().size());
-        assertEquals(defaultUser, lobbyMP.getUsers().iterator().next());
-        assertEquals("1234", lobbyMP.getPassword());
-        assertEquals(true, lobbyMP.isMultiplayer());
+        assertEquals(1, lobby.getLobbyID());
+        assertEquals("lobby", lobby.getName());
+        assertEquals(defaultUser, lobby.getOwner());
+        assertEquals(null, lobby.getPassword());
+        assertEquals(true, lobby.isMultiplayer());
+    }
 
-        Lobby lobbySP = new LobbyDTO(2, null, defaultUser, null, false);
+    /**
+     * This test check whether the createWithoutUserPassword method creates the lobby correctly
+     *
+     * <p>The test fails, if the passwords of the users are still set
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void createWithoutUserPassword() {
+        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true);
+        for (User user : users) {
+            lobby.joinUser(user, "1234");
+        }
+        lobby = lobby.createWithoutUserPassword(lobby);
 
-        assertEquals(null, lobbySP.getName());
-        assertEquals(1, lobbySP.getUsers().size());
-        assertEquals(defaultUser, lobbySP.getUsers().iterator().next());
-        assertEquals(null, lobbySP.getPassword());
-        assertEquals(false, lobbySP.isMultiplayer());
+        assertEquals(1, lobby.getLobbyID());
+        assertEquals("lobby", lobby.getName());
+        assertEquals(defaultUser, lobby.getOwner());
+        assertEquals("1234", lobby.getPassword());
+        assertEquals(true, lobby.isMultiplayer());
+
+        for (User user : lobby.getUsers()) {
+            assertEquals("", user.getPassword());
+        }
     }
 
     // -----------------------------------------------------
-    // Join User Lobby Tests
+    // Join Lobby Tests
     // -----------------------------------------------------
+
+    /**
+     * This test check whether an IllegalArgumentException is thrown, if the user wants to join a
+     * singleplayer lobby
+     *
+     * <p>The test fails, if no exception is thrown
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void joinUserSingleplayerLobbyTest() {
+        Lobby lobby = new LobbyDTO(2, null, defaultUser, null, false);
+
+        assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(users.get(2), "4321"));
+    }
 
     /**
      * This test check whether a user can join a lobby
      *
-     * <p>The test fails if the size of the user list of the lobby does not get bigger or a user who
-     * joined is not in the list.
+     * <p>The test fails, if the size of the user list of the lobby does not get bigger or a user
+     * who joined is not in the list.
      *
      * <p>Else the test fails, if a user can join a singleplayer lobby or puts in an incorrect
-     * password.+
+     * password.
      *
      * @author Moritz Scheer
-     * @since 2019-10-08
+     * @since 2022-12-20
      */
     @Test
-    void joinUserLobbyTest() {
-        Lobby lobbyMP = new LobbyDTO(1, "test", defaultUser, "1234", true);
+    void joinUserMultiplayerLobbyTest() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
-        lobbyMP.joinUser(users.get(0), "1234");
-        assertEquals(2, lobbyMP.getUsers().size());
-        assertTrue(lobbyMP.getUsers().contains(users.get(0)));
+        lobby.joinUser(users.get(0), "1234");
+        assertEquals(2, lobby.getUsers().size());
+        assertTrue(lobby.getUsers().contains(users.get(0)));
 
-        lobbyMP.joinUser(users.get(1), "1234");
-        assertEquals(3, lobbyMP.getUsers().size());
-        assertTrue(lobbyMP.getUsers().contains(users.get(1)));
-
-        // password is incorrect
-        assertThrows(IllegalArgumentException.class, () -> lobbyMP.joinUser(users.get(2), "4321"));
-
-        lobbyMP.joinUser(users.get(2), "1234");
-        lobbyMP.joinUser(users.get(3), "1234");
-        lobbyMP.joinUser(users.get(4), "1234");
-        lobbyMP.joinUser(users.get(5), "1234");
-        lobbyMP.joinUser(users.get(6), "1234");
-
-        // lobby is full
-        assertThrows(
-                IllegalArgumentException.class, () -> lobbyMP.joinUser(notInLobbyUser, "4321"));
-
-        Lobby lobbySP = new LobbyDTO(2, null, defaultUser, null, false);
-
-        // cannot join singleplayer lobby
-        assertThrows(IllegalArgumentException.class, () -> lobbySP.joinUser(users.get(2), "4321"));
+        lobby.joinUser(users.get(1), "1234");
+        assertEquals(3, lobby.getUsers().size());
+        assertTrue(lobby.getUsers().contains(users.get(1)));
     }
+
+    /**
+     * This test check whether an IllegalArgumentException is thrown, if the user wants to join the
+     * lobby, with an incorrect password
+     *
+     * <p>The test fails, if no exception is thrown
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void joinUserPasswordIncorrectTest() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(users.get(0), "4321"));
+    }
+
+    /**
+     * This test check whether a user can join a lobby when it is full
+     *
+     * <p>The test fails, if the user can join the lobby, when the lobbyslot of 8 is reached.
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void joinUserLobbyFullTest() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+        for (User user : users) {
+            lobby.joinUser(user, "1234");
+        }
+
+        assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(notInLobbyUser, "4321"));
+    }
+
+    // -----------------------------------------------------
+    // leave Lobby Tests
+    // -----------------------------------------------------
 
     /**
      * This test check whether a user can leave a lobby
      *
-     * <p>The test fails if the size of the user list of the lobby does not get smaller or the user
+     * <p>The test fails, if the size of the user list of the lobby does not get smaller or the user
      * who left is still in the list.
      *
      * @since 2019-10-08
      */
     @Test
-    void leaveUserLobbyTest() {
+    void leaveUserTest() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
         for (User user : users) {
             lobby.joinUser(user, "1234");
@@ -135,11 +189,28 @@ class LobbyDTOTest {
     }
 
     /**
+     * This test check whether an IllegalArgumentException is thrown, if the user that wants to
+     * leave the lobby and is the last user in the lobby
+     *
+     * <p>The test fails, if no exception is thrown
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void leaveLastUserTest() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
+    }
+
+    /**
      * Test to check if the owner can leave the Lobby correctly
      *
-     * <p>This test fails if the owner field is not updated if the owner leaves the lobby or if he
+     * <p>This test fails, if the owner field is not updated if the owner leaves the lobby or if he
      * still is in the user list of the lobby.
      *
+     * @author Moritz Scheer
      * @since 2019-10-08
      */
     @Test
@@ -153,13 +224,19 @@ class LobbyDTOTest {
 
         assertNotEquals(defaultUser, lobby.getOwner());
         assertTrue(users.contains(lobby.getOwner()));
+        assertEquals(lobby.getUsers().iterator().next(), lobby.getOwner());
     }
+
+    // -----------------------------------------------------
+    // other Tests
+    // -----------------------------------------------------
 
     /**
      * This checks if the owner of a lobby can be updated and if he has have joined the lobby
      *
-     * <p>This test fails if the owner cannot be updated or does not have to be joined
+     * <p>This test fails, if the owner cannot be updated or does not have to be joined
      *
+     * @author Moritz Scheer
      * @since 2019-10-08
      */
     @Test
@@ -176,16 +253,68 @@ class LobbyDTOTest {
     }
 
     /**
-     * This test check whether a lobby can be empty
+     * This test gets the owner of the lobby
      *
-     * <p>If the leaveUser function does not throw an Exception the test fails
-     *
-     * @since 2019-10-08
+     * @author Moritz Scheer
+     * @since 2022-12-20
      */
     @Test
-    void assureNonEmptyLobbyTest() {
+    void getOwner() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
-        assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
+        assertEquals(defaultUser, lobby.getOwner());
+    }
+
+    /**
+     * This test gets the users of the lobby
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void getUsers() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertEquals(true, lobby.getUsers().contains(defaultUser));
+        assertEquals(1, lobby.getUsers().size());
+    }
+
+    /**
+     * This test gets the password of the lobby
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void getPassword() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertEquals("1234", lobby.getPassword());
+    }
+
+    /**
+     * This test gets the gamemode status of the lobby
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void isMultiplayer() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertEquals(true, lobby.isMultiplayer());
+    }
+
+    /**
+     * This test gets the lobbyID of the lobby
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-20
+     */
+    @Test
+    void getLobbyID() {
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+
+        assertEquals(1, lobby.getLobbyID());
     }
 }

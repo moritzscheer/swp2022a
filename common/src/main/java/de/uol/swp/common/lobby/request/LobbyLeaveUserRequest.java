@@ -12,6 +12,9 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
 
+    private Integer lobbyID;
+    private Boolean multiplayer;
+
     /**
      * Default constructor
      *
@@ -25,9 +28,37 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
      *
      * @param lobbyName name of the lobby
      * @param user user who wants to leave the lobby
-     * @since 2019-10-08
+     * @param lobbyID To identify the lobby with a unique key
+     * @param multiplayer Boolean value to query if the user is in the multiplayer
+     * @author Daniel Merzo
+     * @since 2022-12-15
      */
-    public LobbyLeaveUserRequest(String lobbyName, UserDTO user) {
+    public LobbyLeaveUserRequest(
+            String lobbyName, UserDTO user, Integer lobbyID, Boolean multiplayer) {
         super(lobbyName, user);
+        this.lobbyID = lobbyID;
+        this.multiplayer = multiplayer;
+    }
+
+    /**
+     * Getter for the lobbyID variable
+     *
+     * @return Integer containing the Lobby ID
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    public Integer getLobbyID() {
+        return lobbyID;
+    }
+
+    /**
+     * Getter for the multiplayer variable
+     *
+     * @return Boolean containing the multiplayer
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    public Boolean isMultiplayer() {
+        return multiplayer;
     }
 }
