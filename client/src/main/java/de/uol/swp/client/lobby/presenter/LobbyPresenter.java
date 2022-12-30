@@ -4,20 +4,28 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
+import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import de.uol.swp.common.user.UserDTO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
@@ -43,14 +51,12 @@ public class LobbyPresenter extends AbstractPresenter {
     private User owner;
     private ObservableList<String> users;
     private String password;
-    private Boolean isMultiplayer;
+    private Boolean multiplayer;
     private Integer slots = 1;
 
     @Inject
     private LobbyService lobbyService;
 
-    @FXML
-    private Label labelPlayer;
     @FXML
     private ListView<String> usersView;
     @FXML
@@ -66,7 +72,18 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private Label labelMapName;
     @FXML
-    private Button buttonBack;
+    private AnchorPane infoBox;
+    @FXML
+    private Button yesButton;
+    @FXML
+    private Button noButton;
+    @FXML
+    private Label infoLabel;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button backButton;
+
 
     /**
      * Default Constructor
@@ -92,13 +109,13 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        LOG.info("Lobby " + message.getName() + " created successful");
+        LOG.info("Lobby " + message.getName() + " successfully created");
 
         //safe information in the Client
         loggedInUser = message.getUser();
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(loggedInUser));
     }
 
     /**
@@ -117,10 +134,87 @@ public class LobbyPresenter extends AbstractPresenter {
 
         //safe information in the Client
         loggedInUser = message.getUser();
-        System.out.println(message.getLobby().getOwner().getUsername());
         updateInformation(message.getLobby());
 
-        eventBus.post(new ShowLobbyViewEvent());
+        eventBus.post(new ShowLobbyViewEvent(loggedInUser));
+    }
+
+    /**
+     * Handles when a lobby is dropped
+     *
+     * If a LobbyDroppedResponse is posted to the EventBus the
+     * lobby specific variable are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param message the LobbyDroppedResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyDroppedResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyDroppedResponse(LobbyDroppedResponse message){
+        LOG.info("Lobby " + message.getName() + " successfully deleted");
+        if(multiplayer) {
+            eventBus.post(new ShowJoinOrCreateViewEvent());
+        } else {
+            eventBus.post(new ShowMainMenuViewEvent(message.getUser()));
+        }
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Handles when a user leave the lobby
+     *
+     * If a LobbyLeaveUserResponse is posted to the EventBus the
+     * user's specific variable to the lobby are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param message the LobbyLeaveUserResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message){
+        LOG.info("Lobby " + message.getName() + " successfully left");
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Handles when the lobby was not found
+     *
+     * If a LobbyLeaveExceptionResponse is posted to the EventBus the
+     * user's specific variable to the lobby are set to null and
+     * the ShowJoinOrCreateViewEvent is triggered.
+     *
+     * @param message the LobbyLeaveUserResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyLeaveUserResponse
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    void onLobbyLeaveExceptionResponse(LobbyLeaveExceptionResponse message){
+        LOG.error(message.toString());
+        eventBus.post(new ShowJoinOrCreateViewEvent());
+        deleteLobbyData();
+        lobbyService.retrieveAllLobbies();
+    }
+
+    /**
+     * Delete the lobby date
+     *
+     * @author Daniel Merzo
+     * @since 2022-12-18
+     */
+    private void deleteLobbyData() {
+        lobbyID = null;
+        owner = null;
+        loggedInUser = null;
+        lobbyName = null;
+        multiplayer = null;
     }
 
     /**
@@ -137,7 +231,7 @@ public class LobbyPresenter extends AbstractPresenter {
         lobbyName = message.getName();
         owner = message.getOwner();
         password = message.getPassword();
-        isMultiplayer = message.isMultiplayer();
+        multiplayer = message.isMultiplayer();
         slots = message.getUsers().size();
 
         //display data in GUI
@@ -160,7 +254,7 @@ public class LobbyPresenter extends AbstractPresenter {
      *
      * If a new UserJoinedLobbyMessage object is posted to the EventBus the name of the newly
      * joined user is appended to the user list in the lobby.
-     * Furthermore if the LOG-Level is set to DEBUG the message "New user {@literal
+     * Furthermore, if the LOG-Level is set to DEBUG the message "New user {@literal
      * <Username>} joined the lobby." is displayed in the log.
      *
      * @param message the UserJoinedLobbyMessage object seen on the EventBus
@@ -173,8 +267,33 @@ public class LobbyPresenter extends AbstractPresenter {
         Platform.runLater(() -> {
             if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
                 users.add(message.getUser().getUsername());
+
                 slots++;
                 textFieldOnlineUsers.setText(String.valueOf(slots));
+        });
+    }
+
+    /**
+     * Handles when a user left the Lobby
+     *
+     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @Subscribe
+    private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
+        LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
+        Platform.runLater(() -> {
+            users.remove(message.getUser().getUsername());
+
+            slots--;
+            textFieldOnlineUsers.setText(String.valueOf(slots));
+
+            owner = message.getNewOwner();
+            textFieldOwner.setText(owner.getUsername());
         });
     }
 
@@ -186,8 +305,8 @@ public class LobbyPresenter extends AbstractPresenter {
      * this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged in
+     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged-in
      *                 users
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29
@@ -219,7 +338,62 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onBackButtonPressed(ActionEvent actionEvent) {
-        // leave user
+      updateInfoBox();
+    }
+
+    /**
+     * Method called when the yes button in the infoBox is pressed
+     *
+     * This Method is called when the yes button is pressed.
+     *
+     * @author Daniel Merzo
+     * @param actionEvent The ActionEvent generated by pressing the cancel button
+     * @since 2022-12-15
+     */
+    @FXML
+    private void onYesButtonPressed(ActionEvent actionEvent){
+        lobbyService.leaveLobby(lobbyName,(UserDTO) loggedInUser, lobbyID, multiplayer);
+        updateInfoBox();
+    }
+
+    /**
+     * Method called when the no button in the infoBox is pressed
+     *
+     * This Method is called when the no button is pressed.
+     *
+     * @param actionEvent The ActionEvent generated by pressing the cancel button
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    @FXML
+    private void onNoButtonPressed(ActionEvent actionEvent){
+        updateInfoBox();
+    }
+
+    /**
+     * Auxiliary method for the visibility of the infoBox
+     *
+     * If this method is called, it is possible to make the elements of a scene visible or invisible.
+     *
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    private void updateInfoBox(){
+        if(!infoBox.isVisible()){
+            infoBox.setVisible(true);
+            yesButton.setVisible(true);
+            noButton.setVisible(true);
+            infoLabel.setVisible(true);
+            startButton.setDisable(true);
+            backButton.setDisable(true);
+        }else {
+            infoBox.setVisible(false);
+            yesButton.setVisible(false);
+            noButton.setVisible(false);
+            infoLabel.setVisible(false);
+            startButton.setDisable(false);
+            backButton.setDisable(false);
+        }
     }
 
     /**
@@ -234,4 +408,8 @@ public class LobbyPresenter extends AbstractPresenter {
     private void onStartButtonPressed(ActionEvent actionEvent) {
         // start game
     }
+
+
+
+
 }
