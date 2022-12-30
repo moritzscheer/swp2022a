@@ -10,93 +10,129 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="Background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.main.MainMenuPresenter">
-   <children>
+<AnchorPane id="Background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/BaseViewStyle.css"
+            xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="de.uol.swp.client.main.MainMenuPresenter">
+   <HBox alignment="CENTER" layoutX="629.0" layoutY="176.0" prefHeight="217.0" prefWidth="720.0"
+         AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="111.0">
+      <VBox id="LogoBox" alignment="CENTER" prefHeight="217.0" prefWidth="720.0" HBox.hgrow="NEVER">
+         <HBox.margin>
+            <Insets/>
+         </HBox.margin>
+      </VBox>
+   </HBox>
 
-      <HBox alignment="CENTER" layoutX="629.0" layoutY="176.0" prefHeight="217.0" prefWidth="720.0" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="111.0">
-         <children>
-            <VBox id="LogoBox" alignment="CENTER" prefHeight="217.0" prefWidth="720.0" HBox.hgrow="NEVER">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </VBox>
-         </children>
-      </HBox>
-
-      <HBox alignment="CENTER" layoutX="845.0" layoutY="437.0" prefHeight="362.0" prefWidth="206.0" AnchorPane.bottomAnchor="281.0" AnchorPane.leftAnchor="845.0" AnchorPane.rightAnchor="845.0" AnchorPane.topAnchor="437.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="362.0" prefWidth="103.0" HBox.hgrow="NEVER">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <children>
-                  <GridPane alignment="CENTER" hgap="10.0" prefHeight="362.0" prefWidth="272.0" scaleShape="false" vgap="10.0">
-                     <columnConstraints>
-                        <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
-                        <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity" minWidth="100.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                        <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0" valignment="CENTER" vgrow="NEVER" />
-                     </rowConstraints>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                     </padding>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                     <children>
-                        <Button fx:id="singleplayerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSingleplayerButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Singleplayer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="multiplayerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMultiplayerButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="optionsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Settings" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAccountOptionButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Account" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="creditsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCreditButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Credits" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="ruleBookButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onRulebookButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Game rules" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="5" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLogout" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="6" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="logoutButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="7" GridPane.vgrow="NEVER">
-                           <font>
-                              <Font name="sans-serif" size="16.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </GridPane>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </children>
+   <HBox alignment="CENTER" layoutX="845.0" layoutY="437.0" prefHeight="362.0" prefWidth="206.0"
+         AnchorPane.bottomAnchor="281.0" AnchorPane.leftAnchor="845.0" AnchorPane.rightAnchor="845.0"
+         AnchorPane.topAnchor="437.0">
+      <VBox alignment="CENTER" prefHeight="362.0" prefWidth="103.0" HBox.hgrow="NEVER">
+         <HBox.margin>
+            <Insets/>
+         </HBox.margin>
+         <GridPane alignment="CENTER" hgap="10.0" prefHeight="362.0" prefWidth="272.0" scaleShape="false"
+                   vgap="10.0">
+            <columnConstraints>
+               <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity"
+                                  minWidth="100.0" prefWidth="100.0"/>
+               <ColumnConstraints fillWidth="false" halignment="CENTER" hgrow="NEVER" maxWidth="-Infinity"
+                                  minWidth="100.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+               <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="34.0" prefHeight="34.0"
+                               valignment="CENTER" vgrow="NEVER"/>
+            </rowConstraints>
+            <padding>
+               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+            </padding>
+            <opaqueInsets>
+               <Insets/>
+            </opaqueInsets>
+            <Button fx:id="singleplayerButton" alignment="CENTER" contentDisplay="CENTER"
+                    mnemonicParsing="false" onAction="#onSingleplayerButtonPressed" prefHeight="34.0"
+                    prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Singleplayer"
+                    textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="multiplayerButton" alignment="CENTER" contentDisplay="CENTER"
+                    mnemonicParsing="false" onAction="#onMultiplayerButtonPressed" prefHeight="34.0"
+                    prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Multiplayer"
+                    textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="1"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="optionsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Settings"
+                    textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="2"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="accountButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onAccountOptionButtonPressed" prefHeight="34.0" prefWidth="220.0"
+                    stylesheets="@../css/BaseViewStyle.css" text="Account" textAlignment="CENTER"
+                    GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="3"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="creditsButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onCreditButtonPressed" prefHeight="34.0" prefWidth="220.0"
+                    stylesheets="@../css/BaseViewStyle.css" text="Credits" textAlignment="CENTER"
+                    GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="4"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="ruleBookButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onRulebookButtonPressed" prefHeight="34.0" prefWidth="220.0"
+                    stylesheets="@../css/BaseViewStyle.css" text="Game rules" textAlignment="CENTER"
+                    GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="5"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    onAction="#onLogout" prefHeight="34.0" prefWidth="220.0"
+                    stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER"
+                    GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="6"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+            <Button fx:id="logoutButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                    prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Exit"
+                    textAlignment="CENTER" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.rowIndex="7"
+                    GridPane.vgrow="NEVER">
+               <font>
+                  <Font name="sans-serif" size="16.0"/>
+               </font>
+            </Button>
+         </GridPane>
+      </VBox>
+   </HBox>
 </AnchorPane>

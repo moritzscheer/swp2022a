@@ -4,17 +4,35 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1600.0" styleClass="Background" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+          stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
     <TabPane fx:id="tabPane" prefHeight="900.0" prefWidth="1600.0">
-        <Tab closable="false" text="main" />
+        <Tab closable="false" text="main"/>
     </TabPane>
-    <Pane fx:id="infoBox" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: grey;" styleClass="InnerBox" translateX="600.0" translateY="400.0" visible="false">
-        <Button fx:id="yesButton" alignment="CENTER" layoutX="240.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" styleClass="lobbyButton" text="Yes" visible="false" />
-        <Button fx:id="noButton" alignment="CENTER" layoutX="40.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed" prefHeight="40.0" prefWidth="119.0" styleClass="lobbyButton" text="No" visible="false" />
-        <Label fx:id="infoLabel1" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to logout" visible="false" />
-        <Label fx:id="infoLabel2" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Do you want to leave the Lobby?" visible="false" />
+    <Pane fx:id="infoBox" minHeight="200.0" minWidth="400.0" prefHeight="200.0" prefWidth="400.0"
+          style="-fx-background-color: grey;" styleClass="InnerBox" visible="false">
+        <Button fx:id="yesButton" alignment="CENTER" layoutX="240.0" layoutY="131.0" maxHeight="40.0"
+                maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false"
+                onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" styleClass="lobbyButton"
+                text="Yes" visible="false"/>
+        <Button fx:id="noButton" alignment="CENTER" layoutX="40.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0"
+                minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed"
+                prefHeight="40.0" prefWidth="119.0" styleClass="lobbyButton" text="No" visible="false"/>
+        <Label fx:id="infoLabel1" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0"
+               text="Are you sure you want to logout" visible="false"/>
+        <Label fx:id="infoLabel2" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0"
+               text="Do you want to leave the Lobby?" visible="false"/>
     </Pane>
-</AnchorPane>
+</GridPane>
