@@ -22,7 +22,7 @@ public class RegisterUserRequest extends AbstractRequestMessage {
      * @param user the new User to create
      * @since 2019-09-02
      */
-    public RegisterUserRequest(User user){
+    public RegisterUserRequest(User user) {
         this.toCreate = user;
     }
 

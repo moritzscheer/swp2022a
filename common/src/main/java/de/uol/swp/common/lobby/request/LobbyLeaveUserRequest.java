@@ -18,8 +18,7 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LobbyLeaveUserRequest() {
-    }
+    public LobbyLeaveUserRequest() {}
 
     /**
      * Constructor
@@ -31,5 +30,4 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
     public LobbyLeaveUserRequest(String lobbyName, UserDTO user) {
         super(lobbyName, user);
     }
-
 }

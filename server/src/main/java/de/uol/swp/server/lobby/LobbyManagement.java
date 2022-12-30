@@ -21,11 +21,11 @@ public class LobbyManagement {
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
-     * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name containing:
-     * (name of the owner)-Singleplayer-(counter)
+     * createSinglePlayerName is beeing called, which creates an unique Singleplayer Name
+     * containing: (name of the owner)-Singleplayer-(counter)
      *
-     * @param name          the name of the lobby to create
-     * @param owner         the user who wants to create a lobby
+     * @param name the name of the lobby to create
+     * @param owner the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
@@ -34,7 +34,9 @@ public class LobbyManagement {
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
-        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
+        while (lobbies.containsKey(lobbyID)) {
+            lobbyID++;
+        }
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
@@ -50,8 +52,7 @@ public class LobbyManagement {
      * Deletes lobby with requested name
      *
      * @param name String containing the name of the lobby to delete
-     * @throws IllegalArgumentException there exists no lobby with the  requested
-     *                                  name
+     * @throws IllegalArgumentException there exists no lobby with the requested name
      * @since 2019-10-08
      */
     public void dropLobby(String name) {

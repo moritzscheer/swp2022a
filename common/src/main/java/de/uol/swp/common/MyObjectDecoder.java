@@ -4,14 +4,15 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.serialization.ClassResolver;
 import io.netty.handler.codec.serialization.ObjectDecoder;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
  * Class used to decode incoming Byte buffer into objects.
  *
- * An Object of this class is used in the start methods of de.uol.swp.client.ClientConnection
- * and de.uol.swp.server.communication.Server
+ * <p>An Object of this class is used in the start methods of de.uol.swp.client.ClientConnection and
+ * de.uol.swp.server.communication.Server
  *
  * @author Marco Grawunder
  * @since 2019-08-13
@@ -39,7 +40,7 @@ public class MyObjectDecoder extends ObjectDecoder {
             }
             decoded = super.decode(ctx, in);
             if (LOG.isTraceEnabled()) {
-                LOG.trace("{} to {}",in , decoded);
+                LOG.trace("{} to {}", in, decoded);
             }
         } catch (Exception e) {
             LOG.error(e);

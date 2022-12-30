@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Base class of all server messages. Basic handling of notifications from the server
- * to a group of clients
+ * Base class of all server messages. Basic handling of notifications from the server to a group of
+ * clients
  *
  * @see de.uol.swp.common.message.AbstractMessage
  * @see de.uol.swp.common.message.ServerMessage

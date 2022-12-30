@@ -18,7 +18,7 @@
                   <Font size="18.0" />
                </font>
             </Button>
-            
+
             <Button id="cancelButton" layoutX="112.0" layoutY="44.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" text="Cancel">
                   <font>
                      <Font size="18.0" />

@@ -1,6 +1,5 @@
 package de.uol.swp.client;
 
-
 /**
  * This class is used as the entry point for the jar file created by maven
  *
@@ -18,6 +17,4 @@ public class Main {
     public static void main(String[] args) {
         ClientApp.main(args);
     }
-
-
 }
