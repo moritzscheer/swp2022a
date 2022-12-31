@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
+import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**

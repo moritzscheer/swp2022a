@@ -7,10 +7,15 @@ import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
+import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
+import de.uol.swp.common.lobby.request.MapChangeRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.response.AllUsersInLobbyResponse;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -109,8 +114,16 @@ public class LobbyPresenter extends AbstractPresenter {
         this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
         ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
             int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
-            textFieldMapName.setText(new Map(mapIndex).getName());
-            mapThumb.setImage(new Image(new Map(mapIndex).getImageResource().toString()));
+            Map m = new Map(mapIndex);
+
+            updateMapDisplay(m);
+
+            if(this.isMultiplayer)
+            {
+                User u = this.loggedInUser;
+                UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+                eventBus.post(new MapChangeRequest(this.lobbyName, dto, m));
+            }
         };
         this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
 
@@ -137,6 +150,12 @@ public class LobbyPresenter extends AbstractPresenter {
         loggedInUser = message.getUser();
         System.out.println(message.getLobby().getOwner().getUsername());
         updateInformation(message.getLobby());
+
+        mapList.setMouseTransparent(true);
+        mapList.setFocusTraversable(false);
+        this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
+        LOG.debug("LobbyID: {}", message.getLobby().getMap());
+        updateMapDisplay(message.getLobby().getMap());
 
         eventBus.post(new ShowLobbyViewEvent());
     }
@@ -210,7 +229,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29
      */
-    private void updateUsersList(List<User> userList) {
+    private void updateUsersList(List<? extends User> userList) {
         // Attention: This must be done on the FX Thread!
         Platform.runLater(() -> {
             if (users == null) {
@@ -254,46 +273,6 @@ public class LobbyPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles successful lobby join
-     *
-     * If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser
-     * of this client is set to the one in the message received and the full
-     * list of users currently logged in is requested.
-     *
-     * @param message the LoginSuccessfulResponse object seen on the EventBus
-     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
-     * @since 2022-11-20
-     */
-    @Subscribe
-    public void onLobbyJoinSuccessfulResponse(LobbyJoinSuccessfulResponse message) {
-        this.loggedInUser = message.getUser();
-        lobbyService.retrieveAllUsersInLobby(lobbyName);
-    }
-
-    /**
-     * Handles users who have newly joined the lobby
-     *
-     * If a new UserJoinedLobbyMessage object is posted to the EventBus the name of the newly
-     * joined user is appended to the user list in the lobby screen.
-     * Furthermore if the LOG-Level is set to DEBUG the message "New user {@literal
-     * <Username>} joined the lobby." is displayed in the log.
-     *
-     * @param message the UserJoinedLobbyMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
-     * @since 2022-11-20
-     */
-    @Subscribe
-    public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        if (message.getName().equals(lobbyName)) {
-            LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
-            Platform.runLater(() -> {
-                if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
-                    users.add(message.getUser().getUsername());
-            });
-        }
-    }
-
-    /**
      * Handles users who left the lobby
      *
      * If a new UserLeftLobbyMessage object is posted to the EventBus the name of the newly
@@ -334,29 +313,19 @@ public class LobbyPresenter extends AbstractPresenter {
         }
     }
 
-    /**
-     * Updates the lobby user list according to the list given
-     *
-     * This method clears the entire user list and then adds the name of each user
-     * in the list given to the lobby screen user list. If there ist no user list
-     * this it creates one.
-     *
-     * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all users who are currently
-     *                 in the lobby
-     * @see de.uol.swp.common.user.UserDTO
-     * @since 2022-11-20
-     */
-    private void updateUsersList(List<UserDTO> userList) {
-        // Attention: This must be done on the FX Thread!
-        Platform.runLater(() -> {
-            if (users == null) {
-                users = FXCollections.observableArrayList();
-                usersView.setItems(users);
-            }
-            users.clear();
-            userList.forEach(u -> users.add(u.getUsername()));
-        });
+    @Subscribe
+    public void onMapChangedMessage(MapChangedMessage mapChangedMessage)
+    {
+        Map m = new Map(this.mapList.getSelectionModel().getSelectedIndex());
+        if(!mapChangedMessage.getMap().equals(m))
+        {
+            updateMapDisplay(mapChangedMessage.getMap());
+        }
+    }
+
+    private void updateMapDisplay(Map m)
+    {
+        textFieldMapName.setText(m.getName());
+        mapThumb.setImage(new Image(m.getImageResource().toString()));
     }
 }

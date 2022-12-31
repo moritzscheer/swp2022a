@@ -11,6 +11,7 @@ import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
 import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
+import de.uol.swp.common.lobby.request.MapChangeRequest;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
@@ -198,5 +199,24 @@ public class LobbyService extends AbstractService {
         response.initWithMessage(msg);
         post(response);
     }
+
+    @Subscribe
+    public void onMapChangeRequest(MapChangeRequest msg)
+    {
+        String lobbyName = msg.getName();
+        Optional<Lobby> lobbyO = lobbyManagement.getLobby(lobbyName);
+
+        if(lobbyO.isPresent())
+        {
+            Optional<LobbyDTO> lDTO = lobbyManagement.getLobby(lobbyO.get().getLobbyID());
+            // Allow changing the map only if the user sending the request is also the owner
+            if(lDTO.isPresent() && lobbyO.get().getOwner().equals(msg.getUser())) {
+                lDTO.get().setMap(msg.getMap());
+
+                sendToAllInLobby(lobbyName, new MapChangedMessage(lDTO.get().getMap()));
+            }
+        }
+    }
+
 
 }

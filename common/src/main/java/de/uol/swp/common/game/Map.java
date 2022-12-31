@@ -1,11 +1,12 @@
 package de.uol.swp.common.game;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Map {
+public class Map implements Serializable {
 
     private int mapIndex;
 
@@ -57,7 +58,7 @@ public class Map {
     Note: The data structure below fits better in a database or file,
     meaning: TODO: Refactor this
      */
-    private static class MapDataTuple {
+    private static class MapDataTuple implements Serializable {
         public MapDataTuple(String name, String imageName)
         {
             this.name = name;

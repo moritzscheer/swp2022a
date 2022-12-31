@@ -3,6 +3,7 @@ package de.uol.swp.common.lobby.dto;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.game.Map;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,6 +27,8 @@ public class LobbyDTO implements Lobby {
     private final String password;
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
+
+    private Map currentMap;
 
     /**
      * Constructor
@@ -200,5 +203,15 @@ public class LobbyDTO implements Lobby {
      */
     public Integer getLobbyID() {
         return this.lobbyID;
+    }
+
+    public void setMap(Map m)
+    {
+        this.currentMap = m;
+    }
+
+    public Map getMap()
+    {
+        return this.currentMap;
     }
 }
