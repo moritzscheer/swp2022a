@@ -313,6 +313,13 @@ public class LobbyPresenter extends AbstractPresenter {
         }
     }
 
+    /**
+     * Updates the displayed map in the lobby when a MapChangedMessage is received
+     *
+     * @param mapChangedMessage The MapChangedMessage object
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @since 2022-12-31
+     */
     @Subscribe
     public void onMapChangedMessage(MapChangedMessage mapChangedMessage)
     {
@@ -323,6 +330,13 @@ public class LobbyPresenter extends AbstractPresenter {
         }
     }
 
+    /**
+     * Updates the displayed map in the lobby according to the parameter
+     *
+     * @param m The Map object
+     * @see de.uol.swp.common.game.Map
+     * @since 2022-12-31
+     */
     private void updateMapDisplay(Map m)
     {
         textFieldMapName.setText(m.getName());

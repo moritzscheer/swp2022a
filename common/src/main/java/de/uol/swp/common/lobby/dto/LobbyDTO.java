@@ -205,11 +205,26 @@ public class LobbyDTO implements Lobby {
         return this.lobbyID;
     }
 
+    /**
+     * Setter for the current map
+     *
+     * @param m The next Map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
     public void setMap(Map m)
     {
         this.currentMap = m;
     }
 
+    /**
+     * Getter for the current Map
+     *
+     * @return A Map object representing the current map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     *
+     */
     public Map getMap()
     {
         return this.currentMap;
