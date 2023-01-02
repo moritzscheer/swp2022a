@@ -1,4 +1,4 @@
-package de.uol.swp.client.credit;
+package de.uol.swp.client.setting;
 
 import com.google.common.eventbus.Subscribe;
 import de.uol.swp.client.AbstractPresenter;
@@ -9,24 +9,26 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 /**
- * Manages the credit window
+ * Manages the setting window
  *
  * @author Tommy Dang
  * @see de.uol.swp.client.AbstractPresenter
- * @since 2022-11-29
+ * @since 2022-12-11
  *
  */
-public class CreditPresenter extends AbstractPresenter {
+public class SettingPresenter extends AbstractPresenter {
 
-    public static final String FXML = "/fxml/CreditView.fxml";
+    public static final String FXML = "/fxml/SettingView.fxml";
+
     private User loggedInUser;
 
     /**
      * Default Constructor
      *
-     * @since 2022-11-30
+     * @author Tommy Dang
+     * @since 2022-12-11
      */
-    public CreditPresenter() {
+    public SettingPresenter() {
     }
 
     /**
@@ -36,8 +38,9 @@ public class CreditPresenter extends AbstractPresenter {
      * of this client is set to the one in the message received.
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
+     * @author Tommy Dang
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
-     * @since 2022-12-06
+     * @since 2022-12-11
      */
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
@@ -55,7 +58,7 @@ public class CreditPresenter extends AbstractPresenter {
      * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
      * @see de.uol.swp.client.SceneManager
      * @author Tommy Dang
-     * @since 2022-12-06
+     * @since 2022-12-11
      */
     @FXML
     void onBackButtonPressed(ActionEvent event){
