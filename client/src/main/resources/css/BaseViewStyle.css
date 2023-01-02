@@ -84,6 +84,16 @@
 }
 
 /**
+    In this section you can change the style the MainMenuView.
+ */
+#LogoBoxResizeable{
+    -fx-background-image: url("/images/LogoOnly.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: contain;
+}
+
+/**
     In this section you can change the style the OptionView.
  */
 

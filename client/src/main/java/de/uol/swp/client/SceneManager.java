@@ -179,7 +179,7 @@ public class SceneManager {
     private void initMainView() throws IOException {
         if (mainScene == null) {
            Parent rootPane = initPresenter(MainMenuPresenter.FXML);
-            mainScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            mainScene = new Scene(rootPane);
             mainScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
