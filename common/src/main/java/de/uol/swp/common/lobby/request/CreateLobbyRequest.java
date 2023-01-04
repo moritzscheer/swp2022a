@@ -39,16 +39,6 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     }
 
     /**
-     * Setter for the user variable
-     *
-     * @param owner  User trying to create the lobby
-     * @since 2019-10-08
-     */
-    public void setOwner(UserDTO owner) {
-        setUser(owner);
-    }
-
-    /**
      * Getter for the user variable
      *
      * @return User trying to create the lobby

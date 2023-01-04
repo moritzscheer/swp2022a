@@ -51,7 +51,7 @@ class LobbyDTOTest {
         assertEquals(1, lobby.getLobbyID());
         assertEquals("lobby", lobby.getName());
         assertEquals(defaultUser, lobby.getOwner());
-        assertEquals("WITH_PASSWORD", lobby.getPassword());
+        assertEquals("****", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
 
         LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true);
@@ -60,7 +60,7 @@ class LobbyDTOTest {
         assertEquals(1, lobby2.getLobbyID());
         assertEquals("lobby", lobby2.getName());
         assertEquals(defaultUser, lobby2.getOwner());
-        assertEquals("WITHOUT_PASSWORD", lobby2.getPassword());
+        assertEquals("", lobby2.getPassword());
         assertEquals(true, lobby2.isMultiplayer());
     }
 
@@ -279,7 +279,7 @@ class LobbyDTOTest {
     void getUsers() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
-        assertEquals(true, lobby.getUsers().contains(defaultUser));
+        assertTrue(lobby.getUsers().contains(defaultUser));
         assertEquals(1, lobby.getUsers().size());
     }
 

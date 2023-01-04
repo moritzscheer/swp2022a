@@ -75,6 +75,22 @@ public class LobbyService {
     }
 
     /**
+     * Posts a request to drop a specified lobby on the EventBus
+     *
+     * @param name Name of the lobby the user wants to join
+     * @param user User who wants to join the lobby
+     * @param lobbyID To identify the lobby with a unique key
+     * @param multiplayer Boolean value to query if the user is in the multiplayer
+     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @author Daniel Merzo, Moritz Scheer
+     * @since 2022-12-15
+     */
+    public void droplobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
+        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user, lobbyID, multiplayer);
+        eventBus.post(dropLobbyRequest);
+    }
+
+    /**
      * Posts a request to retrieve all lobbies on the EventBus
      *
      * @see de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest

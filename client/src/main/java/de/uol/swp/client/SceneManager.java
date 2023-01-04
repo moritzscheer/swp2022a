@@ -50,9 +50,10 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class that manages which window/scene is currently shown
@@ -94,6 +95,7 @@ public class SceneManager {
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
     private LobbyPresenter lobbyPresenter;
+    private final Map<Integer, LobbyPresenter> lobbyPresenterMap = new HashMap<>();
     private double screenSizeWidth;
     private double screenSizeHeight;
 
@@ -203,8 +205,8 @@ public class SceneManager {
     private Parent initLobbyPresenter(Integer lobbyID) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        lobbyPresenter = lobbyPresenterFactory.create(lobbyID);
-        loader.setController(lobbyPresenter);
+        lobbyPresenterMap.put(lobbyID, lobbyPresenterFactory.create(lobbyID));
+        loader.setController(lobbyPresenterMap.get(lobbyID));
         try {
             URL url = getClass().getResource(LobbyPresenter.FXML);
             LOG.debug("Loading {}", url);
@@ -298,8 +300,7 @@ public class SceneManager {
      */
     private void initRulebookView() throws IOException {
         if (rulebookParent == null) {
-            Parent rootPane = initPresenter(RulebookPresenter.FXML);
-            rulebookParent = rootPane;
+            rulebookParent = initPresenter(RulebookPresenter.FXML);
         }
     }
 
@@ -347,8 +348,7 @@ public class SceneManager {
      */
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateParent == null){
-            Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateParent = rootPane;
+            joinOrCreateParent = initPresenter(JoinOrCreatePresenter.FXML);
         }
     }
 
@@ -364,8 +364,7 @@ public class SceneManager {
      */
     private void initCreateLobbyView() throws IOException {
         if (createLobbyParent == null){
-            Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyParent = rootPane;
+            createLobbyParent = initPresenter(CreateLobbyPresenter.FXML);
         }
     }
 
@@ -415,7 +414,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
-        deleteLobbyTab(message.getLobbyID());
+        deleteLobbyTab(message.getLobby().getLobbyID());
     }
 
     /**
@@ -697,6 +696,7 @@ public class SceneManager {
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
+            primaryStage.centerOnScreen();
         });
     }
 
@@ -864,8 +864,7 @@ public class SceneManager {
             lobbyParent = initLobbyPresenter(lobby.getLobbyID());
 
             // update Information in Controller
-            lobbyPresenter.updateInformation(lobby, user);
-            //lobbyPresenter.setEventBus(eventBus);
+            lobbyPresenterMap.get(lobby.getLobbyID()).updateInformation(lobby, user);
 
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
             if(lobby.isMultiplayer()) {

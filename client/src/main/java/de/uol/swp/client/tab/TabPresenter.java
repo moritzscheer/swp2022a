@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.event.*;
+import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -37,6 +38,8 @@ public class TabPresenter extends AbstractPresenter {
     @FXML
     private Label infoLabel2;
     @FXML
+    private Label infoLabel3;
+    @FXML
     private Pane infoBox;
 
     // -----------------------------------------------------
@@ -63,8 +66,8 @@ public class TabPresenter extends AbstractPresenter {
      * Handles ShowNode events
      *
      * If an ShowNodeEvent object is detected on the EventBus this
-     * method is called. If the loglevel is set to Error or higher "Lobby create error " and the
-     * error message are written to the log.
+     * method is called. If the infoBox is visible, it is set to invisible and the content of the tab with the given
+     * tabID is set to the content from the event
      *
      * @param event The ShowNodeEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -129,32 +132,32 @@ public class TabPresenter extends AbstractPresenter {
         });
     }
 
-    // -----------------------------------------------------
-    // public methods and helper methods
-    // -----------------------------------------------------
-
     /**
-     * method for the visibility of the infoBox
+     * Handles LobbyLeaveExceptionResponse messages
      *
-     * If this method is called, it is possible to make the elements of a scene visible or invisible.
+     * If an LobbyLeaveExceptionResponse object is detected on the EventBus this
+     * method is called. It shows the infoLabel3 with the content "the lobby will be deleted!". If the main tab is selected
+     * the lobby is directly dropped
      *
-     * @author Daniel Merzo
-     * @since 2022-12-15
+     * @param message The LobbyLeaveExceptionResponse object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @author Moritz Scheer
+     * @since 2023-01-04
      */
-    public void updateInfoBox() {
-        if(!infoBox.isVisible()){
-            infoBox.setVisible(true);
-            yesButton.setVisible(true);
-            noButton.setVisible(true);
-            setInfoLabel();
-        } else {
-            infoBox.setVisible(false);
-            yesButton.setVisible(false);
-            noButton.setVisible(false);
-            infoLabel1.setVisible(false);
-            infoLabel2.setVisible(false);
+    @Subscribe
+    public void onLobbyLeaveExceptionResponse(LobbyLeaveExceptionResponse message) {
+        Tab tab = tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex());
+
+        if(tab.getText().equals("main")) {
+            lobbyService.droplobby(message.getName(), message.getUser(), message.getLobbyID(), !tab.getText().equals("Singleplayer"));
         }
+        infoLabel2.setVisible(false);
+        infoLabel3.setVisible(true);
     }
+
+    // -----------------------------------------------------
+    // helper methods and public methods
+    // -----------------------------------------------------
 
     /**
      * helper method to set up a tab
@@ -182,6 +185,30 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
+     * method for the visibility of the infoBox
+     *
+     * If this method is called, it is possible to make the elements of a scene visible or invisible.
+     *
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    public void updateInfoBox() {
+        if(!infoBox.isVisible()){
+            infoBox.setVisible(true);
+            yesButton.setVisible(true);
+            noButton.setVisible(true);
+            setInfoLabel();
+        } else {
+            infoBox.setVisible(false);
+            yesButton.setVisible(false);
+            noButton.setVisible(false);
+            infoLabel1.setVisible(false);
+            infoLabel2.setVisible(false);
+            infoLabel3.setVisible(false);
+        }
+    }
+
+    /**
      * helper method for the visibility of the infoLabels
      *
      * If this method is called, it sets the infoLabels according to the currently selected tab to visible
@@ -192,16 +219,16 @@ public class TabPresenter extends AbstractPresenter {
     private void setInfoLabel() {
         if(tabPane.getSelectionModel().getSelectedItem().getId() == null) {
             infoLabel1.setVisible(true);
-            infoLabel1.setVisible(true);
         } else {
-            infoLabel2.setVisible(true);
             infoLabel2.setVisible(true);
         }
     }
 
     // -----------------------------------------------------
-    // ActionEvents
+    // InfoBox methods
     // -----------------------------------------------------
+
+
 
     /**
      * Method called when the yes button in the infoBox is pressed
@@ -217,25 +244,29 @@ public class TabPresenter extends AbstractPresenter {
         Tab tab = tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex());
 
         Platform.runLater(() -> {
-            if(tab.getId() == null && tabPane.getTabs().size() > 1) {
-                // if the currently selected tab is the main tab and there is more than one tab open
-                for(Tab tabs : tabPane.getTabs()) {
-                    if(tabs.getId() != null) {
-                        lobbyService.leaveLobby(tabs.getText(), (UserDTO) loggedInUser, Integer.valueOf(tabs.getId()), !tab.getText().equals("Singleplayer"));
+            if(infoLabel1.isVisible()) {
+                // if the label "Are you sure you want to log-out?" is visible
+                if(tabPane.getTabs().size() > 1) {
+                    for(Tab tabs : tabPane.getTabs()) {
+                        if(tabs.getId() != null) {
+                            lobbyService.leaveLobby(tabs.getText(), (UserDTO) loggedInUser, Integer.valueOf(tabs.getId()), !tab.getText().equals("Singleplayer"));
+                        }
                     }
                 }
+                updateInfoBox();
                 userService.logout(loggedInUser);
-            } else if (tab.getId() != null) {
-                // if the currently selected tab is not the main tab
+            } else if (infoLabel2.isVisible()) {
+                // if the label "re you sure you want to leave the Lobby?" is visible
+                lobbyService.leaveLobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), true);
+            } else if(infoLabel3.isVisible()) {
+                // if the label "the lobby will be deleted!" is visible
+                updateInfoBox();
                 tabPane.getTabs().remove(tab);
                 tabPane.getSelectionModel().select(0);
-                lobbyService.leaveLobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), true);
-            } else {
-                // if only the main tab is open
-                userService.logout(loggedInUser);
+                lobbyService.droplobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), !tab.getText().equals("Singleplayer"));
+
             }
         });
-        updateInfoBox();
     }
 
     /**

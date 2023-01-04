@@ -1,5 +1,6 @@
 package de.uol.swp.common.lobby.response;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -11,7 +12,7 @@ import de.uol.swp.common.user.UserDTO;
  * @since 2022-12-15
  */
 public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
-    private Integer lobbyID;
+    private LobbyDTO lobby;
 
     /**
      * Default constructor
@@ -26,15 +27,14 @@ public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
     /**
      * Constructor
      *
-     * @param lobbyName name of the lobby
+     * @param lobby containing the lobby data
      * @param user user who wants to leave the lobby
-     * @param lobbyID For a lobby unique key to identify
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyLeaveUserResponse(String lobbyName, UserDTO user, Integer lobbyID) {
-        super(lobbyName, user);
-        this.lobbyID = lobbyID;
+    public LobbyLeaveUserResponse(LobbyDTO lobby, UserDTO user) {
+        super(lobby.getName(), user);
+        this.lobby = lobby.createWithoutPassword(lobby);
     }
 
     /**
@@ -44,7 +44,7 @@ public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public Integer getLobbyID() {
-        return lobbyID;
+    public LobbyDTO getLobby() {
+        return lobby;
     }
 }

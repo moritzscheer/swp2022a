@@ -112,8 +112,6 @@ public class LobbyPresenter extends AbstractPresenter {
         //initialize user list
         List<User> list = new ArrayList<>(message.getUsers());
         updateUsersList(list);
-
-        System.out.println(lobbyID);
     }
 
     /**
@@ -175,21 +173,19 @@ public class LobbyPresenter extends AbstractPresenter {
      *
      * @param message the UserJoinedLobbyMessage object seen on the EventBus
      * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @ Moritz Scheer
      * @since 2022-12-13
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaa");
-        if(message.getLobbyID().equals(lobbyID)) {
-            LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
-            Platform.runLater(() -> {
-                if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername())) {
-                    users.add(message.getUser().getUsername());
-                }
-                slots++;
-                textFieldOnlineUsers.setText(String.valueOf(slots));
-            });
-        }
+        LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
+        Platform.runLater(() -> {
+            if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername())) {
+                users.add(message.getUser().getUsername());
+            }
+            slots++;
+            textFieldOnlineUsers.setText(String.valueOf(slots));
+        });
     }
 
     /**

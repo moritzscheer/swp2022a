@@ -2,7 +2,6 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
@@ -24,9 +23,10 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
 
     private User loggedInUser;
-    private final Injector injector;
+
     @Inject
     private LobbyService lobbyService;
+
     @FXML
     private ListView<String> usersView;
     @FXML
@@ -34,18 +34,16 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     @FXML
     private TextField passwordField;
     @FXML
-    private Label errorMessage1;
+    private Label errorMessage1;    //no name typed in
     @FXML
-    private Label errorMessage2;
+    private Label errorMessage2;    //Name already exists!
 
     /**
      * Default Constructor
      * @author Maxim Erden
      * @since 2022-11-15
      */
-    @Inject
-    public CreateLobbyPresenter(Injector injector) {
-        this.injector = injector;
+    public CreateLobbyPresenter() {
     }
 
     /**
@@ -71,14 +69,15 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      * method is called. If the loglevel is set to Error or higher "Lobby create error " and the
      * error message are written to the log.
      *
-     * @param message The RegistrationSuccessfulResponse object detected on the EventBus
+     * @param message The LobbyCreatedExceptionResponse object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
      * @author Moritz Scheer
      * @since 2022-11-30
      */
     @Subscribe
     public void onLobbyCreatedExceptionMessage(LobbyCreatedExceptionResponse message) {
-        errorMessage1.setVisible(true);
+        errorMessage1.setVisible(false);
+        errorMessage2.setVisible(true);
         LOG.error("Lobby create error {}", message);
     }
 
@@ -118,8 +117,8 @@ public class CreateLobbyPresenter extends AbstractPresenter {
             lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
             backToDefault();
         } else {
-            errorMessage1.setVisible(false);
-            errorMessage2.setVisible(true);
+            errorMessage2.setVisible(false);
+            errorMessage1.setVisible(true);
         }
     }
 

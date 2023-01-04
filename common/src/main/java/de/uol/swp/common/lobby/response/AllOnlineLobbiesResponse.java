@@ -23,7 +23,6 @@ import java.util.Objects;
 public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
 
     private final ArrayList<LobbyDTO> lobbies = new ArrayList<>();
-    private final ArrayList<LobbyDTO> lobbiesWithoutPassword = new ArrayList<>();
 
     /**
      * Default Constructor
@@ -50,9 +49,6 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      */
     public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbyCollection) {
         for (LobbyDTO lobby : lobbyCollection) {
-            if(lobby.getPassword().equals("")) {
-                lobbiesWithoutPassword.add(lobby);
-            }
             this.lobbies.add(lobby.createWithoutPassword(lobby));
         }
     }
@@ -82,14 +78,4 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
         return lobbies;
     }
 
-    /**
-     * Getter for the list of lobbies with no password
-     *
-     * @return list of lobbies with no password
-     * @author Moritz Scheer
-     * @since 2022-12-28
-     */
-    public List<LobbyDTO> getLobbiesWithoutPassword() {
-        return lobbiesWithoutPassword;
-    }
 }

@@ -18,7 +18,6 @@ public class AbstractLobbyMessage extends AbstractServerMessage {
 
     String name;
     UserDTO user;
-    Integer lobbyID;
 
     /**
      * Default constructor
@@ -36,8 +35,7 @@ public class AbstractLobbyMessage extends AbstractServerMessage {
      * @param user user responsible for the creation of this message
      * @since 2019-10-08
      */
-    public AbstractLobbyMessage(Integer lobbyID, String name, UserDTO user) {
-        this.lobbyID = lobbyID;
+    public AbstractLobbyMessage(String name, UserDTO user) {
         this.name = name;
         this.user = user;
     }
@@ -79,25 +77,6 @@ public class AbstractLobbyMessage extends AbstractServerMessage {
      */
     public void setUser(UserDTO user) {
         this.user = user;
-    }
-
-    /**
-     * Getter for the lobbyID variable
-     *
-     * @return Integer responsible for the identification of this lobby
-     * @since 2022-12-25
-     */
-    public Integer getLobbyID() {
-        return lobbyID;
-    }
-    /**
-     * Setter for the lobbyID variable
-     *
-     * @param lobbyID Integer responsible for the identification of this lobby
-     * @since 2022-12-25
-     */
-    public void setLobbyID(Integer lobbyID) {
-        this.lobbyID = lobbyID;
     }
 
     @Override
