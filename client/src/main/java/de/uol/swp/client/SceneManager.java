@@ -69,9 +69,9 @@ public class SceneManager {
     private Scene rulebookScene;
     private Scene lastScene = null;
     private Scene currentScene = null;
+    private double lastSceneWidth;
+    private double lastSceneHeight;
     private Scene changeAccountOptionsScene;
-    private double screenSizeWidth;
-    private double screenSizeHeight;
 
     private final Injector injector;
 
@@ -94,16 +94,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(false);
-
-        /**
-         * Gets the current width and height of screen of its user
-         *
-         * @author Tommy Dang
-         * @since 2022-12-15
-         */
-        screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
-        screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
+        primaryStage.setMaximized(true);
 
         /**
          * Set the minimum size of the stage
@@ -319,7 +310,7 @@ public class SceneManager {
     private void initLobbyView() throws IOException {
         if (lobbyScene == null){
             Parent rootPane = initPresenter(LobbyPresenter.FXML);
-            lobbyScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            lobbyScene = new Scene(rootPane);
             lobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -337,7 +328,7 @@ public class SceneManager {
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateScene == null){
             Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
-            joinOrCreateScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            joinOrCreateScene = new Scene(rootPane);
             joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -355,7 +346,7 @@ public class SceneManager {
     private void initCreateLobbyView() throws IOException {
         if (createLobbyScene == null){
             Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
-            createLobbyScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            createLobbyScene = new Scene(rootPane);
             createLobbyScene.getStylesheets().add(STYLE_SHEET);
         }
     }
@@ -585,24 +576,28 @@ public class SceneManager {
     }
 
     /**
-     * Switches the current scene and title to the given ones
+     * Switches the current scene and title to the given ones and changes the width and height
      *
-     * The current scene and title are saved in the lastScene and lastTitle variables,
-     * before the new scene and title are set and shown.
+     * The current scene, title, screen width and height are saved in the lastScene, lastTitle, lastSceneWidth
+     * and lastSceneHeight variables, before the new scene, title and their width and height are set and shown.
      *
      * @param scene New scene to show
      * @param title New window title
-     * @since 2019-09-03
+     * @author Tommy Dang
+     * @since 2023-01-04
      */
     private void showScene(final Scene scene, final String title) {
         this.lastScene = currentScene;
         this.lastTitle = primaryStage.getTitle();
         this.currentScene = scene;
+        this.lastSceneWidth = primaryStage.getWidth();
+        this.lastSceneHeight = primaryStage.getHeight();
         Platform.runLater(() -> {
+            primaryStage.setWidth(lastSceneWidth);
+            primaryStage.setHeight(lastSceneHeight);
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
-            primaryStage.centerOnScreen();
         });
     }
 
