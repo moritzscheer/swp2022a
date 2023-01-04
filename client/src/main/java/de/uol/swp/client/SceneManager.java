@@ -534,6 +534,21 @@ public class SceneManager {
         showCreateLobbyScreen();
     }
 
+    /**
+     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.CloseClientEvent
+     * @since 2023-01-04
+     */
+    @Subscribe
+    public void onCloseClientEvent(CloseClientEvent event){
+        primaryStage.close();
+    }
+
     // -----------------------------------------------------
     // Error methods
     // -----------------------------------------------------
