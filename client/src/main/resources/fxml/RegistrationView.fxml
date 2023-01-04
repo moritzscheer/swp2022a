@@ -84,6 +84,6 @@
                </GridPane.margin></Label>
          </children>
       </GridPane>
-      <Button id="registerButton" minWidth="60.0" mnemonicParsing="false" onAction="#onRegisterButtonPressed" prefHeight="41.0" prefWidth="83.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <Button minWidth="60.0" mnemonicParsing="false" onAction="#onExitButtonPressed" prefHeight="41.0" prefWidth="83.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
