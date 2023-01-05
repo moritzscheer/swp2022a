@@ -36,6 +36,8 @@ import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
+import de.uol.swp.client.setting.SettingPresenter;
+import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
@@ -158,6 +160,7 @@ public class SceneManager {
         initMainView();
         initCreditView();
         initRulebookView();
+        initSettingView();
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
@@ -216,6 +219,22 @@ public class SceneManager {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
         return rootPane;
+    }
+
+    /**
+     * Initializes the setting view
+     *
+     * If the settingScene is null it gets set to a new scene containing the
+     * a pane showing the setting view as specified by the SettingView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.setting.SettingPresenter
+     * @since 2022-12-11
+     */
+    private void initSettingView() throws IOException {
+        if (settingScene == null) {
+            settingScene = initPresenter(SettingPresenter.FXML);
+        }
     }
 
     /**
@@ -468,6 +487,99 @@ public class SceneManager {
     public void onShowRulebookViewEvent(ShowRulebookViewEvent event){
         showRulebookScreen();
     }
+
+
+    /**
+     * Handles ShowSettingViewEvent detected on the EventBus
+     *
+     * If a ShowSettingViewEvent is detected on the EventBus, this method gets
+     * called. It calls a method to switch the current screen to the setting
+     * screen.
+     *
+     * @param event The ShowSettingViewEvent detected on the EventBus
+     * @see de.uol.swp.client.setting.event.ShowSettingViewEvent
+     * @since 2022-11-27
+     */
+    @Subscribe
+    public void onShowSettingViewEvent(ShowSettingViewEvent event){
+        showSettingScreen();
+    }
+
+
+    /**
+     * Initializes the account view
+     *
+     * If the changeAccountOptionsScene is null it gets set to a new scene containing the
+     * pane showing the account view as specified by the AccountView FXML file.
+     *
+     * @see de.uol.swp.client.main.AccountMenuPresenter
+     * @since 2022-11-25
+     */
+    private void initAccountOptionsView() throws IOException {
+        if(changeAccountOptionsScene == null) {
+            Parent rootPane = initPresenter(AccountMenuPresenter.FXML);
+            changeAccountOptionsScene = new Scene(rootPane);
+            changeAccountOptionsScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the lobby view
+     *
+     * If the lobbyScene is null it gets set to a new scene containing
+     * a pane showing the lobby view as specified by the lobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @since 2022-11-30
+     */
+    private void initLobbyView() throws IOException {
+        if (lobbyScene == null){
+            Parent rootPane = initPresenter(LobbyPresenter.FXML);
+            lobbyScene = new Scene(rootPane, 1600,900);
+            lobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the joinOrCreate view
+     *
+     * If the joinOrCreateScene is null it gets set to a new scene containing
+     * a pane showing the joinOrCreate view as specified by the JoinOrCreateView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
+    private void initJoinOrCreateView() throws IOException {
+        if (joinOrCreateScene == null){
+            Parent rootPane = initPresenter(JoinOrCreatePresenter.FXML);
+            joinOrCreateScene = new Scene(rootPane, 1600,900);
+            joinOrCreateScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    /**
+     * Initializes the createLobby view
+     *
+     * If the createLobbyScene is null it gets set to a new scene containing
+     * a pane showing the createLobby view as specified by the CreateLobbyView
+     * FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2022-11-30
+     */
+    private void initCreateLobbyView() throws IOException {
+        if (createLobbyScene == null){
+            Parent rootPane = initPresenter(CreateLobbyPresenter.FXML);
+            createLobbyScene = new Scene(rootPane, 400,200);
+            createLobbyScene.getStylesheets().add(STYLE_SHEET);
+        }
+    }
+
+    // -----------------------------------------------------
+    // MainManu_Events
+    // -----------------------------------------------------
 
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
@@ -811,6 +923,30 @@ public class SceneManager {
      */
     public void showCreditScreen() {
         showNode(0, creditParent);
+    }
+
+    /**
+     * Shows the setting screen
+     *
+     * Switches the main menu Scene to the settingScene and sets the title of
+     * the window to "Settings"
+     *
+     * @since 2022-12-11
+     */
+    public void showSettingScreen() {
+        showNode(0, settingScene);
+    }
+
+    /**
+     * Shows the login screen
+     *
+     * Switches the current Scene to the loginScene and sets the title of
+     * the window to "Login"
+     *
+     * @since 2019-09-03
+     */
+    public void showLoginScreen() {
+        showScene(loginScene,"Login");
     }
 
     /**
