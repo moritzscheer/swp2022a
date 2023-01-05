@@ -35,11 +35,11 @@
         <opaqueInsets>
             <Insets />
         </opaqueInsets>
-        <Button mnemonicParsing="false" onAction="#onCreateLobbyButtonPressed" prefWidth="200.0" text="Create Lobby" translateX="-20.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+        <Button mnemonicParsing="false" onAction="#onCreateLobbyButtonPressed" prefWidth="200.0" text="Create Lobby" textAlignment="CENTER" translateX="-20.0" GridPane.columnIndex="1">
         </Button>
         <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onCancelButtonPressed" prefWidth="150.0" text="Cancel" translateX="20.0" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
         </Button>
-        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onButtonJoinLobbyInJoinOrCreateViewPressed" prefWidth="200.0" text="Join Lobby" translateX="-230.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
+        <Button contentDisplay="RIGHT" mnemonicParsing="false" onAction="#onButtonJoinLobbyInJoinOrCreateViewPressed" prefWidth="200.0" text="Join Lobby" textAlignment="CENTER" translateX="-230.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS" />
     </GridPane>
     <GridPane styleClass="InnerBox" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columnConstraints>

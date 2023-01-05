@@ -13,6 +13,7 @@
 .button:hover{
     -fx-background-color: #8b0000;
     -fx-background-radius: 5;
+    -fx-alignment: CENTER;
 }
 
 .label{
@@ -30,7 +31,6 @@
     -fx-border-radius: 25;
     -fx-border-width: 6;
 }
-
 
 
 .table-view {
@@ -53,8 +53,6 @@
     -fx-background-color: #8b0000;
     -fx-text-fill: white;
 }
-
-
 
 
 .list-view{
