@@ -11,7 +11,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
+public class LobbyLeftSuccessfulResponse extends AbstractLobbyResponse{
     private LobbyDTO lobby;
 
     /**
@@ -21,7 +21,7 @@ public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyLeaveUserResponse() {
+    public LobbyLeftSuccessfulResponse() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class LobbyLeaveUserResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyLeaveUserResponse(LobbyDTO lobby, UserDTO user) {
+    public LobbyLeftSuccessfulResponse(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
         this.lobby = lobby.createWithoutPassword(lobby);
     }

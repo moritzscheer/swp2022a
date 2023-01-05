@@ -33,9 +33,9 @@ import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
@@ -413,7 +413,7 @@ public class SceneManager {
      * @since 2022-12-27
      */
     @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
+    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
         deleteLobbyTab(message.getLobby().getLobbyID());
     }
 
@@ -428,7 +428,7 @@ public class SceneManager {
      * @since 2022-12-27
      */
     @Subscribe
-    public void onLobbyDroppedResponse(LobbyDroppedResponse message) {
+    public void onLobbyDroppedResponse(LobbyDroppedSuccessfulResponse message) {
         deleteLobbyTab(message.getLobbyID());
     }
 

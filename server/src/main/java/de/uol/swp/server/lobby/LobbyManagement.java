@@ -54,9 +54,6 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public void dropLobby(Integer lobbyID) {
-        if (!lobbies.containsKey(lobbyID)) {
-            throw new IllegalArgumentException("LobbyID " + lobbyID + " not found!");
-        }
         lobbies.remove(lobbyID);
     }
 

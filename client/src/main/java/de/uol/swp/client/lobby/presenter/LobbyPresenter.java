@@ -214,8 +214,16 @@ public class LobbyPresenter extends AbstractPresenter {
         }
     }
 
-
-
+    /**
+     * Handles when window in the tab gets open
+     *
+     * If a ChangeElementEvent is posted to the EventBus this method is called.
+     *
+     * @param event the ChangeElementEvent object seen on the EventBus
+     * @see de.uol.swp.client.tab.event.ChangeElementEvent
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
         SwitchButtonDisableEffect();

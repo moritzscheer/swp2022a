@@ -3,7 +3,7 @@ package de.uol.swp.common.lobby.message;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
-public class LobbyCreatedMessage extends AbstractLobbyMessage {
+public class UserCreatedLobbyMessage extends AbstractLobbyMessage {
 
     private final LobbyDTO lobby;
 
@@ -18,7 +18,7 @@ public class LobbyCreatedMessage extends AbstractLobbyMessage {
      * @author Moritz Scheer
      * @since 2022-11-29
      */
-    public LobbyCreatedMessage(LobbyDTO lobby, UserDTO user) {
+    public UserCreatedLobbyMessage(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
         this.lobby = lobby.createWithoutPassword(lobby);
     }

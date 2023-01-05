@@ -11,7 +11,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class LobbyDroppedMessage extends AbstractLobbyMessage{
+public class UserDroppedLobbyMessage extends AbstractLobbyMessage{
 
     private LobbyDTO lobby;
 
@@ -21,7 +21,7 @@ public class LobbyDroppedMessage extends AbstractLobbyMessage{
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LobbyDroppedMessage() {
+    public UserDroppedLobbyMessage() {
     }
 
     /**
@@ -31,7 +31,7 @@ public class LobbyDroppedMessage extends AbstractLobbyMessage{
      * @param user user who joined the lobby
      * @since 2019-10-08
      */
-    public LobbyDroppedMessage(LobbyDTO lobby, String lobbyName, UserDTO user) {
+    public UserDroppedLobbyMessage(LobbyDTO lobby, String lobbyName, UserDTO user) {
         super(lobbyName, user);
         this.lobby = lobby.createWithoutPassword(lobby);
     }

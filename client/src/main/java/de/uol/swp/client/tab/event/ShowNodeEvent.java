@@ -15,11 +15,11 @@ import javafx.scene.Parent;
 public class ShowNodeEvent {
 
     private final Parent parent;
-    private final int tab;
+    private final int tabID;
 
-    public ShowNodeEvent(int tab, Parent parent) {
+    public ShowNodeEvent(int tabID, Parent parent) {
         this.parent = parent;
-        this.tab = tab;
+        this.tabID = tabID;
 
     }
 
@@ -27,7 +27,7 @@ public class ShowNodeEvent {
         return parent;
     }
 
-    public int getTab() {
-        return tab;
+    public int getTabID() {
+        return tabID;
     }
 }

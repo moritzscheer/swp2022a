@@ -49,12 +49,12 @@ public class LobbyService {
      *
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
-     * @see de.uol.swp.common.lobby.request.LobbyJoinUserRequest
+     * @see JoinLobbyRequest
      * @author Moritz Scheer
      * @since 2022-11-27
      */
     public void joinLobby(String name, UserDTO user, String password) {
-        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
+        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(name, user, password);
         eventBus.post(joinUserRequest);
     }
 
@@ -65,29 +65,13 @@ public class LobbyService {
      * @param user User who wants to join the lobby
      * @param lobbyID To identify the lobby with a unique key
      * @param multiplayer Boolean value to query if the user is in the multiplayer
-     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @see LeaveLobbyRequest
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */
     public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
-        LobbyLeaveUserRequest leaveUserRequest = new LobbyLeaveUserRequest(name, user, lobbyID, multiplayer);
+        LeaveLobbyRequest leaveUserRequest = new LeaveLobbyRequest(name, user, lobbyID, multiplayer);
         eventBus.post(leaveUserRequest);
-    }
-
-    /**
-     * Posts a request to drop a specified lobby on the EventBus
-     *
-     * @param name Name of the lobby the user wants to join
-     * @param user User who wants to join the lobby
-     * @param lobbyID To identify the lobby with a unique key
-     * @param multiplayer Boolean value to query if the user is in the multiplayer
-     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
-     * @author Daniel Merzo, Moritz Scheer
-     * @since 2022-12-15
-     */
-    public void droplobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
-        DropLobbyRequest dropLobbyRequest = new DropLobbyRequest(name, user, lobbyID, multiplayer);
-        eventBus.post(dropLobbyRequest);
     }
 
     /**

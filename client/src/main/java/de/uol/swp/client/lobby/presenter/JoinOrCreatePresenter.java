@@ -8,11 +8,11 @@ import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
-import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
+import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
-import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
+import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -179,7 +179,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-28
      */
     @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeaveUserResponse message) {
+    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
         Platform.runLater(() -> {
             if(lobbiesList != null && loggedInUser != null) {
                 lobbiesList.add(message.getLobby());
@@ -197,12 +197,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * If a LobbyCreatedMessage is posted to the EventBus this method is called.
      *
      * @param message the LobbyCreatedMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
+     * @see UserCreatedLobbyMessage
      * @author Moritz Scheer & Maxim Erden
      * @since 2022-11-30
      */
     @Subscribe
-    public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
+    public void onLobbyCreatedMessage(UserCreatedLobbyMessage message) {
         Platform.runLater(() -> {
             if(lobbiesList != null && loggedInUser != null && !message.getLobby().getUsers().contains(loggedInUser)) {
                 lobbiesList.add(message.getLobby());
@@ -216,12 +216,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * If a LobbyDroppedMessage is posted to the EventBus this method is called.
      *
      * @param message the LobbyDroppedMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
+     * @see UserDroppedLobbyMessage
      * @author Daniel Merzo
      * @since 2022-12-15
      */
     @Subscribe
-    private void onLobbyDroppedMessage(LobbyDroppedMessage message){
+    private void onLobbyDroppedMessage(UserDroppedLobbyMessage message){
         Platform.runLater(() -> {
             if(lobbiesList != null && loggedInUser != null && !message.getUser().equals(loggedInUser)) {
                 lobbiesList.removeIf(u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
