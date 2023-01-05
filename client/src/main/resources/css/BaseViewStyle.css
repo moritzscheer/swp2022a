@@ -7,7 +7,7 @@
     -fx-background-color: #B22222;
     -fx-text-fill: #C0C0C0;
     -fx-background-radius: 5;
-    -fx-font-size: 18px;
+
 
 }
 .button:hover{
@@ -17,7 +17,7 @@
 }
 
 .label{
-    -fx-font-size: 18px;
+
 }
 
 .header{
@@ -34,7 +34,7 @@
 
 
 .table-view {
-    -fx-font-size: 18px;
+
 }
 
 .table-column{
@@ -57,7 +57,7 @@
 
 .list-view{
     -fx-background-color: transparent;
-    -fx-font-size: 18px;
+
 }
 
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
@@ -141,7 +141,7 @@
 }
 
 .tab {
-    -fx-font-size: 18px;
+
     -fx-color: black;
     -fx-text-alignment: center;
 
@@ -154,7 +154,7 @@
 }
 
 .tab:selected {
-    -fx-font-size: 20px;
+
     -fx-font-weight: bold;
     -fx-text-fill: black;
 
@@ -203,7 +203,7 @@
     -fx-background-color: #B22222;
     -fx-text-fill: #000000;
     -fx-background-radius: 5;
-    -fx-font-size: 20px;
+
     -fx-font-weight: bold;
     -fx-max-height: 40px;
     -fx-pref-height: 40px;
