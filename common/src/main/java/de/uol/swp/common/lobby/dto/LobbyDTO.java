@@ -6,6 +6,7 @@ import de.uol.swp.common.user.UserDTO;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 /**
  * Object to transfer the information of a game lobby
@@ -26,6 +27,7 @@ public class LobbyDTO implements Lobby {
     private final String password;
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
+    private final UUID chatChannel;
 
     /**
      * Constructor
@@ -35,13 +37,14 @@ public class LobbyDTO implements Lobby {
      *                owner
      * @since 2019-10-08
      */
-    public LobbyDTO(Integer lobbyID, String name, User creator, String password, Boolean multiplayer) {
+    public LobbyDTO(Integer lobbyID, String name, User creator, String password, Boolean multiplayer, UUID chatChannelUUID) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
         this.users.add(creator);
         this.password = password;
         this.multiplayer = multiplayer;
+        this.chatChannel = chatChannelUUID;
     }
 
     /**
@@ -57,9 +60,9 @@ public class LobbyDTO implements Lobby {
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         createWithoutUserPassword(lobby);
         if(lobby.getPassword() != "") {
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), null, true);
+            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), null, true, null);
         }
-        return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), lobby.getPassword(), true);
+        return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), lobby.getPassword(), true, null);
     }
 
     /**
@@ -73,7 +76,7 @@ public class LobbyDTO implements Lobby {
      * @since 2022-11-30
      */
     public LobbyDTO createWithoutUserPassword(Lobby lobby) {
-        LobbyDTO tmp = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), lobby.isMultiplayer());
+        LobbyDTO tmp = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), lobby.isMultiplayer(), null);
         for (User users : lobby.getUsers()) {
             if(!users.equals(lobby.getOwner()))
                 tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
@@ -201,5 +204,9 @@ public class LobbyDTO implements Lobby {
     @Override
     public Integer getLobbyID() {
         return this.lobbyID;
+    }
+
+    public UUID getTextChatID() {
+        return chatChannel;
     }
 }

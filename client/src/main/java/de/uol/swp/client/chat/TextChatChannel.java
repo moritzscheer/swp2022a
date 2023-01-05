@@ -2,28 +2,31 @@ package de.uol.swp.client.chat;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import de.uol.swp.client.chat.messages.NewTextChatMessageRecieved;
 import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
+import io.netty.util.internal.UnstableApi;
 
 import java.util.ArrayList;
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 public class TextChatChannel {
     private UUID ID;
     private ArrayList<TextChatMessage> chatHistory;
     private EventBus eventBus;
 
     public String getChatString(){
-        String out = "";
+        StringBuilder out = new StringBuilder();
         for (int i = 0; i < chatHistory.size(); i++) {
             TextChatMessage textMessage = chatHistory.get(i);
-            out += textMessage.getSenderString() + " " + textMessage.getMessage();
+            out.append(textMessage.getSenderString()).append(" ").append(textMessage.getMessage());
             if (i < chatHistory.size() - 1){
-                out += "\n";
+                out.append("\n");
             }
         }
-        return out;
+        return out.toString();
     }
 
     public TextChatChannel(UUID id, EventBus eventBus){
@@ -32,8 +35,8 @@ public class TextChatChannel {
         chatHistory = new ArrayList<>();
     }
 
-    public void sendTextMessage(UUID channelID, String text){
-        SendTextChatMessageRequest messageRequest = new SendTextChatMessageRequest(channelID, text);
+    public void sendTextMessage(String text){
+        SendTextChatMessageRequest messageRequest = new SendTextChatMessageRequest(ID, text);
         eventBus.post(messageRequest);
     }
 
@@ -41,5 +44,6 @@ public class TextChatChannel {
     private void onNewTextChatMessageMessage(NewTextChatMessageMessage message){
         if(message.getChannel().getUUID() != ID) return;
         chatHistory.add(message.getMessage());
+        eventBus.post(new NewTextChatMessageRecieved());
     }
 }

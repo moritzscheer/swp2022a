@@ -21,13 +21,18 @@ import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
 import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
+import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
+import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
+import de.uol.swp.server.usermanagement.UserManagement;
+import de.uol.swp.server.usermanagement.UserService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Handles the lobby requests send by the users
@@ -122,6 +127,11 @@ public class LobbyService extends AbstractService {
             try {
                 lobby.get().joinUser(lobbyJoinUserRequest.getUser(), lobbyJoinUserRequest.getPassword());
 
+                //Add user to lobby chat
+                UUID textChatID = lobby.get().getTextChatID();
+                User joiningUser = lobbyJoinUserRequest.getUser();
+                TextChatService.getInstance().joinUser(textChatID, joiningUser);
+
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
                 sendToAllInLobby(lobbyJoinUserRequest.getName(), new UserJoinedLobbyMessage(lobbyJoinUserRequest.getName(), lobbyJoinUserRequest.getUser()));
                 returnMessage = new LobbyJoinedSuccessfulResponse((LobbyDTO) lobby.get(), lobbyJoinUserRequest.getUser());
@@ -158,6 +168,11 @@ public class LobbyService extends AbstractService {
         if (lobby.isPresent()) {
             try {
                 lobby.get().leaveUser(lobbyLeaveUserRequest.getUser());
+
+                //remove User from textChat
+                UUID textChatID = lobby.get().getTextChatID();
+                User leavingUser = lobbyLeaveUserRequest.getUser();
+                TextChatService.getInstance().dropUser(textChatID, leavingUser);
 
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
                 if(lobbyLeaveUserRequest.isMultiplayer()) {

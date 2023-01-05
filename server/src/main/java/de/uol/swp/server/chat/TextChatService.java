@@ -1,4 +1,4 @@
-package de.uol.swp.server.lobby.chat;
+package de.uol.swp.server.chat;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -23,9 +23,11 @@ public class TextChatService extends AbstractService {
     private EventBus eventBus;
 
     private static TextChatService instance;
+
     public static TextChatService getInstance() {
         return instance;
     }
+
     /**
      * Constructor
      *
@@ -57,11 +59,11 @@ public class TextChatService extends AbstractService {
 
     @Subscribe
     private void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
-        if(!channelList.containsKey(message.getChannel().getUUID())) return;
+        if (!channelList.containsKey(message.getChannel().getUUID())) return;
         TextChatChannel channel = channelList.get(message.getChannel().getUUID());
         Optional<Session> senderSession = message.getSession();
 
-        if(!senderSession.isPresent()) return;
+        if (!senderSession.isPresent()) return;
         String sender = senderSession.get().getUser().getUsername();
         String text = message.getMessage();
 
@@ -81,7 +83,7 @@ public class TextChatService extends AbstractService {
         return id;
     }
 
-    public void closeTextChatChannel(UUID id){
-
+    public void closeTextChatChannel(UUID id) {
+        channelList.remove(id);
     }
 }

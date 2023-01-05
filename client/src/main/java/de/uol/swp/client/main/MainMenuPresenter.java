@@ -273,5 +273,4 @@ public class MainMenuPresenter extends AbstractPresenter {
     void onSettingButtonPressed(ActionEvent event) {
         eventBus.post(new ShowSettingViewEvent());
     }
-
 }

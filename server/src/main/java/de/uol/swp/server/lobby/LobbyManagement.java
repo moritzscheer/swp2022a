@@ -3,15 +3,16 @@ package de.uol.swp.server.lobby;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.server.chat.TextChatService;
 
 import java.util.*;
 
 /**
  * Manages creation, deletion and storing of lobbies
  *
+ * @author Marco Grawunder
  * @see de.uol.swp.common.lobby.Lobby
  * @see de.uol.swp.common.lobby.dto.LobbyDTO
- * @author Marco Grawunder
  * @since 2019-10-08
  */
 public class LobbyManagement {
@@ -29,19 +30,24 @@ public class LobbyManagement {
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
-     * @see de.uol.swp.common.user.User
      * @author Moritz Scheer & Maxim Erden
+     * @see de.uol.swp.common.user.User
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
-        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
+        while (lobbies.containsKey(lobbyID)) {
+            lobbyID++;
+        }
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
                 throw new IllegalArgumentException("Lobby name " + name + " already exists!");
             }
         }
-        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer));
+
+        UUID textChannelUUID = TextChatService.getInstance().createTextChatChannel();
+
+        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
         this.currentLobbyID = lobbyID;
         this.lobbyID = 1;
     }
@@ -54,6 +60,7 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public void dropLobby(Integer lobbyID) {
+        TextChatService.getInstance().closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
         lobbies.remove(lobbyID);
     }
 
@@ -62,8 +69,8 @@ public class LobbyManagement {
      *
      * @param name String containing the name of the lobby to search for
      * @return either empty Optional or Optional containing the lobby
-     * @see Optional
      * @author Moritz Scheer
+     * @see Optional
      * @since 2019-10-08
      */
     public Optional<Lobby> getLobby(String name) {
@@ -81,8 +88,8 @@ public class LobbyManagement {
      *
      * @param lobbyID Integer containing the lobbyID of the lobby to search for
      * @return either empty Optional or Optional containing the lobby
-     * @see Optional
      * @author Moritz Scheer
+     * @see Optional
      * @since 2022-12-13
      */
     public Optional<LobbyDTO> getLobby(Integer lobbyID) {

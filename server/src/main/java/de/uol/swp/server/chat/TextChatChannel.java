@@ -1,4 +1,4 @@
-package de.uol.swp.server.lobby.chat;
+package de.uol.swp.server.chat;
 
 import com.google.common.eventbus.EventBus;
 import de.uol.swp.common.chat.TextChatChannelDTO;
@@ -9,7 +9,7 @@ import de.uol.swp.common.user.Session;
 import java.util.ArrayList;
 import java.util.UUID;
 
-class TextChatChannel {
+public class TextChatChannel {
     private UUID ID;
     private ArrayList<TextChatMessage> chatHistory;
     private ArrayList<Session> loggedInUsers;
