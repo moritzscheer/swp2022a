@@ -1,8 +1,7 @@
 package de.uol.swp.common.message;
 
 /**
- * Base class of all request messages. Basic handling of messages from the client
- * to the server
+ * Base class of all request messages. Basic handling of messages from the client to the server
  *
  * @see de.uol.swp.common.message.AbstractMessage
  * @see de.uol.swp.common.message.RequestMessage

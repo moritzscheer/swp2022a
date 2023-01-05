@@ -19,11 +19,10 @@ public class UpdateUserRequest extends AbstractRequestMessage {
     /**
      * Constructor
      *
-     * @param user the user object the sender shall be updated to unchanged fields
-     *             being empty
+     * @param user the user object the sender shall be updated to unchanged fields being empty
      * @since 2019-09-02
      */
-    public UpdateUserRequest(User user){
+    public UpdateUserRequest(User user) {
         this.toUpdate = user;
     }
 

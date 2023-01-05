@@ -1,6 +1,7 @@
 package de.uol.swp.common.lobby.exception;
 
 import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
+
 import java.util.Objects;
 
 public class LobbyCreatedExceptionResponse extends AbstractLobbyResponse {
@@ -13,13 +14,13 @@ public class LobbyCreatedExceptionResponse extends AbstractLobbyResponse {
      * @param message String containing the reason why the registration failed
      * @since 2022-11-24
      */
-    public LobbyCreatedExceptionResponse(String message){
+    public LobbyCreatedExceptionResponse(String message) {
         this.message = message;
     }
 
     @Override
     public String toString() {
-        return "LobbyExceptionResponse "+message;
+        return "LobbyExceptionResponse " + message;
     }
 
     @Override

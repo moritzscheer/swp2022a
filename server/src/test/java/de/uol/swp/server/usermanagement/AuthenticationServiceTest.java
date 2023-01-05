@@ -1,8 +1,11 @@
 package de.uol.swp.server.usermanagement;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -15,6 +18,7 @@ import de.uol.swp.server.message.ClientAuthorizedMessage;
 import de.uol.swp.server.message.ServerExceptionMessage;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
 import de.uol.swp.server.usermanagement.store.UserStore;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +26,6 @@ import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UnstableApiUsage")
 class AuthenticationServiceTest {
@@ -33,7 +35,6 @@ class AuthenticationServiceTest {
     final User user = new UserDTO("name", "password", "email@test.de");
     final User user2 = new UserDTO("name2", "password2", "email@test.de2");
     final User user3 = new UserDTO("name3", "password3", "email@test.de3");
-
 
     final UserStore userStore = new MainMemoryBasedUserStore();
     final EventBus bus = new EventBus();
@@ -74,7 +75,8 @@ class AuthenticationServiceTest {
     @Test
     void loginTestFail() throws InterruptedException {
         userManagement.createUser(user);
-        final LoginRequest loginRequest = new LoginRequest(user.getUsername(), user.getPassword() + "äüö");
+        final LoginRequest loginRequest =
+                new LoginRequest(user.getUsername(), user.getPassword() + "äüö");
         bus.post(loginRequest);
 
         lock.await(1000, TimeUnit.MILLISECONDS);
@@ -103,7 +105,8 @@ class AuthenticationServiceTest {
 
     private void loginUser(User userToLogin) {
         userManagement.createUser(userToLogin);
-        final LoginRequest loginRequest = new LoginRequest(userToLogin.getUsername(), userToLogin.getPassword());
+        final LoginRequest loginRequest =
+                new LoginRequest(userToLogin.getUsername(), userToLogin.getPassword());
         bus.post(loginRequest);
 
         assertTrue(userManagement.isLoggedIn(userToLogin));
@@ -122,7 +125,6 @@ class AuthenticationServiceTest {
 
         assertEquals(1, ((AllOnlineUsersResponse) event).getUsers().size());
         assertEquals(user, ((AllOnlineUsersResponse) event).getUsers().get(0));
-
     }
 
     // TODO: replace with parametrized test
@@ -143,13 +145,11 @@ class AuthenticationServiceTest {
 
         List<User> returnedUsers = new ArrayList<>(((AllOnlineUsersResponse) event).getUsers());
 
-        assertEquals(2,returnedUsers.size());
+        assertEquals(2, returnedUsers.size());
 
         Collections.sort(returnedUsers);
         assertEquals(returnedUsers, users);
-
     }
-
 
     @Test
     void loggedInUsersEmpty() throws InterruptedException {
@@ -160,7 +160,6 @@ class AuthenticationServiceTest {
         assertTrue(event instanceof AllOnlineUsersResponse);
 
         assertTrue(((AllOnlineUsersResponse) event).getUsers().isEmpty());
-
     }
 
     @Test
@@ -172,7 +171,6 @@ class AuthenticationServiceTest {
         users.add(user);
         users.add(user2);
         users.add(user3);
-
 
         Optional<Session> session1 = authService.getSession(user);
         Optional<Session> session2 = authService.getSession(user2);
@@ -188,7 +186,5 @@ class AuthenticationServiceTest {
         assertTrue(sessions.contains(session1.get()));
         assertTrue(sessions.contains(session2.get()));
         assertTrue(sessions.contains(session3.get()));
-
     }
-
 }
