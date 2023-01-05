@@ -1,27 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="196.0" prefWidth="407.0" styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.CreateLobbyPresenter">
-    <Label layoutX="43.0" layoutY="60.0" text="Room Name" />
-    <TextField id="nameField" fx:id="nameField" layoutX="142.0" layoutY="56.0" promptText="Enter Room Name">
+<GridPane minHeight="600.0" minWidth="1000.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.CreateLobbyPresenter">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+        <ColumnConstraints hgrow="SOMETIMES" />
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" percentHeight="35.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" percentHeight="35.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <GridPane styleClass="InnerBox" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES"/>
+            <RowConstraints maxHeight="191.0" minHeight="10.0" percentHeight="15.0" prefHeight="77.00001525878906"
+                            vgrow="SOMETIMES"/>
+        </rowConstraints>
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        </padding>
+        <GridPane>
+            <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="271.333251953125" minWidth="10.0"
+                                   percentWidth="20.0" prefWidth="77.33333333333333"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="467.66658528645837" minWidth="10.0"
+                                   prefWidth="305.3333333333333"/>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="467.66658528645837" minWidth="10.0"
+                                   prefWidth="144.99999999999994"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+            </rowConstraints>
+            <Label alignment="CENTER" styleClass="header" text="create Lobby" GridPane.columnIndex="1"
+                   GridPane.halignment="CENTER"/>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints maxHeight="211.3333740234375" minHeight="10.0" prefHeight="47.33335367838542"
+                                    valignment="CENTER" vgrow="SOMETIMES"/>
+                    <RowConstraints maxHeight="319.3333435058594" minHeight="10.0" percentHeight="70.0"
+                                    prefHeight="205.33331298828125" vgrow="SOMETIMES"/>
+                </rowConstraints>
+                <GridPane GridPane.rowIndex="1">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="40.0"/>
+                        <ColumnConstraints percentWidth="60.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" percentHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" percentHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <Label text="Room Name" translateX="-10.0"/>
+                    <Label text="Password" translateX="-10.0" GridPane.rowIndex="1"/>
+                    <TextField id="passwordField" fx:id="passwordField" maxWidth="300.0" prefHeight="35.0"
+                               promptText="Enter Room Password" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <TextField id="nameField" fx:id="nameField" maxWidth="300.0" prefHeight="35.0"
+                               promptText="Enter Room Name" GridPane.columnIndex="1"/>
+                </GridPane>
+                <Label fx:id="errorMessage1" alignment="CENTER" contentDisplay="CENTER" maxHeight="36.0"
+                       maxWidth="242.0" minHeight="15.0" minWidth="151.0" prefHeight="36.0" prefWidth="242.0"
+                       text="enter name please!" visible="false" GridPane.halignment="RIGHT"
+                       GridPane.valignment="BOTTOM"/>
+                <Label fx:id="errorMessage2" alignment="CENTER" contentDisplay="CENTER" maxHeight="36.0"
+                       maxWidth="242.0" minHeight="15.0" minWidth="151.0" prefHeight="36.0" prefWidth="242.0"
+                       text="Name already exists!" visible="false" GridPane.halignment="RIGHT"
+                       GridPane.valignment="BOTTOM"/>
+            </GridPane>
+        </GridPane>
+        <GridPane GridPane.rowIndex="1">
+            <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES"/>
+            </rowConstraints>
+           <children>
 
-    </TextField>
-    <TextField id="passwordField" fx:id="passwordField" layoutX="142.0" layoutY="86.0" promptText="Enter Room Password" />
 
-    <Label layoutX="50.0" layoutY="90.0" text="Password" />
+               <Button defaultButton="true" mnemonicParsing="false" onAction="#onCreateLobbyPressed" prefWidth="150.0"
+                       text="Create Lobby" GridPane.columnIndex="1">
+                   <font>
+                       <Font size="18.0"/>
+                   </font>
+               </Button>
 
-
-
-    <Button id="createLobby" defaultButton="true" layoutX="203.0" layoutY="133.0" mnemonicParsing="false" onAction="#onCreateLobbyPressed" text="Create Lobby" />
-
-    <Button id="cancelButton" layoutX="142.0" layoutY="133.0" mnemonicParsing="false" onAction="#onCancelButtonPressed" text="Cancel" />
-   <Label fx:id="errorMessage" layoutX="142.0" layoutY="29.0" maxHeight="15.0" maxWidth="151.0" minHeight="15.0" minWidth="151.0" prefHeight="15.0" prefWidth="151.0" text="lobby name already exists" visible="false" />
-
-
-
-
-</AnchorPane>
+               <Button mnemonicParsing="false" onAction="#onCancelButtonPressed" prefWidth="150.0" text="Cancel">
+                   <font>
+                       <Font size="18.0"/>
+                   </font>
+               </Button>
+           </children>
+        </GridPane>
+    </GridPane>
+</GridPane>

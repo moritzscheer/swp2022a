@@ -31,7 +31,7 @@ public class UserLoggedOutMessage extends AbstractServerMessage {
 	/**
 	 * Constructor
 	 *
-	 * @param username the username of the newly logged out user
+	 * @param username the username of the newly logged-out user
 	 * @since 2017-03-17
 	 */
 	public UserLoggedOutMessage(String username){

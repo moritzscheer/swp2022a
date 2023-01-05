@@ -3,10 +3,8 @@ package de.uol.swp.client.di;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
-import de.uol.swp.client.ClientConnection;
-import de.uol.swp.client.ClientConnectionFactory;
-import de.uol.swp.client.SceneManager;
-import de.uol.swp.client.SceneManagerFactory;
+import de.uol.swp.client.*;
+import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.client.user.UserService;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 @SuppressWarnings("UnstableApiUsage")
 public class ClientModule extends AbstractModule {
     final EventBus eventBus = new EventBus();
+    final TabPresenter tabPresenter = new TabPresenter();
 
     @Override
     protected void configure() {
@@ -28,7 +27,9 @@ public class ClientModule extends AbstractModule {
                 build(SceneManagerFactory.class));
         install(new FactoryModuleBuilder().implement(ClientConnection.class, ClientConnection.class).
                 build(ClientConnectionFactory.class));
+        install(new FactoryModuleBuilder().build(LobbyPresenterFactory.class));
         bind(FXMLLoader.class).toProvider(FXMLLoaderProvider.class);
+        bind(TabPresenter.class).toInstance(tabPresenter);
         bind(EventBus.class).toInstance(eventBus);
         bind(ClientUserService.class).to(UserService.class);
     }

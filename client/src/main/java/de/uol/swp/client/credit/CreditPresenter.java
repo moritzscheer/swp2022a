@@ -24,7 +24,7 @@ public class CreditPresenter extends AbstractPresenter {
     /**
      * Default Constructor
      *
-     * @since 2022-11-29
+     * @since 2022-11-30
      */
     public CreditPresenter() {
     }
@@ -59,6 +59,6 @@ public class CreditPresenter extends AbstractPresenter {
      */
     @FXML
     void onBackButtonPressed(ActionEvent event){
-        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
+        eventBus.post(new ShowMainMenuViewEvent());
     }
 }

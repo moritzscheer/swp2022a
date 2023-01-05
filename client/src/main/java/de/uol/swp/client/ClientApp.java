@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.client.di.ClientModule;
+import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -47,6 +48,8 @@ public class ClientApp extends Application implements ConnectionListener {
 
 	private ClientUserService userService;
 
+	private LobbyService lobbyService;
+
 	private User user;
 
 	private ClientConnection clientConnection;
@@ -54,6 +57,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	private EventBus eventBus;
 
 	private SceneManager sceneManager;
+
 
 	// -----------------------------------------------------
 	// Java FX Methods
@@ -89,6 +93,9 @@ public class ClientApp extends Application implements ConnectionListener {
 
         // get user service from guice, is needed for logout
         this.userService = injector.getInstance(ClientUserService.class);
+
+		// get lobby service from guice
+		this.lobbyService = injector.getInstance(LobbyService.class);
 
         // get event bus from guice
 		eventBus = injector.getInstance(EventBus.class);
@@ -144,18 +151,18 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * method is called. It tells the SceneManager to show the main menu and sets
 	 * this clients user to the user found in the object. If the loglevel is set
 	 * to DEBUG or higher "user logged in successfully " and the username of the
-	 * logged in user are written to the log.
+	 * logged-in user are written to the log.
 	 *
 	 * @param message The LoginSuccessfulResponse object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+	 * @see SceneManager
+	 * @see LoginSuccessfulResponse
 	 * @since 2017-03-17
 	 */
 	@Subscribe
 	public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
 		LOG.debug("user logged in successfully {}", message.getUser().getUsername());
 		this.user = message.getUser();
-		sceneManager.showMainScreen(user);
+		sceneManager.showTabScreen(user);
 	}
 
 	/**
@@ -199,7 +206,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	/**
 	 * Handles Logout
 	 *
-	 * If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+	 * If an UserLoggedOutMessage object is detected on the EventBus this
   	 * method is called. It tells the SceneManager to show the login window. If
   	 * the loglevel is set to INFO or higher "User {username} logged out." is written
   	 * to the log.
@@ -270,7 +277,7 @@ public class ClientApp extends Application implements ConnectionListener {
 	public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
 		LOG.debug("user  {}", message.getLoggedInUser().getUsername());
 		this.user = message.getLoggedInUser();
-		sceneManager.showMainScreen(user);
+		sceneManager.showMainScreen();
 	}
 
 	/**
@@ -309,9 +316,8 @@ public class ClientApp extends Application implements ConnectionListener {
 	public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
 		LOG.debug("user  {}", message.getUpdatedUser().getUsername());
 		this.user = message.getUpdatedUser();
-		sceneManager.showMainScreen(user);
+		sceneManager.showMainScreen();
 	}
-
 
 	/**
 	 * Handles errors produced by the EventBus

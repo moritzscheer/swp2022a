@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.uol.swp.common.message.MessageContext;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
@@ -37,7 +36,7 @@ public class AuthenticationService extends AbstractService {
     private static final Logger LOG = LogManager.getLogger(AuthenticationService.class);
 
     /**
-     * The list of current logged in users
+     * The list of current logged-in users
      */
     private final Map<Session, User> userSessions = new HashMap<>();
 
@@ -93,7 +92,7 @@ public class AuthenticationService extends AbstractService {
      * Handles LoginRequests found on the EventBus
      *
      * If a LoginRequest is detected on the EventBus, this method is called. It
-     * tries to login a user via the UserManagement. If this succeeds the user and
+     * tries to log in a user via the UserManagement. If this succeeds the user and
      * his Session are stored in the userSessions Map and a ClientAuthorizedMessage
      * is posted on the EventBus otherwise a ServerExceptionMessage gets posted
      * there.
@@ -128,7 +127,7 @@ public class AuthenticationService extends AbstractService {
      * Handles LogoutRequests found on the EventBus
      *
      * If a LogoutRequest is detected on the EventBus, this method is called. It
-     * tries to logout a user via the UserManagement. If this succeeds the user and
+     * tries to log out a user via the UserManagement. If this succeeds the user and
      * his Session are removed from the userSessions Map and a UserLoggedOutMessage
      * is posted on the EventBus.
      *
@@ -167,7 +166,7 @@ public class AuthenticationService extends AbstractService {
      *
      * If a RetrieveAllOnlineUsersRequest is detected on the EventBus, this method
      * is called. It posts a AllOnlineUsersResponse containing user objects for
-     * every logged in user on the EvenBus.
+     * every logged-in user on the EvenBus.
      *
      * @param msg RetrieveAllOnlineUsersRequest found on the EventBus
      * @see de.uol.swp.common.user.request.RetrieveAllOnlineUsersRequest

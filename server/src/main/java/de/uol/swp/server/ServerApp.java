@@ -65,7 +65,7 @@ class ServerApp {
 	 * Helper method to create the services the server uses and for the time being
 	 * the test users
 	 *
-	 * @param injector the google guice injector used for dependency injection
+	 * @param injector the Google guice injector used for dependency injection
 	 * @since 2019-09-18
 	 */
 	private static void createServices(Injector injector) {

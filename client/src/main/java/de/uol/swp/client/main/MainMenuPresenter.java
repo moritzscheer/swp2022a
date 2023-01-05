@@ -5,10 +5,12 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
+import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
@@ -20,7 +22,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,13 +42,14 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     private static final Logger LOG = LogManager.getLogger(MainMenuPresenter.class);
 
-    public Button singleplayerButton;
-
     private ObservableList<String> users;
 
     private User loggedInUser;
 
     private static final ShowAccountOptionsViewEvent  showAccountOptionMessage = new ShowAccountOptionsViewEvent();
+
+    @Inject
+    private TabPresenter tabPresenter;
     @Inject
     private LobbyService lobbyService;
 
@@ -72,11 +74,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles new logged in users
+     * Handles new logged-in users
      *
      * If a new UserLoggedInMessage object is posted to the EventBus the name of the newly
-     * logged in user is appended to the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "New user {@literal
+     * logged-in user is appended to the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "New user {@literal
      * <Username>} logged in." is displayed in the log.
      *
      * @param message the UserLoggedInMessage object seen on the EventBus
@@ -94,11 +96,11 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles new logged out users
+     * Handles new logged-out users
      *
      * If a new UserLoggedOutMessage object is posted to the EventBus the name of the newly
-     * logged out user is removed from the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "User {@literal
+     * logged-out user is removed from the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "User {@literal
      * <Username>} logged out." is displayed in the log.
      *
      * @param message the UserLoggedOutMessage object seen on the EventBus
@@ -115,9 +117,9 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Handles new list of users
      *
      * If a new AllOnlineUsersResponse object is posted to the EventBus the names
-     * of currently logged in users are put onto the user list in the main menu.
-     * Furthermore if the LOG-Level is set to DEBUG the message "Update of user
-     * list" with the names of all currently logged in users is displayed in the
+     * of currently logged-in users are put onto the user list in the main menu.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "Update of user
+     * list" with the names of all currently logged-in users is displayed in the
      * log.
      *
      * @param allUsersResponse the AllOnlineUsersResponse object seen on the EventBus
@@ -134,7 +136,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Method called when the Delete User button is pressed
      *
      * If the Delete User button is pressed, this method requests the user service
-     * first to logout the user, then to drop the user.
+     * first to log out the user, then to drop the user.
      *
      * @param event The ActionEvent created by pressing the Delete User button
      * @see de.uol.swp.client.lobby.LobbyService
@@ -158,7 +160,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onLogout(ActionEvent event) {
-        userService.logout(loggedInUser);
+        tabPresenter.updateInfoBox();
     }
 
     /**
@@ -169,8 +171,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      * this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged in
+     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged-in
      *                 users
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29
@@ -198,6 +200,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
      void onMultiplayerButtonPressed(ActionEvent actionEvent) {
+        lobbyService.retrieveAllLobbies();
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -213,7 +216,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     void onSingleplayerButtonPressed(ActionEvent event){
-        lobbyService.createNewLobby(null, (UserDTO) loggedInUser, false, null);
+        lobbyService.createNewLobby("Singleplayer", (UserDTO) loggedInUser, false, null);
     }
 
     /**
@@ -247,6 +250,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     void onCreditButtonPressed(ActionEvent event) {
         eventBus.post(new ShowCreditViewEvent());
     }
+
     /**
      * Method called when the rulebook button is pressed
      *
@@ -259,6 +263,20 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     void onRulebookButtonPressed(ActionEvent event) {
         eventBus.post(new ShowRulebookViewEvent());
+    }
+
+    /**
+     * Method called when the setting button is pressed
+     *
+     * If the setting button is pressed, it changes the scene from main menu to setting.
+     *
+     * @param event The ActionEvent created by pressing the setting button
+     * @see de.uol.swp.client.setting
+     * @since 2022-11-27
+     */
+    @FXML
+    void onSettingButtonPressed(ActionEvent event) {
+        eventBus.post(new ShowSettingViewEvent());
     }
 
     /**

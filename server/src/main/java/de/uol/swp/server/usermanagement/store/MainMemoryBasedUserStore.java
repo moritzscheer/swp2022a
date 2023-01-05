@@ -11,7 +11,7 @@ import java.util.*;
  *
  * This is the user store that is used for the start of the software project. The
  * user accounts in this user store only reside within the RAM of your computer
- * and only for as long as the server is running. Therefore the users have to be
+ * and only for as long as the server is running. Therefore, the users have to be
  * added every time the server is started.
  *
  * @implNote This store will never return the password of a user!

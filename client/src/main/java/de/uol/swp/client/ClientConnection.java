@@ -17,7 +17,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -172,8 +171,8 @@ public class ClientConnection {
 	 * Handles RequestMessages detected on the EventBus
 	 *
 	 * If the client is connected to the server and the channel of this object
-	 * is set the RequestMessage given to this method is send to the server.
-	 * Otherwise "Some tries to send a message, but server is not connected" is
+	 * is set the RequestMessage given to this method is sent to the server.
+	 * Otherwise, "Some tries to send a message, but server is not connected" is
 	 * written to the LOG if the LOG-Level is set to WARN or higher.
 	 *
 	 * @param message The RequestMessage object to  send to the server
