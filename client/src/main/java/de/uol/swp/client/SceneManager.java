@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.auth.LoginPresenter;
+import de.uol.swp.client.lobby.LobbyPresenterHandler;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
@@ -54,8 +55,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Class that manages which window/scene is currently shown
@@ -94,11 +93,14 @@ public class SceneManager {
     private Parent settingParent;
 
     @Inject
+    private TabPresenter tabPresenter;
+    @Inject
+    private LobbyPresenterHandler lobbyPresenterHandler;
+    @Inject
     private LobbyService lobbyService;
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
-    private LobbyPresenter lobbyPresenter;
-    private final Map<Integer, LobbyPresenter> lobbyPresenterMap = new HashMap<>();
+
     private double screenSizeWidth;
     private double screenSizeHeight;
 
@@ -145,6 +147,8 @@ public class SceneManager {
         primaryStage.setMinHeight(600);
 
         this.injector = injected;
+        lobbyPresenterHandler = injector.getInstance(LobbyPresenterHandler.class);
+        lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
         initViews();
     }
 
@@ -165,6 +169,7 @@ public class SceneManager {
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
+        initLobbyView();
     }
 
     /**
@@ -182,37 +187,13 @@ public class SceneManager {
     private Parent initPresenter(String fxmlFile) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        if(fxmlFile.equals("/fxml/LobbyView.fxml")) {
+            LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
+            lobbyPresenterHandler.setNextLobbyPresenter(lobbyPresenter);
+            loader.setController(lobbyPresenter);
+        }
         try {
             URL url = getClass().getResource(fxmlFile);
-            LOG.debug("Loading {}", url);
-            loader.setLocation(url);
-            rootPane = loader.load();
-        } catch (Exception e) {
-            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
-        }
-        return rootPane;
-    }
-
-    /**
-     * Subroutine creating parent panes from FXML files for Lobbies
-     *
-     * This Method tries to create a parent pane from the FXML file specified by
-     * the URL String given to it. Also, a new instance of the LobbyPresenter is being created by the
-     * LobbyPresenterFactory which is set to the controller of the Parent. If the LOG-Level is set to Debug or
-     * higher loading is written to the LOG.
-     * If it fails to load the view a RuntimeException is thrown.
-     *
-     * @param lobbyID Integer containing the lobbyID
-     * @return view loaded from FXML or null
-     * @since 2022-12-27
-     */
-    private Parent initLobbyPresenter(Integer lobbyID) throws IOException {
-        Parent rootPane;
-        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        lobbyPresenterMap.put(lobbyID, lobbyPresenterFactory.create(lobbyID));
-        loader.setController(lobbyPresenterMap.get(lobbyID));
-        try {
-            URL url = getClass().getResource(LobbyPresenter.FXML);
             LOG.debug("Loading {}", url);
             loader.setLocation(url);
             rootPane = loader.load();
@@ -403,9 +384,7 @@ public class SceneManager {
      * @since 2022-11-30
      */
     private void initLobbyView() throws IOException {
-        if (lobbyParent == null){
-            lobbyParent = initPresenter(LobbyPresenter.FXML);
-        }
+        lobbyParent = initPresenter(LobbyPresenter.FXML);
     }
 
     // -----------------------------------------------------
@@ -424,7 +403,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        setLobbyTab(message.getLobby(), message.getUser());
+        showLobbyScreen(message.getLobby());
     }
 
     /**
@@ -439,7 +418,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        setLobbyTab(message.getLobby(), message.getUser());
+        showLobbyScreen(message.getLobby());
     }
 
     /**
@@ -922,34 +901,29 @@ public class SceneManager {
     }
 
     /**
-     * helper method to set up the lobby view
+     * Shows the lobby screen
      *
-     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it saves all the current
-     * information in the lobbyPresenter and posts an Event on the Eventbus to create a tab in the TabPresenter.
+     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it shows the
+     * main menu view, if the gamemode is singleplayer and else to the joinOrCreate view and posts an
+     * Event on the Eventbus to create a tab in the TabPresenter.
      *
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void setLobbyTab(LobbyDTO lobby, UserDTO user) {
-        try {
-            // load File and Controller
-            lobbyParent = initLobbyPresenter(lobby.getLobbyID());
-
-            // update Information in Controller
-            lobbyPresenterMap.get(lobby.getLobbyID()).updateInformation(lobby, user);
-
+    private void showLobbyScreen(LobbyDTO lobby) {
+        try{
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
-            if(lobby.isMultiplayer()) {
-                showJoinOrCreateScreen();
-            } else {
-                showMainScreen();
-            }
-
+            if(lobby.isMultiplayer()) { showJoinOrCreateScreen(); } else { showMainScreen(); }
             // create new Tab and switch to the tab
             eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
-        } catch (IOException e) {
+            // load new File and Controller for the next lobby
+            initLobbyView();
+        }catch(IOException e) {
             e.printStackTrace();
         }
+
+
+
     }
 
     /**
