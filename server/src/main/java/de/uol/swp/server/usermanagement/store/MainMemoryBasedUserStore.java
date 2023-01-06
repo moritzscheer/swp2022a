@@ -1,6 +1,7 @@
 package de.uol.swp.server.usermanagement.store;
 
 import com.google.common.base.Strings;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import java.util.*;
@@ -8,10 +9,9 @@ import java.util.*;
 /**
  * This is a user store.
  *
- * This is the user store that is used for the start of the software project. The
- * user accounts in this user store only reside within the RAM of your computer
- * and only for as long as the server is running. Therefore the users have to be
- * added every time the server is started.
+ * <p>This is the user store that is used for the start of the software project. The user accounts
+ * in this user store only reside within the RAM of your computer and only for as long as the server
+ * is running. Therefore the users have to be added every time the server is started.
  *
  * @implNote This store will never return the password of a user!
  * @see de.uol.swp.server.usermanagement.store.AbstractUserStore
@@ -19,7 +19,6 @@ import java.util.*;
  * @author Marco Grawunder
  * @since 2019-08-05
  */
-
 public class MainMemoryBasedUserStore extends AbstractUserStore implements UserStore {
 
     private final Map<String, User> users = new HashMap<>();
@@ -27,7 +26,7 @@ public class MainMemoryBasedUserStore extends AbstractUserStore implements UserS
     @Override
     public Optional<User> findUser(String username, String password) {
         User usr = users.get(username);
-        if (usr != null && Objects.equals(usr.getPassword(),hash(password))) {
+        if (usr != null && Objects.equals(usr.getPassword(), hash(password))) {
             return Optional.of(usr.getWithoutPassword());
         }
         return Optional.empty();
@@ -44,7 +43,7 @@ public class MainMemoryBasedUserStore extends AbstractUserStore implements UserS
 
     @Override
     public User createUser(String username, String password, String eMail) {
-        if (Strings.isNullOrEmpty(username)){
+        if (Strings.isNullOrEmpty(username)) {
             throw new IllegalArgumentException("Username must not be null");
         }
         String passwordHash = hash(password);
@@ -71,5 +70,4 @@ public class MainMemoryBasedUserStore extends AbstractUserStore implements UserS
         users.values().forEach(u -> retUsers.add(u.getWithoutPassword()));
         return retUsers;
     }
-
 }

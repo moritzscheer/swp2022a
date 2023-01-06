@@ -5,18 +5,27 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
 import de.uol.swp.client.di.ClientModule;
+import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
+import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
-import de.uol.swp.common.user.response.UserDroppedResponse;
+import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
+
 import io.netty.channel.Channel;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,8 +34,8 @@ import java.util.List;
 /**
  * The application class of the client
  *
- * This class handles the startup of the application, as well as, incoming login
- * and registration responses and error messages
+ * <p>This class handles the startup of the application, as well as, incoming login and registration
+ * responses and error messages
  *
  * @author Marco Grawunder
  * @see de.uol.swp.client.ConnectionListener
@@ -36,102 +45,109 @@ import java.util.List;
 @SuppressWarnings("UnstableApiUsage")
 public class ClientApp extends Application implements ConnectionListener {
 
-	private static final Logger LOG = LogManager.getLogger(ClientApp.class);
+    private static final Logger LOG = LogManager.getLogger(ClientApp.class);
 
-	private String host;
-	private int port;
+    private String host;
+    private int port;
 
-	private ClientUserService userService;
+    private ClientUserService userService;
+
+	private LobbyService lobbyService;
 
 	private User user;
 
-	private ClientConnection clientConnection;
+    private ClientConnection clientConnection;
 
-	private EventBus eventBus;
+    private EventBus eventBus;
 
-	private SceneManager sceneManager;
+    private SceneManager sceneManager;
 
-	// -----------------------------------------------------
-	// Java FX Methods
-	// ----------------------------------------------------
+    // -----------------------------------------------------
+    // Java FX Methods
+    // ----------------------------------------------------
 
-	@Override
-	public void init() {
-		Parameters p = getParameters();
-		List<String> args = p.getRaw();
+    @Override
+    public void init() {
+        Parameters p = getParameters();
+        List<String> args = p.getRaw();
 
-		if (args.size() != 2) {
-			host = "localhost";
-			port = Configuration.getDefaultPort();
-			LOG.info("Usage: {} host port", ClientConnection.class.getSimpleName());
-			LOG.info("Using default port {} {}", port, host);
-		} else {
-			host = args.get(0);
-			port = Integer.parseInt(args.get(1));
-		}
+        if (args.size() != 2) {
+            host = "localhost";
+            port = Configuration.getDefaultPort();
+            LOG.info("Usage: {} host port", ClientConnection.class.getSimpleName());
+            LOG.info("Using default port {} {}", port, host);
+        } else {
+            host = args.get(0);
+            port = Integer.parseInt(args.get(1));
+        }
 
-		// do not establish connection here
-		// if connection is established in this stage, no GUI is shown and
-		// exceptions are only visible in console!
-	}
+        // do not establish connection here
+        // if connection is established in this stage, no GUI is shown and
+        // exceptions are only visible in console!
+    }
 
-
-	@Override
-	public void start(Stage primaryStage) {
+    @Override
+    public void start(Stage primaryStage) {
 
         // Client app is created by java, so injection must
         // be handled here manually
-		Injector injector = Guice.createInjector(new ClientModule());
+        Injector injector = Guice.createInjector(new ClientModule());
 
         // get user service from guice, is needed for logout
         this.userService = injector.getInstance(ClientUserService.class);
 
+		// get lobby service from guice
+		this.lobbyService = injector.getInstance(LobbyService.class);
+
         // get event bus from guice
-		eventBus = injector.getInstance(EventBus.class);
-		// Register this class for de.uol.swp.client.events (e.g. for exceptions)
-		eventBus.register(this);
+        eventBus = injector.getInstance(EventBus.class);
+        // Register this class for de.uol.swp.client.events (e.g. for exceptions)
+        eventBus.register(this);
 
-		// Client app is created by java, so injection must
-		// be handled here manually
-		SceneManagerFactory sceneManagerFactory = injector.getInstance(SceneManagerFactory.class);
-		this.sceneManager = sceneManagerFactory.create(primaryStage);
+        // Client app is created by java, so injection must
+        // be handled here manually
+        SceneManagerFactory sceneManagerFactory = injector.getInstance(SceneManagerFactory.class);
+        this.sceneManager = sceneManagerFactory.create(primaryStage);
 
-		ClientConnectionFactory connectionFactory = injector.getInstance(ClientConnectionFactory.class);
-		clientConnection = connectionFactory.create(host, port);
-		clientConnection.addConnectionListener(this);
-		// JavaFX Thread should not be blocked to long!
-		Thread t = new Thread(() -> {
-			try {
-				clientConnection.start();
-			} catch (InterruptedException e) {
-				exceptionOccurred(e.getMessage());
-				Thread.currentThread().interrupt();
-			}
-		});
-		t.setDaemon(true);
-		t.start();
-	}
+        ClientConnectionFactory connectionFactory =
+                injector.getInstance(ClientConnectionFactory.class);
+        clientConnection = connectionFactory.create(host, port);
+        clientConnection.addConnectionListener(this);
+        // JavaFX Thread should not be blocked to long!
+        Thread t =
+                new Thread(
+                        () -> {
+                            try {
+                                clientConnection.start();
+                            } catch (InterruptedException e) {
+                                exceptionOccurred(e.getMessage());
+                                Thread.currentThread().interrupt();
+                            }
+                        });
+        t.setDaemon(true);
+        t.start();
+    }
 
-	@Override
-	public void connectionEstablished(Channel ch) {
-		sceneManager.showLoginScreen();
-	}
+    @Override
+    public void connectionEstablished(Channel ch) {
+        sceneManager.showLoginScreen();
+    }
 
-	@Override
-	public void stop() throws InterruptedException {
-		if (userService != null && user != null) {
-			userService.logout(user);
-			user = null;
-		}
-		eventBus.unregister(this);
-		// Important: Close connection so connection thread can terminate
-		// else client application will not stop
-		LOG.trace("Trying to shutting down client ...");
-		if (clientConnection != null) {
-			clientConnection.close();
-		}
-		LOG.info("ClientConnection shutdown");
-	}
+    @Override
+    public void stop() throws InterruptedException {
+        if (userService != null && user != null) {
+            userService.logout(user);
+            user = null;
+        }
+        eventBus.unregister(this);
+        // Important: Close connection so connection thread can terminate
+        // else client application will not stop
+        LOG.trace("Trying to shutting down client ...");
+        if (clientConnection != null) {
+            clientConnection.close();
+        }
+        LOG.info("ClientConnection shutdown");
+    }
 
 	/**
 	 * Handles successful login
@@ -140,91 +156,167 @@ public class ClientApp extends Application implements ConnectionListener {
 	 * method is called. It tells the SceneManager to show the main menu and sets
 	 * this clients user to the user found in the object. If the loglevel is set
 	 * to DEBUG or higher "user logged in successfully " and the username of the
-	 * logged in user are written to the log.
+	 * logged-in user are written to the log.
 	 *
 	 * @param message The LoginSuccessfulResponse object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
+	 * @see SceneManager
+	 * @see LoginSuccessfulResponse
 	 * @since 2017-03-17
 	 */
 	@Subscribe
 	public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
 		LOG.debug("user logged in successfully {}", message.getUser().getUsername());
 		this.user = message.getUser();
-		sceneManager.showMainScreen(user);
+		sceneManager.showTabScreen(user);
 	}
+
+    /**
+     * Handles unsuccessful registrations
+     *
+     * <p>If an RegistrationExceptionMessage object is detected on the EventBus this method is
+     * called. It tells the SceneManager to show the sever error alert. If the loglevel is set to
+     * Error or higher "Registration error " and the error message are written to the log.
+     *
+     * @param message The RegistrationExceptionMessage object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.exception.RegistrationExceptionMessage
+     * @since 2019-09-02
+     */
+    @Subscribe
+    public void onRegistrationExceptionMessage(RegistrationExceptionMessage message) {
+        sceneManager.showServerError(String.format("Registration error %s", message));
+        LOG.error("Registration error {}", message);
+    }
+
+    /**
+     * Handles successful registrations
+     *
+     * <p>If an RegistrationSuccessfulResponse object is detected on the EventBus this method is
+     * called. It tells the SceneManager to show the login window. If the loglevel is set to INFO or
+     * higher "Registration Successful." is written to the log.
+     *
+     * @param message The RegistrationSuccessfulResponse object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.response.RegistrationSuccessfulResponse
+     * @since 2019-09-02
+     */
+    @Subscribe
+    public void onRegistrationSuccessfulMessage(RegistrationSuccessfulResponse message) {
+        LOG.info("Registration successful.");
+        sceneManager.showLoginScreen();
+    }
+
+    /**
+     * Handles Logout
+     *
+     * <p>If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+     * method is called. It tells the SceneManager to show the login window. If the loglevel is set
+     * to INFO or higher "User {username} logged out." is written to the log.
+     *
+     * @param message The UserLoggedOutMessage object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.message.UserLoggedOutMessage
+     * @since 2022-11-08
+     */
+    @Subscribe
+    void onUserLoggedOutMessage(UserLoggedOutMessage message) {
+        LOG.info("User {} logged out.", message.getUsername());
+        sceneManager.showLoginScreen();
+    }
+
+    /**
+     * Handles unsuccessful User-Drops
+     *
+     * <p>If an DropUserExceptionMessage object is detected on the EventBus this method is called.
+     * It tells the SceneManager to show the sever error alert. If the loglevel is set to Error or
+     * higher "Drop User error " and the error message are written to the log.
+     *
+     * @param message The DropUserExceptionMessage object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.exception.DropUserExceptionMessage
+     * @since 2022-12-08
+     * @author Maria Eduarda Costa Leite Andrade
+     */
+    @Subscribe
+    public void onDropUserExceptionMessage(DropUserExceptionMessage message) {
+        sceneManager.showServerError(String.format("Drop user error %s", message));
+        LOG.error("Drop user error {}", message);
+    }
+
+    /**
+     * Handles successful User-Drops
+     *
+     * <p>If an UserDroppedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It tells the SceneManager to show the login window. If the loglevel is set to INFO or
+     * higher "User {response} dropped." is written to the log.
+     *
+     * @param response The UserDroppedSuccessfulResponse object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
+     * @since 2022-11-08
+     */
+    @Subscribe
+    void onUserDroppedSuccessfulResponse(UserDroppedSuccessfulResponse response) {
+        LOG.info("User {} has been dropped.", response.getUsername());
+        sceneManager.showLoginScreen();
+    }
 
 	/**
-	 * Handles unsuccessful registrations
+	 * Handles the switch from account view to main-menu
 	 *
-	 * If an RegistrationExceptionMessage object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the sever error alert.
-	 * If the loglevel is set to Error or higher "Registration error " and the
-	 * error message are written to the log.
+	 * If an ReturnToMainMenuRequest object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
-	 * @param message The RegistrationExceptionMessage object detected on the EventBus
+	 * @param message The ReturnToMainMenuRequest object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
-	 * @since 2019-09-02
+	 * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
+	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+	 * @since 2022-12-02
 	 */
 	@Subscribe
-	public void onRegistrationExceptionMessage(RegistrationExceptionMessage message){
-		sceneManager.showServerError(String.format("Registration error %s", message));
-		LOG.error("Registration error {}", message);
+	public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
+		LOG.debug("user  {}", message.getLoggedInUser().getUsername());
+		this.user = message.getLoggedInUser();
+		sceneManager.showMainScreen();
 	}
+
+    /**
+     * Handles unsuccessful User-Updates
+     *
+     * <p>If an UpdateUserExceptionMessage object is detected on the EventBus this method is called.
+     * It tells the SceneManager to show the sever error alert. If the loglevel is set to Error or
+     * higher "Update user error " and the error message are written to the log.
+     *
+     * @param message The UpdateUserExceptionMessage object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.exception.UpdateUserExceptionMessage
+     * @since 2022-12-08
+     * @author Maria Eduarda Costa Leite Andrade
+     */
+    @Subscribe
+    public void onUpdateUserExceptionMessage(UpdateUserExceptionMessage message) {
+        sceneManager.showServerError(String.format("Update user error %s", message));
+        LOG.error("Update user error {}", message);
+    }
 
 	/**
-	 * Handles successful registrations
+	 * Handles successful User-Updates
 	 *
-	 * If an RegistrationSuccessfulResponse object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the login window. If
-	 * the loglevel is set to INFO or higher "Registration Successful." is written
-	 * to the log.
+	 * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
+	 * method is called. It tells the SceneManager to show the main-menu window.
 	 *
-	 * @param message The RegistrationSuccessfulResponse object detected on the EventBus
+	 * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
 	 * @see de.uol.swp.client.SceneManager
-	 * @since 2019-09-02
+	 * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+	 * @since 2022-12-02
 	 */
 	@Subscribe
-	public void onRegistrationSuccessfulMessage(RegistrationSuccessfulResponse message) {
-		LOG.info("Registration successful.");
-		sceneManager.showLoginScreen();
+	public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
+		LOG.debug("user  {}", message.getUpdatedUser().getUsername());
+		this.user = message.getUpdatedUser();
+		sceneManager.showMainScreen();
 	}
-
-	/**
-	 * Handles Logout
-	 *
-	 * If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
-  	 * method is called. It tells the SceneManager to show the login window. If
-  	 * the loglevel is set to INFO or higher "User {username} logged out." is written
-  	 * to the log.
-	 *
-	 * @param message The UserLoggedOutMessage object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @since 2022-11-08
-	 */
-	@Subscribe
-	void onUserLoggedOutMessage(UserLoggedOutMessage message){
-		LOG.info("User {} logged out.",  message.getUsername());
-		sceneManager.showLoginScreen();
-	}
-
-	/**
-	 * Handles User Drop
-	 *
-	 * If an onUserDroppedMessage object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the login window. If
-	 * the loglevel is set to INFO or higher "User {response} dropped." is written
-	 * to the log.
-	 *
-	 * @param response The UserDroppedResponse object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @since 2022-11-08
-	 */
-	@Subscribe
-	void onUserDroppedResponse(UserDroppedResponse response){
-		LOG.info("User {} has been dropped.", response.getUsername());
-		sceneManager.showLoginScreen();
-	}
-
 
 	/**
 	 * Handles errors produced by the EventBus
@@ -241,23 +333,22 @@ public class ClientApp extends Application implements ConnectionListener {
 		LOG.error("DeadEvent detected {}", deadEvent);
 	}
 
-	@Override
-	public void exceptionOccurred(String e) {
-		sceneManager.showServerError(e);
-	}
+    @Override
+    public void exceptionOccurred(String e) {
+        sceneManager.showServerError(e);
+    }
 
-	// -----------------------------------------------------
-	// JavFX Help method
-	// -----------------------------------------------------
+    // -----------------------------------------------------
+    // JavFX Help method
+    // -----------------------------------------------------
 
-	/**
-	 * Default startup method for javafx applications
-	 *
-	 * @param args Any arguments given when starting the application
-	 * @since 2017-03-17
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
-
+    /**
+     * Default startup method for javafx applications
+     *
+     * @param args Any arguments given when starting the application
+     * @since 2017-03-17
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 }

@@ -24,8 +24,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * @implNote this constructor is needed for serialization
      * @since 2022-11-16
      */
-    public AbstractLobbyResponse() {
-    }
+    public AbstractLobbyResponse() {}
 
     /**
      * Constructor
@@ -52,7 +51,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
     /**
      * Setter for the name variable
      *
-     * @param name  String containing the lobby's name
+     * @param name String containing the lobby's name
      * @since 2022-11-16
      */
     public void setName(String name) {
@@ -72,7 +71,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
     /**
      * Setter for the user variable
      *
-     * @param user  User responsible for the creation of this message
+     * @param user User responsible for the creation of this message
      * @since 2019-10-08
      */
     public void setUser(UserDTO user) {
@@ -84,8 +83,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractLobbyResponse that = (AbstractLobbyResponse) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(user, that.user);
+        return Objects.equals(name, that.name) && Objects.equals(user, that.user);
     }
 
     @Override

@@ -1,0 +1,100 @@
+<mxfile host="65bd71144e">
+    <diagram id="Cefqmx0Oj_4-pc0AHTQd" name="ShowAccountViewScreen">
+        <mxGraphModel dx="448" dy="459" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="1">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="MainMenuPresenter" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="80" width="120" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;" parent="2" vertex="1">
+                    <mxGeometry x="45" y="110" width="10" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="MainMenuView" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="70" y="80" width="100" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;rounded=0;" parent="4" vertex="1">
+                    <mxGeometry x="45" y="90" width="10" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="ClientEventBus" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="80" width="100" height="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;rounded=0;" parent="8" vertex="1">
+                    <mxGeometry x="45" y="210" width="10" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="38" value="" style="edgeStyle=none;html=1;dashed=1;endArrow=none;endFill=0;rounded=0;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="24.759999999999998" y="160" as="sourcePoint"/>
+                        <mxPoint x="25" y="360" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="39" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;entryX=-0.052;entryY=0.015;entryDx=0;entryDy=0;entryPerimeter=0;rounded=0;" parent="1" target="5" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="25" y="170" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="19" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="80" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <object label="" id="41">
+                    <mxCell style="edgeStyle=none;html=1;endArrow=classic;endFill=1;entryX=-0.06;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;rounded=0;" parent="1" source="5" target="3" edge="1">
+                        <mxGeometry relative="1" as="geometry">
+                            <mxPoint x="120" y="190" as="sourcePoint"/>
+                            <mxPoint x="280" y="190" as="targetPoint"/>
+                        </mxGeometry>
+                    </mxCell>
+                </object>
+                <mxCell id="42" value="onAccountOptionButtonPressed" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="41" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
+                        <mxPoint x="30" y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;exitX=1.019;exitY=0.998;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;entryX=-0.086;entryY=-0.005;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="9" target="107" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="635" y="320.0300000000001" as="sourcePoint"/>
+                        <mxPoint x="375.00000000000006" y="320.51" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="52" value="onShowAccountOptionsViewEvent(event)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="51" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
+                        <mxPoint x="45" y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="48" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;entryX=-0.271;entryY=0.029;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.98;exitY=1.005;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;" parent="1" source="3" target="9" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="459.71000000000004" y="289.5200000000001" as="sourcePoint"/>
+                        <mxPoint x="574.71" y="300" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="post(showAccountOptionMessage)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="48" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
+                        <mxPoint x="35" y="-3" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="106" value="SceneManager" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="720" y="80" width="100" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="107" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;rounded=0;" parent="106" vertex="1">
+                    <mxGeometry x="45" y="240" width="10" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="115" value="AccountMenuPresenter" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;outlineConnect=0;rounded=0;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="900" y="80" width="140" height="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="116" value="" style="html=1;points=[];perimeter=orthogonalPerimeter;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;rounded=0;" parent="115" vertex="1">
+                    <mxGeometry x="55" y="270" width="10" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="117" style="edgeStyle=none;html=1;endArrow=classic;endFill=1;exitX=1.067;exitY=1.029;exitDx=0;exitDy=0;exitPerimeter=0;rounded=0;entryX=-0.173;entryY=0.016;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="107" target="116" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="715" y="349.40000000000003" as="sourcePoint"/>
+                        <mxPoint x="893.95" y="349.31" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="118" value="ShowAccountOptionScreen()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rounded=0;" parent="117" vertex="1" connectable="0">
+                    <mxGeometry x="-0.3866" y="-2" relative="1" as="geometry">
+                        <mxPoint x="28" y="-2" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

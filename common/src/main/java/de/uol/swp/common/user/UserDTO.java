@@ -3,8 +3,7 @@ package de.uol.swp.common.user;
 import java.util.Objects;
 
 /**
- * Objects of this class are used to transfer user data between the server and the
- * clients.
+ * Objects of this class are used to transfer user data between the server and the clients.
  *
  * @author Marco Grawunder
  * @see de.uol.swp.common.user.User
@@ -31,7 +30,7 @@ public class UserDTO implements User {
             this.username = username;
             this.password = password;
             this.eMail = eMail;
-        }else{
+        } else {
             throw new IllegalArgumentException("Username and password cannot be null");
         }
     }
@@ -50,8 +49,8 @@ public class UserDTO implements User {
     /**
      * Copy constructor leaving password variable empty
      *
-     * This constructor is used for the user list, because it would be a major security
-     * flaw to send all user data including passwords to everyone connected.
+     * <p>This constructor is used for the user list, because it would be a major security flaw to
+     * send all user data including passwords to everyone connected.
      *
      * @param user User object to copy the values of
      * @return UserDTO copy of User object having the password variable left empty
@@ -60,7 +59,6 @@ public class UserDTO implements User {
     public static UserDTO createWithoutPassword(User user) {
         return new UserDTO(user.getUsername(), "", user.getEMail());
     }
-
 
     @Override
     public String getUsername() {
