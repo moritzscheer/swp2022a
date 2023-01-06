@@ -5,9 +5,8 @@ import java.io.Serializable;
 /**
  * Interface for different kinds of user objects.
  *
- * This interface is for unifying different kinds of user objects throughout the
- * project. With this being the base project it is currently only used for the UserDTO
- * objects.
+ * <p>This interface is for unifying different kinds of user objects throughout the project. With
+ * this being the base project it is currently only used for the UserDTO objects.
  *
  * @see de.uol.swp.common.user.UserDTO
  * @author Marco Grawunder

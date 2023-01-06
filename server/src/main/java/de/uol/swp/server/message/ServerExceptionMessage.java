@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * This message is used if something went wrong
  *
- * This ServerMessage is used if something went wrong e.g. in the login process
+ * <p>This ServerMessage is used if something went wrong e.g. in the login process
  *
  * @see de.uol.swp.server.message.AbstractServerInternalMessage
  * @see de.uol.swp.server.usermanagement.AuthenticationService#onLoginRequest
@@ -33,7 +33,7 @@ public class ServerExceptionMessage extends AbstractServerInternalMessage {
      * @return Exception passed in the constructor
      * @since 2019-08-07
      */
-    public Exception getException(){
+    public Exception getException() {
         return e;
     }
 

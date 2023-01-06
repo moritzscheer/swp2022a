@@ -1,26 +1,27 @@
 package de.uol.swp.server.communication.netty;
 
 import com.google.inject.Inject;
+
 import de.uol.swp.common.message.RequestMessage;
 import de.uol.swp.server.communication.ServerHandler;
+
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This handler is called from netty when communications occur e.g. a new connection
- * is established or data is received
+ * This handler is called from netty when communications occur e.g. a new connection is established
+ * or data is received
  *
  * @see io.netty.channel.ChannelInboundHandler
  * @author Marco Grawunder
  * @since 2019-11-20
  */
-
 @Sharable
-public
-class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
 
     private static final Logger LOG = LogManager.getLogger(NettyServerHandler.class);
     private final ServerHandler delegate;
@@ -51,10 +52,9 @@ class NettyServerHandler extends SimpleChannelInboundHandler<RequestMessage> {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         if (ctx.channel().isActive() || ctx.channel().isOpen()) {
-            LOG.error("Exception caught ",cause);
+            LOG.error("Exception caught ", cause);
         } else {
             delegate.clientDisconnected(new NettyMessageContext(ctx));
         }
     }
-
 }

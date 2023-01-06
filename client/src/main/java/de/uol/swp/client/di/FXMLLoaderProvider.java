@@ -3,6 +3,7 @@ package de.uol.swp.client.di;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+
 import javafx.fxml.FXMLLoader;
 
 /**
@@ -10,11 +11,9 @@ import javafx.fxml.FXMLLoader;
  *
  * @author Marco Grawunder
  * @since 2019-09-18
- *
  */
 public class FXMLLoaderProvider implements Provider<FXMLLoader> {
-    @Inject
-    Injector injector;
+    @Inject Injector injector;
 
     @Override
     public FXMLLoader get() {

@@ -1,6 +1,5 @@
 package de.uol.swp.server.usermanagement.store;
 
-
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
@@ -22,10 +21,7 @@ public abstract class AbstractUserStore implements UserStore {
      * @return String containing the calculated hash
      * @since 2019-09-04
      */
-    protected String hash(String toHash){
-        return Hashing.sha256()
-                .hashString(toHash, StandardCharsets.UTF_8)
-                .toString();
+    protected String hash(String toHash) {
+        return Hashing.sha256().hashString(toHash, StandardCharsets.UTF_8).toString();
     }
-
 }

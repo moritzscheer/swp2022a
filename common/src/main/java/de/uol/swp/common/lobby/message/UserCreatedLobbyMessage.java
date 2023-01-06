@@ -10,8 +10,8 @@ public class UserCreatedLobbyMessage extends AbstractLobbyMessage {
     /**
      * Constructor
      *
-     * This constructor generates a new Lobby Object with their password
-     * variable set to an empty String.
+     * <p>This constructor generates a new Lobby Object with their password variable set to an empty
+     * String.
      *
      * @param lobby LobbyDTO containing all the information of the lobby
      * @param user User containing the user
