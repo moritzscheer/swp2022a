@@ -15,7 +15,7 @@ import de.uol.swp.common.user.User;
  */
 public class UpdatedUserSuccessfulResponse extends AbstractResponseMessage {
 
-    private User updatedUser;
+    private final User updatedUser;
 
     public UpdatedUserSuccessfulResponse(User updatedUser) {
         this.updatedUser = updatedUser;

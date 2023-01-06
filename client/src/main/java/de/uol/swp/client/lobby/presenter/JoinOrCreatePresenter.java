@@ -1,47 +1,41 @@
 package de.uol.swp.client.lobby.presenter;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.user.ClientUserService;
+import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
-import de.uol.swp.common.lobby.message.LobbyCreatedMessage;
-import de.uol.swp.common.lobby.message.LobbyDroppedMessage;
+import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
+import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
+import javafx.scene.layout.AnchorPane;
 import java.util.List;
-import java.util.Map;
-
 /**
  * Manages the joinOrCreate window
  *
  * @author Maxim Erden
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2022-11-23
+ *
  */
 public class JoinOrCreatePresenter extends AbstractPresenter {
 
@@ -50,40 +44,32 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
-    private ObservableList<String> lobbiesList;
-    private final Map<String, LobbyDTO> lobbiesMap = new HashMap<>();
+    private ObservableList<LobbyDTO> lobbiesList;
 
-    @Inject private LobbyService lobbyService;
+    @Inject
+    private LobbyService lobbyService;
 
-    @FXML private Label LabelPasswordView;
-    @FXML private Label errorMessagePasswordIncorrect;
-    @FXML private Label errorMessageLobbyFull;
-    @FXML private ListView<String> lobbiesView;
+    @FXML private TableView<LobbyDTO> lobbiesView;
+    @FXML private TableColumn<LobbyDTO, Integer> column1;
+    @FXML private TableColumn<LobbyDTO, String> column2;
+    @FXML private TableColumn<LobbyDTO, String> column3;
+    @FXML private TableColumn<LobbyDTO, String> column4;
+
+    @FXML private Label errorMessage1; // incorrect password
+    @FXML private Label errorMessage2; // lobby full
+    @FXML private Label passwordLabel;
+    @FXML private Label headerPasswordView;
+    @FXML private Button passwordViewCancelButton;
+    @FXML private Button passwordViewJoinButton;
     @FXML private TextField textFieldPassword;
-    @FXML private AnchorPane AnchorPanePassword;
-    @FXML private AnchorPane AnchorPaneBottomView;
+    @FXML private AnchorPane PasswordView;
 
     /**
      * Default Constructor
-     *
      * @since 2022-11-15
      */
     public JoinOrCreatePresenter() {
         // needed for javafx
-    }
-
-    /**
-     * Constructor
-     *
-     * @param eventBus The EventBus set in ClientModule
-     * @param userService The injected ClientUserService
-     * @see de.uol.swp.client.di.ClientModule
-     * @author Maxim Erden
-     * @since 2019-09-18
-     */
-    @Inject
-    public JoinOrCreatePresenter(EventBus eventBus, ClientUserService userService) {
-        setEventBus(eventBus);
     }
 
     // -----------------------------------------------------
@@ -93,8 +79,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles successful login
      *
-     * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
-     * set to the one in the message received.
+     * If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser
+     * of this client is set to the one in the message received.
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
@@ -109,10 +95,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles new list of lobbies
      *
-     * <p>If a new AllOnlineLobbiesResponse object is posted to the EventBus the names of currently
-     * open lobbies are put onto the lobby list in the joinOrCreate. Furthermore, if the LOG-Level
-     * is set to DEBUG the message "Update of lobby list" with the names of all currently open
-     * lobbies is displayed in the log.
+     * If a new AllOnlineLobbiesResponse object is posted to the EventBus the names
+     * of currently open lobbies are put onto the lobby list in the joinOrCreate.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "Update of lobby
+     * list" with the names of all currently open lobbies is displayed in the
+     * log.
      *
      * @param allLobbiesResponse the AllOnlineLobbiesResponse object seen on the EventBus
      * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
@@ -121,20 +108,16 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onAllOnlineLobbiesResponse(AllOnlineLobbiesResponse allLobbiesResponse) {
-        LOG.debug("Update of lobby list {}", allLobbiesResponse.getLobbies());
-
-        for (LobbyDTO lobby : allLobbiesResponse.getLobbies()) {
-            lobbiesMap.put(lobby.getName(), lobby);
-        }
+        LOG.info("Update of lobby list {}", allLobbiesResponse.getLobbies());
         updateLobbyList(allLobbiesResponse.getLobbies());
     }
 
     /**
      * Handles lobby join exceptions
      *
-     * <p>If an LobbyJoinedExceptionResponse object is detected on the EventBus this method is
-     * called. If the loglevel is set to Error or higher "Lobby join error " and the error message
-     * are written to the log.
+     * If an LobbyJoinedExceptionResponse object is detected on the EventBus this
+     * method is called. If the loglevel is set to Error or higher "Lobby join error " and the
+     * error message are written to the log.
      *
      * @param message The LobbyJoinedExceptionResponse object detected on the EventBus
      * @author Moritz Scheer
@@ -142,12 +125,53 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedExceptionResponse(LobbyJoinedExceptionResponse message) {
-        if (message.toString().contains("already full")) {
-            errorMessageLobbyFull.setVisible(true);
-        } else {
-            errorMessagePasswordIncorrect.setVisible(true);
-        }
         LOG.error("Lobby join error {}", message);
+        updatePasswordView();
+        if (message.toString().contains("already full")) {
+            errorMessage2.setVisible(true);
+        } else {
+            errorMessage1.setVisible(true);
+        }
+    }
+
+    /**
+     * Handles successfully joined lobbies
+     *
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * called.
+     *
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    @Subscribe
+    public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null && loggedInUser != null) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
+                    }
+                });
+    }
+
+    /**
+     * Handles successfully left lobbies
+     *
+     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called.
+     *
+     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    @Subscribe
+    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null && loggedInUser != null) {
+                        lobbiesList.add(message.getLobby());
+                    }
+                });
     }
 
     // -----------------------------------------------------
@@ -160,24 +184,19 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * <p>If a LobbyCreatedMessage is posted to the EventBus this method is called.
      *
      * @param message the LobbyCreatedMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.LobbyCreatedMessage
+     * @see de.uol.swp.common.lobby.message.UserCreatedLobbyMessage
      * @author Moritz Scheer & Maxim Erden
      * @since 2022-11-30
      */
     @Subscribe
-    public void onLobbyCreatedMessage(LobbyCreatedMessage message) {
+    public void onUserCreatedLobbyMessage(UserCreatedLobbyMessage message) {
         Platform.runLater(
                 () -> {
-                    lobbiesMap.put(message.getName(), message.getLobby());
                     if (lobbiesList != null
                             && loggedInUser != null
-                            && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
-                        lobbiesList.add(message.getName());
-                    LOG.info(
-                            "User "
-                                    + message.getUser().getUsername()
-                                    + " created the lobby "
-                                    + message.getName());
+                            && !message.getLobby().getUsers().contains(loggedInUser)) {
+                        lobbiesList.add(message.getLobby());
+                    }
                 });
     }
 
@@ -187,21 +206,20 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * <p>If a LobbyDroppedMessage is posted to the EventBus this method is called.
      *
      * @param message the LobbyDroppedMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.LobbyDroppedMessage
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
      * @author Daniel Merzo
      * @since 2022-12-15
      */
     @Subscribe
-    private void onLobbyDroppedMessage(LobbyDroppedMessage message) {
+    private void onLobbyDroppedMessage(UserDroppedLobbyMessage message) {
         Platform.runLater(
                 () -> {
-                    lobbiesMap.remove(message.getName());
-                    lobbiesList.remove(message.getName());
-                    LOG.info(
-                            "User "
-                                    + message.getUser().getUsername()
-                                    + " deleted the lobby "
-                                    + message.getName());
+                    if (lobbiesList != null
+                            && loggedInUser != null
+                            && !message.getUser().equals(loggedInUser)) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
+                    }
                 });
     }
 
@@ -214,12 +232,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      *
      * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
      *     it is crucial not to remove the {@code Platform.runLater()}
-     * @param lobbyList A list of LobbyDTO objects including all currently open lobbies
+     * @param list A list of LobbyDTO objects including all currently open lobbies
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
      * @author Moritz Scheer & Maxim Erden
      * @since 2022-11-30
      */
-    private void updateLobbyList(List<LobbyDTO> lobbyList) {
+    private void updateLobbyList(List<LobbyDTO> list) {
         // Attention: This must be done on the FX Thread!
         Platform.runLater(
                 () -> {
@@ -228,10 +246,22 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                         lobbiesView.setItems(lobbiesList);
                     }
                     lobbiesList.clear();
-                    lobbyList.forEach(
+
+                    column1.setCellValueFactory(new PropertyValueFactory<>("lobbyID"));
+                    column2.setCellValueFactory(
+                            cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+                    column3.setCellValueFactory(
+                            cellData ->
+                                    new SimpleStringProperty(
+                                            cellData.getValue().getOwner().getUsername()));
+                    column4.setCellValueFactory(
+                            cellData ->
+                                    new SimpleStringProperty(cellData.getValue().getPassword()));
+
+                    list.forEach(
                             u -> {
                                 if (!u.getUsers().contains(loggedInUser)) {
-                                    lobbiesList.add(u.getName());
+                                    lobbiesList.add(u);
                                 }
                             });
                 });
@@ -244,8 +274,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Method called when the cancel button is pressed
      *
-     * <p>This Method is called when the cancel button is pressed. It posts an instance of the
-     * JoinOrCreateCanceledEvent to the EventBus the SceneManager is subscribed to.
+     * This Method is called when the cancel button is pressed. It posts an instance
+     * of the JoinOrCreateCanceledEvent to the EventBus the SceneManager is subscribed
+     * to.
      *
      * @param actionEvent The ActionEvent generated by pressing the cancel button
      * @see de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent
@@ -255,14 +286,15 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @FXML
     void onCancelButtonPressed(ActionEvent actionEvent) {
-        eventBus.post(new JoinOrCreateCanceledEvent(loggedInUser));
+        eventBus.post(new JoinOrCreateCanceledEvent());
     }
 
     /**
      * Method called when the create lobby button is pressed
      *
-     * <p>This Method is called when the create lobby button is pressed. It posts an instance of the
-     * ShowCreateLobbyViewEvent to the EventBus the SceneManager is subscribed to.
+     * This Method is called when the create lobby button is pressed. It posts an instance
+     * of the ShowCreateLobbyViewEvent to the EventBus the SceneManager is subscribed
+     * to.
      *
      * @param actionEvent The ActionEvent generated by pressing the create lobby button
      * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
@@ -276,9 +308,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the join lobby button in the Join or Create view is pressed. It
-     * checks if a Lobby in the Listview is selected and if it is, a screen will open where the
-     * Password is required to join the lobby.
+     *
+     * This Method is called when the join lobby button in the Join or Create view is pressed.
+     * It checks if a Lobby in the Listview is selected and if it is, a screen will open where the Password is required
+     * to join the lobby.
      *
      * @param actionEvent The ActionEvent generated by pressing the Join Lobby button in the Join or
      *     Create view
@@ -287,10 +320,15 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @FXML
     void onButtonJoinLobbyInJoinOrCreateViewPressed(ActionEvent actionEvent) {
-        if (lobbiesView.getSelectionModel().getSelectedItem() == null) {
-            return;
+        LobbyDTO selectedLobby = lobbiesView.getSelectionModel().getSelectedItem();
+
+        if (selectedLobby != null) {
+            if (selectedLobby.getPassword().equals("")) {
+                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
+            } else {
+                updatePasswordView();
+            }
         }
-        updatePasswordView();
     }
 
     /**
@@ -302,14 +340,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     public void onMouseClick(MouseEvent click) {
-        if (click.getClickCount() == 2
-                && lobbiesView.getSelectionModel().getSelectedItem() != null) {
-            if (lobbiesMap.get(lobbiesView.getSelectionModel().getSelectedItem()).getPassword()
-                    == "") {
-                lobbyService.joinLobby(
-                        lobbiesView.getSelectionModel().getSelectedItem(),
-                        (UserDTO) loggedInUser,
-                        "");
+        LobbyDTO selectedLobby = lobbiesView.getSelectionModel().getSelectedItem();
+
+        if (click.getClickCount() == 2 && selectedLobby != null) {
+            if (selectedLobby.getPassword().equals("")) {
+                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
             } else {
                 updatePasswordView();
             }
@@ -317,60 +352,66 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the view of The PasswordView needs to change so whenever you want
-     * to join a lobby, or you want to leave the PasswordView if the method is called it checks
-     * whether the screen is currently visible or not and changes it to the opposite Also the
-     * buttons will change its visibility to the opposite and the LobbiesView (Listview) changes so
-     * the lobby you selected is not changeable while the PasswordField is active
+     * This Method is called when the view of The PasswordView needs to change
+     * so whenever you want to join a lobby, or you want to leave the PasswordView
+     * if the method is called it checks whether the screen is currently visible or not and
+     * changes it to the opposite
+     * Also the buttons will change its visibility to the opposite and the LobbiesView (Listview) changes so the lobby
+     * you selected is not changeable while the PasswordField is active
      *
      * @author Maxim Erden
      * @since 2022-12-11
      */
     private void updatePasswordView() {
-        if (!AnchorPanePassword.isVisible()) {
-            LabelPasswordView.setText(
-                    "Join Lobby " + lobbiesView.getSelectionModel().getSelectedItem());
+        if (!PasswordView.isVisible()) {
+            headerPasswordView.setText(
+                    "Join Lobby " + lobbiesView.getSelectionModel().getSelectedItem().getName());
+            headerPasswordView.setVisible(true);
             lobbiesView.setMouseTransparent(true);
             lobbiesView.setFocusTraversable(false);
-            AnchorPanePassword.setVisible(true);
-            AnchorPaneBottomView.setVisible(false);
+            PasswordView.setVisible(true);
+            passwordLabel.setVisible(true);
+            textFieldPassword.setVisible(true);
+            passwordViewJoinButton.setVisible(true);
+            passwordViewCancelButton.setVisible(true);
         } else {
             lobbiesView.setMouseTransparent(false);
             lobbiesView.setFocusTraversable(true);
-            AnchorPanePassword.setVisible(false);
-            AnchorPaneBottomView.setVisible(true);
+            PasswordView.setVisible(false);
             textFieldPassword.clear();
-            errorMessagePasswordIncorrect.setVisible(false);
-            errorMessageLobbyFull.setVisible(false);
+            errorMessage1.setVisible(false);
+            errorMessage2.setVisible(false);
+            passwordLabel.setVisible(false);
+            textFieldPassword.setVisible(false);
+            passwordViewJoinButton.setVisible(false);
+            passwordViewCancelButton.setVisible(false);
         }
     }
 
     /**
-     * This Method is called when the Join Lobby Button in the PasswordView is pressed It takes the
-     * Lobby that is selected and the Password that is typed in the PasswordField With these
-     * Parameters it tries to join the lobby and if it fails an Error message is shown and the
+     * This Method is called when the Join Lobby Button in the PasswordView is pressed
+     * It takes the Lobby that is selected and the Password that is typed in the PasswordField
+     * With these Parameters it tries to join the lobby and if it fails an Error message is shown and the
      * PasswordField clears
      *
-     * @param actionEvent The ActionEvent is created when you press the Join Lobby button in the
-     *     PasswordView
+     * @param actionEvent The ActionEvent is created when you press the Join Lobby button in the PasswordView
      * @author Maxim Erden
      * @since 2022-12-11
      */
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(
-                lobbiesView.getSelectionModel().getSelectedItem(),
+                lobbiesView.getSelectionModel().getSelectedItem().getName(),
                 (UserDTO) loggedInUser,
                 textFieldPassword.getText());
         textFieldPassword.clear();
+        updatePasswordView();
     }
 
     /**
-     * This Method is called when the Cancel Button in the PasswordView is pressed and acts like a
-     * back button It changes the current passwordView so that the PasswordView is not visible
-     * anymore
+     * This Method is called when the Cancel Button in the PasswordView is pressed and acts like a back button
+     * It changes the current passwordView so that the PasswordView is not visible anymore
      *
-     * @param actionEvent The ActionEvent is created when you press the cancel button in the
-     *     PasswordView
+     * @param actionEvent The ActionEvent is created when you press the cancel button in the PasswordView
      * @author Maxim Erden
      * @since 2022-12-11
      */

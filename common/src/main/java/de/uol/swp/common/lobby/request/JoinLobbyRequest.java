@@ -10,7 +10,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Marco Grawunder
  * @since 2019-10-08
  */
-public class LobbyJoinUserRequest extends AbstractLobbyRequest {
+public class JoinLobbyRequest extends AbstractLobbyRequest {
 
     private String password;
 
@@ -20,7 +20,8 @@ public class LobbyJoinUserRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LobbyJoinUserRequest() {}
+    public JoinLobbyRequest() {
+    }
     /**
      * Constructor
      *
@@ -28,7 +29,7 @@ public class LobbyJoinUserRequest extends AbstractLobbyRequest {
      * @param user user who wants to join the lobby
      * @since 2019-10-08
      */
-    public LobbyJoinUserRequest(String lobbyName, UserDTO user, String password) {
+    public JoinLobbyRequest(String lobbyName, UserDTO user, String password) {
         super(lobbyName, user);
         this.password = password;
     }

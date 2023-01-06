@@ -4,6 +4,7 @@ import de.uol.swp.common.user.User;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Interface to unify lobby objects
@@ -26,7 +27,7 @@ public interface Lobby extends Serializable {
     void joinUser(User user, String password);
 
     /**
-     * Removes an user from the lobby
+     * Removes a user from the lobby
      *
      * @param user The user to remove from the lobby
      * @since 2019-10-08
@@ -74,7 +75,7 @@ public interface Lobby extends Serializable {
     String getPassword();
 
     /**
-     * Getter for gamemode of the lobby
+     * Getter for game mode of the lobby
      *
      * @return a Boolean.If true, the lobby is a multiplayer lobby, if false, the lobby is a
      *     singleplayer lobby
@@ -89,4 +90,12 @@ public interface Lobby extends Serializable {
      * @since 2022-11-22
      */
     Integer getLobbyID();
+
+    /**
+     * Getter for TextChatChannel UUID
+     *
+     * @return Text Chat UUID
+     * @since 2023-01-03
+     */
+    UUID getTextChatID();
 }

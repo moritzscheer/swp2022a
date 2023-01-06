@@ -8,14 +8,16 @@
     -fx-text-fill: #C0C0C0;
     -fx-background-radius: 5;
 
+
 }
 .button:hover{
     -fx-background-color: #8b0000;
     -fx-background-radius: 5;
+    -fx-alignment: CENTER;
 }
 
 .label{
-    -fx-font-size: 20px;
+
 }
 
 .header{
@@ -30,10 +32,42 @@
     -fx-border-width: 6;
 }
 
-.listView {
-    -fx-background-color: #D9D9D9;
+
+.table-view {
+
 }
 
+.table-column{
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell{
+    -fx-background-color: transparent;
+}
+
+.table-view:row-selection .table-row-cell:filled:hover {
+    -fx-background-color: #c7c7c7;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: white;
+}
+
+
+.list-view{
+    -fx-background-color: transparent;
+
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color: #8b0000;
+    -fx-text-fill: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #c7c7c7;
+}
 
 /**
     In this section you can change the style the LoginView.
@@ -41,8 +75,16 @@
 #nameLogin{
     -fx-text-fill: #b22222;
 }
+
 #passwordLogin{
     -fx-text-fill: #b22222;
+}
+
+#LogoBox{
+    -fx-background-image: url("/images/LogoOnly.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: auto;
 }
 
 /**
@@ -68,8 +110,23 @@
 }
 
 #Background{
-    -fx-background-image: url("/images/BackgroundWithLogo.png");
-    -fx-background-size: 1600 900;
+    -fx-background-image: url("/images/BackgroundWithoutLogo.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: cover;
+}
+
+/**
+    In this section you can change the style the MainMenuView.
+ */
+#LogoBoxResizeable{
+    -fx-background-image: url("/images/LogoOnly.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-background-size: contain;
+}
+#BackgroundWithOutLogo{
+    -fx-background-image: url("/images/BackgroundWithoutLogo.png");
 }
 
 /**
@@ -77,8 +134,43 @@
  */
 
 
+
+.tab-header-area {
+    -fx-padding: 1px;
+}
+
+.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab {
+
+    -fx-color: black;
+    -fx-text-alignment: center;
+
+    -fx-background-color: #999999;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 100px;
+
+    -fx-border-width: 1;
+    -fx-border-radius: 4px;
+}
+
+.tab:selected {
+
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+
+    -fx-background-color: #696969;
+    -fx-pref-height: 32px;
+}
+
+.focus-indicator {
+    -fx-border-color: transparent;
+}
+
 /**
-    In this section you can change the style the GerneralErrorView.
+    In this section you can change the style the GeneralErrorView.
  */
 
 
@@ -110,11 +202,11 @@
 /**
     In this section you can change the style the LobbyView.
  */
-#lobbyButton{
+.lobbyButton{
     -fx-background-color: #B22222;
     -fx-text-fill: #000000;
     -fx-background-radius: 5;
-    -fx-font-size: 20px;
+
     -fx-font-weight: bold;
     -fx-max-height: 40px;
     -fx-pref-height: 40px;
