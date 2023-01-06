@@ -55,7 +55,7 @@ class LobbyDTOTest {
         assertEquals("****", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
 
-        LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true);
+        LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true, null);
         lobby2 = lobby2.createWithoutPassword(lobby2);
 
         assertEquals(1, lobby2.getLobbyID());
