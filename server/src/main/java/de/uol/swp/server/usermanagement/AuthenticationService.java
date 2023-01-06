@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
@@ -17,11 +18,13 @@ import de.uol.swp.server.communication.UUIDSession;
 import de.uol.swp.server.message.ClientAuthorizedMessage;
 import de.uol.swp.server.message.ServerExceptionMessage;
 import de.uol.swp.server.message.ServerInternalMessage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.security.auth.login.LoginException;
 import java.util.*;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * Mapping authentication event bus calls to user management calls
@@ -35,9 +38,7 @@ import java.util.*;
 public class AuthenticationService extends AbstractService {
     private static final Logger LOG = LogManager.getLogger(AuthenticationService.class);
 
-    /**
-     * The list of current logged-in users
-     */
+    /** The list of current logged in users */
     private final Map<Session, User> userSessions = new HashMap<>();
 
     private final UserManagement userManagement;
@@ -66,7 +67,8 @@ public class AuthenticationService extends AbstractService {
      * @since 2019-09-04
      */
     public Optional<Session> getSession(User user) {
-        Optional<Map.Entry<Session, User>> entry = userSessions.entrySet().stream().filter(e -> e.getValue().equals(user)).findFirst();
+        Optional<Map.Entry<Session, User>> entry =
+                userSessions.entrySet().stream().filter(e -> e.getValue().equals(user)).findFirst();
         return entry.map(Map.Entry::getKey);
     }
 
@@ -81,21 +83,21 @@ public class AuthenticationService extends AbstractService {
      */
     public List<Session> getSessions(Set<User> users) {
         List<Session> sessions = new ArrayList<>();
-        users.forEach(u -> {
-            Optional<Session> session = getSession(u);
-            session.ifPresent(sessions::add);
-        });
+        users.forEach(
+                u -> {
+                    Optional<Session> session = getSession(u);
+                    session.ifPresent(sessions::add);
+                });
         return sessions;
     }
 
     /**
      * Handles LoginRequests found on the EventBus
      *
-     * If a LoginRequest is detected on the EventBus, this method is called. It
-     * tries to log in a user via the UserManagement. If this succeeds the user and
-     * his Session are stored in the userSessions Map and a ClientAuthorizedMessage
-     * is posted on the EventBus otherwise a ServerExceptionMessage gets posted
-     * there.
+     * <p>If a LoginRequest is detected on the EventBus, this method is called. It tries to login a
+     * user via the UserManagement. If this succeeds the user and his Session are stored in the
+     * userSessions Map and a ClientAuthorizedMessage is posted on the EventBus otherwise a
+     * ServerExceptionMessage gets posted there.
      *
      * @param msg the LoginRequest
      * @see de.uol.swp.common.user.request.LoginRequest
@@ -106,7 +108,7 @@ public class AuthenticationService extends AbstractService {
     @Subscribe
     public void onLoginRequest(LoginRequest msg) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Got new auth message with {} {}", msg.getUsername() , msg.getPassword());
+            LOG.debug("Got new auth message with {} {}", msg.getUsername(), msg.getPassword());
         }
         ServerInternalMessage returnMessage;
         try {
@@ -117,7 +119,9 @@ public class AuthenticationService extends AbstractService {
             returnMessage.setSession(newSession);
         } catch (Exception e) {
             LOG.error(e);
-            returnMessage = new ServerExceptionMessage(new LoginException("Cannot auth user " + msg.getUsername()));
+            returnMessage =
+                    new ServerExceptionMessage(
+                            new LoginException("Cannot auth user " + msg.getUsername()));
         }
         msg.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
@@ -126,10 +130,9 @@ public class AuthenticationService extends AbstractService {
     /**
      * Handles LogoutRequests found on the EventBus
      *
-     * If a LogoutRequest is detected on the EventBus, this method is called. It
-     * tries to log out a user via the UserManagement. If this succeeds the user and
-     * his Session are removed from the userSessions Map and a UserLoggedOutMessage
-     * is posted on the EventBus.
+     * <p>If a LogoutRequest is detected on the EventBus, this method is called. It tries to logout
+     * a user via the UserManagement. If this succeeds the user and his Session are removed from the
+     * userSessions Map and a UserLoggedOutMessage is posted on the EventBus.
      *
      * @param msg the LogoutRequest
      * @see de.uol.swp.common.user.request.LogoutRequest
@@ -143,7 +146,6 @@ public class AuthenticationService extends AbstractService {
             Session userSession = session.get();
             User userToLogOut = userSessions.get(userSession);
 
-
             // Could be already logged out
             if (userToLogOut != null) {
 
@@ -156,7 +158,6 @@ public class AuthenticationService extends AbstractService {
 
                 ServerMessage returnMessage = new UserLoggedOutMessage(userToLogOut.getUsername());
                 post(returnMessage);
-
             }
         }
     }
@@ -164,9 +165,9 @@ public class AuthenticationService extends AbstractService {
     /**
      * Handles RetrieveAllOnlineUsersRequests found on the EventBus
      *
-     * If a RetrieveAllOnlineUsersRequest is detected on the EventBus, this method
-     * is called. It posts a AllOnlineUsersResponse containing user objects for
-     * every logged-in user on the EvenBus.
+     * <p>If a RetrieveAllOnlineUsersRequest is detected on the EventBus, this method is called. It
+     * posts a AllOnlineUsersResponse containing user objects for every logged in user on the
+     * EvenBus.
      *
      * @param msg RetrieveAllOnlineUsersRequest found on the EventBus
      * @see de.uol.swp.common.user.request.RetrieveAllOnlineUsersRequest
@@ -179,6 +180,4 @@ public class AuthenticationService extends AbstractService {
         response.initWithMessage(msg);
         post(response);
     }
-
-
 }

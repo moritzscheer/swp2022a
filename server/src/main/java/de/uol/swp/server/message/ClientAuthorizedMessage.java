@@ -7,8 +7,8 @@ import java.util.Objects;
 /**
  * This message is used if a successful login occurred
  *
- * This message is used to signalize all Services it is relevant to, that someone
- * just logged in successfully
+ * <p>This message is used to signalize all Services it is relevant to, that someone just logged in
+ * successfully
  *
  * @see de.uol.swp.server.message.AbstractServerInternalMessage
  * @see de.uol.swp.server.usermanagement.AuthenticationService

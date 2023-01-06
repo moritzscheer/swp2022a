@@ -6,6 +6,11 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 import de.uol.swp.client.*;
 import de.uol.swp.client.lobby.LobbyPresenterHandler;
 import de.uol.swp.client.tab.TabPresenter;
+
+import de.uol.swp.client.ClientConnection;
+import de.uol.swp.client.ClientConnectionFactory;
+import de.uol.swp.client.SceneManager;
+import de.uol.swp.client.SceneManagerFactory;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.client.user.UserService;
 import javafx.fxml.FXMLLoader;

@@ -5,8 +5,8 @@ import de.uol.swp.common.message.AbstractRequestMessage;
 /**
  * Request for initialising the lobby list in the client
  *
- * This message is sent during the initialization of the lobby list. The server will
- * respond with a AllOnlineLobbiesResponse.
+ * <p>This message is sent during the initialization of the lobby list. The server will respond with
+ * a AllOnlineLobbiesResponse.
  *
  * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
  * @author Marco Grawunder

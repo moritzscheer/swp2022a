@@ -2,6 +2,8 @@ package de.uol.swp.common.lobby.response;
 
 import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.message.AbstractResponseMessage;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,9 +12,8 @@ import java.util.Objects;
 /**
  * Response message for the RetrieveAllOnlineLobbiesRequest
  *
- * This message gets sent to the client that sent an RetrieveAllOnlineLobbiesRequest.
- * It contains a List with Lobby objects of every currently open lobbies on the
- * server.
+ * <p>This message gets sent to the client that sent an RetrieveAllOnlineLobbiesRequest. It contains
+ * a List with Lobby objects of every currently open lobbies on the server.
  *
  * @author Moritz Scheer
  * @see de.uol.swp.common.message.AbstractResponseMessage
@@ -31,7 +32,7 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * @author Moritz Scheer
      * @since 2022-11-29
      */
-    public AllOnlineLobbiesResponse(){
+    public AllOnlineLobbiesResponse() {
         // needed for serialization
     }
 

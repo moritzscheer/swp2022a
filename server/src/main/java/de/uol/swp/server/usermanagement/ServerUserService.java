@@ -10,7 +10,6 @@ import java.util.List;
  * @author Marco Grawunder
  * @since 2017-03-17
  */
-
 public interface ServerUserService {
 
     /**
@@ -22,7 +21,6 @@ public interface ServerUserService {
      * @since 2017-03-17
      */
     User login(String username, String password);
-
 
     /**
      * Test, if given user is logged in
@@ -36,8 +34,8 @@ public interface ServerUserService {
     /**
      * Log out from server
      *
-     * @implNote the User Object has to contain a unique identifier in order to
-     * 			 remove the correct user
+     * @implNote the User Object has to contain a unique identifier in order to remove the correct
+     *     user
      * @since 2017-03-17
      */
     void logout(User user);
@@ -45,8 +43,8 @@ public interface ServerUserService {
     /**
      * Create a new persistent user
      *
-     * @implNote the User Object has to contain a unique identifier in order to
-     * 			 remove the correct user
+     * @implNote the User Object has to contain a unique identifier in order to remove the correct
+     *     user
      * @param user The user to create
      * @return the new created user
      * @since 2019-09-02
@@ -56,10 +54,10 @@ public interface ServerUserService {
     /**
      * Removes a user from the sore
      *
-     * Remove the User specified by the User object.
+     * <p>Remove the User specified by the User object.
      *
-     * @implNote the User Object has to contain a unique identifier in order to
-     * 			 remove the correct user
+     * @implNote the User Object has to contain a unique identifier in order to remove the correct
+     *     user
      * @param user The user to remove
      * @since 2019-10-10
      */
@@ -68,13 +66,12 @@ public interface ServerUserService {
     /**
      * Update a user
      *
-     * Updates the User specified by the User object.
+     * <p>Updates the User specified by the User object.
      *
-     * @implNote the User Object has to contain a unique identifier in order to
-     * 			 update the correct user
-     * @param user the user object containing all infos to
-     *             update, if some values are not set, (e.g. password is "")
-     *             these fields are not updated
+     * @implNote the User Object has to contain a unique identifier in order to update the correct
+     *     user
+     * @param user the user object containing all infos to update, if some values are not set, (e.g.
+     *     password is "") these fields are not updated
      * @return the updated user object
      * @since 2019-09-02
      */
@@ -87,5 +84,4 @@ public interface ServerUserService {
      * @since 2017-03-17
      */
     List<User> retrieveAllUsers();
-
 }
