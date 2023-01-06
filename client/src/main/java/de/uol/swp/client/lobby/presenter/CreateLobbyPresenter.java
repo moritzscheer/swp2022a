@@ -45,6 +45,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      * @since 2022-11-15
      */
     public CreateLobbyPresenter() {
+        // needed for javafx
     }
 
     /**

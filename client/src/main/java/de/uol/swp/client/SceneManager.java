@@ -187,35 +187,6 @@ public class SceneManager {
         return rootPane;
     }
 
-    /**
-     * Subroutine creating parent panes from FXML files for Lobbies
-     *
-     * This Method tries to create a parent pane from the FXML file specified by
-     * the URL String given to it. Also, a new instance of the LobbyPresenter is being created by the
-     * LobbyPresenterFactory which is set to the controller of the Parent. If the LOG-Level is set to Debug or
-     * higher loading is written to the LOG.
-     * If it fails to load the view a RuntimeException is thrown.
-     *
-     * @param lobbyID Integer containing the lobbyID
-     * @return view loaded from FXML or null
-     * @since 2022-12-27
-     */
-    private Parent initLobbyPresenter(Integer lobbyID) throws IOException {
-        Parent rootPane;
-        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        lobbyPresenterMap.put(lobbyID, lobbyPresenterFactory.create(lobbyID));
-        loader.setController(lobbyPresenterMap.get(lobbyID));
-        try {
-            URL url = getClass().getResource(LobbyPresenter.FXML);
-            LOG.debug("Loading {}", url);
-            loader.setLocation(url);
-            rootPane = loader.load();
-        } catch (Exception e) {
-            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
-        }
-        return rootPane;
-    }
-
     // -----------------------------------------------------
     // init views
     // -----------------------------------------------------

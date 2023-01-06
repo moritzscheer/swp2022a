@@ -107,7 +107,7 @@ public class LobbyManagementTest {
     void dropLobbyTest() {
         lobbyManagement.createLobby("lobby1", defaultUser, "1234", true);
 
-        assertTrue(!lobbyManagement.getLobbies().isEmpty());
+        assertFalse(lobbyManagement.getLobbies().isEmpty());
 
         lobbyManagement.dropLobby(1);
 

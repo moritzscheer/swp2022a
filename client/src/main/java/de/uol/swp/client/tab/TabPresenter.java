@@ -211,13 +211,17 @@ public class TabPresenter extends AbstractPresenter {
 
         tab.setOnCloseRequest(closeEvent -> {
             closeEvent.consume();
-            eventBus.post(new ChangeElementEvent());
+            eventBus.post(new ChangeElementEvent(lobbyID));
             updateInfoBox();
         });
 
+        //
         tab.setOnSelectionChanged(changeEvent -> {
             changeEvent.consume();
-            if(infoBox.isVisible()) { updateInfoBox(); }
+            if(infoBox.isVisible()) {
+                updateInfoBox();
+                eventBus.post(new ChangeElementEvent(lobbyID));
+            }
         });
     }
 
@@ -313,7 +317,7 @@ public class TabPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent){
-        eventBus.post(new ChangeElementEvent());
+        eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
         updateInfoBox();
     }
 

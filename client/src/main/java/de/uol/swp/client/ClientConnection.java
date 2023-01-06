@@ -85,7 +85,7 @@ public class ClientConnection {
      * Things usually added are encoders, decoders and the ChannelHandler.
      *
      * @implNote If no ChannelHandler is added, communication will not be possible
-     * @throws Exception Connection failed
+     * @throws InterruptedException Connection failed
      * @since 2017-03-17
      */
     public void start() throws InterruptedException {
