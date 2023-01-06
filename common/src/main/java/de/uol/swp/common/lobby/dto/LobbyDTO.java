@@ -71,11 +71,11 @@ public class LobbyDTO implements Lobby {
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
         if (tmp.getPassword().equals("")) {
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true);
+            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
         } else {
             String passwordBlurred = "*".repeat(lobby.getPassword().length());
             return new LobbyDTO(
-                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), passwordBlurred, true);
+                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), passwordBlurred, true, null);
         }
     }
 
@@ -97,7 +97,8 @@ public class LobbyDTO implements Lobby {
                         lobby.getName(),
                         lobby.getOwner().getWithoutPassword(),
                         lobby.getPassword(),
-                        lobby.isMultiplayer());
+                        lobby.isMultiplayer(),
+                        null);
         for (User users : lobby.getUsers()) {
             if (!users.equals(lobby.getOwner()))
                 tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
