@@ -102,6 +102,9 @@ public class SceneManager {
 
     private double screenSizeWidth;
     private double screenSizeHeight;
+    private double lastSceneWidth;
+    private double lastSceneHeight;
+    private Scene changeAccountOptionsScene;
 
     private final Injector injector;
 
@@ -125,16 +128,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(false);
-
-        /**
-         * Gets the current width and height of screen of its user
-         *
-         * @author Tommy Dang
-         * @since 2022-12-15
-         */
-        screenSizeWidth  = Screen.getPrimary().getVisualBounds().getWidth();
-        screenSizeHeight = Screen.getPrimary().getVisualBounds().getHeight();
+        primaryStage.setMaximized(true);
 
         /**
          * Set the minimum size of the stage
@@ -380,6 +374,7 @@ public class SceneManager {
      * FXML file.
      *
      * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     private void initLobbyView() throws IOException {
@@ -670,6 +665,21 @@ public class SceneManager {
         showTabScreen(event.getUser());
     }
 
+    /**
+     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     *
+     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
+     * called.
+     *
+     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @see de.uol.swp.client.CloseClientEvent
+     * @since 2023-01-04
+     */
+    @Subscribe
+    public void onCloseClientEvent(CloseClientEvent event){
+        primaryStage.close();
+    }
+
     // -----------------------------------------------------
     // Error methods
     // -----------------------------------------------------
@@ -716,24 +726,28 @@ public class SceneManager {
     // -----------------------------------------------------
 
     /**
-     * Switches the current scene and title to the given ones
+     * Switches the current scene and title to the given ones and changes the width and height
      *
-     * The current scene and title are saved in the lastScene and lastTitle variables,
-     * before the new scene and title are set and shown.
+     * The current scene, title, screen width and height are saved in the lastScene, lastTitle, lastSceneWidth
+     * and lastSceneHeight variables, before the new scene, title and their width and height are set and shown.
      *
      * @param scene New scene to show
      * @param title New window title
-     * @since 2019-09-03
+     * @author Tommy Dang
+     * @since 2023-01-04
      */
     private void showScene(final Scene scene, final String title) {
         this.lastScene = currentScene;
         this.lastTitle = primaryStage.getTitle();
         this.currentScene = scene;
+        this.lastSceneWidth = primaryStage.getWidth();
+        this.lastSceneHeight = primaryStage.getHeight();
         Platform.runLater(() -> {
+            primaryStage.setWidth(lastSceneWidth);
+            primaryStage.setHeight(lastSceneHeight);
             primaryStage.setTitle(title);
             primaryStage.setScene(scene);
             primaryStage.show();
-            primaryStage.centerOnScreen();
         });
     }
 

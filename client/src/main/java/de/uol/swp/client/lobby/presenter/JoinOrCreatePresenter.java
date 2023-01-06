@@ -2,22 +2,20 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
-import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
+import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -27,12 +25,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-
 import javafx.scene.layout.AnchorPane;
 
 /**
@@ -41,6 +37,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Maxim Erden
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2022-11-23
+ *
  */
 public class JoinOrCreatePresenter extends AbstractPresenter {
 
@@ -51,7 +48,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     private ObservableList<LobbyDTO> lobbiesList;
 
-    @Inject private LobbyService lobbyService;
+    @Inject
+    private LobbyService lobbyService;
 
     @FXML
     private TableView<LobbyDTO> lobbiesView;
@@ -83,7 +81,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     /**
      * Default Constructor
-     *
      * @since 2022-11-15
      */
     public JoinOrCreatePresenter() {
@@ -97,8 +94,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles successful login
      *
-     * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
-     * set to the one in the message received.
+     * If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser
+     * of this client is set to the one in the message received.
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
@@ -113,10 +110,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles new list of lobbies
      *
-     * <p>If a new AllOnlineLobbiesResponse object is posted to the EventBus the names of currently
-     * open lobbies are put onto the lobby list in the joinOrCreate. Furthermore, if the LOG-Level
-     * is set to DEBUG the message "Update of lobby list" with the names of all currently open
-     * lobbies is displayed in the log.
+     * If a new AllOnlineLobbiesResponse object is posted to the EventBus the names
+     * of currently open lobbies are put onto the lobby list in the joinOrCreate.
+     * Furthermore, if the LOG-Level is set to DEBUG the message "Update of lobby
+     * list" with the names of all currently open lobbies is displayed in the
+     * log.
      *
      * @param allLobbiesResponse the AllOnlineLobbiesResponse object seen on the EventBus
      * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
@@ -132,9 +130,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles lobby join exceptions
      *
-     * <p>If an LobbyJoinedExceptionResponse object is detected on the EventBus this method is
-     * called. If the loglevel is set to Error or higher "Lobby join error " and the error message
-     * are written to the log.
+     * If an LobbyJoinedExceptionResponse object is detected on the EventBus this
+     * method is called. If the loglevel is set to Error or higher "Lobby join error " and the
+     * error message are written to the log.
      *
      * @param message The LobbyJoinedExceptionResponse object detected on the EventBus
      * @author Moritz Scheer
@@ -274,8 +272,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Method called when the cancel button is pressed
      *
-     * <p>This Method is called when the cancel button is pressed. It posts an instance of the
-     * JoinOrCreateCanceledEvent to the EventBus the SceneManager is subscribed to.
+     * This Method is called when the cancel button is pressed. It posts an instance
+     * of the JoinOrCreateCanceledEvent to the EventBus the SceneManager is subscribed
+     * to.
      *
      * @param actionEvent The ActionEvent generated by pressing the cancel button
      * @see de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent
@@ -291,8 +290,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Method called when the create lobby button is pressed
      *
-     * <p>This Method is called when the create lobby button is pressed. It posts an instance of the
-     * ShowCreateLobbyViewEvent to the EventBus the SceneManager is subscribed to.
+     * This Method is called when the create lobby button is pressed. It posts an instance
+     * of the ShowCreateLobbyViewEvent to the EventBus the SceneManager is subscribed
+     * to.
      *
      * @param actionEvent The ActionEvent generated by pressing the create lobby button
      * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
@@ -306,9 +306,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the join lobby button in the Join or Create view is pressed. It
-     * checks if a Lobby in the Listview is selected and if it is, a screen will open where the
-     * Password is required to join the lobby.
+     *
+     * This Method is called when the join lobby button in the Join or Create view is pressed.
+     * It checks if a Lobby in the Listview is selected and if it is, a screen will open where the Password is required
+     * to join the lobby.
      *
      * @param actionEvent The ActionEvent generated by pressing the Join Lobby button in the Join or
      *     Create view
@@ -350,11 +351,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the view of The PasswordView needs to change so whenever you want
-     * to join a lobby, or you want to leave the PasswordView if the method is called it checks
-     * whether the screen is currently visible or not and changes it to the opposite Also the
-     * buttons will change its visibility to the opposite and the LobbiesView (Listview) changes so
-     * the lobby you selected is not changeable while the PasswordField is active
+     * This Method is called when the view of The PasswordView needs to change
+     * so whenever you want to join a lobby, or you want to leave the PasswordView
+     * if the method is called it checks whether the screen is currently visible or not and
+     * changes it to the opposite
+     * Also the buttons will change its visibility to the opposite and the LobbiesView (Listview) changes so the lobby
+     * you selected is not changeable while the PasswordField is active
      *
      * @author Maxim Erden
      * @since 2022-12-11
@@ -386,13 +388,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the Join Lobby Button in the PasswordView is pressed It takes the
-     * Lobby that is selected and the Password that is typed in the PasswordField With these
-     * Parameters it tries to join the lobby and if it fails an Error message is shown and the
+     * This Method is called when the Join Lobby Button in the PasswordView is pressed
+     * It takes the Lobby that is selected and the Password that is typed in the PasswordField
+     * With these Parameters it tries to join the lobby and if it fails an Error message is shown and the
      * PasswordField clears
      *
-     * @param actionEvent The ActionEvent is created when you press the Join Lobby button in the
-     *     PasswordView
+     * @param actionEvent The ActionEvent is created when you press the Join Lobby button in the PasswordView
      * @author Maxim Erden
      * @since 2022-12-11
      */
@@ -403,12 +404,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the Cancel Button in the PasswordView is pressed and acts like a
-     * back button It changes the current passwordView so that the PasswordView is not visible
-     * anymore
+     * This Method is called when the Cancel Button in the PasswordView is pressed and acts like a back button
+     * It changes the current passwordView so that the PasswordView is not visible anymore
      *
-     * @param actionEvent The ActionEvent is created when you press the cancel button in the
-     *     PasswordView
+     * @param actionEvent The ActionEvent is created when you press the cancel button in the PasswordView
      * @author Maxim Erden
      * @since 2022-12-11
      */

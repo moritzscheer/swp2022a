@@ -2,7 +2,6 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
@@ -10,13 +9,11 @@ import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
