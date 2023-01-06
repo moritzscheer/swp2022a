@@ -49,7 +49,7 @@ public class LobbyService {
      *
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
-     * @see JoinLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
      * @author Moritz Scheer
      * @since 2022-11-27
      */
@@ -65,7 +65,7 @@ public class LobbyService {
      * @param user User who wants to join the lobby
      * @param lobbyID To identify the lobby with a unique key
      * @param multiplayer Boolean value to query if the user is in the multiplayer
-     * @see LeaveLobbyRequest
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */

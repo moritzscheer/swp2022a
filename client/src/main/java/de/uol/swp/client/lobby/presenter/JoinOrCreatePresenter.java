@@ -197,7 +197,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * If a LobbyCreatedMessage is posted to the EventBus this method is called.
      *
      * @param message the LobbyCreatedMessage object seen on the EventBus
-     * @see UserCreatedLobbyMessage
+     * @see de.uol.swp.common.lobby.message.UserCreatedLobbyMessage
      * @author Moritz Scheer & Maxim Erden
      * @since 2022-11-30
      */

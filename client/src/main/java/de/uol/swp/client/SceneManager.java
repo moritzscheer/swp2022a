@@ -394,6 +394,7 @@ public class SceneManager {
      * FXML file.
      *
      * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     private void initLobbyView() throws IOException {
