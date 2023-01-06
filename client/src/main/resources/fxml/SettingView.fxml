@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="Background" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0"
-          prefWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.1-ea"
-          xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0"
+          prefWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.setting.SettingPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
@@ -25,7 +25,7 @@
         <RowConstraints maxHeight="303.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES"/>
         <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES"/>
     </rowConstraints>
-    <Button minWidth="60.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="83.0" text="Back"
+    <Button minWidth="60.0" mnemonicParsing="false" prefHeight="41.0" onAction="#onBackButtonPressed" prefWidth="83.0" text="Back"
             GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER"/>
     <GridPane styleClass="InnerBox" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="2"
               GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">

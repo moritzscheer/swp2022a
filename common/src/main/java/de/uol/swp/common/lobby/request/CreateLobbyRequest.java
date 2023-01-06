@@ -22,7 +22,8 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public CreateLobbyRequest() {}
+    public CreateLobbyRequest() {
+    }
 
     /**
      * Constructor
@@ -46,11 +47,9 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     public User getOwner() {
         return getUser();
     }
-
     public Boolean isMultiplayer() {
         return multiplayer;
     }
-
     public String getPassword() {
         return password;
     }

@@ -25,8 +25,8 @@ public class LobbyManagement {
      * createSinglePlayerName is being called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
-     * @param name the name of the lobby to create
-     * @param owner the user who wants to create a lobby
+     * @param name          the name of the lobby to create
+     * @param owner         the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
@@ -35,9 +35,7 @@ public class LobbyManagement {
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
-        while (lobbies.containsKey(lobbyID)) {
-            lobbyID++;
-        }
+        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {

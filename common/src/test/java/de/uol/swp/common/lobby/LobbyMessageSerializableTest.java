@@ -1,15 +1,14 @@
 package de.uol.swp.common.lobby;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import de.uol.swp.common.SerializationTestHelper;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.JoinLobbyRequest;
 import de.uol.swp.common.lobby.request.LeaveLobbyRequest;
 import de.uol.swp.common.user.UserDTO;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LobbyMessageSerializableTest {
 
@@ -28,4 +27,6 @@ class LobbyMessageSerializableTest {
         assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UserLeftLobbyMessage(1, "test", defaultUser, new UserDTO("", "", "")),
                 UserLeftLobbyMessage.class));
     }
+
+
 }
