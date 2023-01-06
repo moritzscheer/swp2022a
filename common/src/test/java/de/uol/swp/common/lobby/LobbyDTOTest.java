@@ -47,7 +47,7 @@ class LobbyDTOTest {
      */
     @Test
     void createWithoutPasswordTest() {
-        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true, null);
         lobby = lobby.createWithoutPassword(lobby);
 
         assertEquals(1, lobby.getLobbyID());
@@ -67,7 +67,7 @@ class LobbyDTOTest {
      */
     @Test
     void createWithoutUserPassword() {
-        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true, null);
         for(User user: users) { lobby.joinUser(user, "1234"); }
         lobby = lobby.createWithoutUserPassword(lobby);
 
@@ -97,7 +97,7 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserSingleplayerLobbyTest() {
-        Lobby lobby = new LobbyDTO(2, null, defaultUser, null, false, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(2, null, defaultUser, null, false, null);
 
         assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(users.get(2), "4321"));
     }
@@ -116,7 +116,7 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserMultiplayerLobbyTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         lobby.joinUser(users.get(0), "1234");
         assertEquals(2, lobby.getUsers().size());
@@ -138,7 +138,7 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserPasswordIncorrectTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(users.get(0), "4321"));
     }
@@ -153,7 +153,7 @@ class LobbyDTOTest {
      */
     @Test
     void joinUserLobbyFullTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
         for(User user: users) { lobby.joinUser(user, "1234"); }
 
         assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(notInLobbyUser, "4321"));
@@ -173,7 +173,7 @@ class LobbyDTOTest {
      */
     @Test
     void leaveUserTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
         for(User user: users) { lobby.joinUser(user, "1234"); }
 
         assertEquals(lobby.getUsers().size(), users.size() + 1);
@@ -194,7 +194,7 @@ class LobbyDTOTest {
      */
     @Test
     void leaveLastUserTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
     }
@@ -210,7 +210,7 @@ class LobbyDTOTest {
      */
     @Test
     void removeOwnerFromLobbyTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
         for(User user: users) {
             lobby.joinUser(user, "1234");
         }
@@ -236,7 +236,7 @@ class LobbyDTOTest {
      */
     @Test
     void updateOwnerTest() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
         for(User user: users) {
             lobby.joinUser(user, "1234");
         }
@@ -255,7 +255,7 @@ class LobbyDTOTest {
      */
     @Test
     void getOwner() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertEquals(defaultUser, lobby.getOwner());
     }
@@ -268,7 +268,7 @@ class LobbyDTOTest {
      */
     @Test
     void getUsers() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertEquals(true, lobby.getUsers().contains(defaultUser));
         assertEquals(1, lobby.getUsers().size());
@@ -282,7 +282,7 @@ class LobbyDTOTest {
      */
     @Test
     void getPassword() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertEquals("1234", lobby.getPassword());
     }
@@ -295,7 +295,7 @@ class LobbyDTOTest {
      */
     @Test
     void isMultiplayer() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertEquals(true, lobby.isMultiplayer());
     }
@@ -308,7 +308,7 @@ class LobbyDTOTest {
      */
     @Test
     void getLobbyID() {
-        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, UUID.fromString("notValidChatChannel"));
+        Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         assertEquals(1, lobby.getLobbyID());
     }
