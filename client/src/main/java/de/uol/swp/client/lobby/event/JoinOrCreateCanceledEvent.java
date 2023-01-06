@@ -1,7 +1,5 @@
 package de.uol.swp.client.lobby.event;
 
-import de.uol.swp.common.user.User;
-
 /**
  * Event used to show the Main Menu window if the back button was pressed in the JoinOrCreate Window
  *

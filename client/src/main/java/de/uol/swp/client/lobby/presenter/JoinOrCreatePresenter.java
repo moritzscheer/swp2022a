@@ -1,21 +1,16 @@
 package de.uol.swp.client.lobby.presenter;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
-import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
@@ -32,15 +27,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-
 import java.util.List;
-import java.util.Map;
+
 import javafx.scene.layout.AnchorPane;
 
 /**

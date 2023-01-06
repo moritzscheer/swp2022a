@@ -18,16 +18,37 @@ public class CreateLobbyTabEvent {
     private final LobbyDTO lobby;
     private final Parent parent;
 
-
+    /**
+     * Constructor
+     *
+     * @param parent Parent containing the content of the fxml file
+     * @param lobby LobbyDTO containing the lobby data
+     * @author Moritz Scheer
+     * @since 2023-01-06
+     */
     public CreateLobbyTabEvent(LobbyDTO lobby, Parent parent) {
         this.lobby = lobby;
         this.parent = parent;
     }
 
+    /**
+     * Getter for the parent variable
+     *
+     * @return Parent containing the content of the fxml file
+     * @author Moritz Scheer
+     * @since 2023-01-06
+     */
     public Parent getParent() {
         return parent;
     }
 
+    /**
+     * Getter for the lobby variable
+     *
+     * @return LobbyDTO containing the lobby data
+     * @author Moritz Scheer
+     * @since 2023-01-06
+     */
     public LobbyDTO getLobby() {
         return lobby;
     }

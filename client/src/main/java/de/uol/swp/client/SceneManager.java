@@ -41,7 +41,6 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

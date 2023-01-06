@@ -1,6 +1,5 @@
 package de.uol.swp.common.lobby.response;
 
-import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.message.AbstractResponseMessage;
 
