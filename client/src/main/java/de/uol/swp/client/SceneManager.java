@@ -915,27 +915,27 @@ public class SceneManager {
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void setLobbyTab(LobbyDTO lobby, UserDTO user) {
-        try {
+    //private void setLobbyTab(LobbyDTO lobby, UserDTO user) {
+        //try {
             // load File and Controller
-            lobbyParent = initLobbyPresenter(lobby.getLobbyID());
+            //lobbyParent = initLobbyPresenter(lobby.getLobbyID());
 
             // update Information in Controller
-            lobbyPresenterMap.get(lobby.getLobbyID()).updateInformation(lobby, user);
+            //lobbyPresenterMap.get(lobby.getLobbyID()).updateInformation(lobby, user);
 
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
-            if(lobby.isMultiplayer()) {
-                showJoinOrCreateScreen();
-            } else {
-                showMainScreen();
-            }
+            //if(lobby.isMultiplayer()) {
+                //showJoinOrCreateScreen();
+            //} else {
+                //showMainScreen();
+            //}
 
             // create new Tab and switch to the tab
-            eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+            //eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
+        //} catch (IOException e) {
+            //e.printStackTrace();
+        //}
+    //}
 
     /**
      * helper method to delete a lobby view
