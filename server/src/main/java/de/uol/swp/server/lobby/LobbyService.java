@@ -104,7 +104,7 @@ public class LobbyService extends AbstractService {
      * @since 2019-10-08
      */
     @Subscribe
-    public void onLobbyJoinUserRequest(JoinLobbyRequest joinLobbyRequest) {
+    public void onJoinLobbyRequest(JoinLobbyRequest joinLobbyRequest) {
         Optional<Lobby> lobby = lobbyManagement.getLobby(joinLobbyRequest.getName());
 
         ResponseMessage returnMessage;
@@ -113,6 +113,7 @@ public class LobbyService extends AbstractService {
                 lobby.get().joinUser(joinLobbyRequest.getUser(), joinLobbyRequest.getPassword());
 
                 //sends a message to all clients in the lobby (for the player list) and sends a response to the client that send the request
+                sendToAllInLobby(joinLobbyRequest.getName(), new UserJoinedLobbyMessage(lobby.get().getLobbyID(), joinLobbyRequest.getName(), joinLobbyRequest.getUser()));
                 returnMessage = new LobbyJoinedSuccessfulResponse((LobbyDTO) lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
@@ -124,7 +125,6 @@ public class LobbyService extends AbstractService {
         }
         joinLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
         post(returnMessage);
-        sendToAllInLobby(joinLobbyRequest.getName(), new UserJoinedLobbyMessage(lobby.get().getLobbyID(), joinLobbyRequest.getName(), joinLobbyRequest.getUser()));
     }
 
     /**

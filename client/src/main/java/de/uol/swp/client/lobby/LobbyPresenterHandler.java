@@ -7,6 +7,7 @@ import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -68,6 +69,22 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
         lobbyMap.get(message.getLobby().getLobbyID()).setInformation(message.getLobby(), message.getUser());
+    }
+
+    /**
+     * Handles dropped lobbies
+     *
+     * If a new LobbyDroppedSuccessfulResponse object is posted to the EventBus the LobbyPresenter method is called
+     * in the lobbyPresenter with the given lobbyID.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    @Subscribe
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message){
+        lobbyMap.remove(message.getLobbyID());
     }
 
     /**

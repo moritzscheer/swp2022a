@@ -328,6 +328,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         }
     }
 
+
+
     /**
      * This Method is called when the List view is double-clicked
      * it opens the PasswordView where you need to put in the password in require
