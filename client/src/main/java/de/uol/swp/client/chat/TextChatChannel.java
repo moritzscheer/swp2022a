@@ -2,11 +2,10 @@ package de.uol.swp.client.chat;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import de.uol.swp.client.chat.messages.NewTextChatMessageRecieved;
+import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
-import io.netty.util.internal.UnstableApi;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -33,7 +32,10 @@ public class TextChatChannel {
         ID = id;
         this.eventBus = eventBus;
         chatHistory = new ArrayList<>();
+        eventBus.register(this);
     }
+
+
 
     public void sendTextMessage(String text){
         SendTextChatMessageRequest messageRequest = new SendTextChatMessageRequest(ID, text);
@@ -41,9 +43,9 @@ public class TextChatChannel {
     }
 
     @Subscribe
-    private void onNewTextChatMessageMessage(NewTextChatMessageMessage message){
-        if(message.getChannel().getUUID() != ID) return;
+    public void onNewTextChatMessageMessage(NewTextChatMessageMessage message){
+        if(!message.getChannel().getUUID().equals(ID)) return;
         chatHistory.add(message.getMessage());
-        eventBus.post(new NewTextChatMessageRecieved());
+        eventBus.post(new NewTextChatMessageReceived());
     }
 }

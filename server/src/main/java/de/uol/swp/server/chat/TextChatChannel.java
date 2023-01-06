@@ -48,5 +48,6 @@ public class TextChatChannel {
         ID = id;
         this.eventBus = eventBus;
         chatHistory = new ArrayList<>();
+        loggedInUsers = new ArrayList<>();
     }
 }

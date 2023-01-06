@@ -20,8 +20,7 @@ public class LobbyJoinUserRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LobbyJoinUserRequest() {
-    }
+    public LobbyJoinUserRequest() {}
     /**
      * Constructor
      *

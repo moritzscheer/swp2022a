@@ -25,8 +25,8 @@ public class LobbyManagement {
      * createSinglePlayerName is beeing called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
-     * @param name          the name of the lobby to create
-     * @param owner         the user who wants to create a lobby
+     * @param name the name of the lobby to create
+     * @param owner the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
@@ -46,6 +46,7 @@ public class LobbyManagement {
         }
 
         UUID textChannelUUID = TextChatService.getInstance().createTextChatChannel();
+        TextChatService.getInstance().joinUser(textChannelUUID, owner);
 
         lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
         this.currentLobbyID = lobbyID;
@@ -141,7 +142,9 @@ public class LobbyManagement {
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null) {
-                tmp.put(entry.getKey(), entry.getValue().createWithoutUserPassword(entry.getValue()));
+                tmp.put(
+                        entry.getKey(),
+                        entry.getValue().createWithoutUserPassword(entry.getValue()));
             }
         }
         return tmp;

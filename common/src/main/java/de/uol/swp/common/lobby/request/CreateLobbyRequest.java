@@ -14,7 +14,7 @@ import de.uol.swp.common.user.UserDTO;
 public class CreateLobbyRequest extends AbstractLobbyRequest {
 
     private Boolean multiplayer;
-    private String password;       //passwort of the lobby
+    private String password; // passwort of the lobby
 
     /**
      * Default constructor
@@ -22,8 +22,7 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public CreateLobbyRequest() {
-    }
+    public CreateLobbyRequest() {}
 
     /**
      * Constructor
@@ -41,7 +40,7 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     /**
      * Setter for the user variable
      *
-     * @param owner  User trying to create the lobby
+     * @param owner User trying to create the lobby
      * @since 2019-10-08
      */
     public void setOwner(UserDTO owner) {
@@ -57,9 +56,11 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
     public User getOwner() {
         return getUser();
     }
+
     public Boolean isMultiplayer() {
         return multiplayer;
     }
+
     public String getPassword() {
         return password;
     }

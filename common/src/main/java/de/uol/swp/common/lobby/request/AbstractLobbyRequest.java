@@ -24,8 +24,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public AbstractLobbyRequest() {
-    }
+    public AbstractLobbyRequest() {}
 
     /**
      * Constructor
@@ -52,7 +51,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
     /**
      * Setter for the name variable
      *
-     * @param name  String containing the lobby's name
+     * @param name String containing the lobby's name
      * @since 2019-10-08
      */
     public void setName(String name) {
@@ -72,7 +71,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
     /**
      * Setter for the user variable
      *
-     * @param user  User responsible for the creation of this message
+     * @param user User responsible for the creation of this message
      * @since 2019-10-08
      */
     public void setUser(UserDTO user) {
@@ -84,8 +83,7 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractLobbyRequest that = (AbstractLobbyRequest) o;
-        return Objects.equals(name, that.name) &&
-                Objects.equals(user, that.user);
+        return Objects.equals(name, that.name) && Objects.equals(user, that.user);
     }
 
     @Override

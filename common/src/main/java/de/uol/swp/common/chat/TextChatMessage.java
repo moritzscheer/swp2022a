@@ -1,6 +1,8 @@
 package de.uol.swp.common.chat;
 
-public class TextChatMessage {
+import java.io.Serializable;
+
+public class TextChatMessage implements Serializable {
     private final String message;
     private final String senderString;
 

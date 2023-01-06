@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
+@SuppressWarnings("UnstableApiUsage")
 @Singleton
 public class TextChatService extends AbstractService {
     private HashMap<UUID, TextChatChannel> channelList;
@@ -58,12 +59,12 @@ public class TextChatService extends AbstractService {
     }
 
     @Subscribe
-    private void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
+    public void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
         if (!channelList.containsKey(message.getChannel().getUUID())) return;
         TextChatChannel channel = channelList.get(message.getChannel().getUUID());
         Optional<Session> senderSession = message.getSession();
 
-        if (!senderSession.isPresent()) return;
+        if (senderSession.isEmpty()) return;
         String sender = senderSession.get().getUser().getUsername();
         String text = message.getMessage();
 

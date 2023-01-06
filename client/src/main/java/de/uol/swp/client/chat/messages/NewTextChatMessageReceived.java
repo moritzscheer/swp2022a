@@ -1,4 +1,4 @@
 package de.uol.swp.client.chat.messages;
 
-public class NewTextChatMessageRecieved {
+public class NewTextChatMessageReceived {
 }

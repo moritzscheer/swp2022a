@@ -9,14 +9,14 @@ import java.util.UUID;
 /**
  * Interface to unify lobby objects
  *
- * This is an Interface to allow for multiple types of lobby objects since it is
- * possible that not every client has to have every information of the lobby.
+ * <p>This is an Interface to allow for multiple types of lobby objects since it is possible that
+ * not every client has to have every information of the lobby.
  *
  * @author Marco Grawunder
  * @see de.uol.swp.common.lobby.dto.LobbyDTO
  * @since 2019-10-08
  */
-public interface Lobby extends Serializable{
+public interface Lobby extends Serializable {
 
     /**
      * Adds a new user to the lobby
@@ -77,7 +77,8 @@ public interface Lobby extends Serializable{
     /**
      * Getter for gamemode of the lobby
      *
-     * @return a Boolean.If true, the lobby is a multiplayer lobby, if false, the lobby is a singleplayer lobby
+     * @return a Boolean.If true, the lobby is a multiplayer lobby, if false, the lobby is a
+     *     singleplayer lobby
      * @since 2022-11-22
      */
     Boolean isMultiplayer();

@@ -5,8 +5,8 @@ import de.uol.swp.common.user.Session;
 import java.util.List;
 
 /**
- * A message from server to a number of clients that
- * is not necessary a response to a request (aka server push)
+ * A message from server to a number of clients that is not necessary a response to a request (aka
+ * server push)
  *
  * @see de.uol.swp.common.message.Message
  * @author Marco Grawunder

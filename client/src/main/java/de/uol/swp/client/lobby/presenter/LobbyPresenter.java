@@ -2,9 +2,10 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
-import de.uol.swp.client.chat.messages.NewTextChatMessageRecieved;
+import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
@@ -14,13 +15,14 @@ import de.uol.swp.common.lobby.exception.LobbyLeaveExceptionResponse;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedResponse;
+import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeaveUserResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import de.uol.swp.common.user.UserDTO;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,6 +30,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -41,6 +44,7 @@ import java.util.List;
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2022-11-15
  */
+@SuppressWarnings("UnstableApiUsage")
 public class LobbyPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/LobbyView.fxml";
@@ -119,7 +123,7 @@ public class LobbyPresenter extends AbstractPresenter {
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
         LOG.info("Lobby " + message.getName() + " successfully created");
 
-        //safe information in the Client
+        // safe information in the Client
         loggedInUser = message.getUser();
         updateInformation(message.getLobby());
 
@@ -140,7 +144,7 @@ public class LobbyPresenter extends AbstractPresenter {
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         LOG.info("Lobby " + message.getName() + " successfully joined");
 
-        //safe information in the Client
+        // safe information in the Client
         loggedInUser = message.getUser();
         updateInformation(message.getLobby());
 
@@ -150,9 +154,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Handles when a lobby is dropped
      * <p>
-     * If a LobbyDroppedResponse is posted to the EventBus the
-     * lobby specific variable are set to null and
-     * the ShowJoinOrCreateViewEvent is triggered.
+     * <p>If a LobbyDroppedResponse is posted to the EventBus the lobby specific variable are set to
+     * null and the ShowJoinOrCreateViewEvent is triggered.
      *
      * @param message the LobbyDroppedResponse object seen on the EventBus
      * @author Daniel Merzo
@@ -174,9 +177,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Handles when a user leave the lobby
      * <p>
-     * If a LobbyLeaveUserResponse is posted to the EventBus the
-     * user's specific variable to the lobby are set to null and
-     * the ShowJoinOrCreateViewEvent is triggered.
+     * <p>If a LobbyLeaveUserResponse is posted to the EventBus the user's specific variable to the
+     * lobby are set to null and the ShowJoinOrCreateViewEvent is triggered.
      *
      * @param message the LobbyLeaveUserResponse object seen on the EventBus
      * @author Daniel Merzo
@@ -194,9 +196,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Handles when the lobby was not found
      * <p>
-     * If a LobbyLeaveExceptionResponse is posted to the EventBus the
-     * user's specific variable to the lobby are set to null and
-     * the ShowJoinOrCreateViewEvent is triggered.
+     * <p>If a LobbyLeaveExceptionResponse is posted to the EventBus the user's specific variable to
+     * the lobby are set to null and the ShowJoinOrCreateViewEvent is triggered.
      *
      * @param message the LobbyLeaveUserResponse object seen on the EventBus
      * @author Daniel Merzo
@@ -223,12 +224,14 @@ public class LobbyPresenter extends AbstractPresenter {
         loggedInUser = null;
         lobbyName = null;
         multiplayer = null;
+
+        eventBus.unregister(this);
     }
 
     /**
      * helper methods for ResponseMessages
      * <p>
-     * It saves the current information of the lobby in the presenter.
+     * <p>It saves the current information of the lobby in the presenter.
      *
      * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
@@ -243,15 +246,16 @@ public class LobbyPresenter extends AbstractPresenter {
         slots = message.getUsers().size();
         textChat = new TextChatChannel(message.getTextChatID(), eventBus);
 
-        //display data in GUI
+        // display data in GUI
         textFieldLobbyName.setText(lobbyName);
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
 
-        //initialize user list
+        // initialize user list
         List<User> list = new ArrayList<>(message.getUsers());
         updateUsersList(list);
+        eventBus.register(this);
     }
 
     // -----------------------------------------------------
@@ -261,10 +265,10 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Handles joined users
      * <p>
-     * If a new UserJoinedLobbyMessage object is posted to the EventBus the name of the newly
-     * joined user is appended to the user list in the lobby.
-     * Furthermore, if the LOG-Level is set to DEBUG the message "New user {@literal
-     * <Username>} joined the lobby." is displayed in the log.
+     * <p>If a new UserJoinedLobbyMessage object is posted to the EventBus the name of the newly
+     * joined user is appended to the user list in the lobby. Furthermore, if the LOG-Level is set
+     * to DEBUG the message "New user {@literal <Username>} joined the lobby." is displayed in the
+     * log.
      *
      * @param message the UserJoinedLobbyMessage object seen on the EventBus
      * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
@@ -273,19 +277,22 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
         LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
-        Platform.runLater(() -> {
-            if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
-                users.add(message.getUser().getUsername());
+        Platform.runLater(
+                () -> {
+                    if (users != null
+                            && loggedInUser != null
+                            && !loggedInUser.getUsername().equals(message.getUser().getUsername()))
+                        users.add(message.getUser().getUsername());
 
-            slots++;
-            textFieldOnlineUsers.setText(String.valueOf(slots));
-        });
+                    slots++;
+                    textFieldOnlineUsers.setText(String.valueOf(slots));
+                });
     }
 
     /**
      * Handles when a user left the Lobby
      * <p>
-     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
+     * <p>If a UserLeftLobbyMessage is posted to the EventBus this method is called.
      *
      * @param message the UserLeftLobbyMessage object seen on the EventBus
      * @author Daniel Merzo
@@ -295,41 +302,41 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     private void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
         LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
-        Platform.runLater(() -> {
-            users.remove(message.getUser().getUsername());
+        Platform.runLater(
+                () -> {
+                    users.remove(message.getUser().getUsername());
 
-            slots--;
-            textFieldOnlineUsers.setText(String.valueOf(slots));
+                    slots--;
+                    textFieldOnlineUsers.setText(String.valueOf(slots));
 
-            owner = message.getNewOwner();
-            textFieldOwner.setText(owner.getUsername());
-        });
+                    owner = message.getNewOwner();
+                    textFieldOwner.setText(owner.getUsername());
+                });
     }
 
     /**
      * Updates the main menus user list according to the list given
      * <p>
-     * This method clears the entire user list and then adds the name of each user
-     * in the list given to the main menus user list. If there ist no user list
-     * this it creates one.
+     * <p>This method clears the entire user list and then adds the name of each user in the list
+     * given to the main menus user list. If there ist no user list this it creates one.
      *
-     * @param userList A list of UserDTO objects including all currently logged-in
-     *                 users
-     * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all currently logged-in users
+     * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
+     * it is crucial not to remove the {@code Platform.runLater()}
      * @see de.uol.swp.common.user.UserDTO
      * @since 2019-08-29
      */
     private void updateUsersList(List<User> userList) {
         // Attention: This must be done on the FX Thread!
-        Platform.runLater(() -> {
-            if (users == null) {
-                users = FXCollections.observableArrayList();
-                usersView.setItems(users);
-            }
-            users.clear();
-            userList.forEach(u -> users.add(u.getUsername()));
-        });
+        Platform.runLater(
+                () -> {
+                    if (users == null) {
+                        users = FXCollections.observableArrayList();
+                        usersView.setItems(users);
+                    }
+                    users.clear();
+                    userList.forEach(u -> users.add(u.getUsername()));
+                });
     }
 
     // -----------------------------------------------------
@@ -339,7 +346,7 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Method called when the cancel button is pressed
      * <p>
-     * This Method is called when the cancel button is pressed.
+     * <p>This Method is called when the cancel button is pressed.
      *
      * @param actionEvent The ActionEvent generated by pressing the back button
      * @author Moritz Scheer and Maria
@@ -353,7 +360,7 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Method called when the yes button in the infoBox is pressed
      * <p>
-     * This Method is called when the yes button is pressed.
+     * <p>This Method is called when the yes button is pressed.
      *
      * @param actionEvent The ActionEvent generated by pressing the cancel button
      * @author Daniel Merzo
@@ -377,14 +384,15 @@ public class LobbyPresenter extends AbstractPresenter {
     }
 
     @Subscribe
-    private void onNewTextChatMessage(NewTextChatMessageRecieved message) {
+    public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         chatOutput.setText(textChat.getChatString());
+        chatOutput.setScrollTop(Double.MAX_VALUE);
     }
 
     /**
      * Method called when the no button in the infoBox is pressed
      * <p>
-     * This Method is called when the no button is pressed.
+     * <p>This Method is called when the no button is pressed.
      *
      * @param actionEvent The ActionEvent generated by pressing the cancel button
      * @author Daniel Merzo
@@ -398,7 +406,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Auxiliary method for the visibility of the infoBox
      * <p>
-     * If this method is called, it is possible to make the elements of a scene visible or invisible.
+     * <p>If this method is called, it is possible to make the elements of a scene visible or
+     * invisible.
      *
      * @author Daniel Merzo
      * @since 2022-12-15
@@ -424,7 +433,7 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Method called when the start button is pressed
      * <p>
-     * This Method is called when the start button is pressed.
+     * <p>This Method is called when the start button is pressed.
      *
      * @param actionEvent The ActionEvent generated by pressing the start button
      * @since 2022-11-30
