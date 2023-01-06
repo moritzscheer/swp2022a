@@ -14,7 +14,7 @@ import de.uol.swp.common.user.UserDTO;
 public class CreateLobbyRequest extends AbstractLobbyRequest {
 
     private Boolean multiplayer;
-    private String password; // passwort of the lobby
+    private String password;
 
     /**
      * Default constructor
@@ -35,16 +35,6 @@ public class CreateLobbyRequest extends AbstractLobbyRequest {
         super(name, owner);
         this.multiplayer = multiplayer;
         this.password = password;
-    }
-
-    /**
-     * Setter for the user variable
-     *
-     * @param owner User trying to create the lobby
-     * @since 2019-10-08
-     */
-    public void setOwner(UserDTO owner) {
-        setUser(owner);
     }
 
     /**

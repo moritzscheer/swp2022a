@@ -5,7 +5,7 @@ import de.uol.swp.common.message.AbstractServerMessage;
 import java.util.Objects;
 
 /**
- * A message to indicate a newly logged in user
+ * A message to indicate a newly logged-in user
  *
  * <p>This message is used to automatically update the user lists of every connected client as soon
  * as a user successfully logs in

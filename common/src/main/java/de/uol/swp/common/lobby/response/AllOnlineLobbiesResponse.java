@@ -38,16 +38,17 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * <p>This constructor generates a new List of the logged in users from the given Collection.
-     * The significant difference between the two being that the new List contains copies of the
-     * User objects. These copies have their password variable set to an empty String.
+     * This constructor generates a new List of the logged-in users from the given
+     * Collection. The significant difference between the two being that the new
+     * List contains copies of the User objects. These copies have their password
+     * variable set to an empty String.
      *
-     * @param lobbies Collection of all users currently logged in
+     * @param lobbyCollection Collection of all users currently logged in
      * @author Moritz Scheer
      * @since 2022-11-29
      */
-    public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbies) {
-        for (LobbyDTO lobby : lobbies) {
+    public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbyCollection) {
+        for (LobbyDTO lobby : lobbyCollection) {
             this.lobbies.add(lobby.createWithoutPassword(lobby));
         }
     }
@@ -67,13 +68,14 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     }
 
     /**
-     * Getter for the list of users currently logged in
+     * Getter for the list of lobbies
      *
-     * @return list of users currently logged in
+     * @return list of lobbies
      * @author Moritz Scheer
      * @since 2022-11-29
      */
     public List<LobbyDTO> getLobbies() {
         return lobbies;
     }
+
 }

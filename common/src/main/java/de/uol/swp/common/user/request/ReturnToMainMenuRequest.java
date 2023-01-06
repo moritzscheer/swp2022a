@@ -12,7 +12,7 @@ import de.uol.swp.common.user.User;
  */
 public class ReturnToMainMenuRequest extends AbstractRequestMessage {
 
-    private User loggedInUser;
+    private final User loggedInUser;
 
     public ReturnToMainMenuRequest(User loggedInUser) {
         this.loggedInUser = loggedInUser;

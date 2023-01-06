@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Test Class for the UserDTO
@@ -53,8 +52,17 @@ class LobbyDTOTest {
         assertEquals(1, lobby.getLobbyID());
         assertEquals("lobby", lobby.getName());
         assertEquals(defaultUser, lobby.getOwner());
-        assertEquals(null, lobby.getPassword());
+        assertEquals("****", lobby.getPassword());
         assertEquals(true, lobby.isMultiplayer());
+
+        LobbyDTO lobby2 = new LobbyDTO(1, "lobby", defaultUser, "", true);
+        lobby2 = lobby2.createWithoutPassword(lobby2);
+
+        assertEquals(1, lobby2.getLobbyID());
+        assertEquals("lobby", lobby2.getName());
+        assertEquals(defaultUser, lobby2.getOwner());
+        assertEquals("", lobby2.getPassword());
+        assertEquals(true, lobby2.isMultiplayer());
     }
 
     /**
@@ -68,7 +76,9 @@ class LobbyDTOTest {
     @Test
     void createWithoutUserPassword() {
         LobbyDTO lobby = new LobbyDTO(1, "lobby", defaultUser, "1234", true, null);
-        for(User user: users) { lobby.joinUser(user, "1234"); }
+        for (User user : users) {
+            lobby.joinUser(user, "1234");
+        }
         lobby = lobby.createWithoutUserPassword(lobby);
 
         assertEquals(1, lobby.getLobbyID());
@@ -146,7 +156,7 @@ class LobbyDTOTest {
     /**
      * This test check whether a user can join a lobby when it is full
      *
-     * <p>The test fails, if the user can join the lobby, when the lobbyslot of 8 is reached.
+     * <p>The test fails, if the user can join the lobby, when the lobby slot of 8 is reached.
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -154,7 +164,9 @@ class LobbyDTOTest {
     @Test
     void joinUserLobbyFullTest() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
-        for(User user: users) { lobby.joinUser(user, "1234"); }
+        for (User user : users) {
+            lobby.joinUser(user, "1234");
+        }
 
         assertThrows(IllegalArgumentException.class, () -> lobby.joinUser(notInLobbyUser, "4321"));
     }
@@ -174,7 +186,9 @@ class LobbyDTOTest {
     @Test
     void leaveUserTest() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
-        for(User user: users) { lobby.joinUser(user, "1234"); }
+        for (User user : users) {
+            lobby.joinUser(user, "1234");
+        }
 
         assertEquals(lobby.getUsers().size(), users.size() + 1);
         lobby.leaveUser(users.get(5));
@@ -211,7 +225,7 @@ class LobbyDTOTest {
     @Test
     void removeOwnerFromLobbyTest() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
-        for(User user: users) {
+        for (User user : users) {
             lobby.joinUser(user, "1234");
         }
 
@@ -237,7 +251,7 @@ class LobbyDTOTest {
     @Test
     void updateOwnerTest() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
-        for(User user: users) {
+        for (User user : users) {
             lobby.joinUser(user, "1234");
         }
 
@@ -270,7 +284,7 @@ class LobbyDTOTest {
     void getUsers() {
         Lobby lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
-        assertEquals(true, lobby.getUsers().contains(defaultUser));
+        assertTrue(lobby.getUsers().contains(defaultUser));
         assertEquals(1, lobby.getUsers().size());
     }
 
@@ -288,7 +302,7 @@ class LobbyDTOTest {
     }
 
     /**
-     * This test gets the gamemode status of the lobby
+     * This test gets the game mode status of the lobby
      *
      * @author Moritz Scheer
      * @since 2022-12-20
