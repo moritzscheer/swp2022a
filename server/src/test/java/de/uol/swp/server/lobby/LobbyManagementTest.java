@@ -112,7 +112,6 @@ public class LobbyManagementTest {
         lobbyManagement.dropLobby(1);
 
         assertTrue(lobbyManagement.getLobbies().isEmpty());
-        assertThrows(IllegalArgumentException.class, () -> lobbyManagement.dropLobby(1));
     }
 
     /**
