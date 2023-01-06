@@ -40,7 +40,7 @@ public class LobbyPresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
-    private final Integer lobbyID;
+    private Integer lobbyID;
     private String lobbyName;
     private User owner;
     private ObservableList<String> users;
@@ -76,9 +76,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * Default Constructor
      * @since 2022-11-15
      */
-    @Inject
-    public LobbyPresenter(@Assisted Integer lobbyID) {
-        this.lobbyID = lobbyID;
+    public LobbyPresenter() {
     }
 
     // -----------------------------------------------------
@@ -88,29 +86,31 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * method to safe the information
      *
-     * It saves the current information of the lobby in the presenter.
+     * <p>It saves the current information of the lobby in the presenter.
      *
-     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
+     * @param lobby The lobby file containing all the information of the lobby
+     * @param user The lobby file containing all the information of the user
      * @author Moritz Scheer
      * @since 2022-12-13
      */
-    public void updateInformation(LobbyDTO message, UserDTO user) {
+    public void setInformation(LobbyDTO lobby, UserDTO user) {
         loggedInUser = user;
 
-        lobbyName = message.getName();
-        owner = message.getOwner();
-        password = message.getPassword();
-        multiplayer = message.isMultiplayer();
-        slots = message.getUsers().size();
+        lobbyID = lobby.getLobbyID();
+        lobbyName = lobby.getName();
+        owner = lobby.getOwner();
+        password = lobby.getPassword();
+        multiplayer = lobby.isMultiplayer();
+        slots = lobby.getUsers().size();
 
-        //display data in GUI
+        // display data in GUI
         textFieldLobbyName.setText(lobbyName);
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
 
         //initialize user list
-        List<User> list = new ArrayList<>(message.getUsers());
+        List<User> list = new ArrayList<>(lobby.getUsers());
         updateUsersList(list);
     }
 
@@ -141,7 +141,7 @@ public class LobbyPresenter extends AbstractPresenter {
     }
 
     /**
-     * helper method to switch the disability effect of the back and start button
+     * method to switch the disability effect of the back and start button
      *
      * This method sets the start and back button to disabled if the buttons are enabled
      * and if the buttons are enabled, the buttons are disabled.
@@ -149,7 +149,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    private void SwitchButtonDisableEffect() {
+    public void switchButtonDisableEffect() {
         if(startButton.isDisabled() && backButton.isDisabled()) {
             backButton.setDisable(false);
             startButton.setDisable(false);
@@ -159,9 +159,29 @@ public class LobbyPresenter extends AbstractPresenter {
         }
     }
 
-    // -----------------------------------------------------
-    // subscribe methods
-    // -----------------------------------------------------
+    /**
+     * Handles when a user left the Lobby
+     *
+     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Daniel Merzo
+     * @since 2022-12-15
+     */
+    public void userLeftLobby(UserLeftLobbyMessage message) {
+        LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
+        Platform.runLater(() -> {
+            users.remove(message.getUser().getUsername());
+
+            slots--;
+            textFieldOnlineUsers.setText(String.valueOf(slots));
+
+            owner = message.getNewOwner();
+            textFieldOwner.setText(owner.getUsername());
+            System.out.println(slots);
+        });
+    }
 
     /**
      * Handles joined users
@@ -176,8 +196,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @ Moritz Scheer
      * @since 2022-12-13
      */
-    @Subscribe
-    public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
+    public void userJoinedLobby(UserJoinedLobbyMessage message) {
         LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
         Platform.runLater(() -> {
             if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUser().getUsername())) {
@@ -186,47 +205,7 @@ public class LobbyPresenter extends AbstractPresenter {
             slots++;
             textFieldOnlineUsers.setText(String.valueOf(slots));
         });
-    }
 
-    /**
-     * Handles when a user left the Lobby
-     *
-     * If a UserLeftLobbyMessage is posted to the EventBus this method is called.
-     *
-     * @param message the UserLeftLobbyMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
-     * @author Daniel Merzo
-     * @since 2022-12-15
-     */
-    @Subscribe
-    private void onUserLeftLobbyMessage(UserLeftLobbyMessage message){
-        if(message.getLobbyID().equals(lobbyID)) {
-            LOG.debug("user {}  left the lobby,", message.getUser().getUsername());
-            Platform.runLater(() -> {
-                users.remove(message.getUser().getUsername());
-
-                slots--;
-                textFieldOnlineUsers.setText(String.valueOf(slots));
-
-                owner = message.getNewOwner();
-                textFieldOwner.setText(owner.getUsername());
-            });
-        }
-    }
-
-    /**
-     * Handles when window in the tab gets open
-     *
-     * If a ChangeElementEvent is posted to the EventBus this method is called.
-     *
-     * @param event the ChangeElementEvent object seen on the EventBus
-     * @see de.uol.swp.client.tab.event.ChangeElementEvent
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    @Subscribe
-    public void onChangeElementEvent(ChangeElementEvent event) {
-        SwitchButtonDisableEffect();
     }
 
     // -----------------------------------------------------
@@ -245,7 +224,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onBackButtonPressed(ActionEvent actionEvent) {
         tabPresenter.updateInfoBox();
-        SwitchButtonDisableEffect();
+        switchButtonDisableEffect();
     }
 
     /**
