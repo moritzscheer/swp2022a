@@ -67,7 +67,7 @@ public interface ClientUserService {
     void updateUser(User user);
 
     /**
-     * Retrieve the list of all current logged in users
+     * Retrieve the list of all current logged-in users
      *
      * @since 2017-03-17
      */

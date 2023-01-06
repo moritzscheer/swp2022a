@@ -10,7 +10,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Marco Grawunder
  * @since 2019-10-08
  */
-public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
+public class LeaveLobbyRequest extends AbstractLobbyRequest {
 
     private Integer lobbyID;
     private Boolean multiplayer;
@@ -21,7 +21,8 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LobbyLeaveUserRequest() {}
+    public LeaveLobbyRequest() {
+    }
 
     /**
      * Constructor
@@ -33,8 +34,7 @@ public class LobbyLeaveUserRequest extends AbstractLobbyRequest {
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyLeaveUserRequest(
-            String lobbyName, UserDTO user, Integer lobbyID, Boolean multiplayer) {
+    public LeaveLobbyRequest(String lobbyName, UserDTO user, Integer lobbyID, Boolean multiplayer) {
         super(lobbyName, user);
         this.lobbyID = lobbyID;
         this.multiplayer = multiplayer;

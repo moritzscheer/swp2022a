@@ -10,7 +10,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class LobbyDroppedResponse extends AbstractLobbyResponse{
+public class LobbyDroppedSuccessfulResponse extends AbstractLobbyResponse{
     private Integer lobbyID;
 
     /**
@@ -20,7 +20,7 @@ public class LobbyDroppedResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyDroppedResponse() {
+    public LobbyDroppedSuccessfulResponse() {
     }
 
     /**
@@ -32,7 +32,7 @@ public class LobbyDroppedResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyDroppedResponse(String lobbyName, UserDTO user, Integer lobbyID) {
+    public LobbyDroppedSuccessfulResponse(String lobbyName, UserDTO user, Integer lobbyID) {
         super(lobbyName, user);
         this.lobbyID = lobbyID;
     }

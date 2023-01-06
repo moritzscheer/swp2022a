@@ -3,10 +3,7 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
-import de.uol.swp.common.lobby.request.CreateLobbyRequest;
-import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
-import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
-import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
+import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -53,12 +50,12 @@ public class LobbyService {
      *
      * @param name Name of the lobby the user wants to join
      * @param user User who wants to join the lobby
-     * @see de.uol.swp.common.lobby.request.LobbyJoinUserRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
      * @author Moritz Scheer
      * @since 2022-11-27
      */
     public void joinLobby(String name, UserDTO user, String password) {
-        LobbyJoinUserRequest joinUserRequest = new LobbyJoinUserRequest(name, user, password);
+        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(name, user, password);
         eventBus.post(joinUserRequest);
     }
 
@@ -69,13 +66,12 @@ public class LobbyService {
      * @param user User who wants to join the lobby
      * @param lobbyID To identify the lobby with a unique key
      * @param multiplayer Boolean value to query if the user is in the multiplayer
-     * @see de.uol.swp.common.lobby.request.LobbyLeaveUserRequest
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */
-    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer) {
-        LobbyLeaveUserRequest leaveUserRequest =
-                new LobbyLeaveUserRequest(name, user, lobbyID, multiplayer);
+    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
+        LeaveLobbyRequest leaveUserRequest = new LeaveLobbyRequest(name, user, lobbyID, multiplayer);
         eventBus.post(leaveUserRequest);
     }
 

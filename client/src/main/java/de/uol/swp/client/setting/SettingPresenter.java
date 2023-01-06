@@ -60,7 +60,7 @@ public class SettingPresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     @FXML
-    void onBackButtonPressed(ActionEvent event) {
-        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
+    void onBackButtonPressed(ActionEvent event){
+        eventBus.post(new ShowMainMenuViewEvent());
     }
 }

@@ -285,7 +285,7 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Gets the Session for a given MessageContext
      *
-     * @param ctx The MeesageContext
+     * @param ctx The MessageContext
      * @see de.uol.swp.common.user.Session
      * @see de.uol.swp.common.message.MessageContext
      * @return Optional containing the Session if found

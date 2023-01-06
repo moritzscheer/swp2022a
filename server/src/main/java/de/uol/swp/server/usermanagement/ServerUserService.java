@@ -78,7 +78,7 @@ public interface ServerUserService {
     User updateUser(User user);
 
     /**
-     * Retrieve the list of all current logged in users
+     * Retrieve the list of all current logged-in users
      *
      * @return a list of users
      * @since 2017-03-17
