@@ -154,8 +154,10 @@ public class LobbyPresenter extends AbstractPresenter {
         mapList.setMouseTransparent(true);
         mapList.setFocusTraversable(false);
         this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
-        LOG.debug("LobbyID: {}", message.getLobby().getMap());
-        updateMapDisplay(message.getLobby().getMap());
+
+        // TODO: Update Map when User joins
+        //LOG.debug("LobbyID: {}", message.getLobby().getMap());
+        //updateMapDisplay(message.getLobby().getMap());
 
         eventBus.post(new ShowLobbyViewEvent());
     }
