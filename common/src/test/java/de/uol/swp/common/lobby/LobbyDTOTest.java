@@ -1,5 +1,6 @@
 package de.uol.swp.common.lobby;
 
+import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -190,5 +191,20 @@ class LobbyDTOTest {
         assertThrows(IllegalArgumentException.class, () -> lobby.leaveUser(defaultUser));
     }
 
+    /**
+     * Tests if a map can be updated
+     */
+    @Test
+    void updateMapTest()
+    {
+        Map m = new Map(0);
+        LobbyDTO lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
 
+        Map before = lobby.getMap();
+        lobby.setMap(m);
+        Map after = lobby.getMap();
+
+        assertNotEquals(before, after);
+        assertEquals(m, after);
+    }
 }
