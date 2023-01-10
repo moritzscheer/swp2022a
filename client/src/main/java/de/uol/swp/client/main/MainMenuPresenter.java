@@ -322,6 +322,7 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
+        if(textChat == null) return;
         TextChatOutput.setText(textChat.getChatString());
         Platform.runLater(() -> {
                 TextChatOutput.setScrollTop(Double.MAX_VALUE);
