@@ -281,7 +281,9 @@ public class LobbyPresenter extends AbstractPresenter {
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         chatOutput.setText(textChat.getChatString());
-        chatOutput.setScrollTop(Double.MAX_VALUE);
+        Platform.runLater(() -> {
+            chatOutput.setScrollTop(Double.MAX_VALUE);
+        });
     }
 
     /**

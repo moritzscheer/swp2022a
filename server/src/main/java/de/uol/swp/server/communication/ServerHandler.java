@@ -9,6 +9,7 @@ import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.message.ClientAuthorizedMessage;
 import de.uol.swp.server.message.ClientDisconnectedMessage;
 import de.uol.swp.server.message.ServerExceptionMessage;
@@ -45,6 +46,8 @@ public class ServerHandler implements ServerHandlerDelegate {
      */
     private final EventBus eventBus;
 
+    private final UUID globalTextChatID;
+
     /**
      * Constructor
      *
@@ -55,6 +58,7 @@ public class ServerHandler implements ServerHandlerDelegate {
     public ServerHandler(EventBus eventBus) {
         this.eventBus = eventBus;
         eventBus.register(this);
+        globalTextChatID = TextChatService.getInstance().createTextChatChannel();
     }
 
     @Override
@@ -144,6 +148,7 @@ public class ServerHandler implements ServerHandlerDelegate {
         Session session = this.activeSessions.get(ctx);
         if (session != null) {
             ClientDisconnectedMessage msg = new ClientDisconnectedMessage();
+            TextChatService.getInstance().dropUser(globalTextChatID, session.getUser());
             msg.setSession(session);
             eventBus.post(msg);
             removeSession(ctx);
@@ -173,7 +178,8 @@ public class ServerHandler implements ServerHandlerDelegate {
         final Optional<Session> session = msg.getSession();
         if (ctx.isPresent() && session.isPresent()) {
             putSession(ctx.get(), session.get());
-            sendToClient(ctx.get(), new LoginSuccessfulResponse(msg.getUser()));
+            TextChatService.getInstance().joinUser(globalTextChatID, msg.getUser());
+            sendToClient(ctx.get(), new LoginSuccessfulResponse(msg.getUser(), globalTextChatID));
             sendMessage(new UserLoggedInMessage(msg.getUser().getUsername()));
         } else {
             LOG.warn("No context for {}", msg);
