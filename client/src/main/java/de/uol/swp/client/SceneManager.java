@@ -355,7 +355,7 @@ public class SceneManager {
      * view as specified by the CreateLobby FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @author Moritz Scheer
+     * @author Moritz Scheerini
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {

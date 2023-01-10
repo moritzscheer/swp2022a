@@ -290,7 +290,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
-        eventBus.post(new CloseClientEvent());
+        tabPresenter.updateInfoBox();
+        //eventBus.post(new CloseClientEvent());
     }
 
 }

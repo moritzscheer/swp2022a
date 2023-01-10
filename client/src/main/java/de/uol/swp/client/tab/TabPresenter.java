@@ -65,8 +65,8 @@ public class TabPresenter extends AbstractPresenter {
      * Handles ShowNode events
      *
      * If an ShowNodeEvent object is detected on the EventBus this
-     * method is called. It calls the showNode method to switch the content of the tab with the tabID
-     * to the parent given to it.
+     * method is called. This method sets the content of the tab with the tabID to the given parent given as a parameter.
+     * If the infoBox is visible, it is set to invisible.
      *
      * @param event The ShowNodeEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -75,14 +75,21 @@ public class TabPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onShowNodeEvent(ShowNodeEvent event) {
-        showNode(event.getTabID(), event.getParent());
+        Platform.runLater(() -> {
+            if(infoBox.isVisible()) {
+                updateInfoBox();
+            }
+            tabPane.getTabs().get(event.getTabID()).setContent(event.getParent());
+        });
     }
 
     /**
      * Handles CreateLobbyTab events
      *
      * If an CreateLobbyTabEvent object is detected on the EventBus this
-     * method is called. It calls the createTab method to create a tab with the given lobbyID, lobbyName and parent.
+     * method is called. This method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
+     * parent parameter given to it. Then it opens the helper method setupTab to setup important settings and adds the
+     * tab to the paneTab. Also, the tab is then selected.
      *
      * @param event The CreateLobbyTabEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -91,14 +98,26 @@ public class TabPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onCreateLobbyTabEvent(CreateLobbyTabEvent event) {
-        createTab(event.getLobby().getName(), event.getLobby().getLobbyID(), event.getParent());
-    }
+        Tab tab = new Tab(event.getLobby().getName());
+
+        Platform.runLater(() -> {
+            try {
+                tab.setContent(event.getParent());
+
+                setupTab(tab, event.getLobby().getLobbyID());
+
+                tabPane.getTabs().add(tab);
+                tabPane.getSelectionModel().select(tab);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        });    }
 
     /**
      * Handles DeleteLobbyTab events
      *
      * If an DeleteLobbyTabEvent object is detected on the EventBus this
-     * method is called. It calls the deleteTab method to delete a tab with the given lobbyID.
+     * method is called. This method removes the tab which has the same ID as the lobbyID given to it.
      *
      * @param event The DeleteLobbyTabEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -107,8 +126,10 @@ public class TabPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onDeleteLobbyTabEvent(DeleteLobbyTabEvent event) {
-        deleteTab(event.getLobbyID());
-    }
+        Platform.runLater(() -> {
+            tabPane.getTabs().removeIf(tab -> tab.getId() != null && tab.getId().equals(event.getLobbyID().toString()));
+            tabPane.getSelectionModel().select(0);
+        });    }
 
     /**
      * Handles LobbyLeaveExceptionResponse messages
@@ -129,72 +150,6 @@ public class TabPresenter extends AbstractPresenter {
     // -----------------------------------------------------
     // helper methods and public methods
     // -----------------------------------------------------
-
-    /**
-     * helper method to show a Node
-     *
-     * This method sets the content of the tab with the tabID to the given parent given as a parameter. If the infoBox
-     * is visible, it is set to invisible.
-     *
-     * @param tabID The Integer containing the lobbyID
-     * @param parent Parent containing the content of the fxml file
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void showNode(Integer tabID, Parent parent) {
-        Platform.runLater(() -> {
-            if(infoBox.isVisible()) {
-                updateInfoBox();
-            }
-            tabPane.getTabs().get(tabID).setContent(parent);
-        });
-    }
-
-    /**
-     * helper method to create a tab
-     *
-     * This method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
-     * parent parameter given to it. Then it opens the helper method setupTab to setup important settings and adds the
-     * tab to the paneTab. Also, the tab is then selected.
-     *
-     * @param lobbyName String containing the name of the lobby
-     * @param lobbyID The Integer containing the lobbyID
-     * @param parent Parent containing the content of the fxml file
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void createTab(String lobbyName, Integer lobbyID, Parent parent) {
-        Tab tab = new Tab(lobbyName);
-
-        Platform.runLater(() -> {
-            try {
-                tab.setContent(parent);
-
-                setupTab(tab, lobbyID);
-
-                tabPane.getTabs().add(tab);
-                tabPane.getSelectionModel().select(tab);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    /**
-     * helper method to delete a tab
-     *
-     * This method removes the tab which has the same ID as the lobbyID given to it.
-     *
-     * @param lobbyID The Integer containing the lobbyID
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void deleteTab(Integer lobbyID) {
-        Platform.runLater(() -> {
-            tabPane.getTabs().removeIf(tab -> tab.getId() != null && tab.getId().equals(lobbyID.toString()));
-            tabPane.getSelectionModel().select(0);
-        });
-    }
 
     /**
      * helper method to set up a tab

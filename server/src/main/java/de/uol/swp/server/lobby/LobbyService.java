@@ -81,10 +81,7 @@ public class LobbyService extends AbstractService {
             // sends a message to all clients (for the lobby list) and sends a response to the
             // client that send the request
             if (createLobbyRequest.isMultiplayer()) {
-                sendToAll(
-                        new UserCreatedLobbyMessage(
-                                lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(),
-                                (UserDTO) createLobbyRequest.getOwner()));
+                sendToAll(new UserCreatedLobbyMessage(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), (UserDTO) createLobbyRequest.getOwner()));
             }
             returnMessage = new LobbyCreatedSuccessfulResponse(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), createLobbyRequest.getUser());
         } catch (IllegalArgumentException e) {
@@ -225,7 +222,7 @@ public class LobbyService extends AbstractService {
      *
      * <p>Send a request that the user exits from the lobby with the corresponding lobbyID
      *
-     * @param leaveLobbyRequest The LobbyJoinUserRequest found on the EventBus
+     * @param lobbyLeaveUserRequest The LobbyJoinUserRequest found on the EventBus
      * @author Daniel Merzo, Moritz Scheer
      * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
      * @since 2022-12-15
