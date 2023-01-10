@@ -4,6 +4,8 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.CloseClientEvent;
+import de.uol.swp.client.chat.TextChatChannel;
+import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
@@ -22,6 +24,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +41,7 @@ import java.util.List;
  * @since 2019-08-29
  *
  */
+@SuppressWarnings("UnstableApiUsage")
 public class MainMenuPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/MainMenuView.fxml";
@@ -45,6 +52,8 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
+    private TextChatChannel textChat;
+
     private static final ShowAccountOptionsViewEvent showAccountOptionMessage =
             new ShowAccountOptionsViewEvent();
 
@@ -53,6 +62,12 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     @FXML
     private ListView<String> usersView;
+
+    @FXML
+    private TextArea TextChatOutput;
+
+    @FXML
+    private TextField TextChatInput;
 
     /**
      * Handles successful login
@@ -68,6 +83,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
         this.loggedInUser = message.getUser();
+        textChat = new TextChatChannel(message.getChatID(), eventBus);
         userService.retrieveAllUsers();
     }
 
@@ -293,4 +309,23 @@ public class MainMenuPresenter extends AbstractPresenter {
         eventBus.post(new CloseClientEvent());
     }
 
+    @FXML
+    private void textChatInputKeyPressed(KeyEvent actionEvent) {
+        if (actionEvent.getCode() == KeyCode.ENTER) {
+            if (TextChatInput == null) {
+                return;
+            }
+            textChat.sendTextMessage(TextChatInput.getText());
+            TextChatInput.setText("");
+        }
+    }
+
+    @Subscribe
+    public void onNewTextChatMessage(NewTextChatMessageReceived message) {
+        if(textChat == null) return;
+        TextChatOutput.setText(textChat.getChatString());
+        Platform.runLater(() -> {
+                TextChatOutput.setScrollTop(Double.MAX_VALUE);
+        });
+    }
 }

@@ -4,6 +4,7 @@ import de.uol.swp.common.message.AbstractResponseMessage;
 import de.uol.swp.common.user.User;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A message containing the session (typically for a new logged-in user)
@@ -21,14 +22,18 @@ public class LoginSuccessfulResponse extends AbstractResponseMessage {
 
     private final User user;
 
+    private final UUID chatID;
+
     /**
      * Constructor
      *
-     * @param user the user who successfully logged in
+     * @param user   the user who successfully logged in
+     * @param chatID
      * @since 2019-08-07
      */
-    public LoginSuccessfulResponse(User user) {
+    public LoginSuccessfulResponse(User user, UUID chatID) {
         this.user = user;
+        this.chatID = chatID;
     }
 
     /**
@@ -52,5 +57,9 @@ public class LoginSuccessfulResponse extends AbstractResponseMessage {
     @Override
     public int hashCode() {
         return Objects.hash(user);
+    }
+
+    public UUID getChatID() {
+        return chatID;
     }
 }

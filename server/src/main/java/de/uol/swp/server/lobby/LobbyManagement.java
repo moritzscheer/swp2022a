@@ -43,8 +43,11 @@ public class LobbyManagement {
             }
         }
 
-        UUID textChannelUUID = TextChatService.getInstance().createTextChatChannel();
-        TextChatService.getInstance().joinUser(textChannelUUID, owner);
+        UUID textChannelUUID = null;
+        if(TextChatService.getInstance() != null) {
+            textChannelUUID = TextChatService.getInstance().createTextChatChannel();
+            TextChatService.getInstance().joinUser(textChannelUUID, owner);
+        }
 
         lobbies.put(
                 lobbyID,
@@ -61,7 +64,9 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public void dropLobby(Integer lobbyID) {
-        TextChatService.getInstance().closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
+        if(TextChatService.getInstance() != null && lobbies.get(lobbyID).getTextChatID() != null) {
+            TextChatService.getInstance().closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
+        }
         lobbies.remove(lobbyID);
     }
 

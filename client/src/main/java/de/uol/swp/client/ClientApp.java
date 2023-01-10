@@ -8,6 +8,7 @@ import com.google.inject.Injector;
 
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -52,9 +53,9 @@ public class ClientApp extends Application implements ConnectionListener {
 
     private ClientUserService userService;
 
-	private LobbyService lobbyService;
+    private LobbyService lobbyService;
 
-	private User user;
+    private User user;
 
     private ClientConnection clientConnection;
 
@@ -96,8 +97,8 @@ public class ClientApp extends Application implements ConnectionListener {
         // get user service from guice, is needed for logout
         this.userService = injector.getInstance(ClientUserService.class);
 
-		// get lobby service from guice
-		this.lobbyService = injector.getInstance(LobbyService.class);
+        // get lobby service from guice
+        this.lobbyService = injector.getInstance(LobbyService.class);
 
         // get event bus from guice
         eventBus = injector.getInstance(EventBus.class);
@@ -149,26 +150,26 @@ public class ClientApp extends Application implements ConnectionListener {
         LOG.info("ClientConnection shutdown");
     }
 
-	/**
-	 * Handles successful login
-	 *
-	 * If an LoginSuccessfulResponse object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the main menu and sets
-	 * this clients user to the user found in the object. If the loglevel is set
-	 * to DEBUG or higher "user logged in successfully " and the username of the
-	 * logged-in user are written to the log.
-	 *
-	 * @param message The LoginSuccessfulResponse object detected on the EventBus
-	 * @see SceneManager
-	 * @see LoginSuccessfulResponse
-	 * @since 2017-03-17
-	 */
-	@Subscribe
-	public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
-		LOG.debug("user logged in successfully {}", message.getUser().getUsername());
-		this.user = message.getUser();
-		sceneManager.showTabScreen(user);
-	}
+    /**
+     * Handles successful login
+     * <p>
+     * If an LoginSuccessfulResponse object is detected on the EventBus this
+     * method is called. It tells the SceneManager to show the main menu and sets
+     * this clients user to the user found in the object. If the loglevel is set
+     * to DEBUG or higher "user logged in successfully " and the username of the
+     * logged-in user are written to the log.
+     *
+     * @param message The LoginSuccessfulResponse object detected on the EventBus
+     * @see SceneManager
+     * @see LoginSuccessfulResponse
+     * @since 2017-03-17
+     */
+    @Subscribe
+    public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
+        LOG.debug("user logged in successfully {}", message.getUser().getUsername());
+        this.user = message.getUser();
+        sceneManager.showTabScreen(user);
+    }
 
     /**
      * Handles unsuccessful registrations
@@ -221,7 +222,9 @@ public class ClientApp extends Application implements ConnectionListener {
     @Subscribe
     void onUserLoggedOutMessage(UserLoggedOutMessage message) {
         LOG.info("User {} logged out.", message.getUsername());
-        sceneManager.showLoginScreen();
+        if (message.getUsername().equals(user.getUsername())) {
+            sceneManager.showLoginScreen();
+        }
     }
 
     /**
@@ -232,10 +235,10 @@ public class ClientApp extends Application implements ConnectionListener {
      * higher "Drop User error " and the error message are written to the log.
      *
      * @param message The DropUserExceptionMessage object detected on the EventBus
+     * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.client.SceneManager
      * @see de.uol.swp.common.user.exception.DropUserExceptionMessage
      * @since 2022-12-08
-     * @author Maria Eduarda Costa Leite Andrade
      */
     @Subscribe
     public void onDropUserExceptionMessage(DropUserExceptionMessage message) {
@@ -261,24 +264,24 @@ public class ClientApp extends Application implements ConnectionListener {
         sceneManager.showLoginScreen();
     }
 
-	/**
-	 * Handles the switch from account view to main-menu
-	 *
-	 * If an ReturnToMainMenuRequest object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the main-menu window.
-	 *
-	 * @param message The ReturnToMainMenuRequest object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
-	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
-	 * @since 2022-12-02
-	 */
-	@Subscribe
-	public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
-		LOG.debug("user  {}", message.getLoggedInUser().getUsername());
-		this.user = message.getLoggedInUser();
-		sceneManager.showMainScreen();
-	}
+    /**
+     * Handles the switch from account view to main-menu
+     * <p>
+     * If an ReturnToMainMenuRequest object is detected on the EventBus this
+     * method is called. It tells the SceneManager to show the main-menu window.
+     *
+     * @param message The ReturnToMainMenuRequest object detected on the EventBus
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
+     * @since 2022-12-02
+     */
+    @Subscribe
+    public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
+        LOG.debug("user  {}", message.getLoggedInUser().getUsername());
+        this.user = message.getLoggedInUser();
+        sceneManager.showMainScreen();
+    }
 
     /**
      * Handles unsuccessful User-Updates
@@ -288,10 +291,10 @@ public class ClientApp extends Application implements ConnectionListener {
      * higher "Update user error " and the error message are written to the log.
      *
      * @param message The UpdateUserExceptionMessage object detected on the EventBus
+     * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.client.SceneManager
      * @see de.uol.swp.common.user.exception.UpdateUserExceptionMessage
      * @since 2022-12-08
-     * @author Maria Eduarda Costa Leite Andrade
      */
     @Subscribe
     public void onUpdateUserExceptionMessage(UpdateUserExceptionMessage message) {
@@ -299,39 +302,39 @@ public class ClientApp extends Application implements ConnectionListener {
         LOG.error("Update user error {}", message);
     }
 
-	/**
-	 * Handles successful User-Updates
-	 *
-	 * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
-	 * method is called. It tells the SceneManager to show the main-menu window.
-	 *
-	 * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
-	 * @see de.uol.swp.client.SceneManager
-	 * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
-	 * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
-	 * @since 2022-12-02
-	 */
-	@Subscribe
-	public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
-		LOG.debug("user  {}", message.getUpdatedUser().getUsername());
-		this.user = message.getUpdatedUser();
-		sceneManager.showMainScreen();
-	}
+    /**
+     * Handles successful User-Updates
+     * <p>
+     * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
+     * method is called. It tells the SceneManager to show the main-menu window.
+     *
+     * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2022-12-02
+     */
+    @Subscribe
+    public void onUpdatedUserSuccessfulResponse(UpdatedUserSuccessfulResponse message) {
+        LOG.debug("user  {}", message.getUpdatedUser().getUsername());
+        this.user = message.getUpdatedUser();
+        sceneManager.showMainScreen();
+    }
 
-	/**
-	 * Handles errors produced by the EventBus
-	 *
-	 * If an DeadEvent object is detected on the EventBus, this method is called.
-	 * It writes "DeadEvent detected " and the error message of the detected DeadEvent
-	 * object to the log, if the loglevel is set to ERROR or higher.
-	 *
-	 * @param deadEvent The DeadEvent object found on the EventBus
-	 * @since 2019-08-07
-	 */
-	@Subscribe
-	private void onDeadEvent(DeadEvent deadEvent){
-		LOG.error("DeadEvent detected {}", deadEvent);
-	}
+    /**
+     * Handles errors produced by the EventBus
+     * <p>
+     * If an DeadEvent object is detected on the EventBus, this method is called.
+     * It writes "DeadEvent detected " and the error message of the detected DeadEvent
+     * object to the log, if the loglevel is set to ERROR or higher.
+     *
+     * @param deadEvent The DeadEvent object found on the EventBus
+     * @since 2019-08-07
+     */
+    @Subscribe
+    private void onDeadEvent(DeadEvent deadEvent) {
+        LOG.error("DeadEvent detected {}", deadEvent);
+    }
 
     @Override
     public void exceptionOccurred(String e) {
