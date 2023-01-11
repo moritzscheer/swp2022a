@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
@@ -110,7 +109,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onJoinLobbyRequest(JoinLobbyRequest joinLobbyRequest) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(joinLobbyRequest.getName());
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(joinLobbyRequest.getName());
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
@@ -132,7 +131,7 @@ public class LobbyService extends AbstractService {
                                 joinLobbyRequest.getUser()));
                 returnMessage =
                         new LobbyJoinedSuccessfulResponse(
-                                (LobbyDTO) lobby.get(), joinLobbyRequest.getUser());
+                                lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
                 LOG.error(e);
@@ -161,7 +160,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onLobbyLeaveUserRequest(LeaveLobbyRequest leaveLobbyRequest) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getName());
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getLobbyID());
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
@@ -186,7 +185,7 @@ public class LobbyService extends AbstractService {
                 }
                 returnMessage =
                         new LobbyLeftSuccessfulResponse(
-                                (LobbyDTO) lobby.get(), leaveLobbyRequest.getUser());
+                                lobby.get(), leaveLobbyRequest.getUser());
             } catch (IllegalArgumentException e) {
                 lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
 
@@ -195,7 +194,7 @@ public class LobbyService extends AbstractService {
                 if (leaveLobbyRequest.isMultiplayer()) {
                     sendToAll(
                             new UserDroppedLobbyMessage(
-                                    (LobbyDTO) lobby.get(),
+                                    lobby.get(),
                                     leaveLobbyRequest.getName(),
                                     leaveLobbyRequest.getUser()));
                 }
@@ -208,9 +207,8 @@ public class LobbyService extends AbstractService {
         } else {
             returnMessage =
                     new LobbyLeftExceptionResponse(
-                            lobby.get().getLobbyID(),
                             leaveLobbyRequest.getName(),
-                            (UserDTO) leaveLobbyRequest.getUser(),
+                            leaveLobbyRequest.getUser(),
                             "Cannot find lobby. Lobby does not exist!");
         }
         leaveLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
@@ -241,7 +239,7 @@ public class LobbyService extends AbstractService {
      * @since 2019-10-08
      */
     public void sendToAllInLobby(String lobbyName, ServerMessage message) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyName);
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyName);
 
         if (lobby.isPresent()) {
             message.setReceiver(authenticationService.getSessions(lobby.get().getUsers()));

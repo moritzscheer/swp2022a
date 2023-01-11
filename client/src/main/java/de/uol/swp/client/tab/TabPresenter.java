@@ -3,16 +3,18 @@ package de.uol.swp.client.tab;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -35,9 +37,11 @@ public class TabPresenter extends AbstractPresenter {
     @FXML
     private Button noButton;
     @FXML
-    private Label infoLabel1;
+    private Label infoLabel1; //Are you sure you want to log-out?
     @FXML
-    private Label infoLabel2;
+    private Label infoLabel2; //Are you sure you want to leave the Lobby?
+    @FXML
+    private Label infoLabel3; //Are you sure you want to exit?
     @FXML
     private Pane infoBox;
 
@@ -114,22 +118,34 @@ public class TabPresenter extends AbstractPresenter {
         });    }
 
     /**
-     * Handles DeleteLobbyTab events
+     * Handles successfully dropped Lobbies
      *
-     * If an DeleteLobbyTabEvent object is detected on the EventBus this
-     * method is called. This method removes the tab which has the same ID as the lobbyID given to it.
+     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
+     * calls a private method to close a tab.
      *
-     * @param event The DeleteLobbyTabEvent object detected on the EventBus
-     * @see de.uol.swp.client.SceneManager
+     * @param message The LobbyDroppedResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
      */
     @Subscribe
-    public void onDeleteLobbyTabEvent(DeleteLobbyTabEvent event) {
-        Platform.runLater(() -> {
-            tabPane.getTabs().removeIf(tab -> tab.getId() != null && tab.getId().equals(event.getLobbyID().toString()));
-            tabPane.getSelectionModel().select(0);
-        });    }
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobbyID());
+    }
+
+    /**
+     * Handles successfully left Lobbies
+     *
+     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
+     * calls a private method to close a tab.
+     *
+     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobby().getLobbyID());
+    }
 
     /**
      * Handles LobbyLeaveExceptionResponse messages
@@ -148,8 +164,24 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     // -----------------------------------------------------
-    // helper methods and public methods
+    // helper methods public methods
     // -----------------------------------------------------
+
+    /**
+     * helper method to delete a tab
+     *
+     * This method removes the tab which has the same ID as the lobbyID given to it.
+     *
+     * @param lobbyID The Integer containing the lobbyID
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    private void deleteLobbyTab(Integer lobbyID) {
+        Platform.runLater(() -> {
+            tabPane.getTabs().removeIf(tab -> tab.getId() != null && tab.getId().equals(lobbyID.toString()));
+            tabPane.getSelectionModel().select(0);
+        });
+    }
 
     /**
      * helper method to set up a tab
@@ -181,6 +213,26 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
+     * helper method for the onYesButtonPressed method
+     *
+     * This method signals the lobbyService to leave all the lobbies that the user is in
+     *
+     * @author Moritz Scheer
+     * @since 2023-01-11
+     */
+    private void leaveAllLobbies(Tab currentTab) {
+        for(Tab tabs : tabPane.getTabs()) {
+            if(tabs.getId() != null) {
+                lobbyService.leaveLobby(tabs.getText(), (UserDTO) loggedInUser, Integer.valueOf(tabs.getId()), !currentTab.getText().equals("Singleplayer"));
+            }
+        }
+    }
+
+    // -----------------------------------------------------
+    // public methods
+    // -----------------------------------------------------
+
+    /**
      * method for the visibility of the infoBox
      *
      * If this method is called, it is possible to make the elements of a scene visible or invisible.
@@ -193,37 +245,37 @@ public class TabPresenter extends AbstractPresenter {
             infoBox.setVisible(true);
             yesButton.setVisible(true);
             noButton.setVisible(true);
-            setInfoLabel();
         } else {
             infoBox.setVisible(false);
             yesButton.setVisible(false);
             noButton.setVisible(false);
             infoLabel1.setVisible(false);
             infoLabel2.setVisible(false);
+            infoLabel3.setVisible(false);
         }
     }
 
     /**
-     * helper method for the visibility of the infoLabels
+     * method for the visibility of the infoLabels
      *
      * If this method is called, it sets the infoLabels according to the currently selected tab to visible
      *
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    private void setInfoLabel() {
-        if(tabPane.getSelectionModel().getSelectedItem().getId() == null) {
+    public void setInfoLabel(Integer infoLabelNumber) {
+        if(infoLabelNumber == 1) {
             infoLabel1.setVisible(true);
-        } else {
+        } else if (infoLabelNumber == 2){
             infoLabel2.setVisible(true);
+        } else {
+            infoLabel3.setVisible(true);
         }
     }
 
     // -----------------------------------------------------
     // InfoBox methods
     // -----------------------------------------------------
-
-
 
     /**
      * Method called when the yes button in the infoBox is pressed
@@ -240,23 +292,23 @@ public class TabPresenter extends AbstractPresenter {
 
         Platform.runLater(() -> {
             if(infoLabel1.isVisible()) {
-                // if the label "Are you sure you want to log-out?" is visible
                 if(tabPane.getTabs().size() > 1) {
-                    for(Tab tabs : tabPane.getTabs()) {
-                        if(tabs.getId() != null) {
-                            lobbyService.leaveLobby(tabs.getText(), (UserDTO) loggedInUser, Integer.valueOf(tabs.getId()), !tab.getText().equals("Singleplayer"));
-                        }
-                    }
+                    leaveAllLobbies(tab);
                 }
                 updateInfoBox();
                 userService.logout(loggedInUser);
             } else if (infoLabel2.isVisible()) {
-                // if the label "re you sure you want to leave the Lobby?" is visible
                 lobbyService.leaveLobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), true);
                 updateInfoBox();
 
                 tabPane.getTabs().remove(tab);
                 tabPane.getSelectionModel().select(0);
+            } else if(infoLabel3.isVisible()) {
+                if(tabPane.getTabs().size() > 1) {
+                    leaveAllLobbies(tab);
+                }
+                updateInfoBox();
+                eventBus.post(new CloseClientEvent());
             }
         });
     }
@@ -272,7 +324,9 @@ public class TabPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent){
-        eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
+        if(!tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId().equals("main")) {
+            eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
+        }
         updateInfoBox();
     }
 

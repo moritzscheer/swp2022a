@@ -2,13 +2,11 @@ package de.uol.swp.client.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
-import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -234,6 +232,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onBackButtonPressed(ActionEvent actionEvent) {
+        tabPresenter.setInfoLabel(2);
         tabPresenter.updateInfoBox();
         switchButtonDisableEffect();
     }

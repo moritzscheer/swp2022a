@@ -1,6 +1,5 @@
 package de.uol.swp.server.lobby;
 
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
@@ -72,10 +71,10 @@ public class LobbyManagement {
      * @see Optional
      * @since 2019-10-08
      */
-    public Optional<Lobby> getLobby(String name) {
+    public Optional<LobbyDTO> getLobby(String name) {
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
-                Lobby lobby = lobbies.get(entry.getKey());
+                LobbyDTO lobby = lobbies.get(entry.getKey());
                 return Optional.of(lobby);
             }
         }

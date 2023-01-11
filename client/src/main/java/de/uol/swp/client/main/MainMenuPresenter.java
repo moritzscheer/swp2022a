@@ -3,7 +3,6 @@ package de.uol.swp.client.main;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
@@ -145,21 +144,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method called when the Logout button is pressed
-     *
-     * If the logout button is pressed, this method requests the user service
-     * to log this user out.
-     *
-     * @param event The ActionEvent created by pressing the logout button
-     * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2022-11-08
-     */
-    @FXML
-    private void onLogout(ActionEvent event) {
-        tabPresenter.updateInfoBox();
-    }
-
-    /**
      * Updates the main menus user list according to the list given
      *
      * This method clears the entire user list and then adds the name of each user
@@ -276,6 +260,22 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
+     * Method called when the Logout button is pressed
+     *
+     * If the logout button is pressed, this method requests the user service
+     * to log this user out.
+     *
+     * @param event The ActionEvent created by pressing the logout button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onLogout(ActionEvent event) {
+        tabPresenter.setInfoLabel(1);
+        tabPresenter.updateInfoBox();
+    }
+
+    /**
      * Method called when the exit button is pressed
      *
      * This Method is called when the exit button is pressed. It posts an instance
@@ -290,8 +290,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
+        tabPresenter.setInfoLabel(3);
         tabPresenter.updateInfoBox();
-        //eventBus.post(new CloseClientEvent());
     }
 
 }
