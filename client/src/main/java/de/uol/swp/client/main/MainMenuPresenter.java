@@ -105,7 +105,6 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        LOG.debug("User {}  logged out.",  message.getUsername() );
         Platform.runLater(() -> users.remove(message.getUsername()));
     }
 
@@ -290,7 +289,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
-        tabPresenter.setInfoLabel(3);
+        tabPresenter.setInfoLabel(2);
         tabPresenter.updateInfoBox();
     }
 

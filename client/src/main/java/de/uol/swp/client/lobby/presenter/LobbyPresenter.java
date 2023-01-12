@@ -263,6 +263,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent) {
+        tabPresenter.setInfoLabel(3);
         updateInfoBox();
     }
 

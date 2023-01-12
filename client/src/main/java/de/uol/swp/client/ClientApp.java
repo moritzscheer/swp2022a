@@ -6,8 +6,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -24,6 +26,7 @@ import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import io.netty.channel.Channel;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -62,6 +65,8 @@ public class ClientApp extends Application implements ConnectionListener {
 
     private SceneManager sceneManager;
 
+    private TabPresenter tabPresenter;
+
     // -----------------------------------------------------
     // Java FX Methods
     // ----------------------------------------------------
@@ -98,6 +103,8 @@ public class ClientApp extends Application implements ConnectionListener {
 
 		// get lobby service from guice
 		this.lobbyService = injector.getInstance(LobbyService.class);
+
+        this.tabPresenter = injector.getInstance(TabPresenter.class);
 
         // get event bus from guice
         eventBus = injector.getInstance(EventBus.class);
@@ -221,7 +228,16 @@ public class ClientApp extends Application implements ConnectionListener {
     @Subscribe
     void onUserLoggedOutMessage(UserLoggedOutMessage message) {
         LOG.info("User {} logged out.", message.getUsername());
-        sceneManager.showLoginScreen();
+        Platform.runLater(() -> {
+            if(message.getUsername().equals(user.getUsername())) {
+                if(tabPresenter.onExitRequest()) {
+                    eventBus.post(new CloseClientEvent());
+
+                } else {
+                    eventBus.post(new ShowLoginViewEvent());
+                }
+            }
+        });
     }
 
     /**
