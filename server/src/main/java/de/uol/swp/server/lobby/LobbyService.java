@@ -4,13 +4,14 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -19,6 +20,7 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,14 +44,16 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement The management class for creating, storing and deleting
-     *                        lobbies
+     * @param lobbyManagement The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
      * @param eventBus the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
-    public LobbyService(LobbyManagement lobbyManagement, AuthenticationService authenticationService, EventBus eventBus) {
+    public LobbyService(
+            LobbyManagement lobbyManagement,
+            AuthenticationService authenticationService,
+            EventBus eventBus) {
         super(eventBus);
         this.lobbyManagement = lobbyManagement;
         this.authenticationService = authenticationService;
@@ -58,10 +62,10 @@ public class LobbyService extends AbstractService {
     /**
      * Handles CreateLobbyRequests found on the EventBus
      *
-     * If a CreateLobbyRequest is detected on the EventBus, this method is called.
-     * It creates a new Lobby via the LobbyManagement using the parameters from the
-     * request and sends a LobbyCreatedMessage to every connected user, if the isMultiplayer variable
-     * is set to true. Also, a LobbyCreatedResponse is sent to the Client that send the Request.
+     * <p>If a CreateLobbyRequest is detected on the EventBus, this method is called. It creates a
+     * new Lobby via the LobbyManagement using the parameters from the request and sends a
+     * LobbyCreatedMessage to every connected user, if the isMultiplayer variable is set to true.
+     * Also, a LobbyCreatedResponse is sent to the Client that send the Request.
      *
      * @param createLobbyRequest The CreateLobbyRequest found on the EventBus
      * @author Moritz Scheer
@@ -76,7 +80,11 @@ public class LobbyService extends AbstractService {
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
         ResponseMessage returnMessage;
         try {
-            lobbyManagement.createLobby(createLobbyRequest.getName(), createLobbyRequest.getUser(), createLobbyRequest.getPassword(), createLobbyRequest.isMultiplayer());
+            lobbyManagement.createLobby(
+                    createLobbyRequest.getName(),
+                    createLobbyRequest.getUser(),
+                    createLobbyRequest.getPassword(),
+                    createLobbyRequest.isMultiplayer());
 
             // sends a message to all clients (for the lobby list) and sends a response to the
             // client that send the request
@@ -86,10 +94,14 @@ public class LobbyService extends AbstractService {
                                 lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(),
                                 (UserDTO) createLobbyRequest.getOwner()));
             }
-            returnMessage = new LobbyCreatedSuccessfulResponse(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), createLobbyRequest.getUser());
+            returnMessage =
+                    new LobbyCreatedSuccessfulResponse(
+                            lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(),
+                            createLobbyRequest.getUser());
         } catch (IllegalArgumentException e) {
             LOG.error(e);
-            returnMessage = new LobbyCreatedExceptionResponse("Cannot create Lobby. " + e.getMessage());
+            returnMessage =
+                    new LobbyCreatedExceptionResponse("Cannot create Lobby. " + e.getMessage());
         }
         LOG.info("lobby: {} created successfully", createLobbyRequest.getName());
         createLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
@@ -274,5 +286,4 @@ public class LobbyService extends AbstractService {
         response.initWithMessage(msg);
         post(response);
     }
-
 }
