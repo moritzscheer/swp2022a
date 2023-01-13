@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="Background" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
+<GridPane id="Background" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -40,6 +40,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
+              <TextField id="loginField" fx:id="loginField" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                  <tooltip>
+                      <Tooltip text="Enter your login here" />
+                  </tooltip>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+              </TextField>
+              <PasswordField id="passwordField" fx:id="passwordField" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></PasswordField>
               <Label id="passwordLogin" prefHeight="30.0" prefWidth="54.0" stylesheets="@../css/BaseViewStyle.css" text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                   <GridPane.margin>
                       <Insets />
@@ -56,18 +68,6 @@
                       <Insets />
                   </GridPane.margin>
               </Label>
-              <PasswordField id="passwordField" fx:id="passwordField" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin></PasswordField>
-              <TextField id="loginField" fx:id="loginField" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
-                  <tooltip>
-                      <Tooltip text="Enter your login here" />
-                  </tooltip>
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-              </TextField>
          </children>
       </GridPane>
       <Button minWidth="60.0" mnemonicParsing="false" onAction="#onExitButtonPressed" prefHeight="41.0" prefWidth="83.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
