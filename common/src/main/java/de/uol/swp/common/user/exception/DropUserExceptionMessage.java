@@ -5,8 +5,8 @@ import de.uol.swp.common.message.AbstractResponseMessage;
 import java.util.Objects;
 
 /**
- * This exception is thrown if something went wrong during the user drop process.
- * e.g.: The username does not exist
+ * This exception is thrown if something went wrong during the user drop process. e.g.: The username
+ * does not exist
  *
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2022-12-09
@@ -21,13 +21,13 @@ public class DropUserExceptionMessage extends AbstractResponseMessage {
      * @param message String containing the reason why the drop failed
      * @since 2022-12-09
      */
-    public DropUserExceptionMessage(String message){
+    public DropUserExceptionMessage(String message) {
         this.message = message;
     }
 
     @Override
     public String toString() {
-        return "DropUserExceptionMessage "+message;
+        return "DropUserExceptionMessage " + message;
     }
 
     @Override

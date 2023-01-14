@@ -3,8 +3,8 @@ package de.uol.swp.common.lobby;
 import de.uol.swp.common.SerializationTestHelper;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
-import de.uol.swp.common.lobby.request.LobbyJoinUserRequest;
-import de.uol.swp.common.lobby.request.LobbyLeaveUserRequest;
+import de.uol.swp.common.lobby.request.JoinLobbyRequest;
+import de.uol.swp.common.lobby.request.LeaveLobbyRequest;
 import de.uol.swp.common.user.UserDTO;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +18,13 @@ class LobbyMessageSerializableTest {
     void testLobbyMessagesSerializable() {
         assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new CreateLobbyRequest("test", defaultUser, true, "1234"),
                 CreateLobbyRequest.class));
-        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LobbyJoinUserRequest("test", defaultUser, "1234"),
-                LobbyJoinUserRequest.class));
-        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LobbyLeaveUserRequest("test", defaultUser),
-                LobbyLeaveUserRequest.class));
-        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UserJoinedLobbyMessage("test", defaultUser),
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new JoinLobbyRequest("test", defaultUser, "1234"),
+                JoinLobbyRequest.class));
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new LeaveLobbyRequest("test", defaultUser, 1, true),
+                LeaveLobbyRequest.class));
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UserJoinedLobbyMessage(1, "test", defaultUser),
                 UserJoinedLobbyMessage.class));
-        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UserLeftLobbyMessage("test", defaultUser),
+        assertTrue(SerializationTestHelper.checkSerializableAndDeserializable(new UserLeftLobbyMessage(1, "test", defaultUser, new UserDTO("", "", "")),
                 UserLeftLobbyMessage.class));
     }
 

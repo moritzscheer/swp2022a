@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.communication.ServerHandler;
 import de.uol.swp.server.communication.netty.NettyServerHandler;
 import de.uol.swp.server.communication.netty.Server;
@@ -65,7 +66,7 @@ class ServerApp {
 	 * Helper method to create the services the server uses and for the time being
 	 * the test users
 	 *
-	 * @param injector the google guice injector used for dependency injection
+	 * @param injector the Google guice injector used for dependency injection
 	 * @since 2019-09-18
 	 */
 	private static void createServices(Injector injector) {
@@ -81,6 +82,6 @@ class ServerApp {
 		injector.getInstance(UserService.class);
 		injector.getInstance(AuthenticationService.class);
         injector.getInstance(LobbyService.class);
-	}
-
+        injector.getInstance(TextChatService.class);
+    }
 }

@@ -5,7 +5,7 @@ import de.uol.swp.common.message.AbstractServerMessage;
 import java.util.Objects;
 
 /**
- * A message to indicate a newly logged in user
+ * A message to indicate a newly logged-in user
  *
  * This message is used to automatically update the user lists of every connected
  * client as soon as a user successfully logs in
@@ -31,7 +31,7 @@ public class UserLoggedInMessage extends AbstractServerMessage {
 	/**
 	 * Constructor
 	 *
-	 * @param username the username of the newly logged in user
+	 * @param username the username of the newly logged-in user
 	 * @since 2017-03-17
 	 */
 	public UserLoggedInMessage(String username){

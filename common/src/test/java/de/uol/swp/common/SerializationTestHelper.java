@@ -4,14 +4,12 @@ import java.io.*;
 
 /**
  * Helper class to test if an object is serializable
- * <p>
- * https://stackoverflow.com/questions/3840356/how-to-test-in-java-that-a-class-implements-serializable-correctly-not-just-is
+ *
+ * <p>https://stackoverflow.com/questions/3840356/how-to-test-in-java-that-a-class-implements-serializable-correctly-not-just-is
  */
-
 public class SerializationTestHelper {
 
-    public static <T extends Serializable> byte[] pickle(T obj)
-            throws IOException {
+    public static <T extends Serializable> byte[] pickle(T obj) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(obj);
@@ -27,7 +25,8 @@ public class SerializationTestHelper {
         return cl.cast(o);
     }
 
-    public static <T extends Serializable> boolean checkSerializableAndDeserializable(T obj, Class<T> cl) {
+    public static <T extends Serializable> boolean checkSerializableAndDeserializable(
+            T obj, Class<T> cl) {
         try {
             byte[] bytes = pickle(obj);
             T obj2 = unpickle(bytes, cl);

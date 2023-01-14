@@ -1,39 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="dialog-pane" stylesheets="@../css/myDialog.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
-   <ImageView fitHeight="400.0" fitWidth="606.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../images/Background3x3Matrix.png" />
-      </image>
-   </ImageView>
-   <AnchorPane styleClass="InnerBox" layoutX="106.0" layoutY="145.0" prefHeight="193.0" prefWidth="395.0" stylesheets="@../css/BaseViewStyle.css">
-      <children>
-         <Label id="nameLogin" layoutX="16.0" layoutY="17.0" stylesheets="@../css/BaseViewStyle.css" text="Login" textAlignment="CENTER">
-            <font>
-               <Font size="20.0" />
-            </font></Label>
-         <TextField id="loginField" fx:id="loginField" layoutX="128.0" layoutY="21.0" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css">
-            <tooltip>
-               <Tooltip text="Enter your login here" />
-            </tooltip>
-         </TextField>
-         <Label id="passwordLogin" layoutX="14.0" layoutY="70.0" stylesheets="@../css/BaseViewStyle.css" text="Password">
-            <font>
-               <Font size="20.0" />
-            </font></Label>
-         <PasswordField id="passwordField" fx:id="passwordField" layoutX="128.0" layoutY="73.0" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" />
-         <Button id="loginButton" defaultButton="true" layoutX="123.0" layoutY="133.0" mnemonicParsing="false" onAction="#onLoginButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Login" />
-         <Button id="registerButton" layoutX="212.0" layoutY="133.0" mnemonicParsing="false" onAction="#onRegisterButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Register" />
-      </children>
-   </AnchorPane>
-</AnchorPane>
+<GridPane id="Background" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.auth.LoginPresenter">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.0" minWidth="10.0" prefWidth="246.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="336.0" minHeight="10.0" prefHeight="78.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="336.0" minHeight="10.0" prefHeight="212.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="362.0" minHeight="10.0" prefHeight="105.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="430.0" minHeight="10.0" prefHeight="145.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="303.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane prefWidth="218.0" styleClass="InnerBox" GridPane.columnIndex="3" GridPane.rowIndex="3">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+              <Label id="passwordLogin" prefHeight="30.0" prefWidth="54.0" stylesheets="@../css/BaseViewStyle.css" text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                      <Insets />
+                  </GridPane.margin>
+              </Label>
+              <Button id="loginButton" defaultButton="true" maxWidth="60.0" minWidth="60.0" mnemonicParsing="false" onAction="#onLoginButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                  <GridPane.margin>
+                      <Insets />
+                  </GridPane.margin>
+              </Button>
+              <Button id="registerButton" mnemonicParsing="false" onAction="#onRegisterButtonPressed" stylesheets="@../css/BaseViewStyle.css" text="Register" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+              <Label id="nameLogin" alignment="CENTER_RIGHT" stylesheets="@../css/BaseViewStyle.css" text="Login" GridPane.halignment="CENTER">
+                  <GridPane.margin>
+                      <Insets />
+                  </GridPane.margin>
+              </Label>
+              <PasswordField id="passwordField" fx:id="passwordField" promptText="Enter Password" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></PasswordField>
+              <TextField id="loginField" fx:id="loginField" promptText="Enter Login" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                  <tooltip>
+                      <Tooltip text="Enter your login here" />
+                  </tooltip>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+              </TextField>
+         </children>
+      </GridPane>
+      <Button minWidth="60.0" mnemonicParsing="false" onAction="#onExitButtonPressed" prefHeight="41.0" prefWidth="83.0" stylesheets="@../css/BaseViewStyle.css" text="Exit" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <GridPane id="LogoBox" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </children>
+</GridPane>

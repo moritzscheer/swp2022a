@@ -1,16 +1,13 @@
 package de.uol.swp.client.rulebook;
 
-import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
-import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
-import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+
 
 /**
  * Manages the rulebook window
@@ -25,6 +22,7 @@ public class RulebookPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/RulebookView.fxml";
     private User loggedInUser;
 
+
     /**
      * Default Constructor
      *
@@ -32,6 +30,7 @@ public class RulebookPresenter extends AbstractPresenter {
      */
     public RulebookPresenter() {
     }
+
 
     /**
      * Handles successful login
@@ -63,7 +62,7 @@ public class RulebookPresenter extends AbstractPresenter {
      */
     @FXML
     void onBackButtonPressed(ActionEvent event){
-        eventBus.post(new ShowMainMenuViewEvent(loggedInUser));
+        eventBus.post(new ShowMainMenuViewEvent());
     }
 
 }

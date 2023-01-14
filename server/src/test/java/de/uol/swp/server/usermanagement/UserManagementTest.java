@@ -1,21 +1,24 @@
 package de.uol.swp.server.usermanagement;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class UserManagementTest {
 
     private static final int NO_USERS = 10;
     private static final List<UserDTO> users;
-    private static final User userNotInStore = new UserDTO("marco" + NO_USERS, "marco" + NO_USERS, "marco" + NO_USERS + "@grawunder.de");
+    private static final User userNotInStore =
+            new UserDTO(
+                    "marco" + NO_USERS, "marco" + NO_USERS, "marco" + NO_USERS + "@grawunder.de");
 
     static {
         users = new ArrayList<>();
@@ -51,7 +54,8 @@ class UserManagementTest {
         UserManagement management = getDefaultManagement();
         User userToLogIn = users.get(0);
 
-        assertThrows(SecurityException.class, () -> management.login(userToLogIn.getUsername(), ""));
+        assertThrows(
+                SecurityException.class, () -> management.login(userToLogIn.getUsername(), ""));
 
         assertFalse(management.isLoggedIn(userToLogIn));
     }
@@ -62,7 +66,9 @@ class UserManagementTest {
         User userToLogIn = users.get(0);
         User secondUser = users.get(1);
 
-        assertThrows(SecurityException.class, () -> management.login(userToLogIn.getUsername(), secondUser.getPassword()));
+        assertThrows(
+                SecurityException.class,
+                () -> management.login(userToLogIn.getUsername(), secondUser.getPassword()));
 
         assertFalse(management.isLoggedIn(userToLogIn));
     }
@@ -79,7 +85,6 @@ class UserManagementTest {
         management.logout(userToLogin);
 
         assertFalse(management.isLoggedIn(userToLogin));
-
     }
 
     @Test
@@ -104,15 +109,15 @@ class UserManagementTest {
 
         management.dropUser(userNotInStore);
 
-        assertThrows(SecurityException.class,
+        assertThrows(
+                SecurityException.class,
                 () -> management.login(userNotInStore.getUsername(), userNotInStore.getPassword()));
     }
 
     @Test
     void dropUserNotExisting() {
         UserManagement management = getDefaultManagement();
-        assertThrows(UserManagementException.class,
-                () -> management.dropUser(userNotInStore));
+        assertThrows(UserManagementException.class, () -> management.dropUser(userNotInStore));
     }
 
     @Test
@@ -121,7 +126,6 @@ class UserManagementTest {
         User userToCreate = users.get(0);
 
         assertThrows(UserManagementException.class, () -> management.createUser(userToCreate));
-
     }
 
     @Test
@@ -167,7 +171,6 @@ class UserManagementTest {
 
         management.login(updatedUser.getUsername(), updatedUser.getPassword());
         assertTrue(management.isLoggedIn(updatedUser));
-
     }
 
     @Test
@@ -187,8 +190,6 @@ class UserManagementTest {
 
         // check, if there are no passwords
         // TODO: typically, there should be no logic in tests
-        allUsers.forEach(u -> assertEquals("",u.getPassword() ));
+        allUsers.forEach(u -> assertEquals("", u.getPassword()));
     }
-
-
 }

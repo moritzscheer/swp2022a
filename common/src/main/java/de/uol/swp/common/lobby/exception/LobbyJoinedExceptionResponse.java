@@ -14,13 +14,13 @@ public class LobbyJoinedExceptionResponse extends AbstractLobbyResponse {
      * @param message String containing the reason why the registration failed
      * @since 2022-11-24
      */
-    public LobbyJoinedExceptionResponse(String message){
+    public LobbyJoinedExceptionResponse(String message) {
         this.message = message;
     }
 
     @Override
     public String toString() {
-        return "LobbyExceptionResponse "+message;
+        return "LobbyExceptionResponse " + message;
     }
 
     @Override

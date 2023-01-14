@@ -1,13 +1,15 @@
 package de.uol.swp.server.usermanagement;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.google.common.eventbus.EventBus;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.request.RegisterUserRequest;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("UnstableApiUsage")
 class UserServiceTest {
@@ -27,7 +29,8 @@ class UserServiceTest {
         bus.post(request);
 
         // can only test, if something in the state has changed
-        final User loggedInUser = userManagement.login(userToRegister.getUsername(), userToRegister.getPassword());
+        final User loggedInUser =
+                userManagement.login(userToRegister.getUsername(), userToRegister.getPassword());
 
         assertNotNull(loggedInUser);
         assertEquals(userToRegister, loggedInUser);
@@ -41,7 +44,8 @@ class UserServiceTest {
         bus.post(request);
         bus.post(request2);
 
-        final User loggedInUser = userManagement.login(userToRegister.getUsername(), userToRegister.getPassword());
+        final User loggedInUser =
+                userManagement.login(userToRegister.getUsername(), userToRegister.getPassword());
 
         // old user should be still in the store
         assertNotNull(loggedInUser);
@@ -49,7 +53,5 @@ class UserServiceTest {
 
         // old user should not be overwritten!
         assertNotEquals(loggedInUser.getEMail(), userWithSameName.getEMail());
-
     }
-
 }

@@ -1,4 +1,4 @@
-SWP Basissystem	
+SWP Basissystem
 ===============
 
 Der folgende Code sollte als Basis für das Software Projekt verwendet werden.
@@ -6,7 +6,7 @@ Der folgende Code sollte als Basis für das Software Projekt verwendet werden.
 
 Maven
 -----
-Das Projekt kann mit Maven gebaut werden. 
+Das Projekt kann mit Maven gebaut werden.
 
 Dazu auf der Hauptebene zunächst
 
@@ -29,5 +29,3 @@ java -jar client-1.0-SNAPSHOT-jar-with-dependencies.jar
 Analoges gilt für den Server.
 
 Weitere Hinweise finden sich im Wiki https://confluence.swl.informatik.uni-oldenburg.de/display/SWP/Vorlesungsvideos
-
-

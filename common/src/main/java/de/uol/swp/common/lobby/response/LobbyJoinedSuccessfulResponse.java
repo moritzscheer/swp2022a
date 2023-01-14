@@ -28,7 +28,7 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
      */
     public LobbyJoinedSuccessfulResponse(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
-        this.lobby = lobby.createWithoutUserPassword(lobby);
+        this.lobby = lobby/*.createWithoutUserPassword(lobby)*/;
 
         // Map has to be sent directly in the message, or the client doesn't receive it
         this.map = lobby.getMap();
