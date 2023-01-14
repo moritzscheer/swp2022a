@@ -155,9 +155,7 @@ public class LobbyPresenter extends AbstractPresenter {
         mapList.setFocusTraversable(false);
         this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
 
-        // TODO: Update Map when User joins
-        //LOG.debug("LobbyID: {}", message.getLobby().getMap());
-        //updateMapDisplay(message.getLobby().getMap());
+        updateMapDisplay(message.getMap());
 
         eventBus.post(new ShowLobbyViewEvent());
     }
@@ -341,7 +339,9 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     private void updateMapDisplay(Map m)
     {
-        textFieldMapName.setText(m.getName());
-        mapThumb.setImage(new Image(m.getImageResource().toString()));
+        Platform.runLater(() -> {
+            textFieldMapName.setText(m.getName());
+            mapThumb.setImage(new Image(m.getImageResource().toString()));
+        });
     }
 }
