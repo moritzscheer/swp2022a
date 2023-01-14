@@ -259,7 +259,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                                             cellData.getValue().getOwner().getUsername()));
                     column4.setCellValueFactory(
                             cellData ->
-                                    new SimpleStringProperty(cellData.getValue().getPassword()));
+                                    new SimpleStringProperty(
+                                            cellData.getValue().getPassword().length() > 0
+                                                    ? "*****"
+                                                    : ""));
 
                     list.forEach(
                             u -> {
