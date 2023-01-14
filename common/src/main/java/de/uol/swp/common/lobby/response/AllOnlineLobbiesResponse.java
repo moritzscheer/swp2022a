@@ -38,10 +38,9 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * This constructor generates a new List of the logged-in users from the given
-     * Collection. The significant difference between the two being that the new
-     * List contains copies of the User objects. These copies have their password
-     * variable set to an empty String.
+     * <p>This constructor generates a new List of the logged-in users from the given Collection.
+     * The significant difference between the two being that the new List contains copies of the
+     * User objects. These copies have their password variable set to an empty String.
      *
      * @param lobbyCollection Collection of all users currently logged in
      * @author Moritz Scheer
@@ -77,5 +76,4 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
     public List<LobbyDTO> getLobbies() {
         return lobbies;
     }
-
 }

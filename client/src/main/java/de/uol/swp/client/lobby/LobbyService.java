@@ -2,6 +2,7 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+
 import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.user.UserDTO;
 
@@ -10,7 +11,6 @@ import de.uol.swp.common.user.UserDTO;
  *
  * @author Marco Grawunder
  * @since 2019-11-20
- *
  */
 @SuppressWarnings("UnstableApiUsage")
 public class LobbyService {
@@ -40,7 +40,8 @@ public class LobbyService {
      * @since 2022-11-23
      */
     public void createNewLobby(String name, UserDTO user, Boolean multiplayer, String password) {
-        CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(name, user, multiplayer, password);
+        CreateLobbyRequest createLobbyRequest =
+                new CreateLobbyRequest(name, user, multiplayer, password);
         eventBus.post(createLobbyRequest);
     }
 
@@ -69,8 +70,9 @@ public class LobbyService {
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */
-    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer){
-        LeaveLobbyRequest leaveUserRequest = new LeaveLobbyRequest(name, user, lobbyID, multiplayer);
+    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer) {
+        LeaveLobbyRequest leaveUserRequest =
+                new LeaveLobbyRequest(name, user, lobbyID, multiplayer);
         eventBus.post(leaveUserRequest);
     }
 
@@ -82,7 +84,8 @@ public class LobbyService {
      * @since 2022-11-30
      */
     public void retrieveAllLobbies() {
-        RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest = new RetrieveAllOnlineLobbiesRequest();
+        RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest =
+                new RetrieveAllOnlineLobbiesRequest();
         eventBus.post(retrieveAllLobbiesRequest);
     }
 }

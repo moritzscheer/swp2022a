@@ -10,7 +10,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class LobbyDroppedSuccessfulResponse extends AbstractLobbyResponse{
+public class LobbyDroppedSuccessfulResponse extends AbstractLobbyResponse {
     private Integer lobbyID;
 
     /**
@@ -20,8 +20,7 @@ public class LobbyDroppedSuccessfulResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyDroppedSuccessfulResponse() {
-    }
+    public LobbyDroppedSuccessfulResponse() {}
 
     /**
      * Constructor
