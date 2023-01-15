@@ -32,7 +32,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         UserDTO usr = null;
         try {
             ResultSet result = SQLHelper.Select(
-                    String.format("SELECT * FROM Users where username = '%s'", username));
+                    String.format("SELECT * FROM rr.user where username = '%s'", username));
             result.next();
             usr = new UserDTO(
                     result.getString("username"),
@@ -54,7 +54,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
     public Optional<User> findUser(String username) {
         UserDTO usr = null;
         try{
-            ResultSet result = SQLHelper.Select(String.format("SELECT * FROM Users where username = '%s'", username));
+            ResultSet result = SQLHelper.Select(String.format("SELECT * FROM rr.user where username = '%s'", username));
             result.next();
             usr = new UserDTO(result.getString("username"), result.getString("password"), result.getString("email"));
         }catch(SQLException e){
@@ -90,7 +90,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         String passwordHash = hash(password);
         int rowsAffected = 0;
         try{
-            rowsAffected = SQLHelper.Update(String.format("UPDATE Users SET password = '%s', email = '%s' WHERE username = '%s'", passwordHash, eMail, username));
+            rowsAffected = SQLHelper.Update(String.format("UPDATE rr.user SET password = '%s', email = '%s' WHERE username = '%s'", passwordHash, eMail, username));
         }catch (Exception e){
             e.printStackTrace();
             return null;
@@ -102,7 +102,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
     @Override
     public void removeUser(String username){
         try{
-            SQLHelper.Update(String.format("DELETE FROM Users WHERE username = '%s'", username));
+            SQLHelper.Update(String.format("DELETE FROM rr.user WHERE username = '%s'", username));
         }catch(Exception e){
 
         }
@@ -112,7 +112,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
     public List<User> getAllUsers() {
         List<User> retUsers = new ArrayList<>();
         try{
-            ResultSet result = SQLHelper.Select("SELECT * FROM Users");
+            ResultSet result = SQLHelper.Select("SELECT * FROM rr.user");
 
             while(result.next()){
                 retUsers.add(new UserDTO(result.getString("username"), result.getString("password"), result.getString("email")));
