@@ -49,7 +49,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -331,7 +330,6 @@ public class SceneManager {
         }
     }
 
-
     /**
      * Initializes the join or create view
      *
@@ -456,7 +454,6 @@ public class SceneManager {
     public void onShowSettingViewEvent(ShowSettingViewEvent event) {
         showSettingScreen();
     }
-
 
     // -----------------------------------------------------
     // MainManu_Events
@@ -628,15 +625,14 @@ public class SceneManager {
     /**
      * Handles ShowCreateLobbyViewEvent detected on the EventBus
      *
-     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
-     * called.
+     * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
      *
      * @param event The RegistrationCanceledEvent detected on the EventBus
      * @see de.uol.swp.client.CloseClientEvent
      * @since 2023-01-04
      */
     @Subscribe
-    public void onCloseClientEvent(CloseClientEvent event){
+    public void onCloseClientEvent(CloseClientEvent event) {
         primaryStage.close();
     }
 
@@ -690,9 +686,9 @@ public class SceneManager {
     /**
      * Switches the current scene and title to the given ones and changes the width and height
      *
-     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle, lastSceneWidth
-     * and lastSceneHeight variables, before the
-     * new scene, title and their width and height are set and shown.
+     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle,
+     * lastSceneWidth and lastSceneHeight variables, before the new scene, title and their width and
+     * height are set and shown.
      *
      * @param scene New scene to show
      * @param title New window title
@@ -705,13 +701,14 @@ public class SceneManager {
         this.currentScene = scene;
         this.lastSceneWidth = primaryStage.getWidth();
         this.lastSceneHeight = primaryStage.getHeight();
-        Platform.runLater(() -> {
-            primaryStage.setWidth(lastSceneWidth);
-            primaryStage.setHeight(lastSceneHeight);
-            primaryStage.setTitle(title);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        });
+        Platform.runLater(
+                () -> {
+                    primaryStage.setWidth(lastSceneWidth);
+                    primaryStage.setHeight(lastSceneHeight);
+                    primaryStage.setTitle(title);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                });
     }
 
     /**

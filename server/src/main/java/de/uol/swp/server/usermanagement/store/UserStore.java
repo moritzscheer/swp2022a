@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Interface to unify different kinds of UserStores in order to be able to exchange
- * them easily.
+ * Interface to unify different kinds of UserStores in order to be able to exchange them easily.
  *
  * @author Marco Grawunder
  * @since 2019-08-13
@@ -63,13 +62,11 @@ public interface UserStore {
      */
     void removeUser(String username);
 
-
     /**
      * Retrieves the list of all users.
+     *
      * @return A list of all users without password information
      * @since 2019-08-13
      */
     List<User> getAllUsers();
-
-
 }

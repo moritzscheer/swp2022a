@@ -22,7 +22,7 @@ public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
 
     @Override
     public String toString() {
-        return "LobbyExceptionResponse "+message;
+        return "LobbyExceptionResponse " + message;
     }
 
     @Override
