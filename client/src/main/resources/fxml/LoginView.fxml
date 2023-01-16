@@ -40,7 +40,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-              <Label id="passwordLogin" prefHeight="30.0" prefWidth="54.0" stylesheets="@../css/BaseViewStyle.css" text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+              <Label id="passwordLogin" prefHeight="30.0" prefWidth="65.0" stylesheets="@../css/BaseViewStyle.css" text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                   <GridPane.margin>
                       <Insets />
                   </GridPane.margin>
