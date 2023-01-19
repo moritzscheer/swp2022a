@@ -353,7 +353,7 @@ public class SceneManager {
      * view as specified by the CreateLobby FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @author Moritz Scheer
+     * @author Moritz Scheerini
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {
@@ -408,36 +408,6 @@ public class SceneManager {
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         showLobbyScreen(message.getLobby());
-    }
-
-    /**
-     * Handles successfully left Lobbies
-     *
-     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
-     *
-     * @param message The LobbyLeaveUserResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobby().getLobbyID());
-    }
-
-    /**
-     * Handles successfully dropped Lobbies
-     *
-     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
-     *
-     * @param message The LobbyDroppedResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyDroppedResponse(LobbyDroppedSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobbyID());
     }
 
     /**
@@ -928,17 +898,5 @@ public class SceneManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * helper method to delete a lobby view
-     *
-     * <p>This method posts an Event on the Eventbus to delete a tab in the TabPresenter.
-     *
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    private void deleteLobbyTab(Integer lobbyID) {
-        eventBus.post(new DeleteLobbyTabEvent(lobbyID));
     }
 }

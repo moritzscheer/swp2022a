@@ -124,7 +124,6 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        LOG.debug("User {}  logged out.", message.getUsername());
         Platform.runLater(() -> users.remove(message.getUsername()));
     }
 
@@ -160,21 +159,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     private void onDropUser(ActionEvent event) {
         userService.dropUser(loggedInUser);
         userService.logout(loggedInUser);
-    }
-
-    /**
-     * Method called when the Logout button is pressed
-     *
-     * <p>If the logout button is pressed, this method requests the user service to log this user
-     * out.
-     *
-     * @param event The ActionEvent created by pressing the logout button
-     * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2022-11-08
-     */
-    @FXML
-    private void onLogout(ActionEvent event) {
-        tabPresenter.updateInfoBox();
     }
 
     /**
@@ -294,6 +278,22 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
+     * Method called when the Logout button is pressed
+     *
+     * If the logout button is pressed, this method requests the user service
+     * to log this user out.
+     *
+     * @param event The ActionEvent created by pressing the logout button
+     * @see de.uol.swp.client.lobby.LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onLogout(ActionEvent event) {
+        tabPresenter.setInfoLabel(1);
+        tabPresenter.updateInfoBox();
+    }
+
+    /**
      * Method called when the exit button is pressed
      *
      * <p>This Method is called when the exit button is pressed. It posts an instance of the
@@ -306,7 +306,8 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
-        eventBus.post(new CloseClientEvent());
+        tabPresenter.setInfoLabel(2);
+        tabPresenter.updateInfoBox();
     }
 
     @FXML

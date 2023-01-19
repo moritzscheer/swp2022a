@@ -89,10 +89,7 @@ public class LobbyService extends AbstractService {
             // sends a message to all clients (for the lobby list) and sends a response to the
             // client that send the request
             if (createLobbyRequest.isMultiplayer()) {
-                sendToAll(
-                        new UserCreatedLobbyMessage(
-                                lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(),
-                                (UserDTO) createLobbyRequest.getOwner()));
+                sendToAll(new UserCreatedLobbyMessage(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), (UserDTO) createLobbyRequest.getOwner()));
             }
             returnMessage =
                     new LobbyCreatedSuccessfulResponse(
@@ -125,7 +122,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onJoinLobbyRequest(JoinLobbyRequest joinLobbyRequest) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(joinLobbyRequest.getName());
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(joinLobbyRequest.getName());
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
@@ -147,7 +144,7 @@ public class LobbyService extends AbstractService {
                                 joinLobbyRequest.getUser()));
                 returnMessage =
                         new LobbyJoinedSuccessfulResponse(
-                                (LobbyDTO) lobby.get(), joinLobbyRequest.getUser());
+                                lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
                 LOG.error(e);
@@ -176,7 +173,7 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onLobbyLeaveUserRequest(LeaveLobbyRequest leaveLobbyRequest) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getName());
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getLobbyID());
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
@@ -201,7 +198,7 @@ public class LobbyService extends AbstractService {
                 }
                 returnMessage =
                         new LobbyLeftSuccessfulResponse(
-                                (LobbyDTO) lobby.get(), leaveLobbyRequest.getUser());
+                                lobby.get(), leaveLobbyRequest.getUser());
             } catch (IllegalArgumentException e) {
                 lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
 
@@ -210,7 +207,7 @@ public class LobbyService extends AbstractService {
                 if (leaveLobbyRequest.isMultiplayer()) {
                     sendToAll(
                             new UserDroppedLobbyMessage(
-                                    (LobbyDTO) lobby.get(),
+                                    lobby.get(),
                                     leaveLobbyRequest.getName(),
                                     leaveLobbyRequest.getUser()));
                 }
@@ -223,9 +220,8 @@ public class LobbyService extends AbstractService {
         } else {
             returnMessage =
                     new LobbyLeftExceptionResponse(
-                            lobby.get().getLobbyID(),
                             leaveLobbyRequest.getName(),
-                            (UserDTO) leaveLobbyRequest.getUser(),
+                            leaveLobbyRequest.getUser(),
                             "Cannot find lobby. Lobby does not exist!");
         }
         leaveLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
@@ -237,7 +233,7 @@ public class LobbyService extends AbstractService {
      *
      * <p>Send a request that the user exits from the lobby with the corresponding lobbyID
      *
-     * @param leaveLobbyRequest The LobbyJoinUserRequest found on the EventBus
+     * @param lobbyLeaveUserRequest The LobbyJoinUserRequest found on the EventBus
      * @author Daniel Merzo, Moritz Scheer
      * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
      * @since 2022-12-15
@@ -256,7 +252,7 @@ public class LobbyService extends AbstractService {
      * @since 2019-10-08
      */
     public void sendToAllInLobby(String lobbyName, ServerMessage message) {
-        Optional<Lobby> lobby = lobbyManagement.getLobby(lobbyName);
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyName);
 
         if (lobby.isPresent()) {
             message.setReceiver(authenticationService.getSessions(lobby.get().getUsers()));
