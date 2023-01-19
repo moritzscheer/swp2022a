@@ -13,6 +13,7 @@ import de.uol.swp.common.user.UserDTO;
 public class JoinLobbyRequest extends AbstractLobbyRequest {
 
     private String password;
+    private Integer lobbyID;
 
     /**
      * Default constructor
@@ -28,8 +29,9 @@ public class JoinLobbyRequest extends AbstractLobbyRequest {
      * @param user user who wants to join the lobby
      * @since 2019-10-08
      */
-    public JoinLobbyRequest(String lobbyName, UserDTO user, String password) {
+    public JoinLobbyRequest(Integer lobbyID, String lobbyName, UserDTO user, String password) {
         super(lobbyName, user);
+        this.lobbyID = lobbyID;
         this.password = password;
     }
 
@@ -41,5 +43,16 @@ public class JoinLobbyRequest extends AbstractLobbyRequest {
      */
     public String getPassword() {
         return this.password;
+    }
+
+    /**
+     * Getter for the lobbyID
+     *
+     * @return Integer containing the lobbyID
+     * @author Moritz Scheer
+     * @since 2023-01-19
+     */
+    public Integer getLobbyID() {
+        return lobbyID;
     }
 }

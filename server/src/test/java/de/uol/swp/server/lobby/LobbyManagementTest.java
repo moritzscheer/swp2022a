@@ -130,26 +130,9 @@ public class LobbyManagementTest {
     void getLobbyTest() {
         addDefaultLobbies();
 
-        assertNotEquals(Optional.empty(), lobbyManagement.getLobby("lobby1"));
+        assertNotEquals(Optional.empty(), lobbyManagement.getLobby(1));
         assertNotEquals(Optional.empty(), lobbyManagement.getLobby(2));
         assertEquals(Optional.empty(), lobbyManagement.getLobby(5));
-    }
-
-    /**
-     * This test check whether the getCurrentLobbyID method returns the correct lobbyID
-     *
-     * <p>If the variables are not set correctly the test fails
-     *
-     * @author Moritz Scheer
-     * @since 2022-12-20
-     */
-    @Test
-    void getCurrentLobbyIDTest() {
-        lobbyManagement.createLobby(null, defaultUser, null, false);
-        assertEquals(1, lobbyManagement.getCurrentLobbyID());
-
-        lobbyManagement.createLobby("lobby1", defaultUser, "1234", true);
-        assertEquals(2, lobbyManagement.getCurrentLobbyID());
     }
 
     /**

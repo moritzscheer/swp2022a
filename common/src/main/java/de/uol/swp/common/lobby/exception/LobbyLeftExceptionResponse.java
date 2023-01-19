@@ -8,7 +8,6 @@ import java.util.Objects;
 public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
 
     private final String message;
-    private final Integer lobbyID;
 
     /**
      * Constructor
@@ -17,10 +16,9 @@ public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
      * @since 2022-11-24
      */
     public LobbyLeftExceptionResponse(
-            Integer lobbyID, String lobbyName, UserDTO user, String message) {
+            String lobbyName, UserDTO user, String message) {
         super(lobbyName, user);
         this.message = message;
-        this.lobbyID = lobbyID;
     }
 
     @Override
@@ -41,7 +39,4 @@ public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
         return Objects.hash(message);
     }
 
-    public Integer getLobbyID() {
-        return lobbyID;
-    }
 }

@@ -247,7 +247,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onYesButtonPressed(ActionEvent actionEvent) {
-        lobbyService.leaveLobby(lobbyName, (UserDTO) loggedInUser, lobbyID, multiplayer);
+        lobbyService.leaveLobby(lobbyID, lobbyName, (UserDTO) loggedInUser, multiplayer);
         updateInfoBox();
     }
 

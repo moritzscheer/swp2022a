@@ -327,7 +327,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
+                lobbyService.joinLobby(selectedLobby.getLobbyID(), selectedLobby.getName(), (UserDTO) loggedInUser, "");
             } else {
                 updatePasswordView();
             }
@@ -347,7 +347,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (click.getClickCount() == 2 && selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
+                lobbyService.joinLobby(selectedLobby.getLobbyID(), selectedLobby.getName(), (UserDTO) loggedInUser, "");
             } else {
                 updatePasswordView();
             }
@@ -403,6 +403,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
         lobbyService.joinLobby(
+                lobbiesView.getSelectionModel().getSelectedItem().getLobbyID(),
                 lobbiesView.getSelectionModel().getSelectedItem().getName(),
                 (UserDTO) loggedInUser,
                 textFieldPassword.getText());

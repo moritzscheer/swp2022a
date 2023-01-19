@@ -294,9 +294,9 @@ public class TabPresenter extends AbstractPresenter {
                             for (Tab tabs : tabPane.getTabs()) {
                                 if (tabs.getId() != null) {
                                     lobbyService.leaveLobby(
+                                            Integer.valueOf(tabs.getId()),
                                             tabs.getText(),
                                             (UserDTO) loggedInUser,
-                                            Integer.valueOf(tabs.getId()),
                                             !tab.getText().equals("Singleplayer"));
                                 }
                             }
@@ -306,9 +306,9 @@ public class TabPresenter extends AbstractPresenter {
                     } else if (infoLabel2.isVisible()) {
                         // if the label "re you sure you want to leave the Lobby?" is visible
                         lobbyService.leaveLobby(
+                                Integer.valueOf(tab.getId()),
                                 tab.getText(),
                                 (UserDTO) loggedInUser,
-                                Integer.valueOf(tab.getId()),
                                 true);
                         updateInfoBox();
 
