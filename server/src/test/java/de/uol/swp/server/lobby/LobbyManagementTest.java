@@ -2,6 +2,7 @@ package de.uol.swp.server.lobby;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ public class LobbyManagementTest {
     }
 
     // ------------------------------------------
-    // create tests
+    // createLobby tests
     // ------------------------------------------
 
     /**
@@ -96,7 +97,7 @@ public class LobbyManagementTest {
     }
 
     // ------------------------------------------
-    // other tests
+    // DropLobby test
     // ------------------------------------------
 
     /**
@@ -118,6 +119,10 @@ public class LobbyManagementTest {
         assertTrue(lobbyManagement.getLobbies().isEmpty());
     }
 
+    // ------------------------------------------
+    // getLobby test
+    // ------------------------------------------
+
     /**
      * This test check whether the getLobby method returns the correct lobby
      *
@@ -129,11 +134,18 @@ public class LobbyManagementTest {
     @Test
     void getLobbyTest() {
         addDefaultLobbies();
+        Optional<LobbyDTO> lobby1 = lobbyManagement.getLobby(1);
+        Optional<LobbyDTO> lobby2 = lobbyManagement.getLobby(2);
+        Optional<LobbyDTO> lobby5 = lobbyManagement.getLobby(5);
 
-        assertNotEquals(Optional.empty(), lobbyManagement.getLobby(1));
-        assertNotEquals(Optional.empty(), lobbyManagement.getLobby(2));
-        assertEquals(Optional.empty(), lobbyManagement.getLobby(5));
+        assertNotEquals(Optional.empty(), lobby1);
+        assertNotEquals(Optional.empty(), lobby2);
+        assertEquals(Optional.empty(), lobby5);
     }
+
+    // ------------------------------------------
+    // getLobbies test
+    // ------------------------------------------
 
     /**
      * This test check whether the getLobbies method returns all lobbies
@@ -169,6 +181,10 @@ public class LobbyManagementTest {
         assertNull(lobbyManagement.getLobbies().get(3).getPassword());
         assertEquals(false, lobbyManagement.getLobbies().get(3).isMultiplayer());
     }
+
+    // ------------------------------------------
+    // getMultiplayerLobbies test
+    // ------------------------------------------
 
     /**
      * This test check whether the getMultiplayer method returns all multiplayer lobbies

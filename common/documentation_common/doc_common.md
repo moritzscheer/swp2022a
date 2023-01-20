@@ -14,7 +14,7 @@ Das bedeutet die Exceptions, Lobby, Messages, den User und alles was zukünftig 
 
 
 # Lobby
-19.01
+19.01 Moritz Scheer
 
 1. ### LobbyDTO
    2. Attribute  

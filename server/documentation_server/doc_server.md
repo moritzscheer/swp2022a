@@ -14,7 +14,7 @@ Das bedeutet die Communication, Lobby, Messages, den UserManagement, ServerApp u
 
 
 # Lobby
-19.01
+19.01 Moritz Scheer
 
 ### LobbyService
 
