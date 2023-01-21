@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter">
+<GridPane minHeight="500.0" minWidth="1000.0" prefHeight="500.0" prefWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
@@ -20,11 +20,11 @@
     <rowConstraints>
         <RowConstraints />
         <RowConstraints percentHeight="1.0" vgrow="ALWAYS" />
-        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
-        <RowConstraints percentHeight="5.0" valignment="BOTTOM" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="532.77783203125" minHeight="10.0" prefHeight="462.77777099609375" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="100.22222900390625" minHeight="35.77783203125" percentHeight="5.0" prefHeight="100.22222900390625" valignment="BOTTOM" vgrow="ALWAYS" />
       <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
     </rowConstraints>
-    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2">
         <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="556.3333740234375" minWidth="10.0" prefWidth="246.00004069010424" />
@@ -51,7 +51,7 @@
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
-        <TableView fx:id="lobbiesView" onMouseClicked="#onMouseClick">
+        <TableView fx:id="lobbiesView" onMouseClicked="#onMouseClick" prefHeight="486.0" prefWidth="889.0">
          <columns>
             <TableColumn fx:id="column1" maxWidth="50.0" prefWidth="50.0" text="ID" />
             <TableColumn fx:id="column2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="1000.0" text="Lobby Name" />

@@ -4,14 +4,17 @@ import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+
 import de.uol.swp.common.message.*;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.message.ClientAuthorizedMessage;
 import de.uol.swp.server.message.ClientDisconnectedMessage;
 import de.uol.swp.server.message.ServerExceptionMessage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,20 +33,16 @@ public class ServerHandler implements ServerHandlerDelegate {
 
     private static final Logger LOG = LogManager.getLogger(ServerHandler.class);
 
-    /**
-     * Clients that are connected
-     */
+    /** Clients that are connected */
     private final List<MessageContext> connectedClients = new CopyOnWriteArrayList<>();
 
-    /**
-     * Clients with logged-in sessions
-     */
+    /** Clients with logged-in sessions */
     private final Map<MessageContext, Session> activeSessions = new HashMap<>();
 
-    /**
-     * Event bus (injected)
-     */
+    /** Event bus (injected) */
     private final EventBus eventBus;
+
+    private final UUID globalTextChatID;
 
     /**
      * Constructor
@@ -55,6 +54,7 @@ public class ServerHandler implements ServerHandlerDelegate {
     public ServerHandler(EventBus eventBus) {
         this.eventBus = eventBus;
         eventBus.register(this);
+        globalTextChatID = TextChatService.getInstance().createTextChatChannel();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ServerHandler implements ServerHandlerDelegate {
                 LOG.error("ServerException {} {}", e.getClass().getName(), e.getMessage());
                 sendToClient(messageContext.get(), new ExceptionMessage(e.getMessage()));
             }
-        }else{
+        } else {
             if (LOG.isErrorEnabled()) {
                 LOG.error(String.format("No message context for %s!", msg));
             }
@@ -99,9 +99,8 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Handles exceptions on the Server
      *
-     * If an ServerExceptionMessage is detected on the EventBus, this method is called.
-     * It sends the ServerExceptionMessage to the affiliated client if a client is
-     * affiliated.
+     * <p>If an ServerExceptionMessage is detected on the EventBus, this method is called. It sends
+     * the ServerExceptionMessage to the affiliated client if a client is affiliated.
      *
      * @param msg The ServerExceptionMessage found on the EventBus
      * @since 2019-11-20
@@ -110,15 +109,19 @@ public class ServerHandler implements ServerHandlerDelegate {
     private void onServerExceptionMessage(ServerExceptionMessage msg) {
         Optional<MessageContext> ctx = getCtx(msg);
         LOG.error(msg.getException());
-        ctx.ifPresent(channelHandlerContext -> sendToClient(channelHandlerContext, new ExceptionMessage(msg.getException().getMessage())));
+        ctx.ifPresent(
+                channelHandlerContext ->
+                        sendToClient(
+                                channelHandlerContext,
+                                new ExceptionMessage(msg.getException().getMessage())));
     }
 
     /**
      * Handles errors produced by the EventBus
      *
-     * If an DeadEvent object is detected on the EventBus, this method is called.
-     * It writes "DeadEvent detected " and the error message of the detected DeadEvent
-     * object to the log, if the loglevel is set to WARN or higher.
+     * <p>If an DeadEvent object is detected on the EventBus, this method is called. It writes
+     * "DeadEvent detected " and the error message of the detected DeadEvent object to the log, if
+     * the loglevel is set to WARN or higher.
      *
      * @param deadEvent The DeadEvent object found on the EventBus
      * @since 2019-11-20
@@ -128,13 +131,12 @@ public class ServerHandler implements ServerHandlerDelegate {
         LOG.error("DeadEvent detected {}", deadEvent);
     }
 
-
     // -------------------------------------------------------------------------------
     // Handling of connected clients
     // -------------------------------------------------------------------------------
     @Override
     public void newClientConnected(MessageContext ctx) {
-        LOG.debug("New client {} connected", ctx );
+        LOG.debug("New client {} connected", ctx);
         connectedClients.add(ctx);
     }
 
@@ -144,6 +146,7 @@ public class ServerHandler implements ServerHandlerDelegate {
         Session session = this.activeSessions.get(ctx);
         if (session != null) {
             ClientDisconnectedMessage msg = new ClientDisconnectedMessage();
+            TextChatService.getInstance().dropUser(globalTextChatID, session.getUser());
             msg.setSession(session);
             eventBus.post(msg);
             removeSession(ctx);
@@ -157,13 +160,14 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Handles ClientAuthorizedMessages found on the EventBus
      *
-     * If a ClientAuthorizedMessage is detected on the EventBus, this method is called.
-     * It gets the MessageContext and then gives it and a new LoginSuccessfulResponse to
-     * sendToClient for sending as well as giving a new UserLoggedInMessage to sendMessage
-     * for notifying all connected clients.
+     * <p>If a ClientAuthorizedMessage is detected on the EventBus, this method is called. It gets
+     * the MessageContext and then gives it and a new LoginSuccessfulResponse to sendToClient for
+     * sending as well as giving a new UserLoggedInMessage to sendMessage for notifying all
+     * connected clients.
      *
      * @param msg The ClientAuthorizedMessage found on the EventBus
-     * @see de.uol.swp.server.communication.ServerHandler#sendToClient(MessageContext, ResponseMessage)
+     * @see de.uol.swp.server.communication.ServerHandler#sendToClient(MessageContext,
+     *     ResponseMessage)
      * @see de.uol.swp.server.communication.ServerHandler#sendMessage(ServerMessage)
      * @since 2019-11-20
      */
@@ -173,7 +177,8 @@ public class ServerHandler implements ServerHandlerDelegate {
         final Optional<Session> session = msg.getSession();
         if (ctx.isPresent() && session.isPresent()) {
             putSession(ctx.get(), session.get());
-            sendToClient(ctx.get(), new LoginSuccessfulResponse(msg.getUser()));
+            TextChatService.getInstance().joinUser(globalTextChatID, msg.getUser());
+            sendToClient(ctx.get(), new LoginSuccessfulResponse(msg.getUser(), globalTextChatID));
             sendMessage(new UserLoggedInMessage(msg.getUser().getUsername()));
         } else {
             LOG.warn("No context for {}", msg);
@@ -183,9 +188,9 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Handles UserLoggedOutMessages found on the EventBus
      *
-     * If an UserLoggedOutMessage is detected on the EventBus, this method is called.
-     * It gets the MessageContext and then gives the message to sendMessage in order
-     * to send it to the connected client.
+     * <p>If an UserLoggedOutMessage is detected on the EventBus, this method is called. It gets the
+     * MessageContext and then gives the message to sendMessage in order to send it to the connected
+     * client.
      *
      * @param msg The UserLoggedOutMessage found on the EventBus
      * @see de.uol.swp.server.communication.ServerHandler#sendMessage(ServerMessage)
@@ -205,12 +210,12 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Handles ResponseMessages found on the EventBus
      *
-     * If an ResponseMessage is detected on the EventBus, this method is called.
-     * It gets the MessageContext and then gives it and the ResponseMessage to
-     * sendToClient for sending.
+     * <p>If an ResponseMessage is detected on the EventBus, this method is called. It gets the
+     * MessageContext and then gives it and the ResponseMessage to sendToClient for sending.
      *
      * @param msg The ResponseMessage found on the EventBus
-     * @see de.uol.swp.server.communication.ServerHandler#sendToClient(MessageContext, ResponseMessage)
+     * @see de.uol.swp.server.communication.ServerHandler#sendToClient(MessageContext,
+     *     ResponseMessage)
      * @since 2019-11-20
      */
     @Subscribe
@@ -221,7 +226,7 @@ public class ServerHandler implements ServerHandlerDelegate {
             msg.setMessageContext(null);
             LOG.debug("Send to client {} message {} ", ctx.get(), msg);
             sendToClient(ctx.get(), msg);
-        }else{
+        } else {
             LOG.warn("Got response message without receiver {}", msg);
         }
     }
@@ -233,9 +238,9 @@ public class ServerHandler implements ServerHandlerDelegate {
     /**
      * Handles ServerMessages found on the EventBus
      *
-     * If an ServerMessage is detected on the EventBus, this method is called.
-     * It sets the Session and MessageContext to null and then gives the message
-     * to sendMessage in order to send it to all connected clients.
+     * <p>If an ServerMessage is detected on the EventBus, this method is called. It sets the
+     * Session and MessageContext to null and then gives the message to sendMessage in order to send
+     * it to all connected clients.
      *
      * @param msg The ServerMessage found on the EventBus
      * @see de.uol.swp.server.communication.ServerHandler#sendMessage(ServerMessage)
@@ -246,11 +251,15 @@ public class ServerHandler implements ServerHandlerDelegate {
         msg.setSession(null);
         msg.setMessageContext(null);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Send {} to {}",msg , (msg.getReceiver().isEmpty() || msg.getReceiver() == null ? "all" : msg.getReceiver()));
+            LOG.debug(
+                    "Send {} to {}",
+                    msg,
+                    (msg.getReceiver().isEmpty() || msg.getReceiver() == null
+                            ? "all"
+                            : msg.getReceiver()));
         }
         sendMessage(msg);
     }
-
 
     // -------------------------------------------------------------------------------
     // Session Management (helper methods)
@@ -342,13 +351,13 @@ public class ServerHandler implements ServerHandlerDelegate {
      */
     private List<MessageContext> getCtx(List<Session> receiver) {
         List<MessageContext> ctxs = new ArrayList<>();
-        receiver.forEach(r -> {
-            Optional<MessageContext> s = getCtx(r);
-            s.ifPresent(ctxs::add);
-        });
+        receiver.forEach(
+                r -> {
+                    Optional<MessageContext> s = getCtx(r);
+                    s.ifPresent(ctxs::add);
+                });
         return ctxs;
     }
-
 
     // -------------------------------------------------------------------------------
     // Help methods: Send only objects of type Message
@@ -402,6 +411,4 @@ public class ServerHandler implements ServerHandlerDelegate {
             }
         }
     }
-
-
 }
