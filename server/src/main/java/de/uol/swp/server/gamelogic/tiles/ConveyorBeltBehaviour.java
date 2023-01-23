@@ -1,8 +1,8 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import javax.swing.text.Position;
 
 /**
  *
