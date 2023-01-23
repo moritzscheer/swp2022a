@@ -11,7 +11,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class UserDroppedLobbyMessage extends AbstractLobbyMessage{
+public class UserDroppedLobbyMessage extends AbstractLobbyMessage {
 
     private LobbyDTO lobby;
 
@@ -21,8 +21,7 @@ public class UserDroppedLobbyMessage extends AbstractLobbyMessage{
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public UserDroppedLobbyMessage() {
-    }
+    public UserDroppedLobbyMessage() {}
 
     /**
      * Constructor

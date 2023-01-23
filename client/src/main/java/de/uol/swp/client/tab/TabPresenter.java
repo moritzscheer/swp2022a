@@ -6,13 +6,14 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -35,9 +36,11 @@ public class TabPresenter extends AbstractPresenter {
     @FXML
     private Button noButton;
     @FXML
-    private Label infoLabel1;
+    private Label infoLabel1; //Are you sure you want to log-out?
     @FXML
-    private Label infoLabel2;
+    private Label infoLabel2; //Are you sure you want to exit?
+    @FXML
+    private Label infoLabel3; //Are you sure you want to leave the Lobby?
     @FXML
     private Pane infoBox;
 
@@ -65,8 +68,8 @@ public class TabPresenter extends AbstractPresenter {
      * Handles ShowNode events
      *
      * If an ShowNodeEvent object is detected on the EventBus this
-     * method is called. It calls the showNode method to switch the content of the tab with the tabID
-     * to the parent given to it.
+     * method is called. This method sets the content of the tab with the tabID to the given parent given as a parameter.
+     * If the infoBox is visible, it is set to invisible.
      *
      * @param event The ShowNodeEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -75,14 +78,21 @@ public class TabPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onShowNodeEvent(ShowNodeEvent event) {
-        showNode(event.getTabID(), event.getParent());
+        Platform.runLater(() -> {
+            if(infoBox.isVisible()) {
+                updateInfoBox();
+            }
+            tabPane.getTabs().get(event.getTabID()).setContent(event.getParent());
+        });
     }
 
     /**
      * Handles CreateLobbyTab events
      *
      * If an CreateLobbyTabEvent object is detected on the EventBus this
-     * method is called. It calls the createTab method to create a tab with the given lobbyID, lobbyName and parent.
+     * method is called. This method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
+     * parent parameter given to it. Then it opens the helper method setupTab to Set up important settings and adds the
+     * tab to the paneTab. Also, the tab is then selected.
      *
      * @param event The CreateLobbyTabEvent object detected on the EventBus
      * @see de.uol.swp.client.SceneManager
@@ -91,23 +101,49 @@ public class TabPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onCreateLobbyTabEvent(CreateLobbyTabEvent event) {
-        createTab(event.getLobby().getName(), event.getLobby().getLobbyID(), event.getParent());
-    }
+        Tab tab = new Tab(event.getLobby().getName());
+
+        Platform.runLater(() -> {
+            try {
+                tab.setContent(event.getParent());
+
+                setupTab(tab, event.getLobby().getLobbyID());
+
+                tabPane.getTabs().add(tab);
+                tabPane.getSelectionModel().select(tab);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+        });    }
 
     /**
-     * Handles DeleteLobbyTab events
+     * Handles successfully dropped Lobbies
      *
-     * If an DeleteLobbyTabEvent object is detected on the EventBus this
-     * method is called. It calls the deleteTab method to delete a tab with the given lobbyID.
+     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
+     * calls a private method to close a tab.
      *
-     * @param event The DeleteLobbyTabEvent object detected on the EventBus
-     * @see de.uol.swp.client.SceneManager
+     * @param message The LobbyDroppedResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
      */
     @Subscribe
-    public void onDeleteLobbyTabEvent(DeleteLobbyTabEvent event) {
-        deleteTab(event.getLobbyID());
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobbyID());
+    }
+
+    /**
+     * Handles successfully left Lobbies
+     *
+     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
+     * calls a private method to close a tab.
+     *
+     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobby().getLobbyID());
     }
 
     /**
@@ -127,58 +163,8 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     // -----------------------------------------------------
-    // helper methods and public methods
+    // helper methods public methods
     // -----------------------------------------------------
-
-    /**
-     * helper method to show a Node
-     *
-     * This method sets the content of the tab with the tabID to the given parent given as a parameter. If the infoBox
-     * is visible, it is set to invisible.
-     *
-     * @param tabID The Integer containing the lobbyID
-     * @param parent Parent containing the content of the fxml file
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void showNode(Integer tabID, Parent parent) {
-        Platform.runLater(() -> {
-            if(infoBox.isVisible()) {
-                updateInfoBox();
-            }
-            tabPane.getTabs().get(tabID).setContent(parent);
-        });
-    }
-
-    /**
-     * helper method to create a tab
-     *
-     * This method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
-     * parent parameter given to it. Then it opens the helper method setupTab to setup important settings and adds the
-     * tab to the paneTab. Also, the tab is then selected.
-     *
-     * @param lobbyName String containing the name of the lobby
-     * @param lobbyID The Integer containing the lobbyID
-     * @param parent Parent containing the content of the fxml file
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void createTab(String lobbyName, Integer lobbyID, Parent parent) {
-        Tab tab = new Tab(lobbyName);
-
-        Platform.runLater(() -> {
-            try {
-                tab.setContent(parent);
-
-                setupTab(tab, lobbyID);
-
-                tabPane.getTabs().add(tab);
-                tabPane.getSelectionModel().select(tab);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
 
     /**
      * helper method to delete a tab
@@ -189,7 +175,7 @@ public class TabPresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    private void deleteTab(Integer lobbyID) {
+    private void deleteLobbyTab(Integer lobbyID) {
         Platform.runLater(() -> {
             tabPane.getTabs().removeIf(tab -> tab.getId() != null && tab.getId().equals(lobbyID.toString()));
             tabPane.getSelectionModel().select(0);
@@ -211,11 +197,11 @@ public class TabPresenter extends AbstractPresenter {
 
         tab.setOnCloseRequest(closeEvent -> {
             closeEvent.consume();
-            eventBus.post(new ChangeElementEvent(lobbyID));
+            infoLabel3.setVisible(true);
             updateInfoBox();
+            eventBus.post(new ChangeElementEvent(lobbyID));
         });
 
-        //
         tab.setOnSelectionChanged(changeEvent -> {
             changeEvent.consume();
             if(infoBox.isVisible()) {
@@ -224,6 +210,10 @@ public class TabPresenter extends AbstractPresenter {
             }
         });
     }
+
+    // -----------------------------------------------------
+    // public methods
+    // -----------------------------------------------------
 
     /**
      * method for the visibility of the infoBox
@@ -238,37 +228,47 @@ public class TabPresenter extends AbstractPresenter {
             infoBox.setVisible(true);
             yesButton.setVisible(true);
             noButton.setVisible(true);
-            setInfoLabel();
         } else {
             infoBox.setVisible(false);
             yesButton.setVisible(false);
             noButton.setVisible(false);
             infoLabel1.setVisible(false);
             infoLabel2.setVisible(false);
+            infoLabel3.setVisible(false);
         }
     }
 
     /**
-     * helper method for the visibility of the infoLabels
+     * method for the visibility of the infoLabels
      *
      * If this method is called, it sets the infoLabels according to the currently selected tab to visible
      *
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    private void setInfoLabel() {
-        if(tabPane.getSelectionModel().getSelectedItem().getId() == null) {
+    public void setInfoLabel(Integer infoLabelNumber) {
+        if(infoLabelNumber == 1) {
             infoLabel1.setVisible(true);
-        } else {
+        } else if (infoLabelNumber == 2){
             infoLabel2.setVisible(true);
+        } else {
+            infoLabel3.setVisible(true);
         }
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean onExitRequest() {
+        return infoLabel2.isVisible();
     }
 
     // -----------------------------------------------------
     // InfoBox methods
     // -----------------------------------------------------
-
-
 
     /**
      * Method called when the yes button in the infoBox is pressed
@@ -284,8 +284,7 @@ public class TabPresenter extends AbstractPresenter {
         Tab tab = tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex());
 
         Platform.runLater(() -> {
-            if(infoLabel1.isVisible()) {
-                // if the label "Are you sure you want to log-out?" is visible
+            if(infoLabel1.isVisible() || infoLabel2.isVisible()) {
                 if(tabPane.getTabs().size() > 1) {
                     for(Tab tabs : tabPane.getTabs()) {
                         if(tabs.getId() != null) {
@@ -293,10 +292,9 @@ public class TabPresenter extends AbstractPresenter {
                         }
                     }
                 }
-                updateInfoBox();
+                //updateInfoBox();
                 userService.logout(loggedInUser);
-            } else if (infoLabel2.isVisible()) {
-                // if the label "re you sure you want to leave the Lobby?" is visible
+            } else if(infoLabel3.isVisible()) {
                 lobbyService.leaveLobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), true);
                 updateInfoBox();
 
@@ -317,7 +315,9 @@ public class TabPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent){
-        eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
+        if(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId() != null) {
+            eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
+        }
         updateInfoBox();
     }
 

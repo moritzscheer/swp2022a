@@ -1,10 +1,12 @@
 package de.uol.swp.server.lobby;
 
-import de.uol.swp.common.user.UserDTO;
-import org.junit.jupiter.api.Test;
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import de.uol.swp.common.user.UserDTO;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.*;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class LobbyManagementTest {
@@ -30,14 +32,14 @@ public class LobbyManagementTest {
         lobbyManagement.createLobby(null, users.get(1), null, false);
     }
 
-    //------------------------------------------
+    // ------------------------------------------
     // create tests
-    //------------------------------------------
+    // ------------------------------------------
 
     /**
      * This test check whether a multiplayer lobby is created correctly
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -56,10 +58,10 @@ public class LobbyManagementTest {
     }
 
     /**
-     * This test check whether an IllegalArgumentException is thrown,
-     * if the user wants to create a singleplayer lobby with a name that is already given
+     * This test check whether an IllegalArgumentException is thrown, if the user wants to create a
+     * singleplayer lobby with a name that is already given
      *
-     * The test fails, if no exception is thrown
+     * <p>The test fails, if no exception is thrown
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -67,13 +69,15 @@ public class LobbyManagementTest {
     @Test
     void createMultiplayerLobbyWithSameNameTest() {
         addDefaultLobbies();
-        assertThrows(IllegalArgumentException.class, () -> lobbyManagement.createLobby("lobby1", users.get(0), "1234", true));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> lobbyManagement.createLobby("lobby1", users.get(0), "1234", true));
     }
 
     /**
      * This test check whether a singleplayer lobby is created correctly
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -91,14 +95,14 @@ public class LobbyManagementTest {
         assertEquals(false, lobbyManagement.getLobby(1).get().isMultiplayer());
     }
 
-    //------------------------------------------
+    // ------------------------------------------
     // other tests
-    //------------------------------------------
+    // ------------------------------------------
 
     /**
      * This test check whether a singleplayer lobby is created correctly
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -117,7 +121,7 @@ public class LobbyManagementTest {
     /**
      * This test check whether the getLobby method returns the correct lobby
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -134,7 +138,7 @@ public class LobbyManagementTest {
     /**
      * This test check whether the getCurrentLobbyID method returns the correct lobbyID
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -151,7 +155,7 @@ public class LobbyManagementTest {
     /**
      * This test check whether the getLobbies method returns all lobbies
      *
-     * If the variables are not set correctly the test fails
+     * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
      * @since 2022-12-20
@@ -186,7 +190,7 @@ public class LobbyManagementTest {
     /**
      * This test check whether the getMultiplayer method returns all multiplayer lobbies
      *
-     * If singleplayer lobbies are put in the test fails.
+     * <p>If singleplayer lobbies are put in the test fails.
      *
      * @author Moritz Scheer
      * @since 2022-12-20
