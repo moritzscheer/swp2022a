@@ -1,6 +1,5 @@
 package de.uol.swp.server.lobby;
 
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
@@ -25,8 +24,8 @@ public class LobbyManagement {
      * createSinglePlayerName is being called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
-     * @param name          the name of the lobby to create
-     * @param owner         the user who wants to create a lobby
+     * @param name the name of the lobby to create
+     * @param owner the user who wants to create a lobby
      * @param isMultiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
@@ -35,7 +34,9 @@ public class LobbyManagement {
      * @since 2022-11-17
      */
     public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
-        while (lobbies.containsKey(lobbyID)) {lobbyID++;}
+        while (lobbies.containsKey(lobbyID)) {
+            lobbyID++;
+        }
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
@@ -44,14 +45,12 @@ public class LobbyManagement {
         }
 
         UUID textChannelUUID = null;
-        if(TextChatService.getInstance() != null) {
+        if (TextChatService.getInstance() != null) {
             textChannelUUID = TextChatService.getInstance().createTextChatChannel();
             TextChatService.getInstance().joinUser(textChannelUUID, owner);
         }
 
-        lobbies.put(
-                lobbyID,
-                new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
+        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
         this.currentLobbyID = lobbyID;
         this.lobbyID = 1;
     }
@@ -64,8 +63,9 @@ public class LobbyManagement {
      * @since 2019-10-08
      */
     public void dropLobby(Integer lobbyID) {
-        if(TextChatService.getInstance() != null && lobbies.get(lobbyID).getTextChatID() != null) {
-            TextChatService.getInstance().closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
+        if (TextChatService.getInstance() != null && lobbies.get(lobbyID).getTextChatID() != null) {
+            TextChatService.getInstance()
+                    .closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
         }
         lobbies.remove(lobbyID);
     }
@@ -79,10 +79,10 @@ public class LobbyManagement {
      * @see Optional
      * @since 2019-10-08
      */
-    public Optional<Lobby> getLobby(String name) {
+    public Optional<LobbyDTO> getLobby(String name) {
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
             if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
-                Lobby lobby = lobbies.get(entry.getKey());
+                LobbyDTO lobby = lobbies.get(entry.getKey());
                 return Optional.of(lobby);
             }
         }

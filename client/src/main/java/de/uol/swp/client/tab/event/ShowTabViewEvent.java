@@ -5,8 +5,8 @@ import de.uol.swp.common.user.User;
 /**
  * * Event used to show the TabView window
  *
- * In order to show the TabView window using this event, post an instance of it
- * onto the eventBus the SceneManager is subscribed to.
+ * <p>In order to show the TabView window using this event, post an instance of it onto the eventBus
+ * the SceneManager is subscribed to.
  *
  * @author Moritz Scheer
  * @see de.uol.swp.client.SceneManager

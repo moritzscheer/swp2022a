@@ -27,7 +27,7 @@ public class LoginSuccessfulResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * @param user   the user who successfully logged in
+     * @param user the user who successfully logged in
      * @param chatID
      * @since 2019-08-07
      */

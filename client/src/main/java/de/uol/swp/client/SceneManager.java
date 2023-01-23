@@ -49,7 +49,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DialogPane;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -331,7 +330,6 @@ public class SceneManager {
         }
     }
 
-
     /**
      * Initializes the join or create view
      *
@@ -355,7 +353,7 @@ public class SceneManager {
      * view as specified by the CreateLobby FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @author Moritz Scheer
+     * @author Moritz Scheerini
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {
@@ -413,36 +411,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles successfully left Lobbies
-     *
-     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
-     *
-     * @param message The LobbyLeaveUserResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobby().getLobbyID());
-    }
-
-    /**
-     * Handles successfully dropped Lobbies
-     *
-     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
-     *
-     * @param message The LobbyDroppedResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyDroppedResponse(LobbyDroppedSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobbyID());
-    }
-
-    /**
      * Handles ShowCreditViewEvent detected on the EventBus
      *
      * <p>If a ShowCreditViewEvent is detected on the EventBus, this method gets called. It calls a
@@ -486,7 +454,6 @@ public class SceneManager {
     public void onShowSettingViewEvent(ShowSettingViewEvent event) {
         showSettingScreen();
     }
-
 
     // -----------------------------------------------------
     // MainManu_Events
@@ -658,15 +625,14 @@ public class SceneManager {
     /**
      * Handles ShowCreateLobbyViewEvent detected on the EventBus
      *
-     * If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets
-     * called.
+     * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
      *
      * @param event The RegistrationCanceledEvent detected on the EventBus
      * @see de.uol.swp.client.CloseClientEvent
      * @since 2023-01-04
      */
     @Subscribe
-    public void onCloseClientEvent(CloseClientEvent event){
+    public void onCloseClientEvent(CloseClientEvent event) {
         primaryStage.close();
     }
 
@@ -720,9 +686,9 @@ public class SceneManager {
     /**
      * Switches the current scene and title to the given ones and changes the width and height
      *
-     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle, lastSceneWidth
-     * and lastSceneHeight variables, before the
-     * new scene, title and their width and height are set and shown.
+     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle,
+     * lastSceneWidth and lastSceneHeight variables, before the new scene, title and their width and
+     * height are set and shown.
      *
      * @param scene New scene to show
      * @param title New window title
@@ -735,13 +701,14 @@ public class SceneManager {
         this.currentScene = scene;
         this.lastSceneWidth = primaryStage.getWidth();
         this.lastSceneHeight = primaryStage.getHeight();
-        Platform.runLater(() -> {
-            primaryStage.setWidth(lastSceneWidth);
-            primaryStage.setHeight(lastSceneHeight);
-            primaryStage.setTitle(title);
-            primaryStage.setScene(scene);
-            primaryStage.show();
-        });
+        Platform.runLater(
+                () -> {
+                    primaryStage.setWidth(lastSceneWidth);
+                    primaryStage.setHeight(lastSceneHeight);
+                    primaryStage.setTitle(title);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                });
     }
 
     /**
@@ -931,17 +898,5 @@ public class SceneManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * helper method to delete a lobby view
-     *
-     * <p>This method posts an Event on the Eventbus to delete a tab in the TabPresenter.
-     *
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    private void deleteLobbyTab(Integer lobbyID) {
-        eventBus.post(new DeleteLobbyTabEvent(lobbyID));
     }
 }
