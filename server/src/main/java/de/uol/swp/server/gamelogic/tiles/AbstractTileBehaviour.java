@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic.tiles;
 
-import javax.swing.text.Position;
+import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 /**
  *
@@ -19,10 +20,10 @@ abstract class AbstractTileBehaviour {
      * @see
      * @since
      */
-//    public boolean getWall(CardinalDirection){
+    public CardinalDirection getWall(CardinalDirection direction){
         //TODO
-//        return false;
-//    }
+        return direction;
+    }
 
     /**
      *
@@ -77,9 +78,9 @@ abstract class AbstractTileBehaviour {
      * @see
      * @since
      */
-    public de.uol.swp.server.gamelogic.Position getCheckPoint(){
+    public Position getCheckPoint(){
         //TODO
-        return 0;
+        return null;
     }
 
     /**
@@ -87,7 +88,7 @@ abstract class AbstractTileBehaviour {
      * @see
      * @since
      */
-    public de.uol.swp.server.gamelogic.Position getCheckPointPosition(){
+    public Position getCheckPointPosition(){
         //TODO
         return null;
     }
