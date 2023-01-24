@@ -146,7 +146,7 @@ public class LobbyService extends AbstractService {
                                 joinLobbyRequest.getUser()));
                 returnMessage =
                         new LobbyJoinedSuccessfulResponse(
-                                (LobbyDTO) lobby.get(), joinLobbyRequest.getUser());
+                                lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
                 LOG.error(e);

@@ -352,7 +352,7 @@ public class SceneManager {
      * view as specified by the CreateLobby FXML file.
      *
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @author Moritz Scheer
+     * @author Moritz Scheerini
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {
@@ -391,7 +391,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        createTab(message.getLobby());
+        createLobbyTab(message.getLobby());
     }
 
     /**
@@ -406,36 +406,36 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        createTab(message.getLobby());
+        createLobbyTab(message.getLobby());
     }
 
     /**
-     * Handles successfully left Lobbies
+     * Handles successfully created Lobbies
      *
-     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
+     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
      *
-     * @param message The LobbyLeaveUserResponse object detected on the EventBus
+     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
      */
     @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+    public void onLobbyLeftSuccessfulResponse(LobbyLeftSuccessfulResponse message) {
         deleteLobbyTab(message.getLobby().getLobbyID());
     }
 
     /**
-     * Handles successfully dropped Lobbies
+     * Handles successfully joined Lobbies
      *
-     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
      *
-     * @param message The LobbyDroppedResponse object detected on the EventBus
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
      */
     @Subscribe
-    public void onLobbyDroppedResponse(LobbyDroppedSuccessfulResponse message) {
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
         deleteLobbyTab(message.getLobbyID());
     }
 
@@ -889,14 +889,14 @@ public class SceneManager {
     /**
      * Shows the lobby screen
      *
-     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
+     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
      * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
      * and posts an Event on the Eventbus to create a tab in the TabPresenter.
      *
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void createTab(LobbyDTO lobby) {
+    private void createLobbyTab(LobbyDTO lobby) {
         try {
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
             if (lobby.isMultiplayer()) {
@@ -914,9 +914,11 @@ public class SceneManager {
     }
 
     /**
-     * helper method to delete a lobby view
+     * Shows the lobby screen
      *
-     * <p>This method posts an Event on the Eventbus to delete a tab in the TabPresenter.
+     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
+     * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
+     * and posts an Event on the Eventbus to create a tab in the TabPresenter.
      *
      * @author Moritz Scheer
      * @since 2022-12-27
