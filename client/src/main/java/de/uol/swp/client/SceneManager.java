@@ -35,7 +35,6 @@ import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
-import de.uol.swp.client.tab.event.ShowTabViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
@@ -392,7 +391,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        showLobbyScreen(message.getLobby());
+        createTab(message.getLobby());
     }
 
     /**
@@ -407,7 +406,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        showLobbyScreen(message.getLobby());
+        createTab(message.getLobby());
     }
 
     /**
@@ -634,22 +633,6 @@ public class SceneManager {
     @Subscribe
     public void onShowCreateLobbyViewEvent(ShowCreateLobbyViewEvent event) {
         showCreateLobbyScreen();
-    }
-
-    /**
-     * Handles ShowTabViewEvent detected on the EventBus
-     *
-     * <p>If a ShowTabViewEvent is detected on the EventBus, this method gets called. It shows the
-     * TabView.
-     *
-     * @param event The ShowTabViewEvent detected on the EventBus
-     * @see de.uol.swp.client.tab.event.ShowTabViewEvent
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onShowTabViewEvent(ShowTabViewEvent event) {
-        showTabScreen(event.getUser());
     }
 
     /**
@@ -913,7 +896,7 @@ public class SceneManager {
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void showLobbyScreen(LobbyDTO lobby) {
+    private void createTab(LobbyDTO lobby) {
         try {
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
             if (lobby.isMultiplayer()) {
