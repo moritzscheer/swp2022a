@@ -139,8 +139,6 @@ public class CreateLobbyPresenter extends AbstractPresenter {
         }
     }
 
-
-
     /**
      * helper method to set the label and textField Nodes back to default
      *
