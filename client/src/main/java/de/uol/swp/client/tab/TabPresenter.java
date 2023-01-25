@@ -204,7 +204,7 @@ public class TabPresenter extends AbstractPresenter {
 
         tab.setOnSelectionChanged(changeEvent -> {
             changeEvent.consume();
-            if(infoBox.isVisible()) {
+            if(infoLabel3.isVisible()) {
                 updateInfoBox();
                 eventBus.post(new ChangeElementEvent(lobbyID));
             }
@@ -292,7 +292,6 @@ public class TabPresenter extends AbstractPresenter {
                         }
                     }
                 }
-                //updateInfoBox();
                 userService.logout(loggedInUser);
             } else if(infoLabel3.isVisible()) {
                 lobbyService.leaveLobby(tab.getText(), (UserDTO) loggedInUser, Integer.valueOf(tab.getId()), true);
