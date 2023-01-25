@@ -146,7 +146,7 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      *
      * <p>This Method sets the label and textField Nodes back to default
      *
-     * @author Moritz Scheer
+     * @author Moritz Scheer, Ole Zimmermann
      * @since 2022-12-27
      */
     private void backToDefault() {
