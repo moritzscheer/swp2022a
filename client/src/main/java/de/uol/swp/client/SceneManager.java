@@ -32,6 +32,7 @@ import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
 import de.uol.swp.client.tab.event.ShowTabViewEvent;
@@ -709,6 +710,10 @@ public class SceneManager {
                     if(currentScene.equals(tabScene)) {
                         primaryStage.setOnCloseRequest(closeEvent -> {
                             closeEvent.consume();
+                            if(tabPresenter.infoLabel3IsVisible()) {
+                                tabPresenter.updateInfoBox();
+                                eventBus.post(new ChangeElementEvent(tabPresenter.getTabID()));
+                            }
                             tabPresenter.updateInfoBox();
                             tabPresenter.setInfoLabel(2);
                         });

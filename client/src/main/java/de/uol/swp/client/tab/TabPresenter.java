@@ -197,9 +197,15 @@ public class TabPresenter extends AbstractPresenter {
 
         tab.setOnCloseRequest(closeEvent -> {
             closeEvent.consume();
-            infoLabel3.setVisible(true);
-            updateInfoBox();
-            eventBus.post(new ChangeElementEvent(lobbyID));
+            if(infoLabel2.isVisible()) {
+                infoLabel2.setVisible(false);
+                infoLabel3.setVisible(true);
+                eventBus.post(new ChangeElementEvent(lobbyID));
+            } else if(!infoLabel3.isVisible()) {
+                infoLabel3.setVisible(true);
+                updateInfoBox();
+                eventBus.post(new ChangeElementEvent(lobbyID));
+            }
         });
 
         tab.setOnSelectionChanged(changeEvent -> {
@@ -262,8 +268,40 @@ public class TabPresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    public boolean onExitRequest() {
+    public boolean infoLabel1IsVisible() {
+        return infoLabel1.isVisible();
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean infoLabel2IsVisible() {
         return infoLabel2.isVisible();
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean infoLabel3IsVisible() {
+        return infoLabel3.isVisible();
+    }
+
+
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public Integer getTabID() {
+        return Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
     }
 
     // -----------------------------------------------------
@@ -314,7 +352,7 @@ public class TabPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent){
-        if(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId() != null) {
+        if(infoLabel3.isVisible()) {
             eventBus.post(new ChangeElementEvent(Integer.valueOf(tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId())));
         }
         updateInfoBox();
