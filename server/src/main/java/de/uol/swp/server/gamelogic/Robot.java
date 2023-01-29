@@ -26,6 +26,8 @@ public class Robot {
     private Position lastRepairSite;
     private int lifePoints;
     private boolean powerDown;
+
+    //TODO: In my opinion this has to be moved to a new class named "Player" ~Finn
     private Card[] cards;               //max 9 cards
     private int[] registerCardIDs;      //max 5 cards
     private int optionCard;

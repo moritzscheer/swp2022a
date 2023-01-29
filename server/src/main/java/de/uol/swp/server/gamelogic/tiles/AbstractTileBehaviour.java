@@ -1,7 +1,6 @@
 package de.uol.swp.server.gamelogic.tiles;
 
-import de.uol.swp.server.gamelogic.Position;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.Robot;
 
 /**
  *
@@ -13,95 +12,152 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 abstract class AbstractTileBehaviour {
 
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public CardinalDirection getWall(CardinalDirection direction) {
+//        //TODO
+//        return direction;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public int getDamage() {
+//        //TODO
+//        return 0;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public int getRepair() {
+//        //TODO
+//        return 0;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public Position moveRobot() {
+//        //TODO
+//        return null;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public boolean killRobot() {
+//        //TODO
+//        return false;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public Position getCheckPoint() {
+//        //TODO
+//        return null;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public Position getCheckPointPosition() {
+//        //TODO
+//        return null;
+//    }
+//
+//    /**
+//     * @author
+//     * @see
+//     * @since
+//     */
+//    public boolean turnRobot() {
+//        //TODO
+//        return false;
+//    }
+
     /**
-     *
-     *
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public CardinalDirection getWall(CardinalDirection direction){
-        //TODO
-        return direction;
+    public Robot[] OnRobotMoved(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
-     *
-     *
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public int getDamage(){
-        //TODO
-        return 0;
+    public Robot[] OnExpressConveyorStage(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
-     *
-     *
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public int getRepair(){
-        //TODO
-        return 0;
+    public Robot[] OnConveyorStage(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
-     *
-     *
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public Position moveRobot(){
-        //TODO
-        return null;
+    public Robot[] OnLaserStage(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
-     *
-     *
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public boolean killRobot(){
-        //TODO
-        return false;
+    public Robot[] OnPusherStage(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
+     * @param currentStates
+     * @return
      * @author
-     * @see
      * @since
      */
-    public Position getCheckPoint(){
-        //TODO
-        return null;
+    public Robot[] OnPresserStage(Robot[] currentStates){
+        return currentStates;
     }
 
     /**
+     * @return ImagePath or Image Itself (maybe rotatet)
      * @author
-     * @see
      * @since
      */
-    public Position getCheckPointPosition(){
-        //TODO
-        return null;
-    }
-
-    /**
-     *
-     *
-     * @author
-     * @see
-     * @since
-     */
-    public boolean turnRobot(){
-        //TODO
-        return false;
+    public String GetImage(){
+        return "";
     }
 }
