@@ -229,7 +229,7 @@ public class ClientApp extends Application implements ConnectionListener {
         LOG.info("User {} logged out.", message.getUsername());
         Platform.runLater(() -> {
             if(message.getUsername().equals(user.getUsername())) {
-                if(tabPresenter.onExitRequest()) {
+                if(tabPresenter.infoLabel2IsVisible()) {
                     eventBus.post(new CloseClientEvent());
                 } else {
                     eventBus.post(new ShowLoginViewEvent());
