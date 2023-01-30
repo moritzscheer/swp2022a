@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
 /**
@@ -93,71 +94,83 @@ abstract class AbstractTileBehaviour {
 //    }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnRobotMoved(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnExpressConveyorStage(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnConveyorStage(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnLaserStage(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnPusherStage(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @param currentStates current state of the game
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public Robot[] OnPresserStage(Robot[] currentStates){
         return currentStates;
     }
 
     /**
-     * @return ImagePath or Image Itself (maybe rotatet)
-     * @author
-     * @since
+     * @return ImagePath or Image Itself (maybe rotated)
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
     public String GetImage(){
         return "";
+    }
+
+
+    /**
+     * @param origin move origin
+     * @param destination move destination
+     * @return whether the move is blocked or not
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
+     */
+    public boolean getObstruction(Position origin, Position destination){
+        return false;
     }
 }
