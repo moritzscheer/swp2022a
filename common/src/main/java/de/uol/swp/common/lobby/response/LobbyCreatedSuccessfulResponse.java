@@ -36,7 +36,7 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
      * @author Ole Zimmermann
      * @since 2023-01-24
      */
-    public UserDTO getUser(){
+    public UserDTO getUser() {
         return super.getUser();
     }
 

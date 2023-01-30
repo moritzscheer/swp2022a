@@ -15,7 +15,7 @@ public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
      * @param message String containing the reason why the registration failed
      * @since 2022-11-24
      */
-    public LobbyLeftExceptionResponse(String lobbyName, UserDTO user, String message){
+    public LobbyLeftExceptionResponse(String lobbyName, UserDTO user, String message) {
         super(lobbyName, user);
         this.message = message;
     }
@@ -37,5 +37,4 @@ public class LobbyLeftExceptionResponse extends AbstractLobbyResponse {
     public int hashCode() {
         return Objects.hash(message);
     }
-
 }

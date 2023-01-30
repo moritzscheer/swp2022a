@@ -232,7 +232,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onBackButtonPressed(ActionEvent actionEvent) {
-        if(tabPresenter.infoLabel2IsVisible() || tabPresenter.infoLabel1IsVisible()) {
+        if (tabPresenter.infoLabel2IsVisible() || tabPresenter.infoLabel1IsVisible()) {
             tabPresenter.updateInfoBox();
         }
         tabPresenter.setInfoLabel(3);

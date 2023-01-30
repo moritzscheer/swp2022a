@@ -227,15 +227,16 @@ public class ClientApp extends Application implements ConnectionListener {
     @Subscribe
     void onUserLoggedOutMessage(UserLoggedOutMessage message) {
         LOG.info("User {} logged out.", message.getUsername());
-        Platform.runLater(() -> {
-            if(message.getUsername().equals(user.getUsername())) {
-                if(tabPresenter.infoLabel2IsVisible()) {
-                    eventBus.post(new CloseClientEvent());
-                } else {
-                    eventBus.post(new ShowLoginViewEvent());
-                }
-            }
-        });
+        Platform.runLater(
+                () -> {
+                    if (message.getUsername().equals(user.getUsername())) {
+                        if (tabPresenter.infoLabel2IsVisible()) {
+                            eventBus.post(new CloseClientEvent());
+                        } else {
+                            eventBus.post(new ShowLoginViewEvent());
+                        }
+                    }
+                });
     }
 
     /**
