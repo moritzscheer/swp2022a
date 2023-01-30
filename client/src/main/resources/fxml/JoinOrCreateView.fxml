@@ -20,7 +20,7 @@
     <rowConstraints>
         <RowConstraints />
         <RowConstraints percentHeight="1.0" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="532.77783203125" minHeight="10.0" prefHeight="462.77777099609375" vgrow="ALWAYS" />
+        <RowConstraints minHeight="10.0" prefHeight="462.77777099609375" vgrow="ALWAYS" />
         <RowConstraints maxHeight="100.22222900390625" minHeight="35.77783203125" percentHeight="5.0" prefHeight="100.22222900390625" valignment="BOTTOM" vgrow="ALWAYS" />
       <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
     </rowConstraints>
