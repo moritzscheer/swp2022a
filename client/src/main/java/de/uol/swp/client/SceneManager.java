@@ -32,6 +32,7 @@ import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
@@ -716,6 +717,26 @@ public class SceneManager {
         this.lastSceneHeight = primaryStage.getHeight();
         Platform.runLater(
                 () -> {
+                    /**
+                     * If the user wants to exit the client when he is logged-in, a pop-up is
+                     * displayed
+                     *
+                     * @author Moritz Scheer
+                     * @since 2023-01-25
+                     */
+                    if (currentScene.equals(tabScene)) {
+                        primaryStage.setOnCloseRequest(
+                                closeEvent -> {
+                                    closeEvent.consume();
+                                    if (tabPresenter.infoLabel3IsVisible()) {
+                                        tabPresenter.updateInfoBox();
+                                        eventBus.post(
+                                                new ChangeElementEvent(tabPresenter.getTabID()));
+                                    }
+                                    tabPresenter.updateInfoBox();
+                                    tabPresenter.setInfoLabel(2);
+                                });
+                    }
                     primaryStage.setWidth(lastSceneWidth);
                     primaryStage.setHeight(lastSceneHeight);
                     primaryStage.setTitle(title);
@@ -889,7 +910,7 @@ public class SceneManager {
     /**
      * Shows the lobby screen
      *
-     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
+     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
      * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
      * and posts an Event on the Eventbus to create a tab in the TabPresenter.
      *
@@ -916,7 +937,7 @@ public class SceneManager {
     /**
      * Shows the lobby screen
      *
-     * This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
+     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
      * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
      * and posts an Event on the Eventbus to create a tab in the TabPresenter.
      *

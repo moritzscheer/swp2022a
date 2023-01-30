@@ -18,7 +18,7 @@ Das bedeutet die Communication, Lobby, Messages, den UserManagement, ServerApp u
 
 ### LobbyService
 
-Im LobbyService werden alle Requests aufgefangen und dementsprechend behandelt, ob die ausführung erfolgreich war oder nicht. Zuerst wird im LobbyManagement eine Methode aufgerufen, um die gewünschte Aktion auszuführen. Wenn eine Exception geworfen wurde beim Aufrufen der Methode, dann wird eine ExceptionResponse zurückgeschickt. Falls der Methodenaufruf erfolgreich war, wird eine SuccessfulResponse zurückgeschickt und falls das multiplayer Attribut true ist auch eine Message abgeschickt  
+Im LobbyService werden alle Requests aufgefangen und dementsprechend behandelt, ob die ausführung erfolgreich war oder nicht. Zuerst wird im LobbyManagement eine Methode aufgerufen, um die gewünschte Aktion auszuführen. Wenn eine Exception geworfen wurde beim Aufrufen der Methode, dann wird eine ExceptionResponse zurückgeschickt. Falls der Methodenaufruf erfolgreich war, wird eine SuccessfulResponse zurückgeschickt und falls das multiplayer Attribut true ist auch eine Message abgeschickt
 
 ```java
 public class LobbyService {

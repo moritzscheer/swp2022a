@@ -79,11 +79,12 @@ public class LobbyService extends AbstractService {
     public void onCreateLobbyRequest(CreateLobbyRequest createLobbyRequest) {
         ResponseMessage returnMessage;
         try {
-            Integer lobbyID = lobbyManagement.createLobby(
-                    createLobbyRequest.getName(),
-                    createLobbyRequest.getUser(),
-                    createLobbyRequest.getPassword(),
-                    createLobbyRequest.isMultiplayer());
+            Integer lobbyID =
+                    lobbyManagement.createLobby(
+                            createLobbyRequest.getName(),
+                            createLobbyRequest.getUser(),
+                            createLobbyRequest.getPassword(),
+                            createLobbyRequest.isMultiplayer());
 
             // sends a message to all clients (for the lobby list) and sends a response to the
             // client that send the request
@@ -95,8 +96,7 @@ public class LobbyService extends AbstractService {
             }
             returnMessage =
                     new LobbyCreatedSuccessfulResponse(
-                            lobbyManagement.getLobby(lobbyID).get(),
-                            createLobbyRequest.getUser());
+                            lobbyManagement.getLobby(lobbyID).get(), createLobbyRequest.getUser());
         } catch (IllegalArgumentException e) {
             LOG.error(e);
             returnMessage =
@@ -145,8 +145,7 @@ public class LobbyService extends AbstractService {
                                 joinLobbyRequest.getName(),
                                 joinLobbyRequest.getUser()));
                 returnMessage =
-                        new LobbyJoinedSuccessfulResponse(
-                                lobby.get(), joinLobbyRequest.getUser());
+                        new LobbyJoinedSuccessfulResponse(lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
                 LOG.error(e);
@@ -199,8 +198,7 @@ public class LobbyService extends AbstractService {
                                     (UserDTO) lobby.get().getOwner()));
                 }
                 returnMessage =
-                        new LobbyLeftSuccessfulResponse(
-                                lobby.get(), leaveLobbyRequest.getUser());
+                        new LobbyLeftSuccessfulResponse(lobby.get(), leaveLobbyRequest.getUser());
             } catch (IllegalArgumentException e) {
                 lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
 

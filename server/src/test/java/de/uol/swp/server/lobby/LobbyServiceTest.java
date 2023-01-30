@@ -1,31 +1,30 @@
 package de.uol.swp.server.lobby;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.google.common.eventbus.EventBus;
+
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.request.CreateLobbyRequest;
 import de.uol.swp.common.lobby.request.JoinLobbyRequest;
 import de.uol.swp.common.lobby.request.LeaveLobbyRequest;
 import de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.request.RegisterUserRequest;
 import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 import de.uol.swp.server.usermanagement.UserManagement;
-import de.uol.swp.server.usermanagement.UserService;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
-import org.checkerframework.checker.units.qual.A;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SuppressWarnings("UnstableApiUsage")
 public class LobbyServiceTest {
     static final EventBus bus = new EventBus();
-    static final AuthenticationService authenticationService = new AuthenticationService(bus, new UserManagement(new MainMemoryBasedUserStore()));
+    static final AuthenticationService authenticationService =
+            new AuthenticationService(bus, new UserManagement(new MainMemoryBasedUserStore()));
     static final TextChatService textChatService = new TextChatService(authenticationService, bus);
     final LobbyManagement lobbyManagement = new LobbyManagement();
     final LobbyService lobbyService = new LobbyService(lobbyManagement, authenticationService, bus);
@@ -35,8 +34,6 @@ public class LobbyServiceTest {
 
     static UUID textChannelUUID = textChatService.createTextChatChannel();
     static final Lobby lobby = new LobbyDTO(1, "lobby1", user, "password", true, textChannelUUID);
-
-
 
     // ------------------------------------------
     // onCreateLobbyRequest tests
@@ -70,11 +67,11 @@ public class LobbyServiceTest {
     @Test
     void JoinLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
 
         bus.post(request);
         bus.post(request2);
-
 
         assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
         assertEquals(true, lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
@@ -83,8 +80,10 @@ public class LobbyServiceTest {
     @Test
     void JoinLobbyWithSameUser() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final JoinLobbyRequest request3 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
+        final JoinLobbyRequest request3 =
+                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
 
         bus.post(request);
         bus.post(request2);
@@ -113,7 +112,8 @@ public class LobbyServiceTest {
     @Test
     void leaveMultiplayerLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
         final LeaveLobbyRequest request3 = new LeaveLobbyRequest(1, "lobby1", user, true);
 
         bus.post(request);
@@ -156,5 +156,4 @@ public class LobbyServiceTest {
 
         bus.post(request);
     }
-
 }

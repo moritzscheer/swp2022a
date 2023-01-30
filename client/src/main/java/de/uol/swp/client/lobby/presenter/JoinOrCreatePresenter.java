@@ -327,7 +327,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getLobbyID(), selectedLobby.getName(), (UserDTO) loggedInUser, "");
+                lobbyService.joinLobby(
+                        selectedLobby.getLobbyID(),
+                        selectedLobby.getName(),
+                        (UserDTO) loggedInUser,
+                        "");
             } else {
                 updatePasswordView();
             }
@@ -347,7 +351,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (click.getClickCount() == 2 && selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getLobbyID(), selectedLobby.getName(), (UserDTO) loggedInUser, "");
+                lobbyService.joinLobby(
+                        selectedLobby.getLobbyID(),
+                        selectedLobby.getName(),
+                        (UserDTO) loggedInUser,
+                        "");
             } else {
                 updatePasswordView();
             }

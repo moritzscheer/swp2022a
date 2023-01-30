@@ -34,7 +34,7 @@ Der Button „Logout“ dient dem Ausloggen des derzeit eingeloggten Users und v
 # Lobby
 20.01 Moritz Scheer
 
-Im Hauptmenü gibt es zum einen die Möglichkeit eine Singleplayer Lobby zu erstellen mithilfe des Singleplayer Buttons. Diese erstellt eine private Lobby automatisch ohne ein Password und als Name wird Singleplayer benutzt. diese Lobby kann kein anderer sehen und ist nur für den einen Nutzer zugänglich. 
+Im Hauptmenü gibt es zum einen die Möglichkeit eine Singleplayer Lobby zu erstellen mithilfe des Singleplayer Buttons. Diese erstellt eine private Lobby automatisch ohne ein Password und als Name wird Singleplayer benutzt. diese Lobby kann kein anderer sehen und ist nur für den einen Nutzer zugänglich.
 
 Der Button Multiplayer öffnet die JoinOrCreateView. Dort werden alle öffentlichen Lobbies angezeigt, bei denen der User nicht in der Lobby ist. Zusätzlich werden in der Tabelle Informationen angezeigt über die Lobby wie zum Beispiel der Name der Lobby oder die Spieleranzahl. Von hier aus kann entweder eine neue Lobby erstellt werden oder einer Lobby beigetreten werden durch doppelklick oder durch einen Join Lobby Button. Wenn eine neue Lobby erstellt werden, soll wird ein neues Fenster geöffnet, welcher einen Input für das gewünschte Password und Namen beinhaltet. Ebenso wird ein Fenster geöffnet, wenn einer Lobby beigetreten werden soll, um das benötigte Password abzufragen. Wenn alle Bedingungen richtig sind, dann wird ein neuer Tab geöffnet für die Lobby.
 
