@@ -99,7 +99,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public Robot[] OnRobotMoved(Robot[] currentStates){
+    public Robot[] OnRobotMoved(Robot[] currentStates, int indexOfMovedRobot){
         return currentStates;
     }
 
