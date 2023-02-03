@@ -97,8 +97,15 @@ abstract class AbstractTileBehaviour {
 //        return false;
 //    }
 
-    private Robot[] gameState;
-    private Block[][] board;
+    protected Robot[] robotStates;
+    protected Block[][] board;
+    protected Position blockPos;
+
+    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos){
+        this.robotStates = robotStates;
+        this.board = board;
+        this.blockPos = blockPos;
+    }
 
     /**
      * @return new state of the game

@@ -3,8 +3,6 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
-import javax.swing.text.Position;
-
 /**
  *
  *
@@ -98,5 +96,13 @@ public class Robot {
     public int lockRegister(){
         //TODO
         return 0;
+    }
+
+    public Position getPosition() {
+        return currentPosition;
+    }
+
+    public int getID() {
+        return id;
     }
 }
