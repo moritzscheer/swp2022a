@@ -10,7 +10,7 @@ package de.uol.swp.server.gamelogic.tiles.enums;
 public enum CardinalDirection {
 
     North,
+    East,
     South,
     West,
-    East
 }
