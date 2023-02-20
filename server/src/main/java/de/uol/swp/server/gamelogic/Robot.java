@@ -21,7 +21,7 @@ public class Robot {
     private int lastCheckPoint;
     private Position lastCheckPointPosition;
     private Position lastRepairSite;
-    private int lifePoints;
+    private int lifeToken;
     private boolean powerDown;
 
     // TODO: In my opinion this has to be moved to a new class named "Player" ~Finn
@@ -37,28 +37,14 @@ public class Robot {
      * @since 06-02-2023
      */
     public Robot(
-            String imgPath,
-            Position currentPosition,
-            boolean alive,
-            int damageToken,
-            CardinalDirection direction,
-            boolean backupCopy,
-            int lastCheckPoint,
-            Position lastCheckPointPosition,
-            Position lastRepairSite,
-            int lifePoints,
-            boolean powerDown) {
+            String imgPath, Position currentPosition, boolean alive, CardinalDirection direction) {
         this.imgPath = imgPath;
         this.currentPosition = currentPosition;
         this.alive = alive;
-        this.damageToken = damageToken;
+        this.damageToken = 0;
         this.direction = direction;
-        this.backupCopy = backupCopy;
-        this.lastCheckPoint = lastCheckPoint;
-        this.lastCheckPointPosition = lastCheckPointPosition;
-        this.lastRepairSite = lastRepairSite;
-        this.lifePoints = lifePoints;
-        this.powerDown = powerDown;
+        this.lifeToken = 3;
+        this.powerDown = false;
     }
 
     /**

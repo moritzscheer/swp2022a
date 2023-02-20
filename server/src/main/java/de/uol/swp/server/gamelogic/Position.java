@@ -3,16 +3,25 @@ package de.uol.swp.server.gamelogic;
 import java.util.Objects;
 
 /**
- *
- *
  * @author
  * @see
  * @since
  */
 public class Position {
-    //TODO
+    // TODO
     public int x;
     public int y;
+
+    /**
+     * Constructor
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 20-02-2023
+     */
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     @Override
     public boolean equals(Object o) {
