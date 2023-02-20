@@ -1,26 +1,30 @@
 package de.uol.swp.server.gamelogic.tiles;
 
-
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.server.gamelogic.Robot;
 
 /**
- *
- *
  * @author
  * @see
  * @since
  */
-public class CheckPointBehaviour extends AbstractTileBehaviour{
+public class CheckPointBehaviour extends AbstractTileBehaviour {
 
     private int number;
+
+    public CheckPointBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+        super(robotStates, board, blockPos);
+        // TODO
+    }
 
     /**
      * @author
      * @see
      * @since
      */
-    public Position getCheckPoint(){
-        //TODO
+    public Position getCheckPoint() {
+        // TODO
         return null;
     }
 
@@ -29,8 +33,8 @@ public class CheckPointBehaviour extends AbstractTileBehaviour{
      * @see
      * @since
      */
-    public Position getCheckPointPosition(){
-        //TODO
+    public Position getCheckPointPosition() {
+        // TODO
         return null;
     }
 }
