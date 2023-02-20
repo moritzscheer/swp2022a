@@ -8,100 +8,17 @@ import de.uol.swp.server.gamelogic.Robot;
 import java.util.List;
 
 /**
- *
- *
  * @author
  * @see
  * @since
  */
-
-abstract class AbstractTileBehaviour {
-
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public CardinalDirection getWall(CardinalDirection direction) {
-//        //TODO
-//        return direction;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public int getDamage() {
-//        //TODO
-//        return 0;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public int getRepair() {
-//        //TODO
-//        return 0;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position moveRobot() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public boolean killRobot() {
-//        //TODO
-//        return false;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position getCheckPoint() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position getCheckPointPosition() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public boolean turnRobot() {
-//        //TODO
-//        return false;
-//    }
+public abstract class AbstractTileBehaviour {
 
     protected Robot[] robotStates;
     protected Block[][] board;
     protected Position blockPos;
 
-    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos){
+    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
         this.robotStates = robotStates;
         this.board = board;
         this.blockPos = blockPos;
@@ -112,7 +29,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot){
+    public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot) {
         return null;
     }
 
@@ -121,7 +38,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnExpressConveyorStage(){
+    public List<MoveIntent> OnExpressConveyorStage() {
         return null;
     }
 
@@ -130,7 +47,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnConveyorStage(){
+    public List<MoveIntent> OnConveyorStage() {
         return null;
     }
 
@@ -139,7 +56,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnLaserStage(){
+    public List<MoveIntent> OnLaserStage() {
         return null;
     }
 
@@ -148,7 +65,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPusherStage(){
+    public List<MoveIntent> OnPusherStage() {
         return null;
     }
 
@@ -157,7 +74,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPresserStage(){
+    public List<MoveIntent> OnPresserStage() {
         return null;
     }
 
@@ -166,10 +83,9 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public String GetImage(){
+    public String GetImage() {
         return "";
     }
-
 
     /**
      * @param origin move origin
@@ -178,7 +94,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public boolean getObstruction(Position origin, Position destination){
+    public boolean getObstruction(Position origin, Position destination) {
         return false;
     }
 }
