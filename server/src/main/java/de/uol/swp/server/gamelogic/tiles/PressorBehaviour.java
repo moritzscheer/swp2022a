@@ -22,7 +22,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author W.Kempel
+     * @author WKempel
      * @see
      * @since 24-02-2023
      */
