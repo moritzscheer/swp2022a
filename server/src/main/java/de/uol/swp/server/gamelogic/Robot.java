@@ -104,6 +104,10 @@ public class Robot {
         return 0;
     }
 
+    public boolean isAlive() {
+        return this.alive;
+    }
+
     public Position getPosition() {
         return this.currentPosition;
     }
@@ -119,5 +123,9 @@ public class Robot {
 
     public CardinalDirection getDirection() {
         return this.direction;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
