@@ -7,9 +7,9 @@ import de.uol.swp.server.gamelogic.Robot;
 import java.util.Objects;
 
 /**
- * @author
- * @see
- * @since
+ * @author WKempel
+ * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+ * @since 24-02-2023
  */
 public class PressorBehaviour extends AbstractTileBehaviour {
 
@@ -23,7 +23,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
 
     /**
      * @author WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 24-02-2023
      */
     private boolean killRobot(int programStep) {
