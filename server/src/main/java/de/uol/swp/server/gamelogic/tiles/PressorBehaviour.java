@@ -16,8 +16,9 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private boolean isActiveStep = false;
 
-    public PressorBehaviour(Robot[] robotStates, Block[][] board, Position blockPos, boolean isActiveStep) {
+    public PressorBehaviour(Robot[] robotStates, Block[][] board,int[] activeInProgramSteps, Position blockPos, boolean isActiveStep) {
         super(robotStates, board, blockPos);
+        this.activeInProgramSteps = activeInProgramSteps;
         this.isActiveStep = isActiveStep;
     }
 
@@ -26,18 +27,19 @@ public class PressorBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 24-02-2023
      */
-    private boolean killRobot(int programStep) {
+    public boolean killRobot(int programStep) {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 isActiveStep = true;
+                for (Robot robotState : robotStates) {
+                    if (Objects.equals(robotState.getPosition(), blockPos)) {
+                        robotState.setAlive(false);
+                    }
+                }
                 break;
             }
-            for (Robot robotState : robotStates) {
-                if (Objects.equals(robotState.getPosition(), blockPos)) {
-                    robotState.setAlive(false);
-                }
-            }
+
         }
-        return true;
+        return isActiveStep;
     }
 }

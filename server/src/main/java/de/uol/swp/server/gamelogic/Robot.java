@@ -128,4 +128,9 @@ public class Robot {
     public void setAlive(boolean alive) {
         this.alive = alive;
     }
+
+
+    public void setCurrentPosition(Position currentPosition) {
+        this.currentPosition = currentPosition;
+    }
 }

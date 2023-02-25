@@ -1,0 +1,47 @@
+package de.uol.swp.server.gamelogic.tiles.unitTest;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.tiles.PressorBehaviour;
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import org.junit.Before;
+import org.junit.Test;
+
+public class PressorBehaviourTest {
+
+    private Robot[] robotStates;
+    private Block[][] board;
+    private Position blockPos;
+
+    private int[] activeInProgramSteps = new int[] {1,2};
+    private boolean isActiveStep;
+    private PressorBehaviour pressorBehaviour;
+
+    @Before
+    public void setUp() throws Exception {
+        robotStates = new Robot[1];
+        robotStates[0] = new Robot("Pressor",new Position(0,0),true, CardinalDirection.East);
+        board = new Block[1][1];
+        blockPos = new Position(0, 0);
+        isActiveStep = true;
+        pressorBehaviour = new PressorBehaviour(robotStates, board,activeInProgramSteps, blockPos, false);
+    }
+
+    @Test
+    public void testKillRobotWhenRobotIsOnBlock() {
+        robotStates[0].setCurrentPosition(blockPos);
+        assertTrue(pressorBehaviour.killRobot(1));
+        assertFalse(robotStates[0].isAlive());
+    }
+
+    @Test
+    public void testKillRobotWhenRobotIsNotOnBlock() {
+        robotStates[0].setCurrentPosition(new Position(1, 1));
+        assertFalse(pressorBehaviour.killRobot(0));
+        assertTrue(robotStates[0].isAlive());
+    }
+}
