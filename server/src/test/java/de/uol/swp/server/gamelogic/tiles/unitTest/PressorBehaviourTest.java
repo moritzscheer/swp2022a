@@ -11,6 +11,12 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Test PressorBehaviour
+ *
+ * @author WKempel
+ * @since 25-02-2023
+ */
 public class PressorBehaviourTest {
 
     private Robot[] robotStates;
@@ -31,6 +37,14 @@ public class PressorBehaviourTest {
         pressorBehaviour = new PressorBehaviour(robotStates, board,activeInProgramSteps, blockPos, false);
     }
 
+    /**
+     * Test is the robot still alive despite he is standing on the block
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
+     * @see de.uol.swp.server.gamelogic.Robot;
+     * @since 25-02-2023
+     */
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
@@ -38,6 +52,14 @@ public class PressorBehaviourTest {
         assertFalse(robotStates[0].isAlive());
     }
 
+    /**
+     * Test is the robot still alive when he is not standing on the block
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
+     * @see de.uol.swp.server.gamelogic.Robot;
+     * @since 25-02-2023
+     */
     @Test
     public void testKillRobotWhenRobotIsNotOnBlock() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
