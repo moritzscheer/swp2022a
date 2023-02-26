@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- *
  * @author Finn
  * @since 2023/02/03
  */
-public class ConveyorBeltBehaviour extends AbstractTileBehaviour{
+public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
     private ArrowType arrowType;
     private CardinalDirection direction;
@@ -27,10 +25,7 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour{
         super(robotStates, board, blockPos);
     }
 
-
     /**
-     *
-     *
      * @author Finn
      * @since 2023/02/03
      */

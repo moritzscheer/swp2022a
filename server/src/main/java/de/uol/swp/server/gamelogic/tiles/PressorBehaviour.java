@@ -15,7 +15,8 @@ public class PressorBehaviour extends AbstractTileBehaviour {
 
     private int[] activeInProgramSteps;
 
-    public PressorBehaviour(Robot[] robotStates, Block[][] board,int[] activeInProgramSteps, Position blockPos) {
+    public PressorBehaviour(
+            Robot[] robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
     }
@@ -36,7 +37,6 @@ public class PressorBehaviour extends AbstractTileBehaviour {
                 }
                 break;
             }
-
         }
         return false;
     }

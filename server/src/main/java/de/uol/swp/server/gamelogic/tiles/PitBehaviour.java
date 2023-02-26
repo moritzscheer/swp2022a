@@ -23,8 +23,8 @@ public class PitBehaviour extends AbstractTileBehaviour {
      * @since 25-02-2023
      */
     public boolean killRobot() {
-        for( Robot robotState : robotStates) {
-            if(Objects.equals(robotState.getPosition(), blockPos)) {
+        for (Robot robotState : robotStates) {
+            if (Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);
                 break;
             }

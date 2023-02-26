@@ -33,14 +33,11 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
-import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
 import de.uol.swp.client.tab.event.ShowTabViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 
 import javafx.application.Platform;

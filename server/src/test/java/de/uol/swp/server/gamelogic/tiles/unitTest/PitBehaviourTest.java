@@ -1,15 +1,16 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
+
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 
 public class PitBehaviourTest {
 
@@ -24,7 +25,7 @@ public class PitBehaviourTest {
     @Before
     public void SetUp() throws Exception {
         robotStates = new Robot[1];
-        robotStates[0] = new Robot("Pressor",new Position(0,0),true, CardinalDirection.East);
+        robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
         pitBehaviour = new PitBehaviour(robotStates, board, blockPos);

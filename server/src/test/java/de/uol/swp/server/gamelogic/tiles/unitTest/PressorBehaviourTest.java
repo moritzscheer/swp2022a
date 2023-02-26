@@ -8,6 +8,7 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.PressorBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,16 +24,16 @@ public class PressorBehaviourTest {
     private Block[][] board;
     private Position blockPos;
 
-    private int[] activeInProgramSteps = new int[] {1,2};
+    private int[] activeInProgramSteps = new int[] {1, 2};
     private PressorBehaviour pressorBehaviour;
 
     @Before
     public void setUp() throws Exception {
         robotStates = new Robot[1];
-        robotStates[0] = new Robot("Pressor",new Position(0,0),true, CardinalDirection.East);
+        robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        pressorBehaviour = new PressorBehaviour(robotStates, board,activeInProgramSteps, blockPos);
+        pressorBehaviour = new PressorBehaviour(robotStates, board, activeInProgramSteps, blockPos);
     }
 
     /**
@@ -66,8 +67,8 @@ public class PressorBehaviourTest {
     }
 
     /**
-     * Test is the robot still alive when he is standing on the block
-     * and the program step is not activated
+     * Test is the robot still alive when he is standing on the block and the program step is not
+     * activated
      *
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
