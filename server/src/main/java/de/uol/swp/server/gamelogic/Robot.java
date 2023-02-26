@@ -132,4 +132,28 @@ public class Robot {
     public void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
     }
+
+    public void setLastCheckPoint(int checkPointNumber) {
+        this.lastCheckPoint = checkPointNumber;
+    }
+
+    public int getLastCheckPoint() {
+        return this.lastCheckPoint;
+    }
+
+    public boolean getBackupCopy() {
+        return this.backupCopy;
+    }
+
+    public void setBackupCopy(boolean backupCopy) {
+        this.backupCopy = backupCopy;
+    }
+
+    public Position getLastCheckPointPosition() {
+        return this.lastCheckPointPosition;
+    }
+
+    public void setLastCheckPointPosition(Position pos) {
+        this.lastCheckPointPosition = pos;
+    }
 }
