@@ -13,7 +13,8 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
 
     private int number;
 
-    public CheckPointBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public CheckPointBehaviour(
+            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
         super(robotStates, board, blockPos);
         // TODO
     }
@@ -26,6 +27,15 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     public Position getCheckPoint() {
         // TODO
         return null;
+    }
+
+    /**
+     * @author
+     * @see
+     * @since
+     */
+    public void setCheckPoint() {
+        // TODO
     }
 
     /**
