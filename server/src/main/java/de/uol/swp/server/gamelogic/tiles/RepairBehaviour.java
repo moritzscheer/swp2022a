@@ -11,11 +11,23 @@ import de.uol.swp.server.gamelogic.Robot;
  */
 public class RepairBehaviour extends AbstractTileBehaviour {
 
-    private int repairSiteKey;
+    // (1)single-wrench: discard 1 Damage token
+    // (2)crossed wrench/hammer: discard 1 Damage token AND draw one Option card.
+    private int repairSiteKey; // 1 or 2
 
-    public RepairBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public RepairBehaviour(
+            Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
         // TODO
+    }
+
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-02-26
+     */
+    public Position getCheckPoint() {
+        return this.blockPos;
     }
 
     /**
@@ -23,8 +35,17 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      * @see
      * @since
      */
-    public Position getCheckPoint() {
+    public void setCheckPoint() {
         // TODO
-        return null;
+        // set as check point for robot
+    }
+
+    /**
+     * @author
+     * @see
+     * @since
+     */
+    public void repairDamage() {
+        // TODO
     }
 }

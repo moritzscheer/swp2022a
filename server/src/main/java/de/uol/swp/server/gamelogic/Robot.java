@@ -20,7 +20,6 @@ public class Robot {
     private boolean backupCopy;
     private int lastCheckPoint;
     private Position lastCheckPointPosition;
-    private Position lastRepairSite;
     private int lifeToken;
     private boolean powerDown;
 
@@ -45,6 +44,7 @@ public class Robot {
         this.direction = direction;
         this.lifeToken = 3;
         this.powerDown = false;
+        this.optionCard = 0;
     }
 
     /**
@@ -155,5 +155,34 @@ public class Robot {
 
     public void setLastCheckPointPosition(Position pos) {
         this.lastCheckPointPosition = pos;
+    }
+
+    /**
+     * Robots reentering the race receive 2 Damage tokens (plus any Damage tokens taken while
+     * powered down).
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
+    public void setDamageByReenteringRace() {
+        this.damageToken += 2;
+    }
+
+    public int getDamageToken() {
+        return this.damageToken;
+    }
+
+    /**
+     * Robots on a crossed wrench/hammer space discard 1 Damage token AND draw one Option card.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
+    public void drawOptionCard() {
+        this.optionCard += 1;
+    }
+
+    public int getOptionCard() {
+        return this.optionCard;
     }
 }
