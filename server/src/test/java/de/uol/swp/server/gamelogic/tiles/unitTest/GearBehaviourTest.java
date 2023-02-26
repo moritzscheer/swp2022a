@@ -28,7 +28,7 @@ public class GearBehaviourTest {
     private static final Block[][] board = new Block[1][2];
 
     @Before
-    public void SetUp() throws Exception {
+    public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         robots[1] = new Robot("", pos2, true, CardinalDirection.East);
         behaviours1[0] = new GearBehaviour(robots, board, pos1, true);
