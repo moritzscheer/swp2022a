@@ -3,13 +3,13 @@ package de.uol.swp.server.gamelogic.tiles.unitTest;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.GearBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -27,7 +27,8 @@ public class GearBehaviourTest {
     private static final AbstractTileBehaviour[] behaviours2 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[1][2];
 
-    static {
+    @Before
+    public void SetUp() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         robots[1] = new Robot("", pos2, true, CardinalDirection.East);
         behaviours1[0] = new GearBehaviour(robots, board, pos1, true);
@@ -35,8 +36,6 @@ public class GearBehaviourTest {
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
     }
-
-    private static final Game game = new Game(board, null, robots);
 
     /**
      * Test turn robot 1 clockwise (east -> south)
