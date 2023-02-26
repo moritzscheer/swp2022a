@@ -26,6 +26,7 @@ public class PitBehaviour extends AbstractTileBehaviour {
         for( Robot robotState : robotStates) {
             if(Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);
+                break;
             }
         }
         return true;

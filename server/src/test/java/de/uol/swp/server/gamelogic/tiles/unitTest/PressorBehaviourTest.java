@@ -24,7 +24,6 @@ public class PressorBehaviourTest {
     private Position blockPos;
 
     private int[] activeInProgramSteps = new int[] {1,2};
-    private boolean isActiveStep;
     private PressorBehaviour pressorBehaviour;
 
     @Before
@@ -33,8 +32,7 @@ public class PressorBehaviourTest {
         robotStates[0] = new Robot("Pressor",new Position(0,0),true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        isActiveStep = true;
-        pressorBehaviour = new PressorBehaviour(robotStates, board,activeInProgramSteps, blockPos, false);
+        pressorBehaviour = new PressorBehaviour(robotStates, board,activeInProgramSteps, blockPos);
     }
 
     /**
@@ -66,4 +64,6 @@ public class PressorBehaviourTest {
         assertFalse(pressorBehaviour.killRobot(0));
         assertTrue(robotStates[0].isAlive());
     }
+
+    // Test für das Feld und ein anderer Step
 }
