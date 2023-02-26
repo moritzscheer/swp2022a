@@ -123,7 +123,9 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        Platform.runLater(() -> users.remove(message.getUsername()));
+        if(this.users != null) {
+            Platform.runLater(() -> users.remove(message.getUsername()));
+        }
     }
 
     /**
