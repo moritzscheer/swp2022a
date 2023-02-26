@@ -20,14 +20,14 @@ import org.junit.jupiter.api.Test;
  * @since 2023-02-26
  */
 public class CheckPointBehaviourTest {
-    private static Position pos1 = new Position(1, 1);
-    private static Robot[] robots = new Robot[1];
+    private static final Position pos1 = new Position(1, 1);
+    private static final Robot[] robots = new Robot[1];
     private static final AbstractTileBehaviour[] behaviours1 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[1][1];
     private static final int checkPointNumber = 1;
 
     @Before
-    public void SetUp() throws Exception {
+    public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
@@ -37,10 +37,9 @@ public class CheckPointBehaviourTest {
      * Test when robot arrives in check point
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 2023-02-20
+     * @since 2023-02-26
      */
     @Test
     void getRobotLastCheckPointTest() {
@@ -53,10 +52,9 @@ public class CheckPointBehaviourTest {
      * Test after robot passed check point and dies
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 2023-02-20
+     * @since 2023-02-26
      */
     @Test
     void robotDiesTest() {
@@ -76,10 +74,9 @@ public class CheckPointBehaviourTest {
      * Test after robot passed check point and dies and comes back for next round
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 2023-02-20
+     * @since 2023-02-26
      */
     @Test
     void robotDiesAndComeBackTest() {

@@ -20,9 +20,9 @@ import org.junit.jupiter.api.Test;
  */
 public class GearBehaviourTest {
 
-    private static Position pos1 = new Position(1, 1);
-    private static Position pos2 = new Position(1, 2);
-    private static Robot[] robots = new Robot[2];
+    private static final Position pos1 = new Position(1, 1);
+    private static final Position pos2 = new Position(1, 2);
+    private static final Robot[] robots = new Robot[2];
     private static final AbstractTileBehaviour[] behaviours1 = new AbstractTileBehaviour[1];
     private static final AbstractTileBehaviour[] behaviours2 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[1][2];
