@@ -61,9 +61,23 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsNotOnBlock() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
-        assertFalse(pressorBehaviour.killRobot(0));
+        assertFalse(pressorBehaviour.killRobot(1));
         assertTrue(robotStates[0].isAlive());
     }
 
-    // Test für das Feld und ein anderer Step
+    /**
+     * Test is the robot still alive when he is standing on the block
+     * and the program step is not activated
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
+     * @see de.uol.swp.server.gamelogic.Robot;
+     * @since 26-02-2023
+     */
+    @Test
+    public void testKillRobotWhenRobotIsNotInProgramStep() {
+        robotStates[0].setCurrentPosition(new Position(1, 1));
+        assertFalse(pressorBehaviour.killRobot(3));
+        assertTrue(robotStates[0].isAlive());
+    }
 }
