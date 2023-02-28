@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public class GearBehaviour extends AbstractTileBehaviour {
 
-    private boolean turnClockwise;
+    private final boolean turnClockwise;
 
     /**
      * Constructor
@@ -28,7 +28,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      */
     public GearBehaviour(Robot[] robotStates, Block[][] board, Position blockPos, boolean turnC) {
         super(robotStates, board, blockPos);
-        turnClockwise = turnC;
+        this.turnClockwise = turnC;
     }
 
     /**
@@ -41,36 +41,14 @@ public class GearBehaviour extends AbstractTileBehaviour {
     public void turnRobot() {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
-                if (turnClockwise) {
-                    switch (robotState.getDirection()) {
-                        case North:
-                            robotState.setDirection(CardinalDirection.East);
-                            break;
-                        case East:
-                            robotState.setDirection(CardinalDirection.South);
-                            break;
-                        case South:
-                            robotState.setDirection(CardinalDirection.West);
-                            break;
-                        case West:
-                            robotState.setDirection(CardinalDirection.North);
-                            break;
-                    }
+                if (this.turnClockwise) {
+                    CardinalDirection dir = robotState.getDirection();
+                    dir = CardinalDirection.values()[(dir.ordinal() + 1) % 4];
+                    robotState.setDirection(dir);
                 } else {
-                    switch (robotState.getDirection()) {
-                        case North:
-                            robotState.setDirection(CardinalDirection.West);
-                            break;
-                        case East:
-                            robotState.setDirection(CardinalDirection.North);
-                            break;
-                        case South:
-                            robotState.setDirection(CardinalDirection.East);
-                            break;
-                        case West:
-                            robotState.setDirection(CardinalDirection.South);
-                            break;
-                    }
+                    CardinalDirection dir = robotState.getDirection();
+                    dir = CardinalDirection.values()[(dir.ordinal() + 3) % 4];
+                    robotState.setDirection(dir);
                 }
                 return;
             }

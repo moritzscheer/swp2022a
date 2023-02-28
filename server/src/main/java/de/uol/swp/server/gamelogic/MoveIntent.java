@@ -6,7 +6,7 @@ public class MoveIntent {
     public final int robotID;
     public final CardinalDirection direction;
 
-    public MoveIntent(int id, CardinalDirection dir){
+    public MoveIntent(int id, CardinalDirection dir) {
         robotID = id;
         direction = dir;
     }

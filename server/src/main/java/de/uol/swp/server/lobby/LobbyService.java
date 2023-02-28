@@ -5,7 +5,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
@@ -89,7 +88,10 @@ public class LobbyService extends AbstractService {
             // sends a message to all clients (for the lobby list) and sends a response to the
             // client that send the request
             if (createLobbyRequest.isMultiplayer()) {
-                sendToAll(new UserCreatedLobbyMessage(lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(), (UserDTO) createLobbyRequest.getOwner()));
+                sendToAll(
+                        new UserCreatedLobbyMessage(
+                                lobbyManagement.getLobby(lobbyManagement.getCurrentLobbyID()).get(),
+                                (UserDTO) createLobbyRequest.getOwner()));
             }
             returnMessage =
                     new LobbyCreatedSuccessfulResponse(
@@ -143,8 +145,7 @@ public class LobbyService extends AbstractService {
                                 joinLobbyRequest.getName(),
                                 joinLobbyRequest.getUser()));
                 returnMessage =
-                        new LobbyJoinedSuccessfulResponse(
-                                lobby.get(), joinLobbyRequest.getUser());
+                        new LobbyJoinedSuccessfulResponse(lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
             } catch (IllegalArgumentException e) {
                 LOG.error(e);
@@ -197,8 +198,7 @@ public class LobbyService extends AbstractService {
                                     (UserDTO) lobby.get().getOwner()));
                 }
                 returnMessage =
-                        new LobbyLeftSuccessfulResponse(
-                                lobby.get(), leaveLobbyRequest.getUser());
+                        new LobbyLeftSuccessfulResponse(lobby.get(), leaveLobbyRequest.getUser());
             } catch (IllegalArgumentException e) {
                 lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
 

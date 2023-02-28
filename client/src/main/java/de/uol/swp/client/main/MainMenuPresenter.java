@@ -4,7 +4,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
@@ -280,8 +279,8 @@ public class MainMenuPresenter extends AbstractPresenter {
     /**
      * Method called when the Logout button is pressed
      *
-     * If the logout button is pressed, this method requests the user service
-     * to log this user out.
+     * <p>If the logout button is pressed, this method requests the user service to log this user
+     * out.
      *
      * @param event The ActionEvent created by pressing the logout button
      * @see de.uol.swp.client.lobby.LobbyService

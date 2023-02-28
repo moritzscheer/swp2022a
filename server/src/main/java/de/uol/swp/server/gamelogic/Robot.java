@@ -20,8 +20,7 @@ public class Robot {
     private boolean backupCopy;
     private int lastCheckPoint;
     private Position lastCheckPointPosition;
-    private Position lastRepairSite;
-    private int lifePoints;
+    private int lifeToken;
     private boolean powerDown;
 
     // TODO: In my opinion this has to be moved to a new class named "Player" ~Finn
@@ -37,28 +36,15 @@ public class Robot {
      * @since 06-02-2023
      */
     public Robot(
-            String imgPath,
-            Position currentPosition,
-            boolean alive,
-            int damageToken,
-            CardinalDirection direction,
-            boolean backupCopy,
-            int lastCheckPoint,
-            Position lastCheckPointPosition,
-            Position lastRepairSite,
-            int lifePoints,
-            boolean powerDown) {
+            String imgPath, Position currentPosition, boolean alive, CardinalDirection direction) {
         this.imgPath = imgPath;
         this.currentPosition = currentPosition;
         this.alive = alive;
-        this.damageToken = damageToken;
+        this.damageToken = 0;
         this.direction = direction;
-        this.backupCopy = backupCopy;
-        this.lastCheckPoint = lastCheckPoint;
-        this.lastCheckPointPosition = lastCheckPointPosition;
-        this.lastRepairSite = lastRepairSite;
-        this.lifePoints = lifePoints;
-        this.powerDown = powerDown;
+        this.lifeToken = 3;
+        this.powerDown = false;
+        this.optionCard = 0;
     }
 
     /**
@@ -118,6 +104,10 @@ public class Robot {
         return 0;
     }
 
+    public boolean isAlive() {
+        return this.alive;
+    }
+
     public Position getPosition() {
         return this.currentPosition;
     }
@@ -133,5 +123,66 @@ public class Robot {
 
     public CardinalDirection getDirection() {
         return this.direction;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
+
+    public void setCurrentPosition(Position currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public void setLastCheckPoint(int checkPointNumber) {
+        this.lastCheckPoint = checkPointNumber;
+    }
+
+    public int getLastCheckPoint() {
+        return this.lastCheckPoint;
+    }
+
+    public boolean getBackupCopy() {
+        return this.backupCopy;
+    }
+
+    public void setBackupCopy(boolean backupCopy) {
+        this.backupCopy = backupCopy;
+    }
+
+    public Position getLastCheckPointPosition() {
+        return this.lastCheckPointPosition;
+    }
+
+    public void setLastCheckPointPosition(Position pos) {
+        this.lastCheckPointPosition = pos;
+    }
+
+    /**
+     * Robots reentering the race receive 2 Damage tokens (plus any Damage tokens taken while
+     * powered down).
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
+    public void setDamageByReenteringRace() {
+        this.damageToken += 2;
+    }
+
+    public int getDamageToken() {
+        return this.damageToken;
+    }
+
+    /**
+     * Robots on a crossed wrench/hammer space discard 1 Damage token AND draw one Option card.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
+    public void drawOptionCard() {
+        this.optionCard += 1;
+    }
+
+    public int getOptionCard() {
+        return this.optionCard;
     }
 }

@@ -50,7 +50,9 @@ public class LobbyManagement {
             TextChatService.getInstance().joinUser(textChannelUUID, owner);
         }
 
-        lobbies.put(lobbyID, new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
+        lobbies.put(
+                lobbyID,
+                new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
         this.currentLobbyID = lobbyID;
         this.lobbyID = 1;
     }
