@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<GridPane minHeight="500.0" minWidth="1000.0" prefHeight="500.0" prefWidth="1177.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.game.presenter.GamePresenter">
+<GridPane minHeight="500.0" minWidth="1000.0" prefHeight="500.0" prefWidth="1177.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" >
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" maxWidth="330.0" minWidth="25.0" percentWidth="15.0" prefWidth="271.0" />
         <ColumnConstraints hgrow="ALWAYS" maxWidth="945.0" minWidth="10.0" prefWidth="399.0" />

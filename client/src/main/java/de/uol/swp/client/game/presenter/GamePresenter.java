@@ -2,36 +2,21 @@ package de.uol.swp.client.game.presenter;
 
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.game.Card;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
-import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.scene.shape.Rectangle;
-import org.apache.logging.log4j.core.pattern.AbstractStyleNameConverter;
-
-import java.awt.*;
 import java.util.*;
-import java.util.List;
-
 import static javafx.scene.paint.Color.*;
 
 /**
@@ -56,8 +41,6 @@ public class GamePresenter extends AbstractPresenter {
     private String password;
     private Boolean multiplayer;
 
-    private TextChatChannel textChat;
-
     @Inject private LobbyService lobbyService;
     @Inject private TabPresenter tabPresenter;
 
@@ -78,71 +61,46 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Rectangle slot5;
 
     @FXML private StackPane paneCard1;
-
-
-
     @FXML private Button data;
 
     Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
     Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
-
     Map<Label, Rectangle> valueLabels = new LinkedHashMap<>();
 
     static ArrayList<Card> cardDeck = new ArrayList<>();
     ArrayList<Card> cardHand = new ArrayList<>();
-
     ArrayList<Card> submittedCards = new ArrayList<>();
 
-
     public GamePresenter() {
-        Platform.runLater(
-                () -> {
+        /*
+            Label a = new Label("500");
+            // a.setTranslateX(card2.getTranslateX()+32);
+            // a.setTranslateY(card2.getTranslateY()-41);
+            a.setAlignment(Pos.CENTER);
+            a.setTextFill(BLACK);
+            handCards.getChildren().add(a);
+        */
 
+        cards.put(card1, false);
+        cards.put(card2, false);
+        cards.put(card3, false);
+        cards.put(card4, false);
+        cards.put(card5, false);
+        cards.put(card6, false);
+        cards.put(card7, false);
+        cards.put(card8, false);
+        cards.put(card9, false);
 
+        slots.put(slot1, false);
+        slots.put(slot2, false);
+        slots.put(slot3, false);
+        slots.put(slot4, false);
+        slots.put(slot5, false);
 
+        //if owner = true      sonst erstellt jeder spieler der Lobby ein eigenes carddeck
+        resetCardsAndSlots();
 
-                /*
-                    Label a = new Label("500");
-                   // a.setTranslateX(card2.getTranslateX()+32);
-                   // a.setTranslateY(card2.getTranslateY()-41);
-                    a.setAlignment(Pos.CENTER);
-                    a.setTextFill(BLACK);
-                    handCards.getChildren().add(a);
-
-
-
-                 */
-
-
-
-
-                    cards.put(card1, false);
-                    cards.put(card2, false);
-                    cards.put(card3, false);
-                    cards.put(card4, false);
-                    cards.put(card5, false);
-                    cards.put(card6, false);
-                    cards.put(card7, false);
-                    cards.put(card8, false);
-                    cards.put(card9, false);
-
-                    slots.put(slot1, false);
-                    slots.put(slot2, false);
-                    slots.put(slot3, false);
-                    slots.put(slot4, false);
-                    slots.put(slot5, false);
-
-                    //if owner = true      sonst erstellt jeder spieler der Lobby ein eigenes carddeck
-                    resetCardsAndSlots();
-
-                    //setLabels();
-
-
-
-
-
-
-                });
+        //setLabels();
     }
 
    //Clickevent auf deinen Kartenbereich
@@ -253,9 +211,10 @@ return null;
 */
     // Tauscht 2 Karten miteinander egal welche
     public void switchTwoCardsOrSlots(Rectangle start, Rectangle end){
-        System.out.println(start.toString());
-        System.out.println(end.toString());
-        System.out.println("---------------");
+
+                    System.out.println(start.toString());
+                    System.out.println(end.toString());
+                    System.out.println("---------------");
 
                     //change pictures
                     Rectangle copy = new Rectangle();
@@ -466,18 +425,20 @@ return null;
                     }
                 }
 
-    for (int i = 0; i< 9; i++) {
-        for( Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()){
-            if(cardSlot.getValue() == false){
-                cards.replace(cardSlot.getKey(), true);
-                cardSlot.getKey().setFill(cardDeck.get(0).getPicture());
-                cardDeck.get(0).setPosition(cardSlot.getKey());
-                cardHand.add(cardDeck.get(0));
-                cardDeck.remove(0);
-                break;
-            }
-        }
-    }
+                for (int i = 0; i < 9; i++) {
+                    for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
+                        if (cardSlot.getValue() == false && cardSlot.getKey() != null) {
+                            cards.replace(cardSlot.getKey(), true);
+                            cardSlot.getKey().setFill(cardDeck.get(0).getPicture());
+                            cardDeck.get(0).setPosition(cardSlot.getKey());
+                            cardHand.add(cardDeck.get(0));
+                            cardDeck.remove(0);
+                            System.out.print("3");
+                            break;
+                        }
+                    }
+                }
+
 }
 
     public void onSubmit(MouseEvent mouseEvent) {

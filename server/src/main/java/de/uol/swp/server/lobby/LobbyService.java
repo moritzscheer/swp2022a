@@ -268,4 +268,9 @@ public class LobbyService extends AbstractService {
         response.initWithMessage(msg);
         post(response);
     }
+
+    @Subscribe
+    public void onStartGameRequest(StartGameRequest msg) {
+        sendToAllInLobby(msg.getLobbyID(), new StartGameMessage(msg.getLobbyID()));
+    }
 }

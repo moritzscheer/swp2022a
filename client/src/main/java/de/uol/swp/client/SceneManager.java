@@ -39,10 +39,8 @@ import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
+import de.uol.swp.common.lobby.message.StartGameMessage;
+import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
 
 import javafx.application.Platform;
@@ -187,6 +185,10 @@ public class SceneManager {
             LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
             lobbyPresenterHandler.setNextLobbyPresenter(lobbyPresenter);
             loader.setController(lobbyPresenter);
+        } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
+            GamePresenter gamePresenter = new GamePresenter();
+            lobbyPresenterHandler.setNextGamePresenter(gamePresenter);
+            loader.setController(gamePresenter);
         }
         try {
             URL url = getClass().getResource(fxmlFile);
@@ -281,9 +283,7 @@ public class SceneManager {
      * @since 2023-02-20
      */
     private void initGameView() throws IOException {
-        if (gameParent == null) {
-            gameParent = initPresenter(GamePresenter.FXML);
-        }
+        gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
@@ -673,6 +673,21 @@ public class SceneManager {
     }
 
     /**
+     * Handles StartGameMessage detected on the EventBus
+     *
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The StartGameMessage detected on the EventBus
+     * @see de.uol.swp.common.lobby.message.StartGameMessage
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage msg) {
+        switchLobbyToGame(msg.getLobbyID());
+    }
+
+    /**
      * Handles ShowCreateLobbyViewEvent detected on the EventBus
      *
      * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
@@ -993,5 +1008,22 @@ public class SceneManager {
      */
     private void deleteLobbyTab(Integer lobbyID) {
         eventBus.post(new DeleteLobbyTabEvent(lobbyID));
+    }
+
+    /**
+     * Shows the lobby screen
+     *
+     * <p>This method initializes the game view and assigns an gamePresenter to the view.
+     *
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2022-02-28
+     */
+    private void switchLobbyToGame(Integer lobby) {
+        try {
+            showGameScreen();
+            initGameView();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
