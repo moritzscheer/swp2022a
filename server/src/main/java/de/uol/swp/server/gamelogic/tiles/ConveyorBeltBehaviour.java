@@ -21,7 +21,6 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour{
 
     private ArrowType arrowType;
     private CardinalDirection direction;
-    private boolean express;
 
     public ConveyorBeltBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
         super(robotStates, board, blockPos);
@@ -46,8 +45,4 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour{
         return moves;
     }
 
-    @Override
-    public List<MoveIntent> OnExpressConveyorStage() {
-        return OnConveyorStage();
-    }
 }
