@@ -257,64 +257,72 @@ return null;
         System.out.println(end.toString());
         System.out.println("---------------");
 
-        //change pictures
-        Rectangle copy = new Rectangle();
-        copy.setFill(start.getFill());
+                    //change pictures
+                    Rectangle copy = new Rectangle();
+                    copy.setFill(start.getFill());
 
-        start.setFill(end.getFill());
-        end.setFill(copy.getFill());
-
-
-
-        //change slotmaps
-        boolean startBool = getSwitchTwoCardsOrSlotsBoolean(start);
-        boolean endBool= getSwitchTwoCardsOrSlotsBoolean(end);
-
-        if (start.toString().contains("card")){
-            cards.replace(start, endBool);
-        }
-        else if (start.toString().contains("slot")) {
-            slots.replace(start, endBool);
-        }
-
-        if (end.toString().contains("card")){
-            cards.replace(end, startBool);
-        }
-        else if (end.toString().contains("slot")) {
-            slots.replace(end, startBool);
-        }
+                    start.setFill(end.getFill());
+                    end.setFill(copy.getFill());
 
 
-        //change cardpositions
-        int startID = -1;
-        int endID = -1;
-        for(int i = 0; i<cardHand.size(); i++){
 
-            if (cardHand.get(i).getPosition().equals(start)){
-                startID = i;
-            }
-            if (cardHand.get(i).getPosition().equals(end)){
-                endID = i;
-            }
-        }
+                    //change slotmaps
+                    boolean startBool = getSwitchTwoCardsOrSlotsBoolean(start);
+                    boolean endBool= getSwitchTwoCardsOrSlotsBoolean(end);
 
-        System.out.println(startID);
-        System.out.println(endID);
-        System.out.println("---------------");
+                    if (start.toString().contains("card")){
+                        cards.replace(start, endBool);
+                    }
+                    else if (start.toString().contains("slot")) {
+                        slots.replace(start, endBool);
+                    }
 
-        if(startID == -1 && endID > -1){
-            cardHand.get(endID).setPosition(start);
-        }
-        else if(endID == -1 && startID > -1){
-            cardHand.get(startID).setPosition(end);
-        }
-        else if (startID > -1 && endID > -1){
-            copy = cardHand.get(startID).getPosition();
+                    if (end.toString().contains("card")){
+                        cards.replace(end, startBool);
+                    }
+                    else if (end.toString().contains("slot")) {
+                        slots.replace(end, startBool);
+                    }
 
-            cardHand.get(startID).setPosition(end);
-            cardHand.get(endID).setPosition(copy);
-        }
-    }
+
+                    //change cardpositions
+                    int startID = -1;
+                    int endID = -1;
+                    for(int i = 0; i<cardHand.size(); i++){
+
+                        if (cardHand.get(i).getPosition().equals(start)){
+                            startID = i;
+                        }
+                        if (cardHand.get(i).getPosition().equals(end)){
+                            endID = i;
+                        }
+                    }
+
+                    System.out.println(startID);
+                    System.out.println(endID);
+                    System.out.println("---------------");
+
+                    if(startID == -1 && endID > -1){
+                        cardHand.get(endID).setPosition(start);
+                    }
+                    else if(endID == -1 && startID > -1){
+                        cardHand.get(startID).setPosition(end);
+                    }
+                    else if (startID > -1 && endID > -1){
+                        copy = cardHand.get(startID).getPosition();
+
+                        cardHand.get(startID).setPosition(end);
+                        cardHand.get(endID).setPosition(copy);
+                    }
+                }
+
+
+
+
+
+
+
+
 
     // gibt den Boolean vom Kartenslot raus
     public boolean getSwitchTwoCardsOrSlotsBoolean(Rectangle cardslot){
@@ -415,7 +423,7 @@ return null;
 */
 
     public void getData(MouseEvent mouseEvent) {
-        System.out.println("--------------------");
+        /*System.out.println("--------------------");
         for(Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()){
             System.out.println(cardz.getKey().toString()+ "  " + cardz.getValue());
         }
@@ -427,21 +435,36 @@ return null;
         for (int i = 0; i< cardHand.size(); i++){
             System.out.println(cardHand.get(i).getCardType().toString() + "  " + cardHand.get(i).getPosition().toString());
         }
+        */
+
+        resetCardsAndSlots();
     }
 
-public void resetCardsAndSlots(){
-    cardDeck = newCardDeck();
-    cardHand.clear();
+    public void resetCardsAndSlots(){
+       // if(loggedInUser == owner) {
+            cardDeck = newCardDeck();
+            System.out.println("KartenDeck größe " + cardDeck.size());
+        //}
+        cardHand.clear();
+        submittedCards.clear();
 
-    for(Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()){
-        cards.replace(cardz.getKey(),false);
-        cardz.getKey().setFill(DODGERBLUE);
-    }
 
-    for(Map.Entry<Rectangle, Boolean> cardz : slots.entrySet()){
-        slots.replace(cardz.getKey(),false);
-        cardz.getKey().setFill(DODGERBLUE);
-    }
+                for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
+                    if(cardz.getKey() != null){
+                        cards.replace(cardz.getKey(), false);
+                        cardz.getKey().setFill(DODGERBLUE);
+                        System.out.print("1");
+                    }
+
+                }
+
+                for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
+                    if(slotz.getKey() != null){
+                        slots.replace(slotz.getKey(), false);
+                        slotz.getKey().setFill(DODGERBLUE);
+                        System.out.print("2");
+                    }
+                }
 
     for (int i = 0; i< 9; i++) {
         for( Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()){
@@ -498,10 +521,16 @@ public void resetCardsAndSlots(){
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
 
-        switchTwoCardsOrSlots(getCardOrSlot(d.getString()),getCardOrSlot(event.toString()));
+
+            switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
+
     }
 
     public void dragEntered(MouseEvent mouseEvent) {
+
+        if(getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
+            return;
+        }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
 
 
@@ -516,6 +545,9 @@ public void resetCardsAndSlots(){
         event.acceptTransferModes(TransferMode.ANY);
     }
 
+    /*
+    @Author Maxim Erden
+     */
     public ArrayList<Card> getSubmittedCards(){
         return this.submittedCards;
     }

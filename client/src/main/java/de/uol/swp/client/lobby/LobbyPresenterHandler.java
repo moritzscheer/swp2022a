@@ -70,8 +70,9 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
-        lobbyMap.get(message.getLobby().getLobbyID())
-                .setInformation(message.getLobby(), message.getUser());
+        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobby().getLobbyID());
+        a.setInformation(message.getLobby(), message.getUser());
+        lobbyMap.replace(message.getLobby().getLobbyID(), a);
     }
 
     /**
@@ -104,7 +105,8 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            lobbyMap.get(message.getLobbyID()).userJoinedLobby(message);
+            LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobbyID());
+            a.userJoinedLobby(message);
         }
     }
 
