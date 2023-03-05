@@ -11,7 +11,7 @@ import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test CheckPointBehaviour
@@ -42,9 +42,9 @@ public class CheckPointBehaviourTest {
      * @since 2023-02-26
      */
     @Test
-    void getRobotLastCheckPointTest() {
+    public void getRobotLastCheckPointTest() {
         // robot is in checkpoint position
-        //((CheckPointBehaviour) behaviours1[0]).setCheckPoint();
+        behaviours1[0].OnRobotEntered(0);
         assertEquals(checkPointNumber, robots[0].getLastCheckPoint());
     }
 
@@ -57,17 +57,17 @@ public class CheckPointBehaviourTest {
      * @since 2023-02-26
      */
     @Test
-    void robotDiesTest() {
+    public void robotDiesTest() {
         // robot is in checkpoint position
-        //((CheckPointBehaviour) behaviours1[0]).setCheckPoint();
-        assertEquals(checkPointNumber, robots[0].getLastCheckPoint());
+        behaviours1[0].OnRobotEntered(0);
+        assertEquals(
+                ((CheckPointBehaviour) behaviours1[0]).getCheckPointNumber(),
+                robots[0].getLastCheckPoint());
 
         // robot dies
         robots[0].setAlive(false);
         assertTrue(robots[0].getBackupCopy());
-        //assertEquals(
-                //((CheckPointBehaviour) behaviours1[0]).getCheckPointPosition(),
-                //robots[0].getLastCheckPointPosition());
+        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastCheckPointPosition());
     }
 
     /**
@@ -79,22 +79,20 @@ public class CheckPointBehaviourTest {
      * @since 2023-02-26
      */
     @Test
-    void robotDiesAndComeBackTest() {
+    public void robotDiesAndComeBackTest() {
         // robot is in checkpoint position
-        //((CheckPointBehaviour) behaviours1[0]).setCheckPoint();
-        assertEquals(checkPointNumber, robots[0].getLastCheckPoint());
+        behaviours1[0].OnRobotEntered(0);
+        assertEquals(
+                ((CheckPointBehaviour) behaviours1[0]).getCheckPointNumber(),
+                robots[0].getLastCheckPoint());
 
         // robot dies
         robots[0].setAlive(false);
         assertTrue(robots[0].getBackupCopy());
-        //assertEquals(
-                //((CheckPointBehaviour) behaviours1[0]).getCheckPointPosition(),
-                //robots[0].getLastCheckPointPosition());
+        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastCheckPointPosition());
 
         // new round, robot comes back in last check point
         robots[0].setAlive(true);
-        //assertEquals(
-                //((CheckPointBehaviour) behaviours1[0]).getCheckPointPosition(),
-                //robots[0].getPosition());
+        assertEquals(behaviours1[0].getBlockPos(), robots[0].getPosition());
     }
 }
