@@ -5,7 +5,6 @@ import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +26,8 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * When a robot is on the pusher tile detected, then it pushes the robot in the direction of the pusher.
+     * When a robot is on the pusher tile detected, then it pushes the robot in the direction of the
+     * pusher.
      *
      * @author Tommy Dang and Finn Oldeboershuis
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
@@ -35,7 +35,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     @Override
-    public List<MoveIntent> OnPusherStage(){
+    public List<MoveIntent> OnPusherStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {

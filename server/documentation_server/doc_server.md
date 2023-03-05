@@ -59,4 +59,3 @@ Der PusherBehaviour erstellt einen neuen MoveIntent und fügt diese in eine Move
 
 
 ## WallBehaviour
-
