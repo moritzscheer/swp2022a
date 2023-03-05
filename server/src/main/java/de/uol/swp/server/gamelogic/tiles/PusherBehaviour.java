@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
@@ -21,7 +22,11 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private CardinalDirection direction;
 
     public PusherBehaviour(
-            Robot[] robotStates, Block[][] board, de.uol.swp.server.gamelogic.Position blockPos) {
+            Robot[] robotStates,
+            Block[][] board,
+            Position blockPos,
+            int[] activeInProgramSteps,
+            CardinalDirection direction) {
         super(robotStates, board, blockPos);
     }
 
@@ -44,5 +49,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             }
         }
         return moves;
+    }
+
+    public CardinalDirection getDirection() {
+        // TODO
+        return null;
     }
 }
