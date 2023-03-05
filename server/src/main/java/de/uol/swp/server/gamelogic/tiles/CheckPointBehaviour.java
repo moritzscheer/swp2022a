@@ -23,8 +23,8 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * when the old checkpoint is smaller than the new one, it changes new old one to the new checkpoint.
-     * Changes the old CheckpointPosition to the new Position
+     * when the old checkpoint is smaller than the new one, it changes new old one to the new
+     * checkpoint. Changes the old CheckpointPosition to the new Position
      *
      * @author Tommy Dang and Finn Oldeboershuis
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
@@ -32,14 +32,17 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      */
     @Override
     public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot) {
-        if(robotStates[indexOfMovedRobot].getLastCheckPoint() < number) {
+        if (robotStates[indexOfMovedRobot].getLastCheckPoint() < number) {
             robotStates[indexOfMovedRobot].setLastCheckPoint(number);
             robotStates[indexOfMovedRobot].setLastCheckPointPosition(blockPos);
-        } else{
+        } else {
             return null;
         }
         return null;
     }
 
-
+    public int getCheckPointNumber() {
+        // TODO
+        return 0;
+    }
 }
