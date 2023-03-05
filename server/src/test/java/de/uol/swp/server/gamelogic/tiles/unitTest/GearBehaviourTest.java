@@ -10,7 +10,7 @@ import de.uol.swp.server.gamelogic.tiles.GearBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test GearBehaviour
@@ -47,7 +47,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotClockwiseEastTest() {
+    public void turnRobotClockwiseEastTest() {
         // robot dir = East
         robots[0].setDirection(CardinalDirection.East);
         assertEquals(CardinalDirection.East, robots[0].getDirection());
@@ -65,7 +65,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotClockwiseSouthTest() {
+    public void turnRobotClockwiseSouthTest() {
         // robot dir = South
         robots[0].setDirection(CardinalDirection.South);
         assertEquals(CardinalDirection.South, robots[0].getDirection());
@@ -83,7 +83,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotClockwiseWestTest() {
+    public void turnRobotClockwiseWestTest() {
         // robot dir = West
         robots[0].setDirection(CardinalDirection.West);
         assertEquals(CardinalDirection.West, robots[0].getDirection());
@@ -101,7 +101,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotClockwiseNorthTest() {
+    public void turnRobotClockwiseNorthTest() {
         // robot dir = North
         robots[0].setDirection(CardinalDirection.North);
         assertEquals(CardinalDirection.North, robots[0].getDirection());
@@ -119,7 +119,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotCounterClockwiseEastTest() {
+    public void turnRobotCounterClockwiseEastTest() {
         // robot dir = East
         robots[1].setDirection(CardinalDirection.East);
         assertEquals(CardinalDirection.East, robots[1].getDirection());
@@ -137,7 +137,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotCounterClockwiseSouthTest() {
+    public void turnRobotCounterClockwiseSouthTest() {
         // robot dir = South
         robots[1].setDirection(CardinalDirection.South);
         assertEquals(CardinalDirection.South, robots[1].getDirection());
@@ -155,7 +155,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotCounterClockwiseWestTest() {
+    public void turnRobotCounterClockwiseWestTest() {
         // robot dir = West
         robots[1].setDirection(CardinalDirection.West);
         assertEquals(CardinalDirection.West, robots[1].getDirection());
@@ -173,7 +173,7 @@ public class GearBehaviourTest {
      * @since 2023-02-20
      */
     @Test
-    void turnRobotCounterClockwiseNorthTest() {
+    public void turnRobotCounterClockwiseNorthTest() {
         // robot dir = North
         robots[1].setDirection(CardinalDirection.North);
         assertEquals(CardinalDirection.North, robots[1].getDirection());
