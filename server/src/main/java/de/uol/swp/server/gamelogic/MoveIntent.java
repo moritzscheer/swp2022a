@@ -10,4 +10,8 @@ public class MoveIntent {
         robotID = id;
         direction = dir;
     }
+
+    public CardinalDirection getDirection() {
+        return direction;
+    }
 }

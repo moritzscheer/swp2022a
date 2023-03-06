@@ -29,7 +29,7 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
      * @since 2023/02/03
      */
     @Override
-    public List<MoveIntent> OnConveyorStage() {
+    public List<MoveIntent> OnConveyorStage(int programmStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {

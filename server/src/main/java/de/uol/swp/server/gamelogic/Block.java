@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 /**
  * @author
@@ -34,4 +35,13 @@ public class Block {
      * @since
      */
     public void executeBehaviours(Robot robot) {}
+
+    public boolean getObstruction(CardinalDirection dir) {
+        for (AbstractTileBehaviour abstractTileBehaviour : behaviourList) {
+            if (abstractTileBehaviour.getObstruction(dir)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

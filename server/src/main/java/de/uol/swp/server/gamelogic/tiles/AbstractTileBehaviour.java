@@ -4,6 +4,7 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @since
  */
 
-abstract class AbstractTileBehaviour {
+public abstract class AbstractTileBehaviour {
 
     protected Robot[] robotStates;
     protected Block[][] board;
@@ -50,7 +51,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnExpressConveyorStage() {
+    public List<MoveIntent> OnExpressConveyorStage(int programmStep) {
         return null;
     }
 
@@ -59,7 +60,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnConveyorStage() {
+    public List<MoveIntent> OnConveyorStage(int programmStep) {
         return null;
     }
 
@@ -68,7 +69,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnLaserStage() {
+    public List<MoveIntent> OnLaserStage(int programmStep) {
         return null;
     }
 
@@ -77,7 +78,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPusherStage() {
+    public List<MoveIntent> OnPusherStage(int programmStep) {
         return null;
     }
 
@@ -86,7 +87,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPresserStage() {
+    public List<MoveIntent> OnPresserStage(int programmStep) {
         return null;
     }
 
@@ -106,7 +107,7 @@ abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public boolean getObstruction(Position origin, Position destination) {
+    public boolean getObstruction(CardinalDirection dir) {
         return false;
     }
 }

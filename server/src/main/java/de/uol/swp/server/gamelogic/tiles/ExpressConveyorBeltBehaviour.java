@@ -14,7 +14,7 @@ public class ExpressConveyorBeltBehaviour extends  ConveyorBeltBehaviour{
     }
 
     @Override
-    public List<MoveIntent> OnExpressConveyorStage() {
+    public List<MoveIntent> OnExpressConveyorStage(int programmStep) {
         return OnConveyorStage();
     }
 }
