@@ -2,10 +2,10 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
-import javax.swing.text.Position;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,12 +22,17 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private CardinalDirection direction;
 
     public PusherBehaviour(
-            Robot[] robotStates, Block[][] board, de.uol.swp.server.gamelogic.Position blockPos) {
+            Robot[] robotStates,
+            Block[][] board,
+            Position blockPos,
+            int[] activeInProgramSteps,
+            CardinalDirection direction) {
         super(robotStates, board, blockPos);
     }
 
     /**
-     * When a robot is on the pusher tile detected, then it pushes the robot in the direction of the pusher.
+     * When a robot is on the pusher tile detected, then it pushes the robot in the direction of the
+     * pusher.
      *
      * @author Tommy Dang and Finn Oldeboershuis
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
@@ -35,7 +40,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     @Override
-    public List<MoveIntent> OnPusherStage(){
+    public List<MoveIntent> OnPusherStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
@@ -44,5 +49,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             }
         }
         return moves;
+    }
+
+    public CardinalDirection getDirection() {
+        // TODO
+        return null;
     }
 }

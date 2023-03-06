@@ -26,6 +26,17 @@ abstract class AbstractTileBehaviour {
     }
 
     /**
+     * Getter for blockPos, mainly for tests purposes
+     *
+     * @return block position
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-03-05
+     */
+    public Position getBlockPos() {
+        return this.blockPos;
+    }
+
+    /**
      * @return new state of the game
      * @author Finn Oldeboershuis
      * @since 2023-01-29
