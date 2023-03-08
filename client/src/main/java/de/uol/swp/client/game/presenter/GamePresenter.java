@@ -6,7 +6,6 @@ import de.uol.swp.client.game.Card;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.user.User;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -80,7 +79,9 @@ public class GamePresenter extends AbstractPresenter {
             a.setTextFill(BLACK);
             handCards.getChildren().add(a);
         */
+    }
 
+    public void init() {
         cards.put(card1, false);
         cards.put(card2, false);
         cards.put(card3, false);

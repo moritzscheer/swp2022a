@@ -12,10 +12,8 @@ import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.StartGameResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-import javafx.application.Platform;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -182,5 +180,7 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onStartGameMessage(StartGameMessage msg) {
         lobbyMap.replace(msg.getLobbyID(), currentGamePresenter);
+        GamePresenter a = (GamePresenter) lobbyMap.get(msg.getLobbyID());
+        a.init();
     }
 }
