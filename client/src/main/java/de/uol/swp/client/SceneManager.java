@@ -10,6 +10,8 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
+import de.uol.swp.client.game.event.ShowGameViewEvent;
+import de.uol.swp.client.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.LobbyPresenterHandler;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
@@ -37,10 +39,8 @@ import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
+import de.uol.swp.common.lobby.message.StartGameMessage;
+import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
 
 import javafx.application.Platform;
@@ -92,6 +92,7 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
+    private Parent gameParent;
 
     @Inject private TabPresenter tabPresenter;
     @Inject private LobbyPresenterHandler lobbyPresenterHandler;
@@ -162,6 +163,7 @@ public class SceneManager {
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
+        initGameView();
         initLobbyView();
     }
 
@@ -183,6 +185,10 @@ public class SceneManager {
             LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
             lobbyPresenterHandler.setNextLobbyPresenter(lobbyPresenter);
             loader.setController(lobbyPresenter);
+        } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
+            GamePresenter gamePresenter = new GamePresenter();
+            lobbyPresenterHandler.setNextGamePresenter(gamePresenter);
+            loader.setController(gamePresenter);
         }
         try {
             URL url = getClass().getResource(fxmlFile);
@@ -264,6 +270,20 @@ public class SceneManager {
         if (settingParent == null) {
             settingParent = initPresenter(SettingPresenter.FXML);
         }
+    }
+
+    /**
+     * Initializes the game view
+     *
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as
+     * specified by the GameView FXML file.
+     *
+     * @see de.uol.swp.client.game.presenter.GamePresenter
+     * @author Moritz Scheer
+     * @since 2023-02-20
+     */
+    private void initGameView() throws IOException {
+        gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
@@ -485,6 +505,22 @@ public class SceneManager {
         showSettingScreen();
     }
 
+    /**
+     * Handles ShowSettingViewEvent detected on the EventBus
+     *
+     * <p>If a ShowSettingViewEvent is detected on the EventBus, this method gets called. It calls a
+     * method to switch the current screen to the setting screen.
+     *
+     * @param event The ShowSettingViewEvent detected on the EventBus
+     * @see de.uol.swp.client.setting.event.ShowSettingViewEvent
+     * @author Moritz Scheer
+     * @since 2023-02-20
+     */
+    @Subscribe
+    public void onShowGameViewEvent(ShowGameViewEvent event) {
+        showGameScreen();
+    }
+
     // -----------------------------------------------------
     // MainManu_Events
     // -----------------------------------------------------
@@ -634,6 +670,21 @@ public class SceneManager {
     @Subscribe
     public void onShowCreateLobbyViewEvent(ShowCreateLobbyViewEvent event) {
         showCreateLobbyScreen();
+    }
+
+    /**
+     * Handles StartGameMessage detected on the EventBus
+     *
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The StartGameMessage detected on the EventBus
+     * @see de.uol.swp.common.lobby.message.StartGameMessage
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage msg) {
+        switchLobbyToGame(msg.getLobbyID());
     }
 
     /**
@@ -872,6 +923,17 @@ public class SceneManager {
     }
 
     /**
+     * Shows the game screen
+     *
+     * <p>Switches the current Parent to the gameParent
+     *
+     * @since 2023-02-20
+     */
+    public void showGameScreen() {
+        showNode(1, gameParent);
+    }
+
+    /**
      * Shows the account screen
      *
      * <p>Switches the current Scene to the accountScene and sets the title of the window to
@@ -946,5 +1008,22 @@ public class SceneManager {
      */
     private void deleteLobbyTab(Integer lobbyID) {
         eventBus.post(new DeleteLobbyTabEvent(lobbyID));
+    }
+
+    /**
+     * Shows the lobby screen
+     *
+     * <p>This method initializes the game view and assigns an gamePresenter to the view.
+     *
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2022-02-28
+     */
+    private void switchLobbyToGame(Integer lobby) {
+        try {
+            showGameScreen();
+            initGameView();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }

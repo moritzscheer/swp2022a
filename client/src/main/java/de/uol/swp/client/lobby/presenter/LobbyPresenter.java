@@ -6,11 +6,14 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
+import de.uol.swp.client.game.event.ShowGameViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
+import de.uol.swp.common.lobby.request.StartGameRequest;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
@@ -51,7 +54,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private Integer lobbyID;
     private String lobbyName;
     private User owner;
-    private ObservableList<String> users;
+    static private ObservableList<String> users;
     private String password;
     private Boolean multiplayer;
     private Integer slots = 1;
@@ -270,7 +273,9 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onStartButtonPressed(ActionEvent actionEvent) {
-        // start game
+    private void onStartButtonPressed(ActionEvent actionEvent){
+        if(loggedInUser == owner) {
+            eventBus.post(new StartGameRequest(lobbyID));
+        }
     }
 }

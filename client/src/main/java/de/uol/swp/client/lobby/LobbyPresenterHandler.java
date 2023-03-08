@@ -3,8 +3,10 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
@@ -19,8 +21,9 @@ import java.util.Map;
 public class LobbyPresenterHandler extends AbstractPresenter {
 
     private User loggedInUser;
-    private final Map<Integer, LobbyPresenter> lobbyMap = new HashMap<>();
+    private final Map<Integer,  AbstractPresenter> lobbyMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
+    private GamePresenter currentGamePresenter;
 
     /**
      * Handles successful login
@@ -52,8 +55,9 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
         lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
-        lobbyMap.get(message.getLobby().getLobbyID())
-                .setInformation(message.getLobby(), message.getUser());
+        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobby().getLobbyID());
+        a.setInformation(message.getLobby(), message.getUser());
+        lobbyMap.replace(message.getLobby().getLobbyID(), a);
     }
 
     /**
@@ -70,8 +74,9 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
-        lobbyMap.get(message.getLobby().getLobbyID())
-                .setInformation(message.getLobby(), message.getUser());
+        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobby().getLobbyID());
+        a.setInformation(message.getLobby(), message.getUser());
+        lobbyMap.replace(message.getLobby().getLobbyID(), a);
     }
 
     /**
@@ -104,7 +109,8 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            lobbyMap.get(message.getLobbyID()).userJoinedLobby(message);
+            LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobbyID());
+            a.userJoinedLobby(message);
         }
     }
 
@@ -122,7 +128,8 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            lobbyMap.get(message.getLobbyID()).userLeftLobby(message);
+            LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobbyID());
+            a.userLeftLobby(message);
         }
     }
 
@@ -138,7 +145,8 @@ public class LobbyPresenterHandler extends AbstractPresenter {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        lobbyMap.get(event.getLobbyID()).switchButtonDisableEffect();
+        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(event.getLobbyID());
+        a.switchButtonDisableEffect();
     }
 
     /**
@@ -149,5 +157,30 @@ public class LobbyPresenterHandler extends AbstractPresenter {
      */
     public void setNextLobbyPresenter(LobbyPresenter currentLobbyPresenter) {
         this.currentLobbyPresenter = currentLobbyPresenter;
+    }
+
+    /**
+     * Setter for the currentGamePresenter variable
+     *
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
+     */
+    public void setNextGamePresenter(GamePresenter currentGamePresenter) {
+        this.currentGamePresenter = currentGamePresenter;
+    }
+
+    /**
+     * Handles when a game is started
+     *
+     * If a StartGameResponse is posted to the EventBus this method is called.
+     *
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage msg) {
+        lobbyMap.replace(msg.getLobbyID(), currentGamePresenter);
+        GamePresenter a = (GamePresenter) lobbyMap.get(msg.getLobbyID());
+        a.init();
     }
 }
