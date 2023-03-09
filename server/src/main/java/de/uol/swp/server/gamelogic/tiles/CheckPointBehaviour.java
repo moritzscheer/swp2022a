@@ -18,8 +18,12 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     protected int number;
 
     public CheckPointBehaviour(
-            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
+            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber, int checkPointCount) {
         super(robotStates, board, blockPos);
+    }
+
+    public int getCheckPointNumber() {
+        return number;
     }
 
     /**
@@ -32,17 +36,15 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      */
     @Override
     public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot) {
-        if (robotStates[indexOfMovedRobot].getLastCheckPoint() < number) {
-            robotStates[indexOfMovedRobot].setLastCheckPoint(number);
+        if (robotStates[indexOfMovedRobot].getLastCheckPoint() < this.number) {
+            robotStates[indexOfMovedRobot].setLastCheckPoint(this.number);
             robotStates[indexOfMovedRobot].setLastCheckPointPosition(blockPos);
+            robotStates[indexOfMovedRobot].setBackupCopy(true);
         } else {
             return null;
         }
         return null;
     }
 
-    public int getCheckPointNumber() {
-        // TODO
-        return 0;
-    }
+
 }

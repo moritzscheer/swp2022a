@@ -25,11 +25,12 @@ public class CheckPointBehaviourTest {
     private static final AbstractTileBehaviour[] behaviours1 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[1][1];
     private static final int checkPointNumber = 1;
+    private static final int checkPointCount = 4;
 
     @Before
     public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
-        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber);
+        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber, checkPointCount);
         board[0][0] = new Block(behaviours1, "", pos1);
     }
 
