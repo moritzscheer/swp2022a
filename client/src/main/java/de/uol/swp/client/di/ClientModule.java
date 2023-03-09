@@ -5,7 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import de.uol.swp.client.*;
-import de.uol.swp.client.lobby.LobbyPresenterHandler;
+import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.client.user.UserService;
@@ -22,7 +22,7 @@ import javafx.fxml.FXMLLoader;
 public class ClientModule extends AbstractModule {
     final EventBus eventBus = new EventBus();
     final TabPresenter tabPresenter = new TabPresenter();
-    final LobbyPresenterHandler lobbyPresenterHandler = new LobbyPresenterHandler();
+    final LobbyManagement lobbyManagement = new LobbyManagement();
 
     @Override
     protected void configure() {
@@ -35,8 +35,11 @@ public class ClientModule extends AbstractModule {
                         .implement(ClientConnection.class, ClientConnection.class)
                         .build(ClientConnectionFactory.class));
         install(new FactoryModuleBuilder().build(LobbyPresenterFactory.class));
+        install(new FactoryModuleBuilder().build(CardsPresenterFactory.class));
+        install(new FactoryModuleBuilder().build(GamePresenterFactory.class));
+
         bind(FXMLLoader.class).toProvider(FXMLLoaderProvider.class);
-        bind(LobbyPresenterHandler.class).toInstance(lobbyPresenterHandler);
+        bind(LobbyManagement.class).toInstance(lobbyManagement);
         bind(TabPresenter.class).toInstance(tabPresenter);
         bind(EventBus.class).toInstance(eventBus);
         bind(ClientUserService.class).to(UserService.class);

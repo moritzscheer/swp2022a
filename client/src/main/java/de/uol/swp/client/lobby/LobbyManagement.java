@@ -3,26 +3,29 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
+import de.uol.swp.client.lobby.game.presenter.GamePresenter;
+import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.lobby.message.StartGameMessage;
+import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import javafx.scene.Parent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LobbyPresenterHandler extends AbstractPresenter {
+public class LobbyManagement extends AbstractPresenter {
 
     private User loggedInUser;
-    private final Map<Integer,  AbstractPresenter> lobbyMap = new HashMap<>();
+    private final Map<Integer, Game> lobbyMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
+    private CardsPresenter currentCardsPresenter;
     private GamePresenter currentGamePresenter;
 
     /**
@@ -41,42 +44,13 @@ public class LobbyPresenterHandler extends AbstractPresenter {
         this.loggedInUser = message.getUser();
     }
 
-    /**
-     * Handles created lobbies
-     *
-     * <p>If a new LobbyCreatedSuccessfulResponse object is posted to the EventBus the
-     * setInformation method is called in the lobbyPresenter with the given lobbyID.
-     *
-     * @param message the LobbyCreatedSuccessfulResponse object seen on the EventBus
-     * @see de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    @Subscribe
-    public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
-        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobby().getLobbyID());
-        a.setInformation(message.getLobby(), message.getUser());
-        lobbyMap.replace(message.getLobby().getLobbyID(), a);
-    }
+    // -----------------------------------------------------
+    // lobby methods
+    // -----------------------------------------------------
 
-    /**
-     * Handles joined lobbies
-     *
-     * <p>If a new LobbyJoinedSuccessfulResponse object is posted to the EventBus the setInformation
-     * method is called in the lobbyPresenter with the given lobbyID.
-     *
-     * @param message the LobbyJoinedSuccessfulResponse object seen on the EventBus
-     * @see de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    @Subscribe
-    public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
-        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobby().getLobbyID());
-        a.setInformation(message.getLobby(), message.getUser());
-        lobbyMap.replace(message.getLobby().getLobbyID(), a);
+    public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
+        currentLobbyPresenter.setInformation(lobby, user);
+        lobbyMap.put(lobby.getLobbyID(), new Game(currentLobbyPresenter, lobbyParent));
     }
 
     /**
@@ -109,7 +83,7 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobbyID());
+            LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userJoinedLobby(message);
         }
     }
@@ -128,8 +102,11 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     @Subscribe
     public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = (LobbyPresenter) lobbyMap.get(message.getLobbyID());
+            LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
+            if(!lobbyMap.get(message.getLobbyID()).getStatus().equals("lobby")) {
+
+            }
         }
     }
 
@@ -145,8 +122,68 @@ public class LobbyPresenterHandler extends AbstractPresenter {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(event.getLobbyID());
+        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(event.getLobbyID()).getLobbyPresenter();
         a.switchButtonDisableEffect();
+    }
+
+    // -----------------------------------------------------
+    // game methods
+    // -----------------------------------------------------
+
+    public void setupGame(Integer lobbyID, Parent gameParent, Parent cardsParent) {
+        currentCardsPresenter.init(lobbyID);
+        lobbyMap.get(lobbyID).setCardsView(currentCardsPresenter, cardsParent);
+        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
+    }
+
+    /**
+     * Handles when cards has been submitted
+     *
+     * <p>If a CardsSubmittedResponse is posted to the EventBus this method is called.
+     *
+     * @param msg the CardsSubmittedResponse object seen on the EventBus
+     * @see CardsSubmittedResponse
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    @Subscribe
+    public void onCardsSubmitted(CardsSubmittedResponse msg) {
+        GamePresenter a = lobbyMap.get(msg.getLobbyID()).getGamePresenter();
+        a.init(msg.getLobbyID());
+    }
+
+    // -----------------------------------------------------
+    // getter and setter
+    // -----------------------------------------------------
+
+    /**
+     * Getter for the lobbyParent
+     *
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    public Parent getLobbyParent(Integer lobbyID) {
+        return lobbyMap.get(lobbyID).getLobbyParent();
+    }
+
+    /**
+     * Getter for the cardsParent
+     *
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    public Parent getCardsParent(Integer lobbyID) {
+        return lobbyMap.get(lobbyID).getCardsParent();
+    }
+
+    /**
+     * Getter for the gameParent
+     *
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    public Parent getGameParent(Integer lobbyID) {
+        return lobbyMap.get(lobbyID).getGameParent();
     }
 
     /**
@@ -165,22 +202,19 @@ public class LobbyPresenterHandler extends AbstractPresenter {
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
-    public void setNextGamePresenter(GamePresenter currentGamePresenter) {
-        this.currentGamePresenter = currentGamePresenter;
+    public void setNextCardsPresenter(CardsPresenter currentCardsPresenter) {
+        this.currentCardsPresenter = currentCardsPresenter;
+
     }
 
     /**
-     * Handles when a game is started
-     *
-     * If a StartGameResponse is posted to the EventBus this method is called.
+     * Setter for the currentGamePresenter variable
      *
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
-    @Subscribe
-    public void onStartGameMessage(StartGameMessage msg) {
-        lobbyMap.replace(msg.getLobbyID(), currentGamePresenter);
-        GamePresenter a = (GamePresenter) lobbyMap.get(msg.getLobbyID());
-        a.init();
+    public void setNextGamePresenter(GamePresenter currentGamePresenter) {
+        this.currentGamePresenter = currentGamePresenter;
     }
+
 }

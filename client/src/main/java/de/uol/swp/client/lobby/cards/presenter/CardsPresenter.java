@@ -1,12 +1,9 @@
-package de.uol.swp.client.game.presenter;
+package de.uol.swp.client.lobby.cards.presenter;
 
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.game.Card;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.tab.TabPresenter;
-import de.uol.swp.common.user.User;
-import javafx.collections.ObservableList;
+import de.uol.swp.client.lobby.game.Card;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import javafx.scene.shape.Rectangle;
+
 import java.util.*;
 import static javafx.scene.paint.Color.*;
 
@@ -26,22 +24,15 @@ import static javafx.scene.paint.Color.*;
  * @since 2022-11-15
  */
 @SuppressWarnings("UnstableApiUsage")
-public class GamePresenter extends AbstractPresenter {
+public class CardsPresenter extends AbstractPresenter {
 
-    public static final String FXML = "/fxml/GameView.fxml";
-    private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
-
-    private User loggedInUser;
+    public static final String FXML = "/fxml/CardsView.fxml";
+    private static final Logger LOG = LogManager.getLogger(CardsPresenter.class);
 
     private Integer lobbyID;
-    private String lobbyName;
-    private User owner;
-    private ObservableList<String> users;
-    private String password;
-    private Boolean multiplayer;
 
     @Inject private LobbyService lobbyService;
-    @Inject private TabPresenter tabPresenter;
+
 
     @FXML private Rectangle card1;
     @FXML private Rectangle card2;
@@ -70,18 +61,11 @@ public class GamePresenter extends AbstractPresenter {
     ArrayList<Card> cardHand = new ArrayList<>();
     ArrayList<Card> submittedCards = new ArrayList<>();
 
-    public GamePresenter() {
-        /*
-            Label a = new Label("500");
-            // a.setTranslateX(card2.getTranslateX()+32);
-            // a.setTranslateY(card2.getTranslateY()-41);
-            a.setAlignment(Pos.CENTER);
-            a.setTextFill(BLACK);
-            handCards.getChildren().add(a);
-        */
-    }
+    public CardsPresenter() { }
 
-    public void init() {
+    public void init(Integer lobbyID) {
+        this.lobbyID = lobbyID;
+
         cards.put(card1, false);
         cards.put(card2, false);
         cards.put(card3, false);
@@ -441,28 +425,22 @@ return null;
                 }
 
 }
-
-    public void onSubmit(MouseEvent mouseEvent) {
+    @FXML
+    private void onSubmit(MouseEvent mouseEvent) {
 
         if(slots.containsValue(false) == false) {
-        submittedCards.add(getCardBySlot(slot1));
-        submittedCards.add(getCardBySlot(slot2));
-        submittedCards.add(getCardBySlot(slot3));
-        submittedCards.add(getCardBySlot(slot4));
-        submittedCards.add(getCardBySlot(slot5));
+            submittedCards.add(getCardBySlot(slot1));
+            submittedCards.add(getCardBySlot(slot2));
+            submittedCards.add(getCardBySlot(slot3));
+            submittedCards.add(getCardBySlot(slot4));
+            submittedCards.add(getCardBySlot(slot5));
 
-        for (int i = 0; i< submittedCards.size(); i++){
-            System.out.println(submittedCards.get(i).getValue());
+            for (int i = 0; i< submittedCards.size(); i++){
+                System.out.println(submittedCards.get(i).getValue());
+            }
+            lobbyService.submitCards(lobbyID);
+            //resetCardsAndSlots();
         }
-
-
-             resetCardsAndSlots();
-        }
-
-
-
-
-
 
     }
 

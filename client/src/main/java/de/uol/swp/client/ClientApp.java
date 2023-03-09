@@ -104,6 +104,7 @@ public class ClientApp extends Application implements ConnectionListener {
         // get lobby service from guice
         this.lobbyService = injector.getInstance(LobbyService.class);
 
+        // get tabPresenter from guice
         this.tabPresenter = injector.getInstance(TabPresenter.class);
 
         // get event bus from guice

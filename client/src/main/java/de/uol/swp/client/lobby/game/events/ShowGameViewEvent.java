@@ -1,7 +1,4 @@
-package de.uol.swp.client.game.event;
-
-
-import javafx.collections.ObservableList;
+package de.uol.swp.client.lobby.game.events;
 
 /**
  * Event used to show the Game window if the start button was pressed in the Lobby Window
@@ -16,16 +13,10 @@ import javafx.collections.ObservableList;
 
 public class ShowGameViewEvent {
 
-    private ObservableList<String> users;
     private Integer lobbyID;
 
-    public ShowGameViewEvent(ObservableList<String> users, Integer lobbyID) {
-        this.users = users;
+    public ShowGameViewEvent(Integer lobbyID) {
         this.lobbyID = lobbyID;
-    }
-
-    public ObservableList<String> getUsers() {
-        return users;
     }
 
     public Integer getLobbyID() {

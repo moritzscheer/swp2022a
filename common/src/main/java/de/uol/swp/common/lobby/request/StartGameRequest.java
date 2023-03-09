@@ -1,6 +1,6 @@
 package de.uol.swp.common.lobby.request;
 
-public class StartGameRequest extends AbstractLobbyRequest{
+public class StartGameRequest extends AbstractLobbyRequest {
 
     private Integer lobbyID;
 
