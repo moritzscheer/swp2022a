@@ -144,36 +144,41 @@ public class Game {
             somethingChanged = removeSameDestinationConflicts(moveList, somethingChanged);
 
             // add moves for pushed robots
-            for (int i = 0; i < moveList.size(); i++) {
-                MoveResult move = moveList.get(i);
-                Position currentTile = move.getOriginPosition();
-                Position destinationTile = move.getTargetPosition();
-                CardinalDirection moveDir = move.getDirection();
-
-                for (int j = 0; j < robots.length; j++) {
-                    Robot robot = robots[j];
-                    if (!robot.equals(robots[move.robotID])) {
-                        if (robot.getPosition() == destinationTile) {
-                            boolean alreadyHasMoveIntent = false;
-                            for (MoveResult moveResult : moveList) {
-                                if (robot.equals(robots[moveResult.robotID])) {
-                                    alreadyHasMoveIntent = true;
-                                    break;
-                                }
-                            }
-                            if (!alreadyHasMoveIntent) {
-                                moveList.add(new MoveResult(move, j));
-                                i = -1;
-                                somethingChanged = true;
-                            }
-                        }
-                    }
-                }
-            }
+            somethingChanged = addPushMoves(moveList, somethingChanged);
 
         } while (somethingChanged);
 
         return (moveList.stream().map((MoveResult value) -> (MoveIntent) value).collect(Collectors.toList()));
+    }
+
+    private boolean addPushMoves(ArrayList<MoveResult> moveList, boolean somethingChanged) {
+        for (int i = 0; i < moveList.size(); i++) {
+            MoveResult move = moveList.get(i);
+            Position currentTile = move.getOriginPosition();
+            Position destinationTile = move.getTargetPosition();
+            CardinalDirection moveDir = move.getDirection();
+
+            for (int j = 0; j < robots.length; j++) {
+                Robot robot = robots[j];
+                if (!robot.equals(robots[move.robotID])) {
+                    if (robot.getPosition() == destinationTile) {
+                        boolean alreadyHasMoveIntent = false;
+                        for (MoveResult moveResult : moveList) {
+                            if (robot.equals(robots[moveResult.robotID])) {
+                                alreadyHasMoveIntent = true;
+                                break;
+                            }
+                        }
+                        if (!alreadyHasMoveIntent) {
+                            moveList.add(new MoveResult(move, j));
+                            i = -1;
+                            somethingChanged = true;
+                        }
+                    }
+                }
+            }
+        }
+        return somethingChanged;
     }
 
     private static boolean removeSameDestinationConflicts(ArrayList<MoveResult> moveList, boolean somethingChanged) {
