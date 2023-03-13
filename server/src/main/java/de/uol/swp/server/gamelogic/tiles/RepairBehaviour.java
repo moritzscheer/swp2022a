@@ -4,6 +4,8 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.Objects;
+
 /**
  * @author
  * @see
@@ -15,10 +17,11 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     // (2)crossed wrench/hammer: discard 1 Damage token AND draw one Option card.
     private int repairSiteKey; // 1 or 2
 
+
     public RepairBehaviour(
             Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
-        // TODO
+        this.repairSiteKey = repairSiteKey;
     }
 
     /**
@@ -26,26 +29,22 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 2023-02-26
      */
-    public Position getCheckPoint() {
+    public Position getCheckPointPosition() {
         return this.blockPos;
     }
 
     /**
-     * @author
-     * @see
-     * @since
-     */
-    public void setCheckPoint() {
-        // TODO
-        // set as check point for robot
-    }
-
-    /**
-     * @author
-     * @see
+     * @author Wkempel
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
      * @since
      */
     public void repairDamage() {
-        // TODO
+        for(Robot robotState : robotStates) {
+            if(Objects.equals(robotState.getPosition(),blockPos)) {
+                robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
+                robotState.setLastCheckPointPosition(blockPos);
+
+            }
+        }
     }
 }

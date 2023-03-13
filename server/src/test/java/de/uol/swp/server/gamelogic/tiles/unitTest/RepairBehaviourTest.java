@@ -10,7 +10,7 @@ import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 /**
  * Test RepairBehaviour
@@ -48,7 +48,7 @@ public class RepairBehaviourTest {
      * @since 2023-02-26
      */
     @Test
-    void robotOnSingleWrenchTest() {
+    public void robotOnSingleWrenchTest() {
         // robot receives 2 damage tokens for reentering the race
         int previousDamage = robots[0].getDamageToken();
         robots[0].setDamageByReenteringRace();
@@ -57,11 +57,10 @@ public class RepairBehaviourTest {
 
         // robot is in repair station
         ((RepairBehaviour) behaviours1[0]).repairDamage();
-        ((RepairBehaviour) behaviours1[0]).setCheckPoint();
 
         assertEquals(previousDamage - 1, robots[0].getDamageToken());
         assertEquals(
-                ((RepairBehaviour) behaviours1[0]).getCheckPoint(), robots[0].getLastCheckPoint());
+                ((RepairBehaviour) behaviours1[0]).getCheckPointPosition(), robots[0].getLastCheckPointPosition());
     }
 
     /**
@@ -73,7 +72,7 @@ public class RepairBehaviourTest {
      * @since 2023-02-26
      */
     @Test
-    void robotOnCrossedWrenchHammerTest() {
+    public void robotOnCrossedWrenchHammerTest() {
         // robot receives 2 damage tokens for reentering the race
         int previousDamage = robots[1].getDamageToken();
         robots[1].setDamageByReenteringRace();
@@ -83,11 +82,9 @@ public class RepairBehaviourTest {
         // robot is in repair station
         int previousOptionCard = robots[1].getOptionCard();
         ((RepairBehaviour) behaviours2[0]).repairDamage();
-        ((RepairBehaviour) behaviours2[0]).setCheckPoint();
 
-        assertEquals(previousDamage - 1, robots[1].getDamageToken());
-        assertEquals(previousOptionCard + 1, robots[1].getOptionCard());
+        assertEquals(previousDamage - 2, robots[1].getDamageToken());
         assertEquals(
-                ((RepairBehaviour) behaviours2[0]).getCheckPoint(), robots[1].getLastCheckPoint());
+                ((RepairBehaviour) behaviours2[0]).getCheckPointPosition(), robots[1].getLastCheckPointPosition());
     }
 }

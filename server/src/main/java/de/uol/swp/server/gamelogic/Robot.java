@@ -172,6 +172,10 @@ public class Robot {
         return this.damageToken;
     }
 
+    public void setDamageToken(int damageToken) {
+        this.damageToken = damageToken;
+    }
+
     /**
      * Robots on a crossed wrench/hammer space discard 1 Damage token AND draw one Option card.
      *
