@@ -1,16 +1,15 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
-
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
+import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -104,9 +103,7 @@ public class LobbyManagement extends AbstractPresenter {
         if (!loggedInUser.equals(message.getUser())) {
             LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
-            if(!lobbyMap.get(message.getLobbyID()).getStatus().equals("lobby")) {
-
-            }
+            if (!lobbyMap.get(message.getLobbyID()).getStatus().equals("lobby")) {}
         }
     }
 
@@ -149,6 +146,7 @@ public class LobbyManagement extends AbstractPresenter {
     @Subscribe
     public void onCardsSubmitted(CardsSubmittedResponse msg) {
         GamePresenter a = lobbyMap.get(msg.getLobbyID()).getGamePresenter();
+        int gridSize = 12;
         a.init(msg.getLobbyID());
     }
 
@@ -204,7 +202,6 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public void setNextCardsPresenter(CardsPresenter currentCardsPresenter) {
         this.currentCardsPresenter = currentCardsPresenter;
-
     }
 
     /**
@@ -217,4 +214,7 @@ public class LobbyManagement extends AbstractPresenter {
         this.currentGamePresenter = currentGamePresenter;
     }
 
+    public void readJSON() {
+
+    }
 }

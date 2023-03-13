@@ -22,7 +22,7 @@
         <RowConstraints percentHeight="1.0" vgrow="ALWAYS" />
         <RowConstraints minHeight="10.0" prefHeight="462.77777099609375" vgrow="ALWAYS" />
         <RowConstraints maxHeight="100.22222900390625" minHeight="35.77783203125" percentHeight="5.0" prefHeight="100.22222900390625" valignment="BOTTOM" vgrow="ALWAYS" />
-      <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
+        <RowConstraints maxHeight="25.0" minHeight="25.0" prefHeight="30.0" vgrow="ALWAYS" />
     </rowConstraints>
     <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.rowSpan="2">
         <columnConstraints>
@@ -52,12 +52,12 @@
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
         <TableView fx:id="lobbiesView" onMouseClicked="#onMouseClick" prefHeight="486.0" prefWidth="889.0">
-         <columns>
-            <TableColumn fx:id="column1" maxWidth="50.0" prefWidth="50.0" text="ID" />
-            <TableColumn fx:id="column2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="1000.0" text="Lobby Name" />
-            <TableColumn fx:id="column3" maxWidth="300.0" prefWidth="300.0" text="Owner" />
-            <TableColumn fx:id="column4" maxWidth="300.0" prefWidth="300.0" text="Password" />
-         </columns></TableView>
+            <columns>
+                <TableColumn fx:id="column1" maxWidth="50.0" prefWidth="50.0" text="ID" />
+                <TableColumn fx:id="column2" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="1000.0" text="Lobby Name" />
+                <TableColumn fx:id="column3" maxWidth="300.0" prefWidth="300.0" text="Owner" />
+                <TableColumn fx:id="column4" maxWidth="300.0" prefWidth="300.0" text="Password" />
+            </columns></TableView>
         <AnchorPane fx:id="PasswordView" maxHeight="300.0" maxWidth="400.0" styleClass="InnerBox" visible="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
             <Label fx:id="headerPasswordView" layoutX="149.0" layoutY="38.0" styleClass="header" text="Join Lobby XYZ" visible="false" />
             <PasswordField fx:id="textFieldPassword" layoutX="291.0" layoutY="157.0" visible="false" />

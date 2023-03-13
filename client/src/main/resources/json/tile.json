@@ -1,0 +1,63 @@
+[
+  {
+    "id": "0",
+    "name": "Field",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "1",
+    "name": "Wall",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Pit",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "3",
+    "name": "Checkpoint",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "4",
+    "name": "ConveyorBelt",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "5",
+    "name": "LaserStart",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "6",
+    "name": "Laser",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "6",
+    "name": "LaserEnd",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "7",
+    "name": "Press",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "8",
+    "name": "Pusher",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "9",
+    "name": "Gear",
+    "source": "images/tiles/field.jpg"
+  },
+  {
+    "id": "10",
+    "name": "Repair",
+    "source": "images/tiles/field.jpg"
+  }
+
+]
