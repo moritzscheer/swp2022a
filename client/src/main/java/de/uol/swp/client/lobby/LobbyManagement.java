@@ -14,6 +14,7 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 
 import java.util.HashMap;
@@ -219,4 +220,8 @@ public class LobbyManagement extends AbstractPresenter {
     public void readJSON() {
 
     }
+    public ObservableList<String> getUser(Integer lobbyID) {
+        return lobbyMap.get(lobbyID).getLobbyPresenter().getUsers();
+    }
+
 }

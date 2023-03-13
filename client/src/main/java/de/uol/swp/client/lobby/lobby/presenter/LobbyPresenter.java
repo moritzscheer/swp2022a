@@ -275,4 +275,8 @@ public class LobbyPresenter extends AbstractPresenter {
             lobbyService.startGame(lobbyID);
         }
     }
+
+    public ObservableList<String> getUsers() {
+        return users;
+    }
 }
