@@ -82,7 +82,7 @@ public class Robot {
      * @see
      * @since
      */
-    public void move(Card[] cards[]) {
+    public void move(Card[] cards) {
         // TODO
     }
 
