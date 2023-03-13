@@ -38,7 +38,7 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @return new state of the game
+     * @return List of planned but not necessarily possible moves
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
@@ -47,7 +47,7 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @return new state of the game
+     * @return List of planned but not necessarily possible moves
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
@@ -56,7 +56,7 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @return new state of the game
+     * @return List of planned but not necessarily possible moves
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
@@ -65,7 +65,7 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @return new state of the game
+     * @return List of planned but not necessarily possible moves
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
@@ -74,7 +74,7 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @return new state of the game
+     * @return List of planned but not necessarily possible moves
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */

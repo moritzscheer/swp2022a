@@ -5,6 +5,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.stream.Collectors;
+
 
 /**
  * @author
@@ -118,41 +120,139 @@ public class Game {
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
-        // convert every MoveIntent to a MoveResult
+        if (movesIn == null) {
+            throw new IllegalArgumentException("The list of moves should not be null.  (But can contain zero elements.)");
+        }
+
+        //convert every MoveIntent to a MoveResult
         for (MoveIntent move : movesIn) {
             moveList.add(new MoveResult(move));
         }
 
-        // repeat the solving of conflicts until no more are left (by deleting the moves that do
-        // cause them)
+        //repeat the solving of conflicts until no more are left (by deleting the moves that do cause them)
         boolean somethingChanged = false;
         do {
             somethingChanged = false;
 
             // remove moves that hit obstructions
+            somethingChanged = removeWallIntersections(moveList, somethingChanged, board);
+
+            // remove head on collisions
+            somethingChanged = removeHeadOnCollisions(moveList, somethingChanged);
+
+            // remove same destination collisions
+            somethingChanged = removeSameDestinationConflicts(moveList, somethingChanged);
+
+            // add moves for pushed robots
             for (int i = 0; i < moveList.size(); i++) {
                 MoveResult move = moveList.get(i);
                 Position currentTile = move.getOriginPosition();
                 Position destinationTile = move.getTargetPosition();
                 CardinalDirection moveDir = move.getDirection();
 
-                if (board[currentTile.x][currentTile.y].getObstruction(moveDir)
-                        || board[currentTile.x][currentTile.y].getObstruction(
-                                CardinalDirection.values()[moveDir.ordinal() + 2])) {}
+                for (int j = 0; j < robots.length; j++) {
+                    Robot robot = robots[j];
+                    if (!robot.equals(robots[move.robotID])) {
+                        if (robot.getPosition() == destinationTile) {
+                            boolean alreadyHasMoveIntent = false;
+                            for (MoveResult moveResult : moveList) {
+                                if (robot.equals(robots[moveResult.robotID])) {
+                                    alreadyHasMoveIntent = true;
+                                    break;
+                                }
+                            }
+                            if (!alreadyHasMoveIntent) {
+                                moveList.add(new MoveResult(move, j));
+                                i = -1;
+                                somethingChanged = true;
+                            }
+                        }
+                    }
+                }
             }
-
-            // remove head on collisions
-
-            // remove same destination collisions
-
-            // add moves for pushed robots
 
         } while (somethingChanged);
 
-        return (List<MoveIntent>) (List<?>) moveList;
+        return (moveList.stream().map((MoveResult value) -> (MoveIntent) value).collect(Collectors.toList()));
     }
 
-    /** @author Finn */
+    private static boolean removeSameDestinationConflicts(ArrayList<MoveResult> moveList, boolean somethingChanged) {
+        for (int i = 0; i < moveList.size(); i++) {
+            MoveResult move = moveList.get(i);
+            Position currentTile = move.getOriginPosition();
+            Position destinationTile = move.getTargetPosition();
+            CardinalDirection moveDir = move.getDirection();
+
+            for (int j = 0; j < moveList.size(); j++) {
+                if (i != j) {
+                    if (destinationTile.equals(moveList.get(j).getTargetPosition())) {
+                        removeMoveResultAndParents(move, moveList);
+                        removeMoveResultAndParents(moveList.get(j), moveList);
+                        i = -1;
+                        j = -1;
+                        somethingChanged = true;
+                    }
+                }
+            }
+        }
+        return somethingChanged;
+    }
+
+    private static boolean removeWallIntersections(ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
+        for (int i = 0; i < moveList.size(); i++) {
+            MoveResult move = moveList.get(i);
+            Position currentTile = move.getOriginPosition();
+            Position destinationTile = move.getTargetPosition();
+            CardinalDirection moveDir = move.getDirection();
+
+            if (checkForObstruction(currentTile, destinationTile, moveDir, board)) {
+                removeMoveResultAndParents(move, moveList);
+                i = -1;
+                somethingChanged = true;
+            }
+        }
+        return somethingChanged;
+    }
+
+    private static boolean removeHeadOnCollisions(ArrayList<MoveResult> moveList, boolean somethingChanged) {
+        for (int i = 0; i < moveList.size(); i++) {
+            MoveResult move = moveList.get(i);
+            Position currentTile = move.getOriginPosition();
+            Position destinationTile = move.getTargetPosition();
+            CardinalDirection moveDir = move.getDirection();
+
+            for (int j = 0; j < moveList.size(); j++) {
+                if (i != j) {
+                    if (moveDir == CardinalDirection.values()[moveList.get(j).getDirection().ordinal() + 2] && destinationTile == moveList.get(j).getOriginPosition()) {
+                        removeMoveResultAndParents(move, moveList);
+                        removeMoveResultAndParents(moveList.get(j), moveList);
+                        i = -1;
+                        j = -1;
+                        somethingChanged = true;
+                    }
+                }
+            }
+        }
+        return somethingChanged;
+    }
+
+    private static boolean checkForObstruction(Position currentTile, Position destinationTile, CardinalDirection moveDir, Block[][] board) {
+        return board[currentTile.x][currentTile.y].getObstruction(moveDir) || board[destinationTile.x][destinationTile.y].getObstruction(CardinalDirection.values()[moveDir.ordinal() + 2]);
+    }
+
+    private static void removeMoveResultAndParents(MoveResult move, ArrayList<MoveResult> moveList) {
+        while (moveList.contains(move)) {
+            moveList.remove(move);
+            if (move.parentMove != null) {
+                move = move.parentMove;
+            }
+        }
+    }
+
+
+    /**
+     * @author Finn
+     */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
@@ -167,7 +267,7 @@ public class Game {
             this.parentMove = parentMove;
         }
 
-        public de.uol.swp.server.gamelogic.Position getTargetPosition() {
+        public Position getTargetPosition() {
             Position p = robots[robotID].getPosition();
             switch (direction) {
                 case East:
@@ -182,7 +282,7 @@ public class Game {
             throw new IllegalStateException();
         }
 
-        public de.uol.swp.server.gamelogic.Position getOriginPosition() {
+        public Position getOriginPosition() {
             return robots[robotID].getPosition();
         }
     }
