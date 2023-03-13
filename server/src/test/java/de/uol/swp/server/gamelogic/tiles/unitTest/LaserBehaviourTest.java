@@ -31,7 +31,7 @@ public class LaserBehaviourTest {
     private static final AbstractTileBehaviour[] behaviours4 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[2][5];
 
-    private int[] activeInProgramSteps = new int[] {1, 2};
+    private final int[] activeInProgramSteps = new int[] {1, 2};
     private static final CardinalDirection laserDir = CardinalDirection.East;
     private static final int laserBeam = 1;
     private static final CardinalDirection wallDirection = CardinalDirection.West;
@@ -41,9 +41,11 @@ public class LaserBehaviourTest {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         robots[1] = new Robot("", pos2, true, CardinalDirection.East);
         robots[2] = new Robot("", pos3, true, CardinalDirection.East);
-        behaviours1[0] = new LaserBehaviour(robots, board, activeInProgramSteps, pos1, laserDir, laserBeam);
+        behaviours1[0] =
+                new LaserBehaviour(robots, board, activeInProgramSteps, pos1, laserDir, laserBeam);
         behaviours3[0] = new WallBehaviour(robots, board, pos3, wallDirection);
-        behaviours4[0] = new LaserBehaviour(robots, board,activeInProgramSteps, pos1, laserDir, laserBeam);
+        behaviours4[0] =
+                new LaserBehaviour(robots, board, activeInProgramSteps, pos1, laserDir, laserBeam);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
         board[1][2] = new Block(behaviours3, "", pos3);
@@ -66,7 +68,7 @@ public class LaserBehaviourTest {
         int beforeDamage = robots[0].getDamageToken();
         ((LaserBehaviour) behaviours1[0]).OnLaserStage(1);
         int afterDamage = robots[0].getDamageToken();
-        assertEquals(((LaserBehaviour) behaviours1[0]).getLaserBeam(), afterDamage -beforeDamage);
+        assertEquals(((LaserBehaviour) behaviours1[0]).getLaserBeam(), afterDamage - beforeDamage);
     }
 
     /**
