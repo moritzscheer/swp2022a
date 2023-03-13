@@ -24,13 +24,14 @@ public class PitBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 25-02-2023
      */
-    public boolean killRobot(int indexMoveRobot) {
+    @Override
+    public List<MoveIntent> OnRobotEntered(int indexMoveRobot) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);
                 break;
             }
         }
-        return true;
+        return null;
     }
 }

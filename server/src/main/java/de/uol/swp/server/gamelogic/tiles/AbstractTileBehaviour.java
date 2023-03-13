@@ -87,7 +87,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPresserStage(int programmStep) {
+    public List<MoveIntent> OnPressorStage(int programmStep) {
         return null;
     }
 
@@ -101,8 +101,6 @@ public abstract class AbstractTileBehaviour {
     }
 
     /**
-     * @param origin move origin
-     * @param destination move destination
      * @return whether the move is blocked or not
      * @author Finn Oldeboershuis
      * @since 2023-01-29

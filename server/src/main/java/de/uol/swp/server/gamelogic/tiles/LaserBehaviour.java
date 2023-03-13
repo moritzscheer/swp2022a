@@ -18,7 +18,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     public LaserBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
         super(robotStates, board, blockPos);
-        // TODO kmkm
+        // TODO
     }
 
     /**

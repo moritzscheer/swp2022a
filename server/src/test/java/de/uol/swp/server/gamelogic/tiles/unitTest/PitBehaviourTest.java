@@ -1,8 +1,5 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
-
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
@@ -11,6 +8,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.TestCase.*;
 
 public class PitBehaviourTest {
 
@@ -42,7 +41,7 @@ public class PitBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
-        assertTrue(pitBehaviour.killRobot(1));
+        assertNull(pitBehaviour.OnRobotEntered(1));
         assertFalse(robotStates[0].isAlive());
     }
 }
