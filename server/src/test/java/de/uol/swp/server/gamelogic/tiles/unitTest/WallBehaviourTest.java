@@ -15,6 +15,8 @@ public class WallBehaviourTest {
     private static final Block[][] board = new Block[5][5];
     private static final AbstractTileBehaviour[] tileBehaviours = new AbstractTileBehaviour[13];
 
+    private int[] activeInProgramSteps = new int[] {1, 2};
+
     @Before
     public void setUp() {
         robots[0] = new Robot("1", new Position(1, 1), true, CardinalDirection.East);
@@ -53,7 +55,7 @@ public class WallBehaviourTest {
                 new ConveyorBeltBehaviour(
                         robots, board, new Position(1, 1), null, CardinalDirection.South);
         tileBehaviours[12] =
-                new LaserBehaviour(robots, board, new Position(1, 1), CardinalDirection.East, 3);
+                new LaserBehaviour(robots, board, activeInProgramSteps, new Position(1, 1), CardinalDirection.East, 3);
 
         board[1][1] = new Block(tileBehaviours, "", new Position(1, 1));
         board[2][2] = new Block(tileBehaviours, "", new Position(2, 2));
@@ -103,7 +105,7 @@ public class WallBehaviourTest {
     public void notDamageRobotBehindWall() {
         // robot in same block as wall
         int beforeDamage = robots[1].getDamageToken();
-        ((LaserBehaviour) tileBehaviours[12]).damageRobot();
+        ((LaserBehaviour) tileBehaviours[12]).OnLaserStage(0);
         int afterDamage = robots[1].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }

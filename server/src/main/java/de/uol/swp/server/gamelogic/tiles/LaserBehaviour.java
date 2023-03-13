@@ -1,38 +1,52 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.List;
+
 /**
- * @author
- * @see
- * @since
+ * @author Maria Eduarda Costa Leite Andrade & WKempel
+ * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+ * @since 2023-03-13
  */
 public class LaserBehaviour extends AbstractTileBehaviour {
 
     private CardinalDirection direction;
+
+    private int[] activeInProgramSteps;
     private int laserBeam; // laserBeam is directed related to damage
 
-    public LaserBehaviour(
-            Robot[] robotStates,
-            Block[][] board,
-            Position blockPos,
-            CardinalDirection laserDir,
-            int laserBeam) {
+    public LaserBehaviour(Robot[] robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos, CardinalDirection laserDir, int laserBeam) {
         super(robotStates, board, blockPos);
-        // TODO
+        this.activeInProgramSteps = activeInProgramSteps;
+        this.direction = laserDir;
+        this.laserBeam = laserBeam;
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * When the robot is before a laser then it will get so much damage like laserBeam exist.
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.Robot
+     * @since 2023-03-13
      */
-    public int damageRobot() {
-        // TODO
-        return laserBeam;
+    @Override
+    public List<MoveIntent> OnLaserStage(int programStep) {
+        for(int i : activeInProgramSteps) {
+            if(i == programStep) {
+                for(Robot robotState : robotStates) {
+                    if(robotState.getPosition().equals(blockPos)) {
+                        robotState.setDamageToken(robotState.getDamageToken() + laserBeam);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return null;
     }
 
     /**

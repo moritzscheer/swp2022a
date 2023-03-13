@@ -30,6 +30,8 @@ public class LaserBehaviourTest {
     private static final AbstractTileBehaviour[] behaviours3 = new AbstractTileBehaviour[1];
     private static final AbstractTileBehaviour[] behaviours4 = new AbstractTileBehaviour[1];
     private static final Block[][] board = new Block[2][5];
+
+    private int[] activeInProgramSteps = new int[] {1, 2};
     private static final CardinalDirection laserDir = CardinalDirection.East;
     private static final int laserBeam = 1;
     private static final CardinalDirection wallDirection = CardinalDirection.West;
@@ -39,9 +41,9 @@ public class LaserBehaviourTest {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         robots[1] = new Robot("", pos2, true, CardinalDirection.East);
         robots[2] = new Robot("", pos3, true, CardinalDirection.East);
-        behaviours1[0] = new LaserBehaviour(robots, board, pos1, laserDir, laserBeam);
+        behaviours1[0] = new LaserBehaviour(robots, board, activeInProgramSteps, pos1, laserDir, laserBeam);
         behaviours3[0] = new WallBehaviour(robots, board, pos3, wallDirection);
-        behaviours4[0] = new LaserBehaviour(robots, board, pos1, laserDir, laserBeam);
+        behaviours4[0] = new LaserBehaviour(robots, board,activeInProgramSteps, pos1, laserDir, laserBeam);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
         board[1][2] = new Block(behaviours3, "", pos3);
@@ -52,9 +54,9 @@ public class LaserBehaviourTest {
      * Test damage robot direct in laser block
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
-     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
-     * @see de.uol.swp.server.gamelogic.Robot
+     * @see CardinalDirection
+     * @see LaserBehaviour
+     * @see Robot
      * @since 2023-03-13
      */
     @Test
@@ -62,9 +64,9 @@ public class LaserBehaviourTest {
         // robot 1 in same block as laser
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         int beforeDamage = robots[0].getDamageToken();
-        ((LaserBehaviour) behaviours1[0]).damageRobot();
+        ((LaserBehaviour) behaviours1[0]).OnLaserStage(1);
         int afterDamage = robots[0].getDamageToken();
-        assertEquals(((LaserBehaviour) behaviours1[0]).getLaserBeam(), beforeDamage - afterDamage);
+        assertEquals(((LaserBehaviour) behaviours1[0]).getLaserBeam(), afterDamage -beforeDamage);
     }
 
     /**
@@ -81,7 +83,7 @@ public class LaserBehaviourTest {
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         assertEquals(robots[1].getPosition(), pos2);
         int beforeDamage = robots[1].getDamageToken();
-        ((LaserBehaviour) behaviours1[0]).damageRobot();
+        ((LaserBehaviour) behaviours1[0]).OnLaserStage(0);
         int afterDamage = robots[1].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }
@@ -100,7 +102,7 @@ public class LaserBehaviourTest {
         // robot in same block as wall
         assertEquals(robots[2].getPosition(), behaviours3[0].getBlockPos());
         int beforeDamage = robots[2].getDamageToken();
-        ((LaserBehaviour) behaviours4[0]).damageRobot();
+        ((LaserBehaviour) behaviours4[0]).OnLaserStage(0);
         int afterDamage = robots[2].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }

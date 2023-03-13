@@ -34,6 +34,8 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * When the robot arrive a repair station then it will lose one / two DamageTokens.
+     * Also, it will update the new lastCheckPointPosition.
      * @author Wkempel
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
      * @since 2023-03-13

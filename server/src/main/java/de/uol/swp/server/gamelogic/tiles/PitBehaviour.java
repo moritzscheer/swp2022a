@@ -20,6 +20,7 @@ public class PitBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * When a robot fall in the pit then it will die.
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 25-02-2023
