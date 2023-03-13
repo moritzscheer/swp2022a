@@ -1,13 +1,12 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.tiles.*;
+import de.uol.swp.server.gamelogic.tiles.enums.*;
 
-/**
- * @author
- * @see
- * @since
- */
+import java.util.ArrayList;
+import java.util.List;
+
+/** @author Ole Zimemrmann */
 public class Block {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -29,19 +28,87 @@ public class Block {
         this.pos = pos;
     }
 
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public void executeBehaviours(Robot robot) {}
-
     public boolean getObstruction(CardinalDirection dir) {
-        for (AbstractTileBehaviour abstractTileBehaviour : behaviourList) {
-            if (abstractTileBehaviour.getObstruction(dir)) {
+        for (AbstractTileBehaviour behaviour : behaviourList) {
+            if (behaviour.getObstruction(dir)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * @author Ole Zimmermann
+     * @since 13-03-2023
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     */
+    public List<MoveIntent> OnConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnConveyorStage(programStep) != null) {
+                moves.addAll(behaviour.OnConveyorStage(programStep));
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * @author Ole Zimmermann
+     * @since 13-03-2023
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     */
+    public List<MoveIntent> OnExpressConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnExpressConveyorStage(programStep) != null) {
+                moves.addAll(behaviour.OnExpressConveyorStage(programStep));
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * @author Ole Zimmermann
+     * @since 13-03-2023
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     */
+    public List<MoveIntent> OnPusherStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnPusherStage(programStep) != null) {
+                moves.addAll(behaviour.OnPusherStage(programStep));
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * @author Ole Zimmermann
+     * @since 13-03-2023
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     */
+    public List<MoveIntent> OnLaserStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnLaserStage(programStep) != null) {
+                moves.addAll(behaviour.OnLaserStage(programStep));
+            }
+        }
+        return moves;
+    }
+
+    /**
+     * @author Ole Zimmermann
+     * @since 13-03-2023
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     */
+    public List<MoveIntent> OnPresserStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnPresserStage(programStep) != null) {
+                moves.addAll(behaviour.OnPresserStage(programStep));
+            }
+        }
+        return moves;
     }
 }

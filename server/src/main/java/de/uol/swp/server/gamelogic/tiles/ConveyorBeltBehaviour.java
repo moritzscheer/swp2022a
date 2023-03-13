@@ -20,7 +20,12 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     private ArrowType arrowType;
     private CardinalDirection direction;
 
-    public ConveyorBeltBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public ConveyorBeltBehaviour(
+            Robot[] robotStates,
+            Block[][] board,
+            Position blockPos,
+            ArrowType arrowType,
+            CardinalDirection direction) {
         super(robotStates, board, blockPos);
     }
 
@@ -39,5 +44,4 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
         }
         return moves;
     }
-
 }

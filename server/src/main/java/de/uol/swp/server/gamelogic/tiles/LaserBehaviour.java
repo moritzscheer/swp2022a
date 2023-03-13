@@ -13,10 +13,14 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 public class LaserBehaviour extends AbstractTileBehaviour {
 
     private CardinalDirection direction;
-    private int damage;
-    private int laserBeam;
+    private int laserBeam; // laserBeam is directed related to damage
 
-    public LaserBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public LaserBehaviour(
+            Robot[] robotStates,
+            Block[][] board,
+            Position blockPos,
+            CardinalDirection laserDir,
+            int laserBeam) {
         super(robotStates, board, blockPos);
         // TODO
     }
@@ -26,8 +30,27 @@ public class LaserBehaviour extends AbstractTileBehaviour {
      * @see
      * @since
      */
-    public int getDamage() {
+    public int damageRobot() {
         // TODO
-        return damage;
+        return laserBeam;
+    }
+
+    /**
+     * Getter for test
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-03-13
+     */
+    public CardinalDirection getLaserDirection() {
+        return this.direction;
+    }
+    /**
+     * Getter for test
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-03-13
+     */
+    public int getLaserBeam() {
+        return this.laserBeam;
     }
 }
