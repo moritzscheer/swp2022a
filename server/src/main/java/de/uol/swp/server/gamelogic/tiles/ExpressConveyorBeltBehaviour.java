@@ -7,7 +7,7 @@ import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.List;
 
-public class ExpressConveyorBeltBehaviour extends  ConveyorBeltBehaviour{
+public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
 
     public ExpressConveyorBeltBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
         super(robotStates, board, blockPos);
@@ -15,6 +15,6 @@ public class ExpressConveyorBeltBehaviour extends  ConveyorBeltBehaviour{
 
     @Override
     public List<MoveIntent> OnExpressConveyorStage(int programmStep) {
-        return OnConveyorStage();
+        return OnConveyorStage(0);
     }
 }
