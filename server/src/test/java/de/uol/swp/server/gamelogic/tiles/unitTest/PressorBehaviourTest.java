@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
+import static junit.framework.TestCase.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -47,7 +48,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
-        assertTrue(pressorBehaviour.killRobot(1));
+        assertNull(pressorBehaviour.OnPressorStage(1));
         assertFalse(robotStates[0].isAlive());
     }
 
@@ -62,7 +63,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsNotOnBlock() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
-        assertFalse(pressorBehaviour.killRobot(1));
+        assertNull(pressorBehaviour.OnPressorStage(1));
         assertTrue(robotStates[0].isAlive());
     }
 
@@ -78,7 +79,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsNotInProgramStep() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
-        assertFalse(pressorBehaviour.killRobot(3));
+        assertNull(pressorBehaviour.OnPressorStage(3));
         assertTrue(robotStates[0].isAlive());
     }
 }

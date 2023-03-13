@@ -7,9 +7,9 @@ import de.uol.swp.server.gamelogic.Robot;
 import java.util.Objects;
 
 /**
- * @author
- * @see
- * @since
+ * @author Maria Eduarda Costa Leite Andrade & WKempel
+ * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+ * @since 2023-03-13
  */
 public class RepairBehaviour extends AbstractTileBehaviour {
 
@@ -36,7 +36,7 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     /**
      * @author Wkempel
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
-     * @since
+     * @since 2023-03-13
      */
     public void repairDamage() {
         for(Robot robotState : robotStates) {
