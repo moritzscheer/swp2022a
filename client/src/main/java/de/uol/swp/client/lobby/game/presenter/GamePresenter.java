@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby.game.presenter;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.cards.events.ShowCardsViewEvent;
 import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
 import javafx.application.Platform;
@@ -33,6 +34,25 @@ public class GamePresenter extends AbstractPresenter {
 
     public void init(Integer lobbyID) {
         this.lobbyID = lobbyID;
+
+        double imageSize = frameGameBoard.getPrefHeight();
+        imageSize = imageSize / boardSize;
+
+            for(int i = 0; i < boardSize; i++){
+                gameBoard.addColumn(i);
+                gameBoard.addRow(i);
+            }
+            for(int col = 0; col < boardSize; col++){
+                for(int row = 0; row < boardSize; row++){
+                    gameBoard.add(new ImageView(new Image("images/tiles/field.jpg", imageSize,imageSize,true,false)), row, col);
+                }
+            }
+
+
+            frameGameBoard.getChildren().add(gameBoard);
+
+
+        addTiles();
     }
     @FXML
     private void onSubmit(MouseEvent mouseEvent) {

@@ -26,6 +26,8 @@ public class LobbyManagement extends AbstractPresenter {
     private LobbyPresenter currentLobbyPresenter;
     private CardsPresenter currentCardsPresenter;
     private GamePresenter currentGamePresenter;
+    private String JSON = "/json/tile.json";
+
 
     /**
      * Handles successful login

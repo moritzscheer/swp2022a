@@ -6,6 +6,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import de.uol.swp.client.*;
 import de.uol.swp.client.lobby.LobbyManagement;
+import de.uol.swp.client.lobby.game.Tile;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.client.user.UserService;
