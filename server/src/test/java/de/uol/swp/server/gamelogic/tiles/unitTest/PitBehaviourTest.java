@@ -42,7 +42,7 @@ public class PitBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
-        assertTrue(pitBehaviour.killRobot());
+        assertTrue(pitBehaviour.killRobot(1));
         assertFalse(robotStates[0].isAlive());
     }
 }

@@ -28,19 +28,18 @@ public class PressorBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 24-02-2023
      */
-    @Override
-    public List<MoveIntent> OnPresserStage(int programStep) {
+    public boolean killRobot(int programStep) {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
                     if (Objects.equals(robotState.getPosition(), blockPos)) {
                         robotState.setAlive(false);
-                        return null;
+                        break;
                     }
                 }
                 break;
             }
         }
-        return null;
+        return false;
     }
 }
