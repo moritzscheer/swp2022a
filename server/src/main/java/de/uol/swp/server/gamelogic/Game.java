@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-
 /**
  * @author
  * @see
@@ -119,14 +118,15 @@ public class Game {
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
-        //convert every MoveIntent to a MoveResult
+        // convert every MoveIntent to a MoveResult
         for (MoveIntent move : movesIn) {
             moveList.add(new MoveResult(move));
         }
 
-        //repeat the solving of conflicts until no more are left (by deleting the moves that do cause them)
+        // repeat the solving of conflicts until no more are left (by deleting the moves that do
+        // cause them)
         boolean somethingChanged = false;
-        do{
+        do {
             somethingChanged = false;
 
             // remove moves that hit obstructions
@@ -136,9 +136,9 @@ public class Game {
                 Position destinationTile = move.getTargetPosition();
                 CardinalDirection moveDir = move.getDirection();
 
-                if(board[currentTile.x][currentTile.y].getObstruction(moveDir) || board[currentTile.x][currentTile.y].getObstruction(moveDir.ordinal() + 2)){
-
-                }
+                if (board[currentTile.x][currentTile.y].getObstruction(moveDir)
+                        || board[currentTile.x][currentTile.y].getObstruction(
+                                CardinalDirection.values()[moveDir.ordinal() + 2])) {}
             }
 
             // remove head on collisions
@@ -147,15 +147,12 @@ public class Game {
 
             // add moves for pushed robots
 
-        }while (somethingChanged);
+        } while (somethingChanged);
 
-        return (List<MoveIntent>)(List<?>) moveList;
+        return (List<MoveIntent>) (List<?>) moveList;
     }
 
-
-    /**
-     * @author Finn
-     */
+    /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
