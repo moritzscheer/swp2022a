@@ -1,11 +1,8 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
-
-import java.util.List;
 
 /**
  * Checks, if a robot is on the checkpoint tile and changes to the new one, if needed
@@ -18,8 +15,9 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     protected int number;
 
     public CheckPointBehaviour(
-            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber, int checkPointCount) {
+            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
         super(robotStates, board, blockPos);
+        this.number = checkPointNumber;
     }
 
     public int getCheckPointNumber() {
@@ -34,17 +32,13 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 28.02.2023
      */
-    @Override
-    public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot) {
+    public int setCheckPoint(int indexOfMovedRobot) {
         if (robotStates[indexOfMovedRobot].getLastCheckPoint() < this.number) {
             robotStates[indexOfMovedRobot].setLastCheckPoint(this.number);
             robotStates[indexOfMovedRobot].setLastCheckPointPosition(blockPos);
             robotStates[indexOfMovedRobot].setBackupCopy(true);
-        } else {
-            return null;
+            return this.number;
         }
-        return null;
+        return 0;
     }
-
-
 }
