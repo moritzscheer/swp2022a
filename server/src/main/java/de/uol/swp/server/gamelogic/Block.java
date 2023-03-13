@@ -6,7 +6,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Ole Zimemrmann */
+/** @author Ole Zimmermann */
 public class Block {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -105,8 +105,8 @@ public class Block {
     public List<MoveIntent> OnPresserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnPresserStage(programStep) != null) {
-                moves.addAll(behaviour.OnPresserStage(programStep));
+            if (behaviour.OnPressorStage(programStep) != null) {
+                moves.addAll(behaviour.OnPressorStage(programStep));
             }
         }
         return moves;
