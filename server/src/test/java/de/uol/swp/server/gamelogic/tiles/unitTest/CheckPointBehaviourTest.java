@@ -30,7 +30,7 @@ public class CheckPointBehaviourTest {
     @Before
     public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
-        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber, checkPointCount);
+        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
     }
 
@@ -45,7 +45,7 @@ public class CheckPointBehaviourTest {
     @Test
     public void getRobotLastCheckPointTest() {
         // robot is in checkpoint position
-        behaviours1[0].OnRobotEntered(0);
+        ((CheckPointBehaviour) behaviours1[0]).setCheckPoint(0);
         assertEquals(checkPointNumber, robots[0].getLastCheckPoint());
     }
 
@@ -60,7 +60,7 @@ public class CheckPointBehaviourTest {
     @Test
     public void robotDiesTest() {
         // robot is in checkpoint position
-        behaviours1[0].OnRobotEntered(0);
+        ((CheckPointBehaviour) behaviours1[0]).setCheckPoint(0);
         assertEquals(
                 ((CheckPointBehaviour) behaviours1[0]).getCheckPointNumber(),
                 robots[0].getLastCheckPoint());
@@ -82,7 +82,7 @@ public class CheckPointBehaviourTest {
     @Test
     public void robotDiesAndComeBackTest() {
         // robot is in checkpoint position
-        behaviours1[0].OnRobotEntered(0);
+        ((CheckPointBehaviour) behaviours1[0]).setCheckPoint(0);
         assertEquals(
                 ((CheckPointBehaviour) behaviours1[0]).getCheckPointNumber(),
                 robots[0].getLastCheckPoint());

@@ -45,6 +45,7 @@ public class Robot {
         this.lifeToken = 3;
         this.powerDown = false;
         this.optionCard = 0;
+        this.lastCheckPoint = -1;
     }
 
     /**
