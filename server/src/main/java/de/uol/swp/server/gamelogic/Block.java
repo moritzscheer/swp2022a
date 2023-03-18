@@ -3,10 +3,13 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.*;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Ole Zimmermann */
+/**
+ * @author Ole Zimmermann
+ */
 public class Block {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -39,8 +42,8 @@ public class Block {
 
     /**
      * @author Ole Zimmermann
-     * @since 13-03-2023
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
      */
     public List<MoveIntent> OnConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -54,8 +57,8 @@ public class Block {
 
     /**
      * @author Ole Zimmermann
-     * @since 13-03-2023
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
      */
     public List<MoveIntent> OnExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -69,8 +72,8 @@ public class Block {
 
     /**
      * @author Ole Zimmermann
-     * @since 13-03-2023
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
      */
     public List<MoveIntent> OnPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -84,8 +87,8 @@ public class Block {
 
     /**
      * @author Ole Zimmermann
-     * @since 13-03-2023
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
      */
     public List<MoveIntent> OnLaserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -99,8 +102,8 @@ public class Block {
 
     /**
      * @author Ole Zimmermann
-     * @since 13-03-2023
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
      */
     public List<MoveIntent> OnPresserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -110,5 +113,14 @@ public class Block {
             }
         }
         return moves;
+    }
+
+    public <T extends  AbstractTileBehaviour> T GetBehaviour(Class<T> type) {
+        for (AbstractTileBehaviour behaviour : behaviourList) {
+            if(type.isInstance(behaviour)){
+                return (T) behaviour;
+            }
+        }
+        return null;
     }
 }

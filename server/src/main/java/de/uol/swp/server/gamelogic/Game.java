@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.util.ArrayList;
@@ -115,6 +116,17 @@ public class Game {
      */
     public void startTimer(int readyRegister, int nRobots) {
         // TODO
+    }
+
+    private void CalcGameRound(Card[][] playedCards){
+        //Iterate through the 5 cards
+        for (int cardIterator = 0; cardIterator < playedCards[0].length; cardIterator++) {
+            //Iterate through the X card of all Players and resolve them
+
+            //Iterate through all the traps
+
+        }
+        //Send back a collective result of the whole GameRound
     }
 
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {

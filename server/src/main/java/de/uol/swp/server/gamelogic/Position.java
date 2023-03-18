@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+
 import java.util.Objects;
 
 /**
@@ -21,6 +23,21 @@ public class Position {
     public Position(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public static Position translate(Position p, CardinalDirection d){
+        switch (d){
+            case East:
+                return new Position(p.x + 1, p.y);
+            case West:
+                return new Position(p.x - 1, p.y);
+            case North:
+                return new Position(p.x, p.y - 1);
+            case South:
+                return new Position(p.x, p.y + 1);
+            default:
+                return null;
+        }
     }
 
     @Override

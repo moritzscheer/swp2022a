@@ -39,6 +39,22 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 moves.add(new MoveIntent(robotState.getID(), direction));
+
+                //rotate robot if moved on other Conv. Belt
+                try {
+                    Position targetPos = Position.translate(blockPos, direction);
+                    if (targetPos != null) {
+                        Block nextBlock = board[targetPos.x][targetPos.y];
+                        ConveyorBeltBehaviour conBehaviourOnNextBlock = nextBlock.GetBehaviour((Class<ConveyorBeltBehaviour>) this.getClass());
+                        if (conBehaviourOnNextBlock != null) {
+                            int rotation = conBehaviourOnNextBlock.direction.ordinal() - direction.ordinal();
+                            robotState.setDirection(CardinalDirection.values()[robotState.getDirection().ordinal() + rotation]);
+                        }
+                    }
+                } catch (IndexOutOfBoundsException exp) {
+                    //
+                }
+
                 break;
             }
         }
