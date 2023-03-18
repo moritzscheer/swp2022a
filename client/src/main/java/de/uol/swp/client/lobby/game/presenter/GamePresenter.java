@@ -1,11 +1,9 @@
 package de.uol.swp.client.lobby.game.presenter;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.cards.events.ShowCardsViewEvent;
 import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
 import de.uol.swp.client.lobby.game.Tile;
-import javafx.application.Platform;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
@@ -13,12 +11,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import javax.inject.Inject;
-
 
 
 @SuppressWarnings("UnstableApiUsage")
@@ -47,33 +42,43 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane frameGameBoard;
 
     private GridPane gameBoard = new GridPane();
-    private int boardSize = 16;
-
+    private int boardSize = 3;
+    private double imageSize;
     public GamePresenter() {
+    }
+
+    public double getImageSize(){
+        return imageSize;
     }
 
 
     public void init(Integer lobbyID) {
         this.lobbyID = lobbyID;
-
         double imageSize = frameGameBoard.getPrefHeight();
         imageSize = imageSize / boardSize;
+        Tile tile = new Tile(boardSize, imageSize);
 
-            for(int i = 0; i < boardSize; i++){
-                gameBoard.addColumn(i);
-                gameBoard.addRow(i);
+        for(int i = 0; i < boardSize; i++){
+            gameBoard.addColumn(i);
+            gameBoard.addRow(i);
+        }
+        for(int col = 0; col < boardSize; col++){
+            for(int row = 0; row < boardSize; row++){
+
+                gameBoard.add(new ImageView(new Image("images/tiles/field.png", imageSize, imageSize,true,false)), row, col);
             }
-            for(int col = 0; col < boardSize; col++){
-                for(int row = 0; row < boardSize; row++){
-                    gameBoard.add(new ImageView(new Image("images/tiles/field.jpg", imageSize,imageSize,true,false)), row, col);
-                }
-            }
+        }
+        gameBoard.add(tile.addTileLaserStart(0), 0,0);
+        gameBoard.add(tile.addTileLaser(0), 1, 0);
+        gameBoard.add(tile.addTileLaser(0), 2, 0);
+
+        gameBoard.add(tile.addTileLaserStart(2), 2,2);
+        gameBoard.add(tile.addTileLaser(0), 0, 2);
+        gameBoard.add(tile.addTileLaser(0), 1, 2);
+
+        frameGameBoard.getChildren().add(gameBoard);
 
 
-            frameGameBoard.getChildren().add(gameBoard);
-
-
-        addTiles();
 
 
         Platform.runLater(() -> {
@@ -99,10 +104,6 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private void onSubmit(MouseEvent mouseEvent) {
         eventBus.post(new ShowCardsViewEvent(lobbyID));
-    }
-
-    public void addTiles() {
-
     }
 
 }
