@@ -40,7 +40,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     @Override
-    public List<MoveIntent> OnPusherStage(int programmStep){
+    public List<MoveIntent> onPusherStage(int programmStep){
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : this.robotStates) {
             if (Objects.equals(robotState.getPosition(), this.blockPos)) {

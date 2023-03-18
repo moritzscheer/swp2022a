@@ -74,10 +74,10 @@ public class WallBehaviourTest {
         assertEquals(
                 true, ((WallBehaviour) tileBehaviours[6]).getObstruction(CardinalDirection.South));
         // Pushes robot
-        ((PusherBehaviour) tileBehaviours[1]).OnPusherStage(1);
-        ((PusherBehaviour) tileBehaviours[3]).OnPusherStage(1);
-        ((PusherBehaviour) tileBehaviours[5]).OnPusherStage(1);
-        ((PusherBehaviour) tileBehaviours[7]).OnPusherStage(1);
+        ((PusherBehaviour) tileBehaviours[1]).onPusherStage(1);
+        ((PusherBehaviour) tileBehaviours[3]).onPusherStage(1);
+        ((PusherBehaviour) tileBehaviours[5]).onPusherStage(1);
+        ((PusherBehaviour) tileBehaviours[7]).onPusherStage(1);
         assertEquals(new Position(1, 1), robots[0].getPosition());
     }
 
@@ -94,10 +94,10 @@ public class WallBehaviourTest {
         assertEquals(
                 true, ((WallBehaviour) tileBehaviours[6]).getObstruction(CardinalDirection.South));
         // Pushes robot
-        ((ConveyorBeltBehaviour) tileBehaviours[8]).OnConveyorStage(1);
-        ((ConveyorBeltBehaviour) tileBehaviours[9]).OnConveyorStage(1);
-        ((ConveyorBeltBehaviour) tileBehaviours[10]).OnConveyorStage(1);
-        ((ConveyorBeltBehaviour) tileBehaviours[11]).OnConveyorStage(1);
+        ((ConveyorBeltBehaviour) tileBehaviours[8]).onConveyorStage(1);
+        ((ConveyorBeltBehaviour) tileBehaviours[9]).onConveyorStage(1);
+        ((ConveyorBeltBehaviour) tileBehaviours[10]).onConveyorStage(1);
+        ((ConveyorBeltBehaviour) tileBehaviours[11]).onConveyorStage(1);
         assertEquals(new Position(1, 1), robots[0].getPosition());
     }
 
@@ -105,7 +105,7 @@ public class WallBehaviourTest {
     public void notDamageRobotBehindWall() {
         // robot in same block as wall
         int beforeDamage = robots[1].getDamageToken();
-        ((LaserBehaviour) tileBehaviours[12]).OnLaserStage(0);
+        ((LaserBehaviour) tileBehaviours[12]).onLaserStage(0);
         int afterDamage = robots[1].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }

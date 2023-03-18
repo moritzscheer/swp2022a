@@ -48,7 +48,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
-        assertNull(pressorBehaviour.OnPressorStage(1));
+        assertNull(pressorBehaviour.onPressorStage(1));
         assertFalse(robotStates[0].isAlive());
     }
 
@@ -63,7 +63,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsNotOnBlock() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
-        assertNull(pressorBehaviour.OnPressorStage(1));
+        assertNull(pressorBehaviour.onPressorStage(1));
         assertTrue(robotStates[0].isAlive());
     }
 
@@ -79,7 +79,7 @@ public class PressorBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsNotInProgramStep() {
         robotStates[0].setCurrentPosition(new Position(1, 1));
-        assertNull(pressorBehaviour.OnPressorStage(3));
+        assertNull(pressorBehaviour.onPressorStage(3));
         assertTrue(robotStates[0].isAlive());
     }
 }

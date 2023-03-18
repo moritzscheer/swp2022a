@@ -57,7 +57,7 @@ public class PusherBehaviourTest {
         // program step is 1
         assertEquals(CardinalDirection.West, ((PusherBehaviour) behaviours1[0]).getDirection());
         // Pushes robot to west
-        ((GearBehaviour) behaviours1[0]).OnPusherStage(1);
+        ((GearBehaviour) behaviours1[0]).onPusherStage(1);
         assertEquals(new Position(0, 1), robots[0].getPosition());
         List<int[]> activeSteps = Arrays.asList(activeInProgramSteps);
         assertTrue(activeSteps.contains(programStep));
@@ -78,7 +78,7 @@ public class PusherBehaviourTest {
         // program step is 2
         assertEquals(CardinalDirection.West, ((PusherBehaviour) behaviours1[0]).getDirection());
         // do not push robot to west
-        ((GearBehaviour) behaviours1[0]).OnPusherStage(1);
+        ((GearBehaviour) behaviours1[0]).onPusherStage(1);
         assertEquals(new Position(0, 0), robots[0].getPosition());
         List<int[]> activeSteps = Arrays.asList(activeInProgramSteps);
         assertFalse(activeSteps.contains(programStep));

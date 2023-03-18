@@ -1,8 +1,11 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
+
+import java.util.List;
 
 /**
  * Checks, if a robot is on the checkpoint tile and changes to the new one, if needed

@@ -40,12 +40,13 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
      * @since 2023-03-13
      */
-    public void repairDamage() {
+    // WKempel Notiz für mich, Methode muss noch angepasst werden /
+    // erst möglich, wenn die move Methode von Robot implementiert wurde
+    public void onRobotRepaired() {
         for(Robot robotState : robotStates) {
             if(Objects.equals(robotState.getPosition(),blockPos)) {
                 robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
                 robotState.setLastCheckPointPosition(blockPos);
-
             }
         }
     }

@@ -26,7 +26,7 @@ public class PitBehaviour extends AbstractTileBehaviour {
      * @since 25-02-2023
      */
     @Override
-    public List<MoveIntent> OnRobotEntered(int indexMoveRobot) {
+    public List<MoveIntent> onRobotEntered(int indexMoveRobot) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);

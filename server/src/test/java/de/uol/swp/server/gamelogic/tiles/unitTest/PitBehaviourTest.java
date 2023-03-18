@@ -41,7 +41,7 @@ public class PitBehaviourTest {
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
         robotStates[0].setCurrentPosition(blockPos);
-        assertNull(pitBehaviour.OnRobotEntered(1));
+        assertNull(pitBehaviour.onRobotEntered(1));
         assertFalse(robotStates[0].isAlive());
     }
 }

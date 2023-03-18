@@ -34,7 +34,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
      * @since 2023-03-13
      */
     @Override
-    public List<MoveIntent> OnLaserStage(int programStep) {
+    public List<MoveIntent> onLaserStage(int programStep) {
         for(int i : activeInProgramSteps) {
             if(i == programStep) {
                 for(Robot robotState : robotStates) {

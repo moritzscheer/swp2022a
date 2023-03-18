@@ -42,7 +42,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnRobotEntered(int indexOfMovedRobot) {
+    public List<MoveIntent> onRobotEntered(int indexOfMovedRobot) {
         return null;
     }
 
@@ -51,7 +51,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnExpressConveyorStage(int programmStep) {
+    public List<MoveIntent> onExpressConveyorStage(int programmStep) {
         return null;
     }
 
@@ -60,7 +60,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnConveyorStage(int programmStep) {
+    public List<MoveIntent> onConveyorStage(int programmStep) {
         return null;
     }
 
@@ -69,7 +69,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnLaserStage(int programmStep) {
+    public List<MoveIntent> onLaserStage(int programmStep) {
         return null;
     }
 
@@ -78,7 +78,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPusherStage(int programmStep) {
+    public List<MoveIntent> onPusherStage(int programmStep) {
         return null;
     }
 
@@ -87,7 +87,7 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public List<MoveIntent> OnPressorStage(int programmStep) {
+    public List<MoveIntent> onPressorStage(int programmStep) {
         return null;
     }
 
@@ -108,4 +108,5 @@ public abstract class AbstractTileBehaviour {
     public boolean getObstruction(CardinalDirection dir) {
         return false;
     }
+
 }

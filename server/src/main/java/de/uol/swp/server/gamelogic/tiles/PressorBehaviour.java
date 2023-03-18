@@ -30,7 +30,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
      * @since 24-02-2023
      */
     @Override
-    public List<MoveIntent> OnPressorStage(int programStep) {
+    public List<MoveIntent> onPressorStage(int programStep) {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {

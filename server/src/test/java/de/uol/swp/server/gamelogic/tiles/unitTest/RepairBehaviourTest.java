@@ -56,7 +56,7 @@ public class RepairBehaviourTest {
         previousDamage = robots[0].getDamageToken();
 
         // robot is in repair station
-        ((RepairBehaviour) behaviours1[0]).repairDamage();
+        ((RepairBehaviour) behaviours1[0]).onRobotRepaired();
 
         assertEquals(previousDamage - 1, robots[0].getDamageToken());
         assertEquals(
@@ -81,7 +81,7 @@ public class RepairBehaviourTest {
 
         // robot is in repair station
         int previousOptionCard = robots[1].getOptionCard();
-        ((RepairBehaviour) behaviours2[0]).repairDamage();
+        ((RepairBehaviour) behaviours2[0]).onRobotRepaired();
 
         assertEquals(previousDamage - 2, robots[1].getDamageToken());
         assertEquals(

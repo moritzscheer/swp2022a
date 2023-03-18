@@ -67,7 +67,7 @@ Das PitBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-Das PitBehaviour erbt ihre Methode ```java OnRobotEntered``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Das PitBehaviour erbt ihre Methode ```java onRobotEntered``` von der abstrakten Oberklasse AbstractTileBehaviour.
 Sie besitzt keine weiteren Attribute.
 
 **<span style="color:DodgerBlue">
@@ -86,7 +86,7 @@ Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse 
 **Methode**
 </span>**
 
-Das PitBehaviour besitzt eine öffentliche Methode namens ```java OnRobotEntered (int indexMoveRobot)```, diese wird ausgelöst, sobald ein Roboter sich auf dem Feld / Block des PitBehaviours befindet. Hierbei wird die Position des Roboters mit dem übergebenden Parameter der Methode verglichen. Falls eine Übereinstimmung eintrifft, werden die Lebenspunkte des Roboters auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
+Das PitBehaviour besitzt eine öffentliche Methode namens ```java onRobotEntered (int indexMoveRobot)```, diese wird ausgelöst, sobald ein Roboter sich auf dem Feld / Block des PitBehaviours befindet. Hierbei wird die Position des Roboters mit dem übergebenden Parameter der Methode verglichen. Falls eine Übereinstimmung eintrifft, werden die Lebenspunkte des Roboters auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
 
 ## PressorBehaviour
 
@@ -106,7 +106,7 @@ Das PressorBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-Die Klasse erbt ihre Methode ```java OnPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Die Klasse erbt ihre Methode ```java onPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
 Sie besitzt ein Attribut namens ```java private int[] activeInProgramSteps```.
 
 **<span style="color:DodgerBlue">
@@ -127,11 +127,7 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 **Methode**
 </span>**
 
-Das PressorBehaviour erbt seine Methode ```java OnPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
-Sie besitzt ein Attribute names ```java private int[] activeInProgramSteps```.
-
-
-Die Klasse hat eine öffentliche Methode ```java OnPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des PressorBehaviours, wenn ein Roboter sich unter dem Pressor befindet.
+Die Klasse hat eine öffentliche Methode ```java onPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des PressorBehaviours, wenn ein Roboter sich unter dem Pressor befindet.
 
 
 Die Methode nimmt den Parameter programStep an, der den aktuellen Programmschritt darstellt und prüft, ob diese Stufe im Array activeInProgramSteps enthalten ist. Falls das der Fall ist, wird eine weitere Bedingung überprüft. Befindet sich ein Roboter auf dem Pressor-Block, so wird der Roboterzustand geändert, die Lebenspunkte werden auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
@@ -141,5 +137,40 @@ Der PusherBehaviour erstellt einen neuen MoveIntent und fügt diese in eine Move
 
 ## RepairBehaviour
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
 
+Das RepairBehaviour verwendet folgende Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+(Muss noch vollendet werden, Problem besteht nach wie vor mit der zu erbenden Klasse / AbstractTileBehaviour)
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor der Klasse ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Pressor-Blocks auf dem Spielbrett
+    int repairSiteKey: ist ein Paramter, der die Unterscheidung der Reperaturstation ermöglicht
+
+Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Das RepairBehaviour hat eine Klasse namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.  
+
+(Weitere Methode muss noch vollendet werden / AbstractTileBehaviour fehlt die Implementierung Move Methode)
 ## WallBehaviour

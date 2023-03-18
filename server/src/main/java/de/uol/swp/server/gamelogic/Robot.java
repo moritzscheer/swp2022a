@@ -46,6 +46,7 @@ public class Robot {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = -1;
+        this.cards = null;
     }
 
     /**
@@ -189,5 +190,9 @@ public class Robot {
 
     public int getOptionCard() {
         return this.optionCard;
+    }
+
+    public Card[] getCards() {
+        return cards;
     }
 }

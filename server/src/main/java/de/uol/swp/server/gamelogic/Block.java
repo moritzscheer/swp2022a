@@ -3,7 +3,6 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.*;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +47,8 @@ public class Block {
     public List<MoveIntent> OnConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnConveyorStage(programStep) != null) {
-                moves.addAll(behaviour.OnConveyorStage(programStep));
+            if (behaviour.onConveyorStage(programStep) != null) {
+                moves.addAll(behaviour.onConveyorStage(programStep));
             }
         }
         return moves;
@@ -63,8 +62,8 @@ public class Block {
     public List<MoveIntent> OnExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnExpressConveyorStage(programStep) != null) {
-                moves.addAll(behaviour.OnExpressConveyorStage(programStep));
+            if (behaviour.onExpressConveyorStage(programStep) != null) {
+                moves.addAll(behaviour.onExpressConveyorStage(programStep));
             }
         }
         return moves;
@@ -78,8 +77,8 @@ public class Block {
     public List<MoveIntent> OnPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnPusherStage(programStep) != null) {
-                moves.addAll(behaviour.OnPusherStage(programStep));
+            if (behaviour.onPusherStage(programStep) != null) {
+                moves.addAll(behaviour.onPusherStage(programStep));
             }
         }
         return moves;
@@ -93,8 +92,8 @@ public class Block {
     public List<MoveIntent> OnLaserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnLaserStage(programStep) != null) {
-                moves.addAll(behaviour.OnLaserStage(programStep));
+            if (behaviour.onLaserStage(programStep) != null) {
+                moves.addAll(behaviour.onLaserStage(programStep));
             }
         }
         return moves;
@@ -108,8 +107,8 @@ public class Block {
     public List<MoveIntent> OnPresserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnPressorStage(programStep) != null) {
-                moves.addAll(behaviour.OnPressorStage(programStep));
+            if (behaviour.onPressorStage(programStep) != null) {
+                moves.addAll(behaviour.onPressorStage(programStep));
             }
         }
         return moves;
