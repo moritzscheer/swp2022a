@@ -49,13 +49,52 @@ Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Robo
 ## PitBehaviour
 
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+Das PitBehaviour verwendet folgende Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    List: ist eine Schnittstelle, die eine geordnete Sammlung von Objekten enthält
+    Objects: ist eine Hilfsklasse, die nützliche Methoden zum Vergleichen von Objekten bereitstellt.
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Das PitBehaviour erbt ihre Methode ```java OnRobotEntered``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Sie besitzt keine weiteren Attribute.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position der Grube auf dem Spielbrett
+
+Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Das PitBehaviour besitzt eine öffentliche Methode namens ```java OnRobotEntered (int indexMoveRobot)```, diese wird ausgelöst, sobald ein Roboter sich auf dem Feld / Block des PitBehaviours befindet. Hierbei wird die Position des Roboters mit dem übergebenden Parameter der Methode verglichen. Falls eine Übereinstimmung eintrifft, werden die Lebenspunkte des Roboters auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
+
 ## PressorBehaviour
 
 **<span style="color:DodgerBlue">
 **Verwendete Klassen und Interfaces**
 </span>**
 
-Die Klasse verwendet folgende Klassen und Interfaces:
+Das PressorBehaviour verwendet folgende Klassen und Interfaces:
 
     Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
     Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
@@ -88,14 +127,14 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 **Methode**
 </span>**
 
-Die Klasse erbt ihre Methode ```java OnPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Das PressorBehaviour erbt seine Methode ```java OnPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
 Sie besitzt ein Attribute names ```java private int[] activeInProgramSteps```.
 
 
-Die Klasse hat eine öffentliche Methode ```java OnPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des Pressors, wenn ein Roboter sich unter dem Pressor befindet.
+Die Klasse hat eine öffentliche Methode ```java OnPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des PressorBehaviours, wenn ein Roboter sich unter dem Pressor befindet.
 
 
-Die Methode nimmt den Parameter programStep an, der den aktuellen Programmschritt darstellt und prüft, ob diese Stufe im Array activeInProgramSteps enthalten ist. Falls das der Fall ist, wird eine weitere Bedingung überprüft. Befindet sich ein Roboter auf dem Pressor-Block, so wird der Roboterzustand geändert, die Lebenspunkte werden auf Null gesetzt. Abschließend git die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
+Die Methode nimmt den Parameter programStep an, der den aktuellen Programmschritt darstellt und prüft, ob diese Stufe im Array activeInProgramSteps enthalten ist. Falls das der Fall ist, wird eine weitere Bedingung überprüft. Befindet sich ein Roboter auf dem Pressor-Block, so wird der Roboterzustand geändert, die Lebenspunkte werden auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
 
 ## PusherBehaviour
 Der PusherBehaviour erstellt einen neuen MoveIntent und fügt diese in eine MoveIntent-Liste hinzu. Sobald es für alle Roboter dies einmal überprüft wurde, gibt der PusherBehaviour die gesamte Liste wieder zurück. Der PusherBehaviour schiebt den Roboter in die jeweilige Richtung um einen Tile.
