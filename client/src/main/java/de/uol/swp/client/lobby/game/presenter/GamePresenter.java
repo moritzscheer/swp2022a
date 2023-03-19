@@ -56,7 +56,7 @@ public class GamePresenter extends AbstractPresenter {
         this.lobbyID = lobbyID;
         double imageSize = frameGameBoard.getPrefHeight();
         imageSize = imageSize / boardSize;
-        Tile tile = new Tile(boardSize, imageSize);
+        Tile tile = new Tile(imageSize);
 
         for(int i = 0; i < boardSize; i++){
             gameBoard.addColumn(i);

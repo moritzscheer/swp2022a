@@ -12,7 +12,6 @@ import javafx.scene.image.ImageView;
  */
 public class Tile {
 
-    private int boardSize;
     private double imageSize;
 
     /**
@@ -21,8 +20,7 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public Tile(int boardSize, double imageSize){
-        this.boardSize = boardSize;
+    public Tile(double imageSize){
         this.imageSize = imageSize;
     }
 
