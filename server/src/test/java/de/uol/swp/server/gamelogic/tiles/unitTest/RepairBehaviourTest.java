@@ -43,8 +43,8 @@ public class RepairBehaviourTest {
      * Test when robot is on single-wrench repair station
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
-     * @see de.uol.swp.server.gamelogic.Robot;
+     * @see RepairBehaviour
+     * @see Robot;
      * @since 2023-02-26
      */
     @Test
@@ -56,7 +56,7 @@ public class RepairBehaviourTest {
         previousDamage = robots[0].getDamageToken();
 
         // robot is in repair station
-        ((RepairBehaviour) behaviours1[0]).onRobotRepaired();
+        ((RepairBehaviour) behaviours1[0]).onCardEnding(4);
 
         assertEquals(previousDamage - 1, robots[0].getDamageToken());
         assertEquals(
@@ -81,7 +81,7 @@ public class RepairBehaviourTest {
 
         // robot is in repair station
         int previousOptionCard = robots[1].getOptionCard();
-        ((RepairBehaviour) behaviours2[0]).onRobotRepaired();
+        ((RepairBehaviour) behaviours2[0]).onCardEnding(4);
 
         assertEquals(previousDamage - 2, robots[1].getDamageToken());
         assertEquals(

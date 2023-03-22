@@ -109,4 +109,13 @@ public abstract class AbstractTileBehaviour {
         return false;
     }
 
+    /**
+     * return List of planned but not necessarily possible moves
+     * @author WKempel
+     * @since 2023-03-22
+     */
+    public List<MoveIntent> onCardEnding(int programmStep) {
+        return null;
+    }
+
 }

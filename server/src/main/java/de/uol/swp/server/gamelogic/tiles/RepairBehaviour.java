@@ -1,9 +1,11 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -36,18 +38,21 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     /**
      * When the robot arrive a repair station then it will lose one / two DamageTokens.
      * Also, it will update the new lastCheckPointPosition.
+     *
      * @author Wkempel
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
      * @since 2023-03-13
      */
-    // WKempel Notiz für mich, Methode muss noch angepasst werden /
-    // erst möglich, wenn die move Methode von Robot implementiert wurde
-    public void onRobotRepaired() {
-        for(Robot robotState : robotStates) {
-            if(Objects.equals(robotState.getPosition(),blockPos)) {
-                robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
-                robotState.setLastCheckPointPosition(blockPos);
+    @Override
+    public List<MoveIntent> onCardEnding(int programmStep) {
+        for (Robot robotState : robotStates) {
+            if (Objects.equals(robotState.getPosition(), blockPos)) {
+                if (programmStep == 4) {
+                    robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
+                    robotState.setLastCheckPointPosition(blockPos);
+                }
             }
         }
+        return null;
     }
 }

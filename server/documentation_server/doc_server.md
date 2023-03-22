@@ -151,7 +151,7 @@ Das RepairBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-(Muss noch vollendet werden, Problem besteht nach wie vor mit der zu erbenden Klasse / AbstractTileBehaviour)
+Die Klasse erbt ihre Methode ```java onCardEnding``` von der abstrakten Oberklasse AbstractTileBehaviour.
 
 **<span style="color:DodgerBlue">
 **Konstruktor**
@@ -170,7 +170,9 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 **Methode**
 </span>**
 
-Das RepairBehaviour hat eine Klasse namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.  
+Das RepairBehaviour hat eine Methode namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.  
+Des Weiteren besitzt die Klasse eine öffentliche Methode ```java onCardEnding```, die eine Liste von MoveIntent als Rückgabewert zurückgibt und als Parameter einen Integer-Wert "programmStep" nutzt.
+Sobald der vierte Programmschritt ausgeführt wurde und ein Roboter sich auf dem RepairBehaviour befindet, wird die Methode "onCardEnding" ausgeführt und die Schadenpunkte um einen oder zwei Marken / Werte reduziert. 
 
-(Weitere Methode muss noch vollendet werden / AbstractTileBehaviour fehlt die Implementierung Move Methode)
+(Weitere Methode muss no
 ## WallBehaviour
