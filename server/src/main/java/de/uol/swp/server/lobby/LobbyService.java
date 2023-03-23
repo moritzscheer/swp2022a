@@ -7,8 +7,6 @@ import com.google.inject.Singleton;
 
 import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.request.StartGameRequest;
-import de.uol.swp.common.lobby.request.SubmitCardsRequest;
-import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
@@ -278,10 +276,4 @@ public class LobbyService extends AbstractService {
         sendToAllInLobby(msg.getLobbyID(), new StartGameMessage(msg.getLobbyID()));
     }
 
-    @Subscribe
-    public void onSubmitCardsRequest(SubmitCardsRequest msg) {
-        CardsSubmittedResponse response = new CardsSubmittedResponse((msg.getLobbyID()));
-        msg.getMessageContext().ifPresent(response::setMessageContext);
-        post(response);
-    }
 }

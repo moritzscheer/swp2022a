@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
 import de.uol.swp.common.lobby.request.StartGameRequest;
-import de.uol.swp.common.lobby.request.SubmitCardsRequest;
 import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.user.UserDTO;
 
@@ -104,16 +103,4 @@ public class LobbyService {
         eventBus.post(startGameRequest);
     }
 
-    /**
-     * Posts a request to start the game on the EventBus
-     *
-     * @param lobbyID To identify the lobby with a unique key
-     * @see StartGameRequest
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public void submitCards(Integer lobbyID) {
-        SubmitCardsRequest submitCardsRequest = new SubmitCardsRequest(lobbyID);
-        eventBus.post(submitCardsRequest);
-    }
 }

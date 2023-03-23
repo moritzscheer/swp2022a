@@ -2,14 +2,12 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
-import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -25,9 +23,7 @@ public class LobbyManagement extends AbstractPresenter {
     private User loggedInUser;
     private final Map<Integer, Game> lobbyMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
-    private CardsPresenter currentCardsPresenter;
     private GamePresenter currentGamePresenter;
-    private String JSON = "/json/tile.json";
 
 
     /**
@@ -106,7 +102,6 @@ public class LobbyManagement extends AbstractPresenter {
         if (!loggedInUser.equals(message.getUser())) {
             LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
-            if (!lobbyMap.get(message.getLobbyID()).getStatus().equals("lobby")) {}
         }
     }
 
@@ -122,7 +117,7 @@ public class LobbyManagement extends AbstractPresenter {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        LobbyPresenter a = (LobbyPresenter) lobbyMap.get(event.getLobbyID()).getLobbyPresenter();
+        LobbyPresenter a = lobbyMap.get(event.getLobbyID()).getLobbyPresenter();
         a.switchButtonDisableEffect();
     }
 
@@ -130,27 +125,22 @@ public class LobbyManagement extends AbstractPresenter {
     // game methods
     // -----------------------------------------------------
 
-    public void setupGame(Integer lobbyID, Parent gameParent, Parent cardsParent) {
-        currentCardsPresenter.init(lobbyID);
-        lobbyMap.get(lobbyID).setCardsView(currentCardsPresenter, cardsParent);
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
-    }
+    public void setupGame(Integer lobbyID, Parent gameParent) {
+        Integer[][][] board = new Integer[12][12][2];
 
-    /**
-     * Handles when cards has been submitted
-     *
-     * <p>If a CardsSubmittedResponse is posted to the EventBus this method is called.
-     *
-     * @param msg the CardsSubmittedResponse object seen on the EventBus
-     * @see CardsSubmittedResponse
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    @Subscribe
-    public void onCardsSubmitted(CardsSubmittedResponse msg) {
-        GamePresenter a = lobbyMap.get(msg.getLobbyID()).getGamePresenter();
-        int gridSize = 12;
-        a.init(msg.getLobbyID());
+        //testing
+        for(int col = 0; col < board.length; col++) {
+            for (int row = 0; row < board[col].length; row++) {
+                int count = 0;
+                for (int img = 0; img < board[col][row].length; img++) {
+                    board[col][row][img] = count;
+                    count++;
+                }
+            }
+        }
+
+        currentGamePresenter.init(lobbyID, board);
+        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
     }
 
     // -----------------------------------------------------
@@ -165,16 +155,6 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public Parent getLobbyParent(Integer lobbyID) {
         return lobbyMap.get(lobbyID).getLobbyParent();
-    }
-
-    /**
-     * Getter for the cardsParent
-     *
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public Parent getCardsParent(Integer lobbyID) {
-        return lobbyMap.get(lobbyID).getCardsParent();
     }
 
     /**
@@ -203,23 +183,10 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
-    public void setNextCardsPresenter(CardsPresenter currentCardsPresenter) {
-        this.currentCardsPresenter = currentCardsPresenter;
-    }
-
-    /**
-     * Setter for the currentGamePresenter variable
-     *
-     * @author Moritz Scheer & Maxim Erden
-     * @since 2023-02-28
-     */
     public void setNextGamePresenter(GamePresenter currentGamePresenter) {
         this.currentGamePresenter = currentGamePresenter;
     }
 
-    public void readJSON() {
-
-    }
     public ObservableList<String> getUser(Integer lobbyID) {
         return lobbyMap.get(lobbyID).getLobbyPresenter().getUsers();
     }

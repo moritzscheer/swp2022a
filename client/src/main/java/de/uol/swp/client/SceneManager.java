@@ -10,10 +10,8 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.lobby.cards.events.ShowCardsViewEvent;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
-import de.uol.swp.client.lobby.cards.presenter.CardsPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
@@ -38,7 +36,6 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.lobby.response.CardsSubmittedResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.response.*;
@@ -94,21 +91,20 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
-    private Parent cardsParent;
     private Parent gameParent;
 
     @Inject private TabPresenter tabPresenter;
     @Inject private LobbyManagement lobbyManagement;
     @Inject private LobbyService lobbyService;
     @Inject private LobbyPresenterFactory lobbyPresenterFactory;
-    @Inject private CardsPresenterFactory cardsPresenterFactory;
     @Inject private GamePresenterFactory gamePresenterFactory;
+
+    private GamePresenter gamePresenter;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
     private double lastSceneWidth;
     private double lastSceneHeight;
-    private Scene changeAccountOptionsScene;
 
     private final Injector injector;
 
@@ -148,7 +144,6 @@ public class SceneManager {
 
         lobbyManagement = injector.getInstance(LobbyManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
-        cardsPresenterFactory = injector.getInstance(CardsPresenterFactory.class);
         gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
 
         initViews();
@@ -193,12 +188,8 @@ public class SceneManager {
             LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
             lobbyManagement.setNextLobbyPresenter(lobbyPresenter);
             loader.setController(lobbyPresenter);
-        } else if (fxmlFile.equals("/fxml/CardsView.fxml")) {
-            CardsPresenter cardsPresenter = cardsPresenterFactory.create();
-            lobbyManagement.setNextCardsPresenter(cardsPresenter);
-            loader.setController(cardsPresenter);
         } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
-            GamePresenter gamePresenter = gamePresenterFactory.create();
+            gamePresenter = gamePresenterFactory.create();
             lobbyManagement.setNextGamePresenter(gamePresenter);
             loader.setController(gamePresenter);
         }
@@ -285,19 +276,15 @@ public class SceneManager {
     }
 
     /**
-     * Initializes the cards view
+     * Initializes the game view
      *
-     * <p>If the cardsParent is null it gets set to a new Parent showing the game view as
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as
      * specified by the GameView FXML file.
      *
-     * @see CardsPresenter
+     * @see GamePresenter
      * @author Moritz Scheer
      * @since 2023-02-20
      */
-    private void initCardsView() throws IOException {
-        cardsParent = initPresenter(CardsPresenter.FXML);
-    }
-
     private void initGameView() throws IOException {
         gameParent = initPresenter(GamePresenter.FXML);
     }
@@ -643,34 +630,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles CardsSubmittedResponse detected on the EventBus
-     *
-     * <p>If a CardsSubmittedResponse is detected on the EventBus, this method gets called.
-     *
-     * @param msg The CardsSubmittedResponse detected on the EventBus
-     * @see CardsSubmittedResponse
-     * @since 2023-03-09
-     */
-    @Subscribe
-    public void onCardsSubmittedResponse(CardsSubmittedResponse msg) {
-        showGameScreen(msg.getLobbyID());
-    }
-
-    /**
-     * Handles ShowCardsViewEvent detected on the EventBus
-     *
-     * <p>If a ShowCardsViewEvent is detected on the EventBus, this method gets called.
-     *
-     * @param event The ShowCardsViewEvent detected on the EventBus
-     * @see ShowCardsViewEvent
-     * @since 2023-03-09
-     */
-    @Subscribe
-    public void onShowCardsViewEvent(ShowCardsViewEvent event) {
-        showCardsScreen(event.getLobbyID());
-    }
-
-    /**
      * Handles ShowGameViewEvent detected on the EventBus
      *
      * <p>If a ShowGameViewEvent is detected on the EventBus, this method gets called.
@@ -934,17 +893,6 @@ public class SceneManager {
     }
 
     /**
-     * Shows the cards screen
-     *
-     * <p>Switches the current Parent to the cardsParent
-     *
-     * @since 2023-03-09
-     */
-    public void showCardsScreen(Integer lobbyID) {
-        showNode(lobbyID, lobbyManagement.getCardsParent(lobbyID));
-    }
-
-    /**
      * Shows the game screen
      *
      * <p>Switches the current Parent to the gameParent
@@ -1034,16 +982,13 @@ public class SceneManager {
     @Subscribe
     public void onStartGameMessage(StartGameMessage msg) {
         try {
-            initCardsView();
             initGameView();
 
-            lobbyManagement.setupGame(msg.getLobbyID(), gameParent, cardsParent);
-            showCardsScreen(msg.getLobbyID());
+            lobbyManagement.setupGame(msg.getLobbyID(), gameParent);
+            showGameScreen(msg.getLobbyID());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
 }
