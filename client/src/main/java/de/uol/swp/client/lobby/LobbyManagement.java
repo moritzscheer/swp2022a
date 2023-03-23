@@ -1,7 +1,6 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
-import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
@@ -12,13 +11,18 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-import javafx.collections.ObservableList;
 import javafx.scene.Parent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LobbyManagement extends AbstractPresenter {
+/**
+ * Class that manages the Presenter and Parents of the Lobby and Game views
+ *
+ * @author Moritz Scheer
+ * @since 2023-01-05
+ */
+public class LobbyManagement {
 
     private User loggedInUser;
     private final Map<Integer, Game> lobbyMap = new HashMap<>();
@@ -46,6 +50,17 @@ public class LobbyManagement extends AbstractPresenter {
     // lobby methods
     // -----------------------------------------------------
 
+    /**
+     * Method to set up a game view
+     *
+     * This method opens the init method in the GamePresenter and saves it with the parent in the lobbyMap HashMap.
+     *
+     * @param lobby the LobbyDTO Object containing all the information of the lobby
+     * @param user the UserDTO Object containing all the information of the user
+     * @param lobbyParent the Parent object of the lobby view
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
     public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
         currentLobbyPresenter.setInformation(lobby, user);
         lobbyMap.put(lobby.getLobbyID(), new Game(currentLobbyPresenter, lobbyParent));
@@ -125,10 +140,19 @@ public class LobbyManagement extends AbstractPresenter {
     // game methods
     // -----------------------------------------------------
 
-    public void setupGame(Integer lobbyID, Parent gameParent) {
-        Integer[][][] board = new Integer[12][12][2];
-
+    /**
+     * Method to set up a game view
+     *
+     * This method opens the init method in the GamePresenter and saves it with the parent in the lobbyMap HashMap.
+     * @param lobbyID the Integer identifier of the lobby
+     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param gameParent the Parent object of the game view
+     * @author Moritz Scheer
+     * @since 2023-03-23
+     */
+    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent) {
         //testing
+        Integer[][][] board = new Integer[12][12][2];
         for(int col = 0; col < board.length; col++) {
             for (int row = 0; row < board[col].length; row++) {
                 int count = 0;
@@ -139,7 +163,7 @@ public class LobbyManagement extends AbstractPresenter {
             }
         }
 
-        currentGamePresenter.init(lobbyID, board);
+        currentGamePresenter.init(lobbyID, lobby, board);
         lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
     }
 
@@ -185,10 +209,6 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public void setNextGamePresenter(GamePresenter currentGamePresenter) {
         this.currentGamePresenter = currentGamePresenter;
-    }
-
-    public ObservableList<String> getUser(Integer lobbyID) {
-        return lobbyMap.get(lobbyID).getLobbyPresenter().getUsers();
     }
 
 }

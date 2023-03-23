@@ -1,18 +1,31 @@
 package de.uol.swp.common.lobby.message;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+
+/**
+ * Message sent by the server when a game is started
+ *
+ * @see de.uol.swp.common.lobby.message.AbstractLobbyMessage
+ * @see de.uol.swp.common.user.User
+ * @author Moritz Scheer & Maxim Erden
+ * @since 2022-02-28
+ */
 public class StartGameMessage extends AbstractLobbyMessage {
 
     private Integer lobbyID;
+    private LobbyDTO lobby;
 
     /**
      * constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
+     * @param lobby LobbyDTO Object containing all the information of the lobby
      * @author Moritz Scheer & Maxim Erden
-     * @since 2022-02-28
+     * @since 2022-03-23
      */
-    public StartGameMessage(Integer lobbyID) {
+    public StartGameMessage(Integer lobbyID, LobbyDTO lobby) {
         this.lobbyID = lobbyID;
+        this.lobby = lobby.createWithoutUserPassword(lobby);
     }
 
     /**
@@ -24,5 +37,16 @@ public class StartGameMessage extends AbstractLobbyMessage {
      */
     public Integer getLobbyID() {
         return lobbyID;
+    }
+
+    /**
+     * Getter for the lobbyID variable
+     *
+     * @return LobbyDTO Object containing all the information of the lobby
+     * @author Moritz Scheer
+     * @since 2022-03-23
+     */
+    public LobbyDTO getLobby() {
+        return lobby;
     }
 }

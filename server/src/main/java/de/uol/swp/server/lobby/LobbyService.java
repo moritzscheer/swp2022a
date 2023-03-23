@@ -271,9 +271,21 @@ public class LobbyService extends AbstractService {
         post(response);
     }
 
+    /**
+     * Handles StartGameRequest found on the EventBus
+     *
+     * <p>If a StartGameRequest is detected on the EventBus, this method is called.
+     * It posts a StartGameMessage to all the users in the lobby, containing the
+     *
+     * @param msg StartGameRequest found on the EventBus
+     * @author Moritz Scheer
+     * @see de.uol.swp.common.lobby.request.StartGameRequest
+     * @see de.uol.swp.common.lobby.message.StartGameMessage
+     * @since 2023-02-28
+     */
     @Subscribe
     public void onStartGameRequest(StartGameRequest msg) {
-        sendToAllInLobby(msg.getLobbyID(), new StartGameMessage(msg.getLobbyID()));
+        sendToAllInLobby(msg.getLobbyID(), new StartGameMessage(msg.getLobbyID(), lobbyManagement.getLobby(msg.getLobbyID()).get()));
     }
 
 }

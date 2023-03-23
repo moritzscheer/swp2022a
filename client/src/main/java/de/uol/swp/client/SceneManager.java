@@ -954,6 +954,20 @@ public class SceneManager {
     // lobby methods
     // -----------------------------------------------------
 
+    /**
+     * Helper method to create a tab and initialize the lobby view
+     *
+     * This method initializes the lobbyview and shows different views depending on if the lobby is
+     * set to private or not. Also it opens the setup method to setup the lobby and opens the createTab method to
+     * create a tab with the given content.
+     *
+     * @param lobby the LobbyDTO Object containing all the information of the lobby
+     * @param user the UserDTO Object containing all the information of the User
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @see de.uol.swp.common.user.UserDTO
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
     private void createTab(LobbyDTO lobby, UserDTO user) {
         try {
             initLobbyView();
@@ -984,7 +998,7 @@ public class SceneManager {
         try {
             initGameView();
 
-            lobbyManagement.setupGame(msg.getLobbyID(), gameParent);
+            lobbyManagement.setupGame(msg.getLobbyID(), msg.getLobby(), gameParent);
             showGameScreen(msg.getLobbyID());
         } catch (Exception e) {
             e.printStackTrace();

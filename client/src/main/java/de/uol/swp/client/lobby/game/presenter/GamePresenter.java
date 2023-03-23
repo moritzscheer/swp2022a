@@ -2,6 +2,7 @@ package de.uol.swp.client.lobby.game.presenter;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,7 +23,13 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.DODGERBLUE;
 
-
+/**
+ * Manages the game window
+ *
+ * @author Moritz Scheer
+ * @see de.uol.swp.client.AbstractPresenter
+ * @since 2023-03-09
+ */
 @SuppressWarnings("UnstableApiUsage")
 public class GamePresenter extends AbstractPresenter {
 
@@ -30,8 +37,6 @@ public class GamePresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
 
     private Integer lobbyID;
-    private int boardGridSize = 16;
-
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -83,36 +88,33 @@ public class GamePresenter extends AbstractPresenter {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Default Constructor
+     *
+     * @since 2022-03-12
+     */
+    public GamePresenter() {}
 
-    public GamePresenter() {
-    }
-
-
-    private String searchJSON(JSONArray array, String searchValue) {
-        for(int i = 0; i < array.length(); i++) {
-            JSONObject obj = null;
-            try {
-                obj = array.getJSONObject(i);
-                if (obj.getString("id").equals(searchValue.toString())) {
-                    return obj.getString("source");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-
-
-
-    public void init(Integer lobbyID, Integer[][][] board) {
+    /**
+     * Method to initialize the game view
+     *
+     * This method creates a board with the given information and adds all images to the board.
+     *
+     * @param lobbyID the Integer identifier of the lobby
+     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param board an Integer array containing all the information of the board
+     * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
+     * @since 2023-03-23
+     */
+    public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board) {
         this.lobbyID = lobbyID;
 
+        //creates the board
         try {
             JSONObject json = new JSONObject(new JSONTokener(new FileReader("client/src/main/resources/json/tile.json")));
             JSONArray jsonArray = json.getJSONArray("array");
 
-            for(int i = 0; i < boardGridSize; i++){
+            for(int i = 0; i < board.length; i++){
                 gameBoard.addColumn(i);
                 gameBoard.addRow(i);
             }
@@ -176,11 +178,32 @@ public class GamePresenter extends AbstractPresenter {
         player8Ready.setFill(Color.RED);
     }
 
-    public void addTiles() {
-
+    /**
+     * Helper method to search a given value in a JSON array
+     *
+     * This method goes through all JSON Objects in the JSON Array and looks for id matching to the value
+     * from the parameter. Then in returns the path of the image.
+     *
+     * @param array the JSONArray where the content is saved
+     * @param searchValue the String that wants to be searched for
+     * @see client/src/main/resources/json/tile.json
+     * @author Moritz Scheer
+     * @since 2023-03-23
+     */
+    private String searchJSON(JSONArray array, String searchValue) {
+        for(int i = 0; i < array.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = array.getJSONObject(i);
+                if (obj.getString("id").equals(searchValue.toString())) {
+                    return obj.getString("source");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
-
-
 
 
 

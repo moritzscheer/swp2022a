@@ -1,5 +1,12 @@
 package de.uol.swp.common.lobby.request;
 
+/**
+ * Request sent to the server when the game has been started
+ *
+ * @see de.uol.swp.common.lobby.request.StartGameRequest
+ * @author Moritz Scheer & Maxim Erden
+ * @since 2023-02-28
+ */
 public class StartGameRequest extends AbstractLobbyRequest {
 
     private Integer lobbyID;
