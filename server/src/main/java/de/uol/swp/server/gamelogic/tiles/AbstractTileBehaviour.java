@@ -6,6 +6,7 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -118,4 +119,12 @@ public abstract class AbstractTileBehaviour {
         return null;
     }
 
+
+    public List<MoveIntent> OnRotatorStage(int programStep) {
+        return null;
+    }
+
+    public List<MoveIntent> OnCheckPointStage(int programStep) {
+        return null;
+    }
 }

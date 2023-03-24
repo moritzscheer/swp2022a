@@ -83,7 +83,11 @@ public class Robot {
      * @see
      * @since
      */
-    public void move(Card[] cards) {
+    public void move(CardinalDirection directionToMove) {
+        currentPosition = Position.translate(currentPosition, directionToMove);
+    }
+
+    public void move(Position targetCoords) {
         // TODO
     }
 

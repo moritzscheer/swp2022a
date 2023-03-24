@@ -122,4 +122,24 @@ public class Block {
         }
         return null;
     }
+
+    public List<MoveIntent> OnRotatorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnRotatorStage(programStep) != null) {
+                moves.addAll(behaviour.OnRotatorStage(programStep));
+            }
+        }
+        return moves;
+    }
+
+    public List<MoveIntent> OnCheckPointStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (AbstractTileBehaviour behaviour : this.behaviourList) {
+            if (behaviour.OnCheckPointStage(programStep) != null) {
+                moves.addAll(behaviour.OnCheckPointStage(programStep));
+            }
+        }
+        return moves;
+    }
 }

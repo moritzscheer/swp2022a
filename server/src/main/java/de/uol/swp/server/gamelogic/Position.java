@@ -9,8 +9,7 @@ import java.util.Objects;
  * @see
  * @since
  */
-public class Position {
-    // TODO
+public final class Position {
     public int x;
     public int y;
 

@@ -1,7 +1,9 @@
 package de.uol.swp.server.gamelogic;
 
+import com.google.common.eventbus.EventBus;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.server.lobby.LobbyService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 public class Game {
 
     private Block[][] board;
+
+    //TODO: Remove dockingBays field
     private Position[] dockingBays;
     private Robot[] robots;
     private int nRobots;
@@ -118,15 +122,61 @@ public class Game {
         // TODO
     }
 
-    private void CalcGameRound(Card[][] playedCards){
+    private void CalcGameRound(Card[][] playedCards) {
         //Iterate through the 5 cards
+        if (playedCards[0].length != 5) {
+            //TODO: Log Error regarding card count
+        }
         for (int cardIterator = 0; cardIterator < playedCards[0].length; cardIterator++) {
             //Iterate through the X card of all Players and resolve them
-
+            for (int playerIterator = 0; playerIterator < playedCards.length; playerIterator++) {
+                //TODO: resolve playedCards[playerIterator][cardIterator]
+            }
             //Iterate through all the traps
+            for (Block[] blocksX : board) {
+                for (Block blockXY : blocksX) {
+                    List<MoveIntent> moves;
+
+                    moves = blockXY.OnExpressConveyorStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnConveyorStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnPusherStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnRotatorStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnPresserStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnLaserStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+
+                    moves = blockXY.OnCheckPointStage(cardIterator);
+                    moves = resolveMoveIntentConflicts(moves);
+                    executeMoveIntents(moves);
+                }
+            }
 
         }
         //Send back a collective result of the whole GameRound
+    }
+
+    private void executeMoveIntents(List<MoveIntent> moves) {
+        if (moves != null) {
+            for (MoveIntent move : moves) {
+                robots[move.robotID].move(move.direction);
+            }
+        }
     }
 
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
