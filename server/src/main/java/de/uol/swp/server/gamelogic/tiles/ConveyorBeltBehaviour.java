@@ -27,6 +27,8 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
             ArrowType arrowType,
             CardinalDirection direction) {
         super(robotStates, board, blockPos);
+        this.arrowType = arrowType;
+        this.direction = direction;
     }
 
     /**
@@ -40,15 +42,21 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 moves.add(new MoveIntent(robotState.getID(), direction));
 
-                //rotate robot if moved on other Conv. Belt
+                // rotate robot if moved on other Conv. Belt
                 try {
                     Position targetPos = Position.translate(blockPos, direction);
                     if (targetPos != null) {
                         Block nextBlock = board[targetPos.x][targetPos.y];
-                        ConveyorBeltBehaviour conBehaviourOnNextBlock = nextBlock.GetBehaviour((Class<ConveyorBeltBehaviour>) this.getClass());
+                        ConveyorBeltBehaviour conBehaviourOnNextBlock =
+                                nextBlock.GetBehaviour(
+                                        (Class<ConveyorBeltBehaviour>) this.getClass());
                         if (conBehaviourOnNextBlock != null) {
-                            int rotation = conBehaviourOnNextBlock.direction.ordinal() - direction.ordinal();
-                            robotState.setDirection(CardinalDirection.values()[robotState.getDirection().ordinal() + rotation]);
+                            int rotation =
+                                    conBehaviourOnNextBlock.direction.ordinal()
+                                            - direction.ordinal();
+                            robotState.setDirection(
+                                    CardinalDirection.values()[
+                                            robotState.getDirection().ordinal() + rotation]);
                         }
                     }
                 } catch (IndexOutOfBoundsException exp) {
