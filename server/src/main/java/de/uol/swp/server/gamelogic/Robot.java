@@ -1,6 +1,5 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 /**
@@ -23,9 +22,6 @@ public class Robot {
     private int lifeToken;
     private boolean powerDown;
 
-    // TODO: In my opinion this has to be moved to a new class named "Player" ~Finn
-    private Card[] cards; // max 9 cards
-    private int[] registerCardIDs; // max 5 cards
     private int optionCard;
     private int lockedRegisters;
 
@@ -46,7 +42,6 @@ public class Robot {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = -1;
-        this.cards = null;
     }
 
     /**
@@ -66,16 +61,6 @@ public class Robot {
      */
     public void fireLaser() {
         // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public Card[] revealCard(int programStep) {
-        // TODO
-        return this.cards;
     }
 
     /**
@@ -194,9 +179,5 @@ public class Robot {
 
     public int getOptionCard() {
         return this.optionCard;
-    }
-
-    public Card[] getCards() {
-        return cards;
     }
 }
