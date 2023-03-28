@@ -25,6 +25,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
 
     /**
      * When the robot is under a pressor then it will die.
+     *
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 24-02-2023

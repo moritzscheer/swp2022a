@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
+import static junit.framework.TestCase.*;
+
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
@@ -8,8 +10,6 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import static junit.framework.TestCase.*;
 
 public class PitBehaviourTest {
 

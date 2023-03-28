@@ -24,8 +24,8 @@ public final class Position {
         this.y = y;
     }
 
-    public static Position translate(Position p, CardinalDirection d){
-        switch (d){
+    public static Position translate(Position p, CardinalDirection d) {
+        switch (d) {
             case East:
                 return new Position(p.x + 1, p.y);
             case West:

@@ -19,7 +19,6 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     // (2)crossed wrench/hammer: discard 1 Damage token AND draw one Option card.
     private int repairSiteKey; // 1 or 2
 
-
     public RepairBehaviour(
             Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
@@ -36,8 +35,8 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * When the robot arrive a repair station then it will lose one / two DamageTokens.
-     * Also, it will update the new lastCheckPointPosition.
+     * When the robot arrive a repair station then it will lose one / two DamageTokens. Also, it
+     * will update the new lastCheckPointPosition.
      *
      * @author Wkempel
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour

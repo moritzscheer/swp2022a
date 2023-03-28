@@ -170,9 +170,9 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 **Methode**
 </span>**
 
-Das RepairBehaviour hat eine Methode namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.  
+Das RepairBehaviour hat eine Methode namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.
 Des Weiteren besitzt die Klasse eine öffentliche Methode ```java onCardEnding```, die eine Liste von MoveIntent als Rückgabewert zurückgibt und als Parameter einen Integer-Wert "programmStep" nutzt.
-Sobald der vierte Programmschritt ausgeführt wurde und ein Roboter sich auf dem RepairBehaviour befindet, wird die Methode "onCardEnding" ausgeführt und die Schadenpunkte um einen oder zwei Marken / Werte reduziert. 
+Sobald der vierte Programmschritt ausgeführt wurde und ein Roboter sich auf dem RepairBehaviour befindet, wird die Methode "onCardEnding" ausgeführt und die Schadenpunkte um einen oder zwei Marken / Werte reduziert.
 
 (Weitere Methode muss no
 ## WallBehaviour

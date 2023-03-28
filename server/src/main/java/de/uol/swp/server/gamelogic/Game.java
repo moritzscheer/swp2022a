@@ -1,15 +1,12 @@
 package de.uol.swp.server.gamelogic;
 
-import com.google.common.eventbus.EventBus;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import de.uol.swp.server.lobby.LobbyService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.stream.Collectors;
-
 
 /**
  * @author
@@ -20,7 +17,7 @@ public class Game {
 
     private Block[][] board;
 
-    //TODO: Remove dockingBays field
+    // TODO: Remove dockingBays field
     private Position[] dockingBays;
     private Robot[] robots;
     private int nRobots;
@@ -123,16 +120,16 @@ public class Game {
     }
 
     private void CalcGameRound(Card[][] playedCards) {
-        //Iterate through the 5 cards
+        // Iterate through the 5 cards
         if (playedCards[0].length != 5) {
-            //TODO: Log Error regarding card count
+            // TODO: Log Error regarding card count
         }
         for (int cardIterator = 0; cardIterator < playedCards[0].length; cardIterator++) {
-            //Iterate through the X card of all Players and resolve them
+            // Iterate through the X card of all Players and resolve them
             for (int playerIterator = 0; playerIterator < playedCards.length; playerIterator++) {
-                //TODO: resolve playedCards[playerIterator][cardIterator]
+                // TODO: resolve playedCards[playerIterator][cardIterator]
             }
-            //Iterate through all the traps
+            // Iterate through all the traps
             for (Block[] blocksX : board) {
                 for (Block blockXY : blocksX) {
                     List<MoveIntent> moves;
@@ -166,9 +163,8 @@ public class Game {
                     executeMoveIntents(moves);
                 }
             }
-
         }
-        //Send back a collective result of the whole GameRound
+        // Send back a collective result of the whole GameRound
     }
 
     private void executeMoveIntents(List<MoveIntent> moves) {
@@ -183,15 +179,17 @@ public class Game {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
         if (movesIn == null) {
-            throw new IllegalArgumentException("The list of moves should not be null.  (But can contain zero elements.)");
+            throw new IllegalArgumentException(
+                    "The list of moves should not be null.  (But can contain zero elements.)");
         }
 
-        //convert every MoveIntent to a MoveResult
+        // convert every MoveIntent to a MoveResult
         for (MoveIntent move : movesIn) {
             moveList.add(new MoveResult(move));
         }
 
-        //repeat the solving of conflicts until no more are left (by deleting the moves that do cause them)
+        // repeat the solving of conflicts until no more are left (by deleting the moves that do
+        // cause them)
         boolean somethingChanged = false;
         do {
             somethingChanged = false;
@@ -210,7 +208,9 @@ public class Game {
 
         } while (somethingChanged);
 
-        return (moveList.stream().map((MoveResult value) -> (MoveIntent) value).collect(Collectors.toList()));
+        return (moveList.stream()
+                .map((MoveResult value) -> (MoveIntent) value)
+                .collect(Collectors.toList()));
     }
 
     private boolean addPushMoves(ArrayList<MoveResult> moveList, boolean somethingChanged) {
@@ -243,7 +243,8 @@ public class Game {
         return somethingChanged;
     }
 
-    private static boolean removeSameDestinationConflicts(ArrayList<MoveResult> moveList, boolean somethingChanged) {
+    private static boolean removeSameDestinationConflicts(
+            ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
             MoveResult move = moveList.get(i);
             Position currentTile = move.getOriginPosition();
@@ -265,7 +266,8 @@ public class Game {
         return somethingChanged;
     }
 
-    private static boolean removeWallIntersections(ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
+    private static boolean removeWallIntersections(
+            ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
         for (int i = 0; i < moveList.size(); i++) {
             MoveResult move = moveList.get(i);
             Position currentTile = move.getOriginPosition();
@@ -281,7 +283,8 @@ public class Game {
         return somethingChanged;
     }
 
-    private static boolean removeHeadOnCollisions(ArrayList<MoveResult> moveList, boolean somethingChanged) {
+    private static boolean removeHeadOnCollisions(
+            ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
             MoveResult move = moveList.get(i);
             Position currentTile = move.getOriginPosition();
@@ -290,7 +293,10 @@ public class Game {
 
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
-                    if (moveDir == CardinalDirection.values()[moveList.get(j).getDirection().ordinal() + 2] && destinationTile == moveList.get(j).getOriginPosition()) {
+                    if (moveDir
+                                    == CardinalDirection.values()[
+                                            moveList.get(j).getDirection().ordinal() + 2]
+                            && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
                         i = -1;
@@ -303,11 +309,18 @@ public class Game {
         return somethingChanged;
     }
 
-    private static boolean checkForObstruction(Position currentTile, Position destinationTile, CardinalDirection moveDir, Block[][] board) {
-        return board[currentTile.x][currentTile.y].getObstruction(moveDir) || board[destinationTile.x][destinationTile.y].getObstruction(CardinalDirection.values()[moveDir.ordinal() + 2]);
+    private static boolean checkForObstruction(
+            Position currentTile,
+            Position destinationTile,
+            CardinalDirection moveDir,
+            Block[][] board) {
+        return board[currentTile.x][currentTile.y].getObstruction(moveDir)
+                || board[destinationTile.x][destinationTile.y].getObstruction(
+                        CardinalDirection.values()[moveDir.ordinal() + 2]);
     }
 
-    private static void removeMoveResultAndParents(MoveResult move, ArrayList<MoveResult> moveList) {
+    private static void removeMoveResultAndParents(
+            MoveResult move, ArrayList<MoveResult> moveList) {
         while (moveList.contains(move)) {
             moveList.remove(move);
             if (move.parentMove != null) {
@@ -316,10 +329,7 @@ public class Game {
         }
     }
 
-
-    /**
-     * @author Finn
-     */
+    /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;

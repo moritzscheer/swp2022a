@@ -60,7 +60,8 @@ public class RepairBehaviourTest {
 
         assertEquals(previousDamage - 1, robots[0].getDamageToken());
         assertEquals(
-                ((RepairBehaviour) behaviours1[0]).getCheckPointPosition(), robots[0].getLastCheckPointPosition());
+                ((RepairBehaviour) behaviours1[0]).getCheckPointPosition(),
+                robots[0].getLastCheckPointPosition());
     }
 
     /**
@@ -85,6 +86,7 @@ public class RepairBehaviourTest {
 
         assertEquals(previousDamage - 2, robots[1].getDamageToken());
         assertEquals(
-                ((RepairBehaviour) behaviours2[0]).getCheckPointPosition(), robots[1].getLastCheckPointPosition());
+                ((RepairBehaviour) behaviours2[0]).getCheckPointPosition(),
+                robots[1].getLastCheckPointPosition());
     }
 }

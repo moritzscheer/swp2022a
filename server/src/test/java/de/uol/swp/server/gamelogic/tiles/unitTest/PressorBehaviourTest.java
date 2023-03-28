@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
 import static junit.framework.TestCase.assertNull;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

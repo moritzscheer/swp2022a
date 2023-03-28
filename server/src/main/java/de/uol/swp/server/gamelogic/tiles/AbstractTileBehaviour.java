@@ -6,7 +6,6 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,7 +13,6 @@ import java.util.List;
  * @see
  * @since
  */
-
 public abstract class AbstractTileBehaviour {
 
     protected Robot[] robotStates;
@@ -112,13 +110,13 @@ public abstract class AbstractTileBehaviour {
 
     /**
      * return List of planned but not necessarily possible moves
+     *
      * @author WKempel
      * @since 2023-03-22
      */
     public List<MoveIntent> onCardEnding(int programmStep) {
         return null;
     }
-
 
     public List<MoveIntent> OnRotatorStage(int programStep) {
         return null;

@@ -20,7 +20,13 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private int laserBeam; // laserBeam is directed related to damage
 
-    public LaserBehaviour(Robot[] robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos, CardinalDirection laserDir, int laserBeam) {
+    public LaserBehaviour(
+            Robot[] robotStates,
+            Block[][] board,
+            int[] activeInProgramSteps,
+            Position blockPos,
+            CardinalDirection laserDir,
+            int laserBeam) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = laserDir;
@@ -29,16 +35,17 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     /**
      * When the robot is before a laser then it will get so much damage like laserBeam exist.
+     *
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-03-13
      */
     @Override
     public List<MoveIntent> onLaserStage(int programStep) {
-        for(int i : activeInProgramSteps) {
-            if(i == programStep) {
-                for(Robot robotState : robotStates) {
-                    if(robotState.getPosition().equals(blockPos)) {
+        for (int i : activeInProgramSteps) {
+            if (i == programStep) {
+                for (Robot robotState : robotStates) {
+                    if (robotState.getPosition().equals(blockPos)) {
                         robotState.setDamageToken(robotState.getDamageToken() + laserBeam);
                         break;
                     }

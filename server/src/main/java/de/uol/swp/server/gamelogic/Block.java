@@ -6,9 +6,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Ole Zimmermann
- */
+/** @author Ole Zimmermann */
 public class Block {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -114,9 +112,9 @@ public class Block {
         return moves;
     }
 
-    public <T extends  AbstractTileBehaviour> T GetBehaviour(Class<T> type) {
+    public <T extends AbstractTileBehaviour> T GetBehaviour(Class<T> type) {
         for (AbstractTileBehaviour behaviour : behaviourList) {
-            if(type.isInstance(behaviour)){
+            if (type.isInstance(behaviour)) {
                 return (T) behaviour;
             }
         }
