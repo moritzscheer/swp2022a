@@ -3,7 +3,6 @@ package de.uol.swp.server.gamelogic.tiles.unitTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.server.gamelogic.*;
-import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
@@ -55,7 +54,13 @@ public class WallBehaviourTest {
                 new ConveyorBeltBehaviour(
                         robots, board, new Position(1, 1), null, CardinalDirection.South);
         tileBehaviours[12] =
-                new LaserBehaviour(robots, board, activeInProgramSteps, new Position(1, 1), CardinalDirection.East, 3);
+                new LaserBehaviour(
+                        robots,
+                        board,
+                        activeInProgramSteps,
+                        new Position(1, 1),
+                        CardinalDirection.East,
+                        3);
 
         board[1][1] = new Block(tileBehaviours, "", new Position(1, 1));
         board[2][2] = new Block(tileBehaviours, "", new Position(2, 2));
@@ -115,7 +120,9 @@ public class WallBehaviourTest {
         assertEquals(
                 true, ((WallBehaviour) tileBehaviours[0]).getObstruction(CardinalDirection.East));
         Position before = robots[0].getPosition();
-        robots[0].move(new Card[0]);
+
+        // movement by cards will be controlled by player
+        robots[0].move(new Position(0, 1));
         assertEquals(robots[0].getPosition(), before);
     }
 }
