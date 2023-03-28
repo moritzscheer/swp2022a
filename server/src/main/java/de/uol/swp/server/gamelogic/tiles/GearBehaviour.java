@@ -1,10 +1,12 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,7 +40,8 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
      * @since 06-02-2023
      */
-    public void turnRobot() {
+    @Override
+    public List<MoveIntent> OnRotatorStage(int programmStep) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (this.turnClockwise) {
@@ -50,8 +53,9 @@ public class GearBehaviour extends AbstractTileBehaviour {
                     dir = CardinalDirection.values()[(dir.ordinal() + 3) % 4];
                     robotState.setDirection(dir);
                 }
-                return;
+                return null;
             }
         }
+        return null;
     }
 }
