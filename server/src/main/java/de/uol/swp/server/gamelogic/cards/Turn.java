@@ -14,8 +14,9 @@ public class Turn extends CardBehaviour {
      * @see
      * @since
      */
+    @Override
     public Direction turn() {
-        // TODO
+        direction = Direction.Left;
         return direction;
     }
 }

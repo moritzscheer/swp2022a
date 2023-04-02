@@ -14,8 +14,8 @@ public class Straight extends CardBehaviour {
      * @see
      * @since
      */
+    @Override
     public int move() {
-        // TODO
-        return moves;
+        return moves + 1;
     }
 }

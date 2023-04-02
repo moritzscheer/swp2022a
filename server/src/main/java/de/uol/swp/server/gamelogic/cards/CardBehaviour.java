@@ -1,39 +1,32 @@
 package de.uol.swp.server.gamelogic.cards;
 
 /**
- * @author
- * @see
- * @since
+ * @author Tommy Dang
+ * @since 2023-04-02
  */
 abstract class CardBehaviour {
 
     /**
-     * @author
-     * @see
-     * @since
+     * @author Tommy Dang
+     * @since 2023-04-02
      */
     public int move() {
-        // TODO
         return 0;
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * @author Tommy Dang
+     * @since 2023-04-02
      */
     public Direction turn() {
-        // TODO
         return null;
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * @author Tommy Dang
+     * @since 2023-04-02
      */
     public boolean uTurn() {
-        // TODO
         return false;
     }
 }
