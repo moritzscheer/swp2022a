@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
+import de.uol.swp.server.gamelogic.Robot;
+
 /**
  * @author
  * @see
@@ -14,9 +16,8 @@ public class Turn extends CardBehaviour {
      * @see
      * @since
      */
-    @Override
-    public Direction turn() {
-        direction = Direction.Left;
+    public Direction turn(Robot robot) {
+        // TODO
         return direction;
     }
 }

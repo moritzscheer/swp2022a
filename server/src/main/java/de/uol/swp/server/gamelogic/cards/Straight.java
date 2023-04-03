@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
+import de.uol.swp.server.gamelogic.Robot;
+
 /**
  * @author
  * @see
@@ -10,12 +12,11 @@ public class Straight extends CardBehaviour {
     private int moves;
 
     /**
-     * @author
+     * @author Tommy & WKempel
      * @see
-     * @since
+     * @since 2023-04-03
      */
-    @Override
-    public int move() {
-        return moves + 1;
+    public int move(Robot robot) {
+        return moves;
     }
 }

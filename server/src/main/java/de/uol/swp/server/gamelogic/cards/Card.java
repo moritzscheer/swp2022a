@@ -14,12 +14,25 @@ public class Card extends CardBehaviour {
     private int priority;
     private String imgPath;
 
+
     /**
-     * @author
+     * @author WKempel
      * @see
-     * @since
+     * @since 2023-04-03
+     */
+    public Card(int id, CardBehaviour behaviour, int priority, String imgPath) {
+        this.id = id;
+        this.behaviour = behaviour;
+        this.priority = priority;
+        this.imgPath = imgPath;
+    }
+
+    /**
+     * @author WKempel
+     * @see
+     * @since 2023-04-03
      */
     public void executeBehaviour(Robot robot) {
-        // TODO
+        behaviour.execute(robot);
     }
 }
