@@ -8,14 +8,16 @@ import de.uol.swp.server.gamelogic.Robot;
  */
 abstract class CardBehaviour {
 
+    private int moves;
+    private Direction directionCard;
+    private boolean uTurn;
+
     /**
      * @author Tommy & WKempel
      * @see
      * @since 2023-04-03
      */
-    public int move(Robot robot) {
-        // TODO
-        return 0;
+    public void move(Robot robot, int moves) {
     }
 
     /**
@@ -23,9 +25,7 @@ abstract class CardBehaviour {
      * @see
      * @since 2023-04-03
      */
-    public Direction turn(Robot robot) {
-        // TODO
-        return null;
+    public void turn(Robot robot, Direction directionCard) {
     }
 
     /**
@@ -33,9 +33,7 @@ abstract class CardBehaviour {
      * @see
      * @since 2023-04-03
      */
-    public boolean uTurn(Robot robot) {
-        // TODO
-        return false;
+    public void uTurn(Robot robot, boolean uTurn) {
     }
 
     /**
@@ -44,8 +42,8 @@ abstract class CardBehaviour {
      * @since 2023-04-03
      */
     public void execute(Robot robot) {
-        uTurn(robot);
-        move(robot);
-        turn(robot);
+        uTurn(robot, uTurn);
+        move(robot, moves);
+        turn(robot, directionCard);
     }
 }

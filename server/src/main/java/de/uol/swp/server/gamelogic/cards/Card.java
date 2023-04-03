@@ -3,9 +3,9 @@ package de.uol.swp.server.gamelogic.cards;
 import de.uol.swp.server.gamelogic.Robot;
 
 /**
- * @author
+ * @author Tommy & WKempel
  * @see
- * @since
+ * @since 2023-04-03
  */
 public class Card extends CardBehaviour {
 
