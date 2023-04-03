@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
+import de.uol.swp.server.gamelogic.Robot;
+
 /**
  * @author
  * @see
@@ -12,7 +14,7 @@ public class UTurn extends CardBehaviour {
      * @see
      * @since
      */
-    public boolean uTurn() {
+    public boolean uTurn(Robot robot) {
         return true;
     }
 }

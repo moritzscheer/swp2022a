@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
+import de.uol.swp.server.gamelogic.Robot;
+
 /**
  * @author
  * @see
@@ -14,7 +16,7 @@ public class Turn extends CardBehaviour {
      * @see
      * @since
      */
-    public Direction turn() {
+    public Direction turn(Robot robot) {
         // TODO
         return direction;
     }
