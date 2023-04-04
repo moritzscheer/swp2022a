@@ -25,14 +25,7 @@ public class Tile {
     }
 
     public int rotateTileImage(int direction){
-        if(direction == 1){
-            return 90;
-        }else if(direction == 2){
-            return 180;
-        }else if(direction == 3) {
-            return 270;
-        }
-        return 0;
+        return 90 * direction;
     }
 
 
@@ -142,5 +135,40 @@ public class Tile {
         ImageView laserHalf3 = new ImageView(new Image("images/tiles/laserHalf3.png", imageSize, imageSize, true, false));
         laserHalf3.setRotate(rotateTileImage(direction));
         return laserHalf3;
+    }
+
+    public ImageView addTilePusher1(int direction)
+    {
+        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1.png", imageSize, imageSize, true, false));
+        pusher.setRotate(rotateTileImage(direction));
+        return pusher;
+    }
+
+    public ImageView addTilePusher135(int direction)
+    {
+        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1_3_5.png", imageSize, imageSize, true, false));
+        pusher.setRotate(rotateTileImage(direction));
+        return pusher;
+    }
+
+    public ImageView addTilePusher2(int direction)
+    {
+        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2.png", imageSize, imageSize, true, false));
+        pusher.setRotate(rotateTileImage(direction));
+        return pusher;
+    }
+
+    public ImageView addTilePusher24(int direction)
+    {
+        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2_4.png", imageSize, imageSize, true, false));
+        pusher.setRotate(rotateTileImage(direction));
+        return pusher;
+    }
+
+    public ImageView addTilePusher3(int direction)
+    {
+        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_3.png", imageSize, imageSize, true, false));
+        pusher.setRotate(rotateTileImage(direction));
+        return pusher;
     }
 }
