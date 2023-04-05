@@ -137,6 +137,12 @@ public class Tile {
         return laserHalf3;
     }
 
+    /**
+     * Returns an ImageView object with the corresponding pusher
+     *
+     * @author Mathis Eilers
+     * @since 2023-03-24
+     */
     public ImageView addTilePusher1(int direction)
     {
         ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1.png", imageSize, imageSize, true, false));
@@ -144,6 +150,12 @@ public class Tile {
         return pusher;
     }
 
+    /**
+     * Returns an ImageView object with the corresponding pusher
+     *
+     * @author Mathis Eilers
+     * @since 2023-03-24
+     */
     public ImageView addTilePusher135(int direction)
     {
         ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1_3_5.png", imageSize, imageSize, true, false));
@@ -151,6 +163,12 @@ public class Tile {
         return pusher;
     }
 
+    /**
+     * Returns an ImageView object with the corresponding pusher
+     *
+     * @author Mathis Eilers
+     * @since 2023-03-24
+     */
     public ImageView addTilePusher2(int direction)
     {
         ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2.png", imageSize, imageSize, true, false));
@@ -158,6 +176,12 @@ public class Tile {
         return pusher;
     }
 
+    /**
+     * Returns an ImageView object with the corresponding pusher
+     *
+     * @author Mathis Eilers
+     * @since 2023-03-24
+     */
     public ImageView addTilePusher24(int direction)
     {
         ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2_4.png", imageSize, imageSize, true, false));
@@ -165,10 +189,40 @@ public class Tile {
         return pusher;
     }
 
+    /**
+     * Returns an ImageView object with the corresponding pusher
+     *
+     * @author Mathis Eilers
+     * @since 2023-03-24
+     */
     public ImageView addTilePusher3(int direction)
     {
         ImageView pusher = new ImageView(new Image("images/tiles/Pusher_3.png", imageSize, imageSize, true, false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
+    }
+
+    /**
+     * Returns an ImageView object with the corresponding gear
+     *
+     * @author Mathis Eilers
+     * @since 2023-04-05
+     */
+    public ImageView addGearCW()
+    {
+        // CW: Clockwise
+        return new ImageView(new Image("images/tiles/GearCW.png", imageSize, imageSize, true, false));
+    }
+
+    /**
+     * Returns an ImageView object with the corresponding gear
+     *
+     * @author Mathis Eilers
+     * @since 2023-04-05
+     */
+    public ImageView addGearCCW()
+    {
+        // CCW: Counterclockwise
+        return new ImageView(new Image("images/tiles/GearCCW.png", imageSize, imageSize, true, false));
     }
 }
