@@ -20,17 +20,20 @@ public class UTurn extends CardBehaviour {
     @Override
     public void uTurn(Robot robot, boolean uTurn) {
         if(uTurn){
-            if(robot.getDirection().equals(CardinalDirection.North)){
-                robot.setDirection(CardinalDirection.South);
-            }
-            if(robot.getDirection().equals(CardinalDirection.East)){
-                robot.setDirection(CardinalDirection.West);
-            }
-            if(robot.getDirection().equals(CardinalDirection.South)){
-                robot.setDirection(CardinalDirection.North);
-            }
-            if(robot.getDirection().equals(CardinalDirection.West)){
-                robot.setDirection(CardinalDirection.East);
+            switch(robot.getDirection()) {
+                case North:
+                    robot.setDirection(CardinalDirection.South);
+                    break;
+                case East:
+                    robot.setDirection(CardinalDirection.West);
+                    break;
+                case South:
+                    robot.setDirection(CardinalDirection.North);
+                    break;
+                case West:
+                    robot.setDirection(CardinalDirection.East);
+                default:
+                    break;
             }
         }
 

@@ -43,7 +43,7 @@ public class PressorBehaviourTest {
      *
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
-     * @see de.uol.swp.server.gamelogic.Robot;
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 25-02-2023
      */
     @Test
