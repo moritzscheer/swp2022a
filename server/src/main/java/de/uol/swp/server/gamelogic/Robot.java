@@ -43,7 +43,6 @@ public class Robot {
         this.optionCard = 0;
         this.lastCheckPoint = -1;
     }
-
     /**
      * @author
      * @see
