@@ -20,6 +20,7 @@ public class UTurnTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.cards.UTurn
      * @see de.uol.swp.server.gamelogic.Robot
+     * @see de.uol.swp.server.gamelogic.tiles.enums
      * @since 2023-04-05
      */
     @Test
@@ -35,6 +36,7 @@ public class UTurnTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.cards.UTurn
      * @see de.uol.swp.server.gamelogic.Robot
+     * @see de.uol.swp.server.gamelogic.tiles.enums
      * @since 2023-04-05
      */
     @Test
@@ -50,6 +52,7 @@ public class UTurnTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.cards.UTurn
      * @see de.uol.swp.server.gamelogic.Robot
+     * @see de.uol.swp.server.gamelogic.tiles.enums
      * @since 2023-04-05
      */
     @Test
@@ -65,6 +68,7 @@ public class UTurnTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.cards.UTurn
      * @see de.uol.swp.server.gamelogic.Robot
+     * @see de.uol.swp.server.gamelogic.tiles.enums
      * @since 2023-04-05
      */
     @Test
