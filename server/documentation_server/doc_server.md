@@ -45,6 +45,54 @@ Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Robo
 
 ## LaserBehaviour
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+Das LaserBehaviour verwendet diese Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    CardinalDirection: ist eine Enumeration, die festgelegte Variablen, in diesem Fall die vier
+    Himmelsrichtungen aufzählt / vorgibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Das LaserBehaviour erbt ihre Methode ```onLaserStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Sie besitzt drei weitere Attribute: ```private CardinalDirection direction```, ```private int[] activeInProgramSteps```
+und```private int laserBeam```.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Lasers auf dem Spielbrett
+    int[] activeInProgramSteps: ist ein Array von Programmschritten in denen
+    der Laser aktiv ist
+    CardinalDirection laserDir: ist die Ausrichtung des Lasers
+    int laserBeam: ist die Anzahl an Laser, die sich auf dem Block befinden
+
+Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methoden**
+</span>**
+
+Die Methode ```onLaserStage``` wird aktiviert, wenn ein Roboter sich auf dem Laserblock befindet. Hierbei ist zu beachten, dass der Parameter ```int programStep```, zum Abgleich dient.
+Falls der gesuchte Programmschritt eintritt und sich der Roboter auf dem Feld befindet, erhält dieser einen Schaden in Höhe der Laseranzahl.
+
+Mit der Methode ```getLaserDirection``` wird die Ausrichtung der Laser ermittelt.
+Die Methode ```getLaserBeam``` dient zur Ermittlung der Laseranzahl.
+
 
 ## PitBehaviour
 
@@ -67,7 +115,7 @@ Das PitBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-Das PitBehaviour erbt ihre Methode ```java onRobotEntered``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Das PitBehaviour erbt ihre Methode ```onRobotEntered``` von der abstrakten Oberklasse AbstractTileBehaviour.
 Sie besitzt keine weiteren Attribute.
 
 **<span style="color:DodgerBlue">
@@ -86,7 +134,7 @@ Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse 
 **Methode**
 </span>**
 
-Das PitBehaviour besitzt eine öffentliche Methode namens ```java onRobotEntered (int indexMoveRobot)```, diese wird ausgelöst, sobald ein Roboter sich auf dem Feld / Block des PitBehaviours befindet. Hierbei wird die Position des Roboters mit dem übergebenden Parameter der Methode verglichen. Falls eine Übereinstimmung eintrifft, werden die Lebenspunkte des Roboters auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
+Das PitBehaviour besitzt eine öffentliche Methode namens ```onRobotEntered (int indexMoveRobot)```, diese wird ausgelöst, sobald ein Roboter sich auf dem Feld / Block des PitBehaviours befindet. Hierbei wird die Position des Roboters mit dem übergebenden Parameter der Methode verglichen. Falls eine Übereinstimmung eintrifft, werden die Lebenspunkte des Roboters auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
 
 ## PressorBehaviour
 
@@ -106,8 +154,8 @@ Das PressorBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-Die Klasse erbt ihre Methode ```java onPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
-Sie besitzt ein Attribut namens ```java private int[] activeInProgramSteps```.
+Die Klasse erbt ihre Methode ```onPressorStage``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Sie besitzt ein Attribut namens ```private int[] activeInProgramSteps```.
 
 **<span style="color:DodgerBlue">
 **Konstruktor**
@@ -127,7 +175,7 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 **Methode**
 </span>**
 
-Die Klasse hat eine öffentliche Methode ```java onPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des PressorBehaviours, wenn ein Roboter sich unter dem Pressor befindet.
+Die Klasse hat eine öffentliche Methode ```onPressorStage(int programStep)```, die eine Liste von MoveIntent-Objekten zurückgibt und einen Parameter programStep akzeptiert. Die Methode wird überschrieben und implementiert das Verhalten des PressorBehaviours, wenn ein Roboter sich unter dem Pressor befindet.
 
 
 Die Methode nimmt den Parameter programStep an, der den aktuellen Programmschritt darstellt und prüft, ob diese Stufe im Array activeInProgramSteps enthalten ist. Falls das der Fall ist, wird eine weitere Bedingung überprüft. Befindet sich ein Roboter auf dem Pressor-Block, so wird der Roboterzustand geändert, die Lebenspunkte werden auf Null gesetzt. Abschließend gibt die Methode den Wert null zurück, da keine MoveIntent-Objekte zurückgegeben werden müssen.
@@ -151,7 +199,7 @@ Das RepairBehaviour verwendet folgende Klassen und Interfaces:
 **Vererbungshierarchie**
 </span>**
 
-Die Klasse erbt ihre Methode ```java onCardEnding``` von der abstrakten Oberklasse AbstractTileBehaviour.
+Die Klasse erbt ihre Methode ```onCardEnding``` von der abstrakten Oberklasse AbstractTileBehaviour.
 
 **<span style="color:DodgerBlue">
 **Konstruktor**
@@ -167,11 +215,11 @@ Der Konstruktor der Klasse ist folgendermaßen aufgebaut:
 Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 
 **<span style="color:DodgerBlue">
-**Methode**
+**Methoden**
 </span>**
 
-Das RepairBehaviour hat eine Methode namens ```java getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.
-Des Weiteren besitzt die Klasse eine öffentliche Methode ```java onCardEnding```, die eine Liste von MoveIntent als Rückgabewert zurückgibt und als Parameter einen Integer-Wert "programmStep" nutzt.
+Das RepairBehaviour hat eine Methode namens ```getCheckPointPosition```, welche als Rückgabewert die Position der Reparaturstation zurückgibt.
+Des Weiteren besitzt die Klasse eine öffentliche Methode ```onCardEnding```, die eine Liste von MoveIntent als Rückgabewert zurückgibt und als Parameter einen Integer-Wert "programmStep" nutzt.
 Sobald der vierte Programmschritt ausgeführt wurde und ein Roboter sich auf dem RepairBehaviour befindet, wird die Methode "onCardEnding" ausgeführt und die Schadenpunkte um einen oder zwei Marken / Werte reduziert.
 
 (Weitere Methode muss no
