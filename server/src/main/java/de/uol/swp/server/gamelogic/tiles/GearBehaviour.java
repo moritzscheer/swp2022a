@@ -41,7 +41,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @since 06-02-2023
      */
     @Override
-    public List<MoveIntent> OnRotatorStage(int programmStep) {
+    public List<MoveIntent> OnRotatorStage(int programStep) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (this.turnClockwise) {

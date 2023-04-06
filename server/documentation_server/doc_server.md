@@ -42,6 +42,53 @@ Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Robo
 
 ## GearBehaviour
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+Das GearBehaviour verwendet folgende Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    CardinalDirection: ist eine Enumeration, die festgelegte Variablen, in diesem Fall die vier
+    Himmelsrichtungen aufzählt / vorgibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Das GearBehaviour erbt ihre Methode ```OnRotatorStage``` von der abstrakten Oberklasse AbstractTileBehaviour
+und besitzt ein weiteres Attribut ```turnClockwise```, welches die Rotationsausrichtung des Zahnrads bestimmt.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor des GearBehaviours ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Zahnrads auf dem Spielbrett
+    boolean turnC: ist ein Operator, der die Rotationsausrichtung bei "true" mit
+    dem Uhrzeigersinn und bei "false", gegen den Uhrzeigersinn bestimmt
+
+Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int prgramStep``` und
+gibt entweder eine Liste von ```List<MoveIntent>```, oder den Wert ```Null``` zurück.
+Innerhalb der Methode werden alle Roboter, die in der Liste ```Robot[] robotStates``` sich befinden
+iteriert. Falls ein Roboter dieselbe Position wie ```Position blockPos``` des GearBehaviours besitzt,
+wird der Roboter bei einem positiven "turnC-Wert" um 180° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false", 
+wird eine Ausrichtung gegen den Uhrzeigersinn vorgenommen.
+
+
 
 ## LaserBehaviour
 
