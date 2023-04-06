@@ -118,11 +118,11 @@ public abstract class AbstractTileBehaviour {
         return null;
     }
 
-    public List<MoveIntent> OnRotatorStage(int programStep) {
+    public List<MoveIntent> onRotatorStage(int programStep) {
         return null;
     }
 
-    public List<MoveIntent> OnCheckPointStage(int programStep) {
+    public List<MoveIntent> onCheckPointStage(int programStep) {
         return null;
     }
 }

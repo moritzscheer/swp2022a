@@ -51,7 +51,7 @@ public class GearBehaviourTest {
         // robot dir = East
         robots[0].setDirection(CardinalDirection.East);
         assertEquals(CardinalDirection.East, robots[0].getDirection());
-        behaviours1[0].OnRotatorStage(1);
+        behaviours1[0].onRotatorStage(1);
         assertEquals(CardinalDirection.South, robots[0].getDirection());
     }
 
@@ -69,7 +69,7 @@ public class GearBehaviourTest {
         // robot dir = South
         robots[0].setDirection(CardinalDirection.South);
         assertEquals(CardinalDirection.South, robots[0].getDirection());
-        behaviours1[0].OnRotatorStage(1);
+        behaviours1[0].onRotatorStage(1);
         assertEquals(CardinalDirection.West, robots[0].getDirection());
     }
 
@@ -87,7 +87,7 @@ public class GearBehaviourTest {
         // robot dir = West
         robots[0].setDirection(CardinalDirection.West);
         assertEquals(CardinalDirection.West, robots[0].getDirection());
-        behaviours1[0].OnRotatorStage(1);
+        behaviours1[0].onRotatorStage(1);
         assertEquals(CardinalDirection.North, robots[0].getDirection());
     }
 
@@ -105,7 +105,7 @@ public class GearBehaviourTest {
         // robot dir = North
         robots[0].setDirection(CardinalDirection.North);
         assertEquals(CardinalDirection.North, robots[0].getDirection());
-        behaviours1[0].OnRotatorStage(1);
+        behaviours1[0].onRotatorStage(1);
         assertEquals(CardinalDirection.East, robots[0].getDirection());
     }
 
@@ -123,7 +123,7 @@ public class GearBehaviourTest {
         // robot dir = East
         robots[1].setDirection(CardinalDirection.East);
         assertEquals(CardinalDirection.East, robots[1].getDirection());
-        behaviours2[0].OnRotatorStage(1);
+        behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.North, robots[1].getDirection());
     }
 
@@ -141,7 +141,7 @@ public class GearBehaviourTest {
         // robot dir = South
         robots[1].setDirection(CardinalDirection.South);
         assertEquals(CardinalDirection.South, robots[1].getDirection());
-        behaviours2[0].OnRotatorStage(1);
+        behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.East, robots[1].getDirection());
     }
 
@@ -159,7 +159,7 @@ public class GearBehaviourTest {
         // robot dir = West
         robots[1].setDirection(CardinalDirection.West);
         assertEquals(CardinalDirection.West, robots[1].getDirection());
-        behaviours2[0].OnRotatorStage(1);
+        behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.South, robots[1].getDirection());
     }
 
@@ -177,7 +177,7 @@ public class GearBehaviourTest {
         // robot dir = North
         robots[1].setDirection(CardinalDirection.North);
         assertEquals(CardinalDirection.North, robots[1].getDirection());
-        behaviours2[0].OnRotatorStage(1);
+        behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.West, robots[1].getDirection());
     }
 }

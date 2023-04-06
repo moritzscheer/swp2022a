@@ -33,6 +33,80 @@ Das bedeutet die Communication, Lobby, Messages, den Usermanagement, ServerApp u
 
 ## AbstractTileBehaviour
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+Das AbstractTileBehaviour verwendet folgende Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    CardinalDirection: ist eine Enumeration, die festgelegte Variablen, in diesem Fall die vier
+    Himmelsrichtungen aufzählt / vorgibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie und Funktion**
+</span>**
+
+Betrachtet man die Funktion des AbstractTileBehaviours, so dient es als eine Art Vorlage und bringt somit sämtliche Eigenschaften,
+die eine abstrakte Klasse mit sich bringt. Es werden eine Vielzahl an abstrakten Methoden vorgegeben, die anschließend in den zu erbenden
+Klassen überschrieben und vervollständigt bzw. funktionsfähig implementiert werden.
+
+Da das AbstractTileBehaviour nicht direkt instanziiert werden kann, sollen sämtliche erbenden Klassen, die im 
+folgenden Verlauf weiter erläutert werden, einer eigenen Funktion als Objekt nachgehen.
+
+Jeder dieser Objekte repräsentiert die Verhaltensweise wie auch die Funktionen des jeweiligen Feldes der Spielkarte.
+Dabei werden Parameter wie eine Liste von Robotern ```Robot[] robotStates```, oder die Anordnung in 
+Form eines zweidimensionalen Arrays der Blöcke```Block[][] board``` genutzt, um die Funktionalität der überschriebenen Methoden
+zu gewährleisten.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor des AbstractTileBehaviours ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Blocks auf dem Spielbrett
+
+*<span style="color:DodgerBlue">
+**Methode**
+</span>*
+
+Eine relevante Information vorab, jede folgende beschriebene Methode mit dem Rückgabetypen einer Liste ```List<MoveIntent>```
+repräsentiert die mögliche Abfolge, aber nicht unbedingt nötige Ausführung an Spielzügen.
+
+Die Methode ```getBlockPos``` gibt die Position des Feldes bzw. des Blocks auf dem Spielbrett zurück.
+
+Die Methode ```onRobotEntered``` besitzt den Rückgabewert einer Liste ```List<MoveIntent>```, die beim Auftreten 
+eines Roboters auf den Block aktiviert wird. 
+
+Die Methode ```onExpressConveyorStage``` wird ausgeführt, sobald ein Roboter sich auf dem Expressförderband befindet.
+
+Die Methode ```onConveyorStage``` wird ausgeführt, wenn ein Roboter sich auf dem Förderband befindet.
+
+Die Methode ```onLaserStage``` wird aktiviert, sobald ein Roboter sich auf Block bzw. vor dem Laser-Block sich befindet.
+
+Die Methode ```onPusherStage``` wird ausgeführt, sobald ein Roboter sich vor dem Schieber aufhält.
+
+Die Methode ```onPressorStage``` wird aktiviert, wenn ein Roboter sich unter der Presse bzw. auf dem Block positioniert hat.
+
+Die Methode ```GetImage``` besitzt als Rückgabewert den Typ "String" und soll einen Bildpfad, oder eine Bildbezeichung zurückgeben.
+
+Die Methode ```getObstruction``` soll mithilfe des Rückgabetypen "boolean" einen potenziellen Zug in eine Richtung bestätigen, oder verneinen.
+
+Die Methode ```onCardEnding``` wird ausgeführt, wenn die Kartenanzahl auf der Spielhand endet.
+
+Die Methode ```onRotatorStage``` wird aktiviert, wenn ein Roboter sich auf einem Zahnrad befindet.
+
+Die Methode ```onCheckPointStage``` wird ausgeführt, sobald ein Roboter sich auf dem Checkpoint oder Reperaturblock befindet.
+
+Alle aufgelisteten Methoden werden im jeweiligen Behaviour vollständig und ausführlich beschrieben wie auch erklärt.
+
 
 ## CheckPointBehaviour
 Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Roboter auf dem jeweiligen CheckPoint Tile befindet. Wenn dies der Fall ist, dann wird im Anschluss überprüft, ob der letzte CheckPointNummer größer ist als das neue CheckPointNummer. Ist dies der Fall, wird der letzte CheckPoint mit dem neuen CheckPoint sowie die Position übernommen. So kann der Roboter an dieser Stelle wieder spawnen, wenn vorher zerstört wurde.

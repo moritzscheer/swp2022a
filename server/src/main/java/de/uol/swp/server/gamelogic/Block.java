@@ -124,8 +124,8 @@ public class Block {
     public List<MoveIntent> OnRotatorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnRotatorStage(programStep) != null) {
-                moves.addAll(behaviour.OnRotatorStage(programStep));
+            if (behaviour.onRotatorStage(programStep) != null) {
+                moves.addAll(behaviour.onRotatorStage(programStep));
             }
         }
         return moves;
@@ -134,8 +134,8 @@ public class Block {
     public List<MoveIntent> OnCheckPointStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.OnCheckPointStage(programStep) != null) {
-                moves.addAll(behaviour.OnCheckPointStage(programStep));
+            if (behaviour.onCheckPointStage(programStep) != null) {
+                moves.addAll(behaviour.onCheckPointStage(programStep));
             }
         }
         return moves;
