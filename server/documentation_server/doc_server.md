@@ -269,5 +269,43 @@ Das RepairBehaviour hat eine Methode namens ```getCheckPointPosition```, welche 
 Des Weiteren besitzt die Klasse eine öffentliche Methode ```onCardEnding```, die eine Liste von MoveIntent als Rückgabewert zurückgibt und als Parameter einen Integer-Wert "programmStep" nutzt.
 Sobald der vierte Programmschritt ausgeführt wurde und ein Roboter sich auf dem RepairBehaviour befindet, wird die Methode "onCardEnding" ausgeführt und die Schadenpunkte um einen oder zwei Marken / Werte reduziert.
 
-(Weitere Methode muss no
 ## WallBehaviour
+
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+Das WallBehaviour verwendet folgende Klassen und Interfaces:
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    CardinalDirection wallDirection: ist eine Klasse, die Himmelsrichtungen angibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Die Klasse erbt die Methode ```getObstruction``` von der abstrakten Oberklasse AbstractTileBehaviour.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor des WallBehaviours ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Pressor-Blocks auf dem Spielbrett
+    CardinalDirection wallDirection: ist ein Paramter, der die Wandausrichtung darstellt
+
+Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Das WallBehaviour hat eine Methode namens ```getObstruction```, die einen Boolean als Rückgabewert darstellt und eine
+```CardinalDirection direction``` als Parameter besitzt. Dieser Parameter wird verwendet, um einen Vergleich zwischen der Laufrichtung eines
+Roboters und der Wandausrichtung zu schaffen. Wird die Wandausrichtung als potenzielles Hindernis für einen Roboter gesehen, so wird der
+Wert "true" zurückgegeben, ansonsten false. 
