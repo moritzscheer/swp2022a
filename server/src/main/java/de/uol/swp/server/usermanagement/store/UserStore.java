@@ -1,7 +1,6 @@
 package de.uol.swp.server.usermanagement.store;
 
 import de.uol.swp.common.user.User;
-
 import java.util.List;
 import java.util.Optional;
 
