@@ -119,7 +119,7 @@ public class Game {
         // TODO
     }
 
-    private void CalcGameRound(Card[][] playedCards) {
+    private void calcGameRound(Card[][] playedCards) {
         // Iterate through the 5 cards
         if (playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
