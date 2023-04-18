@@ -10,6 +10,13 @@ public class WallBehaviour extends AbstractTileBehaviour {
 
     private CardinalDirection wallDirection;
 
+    /**
+     * Constructor
+     *
+     * @author Ole Zimmermann
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 13-03-2023
+     */
     public WallBehaviour(
             Robot[] robotStates,
             Block[][] board,
@@ -20,6 +27,8 @@ public class WallBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * Return if there is a wall in the given direction
+     *
      * @author Ole Zimmermann
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023

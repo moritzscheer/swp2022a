@@ -19,6 +19,13 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     // (2)crossed wrench/hammer: discard 1 Damage token AND draw one Option card.
     private int repairSiteKey; // 1 or 2
 
+    /**
+     * Constructor
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-02-26
+     */
     public RepairBehaviour(
             Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
@@ -26,6 +33,8 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * Getter CheckPoint Position
+     *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 2023-02-26
