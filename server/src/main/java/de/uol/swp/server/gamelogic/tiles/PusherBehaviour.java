@@ -28,6 +28,8 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             int[] activeInProgramSteps,
             CardinalDirection direction) {
         super(robotStates, board, blockPos);
+        this.activeInProgramSteps = activeInProgramSteps;
+        this.direction = direction;
     }
 
     /**
@@ -52,10 +54,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     }
 
     public CardinalDirection getDirection() {
-        return direction;
+        return this.direction;
     }
 
     public int[] getActiveInProgramSteps() {
-        return activeInProgramSteps;
+        return this.activeInProgramSteps;
     }
 }
