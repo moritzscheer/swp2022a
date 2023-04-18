@@ -55,9 +55,16 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
                     Position targetPos = Position.translate(blockPos, direction);
                     if (targetPos != null) {
                         Block nextBlock = board[targetPos.x][targetPos.y];
-                        ConveyorBeltBehaviour conBehaviourOnNextBlock =
-                                nextBlock.GetBehaviour(
-                                        (Class<ConveyorBeltBehaviour>) this.getClass());
+                        ConveyorBeltBehaviour conBehaviourOnNextBlock;
+                        try {
+                            conBehaviourOnNextBlock =
+                                    nextBlock.GetBehaviour(
+                                            (Class<ConveyorBeltBehaviour>) this.getClass());
+                        } catch (NullPointerException exp) {
+                            // next block does not exist
+                            conBehaviourOnNextBlock = null;
+                        }
+
                         if (conBehaviourOnNextBlock != null) {
                             int rotation =
                                     conBehaviourOnNextBlock.direction.ordinal()
