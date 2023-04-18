@@ -83,42 +83,6 @@ public class Game {
      * @see
      * @since
      */
-    public void moveRobots() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public void moveBoardElements() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public void fireLaser() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public void touchCheckPoints() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
     public void startTimer(int readyRegister, int nRobots) {
         // TODO
     }
@@ -131,12 +95,21 @@ public class Game {
         for (int cardIterator = 0; cardIterator < playedCards[0].length; cardIterator++) {
             // Iterate through the X card of all Players and resolve them
             for (int playerIterator = 0; playerIterator < playedCards.length; playerIterator++) {
-                // TODO: resolve playedCards[playerIterator][cardIterator]
+                List<List<MoveIntent>> moves;
+                moves = resolveCard(playedCards[playerIterator][cardIterator], playerIterator);
+                for (List<MoveIntent> move : moves) {
+                    List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
+                    executeMoveIntents(resolvedMoves);
+                }
             }
             // Iterate through all the traps
             for (Block[] blocksX : board) {
                 for (Block blockXY : blocksX) {
                     List<MoveIntent> moves;
+
+                    //TODO: implementation of ActionReports for use in a GameMoveHistory
+                    //Preferably altering the behaviour Methods to return (or get as parameters)
+                    //the list of ActionReports and MoveIntents
 
                     moves = blockXY.OnExpressConveyorStage(cardIterator);
                     moves = resolveMoveIntentConflicts(moves);
@@ -169,6 +142,17 @@ public class Game {
             }
         }
         // Send back a collective result of the whole GameRound
+    }
+
+    private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
+        List<List<MoveIntent>> moves = new ArrayList<>();
+        //TODO: handle rotations
+        for (int i = 0; i < 3/*card.move() TODO: modify card.move() to return the number of moves*/; i++) {
+            List<MoveIntent> subMoveList = new ArrayList<>();
+            subMoveList.add(new MoveIntent(robotID, robots[robotID].getDirection()));
+            moves.add(subMoveList);
+        }
+        return moves;
     }
 
     private void executeMoveIntents(List<MoveIntent> moves) {
