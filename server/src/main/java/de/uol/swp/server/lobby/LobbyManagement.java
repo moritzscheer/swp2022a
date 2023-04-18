@@ -15,8 +15,6 @@ import java.util.*;
  * @since 2019-10-08
  */
 public class LobbyManagement {
-    private Integer lobbyID = 1;
-    private Integer currentLobbyID;
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
     /**
@@ -26,21 +24,24 @@ public class LobbyManagement {
      *
      * @param name the name of the lobby to create
      * @param owner the user who wants to create a lobby
-     * @param isMultiplayer true if multiplayer, false if singleplayer
+     * @param multiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
      * @author Moritz Scheer & Maxim Erden
      * @see de.uol.swp.common.user.User
      * @since 2022-11-17
      */
-    public void createLobby(String name, UserDTO owner, String password, Boolean isMultiplayer) {
+    public Integer createLobby(String name, UserDTO owner, String password, Boolean multiplayer) {
+        Integer lobbyID = 1;
         while (lobbies.containsKey(lobbyID)) {
             lobbyID++;
         }
 
-        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
-                throw new IllegalArgumentException("Lobby name " + name + " already exists!");
+        if (multiplayer) {
+            for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
+                if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
+                    throw new IllegalArgumentException("Lobby name " + name + " already exists!");
+                }
             }
         }
 
@@ -52,9 +53,8 @@ public class LobbyManagement {
 
         lobbies.put(
                 lobbyID,
-                new LobbyDTO(lobbyID, name, owner, password, isMultiplayer, textChannelUUID));
-        this.currentLobbyID = lobbyID;
-        this.lobbyID = 1;
+                new LobbyDTO(lobbyID, name, owner, password, multiplayer, textChannelUUID));
+        return lobbyID;
     }
 
     /**
@@ -70,25 +70,6 @@ public class LobbyManagement {
                     .closeTextChatChannel(lobbies.get(lobbyID).getTextChatID());
         }
         lobbies.remove(lobbyID);
-    }
-
-    /**
-     * Searches for the lobby with the requested name
-     *
-     * @param name String containing the name of the lobby to search for
-     * @return either empty Optional or Optional containing the lobby
-     * @author Moritz Scheer
-     * @see Optional
-     * @since 2019-10-08
-     */
-    public Optional<LobbyDTO> getLobby(String name) {
-        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
-                LobbyDTO lobby = lobbies.get(entry.getKey());
-                return Optional.of(lobby);
-            }
-        }
-        return Optional.empty();
     }
 
     /**
@@ -108,17 +89,6 @@ public class LobbyManagement {
             }
         }
         return Optional.empty();
-    }
-
-    /**
-     * getter for the current lobbyID
-     *
-     * @return Integer Value containing the current lobbyID
-     * @author Moritz Scheer
-     * @since 2022-11-30
-     */
-    public Integer getCurrentLobbyID() {
-        return this.currentLobbyID;
     }
 
     /**

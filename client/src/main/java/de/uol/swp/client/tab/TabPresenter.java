@@ -7,8 +7,6 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -49,8 +47,8 @@ public class TabPresenter extends AbstractPresenter {
      * set to the one in the message received.
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
-     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
      * @author Moritz Scheer
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
      * @since 2022-12-27
      */
     @Subscribe
@@ -66,8 +64,8 @@ public class TabPresenter extends AbstractPresenter {
      * infoBox is visible, it is set to invisible.
      *
      * @param event The ShowNodeEvent object detected on the EventBus
-     * @see de.uol.swp.client.SceneManager
      * @author Moritz Scheer
+     * @see de.uol.swp.client.SceneManager
      * @since 2022-12-27
      */
     @Subscribe
@@ -90,8 +88,8 @@ public class TabPresenter extends AbstractPresenter {
      * settings and adds the tab to the paneTab. Also, the tab is then selected.
      *
      * @param event The CreateLobbyTabEvent object detected on the EventBus
-     * @see de.uol.swp.client.SceneManager
      * @author Moritz Scheer
+     * @see de.uol.swp.client.SceneManager
      * @since 2022-12-27
      */
     @Subscribe
@@ -114,33 +112,28 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles successfully dropped Lobbies
+     * Handles DeleteLobbyTab events
      *
-     * <p>If an LobbyDroppedResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
+     * <p>If an DeleteLobbyTabEvent object is detected on the EventBus this method is called. This
+     * method deletes a tab with the given lobbyID.
      *
-     * @param message The LobbyDroppedResponse object detected on the EventBus
+     * @param event The DeleteLobbyTabEvent object detected on the EventBus
      * @author Moritz Scheer
-     * @since 2022-12-27
+     * @see de.uol.swp.client.SceneManager
+     * @since 2023-01-24
      */
     @Subscribe
-    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobbyID());
-    }
-
-    /**
-     * Handles successfully left Lobbies
-     *
-     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called. It
-     * calls a private method to close a tab.
-     *
-     * @param message The LobbyLeaveUserResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobby().getLobbyID());
+    public void onDeleteLobbyTabEvent(DeleteLobbyTabEvent event) {
+        Platform.runLater(
+                () -> {
+                    tabPane.getTabs()
+                            .removeIf(
+                                    tab ->
+                                            tab.getId() != null
+                                                    && tab.getId()
+                                                            .equals(event.getLobbyID().toString()));
+                    tabPane.getSelectionModel().select(0);
+                });
     }
 
     /**
@@ -200,15 +193,21 @@ public class TabPresenter extends AbstractPresenter {
         tab.setOnCloseRequest(
                 closeEvent -> {
                     closeEvent.consume();
-                    infoLabel3.setVisible(true);
-                    updateInfoBox();
-                    eventBus.post(new ChangeElementEvent(lobbyID));
+                    if (infoLabel2.isVisible()) {
+                        infoLabel2.setVisible(false);
+                        infoLabel3.setVisible(true);
+                        eventBus.post(new ChangeElementEvent(lobbyID));
+                    } else if (!infoLabel3.isVisible()) {
+                        infoLabel3.setVisible(true);
+                        updateInfoBox();
+                        eventBus.post(new ChangeElementEvent(lobbyID));
+                    }
                 });
 
         tab.setOnSelectionChanged(
                 changeEvent -> {
                     changeEvent.consume();
-                    if (infoBox.isVisible()) {
+                    if (infoLabel3.isVisible()) {
                         updateInfoBox();
                         eventBus.post(new ChangeElementEvent(lobbyID));
                     }
@@ -268,8 +267,39 @@ public class TabPresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    public boolean onExitRequest() {
+    public boolean infoLabel1IsVisible() {
+        return infoLabel1.isVisible();
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean infoLabel2IsVisible() {
         return infoLabel2.isVisible();
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean infoLabel3IsVisible() {
+        return infoLabel3.isVisible();
+    }
+
+    /**
+     * method for checking if an exit request send
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public Integer getTabID() {
+        return Integer.valueOf(
+                tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
     }
 
     // -----------------------------------------------------
@@ -296,20 +326,20 @@ public class TabPresenter extends AbstractPresenter {
                             for (Tab tabs : tabPane.getTabs()) {
                                 if (tabs.getId() != null) {
                                     lobbyService.leaveLobby(
+                                            Integer.valueOf(tabs.getId()),
                                             tabs.getText(),
                                             (UserDTO) loggedInUser,
-                                            Integer.valueOf(tabs.getId()),
                                             !tab.getText().equals("Singleplayer"));
                                 }
                             }
                         }
-                        // updateInfoBox();
+
                         userService.logout(loggedInUser);
                     } else if (infoLabel3.isVisible()) {
                         lobbyService.leaveLobby(
+                                Integer.valueOf(tab.getId()),
                                 tab.getText(),
                                 (UserDTO) loggedInUser,
-                                Integer.valueOf(tab.getId()),
                                 true);
                         updateInfoBox();
 
@@ -330,7 +360,7 @@ public class TabPresenter extends AbstractPresenter {
      */
     @FXML
     private void onNoButtonPressed(ActionEvent actionEvent) {
-        if (tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId() != null) {
+        if (infoLabel3.isVisible()) {
             eventBus.post(
                     new ChangeElementEvent(
                             Integer.valueOf(

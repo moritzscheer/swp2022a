@@ -32,9 +32,9 @@ import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
 import de.uol.swp.client.tab.event.ShowNodeEvent;
-import de.uol.swp.client.tab.event.ShowTabViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
@@ -389,7 +389,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        showLobbyScreen(message.getLobby());
+        createLobbyTab(message.getLobby());
     }
 
     /**
@@ -404,7 +404,37 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        showLobbyScreen(message.getLobby());
+        createLobbyTab(message.getLobby());
+    }
+
+    /**
+     * Handles successfully created Lobbies
+     *
+     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
+     *
+     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyLeftSuccessfulResponse(LobbyLeftSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobby().getLobbyID());
+    }
+
+    /**
+     * Handles successfully joined Lobbies
+     *
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
+     *
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+        deleteLobbyTab(message.getLobbyID());
     }
 
     /**
@@ -604,22 +634,6 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowTabViewEvent detected on the EventBus
-     *
-     * <p>If a ShowTabViewEvent is detected on the EventBus, this method gets called. It shows the
-     * TabView.
-     *
-     * @param event The ShowTabViewEvent detected on the EventBus
-     * @see de.uol.swp.client.tab.event.ShowTabViewEvent
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onShowTabViewEvent(ShowTabViewEvent event) {
-        showTabScreen(event.getUser());
-    }
-
-    /**
      * Handles ShowCreateLobbyViewEvent detected on the EventBus
      *
      * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
@@ -700,6 +714,26 @@ public class SceneManager {
         this.lastSceneHeight = primaryStage.getHeight();
         Platform.runLater(
                 () -> {
+                    /**
+                     * If the user wants to exit the client when he is logged-in, a pop-up is
+                     * displayed
+                     *
+                     * @author Moritz Scheer
+                     * @since 2023-01-25
+                     */
+                    if (currentScene.equals(tabScene)) {
+                        primaryStage.setOnCloseRequest(
+                                closeEvent -> {
+                                    closeEvent.consume();
+                                    if (tabPresenter.infoLabel3IsVisible()) {
+                                        tabPresenter.updateInfoBox();
+                                        eventBus.post(
+                                                new ChangeElementEvent(tabPresenter.getTabID()));
+                                    }
+                                    tabPresenter.updateInfoBox();
+                                    tabPresenter.setInfoLabel(2);
+                                });
+                    }
                     primaryStage.setWidth(lastSceneWidth);
                     primaryStage.setHeight(lastSceneHeight);
                     primaryStage.setTitle(title);
@@ -880,7 +914,7 @@ public class SceneManager {
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void showLobbyScreen(LobbyDTO lobby) {
+    private void createLobbyTab(LobbyDTO lobby) {
         try {
             // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
             if (lobby.isMultiplayer()) {
@@ -895,5 +929,19 @@ public class SceneManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Shows the lobby screen
+     *
+     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
+     * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
+     * and posts an Event on the Eventbus to create a tab in the TabPresenter.
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    private void deleteLobbyTab(Integer lobbyID) {
+        eventBus.post(new DeleteLobbyTabEvent(lobbyID));
     }
 }

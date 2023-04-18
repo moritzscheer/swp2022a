@@ -54,8 +54,8 @@ public class LobbyService {
      * @author Moritz Scheer
      * @since 2022-11-27
      */
-    public void joinLobby(String name, UserDTO user, String password) {
-        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(name, user, password);
+    public void joinLobby(Integer lobbyID, String name, UserDTO user, String password) {
+        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(lobbyID, name, user, password);
         eventBus.post(joinUserRequest);
     }
 
@@ -70,9 +70,9 @@ public class LobbyService {
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */
-    public void leaveLobby(String name, UserDTO user, Integer lobbyID, Boolean multiplayer) {
+    public void leaveLobby(Integer lobbyID, String name, UserDTO user, Boolean multiplayer) {
         LeaveLobbyRequest leaveUserRequest =
-                new LeaveLobbyRequest(name, user, lobbyID, multiplayer);
+                new LeaveLobbyRequest(lobbyID, name, user, multiplayer);
         eventBus.post(leaveUserRequest);
     }
 
