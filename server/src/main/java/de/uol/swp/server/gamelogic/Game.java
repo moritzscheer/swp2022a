@@ -26,6 +26,7 @@ public class Game {
     private int programStep;
     private Timer timer;
     private int readyRegister;
+    private Player[] players;
 
     /**
      * Constructor
@@ -36,8 +37,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Block[][] board, Position[] dockingBays, Robot[] robots) {
-
+    public Game(Block[][] board, Position[] dockingBays, Robot[] robots, Player[] players) {
         this.board = board;
         this.dockingBays = dockingBays;
         this.robots = robots;
@@ -45,15 +45,17 @@ public class Game {
         this.rowCount = board.length;
         this.columCount = board[0].length;
         this.programStep = 0;
+        this.players = players;
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * Set docking bays, might not be necessary if only set in constructor
+     *
+     * @author Maria
+     * @since 2023-04-18
      */
-    public void setDockingBaysPositions(Position[] position) {
-        // TODO
+    public void setDockingBaysPositions(Position[] positions) {
+        this.dockingBays = positions;
     }
 
     /**
@@ -66,12 +68,14 @@ public class Game {
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * Get next card of a player
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Player
+     * @since 2023-04-18
      */
-    public void revealProgramCards() {
-        // TODO
+    public Card revealProgramCards(int playerIndex) {
+        return this.players[playerIndex].playCard();
     }
 
     /**
