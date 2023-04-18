@@ -8,6 +8,4 @@ package de.uol.swp.server.gamelogic.cards;
 public enum Direction {
     Right,
     Left
-
 }
-

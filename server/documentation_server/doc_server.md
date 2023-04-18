@@ -55,11 +55,11 @@ Betrachtet man die Funktion des AbstractTileBehaviours, so dient es als eine Art
 die eine abstrakte Klasse mit sich bringt. Es werden eine Vielzahl an abstrakten Methoden vorgegeben, die anschließend in den zu erbenden
 Klassen überschrieben und vervollständigt bzw. funktionsfähig implementiert werden.
 
-Da das AbstractTileBehaviour nicht direkt instanziiert werden kann, sollen sämtliche erbenden Klassen, die im 
+Da das AbstractTileBehaviour nicht direkt instanziiert werden kann, sollen sämtliche erbenden Klassen, die im
 folgenden Verlauf weiter erläutert werden, einer eigenen Funktion als Objekt nachgehen.
 
 Jeder dieser Objekte repräsentiert die Verhaltensweise wie auch die Funktionen des jeweiligen Feldes der Spielkarte.
-Dabei werden Parameter wie eine Liste von Robotern ```Robot[] robotStates```, oder die Anordnung in 
+Dabei werden Parameter wie eine Liste von Robotern ```Robot[] robotStates```, oder die Anordnung in
 Form eines zweidimensionalen Arrays der Blöcke```Block[][] board``` genutzt, um die Funktionalität der überschriebenen Methoden
 zu gewährleisten.
 
@@ -82,8 +82,8 @@ repräsentiert die mögliche Abfolge, aber nicht unbedingt nötige Ausführung a
 
 Die Methode ```getBlockPos``` gibt die Position des Feldes bzw. des Blocks auf dem Spielbrett zurück.
 
-Die Methode ```onRobotEntered``` besitzt den Rückgabewert einer Liste ```List<MoveIntent>```, die beim Auftreten 
-eines Roboters auf den Block aktiviert wird. 
+Die Methode ```onRobotEntered``` besitzt den Rückgabewert einer Liste ```List<MoveIntent>```, die beim Auftreten
+eines Roboters auf den Block aktiviert wird.
 
 Die Methode ```onExpressConveyorStage``` wird ausgeführt, sobald ein Roboter sich auf dem Expressförderband befindet.
 
@@ -159,7 +159,7 @@ Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int prgramSte
 gibt entweder eine Liste von ```List<MoveIntent>```, oder den Wert ```Null``` zurück.
 Innerhalb der Methode werden alle Roboter, die in der Liste ```Robot[] robotStates``` sich befinden
 iteriert. Falls ein Roboter dieselbe Position wie ```Position blockPos``` des GearBehaviours besitzt,
-wird der Roboter bei einem positiven "turnC-Wert" um 180° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false", 
+wird der Roboter bei einem positiven "turnC-Wert" um 180° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false",
 wird eine Ausrichtung gegen den Uhrzeigersinn vorgenommen.
 
 
@@ -382,4 +382,4 @@ Der Konstruktor ruft den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 Das WallBehaviour hat eine Methode namens ```getObstruction```, die einen Boolean als Rückgabewert darstellt und eine
 ```CardinalDirection direction``` als Parameter besitzt. Dieser Parameter wird verwendet, um einen Vergleich zwischen der Laufrichtung eines
 Roboters und der Wandausrichtung zu schaffen. Wird die Wandausrichtung als potenzielles Hindernis für einen Roboter gesehen, so wird der
-Wert "true" zurückgegeben, ansonsten false. 
+Wert "true" zurückgegeben, ansonsten false.

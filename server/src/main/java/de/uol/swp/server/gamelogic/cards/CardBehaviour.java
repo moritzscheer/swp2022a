@@ -17,24 +17,21 @@ abstract class CardBehaviour {
      * @see
      * @since 2023-04-03
      */
-    public void move(Robot robot, int moves) {
-    }
+    public void move(Robot robot, int moves) {}
 
     /**
      * @author Tommy & WKempel
      * @see
      * @since 2023-04-03
      */
-    public void turn(Robot robot, Direction directionCard) {
-    }
+    public void turn(Robot robot, Direction directionCard) {}
 
     /**
      * @author Tommy & WKempel
      * @see
      * @since 2023-04-03
      */
-    public void uTurn(Robot robot, boolean uTurn) {
-    }
+    public void uTurn(Robot robot, boolean uTurn) {}
 
     /**
      * @author WKempel

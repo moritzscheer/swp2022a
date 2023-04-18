@@ -1,6 +1,6 @@
 package de.uol.swp.server.gamelogic.cards;
-import de.uol.swp.server.gamelogic.Robot;
 
+import de.uol.swp.server.gamelogic.Robot;
 
 /**
  * Moves the robot one to three tiles forward in direction where the robot is looking
@@ -14,7 +14,8 @@ public class Straight extends CardBehaviour {
     private int moves;
 
     /**
-     * Moves the robot forward in the direction where the robot is looking. With the parameter moves tells the roboter how many tiles it goes.
+     * Moves the robot forward in the direction where the robot is looking. With the parameter moves
+     * tells the roboter how many tiles it goes.
      *
      * @author Tommy & WKempel
      * @see
@@ -22,7 +23,7 @@ public class Straight extends CardBehaviour {
      */
     @Override
     public void move(Robot robot, int moves) {
-        for (int i = 1; i <= moves; i++){
+        for (int i = 1; i <= moves; i++) {
             robot.move(robot.getDirection());
         }
     }

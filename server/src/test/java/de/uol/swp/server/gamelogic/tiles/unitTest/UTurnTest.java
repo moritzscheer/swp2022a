@@ -1,18 +1,19 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
+import static junit.framework.TestCase.assertEquals;
+
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.UTurn;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
+import org.junit.Test;
 
 public class UTurnTest {
 
-    private Position position = new Position(0,0);
+    private Position position = new Position(0, 0);
 
-    private Robot robot = new Robot("Robot",position,true,null);
+    private Robot robot = new Robot("Robot", position, true, null);
 
     /**
      * Test the robot changed the direction from north to south
@@ -27,8 +28,8 @@ public class UTurnTest {
     public void testUTunFromNorthToSouth() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.North);
-        uTurn.uTurn(robot,true);
-        assertEquals(CardinalDirection.South,robot.getDirection());
+        uTurn.uTurn(robot, true);
+        assertEquals(CardinalDirection.South, robot.getDirection());
     }
     /**
      * Test the robot changed the direction from south to north
@@ -43,8 +44,8 @@ public class UTurnTest {
     public void testUTurnFromSouthToNorth() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.South);
-        uTurn.uTurn(robot,true);
-        assertEquals(CardinalDirection.North,robot.getDirection());
+        uTurn.uTurn(robot, true);
+        assertEquals(CardinalDirection.North, robot.getDirection());
     }
     /**
      * Test the robot changed the direction from west to east
@@ -59,8 +60,8 @@ public class UTurnTest {
     public void testUTurnFromWestToEast() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.West);
-        uTurn.uTurn(robot,true);
-        assertEquals(CardinalDirection.East,robot.getDirection());
+        uTurn.uTurn(robot, true);
+        assertEquals(CardinalDirection.East, robot.getDirection());
     }
     /**
      * Test the robot changed the direction from east to west
@@ -75,7 +76,7 @@ public class UTurnTest {
     public void testUTurnFromEastToWest() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.East);
-        uTurn.uTurn(robot,true);
-        assertEquals(CardinalDirection.West,robot.getDirection());
+        uTurn.uTurn(robot, true);
+        assertEquals(CardinalDirection.West, robot.getDirection());
     }
 }

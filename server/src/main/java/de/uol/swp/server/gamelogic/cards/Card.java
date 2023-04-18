@@ -14,7 +14,6 @@ public class Card extends CardBehaviour {
     private int priority;
     private String imgPath;
 
-
     /**
      * @author WKempel
      * @see

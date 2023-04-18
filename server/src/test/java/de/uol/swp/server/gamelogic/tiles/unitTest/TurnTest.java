@@ -1,23 +1,22 @@
 package de.uol.swp.server.gamelogic.tiles.unitTest;
 
+import static junit.framework.TestCase.assertEquals;
+
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.cards.Turn;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
+import org.junit.Test;
 
 public class TurnTest {
 
-    private Position position = new Position(0,0);
+    private Position position = new Position(0, 0);
 
-    private Robot robot = new Robot("Robot",position,true,null);
+    private Robot robot = new Robot("Robot", position, true, null);
 
-    /**
-     * These following four tests implements the right turn
-     */
+    /** These following four tests implements the right turn */
 
     /**
      * Test the robot changed the direction from north to east
@@ -34,7 +33,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.North);
         turn.turn(robot, Direction.Right);
-        assertEquals(CardinalDirection.East,robot.getDirection());
+        assertEquals(CardinalDirection.East, robot.getDirection());
     }
 
     /**
@@ -52,7 +51,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.East);
         turn.turn(robot, Direction.Right);
-        assertEquals(CardinalDirection.South,robot.getDirection());
+        assertEquals(CardinalDirection.South, robot.getDirection());
     }
 
     /**
@@ -70,7 +69,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.South);
         turn.turn(robot, Direction.Right);
-        assertEquals(CardinalDirection.West,robot.getDirection());
+        assertEquals(CardinalDirection.West, robot.getDirection());
     }
     /**
      * Test the robot changed the direction from west to north
@@ -87,12 +86,10 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.West);
         turn.turn(robot, Direction.Right);
-        assertEquals(CardinalDirection.North,robot.getDirection());
+        assertEquals(CardinalDirection.North, robot.getDirection());
     }
 
-    /**
-     * These following four tests implements the left turn
-     */
+    /** These following four tests implements the left turn */
 
     /**
      * Test the robot changed the direction from north to west
@@ -109,7 +106,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.North);
         turn.turn(robot, Direction.Left);
-        assertEquals(CardinalDirection.West,robot.getDirection());
+        assertEquals(CardinalDirection.West, robot.getDirection());
     }
 
     /**
@@ -127,7 +124,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.West);
         turn.turn(robot, Direction.Left);
-        assertEquals(CardinalDirection.South,robot.getDirection());
+        assertEquals(CardinalDirection.South, robot.getDirection());
     }
 
     /**
@@ -145,7 +142,7 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.South);
         turn.turn(robot, Direction.Left);
-        assertEquals(CardinalDirection.East,robot.getDirection());
+        assertEquals(CardinalDirection.East, robot.getDirection());
     }
 
     /**
@@ -163,6 +160,6 @@ public class TurnTest {
         Turn turn = new Turn();
         robot.setDirection(CardinalDirection.East);
         turn.turn(robot, Direction.Left);
-        assertEquals(CardinalDirection.North,robot.getDirection());
+        assertEquals(CardinalDirection.North, robot.getDirection());
     }
 }

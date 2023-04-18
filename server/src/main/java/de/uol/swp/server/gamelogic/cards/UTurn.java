@@ -19,8 +19,8 @@ public class UTurn extends CardBehaviour {
      */
     @Override
     public void uTurn(Robot robot, boolean uTurn) {
-        if(uTurn){
-            switch(robot.getDirection()) {
+        if (uTurn) {
+            switch (robot.getDirection()) {
                 case North:
                     robot.setDirection(CardinalDirection.South);
                     break;
@@ -36,6 +36,5 @@ public class UTurn extends CardBehaviour {
                     break;
             }
         }
-
     }
 }
