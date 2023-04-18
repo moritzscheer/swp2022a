@@ -20,6 +20,12 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     private ArrowType arrowType;
     private CardinalDirection direction;
 
+    /**
+     * Constructor
+     *
+     * @author Finn
+     * @since 2023/02/03
+     */
     public ConveyorBeltBehaviour(
             Robot[] robotStates,
             Block[][] board,
@@ -32,6 +38,8 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * Create a move intention of the robot to the next block
+     *
      * @author Finn
      * @since 2023/02/03
      */
