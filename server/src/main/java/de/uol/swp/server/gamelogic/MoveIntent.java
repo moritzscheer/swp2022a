@@ -13,6 +13,14 @@ public class MoveIntent {
         this.moves = 1;
     }
 
+    /**
+     * Constructor with moves
+     *
+     * <p>This is necessary to handle movements with cards, which may move 1, 2 or 3 positions
+     *
+     * @author Maria Eduarda
+     * @since 2023-04-22
+     */
     public MoveIntent(int id, CardinalDirection dir, int moves) {
         this.robotID = id;
         this.direction = dir;
