@@ -14,6 +14,27 @@ public class Straight extends CardBehaviour {
     private int moves;
 
     /**
+     * Constructor
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public Straight(int moves) {
+        this.moves = moves;
+    }
+
+    /**
+     * Get how many moves
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    @Override
+    public int getMoves() {
+        return this.moves;
+    }
+
+    /**
      * Moves the robot forward in the direction where the robot is looking. With the parameter moves
      * tells the roboter how many tiles it goes.
      *

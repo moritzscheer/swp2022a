@@ -10,7 +10,7 @@ import de.uol.swp.server.gamelogic.Robot;
 public class Card extends CardBehaviour {
 
     private int id;
-    private CardBehaviour behaviour;
+    private final CardBehaviour behaviour;
     private int priority;
     private String imgPath;
 
@@ -33,5 +33,35 @@ public class Card extends CardBehaviour {
      */
     public void executeBehaviour(Robot robot) {
         behaviour.execute(robot);
+    }
+
+    /**
+     * Get direction, from card behaviour
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public Direction getDirectionCard() {
+        return behaviour.getDirectionCard();
+    }
+
+    /**
+     * Get how many moves, from card behaviour
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public int getMoves() {
+        return behaviour.getMoves();
+    }
+
+    /**
+     * Get uTurn, from card behaviour
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public boolean getUTurn() {
+        return behaviour.getUTurn();
     }
 }

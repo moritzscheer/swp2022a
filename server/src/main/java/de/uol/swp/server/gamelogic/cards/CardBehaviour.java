@@ -24,7 +24,7 @@ abstract class CardBehaviour {
      * @see
      * @since 2023-04-03
      */
-    public void turn(Robot robot, Direction directionCard) {}
+    public void turn(Robot robot) {}
 
     /**
      * @author Tommy & WKempel
@@ -41,6 +41,36 @@ abstract class CardBehaviour {
     public void execute(Robot robot) {
         uTurn(robot, uTurn);
         move(robot, moves);
-        turn(robot, directionCard);
+        turn(robot);
+    }
+
+    /**
+     * Get uTurn, overriden in uTurn
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public boolean getUTurn() {
+        return false;
+    }
+
+    /**
+     * Get direction, overriden in Turn
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public Direction getDirectionCard() {
+        return null;
+    }
+
+    /**
+     * Get moves, overriden in Straight
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public int getMoves() {
+        return 0;
     }
 }

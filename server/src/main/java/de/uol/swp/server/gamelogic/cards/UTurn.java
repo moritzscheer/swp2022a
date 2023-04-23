@@ -12,6 +12,30 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
  */
 public class UTurn extends CardBehaviour {
 
+    private boolean uTurn;
+
+    /**
+     * Constructor
+     *
+     * @author Maria
+     * @see
+     * @since 2023-04-23
+     */
+    public void uTurn() {
+        this.uTurn = true;
+    }
+
+    /**
+     * getUTurn
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    @Override
+    public boolean getUTurn() {
+        return this.uTurn;
+    }
+
     /**
      * @author Tommy & WKempel
      * @see

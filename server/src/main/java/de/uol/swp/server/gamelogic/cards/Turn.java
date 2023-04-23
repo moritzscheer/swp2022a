@@ -12,6 +12,29 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
  */
 public class Turn extends CardBehaviour {
 
+    Direction directionCard;
+
+    /**
+     * Constructor
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public Turn(Direction dir) {
+        this.directionCard = dir;
+    }
+
+    /**
+     * Get Direction
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    @Override
+    public Direction getDirectionCard() {
+        return this.directionCard;
+    }
+
     /**
      * Depending on where the robot is looking and with card it is, changes the CardinalDirection of
      * the robot
@@ -21,8 +44,8 @@ public class Turn extends CardBehaviour {
      * @since 2023-04-03
      */
     @Override
-    public void turn(Robot robot, Direction directionCard) {
-        if (directionCard.equals(Direction.Right)) {
+    public void turn(Robot robot) {
+        if (this.directionCard.equals(Direction.Right)) {
             switch (robot.getDirection()) {
                 case North:
                     robot.setDirection(CardinalDirection.East);
@@ -40,7 +63,7 @@ public class Turn extends CardBehaviour {
                     break;
             }
         }
-        if (directionCard.equals(Direction.Left)) {
+        if (this.directionCard.equals(Direction.Left)) {
             switch (robot.getDirection()) {
                 case North:
                     robot.setDirection(CardinalDirection.West);
