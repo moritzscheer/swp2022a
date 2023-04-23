@@ -107,9 +107,9 @@ public class Game {
                 for (Block blockXY : blocksX) {
                     List<MoveIntent> moves;
 
-                    //TODO: implementation of ActionReports for use in a GameMoveHistory
-                    //Preferably altering the behaviour Methods to return (or get as parameters)
-                    //the list of ActionReports and MoveIntents
+                    // TODO: implementation of ActionReports for use in a GameMoveHistory
+                    // Preferably altering the behaviour Methods to return (or get as parameters)
+                    // the list of ActionReports and MoveIntents
 
                     moves = blockXY.OnExpressConveyorStage(cardIterator);
                     moves = resolveMoveIntentConflicts(moves);
@@ -146,8 +146,12 @@ public class Game {
 
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
         List<List<MoveIntent>> moves = new ArrayList<>();
-        //TODO: handle rotations
-        for (int i = 0; i < 3/*card.move() TODO: modify card.move() to return the number of moves*/; i++) {
+        // TODO: handle rotations
+        // card.getDirectionCard();
+        // card.getUTurn();
+        for (int i = 0;
+                i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
+                i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots[robotID].getDirection()));
             moves.add(subMoveList);
