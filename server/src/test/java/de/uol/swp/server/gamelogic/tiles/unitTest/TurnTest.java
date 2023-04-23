@@ -30,9 +30,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromNorthToEast() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Right);
         robot.setDirection(CardinalDirection.North);
-        turn.turn(robot, Direction.Right);
+        turn.turn(robot);
         assertEquals(CardinalDirection.East, robot.getDirection());
     }
 
@@ -48,9 +48,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromEastToSouth() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Right);
         robot.setDirection(CardinalDirection.East);
-        turn.turn(robot, Direction.Right);
+        turn.turn(robot);
         assertEquals(CardinalDirection.South, robot.getDirection());
     }
 
@@ -66,9 +66,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromSouthToWest() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Right);
         robot.setDirection(CardinalDirection.South);
-        turn.turn(robot, Direction.Right);
+        turn.turn(robot);
         assertEquals(CardinalDirection.West, robot.getDirection());
     }
     /**
@@ -83,9 +83,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromWestToNorth() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Right);
         robot.setDirection(CardinalDirection.West);
-        turn.turn(robot, Direction.Right);
+        turn.turn(robot);
         assertEquals(CardinalDirection.North, robot.getDirection());
     }
 
@@ -103,9 +103,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromNorthToWest() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Left);
         robot.setDirection(CardinalDirection.North);
-        turn.turn(robot, Direction.Left);
+        turn.turn(robot);
         assertEquals(CardinalDirection.West, robot.getDirection());
     }
 
@@ -121,9 +121,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromWestToSouth() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Left);
         robot.setDirection(CardinalDirection.West);
-        turn.turn(robot, Direction.Left);
+        turn.turn(robot);
         assertEquals(CardinalDirection.South, robot.getDirection());
     }
 
@@ -139,9 +139,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromSouthToEast() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Left);
         robot.setDirection(CardinalDirection.South);
-        turn.turn(robot, Direction.Left);
+        turn.turn(robot);
         assertEquals(CardinalDirection.East, robot.getDirection());
     }
 
@@ -157,9 +157,9 @@ public class TurnTest {
      */
     @Test
     public void testTurnFromEastToNorth() {
-        Turn turn = new Turn();
+        Turn turn = new Turn(Direction.Left);
         robot.setDirection(CardinalDirection.East);
-        turn.turn(robot, Direction.Left);
+        turn.turn(robot);
         assertEquals(CardinalDirection.North, robot.getDirection());
     }
 }
