@@ -28,7 +28,7 @@ public class UTurnTest {
     public void testUTunFromNorthToSouth() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.North);
-        uTurn.uTurn(robot, true);
+        uTurn.uTurn(robot);
         assertEquals(CardinalDirection.South, robot.getDirection());
     }
     /**
@@ -44,7 +44,7 @@ public class UTurnTest {
     public void testUTurnFromSouthToNorth() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.South);
-        uTurn.uTurn(robot, true);
+        uTurn.uTurn(robot);
         assertEquals(CardinalDirection.North, robot.getDirection());
     }
     /**
@@ -60,7 +60,7 @@ public class UTurnTest {
     public void testUTurnFromWestToEast() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.West);
-        uTurn.uTurn(robot, true);
+        uTurn.uTurn(robot);
         assertEquals(CardinalDirection.East, robot.getDirection());
     }
     /**
@@ -76,7 +76,7 @@ public class UTurnTest {
     public void testUTurnFromEastToWest() {
         UTurn uTurn = new UTurn();
         robot.setDirection(CardinalDirection.East);
-        uTurn.uTurn(robot, true);
+        uTurn.uTurn(robot);
         assertEquals(CardinalDirection.West, robot.getDirection());
     }
 }
