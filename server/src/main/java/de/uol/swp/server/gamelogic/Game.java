@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Game {
     private Robot[] robots;
     private int nRobots;
     private int rowCount;
-    private int columCount;
+    private int columnCount;
     private int programStep;
     private Timer timer;
     private int readyRegister;
@@ -43,7 +44,7 @@ public class Game {
         this.robots = robots;
         this.nRobots = robots.length;
         this.rowCount = board.length;
-        this.columCount = board[0].length;
+        this.columnCount = board[0].length;
         this.programStep = 0;
         this.players = players;
     }
@@ -144,23 +145,44 @@ public class Game {
         // Send back a collective result of the whole GameRound
     }
 
+    private void turn(Robot robot, Direction directionCard) {
+        int rotation;
+        switch (directionCard) {
+            case Left:
+                rotation = 3;
+                break;
+            case Right:
+                rotation = 1;
+                break;
+            default:
+                rotation = 0;
+                break;
+        }
+        robot.setDirection(CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
+    }
+
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
         List<List<MoveIntent>> moves = new ArrayList<>();
         // TODO: handle rotations
         if (card.getDirectionCard() != null) {
-            card.turn(robots[robotID]);
+            turn(robots[robotID], card.getDirectionCard());
         }
         if (card.getUTurn()) {
-            card.uTurn(robots[robotID]);
+            uTurn(robots[robotID]);
         }
         for (int i = 0;
-                i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
-                i++) {
+             i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
+             i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots[robotID].getDirection()));
             moves.add(subMoveList);
         }
         return moves;
+    }
+
+    private void uTurn(Robot robot) {
+        turn(robot, Direction.Left);
+        turn(robot, Direction.Left);
     }
 
     private void executeMoveIntents(List<MoveIntent> moves) {
@@ -175,8 +197,9 @@ public class Game {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
         if (movesIn == null) {
-            throw new IllegalArgumentException(
-                    "The list of moves should not be null.  (But can contain zero elements.)");
+            //TODO: Log Error instead of throwing it
+//            throw new IllegalArgumentException(
+//                    "The list of moves should not be null.  (But can contain zero elements.)");
         }
 
         // convert every MoveIntent to a MoveResult
@@ -290,8 +313,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                                    == CardinalDirection.values()[
-                                            moveList.get(j).getDirection().ordinal() + 2]
+                            == CardinalDirection.values()[
+                            moveList.get(j).getDirection().ordinal() + 2]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -312,7 +335,7 @@ public class Game {
             Block[][] board) {
         return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                 || board[destinationTile.x][destinationTile.y].getObstruction(
-                        CardinalDirection.values()[moveDir.ordinal() + 2]);
+                CardinalDirection.values()[moveDir.ordinal() + 2]);
     }
 
     private static void removeMoveResultAndParents(
@@ -325,7 +348,9 @@ public class Game {
         }
     }
 
-    /** @author Finn */
+    /**
+     * @author Finn
+     */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
