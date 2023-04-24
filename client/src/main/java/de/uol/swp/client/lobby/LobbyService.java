@@ -3,8 +3,8 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
-import de.uol.swp.common.lobby.request.StartGameRequest;
 import de.uol.swp.common.lobby.request.*;
+import de.uol.swp.common.lobby.request.StartGameRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -102,5 +102,4 @@ public class LobbyService {
         StartGameRequest startGameRequest = new StartGameRequest(lobbyID);
         eventBus.post(startGameRequest);
     }
-
 }

@@ -1,8 +1,11 @@
 package de.uol.swp.client.lobby.game.presenter;
 
+import static javafx.scene.paint.Color.DODGERBLUE;
+
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,15 +15,15 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+
 import java.io.FileReader;
 import java.util.*;
-
-import static javafx.scene.paint.Color.DODGERBLUE;
 
 /**
  * Manages the game window
@@ -97,7 +100,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Method to initialize the game view
      *
-     * This method creates a board with the given information and adds all images to the board.
+     * <p>This method creates a board with the given information and adds all images to the board.
      *
      * @param lobbyID the Integer identifier of the lobby
      * @param lobby LobbyDTO Object containing all the information of the lobby
@@ -108,23 +111,30 @@ public class GamePresenter extends AbstractPresenter {
     public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board) {
         this.lobbyID = lobbyID;
 
-        //creates the board
+        // creates the board
         try {
-            JSONObject json = new JSONObject(new JSONTokener(new FileReader("client/src/main/resources/json/tile.json")));
+            JSONObject json =
+                    new JSONObject(
+                            new JSONTokener(
+                                    new FileReader("client/src/main/resources/json/tile.json")));
             JSONArray jsonArray = json.getJSONArray("array");
 
-            for(int i = 0; i < board.length; i++){
+            for (int i = 0; i < board.length; i++) {
                 gameBoard.addColumn(i);
                 gameBoard.addRow(i);
             }
 
-            for(int col = 0; col < board.length; col++) {
-                for(int row = 0; row < board[col].length; row++) {
+            for (int col = 0; col < board.length; col++) {
+                for (int row = 0; row < board[col].length; row++) {
                     for (int img = 0; img < board[col][row].length; img++) {
                         String path = searchJSON(jsonArray, board[col][row][img].toString());
                         ImageView imageView = new ImageView(path);
-                        imageView.fitWidthProperty().bind(gameBoard.widthProperty().divide(board.length));
-                        imageView.fitHeightProperty().bind(gameBoard.heightProperty().divide(board.length));
+                        imageView
+                                .fitWidthProperty()
+                                .bind(gameBoard.widthProperty().divide(board.length));
+                        imageView
+                                .fitHeightProperty()
+                                .bind(gameBoard.heightProperty().divide(board.length));
                         gameBoard.add(imageView, col, row);
                     }
                 }
@@ -133,10 +143,10 @@ public class GamePresenter extends AbstractPresenter {
             e.printStackTrace();
         }
 
-
-        Platform.runLater(() -> {
-            setAllPlayersNotReady();
-        });
+        Platform.runLater(
+                () -> {
+                    setAllPlayersNotReady();
+                });
 
         cards.put(card1, false);
         cards.put(card2, false);
@@ -154,13 +164,13 @@ public class GamePresenter extends AbstractPresenter {
         slots.put(slot4, false);
         slots.put(slot5, false);
 
-        //if owner = true      sonst erstellt jeder spieler der Lobby ein eigenes carddeck
+        // if owner = true      sonst erstellt jeder spieler der Lobby ein eigenes carddeck
         resetCardsAndSlots();
 
-        //setLabels();
+        // setLabels();
     }
 
-    private void setAllPlayersNotReady(){
+    private void setAllPlayersNotReady() {
         player2Ready.setText("Not ready");
         player2Ready.setFill(Color.RED);
         player3Ready.setText("Not ready");
@@ -180,8 +190,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Helper method to search a given value in a JSON array
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to the value
-     * from the parameter. Then in returns the path of the image.
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * the value from the parameter. Then in returns the path of the image.
      *
      * @param array the JSONArray where the content is saved
      * @param searchValue the String that wants to be searched for
@@ -190,7 +200,7 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-03-23
      */
     private String searchJSON(JSONArray array, String searchValue) {
-        for(int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.length(); i++) {
             JSONObject obj = null;
             try {
                 obj = array.getJSONObject(i);
@@ -204,37 +214,18 @@ public class GamePresenter extends AbstractPresenter {
         return null;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // -----------------------------------------------------
     // methods for the cards
     // -----------------------------------------------------
 
-
-
-
-    //Clickevent auf deinen Kartenbereich
-    public void onCardClicked (MouseEvent click) {
+    // Clickevent auf deinen Kartenbereich
+    public void onCardClicked(MouseEvent click) {
         if (slots.containsValue(false)) {
             for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
-                if (cardz.getKey().equals(getCardOrSlot(click.toString())) && cardz.getValue() == true) {
-                    for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
+                if (cardz.getKey().equals(getCardOrSlot(click.toString()))
+                        && cardz.getValue() == true) {
+                    for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz :
+                            slots.entrySet()) {
                         if (slotz.getValue() == false) {
                             switchTwoCardsOrSlots(getCardOrSlot(click.toString()), slotz.getKey());
                             break;
@@ -246,14 +237,15 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-    //Clickevent auf deinen Slotbereich
-    public void onSlotClicked (MouseEvent click) {
+    // Clickevent auf deinen Slotbereich
+    public void onSlotClicked(MouseEvent click) {
         cardsGridPane.setVisible(true);
 
-        for( Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()){
-            if(slotz.getKey().equals(getCardOrSlot(click.toString())) && slotz.getValue() == true){
-                for( Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()){
-                    if(cardz.getValue() == false){
+        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
+            if (slotz.getKey().equals(getCardOrSlot(click.toString()))
+                    && slotz.getValue() == true) {
+                for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
+                    if (cardz.getValue() == false) {
                         switchTwoCardsOrSlots(getCardOrSlot(click.toString()), cardz.getKey());
                         break;
                     }
@@ -263,10 +255,10 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-    //Gibt dir aus einem Target.toString() den passenden Slot aus
-    public javafx.scene.shape.Rectangle getCardOrSlot(String click){
+    // Gibt dir aus einem Target.toString() den passenden Slot aus
+    public javafx.scene.shape.Rectangle getCardOrSlot(String click) {
 
-        //checkt obs im Kartenbereich ist
+        // checkt obs im Kartenbereich ist
         if (click.contains("card1")) {
             return card1;
         } else if (click.contains("card2")) {
@@ -287,16 +279,16 @@ public class GamePresenter extends AbstractPresenter {
             return card9;
         }
 
-        //checkt obs im SlotBereich ist
+        // checkt obs im SlotBereich ist
         else if (click.contains("slot1")) {
             return slot1;
         } else if (click.contains("slot2")) {
             return slot2;
-        } else  if (click.contains("slot3")) {
+        } else if (click.contains("slot3")) {
             return slot3;
-        } else  if (click.contains("slot4")) {
+        } else if (click.contains("slot4")) {
             return slot4;
-        } else  if (click.contains("slot5")) {
+        } else if (click.contains("slot5")) {
             return slot5;
         }
         return null;
@@ -337,49 +329,45 @@ public class GamePresenter extends AbstractPresenter {
 
     */
     // Tauscht 2 Karten miteinander egal welche
-    public void switchTwoCardsOrSlots(javafx.scene.shape.Rectangle start, javafx.scene.shape.Rectangle end){
+    public void switchTwoCardsOrSlots(
+            javafx.scene.shape.Rectangle start, javafx.scene.shape.Rectangle end) {
 
         System.out.println(start.toString());
         System.out.println(end.toString());
         System.out.println("---------------");
 
-        //change pictures
+        // change pictures
         javafx.scene.shape.Rectangle copy = new javafx.scene.shape.Rectangle();
         copy.setFill(start.getFill());
 
         start.setFill(end.getFill());
         end.setFill(copy.getFill());
 
-
-
-        //change slotmaps
+        // change slotmaps
         boolean startBool = getSwitchTwoCardsOrSlotsBoolean(start);
-        boolean endBool= getSwitchTwoCardsOrSlotsBoolean(end);
+        boolean endBool = getSwitchTwoCardsOrSlotsBoolean(end);
 
-        if (start.toString().contains("card")){
+        if (start.toString().contains("card")) {
             cards.replace(start, endBool);
-        }
-        else if (start.toString().contains("slot")) {
+        } else if (start.toString().contains("slot")) {
             slots.replace(start, endBool);
         }
 
-        if (end.toString().contains("card")){
+        if (end.toString().contains("card")) {
             cards.replace(end, startBool);
-        }
-        else if (end.toString().contains("slot")) {
+        } else if (end.toString().contains("slot")) {
             slots.replace(end, startBool);
         }
 
-
-        //change cardpositions
+        // change cardpositions
         int startID = -1;
         int endID = -1;
-        for(int i = 0; i<cardHand.size(); i++){
+        for (int i = 0; i < cardHand.size(); i++) {
 
-            if (cardHand.get(i).getPosition().equals(start)){
+            if (cardHand.get(i).getPosition().equals(start)) {
                 startID = i;
             }
-            if (cardHand.get(i).getPosition().equals(end)){
+            if (cardHand.get(i).getPosition().equals(end)) {
                 endID = i;
             }
         }
@@ -388,13 +376,11 @@ public class GamePresenter extends AbstractPresenter {
         System.out.println(endID);
         System.out.println("---------------");
 
-        if(startID == -1 && endID > -1){
+        if (startID == -1 && endID > -1) {
             cardHand.get(endID).setPosition(start);
-        }
-        else if(endID == -1 && startID > -1){
+        } else if (endID == -1 && startID > -1) {
             cardHand.get(startID).setPosition(end);
-        }
-        else if (startID > -1 && endID > -1){
+        } else if (startID > -1 && endID > -1) {
             copy = cardHand.get(startID).getPosition();
 
             cardHand.get(startID).setPosition(end);
@@ -402,50 +388,42 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-
-
-
-
-
-
-
-
     // gibt den Boolean vom Kartenslot raus
-    public boolean getSwitchTwoCardsOrSlotsBoolean(javafx.scene.shape.Rectangle cardslot){
-        for( Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
-            if(cardz.getKey().equals(cardslot)){
+    public boolean getSwitchTwoCardsOrSlotsBoolean(javafx.scene.shape.Rectangle cardslot) {
+        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
+            if (cardz.getKey().equals(cardslot)) {
                 return cardz.getValue();
             }
         }
-        for( Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
-            if(slotz.getKey().equals(cardslot)){
+        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
+            if (slotz.getKey().equals(cardslot)) {
                 return slotz.getValue();
             }
         }
         return false;
     }
 
-/* DEAD CODE
-//Tauscht design
-    public void changeCard(Rectangle valueCard, Rectangle slot){
+    /* DEAD CODE
+    //Tauscht design
+        public void changeCard(Rectangle valueCard, Rectangle slot){
 
-        for(int i = 0; i<cardHand.size(); i++){
+            for(int i = 0; i<cardHand.size(); i++){
 
-            if (cardHand.get(i).getPosition().equals(slot)){
+                if (cardHand.get(i).getPosition().equals(slot)){
 
-                cardHand.get(i).setPosition(valueCard);
-                valueCard.setFill(cardHand.get(i).getPicture());
-                slot.setFill(DODGERBLUE);
-                break;
+                    cardHand.get(i).setPosition(valueCard);
+                    valueCard.setFill(cardHand.get(i).getPicture());
+                    slot.setFill(DODGERBLUE);
+                    break;
+                }
             }
         }
-    }
-*/
+    */
 
-    public ArrayList<Card> newCardDeck(){
+    public ArrayList<Card> newCardDeck() {
 
         ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 10; i<=840; i = i +10){
+        for (int i = 10; i <= 840; i = i + 10) {
             cards.add(new Card(i));
         }
         Collections.shuffle(cards);
@@ -453,60 +431,60 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /*
-    public void setLabels(){
-        if(valueLabels.size() <= 9){
-            for(int i = 1; i< 10; i++){
-                valueLabels.put(new Label(), null);
+        public void setLabels(){
+            if(valueLabels.size() <= 9){
+                for(int i = 1; i< 10; i++){
+                    valueLabels.put(new Label(), null);
 
-            }
-        }
-
-        ArrayList<String> alreadyDone = new ArrayList<>();
-
-        for(Map.Entry<Label, Rectangle> labMap : valueLabels.entrySet()){
-            boolean done = false;
-
-            for(Map.Entry<Rectangle, Boolean> value : cards.entrySet()){
-                if(value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false){
-                    setLabelText(labMap.getKey(), value.getKey());
-                    alreadyDone.add(value.getKey().toString());
-                    done = true;
-
-                    break;
                 }
             }
-            if( done == false) {
-                for (Map.Entry<Rectangle, Boolean> value : slots.entrySet()) {
-                    if (value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false) {
 
+            ArrayList<String> alreadyDone = new ArrayList<>();
+
+            for(Map.Entry<Label, Rectangle> labMap : valueLabels.entrySet()){
+                boolean done = false;
+
+                for(Map.Entry<Rectangle, Boolean> value : cards.entrySet()){
+                    if(value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false){
                         setLabelText(labMap.getKey(), value.getKey());
                         alreadyDone.add(value.getKey().toString());
                         done = true;
+
                         break;
+                    }
+                }
+                if( done == false) {
+                    for (Map.Entry<Rectangle, Boolean> value : slots.entrySet()) {
+                        if (value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false) {
+
+                            setLabelText(labMap.getKey(), value.getKey());
+                            alreadyDone.add(value.getKey().toString());
+                            done = true;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
 
-    public void setLabelText(Label label, Rectangle box){
+        public void setLabelText(Label label, Rectangle box){
 
-        System.out.println(box.toString());
+            System.out.println(box.toString());
 
-        for( int i = 0; i< cardHand.size(); i++){
-            if(cardHand.get(i).getPosition().equals(box)){
-            label.setText(String.valueOf(cardHand.get(i).getValue()));
+            for( int i = 0; i< cardHand.size(); i++){
+                if(cardHand.get(i).getPosition().equals(box)){
+                label.setText(String.valueOf(cardHand.get(i).getValue()));
 
-                label.setTranslateX(box.getX()+32);
-                label.setTranslateY(box.getY()-41);
-                label.setAlignment(Pos.CENTER);
-                label.setTextFill(BLACK);
-                handCards.getChildren().add(label);
+                    label.setTranslateX(box.getX()+32);
+                    label.setTranslateY(box.getY()-41);
+                    label.setAlignment(Pos.CENTER);
+                    label.setTextFill(BLACK);
+                    handCards.getChildren().add(label);
 
+                }
             }
         }
-    }
-*/
+    */
 
     public void getData(MouseEvent mouseEvent) {
         /*System.out.println("--------------------");
@@ -528,26 +506,24 @@ public class GamePresenter extends AbstractPresenter {
         resetCardsAndSlots();
     }
 
-    public void resetCardsAndSlots(){
+    public void resetCardsAndSlots() {
         // if(loggedInUser == owner) {
         cardDeck = newCardDeck();
         System.out.println("KartenDeck größe " + cardDeck.size());
-        //}
+        // }
         cardHand.clear();
         submittedCards.clear();
 
-
         for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
-            if(cardz.getKey() != null){
+            if (cardz.getKey() != null) {
                 cards.replace(cardz.getKey(), false);
                 cardz.getKey().setFill(DODGERBLUE);
                 System.out.print("1");
             }
-
         }
 
         for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
-            if(slotz.getKey() != null){
+            if (slotz.getKey() != null) {
                 slots.replace(slotz.getKey(), false);
                 slotz.getKey().setFill(DODGERBLUE);
                 System.out.print("2");
@@ -567,38 +543,36 @@ public class GamePresenter extends AbstractPresenter {
                 }
             }
         }
-
     }
+
     @FXML
     private void onSubmit(MouseEvent mouseEvent) {
 
-        if(slots.containsValue(false) == false) {
+        if (slots.containsValue(false) == false) {
             submittedCards.add(getCardBySlot(slot1));
             submittedCards.add(getCardBySlot(slot2));
             submittedCards.add(getCardBySlot(slot3));
             submittedCards.add(getCardBySlot(slot4));
             submittedCards.add(getCardBySlot(slot5));
 
-            for (int i = 0; i< submittedCards.size(); i++){
+            for (int i = 0; i < submittedCards.size(); i++) {
                 System.out.println(submittedCards.get(i).getValue());
             }
 
             cardsGridPane.setVisible(false);
 
-            //resetCardsAndSlots();
+            // resetCardsAndSlots();
         }
-
     }
 
-    public Card getCardBySlot(Rectangle slot){
-        for (int i = 0; i<cardHand.size();i++){
-            if(cardHand.get(i).getPosition().equals(slot)){
+    public Card getCardBySlot(Rectangle slot) {
+        for (int i = 0; i < cardHand.size(); i++) {
+            if (cardHand.get(i).getPosition().equals(slot)) {
                 return cardHand.get(i);
             }
         }
         return null;
     }
-
 
     public void dragDropped(DragEvent event) {
         event.acceptTransferModes(TransferMode.ANY);
@@ -607,24 +581,21 @@ public class GamePresenter extends AbstractPresenter {
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
 
-
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
-
     }
 
     public void dragEntered(MouseEvent mouseEvent) {
 
-        if(getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
+        if (getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
             return;
         }
-        Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
-
+        Dragboard dragboard =
+                getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
 
         ClipboardContent content = new ClipboardContent();
 
         content.putString(mouseEvent.toString());
         dragboard.setContent(content);
-
     }
 
     public void dragOver(DragEvent event) {
@@ -634,7 +605,7 @@ public class GamePresenter extends AbstractPresenter {
     /*
     @Author Maxim Erden
      */
-    public ArrayList<Card> getSubmittedCards(){
+    public ArrayList<Card> getSubmittedCards() {
         return this.submittedCards;
     }
 }

@@ -10,7 +10,6 @@ package de.uol.swp.client.lobby.game.events;
  * @see de.uol.swp.client.SceneManager
  * @since 2023-02-20
  */
-
 public class ShowGameViewEvent {
 
     private Integer lobbyID;

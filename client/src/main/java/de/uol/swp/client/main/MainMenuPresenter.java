@@ -8,8 +8,8 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
@@ -123,7 +123,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        if(this.users != null) {
+        if (this.users != null) {
             Platform.runLater(() -> users.remove(message.getUsername()));
         }
     }

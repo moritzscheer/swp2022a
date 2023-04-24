@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
+
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
@@ -11,6 +12,7 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+
 import javafx.scene.Parent;
 
 import java.util.HashMap;
@@ -28,7 +30,6 @@ public class LobbyManagement {
     private final Map<Integer, Game> lobbyMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
     private GamePresenter currentGamePresenter;
-
 
     /**
      * Handles successful login
@@ -53,7 +54,8 @@ public class LobbyManagement {
     /**
      * Method to set up a game view
      *
-     * This method opens the init method in the GamePresenter and saves it with the parent in the lobbyMap HashMap.
+     * <p>This method opens the init method in the GamePresenter and saves it with the parent in the
+     * lobbyMap HashMap.
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
      * @param user the UserDTO Object containing all the information of the user
@@ -143,7 +145,9 @@ public class LobbyManagement {
     /**
      * Method to set up a game view
      *
-     * This method opens the init method in the GamePresenter and saves it with the parent in the lobbyMap HashMap.
+     * <p>This method opens the init method in the GamePresenter and saves it with the parent in the
+     * lobbyMap HashMap.
+     *
      * @param lobbyID the Integer identifier of the lobby
      * @param lobby LobbyDTO Object containing all the information of the lobby
      * @param gameParent the Parent object of the game view
@@ -151,9 +155,9 @@ public class LobbyManagement {
      * @since 2023-03-23
      */
     public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent) {
-        //testing
+        // testing
         Integer[][][] board = new Integer[12][12][2];
-        for(int col = 0; col < board.length; col++) {
+        for (int col = 0; col < board.length; col++) {
             for (int row = 0; row < board[col].length; row++) {
                 int count = 0;
                 for (int img = 0; img < board[col][row].length; img++) {
@@ -210,5 +214,4 @@ public class LobbyManagement {
     public void setNextGamePresenter(GamePresenter currentGamePresenter) {
         this.currentGamePresenter = currentGamePresenter;
     }
-
 }

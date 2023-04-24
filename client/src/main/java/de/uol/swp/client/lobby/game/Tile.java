@@ -1,6 +1,5 @@
 package de.uol.swp.client.lobby.game;
 
-
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -20,14 +19,13 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public Tile(double imageSize){
+    public Tile(double imageSize) {
         this.imageSize = imageSize;
     }
 
-    public int rotateTileImage(int direction){
+    public int rotateTileImage(int direction) {
         return 90 * direction;
     }
-
 
     /**
      * Adds the LaserStart on the game board with location, imageSize and rotation
@@ -35,8 +33,11 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-18
      */
-    public ImageView addTileLaserStart(int direction){
-        ImageView laserStart = new ImageView(new Image("images/tiles/LaserStart.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserStart(int direction) {
+        ImageView laserStart =
+                new ImageView(
+                        new Image(
+                                "images/tiles/LaserStart.png", imageSize, imageSize, true, false));
         laserStart.setRotate(rotateTileImage(direction));
         return laserStart;
     }
@@ -47,8 +48,11 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaserStart2(int direction){
-        ImageView laserStart2 = new ImageView(new Image("images/tiles/LaserStart2.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserStart2(int direction) {
+        ImageView laserStart2 =
+                new ImageView(
+                        new Image(
+                                "images/tiles/LaserStart2.png", imageSize, imageSize, true, false));
         laserStart2.setRotate(rotateTileImage(direction));
         return laserStart2;
     }
@@ -59,8 +63,11 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaserStart3(int direction){
-        ImageView laserStart3 = new ImageView(new Image("images/tiles/LaserStart3.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserStart3(int direction) {
+        ImageView laserStart3 =
+                new ImageView(
+                        new Image(
+                                "images/tiles/LaserStart3.png", imageSize, imageSize, true, false));
         laserStart3.setRotate(rotateTileImage(direction));
         return laserStart3;
     }
@@ -71,8 +78,10 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaser(int direction){
-        ImageView laser = new ImageView(new Image("images/tiles/laser.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaser(int direction) {
+        ImageView laser =
+                new ImageView(
+                        new Image("images/tiles/laser.png", imageSize, imageSize, true, false));
         laser.setRotate(rotateTileImage(direction));
         return laser;
     }
@@ -83,8 +92,10 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-18
      */
-    public ImageView addTileLaser2(int direction){
-        ImageView laser2 = new ImageView(new Image("images/tiles/laser2.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaser2(int direction) {
+        ImageView laser2 =
+                new ImageView(
+                        new Image("images/tiles/laser2.png", imageSize, imageSize, true, false));
         laser2.setRotate(rotateTileImage(direction));
         return laser2;
     }
@@ -95,8 +106,10 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaser3(int direction){
-        ImageView laser3 = new ImageView(new Image("images/tiles/laser3.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaser3(int direction) {
+        ImageView laser3 =
+                new ImageView(
+                        new Image("images/tiles/laser3.png", imageSize, imageSize, true, false));
         laser3.setRotate(rotateTileImage(direction));
         return laser3;
     }
@@ -107,8 +120,10 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaserHalf(int direction){
-        ImageView laserHalf = new ImageView(new Image("images/tiles/laserHalf.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserHalf(int direction) {
+        ImageView laserHalf =
+                new ImageView(
+                        new Image("images/tiles/laserHalf.png", imageSize, imageSize, true, false));
         laserHalf.setRotate(rotateTileImage(direction));
         return laserHalf;
     }
@@ -119,8 +134,11 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaserHalf2(int direction){
-        ImageView laserHalf2 = new ImageView(new Image("images/tiles/laserHalf2.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserHalf2(int direction) {
+        ImageView laserHalf2 =
+                new ImageView(
+                        new Image(
+                                "images/tiles/laserHalf2.png", imageSize, imageSize, true, false));
         laserHalf2.setRotate(rotateTileImage(direction));
         return laserHalf2;
     }
@@ -131,8 +149,11 @@ public class Tile {
      * @author Tommy Dang
      * @since 2023-03-19
      */
-    public ImageView addTileLaserHalf3(int direction){
-        ImageView laserHalf3 = new ImageView(new Image("images/tiles/laserHalf3.png", imageSize, imageSize, true, false));
+    public ImageView addTileLaserHalf3(int direction) {
+        ImageView laserHalf3 =
+                new ImageView(
+                        new Image(
+                                "images/tiles/laserHalf3.png", imageSize, imageSize, true, false));
         laserHalf3.setRotate(rotateTileImage(direction));
         return laserHalf3;
     }
@@ -143,9 +164,10 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-03-24
      */
-    public ImageView addTilePusher1(int direction)
-    {
-        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1.png", imageSize, imageSize, true, false));
+    public ImageView addTilePusher1(int direction) {
+        ImageView pusher =
+                new ImageView(
+                        new Image("images/tiles/Pusher_1.png", imageSize, imageSize, true, false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -156,9 +178,15 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-03-24
      */
-    public ImageView addTilePusher135(int direction)
-    {
-        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_1_3_5.png", imageSize, imageSize, true, false));
+    public ImageView addTilePusher135(int direction) {
+        ImageView pusher =
+                new ImageView(
+                        new Image(
+                                "images/tiles/Pusher_1_3_5.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -169,9 +197,10 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-03-24
      */
-    public ImageView addTilePusher2(int direction)
-    {
-        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2.png", imageSize, imageSize, true, false));
+    public ImageView addTilePusher2(int direction) {
+        ImageView pusher =
+                new ImageView(
+                        new Image("images/tiles/Pusher_2.png", imageSize, imageSize, true, false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -182,9 +211,11 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-03-24
      */
-    public ImageView addTilePusher24(int direction)
-    {
-        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_2_4.png", imageSize, imageSize, true, false));
+    public ImageView addTilePusher24(int direction) {
+        ImageView pusher =
+                new ImageView(
+                        new Image(
+                                "images/tiles/Pusher_2_4.png", imageSize, imageSize, true, false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -195,9 +226,10 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-03-24
      */
-    public ImageView addTilePusher3(int direction)
-    {
-        ImageView pusher = new ImageView(new Image("images/tiles/Pusher_3.png", imageSize, imageSize, true, false));
+    public ImageView addTilePusher3(int direction) {
+        ImageView pusher =
+                new ImageView(
+                        new Image("images/tiles/Pusher_3.png", imageSize, imageSize, true, false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -208,10 +240,10 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-04-05
      */
-    public ImageView addGearCW()
-    {
+    public ImageView addGearCW() {
         // CW: Clockwise
-        return new ImageView(new Image("images/tiles/GearCW.png", imageSize, imageSize, true, false));
+        return new ImageView(
+                new Image("images/tiles/GearCW.png", imageSize, imageSize, true, false));
     }
 
     /**
@@ -220,9 +252,9 @@ public class Tile {
      * @author Mathis Eilers
      * @since 2023-04-05
      */
-    public ImageView addGearCCW()
-    {
+    public ImageView addGearCCW() {
         // CCW: Counterclockwise
-        return new ImageView(new Image("images/tiles/GearCCW.png", imageSize, imageSize, true, false));
+        return new ImageView(
+                new Image("images/tiles/GearCCW.png", imageSize, imageSize, true, false));
     }
 }

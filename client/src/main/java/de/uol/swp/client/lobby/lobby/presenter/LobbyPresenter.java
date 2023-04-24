@@ -51,7 +51,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private Integer lobbyID;
     private String lobbyName;
     private User owner;
-    static private ObservableList<String> users;
+    private static ObservableList<String> users;
     private String password;
     private Boolean multiplayer;
     private Integer slots = 1;
@@ -270,8 +270,8 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onStartButtonPressed(ActionEvent actionEvent){
-        if(loggedInUser == owner) {
+    private void onStartButtonPressed(ActionEvent actionEvent) {
+        if (loggedInUser == owner) {
             lobbyService.startGame(lobbyID);
         }
     }

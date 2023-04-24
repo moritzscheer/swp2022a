@@ -111,10 +111,31 @@ public class TabPresenter extends AbstractPresenter {
     // -----------------------------------------------------
 
     /**
+     * helper method to delete a tab
+     *
+     * <p>This method removes the tab which has the same ID as the lobbyID given to it.
+     *
+     * @param lobbyID The Integer containing the lobbyID
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    private void deleteLobbyTab(Integer lobbyID) {
+        Platform.runLater(
+                () -> {
+                    tabPane.getTabs()
+                            .removeIf(
+                                    tab ->
+                                            tab.getId() != null
+                                                    && tab.getId().equals(lobbyID.toString()));
+                    tabPane.getSelectionModel().select(0);
+                });
+    }
+
+    /**
      * method for the switching the content of a tab
      *
-     * This method sets the content of the tab with the tabID to the given parent given as a parameter. If the
-     * infoBox is visible, it is set to invisible.
+     * <p>This method sets the content of the tab with the tabID to the given parent given as a
+     * parameter. If the infoBox is visible, it is set to invisible.
      *
      * @param lobbyID Integer containing the ID of the lobby
      * @param parent Parent containing the content of the fxml
@@ -135,9 +156,9 @@ public class TabPresenter extends AbstractPresenter {
     /**
      * method for the creating a tab
      *
-     * This method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
-     * parent parameter given to it. Then it opens the helper method setupTab to Set up important
-     * settings and adds the tab to the paneTab. Also, the tab is then selected.
+     * <p>This method creates a tab with the lobbyName as a tab name and sets the content of the tab
+     * to the parent parameter given to it. Then it opens the helper method setupTab to Set up
+     * important settings and adds the tab to the paneTab. Also, the tab is then selected.
      *
      * @author Moritz Scheer
      * @see de.uol.swp.client.SceneManager
@@ -267,8 +288,7 @@ public class TabPresenter extends AbstractPresenter {
                             .removeIf(
                                     tab ->
                                             tab.getId() != null
-                                                    && tab.getId()
-                                                    .equals(lobbyID.toString()));
+                                                    && tab.getId().equals(lobbyID.toString()));
                     tabPane.getSelectionModel().select(0);
                 });
     }
@@ -341,6 +361,7 @@ public class TabPresenter extends AbstractPresenter {
                                 }
                             }
                         }
+
                         userService.logout(loggedInUser);
                     } else if (infoLabel3.isVisible()) {
                         lobbyService.leaveLobby(

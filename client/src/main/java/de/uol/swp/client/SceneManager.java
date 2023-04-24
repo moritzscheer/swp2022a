@@ -10,22 +10,22 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
-import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
+import de.uol.swp.client.lobby.game.presenter.GamePresenter;
+import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.main.AccountMenuPresenter;
+import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.preLobby.events.CreateLobbyCanceledEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
 import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter;
 import de.uol.swp.client.preLobby.presenter.JoinOrCreatePresenter;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
-import de.uol.swp.client.main.AccountMenuPresenter;
-import de.uol.swp.client.main.MainMenuPresenter;
-import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
-import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -40,8 +40,8 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
-
 import de.uol.swp.common.user.UserDTO;
+
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -278,8 +278,8 @@ public class SceneManager {
     /**
      * Initializes the game view
      *
-     * <p>If the gameParent is null it gets set to a new Parent showing the game view as
-     * specified by the GameView FXML file.
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * by the GameView FXML file.
      *
      * @see GamePresenter
      * @author Moritz Scheer
@@ -957,9 +957,9 @@ public class SceneManager {
     /**
      * Helper method to create a tab and initialize the lobby view
      *
-     * This method initializes the lobbyview and shows different views depending on if the lobby is
-     * set to private or not. Also it opens the setup method to setup the lobby and opens the createTab method to
-     * create a tab with the given content.
+     * <p>This method initializes the lobbyview and shows different views depending on if the lobby
+     * is set to private or not. Also it opens the setup method to setup the lobby and opens the
+     * createTab method to create a tab with the given content.
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
      * @param user the UserDTO Object containing all the information of the User
@@ -974,7 +974,9 @@ public class SceneManager {
 
             if (lobby.isMultiplayer()) {
                 showJoinOrCreateScreen();
-            } else { showMainScreen(); }
+            } else {
+                showMainScreen();
+            }
 
             lobbyManagement.setupLobby(lobby, user, lobbyParent);
             tabPresenter.createTab(lobby, lobbyParent);
@@ -1004,5 +1006,4 @@ public class SceneManager {
             e.printStackTrace();
         }
     }
-
 }

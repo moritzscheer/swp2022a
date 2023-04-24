@@ -5,14 +5,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.uol.swp.common.lobby.message.StartGameMessage;
-import de.uol.swp.common.lobby.request.StartGameRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
+import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.request.*;
+import de.uol.swp.common.lobby.request.StartGameRequest;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -274,8 +274,8 @@ public class LobbyService extends AbstractService {
     /**
      * Handles StartGameRequest found on the EventBus
      *
-     * <p>If a StartGameRequest is detected on the EventBus, this method is called.
-     * It posts a StartGameMessage to all the users in the lobby, containing the
+     * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
+     * StartGameMessage to all the users in the lobby, containing the
      *
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer
@@ -285,7 +285,9 @@ public class LobbyService extends AbstractService {
      */
     @Subscribe
     public void onStartGameRequest(StartGameRequest msg) {
-        sendToAllInLobby(msg.getLobbyID(), new StartGameMessage(msg.getLobbyID(), lobbyManagement.getLobby(msg.getLobbyID()).get()));
+        sendToAllInLobby(
+                msg.getLobbyID(),
+                new StartGameMessage(
+                        msg.getLobbyID(), lobbyManagement.getLobby(msg.getLobbyID()).get()));
     }
-
 }

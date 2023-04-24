@@ -37,7 +37,7 @@ public class LobbyManagement {
             lobbyID++;
         }
 
-        if(multiplayer) {
+        if (multiplayer) {
             for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
                 if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {
                     throw new IllegalArgumentException("Lobby name " + name + " already exists!");

@@ -2,6 +2,7 @@ package de.uol.swp.client.lobby;
 
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
+
 import javafx.scene.Parent;
 
 /**
@@ -18,8 +19,8 @@ public class Game {
     private GamePresenter gamePresenter;
 
     /**
-     * Constructor to save the lobbyPresenter and lobbyParent in the given attributes
-     **
+     * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
+     *
      * @param lobbyPresenter the Presenter of the lobby view
      * @param lobbyParent the Parent Object of the lobby view
      * @author Moritz Scheer
@@ -31,8 +32,8 @@ public class Game {
     }
 
     /**
-     * Method to save the gamePresenter and gameParent in the given attributes
-     **
+     * Method to save the gamePresenter and gameParent in the given attributes *
+     *
      * @param gamePresenter the Presenter of the game view
      * @param gameParent the Parent Object of the game view
      * @author Moritz Scheer
@@ -90,8 +91,4 @@ public class Game {
     public LobbyPresenter getLobbyPresenter() {
         return lobbyPresenter;
     }
-
-
-
-
 }
