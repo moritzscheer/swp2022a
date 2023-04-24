@@ -31,7 +31,7 @@ abstract class CardBehaviour {
      * @see
      * @since 2023-04-03
      */
-    public void uTurn(Robot robot, boolean uTurn) {}
+    public void uTurn(Robot robot) {}
 
     /**
      * @author WKempel
@@ -39,7 +39,7 @@ abstract class CardBehaviour {
      * @since 2023-04-03
      */
     public void execute(Robot robot) {
-        uTurn(robot, uTurn);
+        uTurn(robot);
         move(robot, moves);
         turn(robot);
     }
