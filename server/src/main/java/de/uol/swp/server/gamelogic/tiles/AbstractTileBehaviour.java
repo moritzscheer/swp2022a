@@ -1,163 +1,128 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+
+import java.util.List;
 
 /**
- *
- *
  * @author
  * @see
  * @since
  */
+public abstract class AbstractTileBehaviour {
 
-abstract class AbstractTileBehaviour {
+    protected Robot[] robotStates;
+    protected Block[][] board;
+    protected Position blockPos;
 
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public CardinalDirection getWall(CardinalDirection direction) {
-//        //TODO
-//        return direction;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public int getDamage() {
-//        //TODO
-//        return 0;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public int getRepair() {
-//        //TODO
-//        return 0;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position moveRobot() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public boolean killRobot() {
-//        //TODO
-//        return false;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position getCheckPoint() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public Position getCheckPointPosition() {
-//        //TODO
-//        return null;
-//    }
-//
-//    /**
-//     * @author
-//     * @see
-//     * @since
-//     */
-//    public boolean turnRobot() {
-//        //TODO
-//        return false;
-//    }
-
-    /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
-     */
-    public Robot[] OnRobotMoved(Robot[] currentStates){
-        return currentStates;
+    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+        this.robotStates = robotStates;
+        this.board = board;
+        this.blockPos = blockPos;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * Getter for blockPos, mainly for tests purposes
+     *
+     * @return block position
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-03-05
      */
-    public Robot[] OnExpressConveyorStage(Robot[] currentStates){
-        return currentStates;
+    public Position getBlockPos() {
+        return this.blockPos;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @return List of planned but not necessarily possible moves
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
-    public Robot[] OnConveyorStage(Robot[] currentStates){
-        return currentStates;
+    public List<MoveIntent> onRobotEntered(int indexOfMovedRobot) {
+        return null;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @return List of planned but not necessarily possible moves
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
-    public Robot[] OnLaserStage(Robot[] currentStates){
-        return currentStates;
+    public List<MoveIntent> onExpressConveyorStage(int programmStep) {
+        return null;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @return List of planned but not necessarily possible moves
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
-    public Robot[] OnPusherStage(Robot[] currentStates){
-        return currentStates;
+    public List<MoveIntent> onConveyorStage(int programmStep) {
+        return null;
     }
 
     /**
-     * @param currentStates
-     * @return
-     * @author
-     * @since
+     * @return List of planned but not necessarily possible moves
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
-    public Robot[] OnPresserStage(Robot[] currentStates){
-        return currentStates;
+    public List<MoveIntent> onLaserStage(int programmStep) {
+        return null;
     }
 
     /**
-     * @return ImagePath or Image Itself (maybe rotatet)
-     * @author
-     * @since
+     * @return List of planned but not necessarily possible moves
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
      */
-    public String GetImage(){
+    public List<MoveIntent> onPusherStage(int programmStep) {
+        return null;
+    }
+
+    /**
+     * @return new state of the game
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
+     */
+    public List<MoveIntent> onPressorStage(int programmStep) {
+        return null;
+    }
+
+    /**
+     * @return ImagePath or Image Itself (maybe rotated)
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
+     */
+    public String GetImage() {
         return "";
+    }
+
+    /**
+     * @return whether the move is blocked or not
+     * @author Finn Oldeboershuis
+     * @since 2023-01-29
+     */
+    public boolean getObstruction(CardinalDirection dir) {
+        return false;
+    }
+
+    /**
+     * return List of planned but not necessarily possible moves
+     *
+     * @author WKempel
+     * @since 2023-03-22
+     */
+    public List<MoveIntent> onCardEnding(int programmStep) {
+        return null;
+    }
+
+    public List<MoveIntent> onRotatorStage(int programStep) {
+        return null;
+    }
+
+    public List<MoveIntent> onCheckPointStage(int programStep) {
+        return null;
     }
 }

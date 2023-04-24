@@ -1,49 +1,76 @@
 package de.uol.swp.server.gamelogic.cards;
 
-import io.netty.handler.codec.http2.Http2FrameLogger;
+import de.uol.swp.server.gamelogic.Robot;
 
 /**
- *
- *
- * @author
- * @see
- * @since
+ * @author Tommy Dang
+ * @since 2023-04-02
  */
-abstract class CardBehaviour{
+abstract class CardBehaviour {
+
+    private int moves;
+    private Direction directionCard;
+    private boolean uTurn;
 
     /**
-     *
-     *
-     * @author
+     * @author Tommy & WKempel
      * @see
-     * @since
+     * @since 2023-04-03
      */
-    public int move(){
-        //TODO
-        return 0;
+    public void move(Robot robot, int moves) {}
+
+    /**
+     * @author Tommy & WKempel
+     * @see
+     * @since 2023-04-03
+     */
+    public void turn(Robot robot) {}
+
+    /**
+     * @author Tommy & WKempel
+     * @see
+     * @since 2023-04-03
+     */
+    public void uTurn(Robot robot) {}
+
+    /**
+     * @author WKempel
+     * @see
+     * @since 2023-04-03
+     */
+    public void execute(Robot robot) {
+        uTurn(robot);
+        move(robot, moves);
+        turn(robot);
     }
 
     /**
+     * Get uTurn, overriden in uTurn
      *
-     *
-     * @author
-     * @see
-     * @since
+     * @author Maria
+     * @since 2023-04-23
      */
-    public Direction turn(){
-        //TODO
+    public boolean getUTurn() {
+        return false;
+    }
+
+    /**
+     * Get direction, overriden in Turn
+     *
+     * @author Maria
+     * @since 2023-04-23
+     */
+    public Direction getDirectionCard() {
         return null;
     }
 
     /**
+     * Get moves, overriden in Straight
      *
-     *
-     * @author
-     * @see
-     * @since
+     * @author Maria
+     * @since 2023-04-23
      */
-    public boolean uTurn(){
-        //TODO
-        return false;
+    public int getMoves() {
+        return 0;
     }
 }

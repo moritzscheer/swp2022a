@@ -157,6 +157,27 @@ public class TabPresenter extends AbstractPresenter {
     // -----------------------------------------------------
 
     /**
+     * helper method to delete a tab
+     *
+     * <p>This method removes the tab which has the same ID as the lobbyID given to it.
+     *
+     * @param lobbyID The Integer containing the lobbyID
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    private void deleteLobbyTab(Integer lobbyID) {
+        Platform.runLater(
+                () -> {
+                    tabPane.getTabs()
+                            .removeIf(
+                                    tab ->
+                                            tab.getId() != null
+                                                    && tab.getId().equals(lobbyID.toString()));
+                    tabPane.getSelectionModel().select(0);
+                });
+    }
+
+    /**
      * helper method to set up a tab
      *
      * <p>This method sets the id to the tab id and defines EventHandler for different events
@@ -312,6 +333,7 @@ public class TabPresenter extends AbstractPresenter {
                                 }
                             }
                         }
+
                         userService.logout(loggedInUser);
                     } else if (infoLabel3.isVisible()) {
                         lobbyService.leaveLobby(
