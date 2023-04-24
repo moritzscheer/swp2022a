@@ -147,8 +147,12 @@ public class Game {
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
         List<List<MoveIntent>> moves = new ArrayList<>();
         // TODO: handle rotations
-        // card.getDirectionCard();
-        // card.getUTurn();
+        if (card.getDirectionCard() != null) {
+            card.turn(robots[robotID]);
+        }
+        if (card.getUTurn()) {
+            card.uTurn(robots[robotID]);
+        }
         for (int i = 0;
                 i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
                 i++) {
