@@ -20,10 +20,40 @@ public class Block {
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
-     * @since 20-02-2023
+     * @since 2023-02-20
      */
     public Block(AbstractTileBehaviour[] behaviourList, String imgPath, Position pos) {
         this.behaviourList = behaviourList;
+        this.imgPath = imgPath;
+        this.pos = pos;
+    }
+
+    /**
+     * Constructor with only one behaviour
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public Block(AbstractTileBehaviour behaviour, String imgPath, Position pos) {
+        AbstractTileBehaviour[] behaviourList = new AbstractTileBehaviour[1];
+        behaviourList[0] = behaviour;
+
+        this.behaviourList = behaviourList;
+        this.imgPath = imgPath;
+        this.pos = pos;
+    }
+
+    /**
+     * Constructor with no behaviour
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public Block(String imgPath, Position pos) {
+
+        this.behaviourList = null;
         this.imgPath = imgPath;
         this.pos = pos;
     }
@@ -139,5 +169,27 @@ public class Block {
             }
         }
         return moves;
+    }
+
+    /**
+     * Getter behaviouList
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public AbstractTileBehaviour[] getBehaviourList() {
+        return this.behaviourList;
+    }
+
+    /**
+     * Getter imagePath
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public String getImgPath() {
+        return this.imgPath;
     }
 }
