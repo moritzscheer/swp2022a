@@ -6,6 +6,9 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.database.SQLHelper;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -13,20 +16,26 @@ import java.util.*;
 /**
  * This is a user store.
  *
- * <p>This is the user store that is used for the start of the software project. The user accounts
- * in this user store only reside within the RAM of your computer and only for as long as the server
- * is running. Therefore the users have to be added every time the server is started.
+ * <p>This user store is based on a database.
  *
  * @implNote This store will never return the password of a user!
  * @see AbstractUserStore
  * @see UserStore
- * @author Marco Grawunder
- * @since 2019-08-05
+ * @author Marco Grawunder & Jann Bruns
+ * @since 2022-12-02
  */
 public class DatabaseBasedUserStore extends AbstractUserStore implements UserStore {
 
     private final Map<String, User> users = new HashMap<>();
+    private static final Logger LOG = LogManager.getLogger(DatabaseBasedUserStore.class);
 
+    /**
+     * Finds a User by its Username and Password.
+     *
+     * @param username The user to be found.
+     * @param password The password of the user to be found.
+     * @throws NullPointerException If the users are null.
+     */
     @Override
     public Optional<User> findUser(String username, String password) {
         UserDTO usr = null;
@@ -42,7 +51,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
                             result.getString("email"));
 
         } catch (SQLException e) {
-            // TO IMPLEMENT
+            LOG.error("SQL Error: " + e.getMessage());
         }
 
         if (usr != null && Objects.equals(usr.getPassword(), hash(password))) {
@@ -51,6 +60,15 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         return Optional.empty();
     }
 
+    /**
+     * Finds a user by its username.
+     *
+     * @param username The username of the user.
+     * @return The user.
+     * @author Jann Bruns & Ole Zimmermann
+     * @since 2022-12-02
+     * @throws IllegalArgumentException If the username is null or empty.
+     */
     @Override
     public Optional<User> findUser(String username) {
         UserDTO usr = null;
@@ -73,6 +91,17 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         return Optional.empty();
     }
 
+    /**
+     * Creates a new user in the Database.
+     *
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param eMail The eMail of the user.
+     * @return The created user.
+     * @author Jann Bruns & Ole Zimmermann
+     * @since 2022-12-02
+     * @throws IllegalArgumentException If the username is null or empty.
+     */
     @Override
     public User createUser(String username, String password, String eMail) {
         if (Strings.isNullOrEmpty(username)) {
@@ -99,6 +128,17 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
                 : null;
     }
 
+    /**
+     * Updates a user in the Database.
+     *
+     * @param username The username of the user.
+     * @param password The password of the user.
+     * @param eMail The eMail of the user.
+     * @return The updated user.
+     * @author Jann Bruns & Ole Zimmermann
+     * @since 2022-12-02
+     * @throws IllegalArgumentException If the username is null or empty.
+     */
     @Override
     public User updateUser(String username, String password, String eMail) {
         String passwordHash = hash(password);
@@ -118,6 +158,14 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         return rowsAffected == 1 ? new UserDTO(username, passwordHash, eMail) : null;
     }
 
+    /**
+     * Removes a user from the Database.
+     *
+     * @param username The username of the user.
+     * @author Jann Bruns
+     * @since 2022-12-02
+     * @throws IllegalArgumentException If the username is null or empty.
+     */
     @Override
     public void removeUser(String username) {
         try {
@@ -127,6 +175,13 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
         }
     }
 
+    /**
+     * Gets all users from the Database.
+     *
+     * @return The list of all users.
+     * @author Jann Bruns & Ole Zimmermann
+     * @since 2022-12-02
+     */
     @Override
     public List<User> getAllUsers() {
         List<User> retUsers = new ArrayList<>();
