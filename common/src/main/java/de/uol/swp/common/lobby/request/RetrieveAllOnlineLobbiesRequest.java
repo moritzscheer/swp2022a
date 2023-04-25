@@ -12,6 +12,4 @@ import de.uol.swp.common.message.AbstractRequestMessage;
  * @author Marco Grawunder
  * @since 2019-08-07
  */
-
-public class RetrieveAllOnlineLobbiesRequest extends AbstractRequestMessage {
-}
+public class RetrieveAllOnlineLobbiesRequest extends AbstractRequestMessage {}

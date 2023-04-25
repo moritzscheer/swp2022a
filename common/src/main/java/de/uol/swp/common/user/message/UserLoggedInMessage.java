@@ -30,7 +30,7 @@ public class UserLoggedInMessage extends AbstractServerMessage {
     /**
      * Constructor
      *
-     * @param username the username of the newly logged in user
+     * @param username the username of the newly logged-in user
      * @since 2017-03-17
      */
     public UserLoggedInMessage(String username) {

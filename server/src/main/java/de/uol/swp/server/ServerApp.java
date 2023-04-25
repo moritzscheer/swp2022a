@@ -2,7 +2,9 @@ package de.uol.swp.server;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
 import de.uol.swp.common.Configuration;
+import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.communication.ServerHandler;
 import de.uol.swp.server.communication.netty.NettyServerHandler;
 import de.uol.swp.server.communication.netty.Server;
@@ -11,13 +13,15 @@ import de.uol.swp.server.lobby.LobbyService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 import de.uol.swp.server.usermanagement.UserManagement;
 import de.uol.swp.server.usermanagement.UserService;
+
 import io.netty.channel.ChannelHandler;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This class handles the startup of the server, as well as, the creation of default
- * users while the MainMemoryBasedUserStore is still in use.
+ * This class handles the startup of the server, as well as, the creation of default users while the
+ * MainMemoryBasedUserStore is still in use.
  *
  * @author Marco Grawunder
  * @see de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore
@@ -29,12 +33,10 @@ class ServerApp {
 
     /**
      * Main Method
-     * <p>
-     * This method handles the creation of the server components and the start of
-     * the server
      *
-     * @param args Any arguments given when starting the application e.g. a port
-     *             number
+     * <p>This method handles the creation of the server components and the start of the server
+     *
+     * @param args Any arguments given when starting the application e.g. a port number
      * @since 2017-03-17
      */
     public static void main(String[] args) throws Exception {
@@ -61,8 +63,7 @@ class ServerApp {
     }
 
     /**
-     * Helper method to create the services the server uses and for the time being
-     * the test users
+     * Helper method to create the services the server uses and for the time being the test users
      *
      * @param injector the google guice injector used for dependency injection
      * @since 2019-09-18
@@ -75,6 +76,6 @@ class ServerApp {
         injector.getInstance(UserService.class);
         injector.getInstance(AuthenticationService.class);
         injector.getInstance(LobbyService.class);
+        injector.getInstance(TextChatService.class);
     }
-
 }

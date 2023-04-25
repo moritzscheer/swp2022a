@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="Background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="1000.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.1-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
+<GridPane id="Background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="1000.0" prefHeight="1080.0" prefWidth="1920.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -23,6 +23,7 @@
         <Button fx:id="yesButton" alignment="CENTER" layoutX="240.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onYesButtonPressed" prefHeight="40.0" prefWidth="119.0" text="Yes" visible="false" />
         <Button fx:id="noButton" alignment="CENTER" layoutX="40.0" layoutY="131.0" maxHeight="40.0" maxWidth="119.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#onNoButtonPressed" prefHeight="40.0" prefWidth="119.0" text="No" visible="false" />
         <Label fx:id="infoLabel1" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to log-out?" visible="false" />
-        <Label fx:id="infoLabel2" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to leave the Lobby?" visible="false" />
+        <Label fx:id="infoLabel2" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to exit?" visible="false" />
+        <Label fx:id="infoLabel3" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to leave the Lobby?" visible="false" />
     </Pane>
 </GridPane>

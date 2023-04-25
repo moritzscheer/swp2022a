@@ -7,6 +7,7 @@ import de.uol.swp.common.user.UserDTO;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.UUID;
 
 /**
  * Object to transfer the information of a game lobby
@@ -27,6 +28,7 @@ public class LobbyDTO implements Lobby {
     private final String password;
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
+    private final UUID chatChannel;
 
     /**
      * Constructor
@@ -40,13 +42,19 @@ public class LobbyDTO implements Lobby {
      * @since 2023-01-03
      */
     public LobbyDTO(
-            Integer lobbyID, String name, User creator, String password, Boolean multiplayer) {
+            Integer lobbyID,
+            String name,
+            User creator,
+            String password,
+            Boolean multiplayer,
+            UUID chatChannelUUID) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
         this.users.add(creator);
         this.password = password;
         this.multiplayer = multiplayer;
+        this.chatChannel = chatChannelUUID;
     }
 
     /**
@@ -62,11 +70,18 @@ public class LobbyDTO implements Lobby {
      */
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
-        if(tmp.getPassword().equals("")) {
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true);
+        if (tmp.getPassword().equals("")) {
+            return new LobbyDTO(
+                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
         } else {
             String passwordBlurred = "*".repeat(lobby.getPassword().length());
-            return new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), passwordBlurred, true);
+            return new LobbyDTO(
+                    lobby.getLobbyID(),
+                    lobby.getName(),
+                    lobby.getOwner(),
+                    passwordBlurred,
+                    true,
+                    null);
         }
     }
 
@@ -82,7 +97,14 @@ public class LobbyDTO implements Lobby {
      * @since 2022-12-03
      */
     public LobbyDTO createWithoutUserPassword(Lobby lobby) {
-        LobbyDTO tmp = new LobbyDTO(lobby.getLobbyID(), lobby.getName(), lobby.getOwner().getWithoutPassword(), lobby.getPassword(), lobby.isMultiplayer());
+        LobbyDTO tmp =
+                new LobbyDTO(
+                        lobby.getLobbyID(),
+                        lobby.getName(),
+                        lobby.getOwner().getWithoutPassword(),
+                        lobby.getPassword(),
+                        lobby.isMultiplayer(),
+                        null);
         for (User users : lobby.getUsers()) {
             if (!users.equals(lobby.getOwner()))
                 tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
@@ -121,9 +143,9 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles User that wants to leave the lobby.
      *
-     *
-     * If the user that wants to leave the lobby is the last user in the lobby an IllegalArgumentException is thrown.
-     * If more than one user is in the lobby, then the user is removed and a new owner is asigned.
+     * <p>If the user that wants to leave the lobby is the last user in the lobby an
+     * IllegalArgumentException is thrown. If more than one user is in the lobby, then the user is
+     * removed and a new owner is asigned.
      *
      * @param user The User that wants to leave the lobby.
      * @author Moritz Scheer & Daniel Merzo
@@ -225,5 +247,9 @@ public class LobbyDTO implements Lobby {
     @Override
     public Integer getLobbyID() {
         return this.lobbyID;
+    }
+
+    public UUID getTextChatID() {
+        return chatChannel;
     }
 }

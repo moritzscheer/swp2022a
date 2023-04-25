@@ -7,6 +7,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -27,19 +28,13 @@ public class CreateLobbyPresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
-    @Inject
-    private LobbyService lobbyService;
+    @Inject private LobbyService lobbyService;
 
-    @FXML
-    private ListView<String> usersView;
-    @FXML
-    private TextField nameField;
-    @FXML
-    private TextField passwordField;
-    @FXML
-    private Label errorMessage1;    //no name typed in
-    @FXML
-    private Label errorMessage2;    //Name already exists!
+    @FXML private ListView<String> usersView;
+    @FXML private TextField nameField;
+    @FXML private TextField passwordField;
+    @FXML private Label errorMessage1; // no name typed in
+    @FXML private Label errorMessage2; // Name already exists!
 
     /**
      * Default Constructor
@@ -87,6 +82,21 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     }
 
     /**
+     * Method called when the lobby is created successfully
+     *
+     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
+     * @see de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse
+     * @author Ole Zimmermann
+     * @since 2023-01-25
+     */
+    @Subscribe
+    public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
+        backToDefault();
+        nameField.clear();
+        passwordField.clear();
+    }
+
+    /**
      * Method called when the cancel button is pressed
      *
      * <p>This Method is called when the cancel button is pressed. It posts an instance of the
@@ -101,6 +111,8 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     @FXML
     void onCancelButtonPressed(ActionEvent actionEvent) {
         backToDefault();
+        nameField.clear();
+        passwordField.clear();
         eventBus.post(new CreateLobbyCanceledEvent());
     }
 
@@ -117,8 +129,9 @@ public class CreateLobbyPresenter extends AbstractPresenter {
      */
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
-        if(!nameField.getText().isBlank()) {
-            lobbyService.createNewLobby(nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
+        if (!nameField.getText().isBlank()) {
+            lobbyService.createNewLobby(
+                    nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
             backToDefault();
         } else {
             errorMessage2.setVisible(false);
@@ -129,16 +142,13 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     /**
      * helper method to set the label and textField Nodes back to default
      *
-     * This Method sets the label and textField Nodes back to default
+     * <p>This Method sets the label and textField Nodes back to default
      *
-     * @author Moritz Scheer
+     * @author Moritz Scheer, Ole Zimmermann
      * @since 2022-12-27
      */
     private void backToDefault() {
         errorMessage1.setVisible(false);
         errorMessage2.setVisible(false);
-
-        nameField.clear();
-        passwordField.clear();
     }
 }

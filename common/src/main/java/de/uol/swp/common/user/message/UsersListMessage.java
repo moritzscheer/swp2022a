@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A message containing all current logged in usernames
+ * A message containing all current logged-in usernames
  *
  * @author Marco Grawunder
  * @since 2017-03-17

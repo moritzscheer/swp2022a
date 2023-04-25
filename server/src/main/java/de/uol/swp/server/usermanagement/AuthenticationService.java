@@ -38,7 +38,7 @@ import javax.security.auth.login.LoginException;
 public class AuthenticationService extends AbstractService {
     private static final Logger LOG = LogManager.getLogger(AuthenticationService.class);
 
-    /** The list of current logged in users */
+    /** The list of current logged-in users */
     private final Map<Session, User> userSessions = new HashMap<>();
 
     private final UserManagement userManagement;

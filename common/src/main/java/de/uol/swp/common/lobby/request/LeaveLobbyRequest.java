@@ -21,8 +21,7 @@ public class LeaveLobbyRequest extends AbstractLobbyRequest {
      * @implNote this constructor is needed for serialization
      * @since 2019-10-08
      */
-    public LeaveLobbyRequest() {
-    }
+    public LeaveLobbyRequest() {}
 
     /**
      * Constructor
@@ -34,7 +33,7 @@ public class LeaveLobbyRequest extends AbstractLobbyRequest {
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LeaveLobbyRequest(String lobbyName, UserDTO user, Integer lobbyID, Boolean multiplayer) {
+    public LeaveLobbyRequest(Integer lobbyID, String lobbyName, UserDTO user, Boolean multiplayer) {
         super(lobbyName, user);
         this.lobbyID = lobbyID;
         this.multiplayer = multiplayer;

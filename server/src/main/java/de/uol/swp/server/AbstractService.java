@@ -46,7 +46,7 @@ public class AbstractService {
     /**
      * Prepares a ServerMessage to be send to all connected users and posts it to the EventBus.
      *
-     * @param message the message to be sent to every user
+     * @param message the message to be send to every user
      * @see de.uol.swp.common.message.ServerMessage
      * @since 2019-10-08
      */

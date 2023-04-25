@@ -11,7 +11,7 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2022-12-15
  */
-public class LobbyLeftSuccessfulResponse extends AbstractLobbyResponse{
+public class LobbyLeftSuccessfulResponse extends AbstractLobbyResponse {
     private LobbyDTO lobby;
 
     /**
@@ -21,8 +21,7 @@ public class LobbyLeftSuccessfulResponse extends AbstractLobbyResponse{
      * @author Daniel Merzo
      * @since 2022-12-15
      */
-    public LobbyLeftSuccessfulResponse() {
-    }
+    public LobbyLeftSuccessfulResponse() {}
 
     /**
      * Constructor

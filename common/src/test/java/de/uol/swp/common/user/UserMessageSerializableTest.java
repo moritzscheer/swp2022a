@@ -50,7 +50,8 @@ class UserMessageSerializableTest {
                         RegistrationExceptionMessage.class));
         assertTrue(
                 SerializationTestHelper.checkSerializableAndDeserializable(
-                        new LoginSuccessfulResponse(defaultUser), LoginSuccessfulResponse.class));
+                        new LoginSuccessfulResponse(defaultUser, null),
+                        LoginSuccessfulResponse.class));
         assertTrue(
                 SerializationTestHelper.checkSerializableAndDeserializable(
                         new LoginRequest("name", "pass"), LoginRequest.class));

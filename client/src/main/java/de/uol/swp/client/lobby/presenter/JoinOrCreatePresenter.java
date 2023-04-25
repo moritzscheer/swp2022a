@@ -14,8 +14,8 @@ import de.uol.swp.common.lobby.message.UserDroppedLobbyMessage;
 import de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse;
 import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
-import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.application.Platform;
@@ -27,13 +27,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-
-import javafx.scene.layout.AnchorPane;
 
 /**
  * Manages the joinOrCreate window
@@ -53,33 +52,20 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     @Inject private LobbyService lobbyService;
 
-    @FXML
-    private TableView<LobbyDTO> lobbiesView;
-    @FXML
-    private TableColumn<LobbyDTO, Integer> column1;
-    @FXML
-    private TableColumn<LobbyDTO, String> column2;
-    @FXML
-    private TableColumn<LobbyDTO, String> column3;
-    @FXML
-    private TableColumn<LobbyDTO, String> column4;
+    @FXML private TableView<LobbyDTO> lobbiesView;
+    @FXML private TableColumn<LobbyDTO, Integer> column1;
+    @FXML private TableColumn<LobbyDTO, String> column2;
+    @FXML private TableColumn<LobbyDTO, String> column3;
+    @FXML private TableColumn<LobbyDTO, String> column4;
 
-    @FXML
-    private Label errorMessage1;    //incorrect password
-    @FXML
-    private Label errorMessage2;    //lobby full
-    @FXML
-    private Label passwordLabel;
-    @FXML
-    private Label headerPasswordView;
-    @FXML
-    private Button passwordViewCancelButton;
-    @FXML
-    private Button passwordViewJoinButton;
-    @FXML
-    private TextField textFieldPassword;
-    @FXML
-    private AnchorPane PasswordView;
+    @FXML private Label errorMessage1; // incorrect password
+    @FXML private Label errorMessage2; // lobby full
+    @FXML private Label passwordLabel;
+    @FXML private Label headerPasswordView;
+    @FXML private Button passwordViewCancelButton;
+    @FXML private Button passwordViewJoinButton;
+    @FXML private TextField textFieldPassword;
+    @FXML private AnchorPane PasswordView;
 
     /**
      * Default Constructor
@@ -144,7 +130,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     public void onLobbyJoinedExceptionResponse(LobbyJoinedExceptionResponse message) {
         LOG.error("Lobby join error {}", message);
         updatePasswordView();
-        if(message.toString().contains("already full")) {
+        if (message.toString().contains("already full")) {
             errorMessage2.setVisible(true);
         } else {
             errorMessage1.setVisible(true);
@@ -154,8 +140,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Handles successfully joined lobbies
      *
-     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this
-     * method is called.
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * called.
      *
      * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
@@ -163,18 +149,19 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        Platform.runLater(() -> {
-            if(lobbiesList != null && loggedInUser != null ) {
-                lobbiesList.removeIf(u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
-            }
-        });
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null && loggedInUser != null) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
+                    }
+                });
     }
 
     /**
      * Handles successfully left lobbies
      *
-     * If an LobbyLeaveUserResponse object is detected on the EventBus this
-     * method is called.
+     * <p>If an LobbyLeaveUserResponse object is detected on the EventBus this method is called.
      *
      * @param message The LobbyLeaveUserResponse object detected on the EventBus
      * @author Moritz Scheer
@@ -182,11 +169,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
-        Platform.runLater(() -> {
-            if(lobbiesList != null && loggedInUser != null) {
-                lobbiesList.add(message.getLobby());
-            }
-        });
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null && loggedInUser != null) {
+                        lobbiesList.add(message.getLobby());
+                    }
+                });
     }
 
     // -----------------------------------------------------
@@ -205,11 +193,14 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserCreatedLobbyMessage(UserCreatedLobbyMessage message) {
-        Platform.runLater(() -> {
-            if(lobbiesList != null && loggedInUser != null && !message.getLobby().getUsers().contains(loggedInUser)) {
-                lobbiesList.add(message.getLobby());
-            }
-        });
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null
+                            && loggedInUser != null
+                            && !message.getLobby().getUsers().contains(loggedInUser)) {
+                        lobbiesList.add(message.getLobby());
+                    }
+                });
     }
 
     /**
@@ -223,12 +214,16 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-15
      */
     @Subscribe
-    private void onLobbyDroppedMessage(UserDroppedLobbyMessage message){
-        Platform.runLater(() -> {
-            if(lobbiesList != null && loggedInUser != null && !message.getUser().equals(loggedInUser)) {
-                lobbiesList.removeIf(u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
-            }
-        });
+    private void onLobbyDroppedMessage(UserDroppedLobbyMessage message) {
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null
+                            && loggedInUser != null
+                            && !message.getUser().equals(loggedInUser)) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
+                    }
+                });
     }
 
     /**
@@ -238,8 +233,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * contains not the loggedInUser in the list given to the joinOrCreate lobby list. If there is
      * no lobby list, then it creates one.
      *
-     * @implNote The code inside this Method has to run in the JavaFX-application
-     * thread. Therefore, it is crucial not to remove the {@code Platform.runLater()}
+     * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
+     *     it is crucial not to remove the {@code Platform.runLater()}
      * @param list A list of LobbyDTO objects including all currently open lobbies
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
      * @author Moritz Scheer & Maxim Erden
@@ -247,24 +242,35 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     private void updateLobbyList(List<LobbyDTO> list) {
         // Attention: This must be done on the FX Thread!
-        Platform.runLater(() -> {
-            if (lobbiesList == null) {
-                lobbiesList = FXCollections.observableArrayList();
-                lobbiesView.setItems(lobbiesList);
-            }
-            lobbiesList.clear();
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList == null) {
+                        lobbiesList = FXCollections.observableArrayList();
+                        lobbiesView.setItems(lobbiesList);
+                    }
+                    lobbiesList.clear();
 
-            column1.setCellValueFactory(new PropertyValueFactory<>("lobbyID"));
-            column2.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-            column3.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getOwner().getUsername()));
-            column4.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getPassword()));
+                    column1.setCellValueFactory(new PropertyValueFactory<>("lobbyID"));
+                    column2.setCellValueFactory(
+                            cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+                    column3.setCellValueFactory(
+                            cellData ->
+                                    new SimpleStringProperty(
+                                            cellData.getValue().getOwner().getUsername()));
+                    column4.setCellValueFactory(
+                            cellData ->
+                                    new SimpleStringProperty(
+                                            cellData.getValue().getPassword().length() > 0
+                                                    ? "*****"
+                                                    : ""));
 
-            list.forEach(u -> {
-                if (!u.getUsers().contains(loggedInUser)) {
-                    lobbiesList.add(u);
-                }
-            });
-        });
+                    list.forEach(
+                            u -> {
+                                if (!u.getUsers().contains(loggedInUser)) {
+                                    lobbiesList.add(u);
+                                }
+                            });
+                });
     }
 
     // -----------------------------------------------------
@@ -320,8 +326,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         LobbyDTO selectedLobby = lobbiesView.getSelectionModel().getSelectedItem();
 
         if (selectedLobby != null) {
-            if(selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
+            if (selectedLobby.getPassword().equals("")) {
+                lobbyService.joinLobby(
+                        selectedLobby.getLobbyID(),
+                        selectedLobby.getName(),
+                        (UserDTO) loggedInUser,
+                        "");
             } else {
                 updatePasswordView();
             }
@@ -329,9 +339,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     }
 
     /**
-     * This Method is called when the List view is double-clicked
-     * it opens the PasswordView where you need to put in the password in require
-     * to join the selected Lobby
+     * This Method is called when the List view is double-clicked it opens the PasswordView where
+     * you need to put in the password in require to join the selected Lobby
      *
      * @param click The MouseEvent generated by double-clicking the Listview
      * @author Maxim Erden
@@ -341,8 +350,12 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         LobbyDTO selectedLobby = lobbiesView.getSelectionModel().getSelectedItem();
 
         if (click.getClickCount() == 2 && selectedLobby != null) {
-            if(selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(selectedLobby.getName(), (UserDTO) loggedInUser, "");
+            if (selectedLobby.getPassword().equals("")) {
+                lobbyService.joinLobby(
+                        selectedLobby.getLobbyID(),
+                        selectedLobby.getName(),
+                        (UserDTO) loggedInUser,
+                        "");
             } else {
                 updatePasswordView();
             }
@@ -359,9 +372,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @author Maxim Erden
      * @since 2022-12-11
      */
-    private void updatePasswordView(){
-        if(!PasswordView.isVisible()) {
-            headerPasswordView.setText("Join Lobby "+ lobbiesView.getSelectionModel().getSelectedItem().getName());
+    private void updatePasswordView() {
+        if (!PasswordView.isVisible()) {
+            headerPasswordView.setText(
+                    "Join Lobby " + lobbiesView.getSelectionModel().getSelectedItem().getName());
             headerPasswordView.setVisible(true);
             lobbiesView.setMouseTransparent(true);
             lobbiesView.setFocusTraversable(false);
@@ -370,8 +384,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
             textFieldPassword.setVisible(true);
             passwordViewJoinButton.setVisible(true);
             passwordViewCancelButton.setVisible(true);
-        }
-        else{
+        } else {
             lobbiesView.setMouseTransparent(false);
             lobbiesView.setFocusTraversable(true);
             PasswordView.setVisible(false);
@@ -397,7 +410,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
-        lobbyService.joinLobby(lobbiesView.getSelectionModel().getSelectedItem().getName(), (UserDTO) loggedInUser, textFieldPassword.getText());
+        lobbyService.joinLobby(
+                lobbiesView.getSelectionModel().getSelectedItem().getLobbyID(),
+                lobbiesView.getSelectionModel().getSelectedItem().getName(),
+                (UserDTO) loggedInUser,
+                textFieldPassword.getText());
         textFieldPassword.clear();
         updatePasswordView();
     }

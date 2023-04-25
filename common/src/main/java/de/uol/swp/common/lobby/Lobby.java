@@ -4,6 +4,7 @@ import de.uol.swp.common.user.User;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Interface to unify lobby objects
@@ -89,4 +90,12 @@ public interface Lobby extends Serializable {
      * @since 2022-11-22
      */
     Integer getLobbyID();
+
+    /**
+     * Getter for TextChatChannel UUID
+     *
+     * @return Text Chat UUID
+     * @since 2023-01-03
+     */
+    UUID getTextChatID();
 }

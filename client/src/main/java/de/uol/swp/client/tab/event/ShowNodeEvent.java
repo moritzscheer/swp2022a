@@ -5,8 +5,8 @@ import javafx.scene.Parent;
 /**
  * Event used to switch the Node in the TabPane to the given Node
  *
- * In order to switch the Node in the tab using this event, post an instance of it
- * onto the eventBus the SceneManager is subscribed to.
+ * <p>In order to switch the Node in the tab using this event, post an instance of it onto the
+ * eventBus the SceneManager is subscribed to.
  *
  * @author Moritz Scheer
  * @see de.uol.swp.client.tab.TabPresenter
@@ -20,7 +20,6 @@ public class ShowNodeEvent {
     public ShowNodeEvent(int tabID, Parent parent) {
         this.parent = parent;
         this.tabID = tabID;
-
     }
 
     public Parent getParent() {
