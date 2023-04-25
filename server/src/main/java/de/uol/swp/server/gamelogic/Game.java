@@ -15,18 +15,18 @@ import java.util.stream.Collectors;
  */
 public class Game {
 
-    private Block[][] board;
+    private final Block[][] board;
 
     // TODO: Remove dockingBays field
     private Position[] dockingBays;
-    private Robot[] robots;
+    private final Robot[] robots;
     private int nRobots;
     private int rowCount;
     private int columCount;
     private int programStep;
     private Timer timer;
     private int readyRegister;
-    private Player[] players;
+    private final AbstractPlayer[] players;
 
     /**
      * Constructor
@@ -37,7 +37,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Block[][] board, Position[] dockingBays, Robot[] robots, Player[] players) {
+    public Game(Block[][] board, Position[] dockingBays, Robot[] robots, AbstractPlayer[] players) {
         this.board = board;
         this.dockingBays = dockingBays;
         this.robots = robots;
