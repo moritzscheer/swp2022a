@@ -104,7 +104,7 @@ public class Game {
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Player
      * @see de.uol.swp.server.gamelogic.cards.Card
-     * @since 2023-04-18
+     * @since 2023-04-25
      */
     public Card[] revealProgramCards() {
         // TODO: send message to client
