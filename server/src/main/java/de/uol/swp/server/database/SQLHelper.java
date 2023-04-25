@@ -9,7 +9,6 @@ public class SQLHelper {
     private static Connection SqlConnection;
 
     public static Connection GetSqlConnection() throws SQLException {
-        System.out.println(DB_PASS + " " + DB_USER + " " + DB_URL);
 
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
