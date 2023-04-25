@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic.tiles.unitTest;
+package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
