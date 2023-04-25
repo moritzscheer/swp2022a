@@ -10,8 +10,7 @@ public class PlayerIsReadyMessage extends AbstractServerMessage {
     private final boolean isReady;
 
     /**
-     * @author OZimmermann
-     * @see
+     * @author Ole Zimmermann
      * @since 2023-04-25
      */
     public PlayerIsReadyMessage(boolean isReady) {
@@ -19,8 +18,7 @@ public class PlayerIsReadyMessage extends AbstractServerMessage {
     }
 
     /**
-     * @author OZimmermann
-     * @see
+     * @author Ole Zimmermann
      * @since 2023-04-25
      */
     public boolean isReady() {
