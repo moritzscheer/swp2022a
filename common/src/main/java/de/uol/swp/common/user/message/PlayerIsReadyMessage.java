@@ -4,9 +4,10 @@ import de.uol.swp.common.message.AbstractServerMessage;
 import de.uol.swp.common.user.Session;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PlayerIsReadyMessage extends AbstractServerMessage {
-
+    private static final long serialVersionUID = -6003337260190748189L;
     private final boolean isReady;
 
     /**
@@ -37,7 +38,11 @@ public class PlayerIsReadyMessage extends AbstractServerMessage {
 
     @Override
     public boolean equals(Object o) {
-        return super.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PlayerIsReadyMessage that = (PlayerIsReadyMessage) o;
+        return Objects.equals(isReady, that.isReady);
     }
 
     @Override

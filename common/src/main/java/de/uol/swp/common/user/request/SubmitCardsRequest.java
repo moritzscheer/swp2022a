@@ -3,6 +3,7 @@ package de.uol.swp.common.user.request;
 import de.uol.swp.common.message.AbstractRequestMessage;
 
 public class SubmitCardsRequest extends AbstractRequestMessage {
+    private static final long serialVersionUID = -5910486927806761643L;
     private final int[] cardIDs;
 
     /**
@@ -23,6 +24,6 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
 
     @Override
     public boolean authorizationNeeded() {
-        return false;
+        return true;
     }
 }
