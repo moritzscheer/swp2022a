@@ -3,11 +3,12 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /** @author Ole Zimmermann */
-public class Block {
+public class Block implements Serializable {
 
     private AbstractTileBehaviour[] behaviourList;
     private String imgPath;

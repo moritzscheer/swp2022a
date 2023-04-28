@@ -24,6 +24,7 @@ public class Game {
     private final Robot[] robots;
     private int nRobots;
     private int rowCount;
+    private int columnCount;
     private int columCount;
     private int programStep; // program steps from 1 to 5
     private Timer timer;
