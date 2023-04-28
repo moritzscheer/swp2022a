@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic.tiles.unitTest;
+package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +38,7 @@ public class PusherBehaviourTest {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         behaviours1[0] = new PusherBehaviour(robots, board, pos1, activeInProgramSteps, direction);
         board[0][0] = new Block(behaviours1, "", pos1);
-        board[0][1] = new Block(null, "", pos2);
+        board[0][1] = new Block("", pos2);
     }
 
     /**
