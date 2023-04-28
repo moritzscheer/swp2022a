@@ -316,7 +316,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (TextChatInput.getLength() != 0 && !TextChatInput.getText().equals(" ") && !TextChatInput.getText().equals("  ") && !TextChatInput.getText().equals("   ")) {
+            if (TextChatInput.getLength() != 0 && !TextChatInput.getText().isBlank()) {
                 textChat.sendTextMessage(TextChatInput.getText());
                 TextChatInput.setText("");
             }

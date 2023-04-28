@@ -243,7 +243,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (chatInput.getLength() != 0 && !chatInput.getText().equals(" ") && !chatInput.getText().equals("  ") && !chatInput.getText().equals("   ")) {
+            if (chatInput.getLength() != 0 && !chatInput.getText().isBlank()) {
                 textChat.sendTextMessage(chatInput.getText());
                 chatInput.setText("");
             }
