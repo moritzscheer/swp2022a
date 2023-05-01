@@ -16,7 +16,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
-     * @author Moritz Scheer & Maxim Erden
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
     public StartGameRequest(Integer lobbyID) {
@@ -27,7 +27,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * Getter for the lobbyID variable
      *
      * @return Integer containing the Lobby ID
-     * @author Moritz Scheer & Maxim Erden
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
     public Integer getLobbyID() {
