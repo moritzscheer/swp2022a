@@ -8,7 +8,7 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
  *
  * @see AbstractLobbyMessage
  * @see de.uol.swp.common.user.User
- * @author Moritz Scheer & Maxim Erden
+ * @author Maria Eduarda Costa Leite Andrade, WKempel
  * @since 2022-02-28
  */
 public class StartGameMessage extends AbstractLobbyMessage {
@@ -21,7 +21,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      *
      * @param lobbyID Integer containing the ID of the lobby
      * @param lobby LobbyDTO Object containing all the information of the lobby
-     * @author Moritz Scheer & Maxim Erden
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23
      */
     public StartGameMessage(Integer lobbyID, LobbyDTO lobby) {
@@ -34,7 +34,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * Getter for the lobbyID variable
      *
      * @return Integer containing the Lobby ID
-     * @author Moritz Scheer & Maxim Erden
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
     public Integer getLobbyID() {
@@ -45,7 +45,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * Getter for the lobbyID variable
      *
      * @return LobbyDTO Object containing all the information of the lobby
-     * @author Moritz Scheer
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23
      */
     public LobbyDTO getLobby() {
