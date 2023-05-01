@@ -20,4 +20,12 @@ public interface Game extends Serializable {
      * @since 2023-05-01
      */
     Integer getGameID();
+
+    /**
+     * Getter for the lobby's name
+     *
+     * @return A String containing the name of the lobby
+     * @since 2023-05-01
+     */
+    String getName();
 }
