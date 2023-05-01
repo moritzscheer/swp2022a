@@ -2,13 +2,15 @@ package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.io.Serializable;
+
 /**
  * Manages the robot
  *
  * @author Maria Eduarda Costa Leite Andrade
  * @since 06-02-2023
  */
-public class Robot {
+public class Robot implements Serializable {
 
     private int id;
     private String imgPath;

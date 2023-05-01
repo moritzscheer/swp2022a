@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,7 @@ import java.util.Objects;
  * @see
  * @since
  */
-public final class Position {
+public final class Position implements Serializable {
     public int x;
     public int y;
 
