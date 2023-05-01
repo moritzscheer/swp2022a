@@ -1,11 +1,12 @@
-package de.uol.swp.common.lobby.message;
+package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 
 /**
  * Message sent by the server when a game is started
  *
- * @see de.uol.swp.common.lobby.message.AbstractLobbyMessage
+ * @see AbstractLobbyMessage
  * @see de.uol.swp.common.user.User
  * @author Moritz Scheer & Maxim Erden
  * @since 2022-02-28

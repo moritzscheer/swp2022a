@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.lobby.request.StartGameRequest;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**

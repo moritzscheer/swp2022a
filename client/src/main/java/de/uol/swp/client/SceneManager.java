@@ -37,7 +37,6 @@ import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;

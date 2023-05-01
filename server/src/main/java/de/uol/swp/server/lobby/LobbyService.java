@@ -5,14 +5,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
-import de.uol.swp.common.lobby.message.StartGameMessage;
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.lobby.request.StartGameRequest;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -279,8 +279,8 @@ public class LobbyService extends AbstractService {
      *
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
-     * @see de.uol.swp.common.lobby.request.StartGameRequest
-     * @see de.uol.swp.common.lobby.message.StartGameMessage
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
     @Subscribe
