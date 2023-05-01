@@ -26,6 +26,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      */
     public StartGameMessage(Integer lobbyID, LobbyDTO lobby) {
         this.lobbyID = lobbyID;
+        // TODO: create new Game and not Lobby
         this.lobby = lobby.createWithoutUserPassword(lobby);
     }
 
