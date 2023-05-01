@@ -278,16 +278,22 @@ public class LobbyService extends AbstractService {
      * StartGameMessage to all the users in the lobby, containing the
      *
      * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
      * @see de.uol.swp.common.lobby.request.StartGameRequest
      * @see de.uol.swp.common.lobby.message.StartGameMessage
      * @since 2023-02-28
      */
     @Subscribe
     public void onStartGameRequest(StartGameRequest msg) {
-        sendToAllInLobby(
-                msg.getLobbyID(),
-                new StartGameMessage(
-                        msg.getLobbyID(), lobbyManagement.getLobby(msg.getLobbyID()).get()));
+        Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
+        if(!tmp.isEmpty()) {
+            if(tmp.get().increaseCounterRequest() == tmp.get().getUsers().size()){
+                sendToAllInLobby(
+                        msg.getLobbyID(),
+                        new StartGameMessage(
+                                msg.getLobbyID(), tmp.get()));
+                tmp.get().resetCounterRequest();
+            }
+        }
     }
 }
