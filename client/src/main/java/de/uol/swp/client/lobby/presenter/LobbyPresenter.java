@@ -255,6 +255,7 @@ public class LobbyPresenter extends AbstractPresenter {
         if (textChat == null) return;
         chatOutput.setText(textChat.getChatString());
         chatOutput.appendText("");
+        chatOutput.setWrapText(true);
         Platform.runLater(
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);

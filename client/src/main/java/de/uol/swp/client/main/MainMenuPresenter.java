@@ -21,7 +21,6 @@ import de.uol.swp.common.user.response.AllOnlineUsersResponse;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +32,6 @@ import javafx.scene.input.KeyEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import java.util.List;
 
@@ -65,9 +63,9 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     @FXML private ListView<String> usersView;
 
-    @FXML private TextArea TextChatOutput;
+    @FXML private TextArea textChatOutput;
 
-    @FXML private TextField TextChatInput;
+    @FXML private TextField textChatInput;
 
     /**
      * Handles successful login
@@ -291,7 +289,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-08
      */
     @FXML
-    private void onLogout(ActionEvent event) {
+    private void onLogoutButtonPressed(ActionEvent event) {
         tabPresenter.setInfoLabel(1);
         tabPresenter.updateInfoBox();
     }
@@ -316,9 +314,9 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (TextChatInput.getLength() != 0 && !TextChatInput.getText().isBlank()) {
-                textChat.sendTextMessage(TextChatInput.getText());
-                TextChatInput.setText("");
+            if (textChatInput.getLength() != 0 && !textChatInput.getText().isBlank()) {
+                textChat.sendTextMessage(textChatInput.getText());
+                textChatInput.setText("");
             }
         }
     }
@@ -326,11 +324,12 @@ public class MainMenuPresenter extends AbstractPresenter {
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         if (textChat == null) return;
-        TextChatOutput.setText(textChat.getChatString());
-        TextChatOutput.appendText("");
+        textChatOutput.setText(textChat.getChatString());
+        textChatOutput.appendText("");
+        textChatOutput.setWrapText(true);
         Platform.runLater(
                 () -> {
-                    TextChatOutput.setScrollTop(Double.MAX_VALUE);
+                    textChatOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
 }
