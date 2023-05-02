@@ -6,6 +6,12 @@ import javafx.scene.shape.Rectangle;
 
 import java.security.SecureRandom;
 
+/**
+ * Show Lobby Event
+ *
+ * @author Ole Zimmermann & Maxim Erden
+ * @since 2023-02-27
+ */
 public class Card {
 
     private Rectangle position;
