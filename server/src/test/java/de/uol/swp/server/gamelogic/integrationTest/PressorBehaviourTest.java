@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic.tiles.integrationTest;
+package de.uol.swp.server.gamelogic.integrationTest;
 
 public class PressorBehaviourTest {
 

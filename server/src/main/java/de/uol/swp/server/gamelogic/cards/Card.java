@@ -7,7 +7,7 @@ import de.uol.swp.server.gamelogic.Robot;
  * @see
  * @since 2023-04-03
  */
-public class Card extends CardBehaviour {
+public class Card {
 
     private int id;
     private final CardBehaviour behaviour;
@@ -63,5 +63,15 @@ public class Card extends CardBehaviour {
      */
     public boolean getUTurn() {
         return behaviour.getUTurn();
+    }
+
+    /**
+     * Get card priority
+     *
+     * @author Finn Oldeboershuis
+     * @since 2023-04-24
+     */
+    public int getPriority() {
+        return priority;
     }
 }
