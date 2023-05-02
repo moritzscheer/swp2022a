@@ -10,9 +10,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author
+ * @author Tommy Dang & WKempel & Maria Andrade & Finn Oldeboershuis
  * @see
- * @since
+ * @since 2023-03-05
  */
 public abstract class AbstractTileBehaviour implements Serializable {
 
