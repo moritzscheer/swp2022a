@@ -21,7 +21,7 @@ public class TextChatChannel {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < chatHistory.size(); i++) {
             TextChatMessage textMessage = chatHistory.get(i);
-            out.append(textMessage.getSenderString()).append(" ").append(textMessage.getMessage());
+            out.append(textMessage.getTimeStamp()).append(textMessage.getSenderString()).append(" ").append(textMessage.getMessage());
             if (i < chatHistory.size() - 1) {
                 out.append("\n");
             }

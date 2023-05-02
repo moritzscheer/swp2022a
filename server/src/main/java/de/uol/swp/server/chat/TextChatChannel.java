@@ -8,9 +8,9 @@ import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.user.Session;
 
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class TextChatChannel {
@@ -19,23 +19,20 @@ public class TextChatChannel {
     private ArrayList<Session> loggedInUsers;
     private EventBus eventBus;
 
-    private String timeStamp = createTimestampAsString();
-
-
-    private String createTimestampAsString() {
-        LocalDateTime now = LocalDateTime.now();
-        String formattedTimestamp = now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return formattedTimestamp;
+    private String getCurrentTimeStamp() {
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
     public void addUserTextMessage(String sender, String message) {
-        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">", createTimestampAsString());
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }
 
     public void addServerTextMessage(String message) {
-        TextChatMessage text = new TextChatMessage(message, "[Server]", createTimestampAsString());
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "[Server]", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }
