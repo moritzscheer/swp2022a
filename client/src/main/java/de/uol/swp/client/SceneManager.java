@@ -991,7 +991,7 @@ public class SceneManager {
      * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The StartGameMessage detected on the EventBus
-     * @see StartGameMessage
+     * @see de.uol.swp.common.game.message.StartGameMessage
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
