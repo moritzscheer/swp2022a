@@ -104,9 +104,9 @@ Der Konstruktor des AbstractTileBehaviours ist folgendermaßen aufgebaut:
     Block[][] board: ist ein zweidimensionales Array von Blöcken
     Position blockPos: ist eine Position des Blocks auf dem Spielbrett
 
-*<span style="color:DodgerBlue">
+**<span style="color:DodgerBlue">
 **Methode**
-</span>*
+</span>**
 
 Eine relevante Information vorab, jede folgende beschriebene Methode mit dem Rückgabetypen einer Liste ```List<MoveIntent>```
 repräsentiert die mögliche Abfolge, aber nicht unbedingt nötige Ausführung an Spielzügen.
@@ -143,6 +143,42 @@ Alle aufgelisteten Methoden werden im jeweiligen Behaviour vollständig und ausf
 Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Roboter auf dem jeweiligen CheckPoint Tile befindet. Wenn dies der Fall ist, dann wird im Anschluss überprüft, ob der letzte CheckPointNummer größer ist als das neue CheckPointNummer. Ist dies der Fall, wird der letzte CheckPoint mit dem neuen CheckPoint sowie die Position übernommen. So kann der Roboter an dieser Stelle wieder spawnen, wenn vorher zerstört wurde.
 
 ## ConveyorBeltBehaviour
+
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    CardinalDirection: ist eine Enumeration, die festgelegte Variablen, in diesem Fall die vier
+    Himmelsrichtungen aufzählt / vorgibt
+    ArrowType: ist eine Enumeration, die die Pfeilrichtung auf dem Förderband angibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Das ConveyorBeltBehaviour erbt die Methode ```onConveyorStage``` von der abstrakten Oberklasse AbstractTileBehaviour
+und besitzt zwei weitere Attribute ```arrowType``` und ```direction```, welche die Pfeilausrichtung des Förderbandes
+sowie die Ausrichtung des Roboters darstellt.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor des ConveyorBeltBehaviour ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Zahnrads auf dem Spielbrett
+    ArrowType arrowType: ist Pfeilausrichtung des Förderbandes
+    CardinalDirection direction: ist die Bewegungsausrichtung des Roboters
+    bzw. Himmelsausrichtung 
+
+Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 
 
 ## GearBehaviour
