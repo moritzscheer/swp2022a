@@ -2,8 +2,6 @@ package de.uol.swp.common.game.response;
 
 import de.uol.swp.common.game.Game;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
  * Response sent to the Client with all the cards data in it
@@ -15,22 +13,23 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
  */
 public class ProgramCardDataResponse extends AbstractGameResponse {
     private final CardDTO[] cards;
-    private final PlayerDTO player;
+    private final Integer playerID;
+    private final Integer gameID;
 
     /**
      * Constructor
      *
      * @param game the game to which this player belong
-     * @param lobby The lobby who created the game
      * @param cards cards that were assigned to a player
-     * @param player player that is in this game
+     * @param playerID player that is in this game
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public ProgramCardDataResponse(Game game, LobbyDTO lobby, CardDTO[] cards, PlayerDTO player) {
-        super(game.getName(), lobby);
+    public ProgramCardDataResponse(Game game, CardDTO[] cards, Integer playerID) {
+        super(game.getName(), game.getGameID());
         this.cards = cards;
-        this.player = player;
+        this.playerID = playerID;
+        this.gameID = game.getGameID();
     }
 
     /**
@@ -51,7 +50,7 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public PlayerDTO getPlayer() {
-        return this.player;
+    public Integer getPlayerID() {
+        return this.playerID;
     }
 }
