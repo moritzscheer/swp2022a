@@ -1,7 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
 /**
- * @author
+ * @author Tommy Dang
  * @see
  * @since
  */
