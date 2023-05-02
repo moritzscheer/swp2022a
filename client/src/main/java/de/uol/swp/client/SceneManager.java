@@ -36,6 +36,7 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
@@ -990,7 +991,7 @@ public class SceneManager {
      * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The StartGameMessage detected on the EventBus
-     * @see StartGameMessage
+     * @see de.uol.swp.common.game.message.StartGameMessage
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
