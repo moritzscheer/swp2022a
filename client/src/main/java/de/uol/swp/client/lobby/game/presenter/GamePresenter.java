@@ -7,8 +7,12 @@ import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -22,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.io.FileReader;
 import java.util.*;
 
@@ -41,52 +46,65 @@ public class GamePresenter extends AbstractPresenter {
     private Integer lobbyID;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**@FXML private Rectangle card1;
+     @FXML private Rectangle card2;
+     @FXML private Rectangle card3;
+     @FXML private Rectangle card4;
+     @FXML private Rectangle card5;
+     @FXML private Rectangle card6;
+     @FXML private Rectangle card7;
+     @FXML private Rectangle card8;
+     @FXML private Rectangle card9;
 
-    @FXML private Rectangle card1;
-    @FXML private Rectangle card2;
-    @FXML private Rectangle card3;
-    @FXML private Rectangle card4;
-    @FXML private Rectangle card5;
-    @FXML private Rectangle card6;
-    @FXML private Rectangle card7;
-    @FXML private Rectangle card8;
-    @FXML private Rectangle card9;
+     @FXML private Rectangle slot1;
+     @FXML private Rectangle slot2;
+     @FXML private Rectangle slot3;
+     @FXML private Rectangle slot4;
+     @FXML private Rectangle slot5;
 
-    @FXML private Rectangle slot1;
-    @FXML private Rectangle slot2;
-    @FXML private Rectangle slot3;
-    @FXML private Rectangle slot4;
-    @FXML private Rectangle slot5;
+     @FXML private StackPane paneCard1;
+     @FXML private javafx.scene.control.Button data;
 
-    @FXML private StackPane paneCard1;
-    @FXML private javafx.scene.control.Button data;
+     Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
+     Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
+     Map<Label, Rectangle> valueLabels = new LinkedHashMap<>();
 
-    Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
-    Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
-    Map<Label, Rectangle> valueLabels = new LinkedHashMap<>();
+     static ArrayList<Card> cardDeck = new ArrayList<>();
+     ArrayList<Card> cardHand = new ArrayList<>();
+     ArrayList<Card> submittedCards = new ArrayList<>();
 
-    static ArrayList<Card> cardDeck = new ArrayList<>();
-    ArrayList<Card> cardHand = new ArrayList<>();
-    ArrayList<Card> submittedCards = new ArrayList<>();
+     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     */
+     @FXML private GridPane mainGrid;
+     @FXML private GridPane gameBoard;
+     @FXML private Text player2HP;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    @FXML private Text player2Ready;
-    @FXML private Text player3Ready;
-    @FXML private Text player4Ready;
-    @FXML private Text player5Ready;
-    @FXML private Text player6Ready;
-    @FXML private Text player7Ready;
-    @FXML private Text player8Ready;
-    @FXML private Text player2Name;
-    @FXML private Text player3Name;
-    @FXML private Text player4Name;
-    @FXML private Text player5Name;
-    @FXML private Text player6Name;
-    @FXML private Text player7Name;
-    @FXML private Text player8Name;
-    @FXML private GridPane gameBoard;
-    @FXML private GridPane cardsGridPane;
+     @FXML private Text player2Checkpoint;
+     @FXML private Text player2RobotLives;
+     @FXML private StackPane player2Ready;
+     @FXML private Text player2Name;
+     @FXML private ImageView player2Card;
+     @FXML private ImageView player3Card;
+     @FXML private ImageView player4Card;
+     @FXML private ImageView player5Card;
+     @FXML private ImageView player6Card;
+     @FXML private ImageView player7Card;
+     @FXML private ImageView player8Card;
+     @FXML private ImageView card1;
+     @FXML private ImageView card2;
+     @FXML private ImageView card3;
+     @FXML private ImageView card4;
+     @FXML private ImageView card5;
+     @FXML private ImageView card6;
+     @FXML private ImageView card7;
+     @FXML private ImageView card8;
+     @FXML private ImageView card9;
+     @FXML private ImageView chosenCard1;
+     @FXML private ImageView chosenCard2;
+     @FXML private ImageView chosenCard3;
+     @FXML private ImageView chosenCard4;
+     @FXML private ImageView chosenCard5;
+     @FXML private ImageView markField;
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -111,6 +129,119 @@ public class GamePresenter extends AbstractPresenter {
     public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board) {
         this.lobbyID = lobbyID;
 
+        File file = new File("C:/Users/Jann/IdeaProjects/swpbaseproject/client/src/main/resources/images/Cards/prgcard001.jpg");
+        Image image = new Image(file.toURI().toString());
+        player2Card.setPreserveRatio(true);
+        player2Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player2Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player2Card.setImage(image);
+
+        player3Card.setPreserveRatio(true);
+        player3Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player3Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player3Card.setImage(image);
+
+        player4Card.setPreserveRatio(true);
+        player4Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player4Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player4Card.setImage(image);
+
+        player5Card.setPreserveRatio(true);
+        player5Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player5Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player5Card.setImage(image);
+
+        player6Card.setPreserveRatio(true);
+        player6Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player6Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player6Card.setImage(image);
+
+        player7Card.setPreserveRatio(true);
+        player7Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player7Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player7Card.setImage(image);
+
+        player8Card.setPreserveRatio(true);
+        player8Card.fitHeightProperty().bind(gameBoard.heightProperty().divide(7.5));
+        player8Card.fitWidthProperty().bind(gameBoard.widthProperty().divide(7));
+        player8Card.setImage(image);
+
+        card1.setPreserveRatio(true);
+        card1.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card1.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card1.setImage(image);
+
+        card2.setPreserveRatio(true);
+        card2.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card2.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card2.setImage(image);
+
+        card3.setPreserveRatio(true);
+        card3.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card3.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card3.setImage(image);
+
+        card4.setPreserveRatio(true);
+        card4.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card4.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card4.setImage(image);
+
+        card5.setPreserveRatio(true);
+        card5.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card5.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card5.setImage(image);
+
+        card6.setPreserveRatio(true);
+        card6.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card6.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card6.setImage(image);
+
+        card7.setPreserveRatio(true);
+        card7.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card7.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card7.setImage(image);
+
+        card8.setPreserveRatio(true);
+        card8.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card8.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card8.setImage(image);
+
+        card9.setPreserveRatio(true);
+        card9.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        card9.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        card9.setImage(image);
+
+        chosenCard1.setPreserveRatio(true);
+        chosenCard1.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        chosenCard1.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        chosenCard1.setImage(image);
+
+        chosenCard2.setPreserveRatio(true);
+        chosenCard2.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        chosenCard2.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        chosenCard2.setImage(image);
+
+        chosenCard3.setPreserveRatio(true);
+        chosenCard3.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        chosenCard3.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        chosenCard3.setImage(image);
+
+        chosenCard4.setPreserveRatio(true);
+        chosenCard4.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        chosenCard4.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        chosenCard4.setImage(image);
+
+        chosenCard5.setPreserveRatio(true);
+        chosenCard5.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        chosenCard5.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        chosenCard5.setImage(image);
+
+        markField.setPreserveRatio(true);
+        markField.fitHeightProperty().bind(mainGrid.heightProperty().divide(6));
+        markField.fitWidthProperty().bind(mainGrid.widthProperty().divide(20));
+        markField.setImage(image);
+
+        /**
         // creates the board
         try {
             JSONObject json =
@@ -142,12 +273,13 @@ public class GamePresenter extends AbstractPresenter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        */
 
-        Platform.runLater(
-                () -> {
-                    setAllPlayersNotReady();
-                });
-
+/**
+ Platform.runLater(
+ () -> {
+ setAllPlayersNotReady();
+ });
         cards.put(card1, false);
         cards.put(card2, false);
         cards.put(card3, false);
@@ -164,28 +296,17 @@ public class GamePresenter extends AbstractPresenter {
         slots.put(slot4, false);
         slots.put(slot5, false);
 
-        // if owner = true      sonst erstellt jeder spieler der Lobby ein eigenes carddeck
+
+         if owner = true      //sonst erstellt jeder spieler der Lobby ein eigenes carddeck
         resetCardsAndSlots();
 
-        // setLabels();
+        setLabels();
+        */
     }
-
+    /**
     private void setAllPlayersNotReady() {
-        player2Ready.setText("Not ready");
-        player2Ready.setFill(Color.RED);
-        player3Ready.setText("Not ready");
-        player3Ready.setFill(Color.RED);
-        player4Ready.setText("Not ready");
-        player4Ready.setFill(Color.RED);
-        player5Ready.setText("Not ready");
-        player5Ready.setFill(Color.RED);
-        player6Ready.setText("Not ready");
-        player6Ready.setFill(Color.RED);
-        player7Ready.setText("Not ready");
-        player7Ready.setFill(Color.RED);
-        player8Ready.setText("Not ready");
-        player8Ready.setFill(Color.RED);
-    }
+
+    }*/
 
     /**
      * Helper method to search a given value in a JSON array
@@ -199,6 +320,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
+
     private String searchJSON(JSONArray array, String searchValue) {
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = null;
@@ -213,7 +335,7 @@ public class GamePresenter extends AbstractPresenter {
         }
         return null;
     }
-
+/**
     // -----------------------------------------------------
     // methods for the cards
     // -----------------------------------------------------
@@ -328,6 +450,7 @@ public class GamePresenter extends AbstractPresenter {
         }
 
     */
+    /**
     // Tauscht 2 Karten miteinander egal welche
     public void switchTwoCardsOrSlots(
             javafx.scene.shape.Rectangle start, javafx.scene.shape.Rectangle end) {
@@ -419,7 +542,7 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
     */
-
+/**
     public ArrayList<Card> newCardDeck() {
 
         ArrayList<Card> cards = new ArrayList<>();
@@ -430,7 +553,7 @@ public class GamePresenter extends AbstractPresenter {
         return cards;
     }
 
-    /*
+
         public void setLabels(){
             if(valueLabels.size() <= 9){
                 for(int i = 1; i< 10; i++){
@@ -485,7 +608,7 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
     */
-
+/**
     public void getData(MouseEvent mouseEvent) {
         /*System.out.println("--------------------");
         for(Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()){
@@ -500,12 +623,13 @@ public class GamePresenter extends AbstractPresenter {
             System.out.println(cardHand.get(i).getCardType().toString() + "  " + cardHand.get(i).getPosition().toString());
         }
         */
-
+/**
         cardsGridPane.setVisible(false);
 
         resetCardsAndSlots();
     }
-
+*/
+/**
     public void resetCardsAndSlots() {
         // if(loggedInUser == owner) {
         cardDeck = newCardDeck();
@@ -544,7 +668,8 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
     }
-
+*/
+/**
     @FXML
     private void onSubmit(MouseEvent mouseEvent) {
 
@@ -605,7 +730,9 @@ public class GamePresenter extends AbstractPresenter {
     /*
     @Author Maxim Erden
      */
+/**
     public ArrayList<Card> getSubmittedCards() {
         return this.submittedCards;
     }
+    */
 }
