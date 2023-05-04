@@ -21,6 +21,7 @@ import de.uol.swp.common.user.response.AllOnlineUsersResponse;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +33,7 @@ import javafx.scene.input.KeyEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 
 import java.util.List;
 
@@ -314,11 +316,10 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (TextChatInput == null) {
-                return;
+            if (TextChatInput.getLength() != 0 && !TextChatInput.getText().isBlank()) {
+                textChat.sendTextMessage(TextChatInput.getText());
+                TextChatInput.setText("");
             }
-            textChat.sendTextMessage(TextChatInput.getText());
-            TextChatInput.setText("");
         }
     }
 
@@ -326,6 +327,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         if (textChat == null) return;
         TextChatOutput.setText(textChat.getChatString());
+        TextChatOutput.appendText("");
         Platform.runLater(
                 () -> {
                     TextChatOutput.setScrollTop(Double.MAX_VALUE);
