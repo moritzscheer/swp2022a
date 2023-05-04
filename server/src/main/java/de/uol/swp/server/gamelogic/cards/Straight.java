@@ -5,7 +5,7 @@ import de.uol.swp.server.gamelogic.Robot;
 /**
  * Moves the robot one to three tiles forward in direction where the robot is looking
  *
- * @author
+ * @author Maria
  * @see
  * @since 2023-04-03
  */

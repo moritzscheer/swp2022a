@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @author
+ * @author Maria Andrade & Finn Oldeboershuis
  * @see
  * @since
  */
@@ -236,7 +236,8 @@ public class Game {
                 rotation = 0;
                 break;
         }
-        robot.setDirection(CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
+        robot.setDirection(
+                CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
     }
 
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
@@ -249,8 +250,8 @@ public class Game {
             uTurn(robots[robotID]);
         }
         for (int i = 0;
-             i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
-             i++) {
+                i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
+                i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots[robotID].getDirection()));
             moves.add(subMoveList);
@@ -275,9 +276,10 @@ public class Game {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
         if (movesIn == null) {
-            //TODO: Log Error instead of throwing it
-//            throw new IllegalArgumentException(
-//                    "The list of moves should not be null.  (But can contain zero elements.)");
+            // TODO: Log Error instead of throwing it
+            //            throw new IllegalArgumentException(
+            //                    "The list of moves should not be null.  (But can contain zero
+            // elements.)");
         }
 
         // convert every MoveIntent to a MoveResult
@@ -391,8 +393,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                            == CardinalDirection.values()[
-                            moveList.get(j).getDirection().ordinal() + 2]
+                                    == CardinalDirection.values()[
+                                            moveList.get(j).getDirection().ordinal() + 2]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -413,7 +415,7 @@ public class Game {
             Block[][] board) {
         return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                 || board[destinationTile.x][destinationTile.y].getObstruction(
-                CardinalDirection.values()[moveDir.ordinal() + 2]);
+                        CardinalDirection.values()[moveDir.ordinal() + 2]);
     }
 
     private static void removeMoveResultAndParents(
@@ -426,9 +428,7 @@ public class Game {
         }
     }
 
-    /**
-     * @author Finn
-     */
+    /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
