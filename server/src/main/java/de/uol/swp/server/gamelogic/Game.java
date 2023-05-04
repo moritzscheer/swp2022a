@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  */
 public class Game {
 
-    private final Block[][] board;
+    private Block[][] board;
 
     // TODO: Remove dockingBays field
     private Position[] dockingBays;
@@ -41,12 +41,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(
-            Block[][] board,
-            Position[] dockingBays,
-            Robot[] robots,
-            Timer timer,
-            AbstractPlayer[] players) {
+    public Game(Block[][] board, Position[] dockingBays, Robot[] robots, Timer timer, AbstractPlayer[] players) {
         this.board = board;
         this.dockingBays = dockingBays;
         this.robots = robots;
@@ -148,6 +143,23 @@ public class Game {
         }
         // round is over
         this.programStep = 0;
+    }
+
+    private void startGame(){
+        board = MapBuilder.getMap("maps/tempMap.map");
+        if(board == null){
+            //TODO: Log error "Map couldn't be loaded"
+            return;
+        }
+        setRobotsInfoInBehaviours(board, robots);
+    }
+
+    private void setRobotsInfoInBehaviours(Block[][] board, Robot[] robots) {
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board[x].length; y++) {
+                board[x][y].setRobotsInfo(robots);
+            }
+        }
     }
 
     private void calcGameRound() {

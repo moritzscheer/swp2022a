@@ -126,4 +126,8 @@ public abstract class AbstractTileBehaviour implements Serializable {
     public List<MoveIntent> onCheckPointStage(int programStep) {
         return null;
     }
+
+    public void setRobotStates(Robot[] robots){
+        robotStates = robots;
+    }
 }
