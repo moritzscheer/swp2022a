@@ -6,14 +6,15 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author
+ * @author Tommy Dang & WKempel & Maria Andrade & Finn Oldeboershuis
  * @see
- * @since
+ * @since 2023-03-05
  */
-public abstract class AbstractTileBehaviour {
+public abstract class AbstractTileBehaviour implements Serializable {
 
     protected Robot[] robotStates;
     protected Block[][] board;
@@ -124,5 +125,9 @@ public abstract class AbstractTileBehaviour {
 
     public List<MoveIntent> onCheckPointStage(int programStep) {
         return null;
+    }
+
+    public void setRobotStates(Robot[] robots){
+        robotStates = robots;
     }
 }

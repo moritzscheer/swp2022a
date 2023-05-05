@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
 import de.uol.swp.common.lobby.request.*;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -87,5 +88,18 @@ public class LobbyService {
         RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest =
                 new RetrieveAllOnlineLobbiesRequest();
         eventBus.post(retrieveAllLobbiesRequest);
+    }
+
+    /**
+     * Posts a request to start the game on the EventBus
+     *
+     * @param lobbyID To identify the lobby with a unique key
+     * @see StartGameRequest
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    public void startGame(Integer lobbyID) {
+        StartGameRequest startGameRequest = new StartGameRequest(lobbyID);
+        eventBus.post(startGameRequest);
     }
 }

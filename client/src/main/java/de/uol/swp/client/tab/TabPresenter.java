@@ -6,7 +6,10 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.event.*;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
+import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
@@ -14,6 +17,7 @@ import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -57,83 +61,33 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles ShowNode events
+     * Handles successfully created Lobbies
      *
-     * <p>If an ShowNodeEvent object is detected on the EventBus this method is called. This method
-     * sets the content of the tab with the tabID to the given parent given as a parameter. If the
-     * infoBox is visible, it is set to invisible.
+     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
      *
-     * @param event The ShowNodeEvent object detected on the EventBus
+     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
-     * @see de.uol.swp.client.SceneManager
      * @since 2022-12-27
      */
     @Subscribe
-    public void onShowNodeEvent(ShowNodeEvent event) {
-        Platform.runLater(
-                () -> {
-                    if (infoBox.isVisible()) {
-                        updateInfoBox();
-                    }
-                    tabPane.getTabs().get(event.getTabID()).setContent(event.getParent());
-                });
+    public void onLobbyLeftSuccessfulResponse(LobbyLeftSuccessfulResponse message) {
+        deleteTab(message.getLobby().getLobbyID());
     }
 
     /**
-     * Handles CreateLobbyTab events
+     * Handles successfully joined Lobbies
      *
-     * <p>If an CreateLobbyTabEvent object is detected on the EventBus this method is called. This
-     * method creates a tab with the lobbyName as a tab name and sets the content of the tab to the
-     * parent parameter given to it. Then it opens the helper method setupTab to Set up important
-     * settings and adds the tab to the paneTab. Also, the tab is then selected.
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * called. It calls a private method to set up a tab.
      *
-     * @param event The CreateLobbyTabEvent object detected on the EventBus
+     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
-     * @see de.uol.swp.client.SceneManager
      * @since 2022-12-27
      */
     @Subscribe
-    public void onCreateLobbyTabEvent(CreateLobbyTabEvent event) {
-        Tab tab = new Tab(event.getLobby().getName());
-
-        Platform.runLater(
-                () -> {
-                    try {
-                        tab.setContent(event.getParent());
-
-                        setupTab(tab, event.getLobby().getLobbyID());
-
-                        tabPane.getTabs().add(tab);
-                        tabPane.getSelectionModel().select(tab);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
-    }
-
-    /**
-     * Handles DeleteLobbyTab events
-     *
-     * <p>If an DeleteLobbyTabEvent object is detected on the EventBus this method is called. This
-     * method deletes a tab with the given lobbyID.
-     *
-     * @param event The DeleteLobbyTabEvent object detected on the EventBus
-     * @author Moritz Scheer
-     * @see de.uol.swp.client.SceneManager
-     * @since 2023-01-24
-     */
-    @Subscribe
-    public void onDeleteLobbyTabEvent(DeleteLobbyTabEvent event) {
-        Platform.runLater(
-                () -> {
-                    tabPane.getTabs()
-                            .removeIf(
-                                    tab ->
-                                            tab.getId() != null
-                                                    && tab.getId()
-                                                            .equals(event.getLobbyID().toString()));
-                    tabPane.getSelectionModel().select(0);
-                });
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+        deleteTab(message.getLobbyID());
     }
 
     /**
@@ -153,7 +107,7 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     // -----------------------------------------------------
-    // helper methods public methods
+    // public methods
     // -----------------------------------------------------
 
     /**
@@ -178,45 +132,55 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
-     * helper method to set up a tab
+     * method for the switching the content of a tab
      *
-     * <p>This method sets the id to the tab id and defines EventHandler for different events
+     * <p>This method sets the content of the tab with the tabID to the given parent given as a
+     * parameter. If the infoBox is visible, it is set to invisible.
      *
-     * @param tab The Tab containing the tab data
-     * @param lobbyID The Integer containing the lobbyID
+     * @param lobbyID Integer containing the ID of the lobby
+     * @param parent Parent containing the content of the fxml
      * @author Moritz Scheer
-     * @since 2022-12-28
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-03-09
      */
-    private void setupTab(Tab tab, Integer lobbyID) {
-        tab.setId(lobbyID.toString());
-
-        tab.setOnCloseRequest(
-                closeEvent -> {
-                    closeEvent.consume();
-                    if (infoLabel2.isVisible()) {
-                        infoLabel2.setVisible(false);
-                        infoLabel3.setVisible(true);
-                        eventBus.post(new ChangeElementEvent(lobbyID));
-                    } else if (!infoLabel3.isVisible()) {
-                        infoLabel3.setVisible(true);
+    public void showNode(Integer lobbyID, Parent parent) {
+        Platform.runLater(
+                () -> {
+                    if (infoBox.isVisible()) {
                         updateInfoBox();
-                        eventBus.post(new ChangeElementEvent(lobbyID));
                     }
-                });
-
-        tab.setOnSelectionChanged(
-                changeEvent -> {
-                    changeEvent.consume();
-                    if (infoLabel3.isVisible()) {
-                        updateInfoBox();
-                        eventBus.post(new ChangeElementEvent(lobbyID));
-                    }
+                    tabPane.getTabs().get(lobbyID).setContent(parent);
                 });
     }
 
-    // -----------------------------------------------------
-    // public methods
-    // -----------------------------------------------------
+    /**
+     * method for the creating a tab
+     *
+     * <p>This method creates a tab with the lobbyName as a tab name and sets the content of the tab
+     * to the parent parameter given to it. Then it opens the helper method setupTab to Set up
+     * important settings and adds the tab to the paneTab. Also, the tab is then selected.
+     *
+     * @author Moritz Scheer
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-03-09
+     */
+    public void createTab(LobbyDTO lobby, Parent parent) {
+        Tab tab = new Tab(lobby.getName());
+
+        Platform.runLater(
+                () -> {
+                    try {
+                        tab.setContent(parent);
+
+                        setupTab(tab, lobby.getLobbyID());
+
+                        tabPane.getTabs().add(tab);
+                        tabPane.getSelectionModel().select(tab);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+    }
 
     /**
      * method for the visibility of the infoBox
@@ -300,6 +264,70 @@ public class TabPresenter extends AbstractPresenter {
     public Integer getTabID() {
         return Integer.valueOf(
                 tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
+    }
+
+    // -----------------------------------------------------
+    // private methods
+    // -----------------------------------------------------
+
+    /**
+     * Handles DeleteLobbyTab events
+     *
+     * <p>If an DeleteLobbyTabEvent object is detected on the EventBus this method is called. This
+     * method deletes a tab with the given lobbyID.
+     *
+     * @param lobbyID Integer containing the ID of the lobby
+     * @author Moritz Scheer
+     * @see de.uol.swp.client.SceneManager
+     * @since 2023-01-24
+     */
+    private void deleteTab(Integer lobbyID) {
+        Platform.runLater(
+                () -> {
+                    tabPane.getTabs()
+                            .removeIf(
+                                    tab ->
+                                            tab.getId() != null
+                                                    && tab.getId().equals(lobbyID.toString()));
+                    tabPane.getSelectionModel().select(0);
+                });
+    }
+
+    /**
+     * helper method to set up a tab
+     *
+     * <p>This method sets the id to the tab id and defines EventHandler for different events
+     *
+     * @param tab The Tab containing the tab data
+     * @param lobbyID The Integer containing the lobbyID
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    private void setupTab(Tab tab, Integer lobbyID) {
+        tab.setId(lobbyID.toString());
+
+        tab.setOnCloseRequest(
+                closeEvent -> {
+                    closeEvent.consume();
+                    if (infoLabel2.isVisible()) {
+                        infoLabel2.setVisible(false);
+                        infoLabel3.setVisible(true);
+                        eventBus.post(new ChangeElementEvent(lobbyID));
+                    } else if (!infoLabel3.isVisible()) {
+                        infoLabel3.setVisible(true);
+                        updateInfoBox();
+                        eventBus.post(new ChangeElementEvent(lobbyID));
+                    }
+                });
+
+        tab.setOnSelectionChanged(
+                changeEvent -> {
+                    changeEvent.consume();
+                    if (infoLabel3.isVisible()) {
+                        updateInfoBox();
+                        eventBus.post(new ChangeElementEvent(lobbyID));
+                    }
+                });
     }
 
     // -----------------------------------------------------

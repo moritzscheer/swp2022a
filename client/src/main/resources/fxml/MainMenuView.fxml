@@ -72,7 +72,7 @@
                   <Font name="sans-serif" size="16.0" />
                </font>
             </Button>
-            <Button fx:id="logoutButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLogout" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6" GridPane.vgrow="NEVER">
+            <Button fx:id="logoutButton1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLogoutButtonPressed" prefHeight="34.0" prefWidth="220.0" stylesheets="@../css/BaseViewStyle.css" text="Logout" textAlignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6" GridPane.vgrow="NEVER">
                <font>
                   <Font name="sans-serif" size="16.0" />
                </font>
@@ -92,7 +92,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <TextArea fx:id="TextChatOutput" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="TextChatInput" onKeyPressed="#textChatInputKeyPressed" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+      <TextArea fx:id="textChatOutput" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <TextField fx:id="textChatInput" onKeyPressed="#textChatInputKeyPressed" GridPane.columnSpan="2" GridPane.rowIndex="4" />
    </children>
 </GridPane>
