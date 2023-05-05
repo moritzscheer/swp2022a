@@ -940,7 +940,6 @@ public class SceneManager {
      * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
      * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
      * and posts an Event on the Eventbus to create a tab in the TabPresenter.
-     *
      * @author Moritz Scheer
      * @since 2022-12-27
      */
