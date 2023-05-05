@@ -180,6 +180,20 @@ Der Konstruktor des ConveyorBeltBehaviour ist folgendermaßen aufgebaut:
 
 Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Das ConveyorBeltBehaviour besitzt eine Methode namens ```onConveyorStage```, welche die Bewegungsabsicht eines bzw.
+mehrerer Roboter darstellen soll. Hierbei wird das Array ```robotStates``` durchlaufen und überprüft, ob ein
+Roboter sich auf dem Feld befindet. Falls das der Fall ist, wird ein Objekt vom Typ ```MoveIntent``` erstellt, welches
+wiederum die Bewegungsrichtung des Roboters, dem der Pfeilrichtung des Förderbandes anpasst / übergibt.
+
+Zusätzlich überprüft die Methode, ob ein weiteres Förderband-Feld nach der Ausrichtung vorkommt. Wenn ein 
+weiteres Förderband auftritt, wird die Methode wiederholt bzw. die Bewegungsausrichtung der Pfeilrichtung angepasst.
+
+Anschließend werden alle MoveIntent's als Rückgabetyp der Methode zurückgegeben.
+Falls der Roboter sich nicht auf dem Förderband befindet, wird eine leere Liste zurückgegeben.
 
 ## GearBehaviour
 
