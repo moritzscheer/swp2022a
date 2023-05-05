@@ -193,4 +193,10 @@ public class Block implements Serializable {
     public String getImgPath() {
         return this.imgPath;
     }
+
+    public void setRobotsInfo(Robot[] robots) {
+        for (int i = 0; i < behaviourList.length; i++) {
+            behaviourList[i].setRobotStates(robots);
+        }
+    }
 }
