@@ -6,9 +6,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @author
+ * @author Maria Andrade & Finn Oldeboershuis
  * @see
- * @since
+ * @since 2023-03-17
  */
 public final class Position implements Serializable {
     public int x;

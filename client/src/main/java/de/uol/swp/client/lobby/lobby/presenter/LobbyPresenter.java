@@ -243,11 +243,10 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (chatInput == null) {
-                return;
+            if (chatInput.getLength() != 0 && !chatInput.getText().isBlank()) {
+                textChat.sendTextMessage(chatInput.getText());
+                chatInput.setText("");
             }
-            textChat.sendTextMessage(chatInput.getText());
-            chatInput.setText("");
         }
     }
 
@@ -255,6 +254,8 @@ public class LobbyPresenter extends AbstractPresenter {
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         if (textChat == null) return;
         chatOutput.setText(textChat.getChatString());
+        chatOutput.appendText("");
+        chatOutput.setWrapText(true);
         Platform.runLater(
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);
