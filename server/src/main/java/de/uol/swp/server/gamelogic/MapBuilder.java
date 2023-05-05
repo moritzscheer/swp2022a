@@ -27,7 +27,7 @@ public final class MapBuilder {
     }
 
     public static void main(String[] args) throws IOException {
-        MapGen();
+        mapGen();
 
         Block[][] map = getMap("C:\\\\Temp\\\\tempMap.map");
         if (map != null) {
@@ -35,9 +35,9 @@ public final class MapBuilder {
         }
     }
 
-    public static void MapGen() throws IOException {
+    public static void mapGen() throws IOException {
         Block[][] map = new Block[12][12];
-        MapGenExtracted(map);
+        mapGenExtracted(map);
 
         ObjectOutputStream objOut =
                 new ObjectOutputStream(new FileOutputStream("C:\\Temp\\tempMap.map"));
@@ -46,7 +46,7 @@ public final class MapBuilder {
         objOut.close();
     }
 
-    private static void MapGenExtracted(Block[][] map) {
+    private static void mapGenExtracted(Block[][] map) {
         int x = 0;
         int y = 0;
 
@@ -155,7 +155,7 @@ public final class MapBuilder {
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
                 new PusherBehaviour(
-                        null, map, new Position(x, y), new int[] {2, 4}, CardinalDirection.East));
+                        null, map, new Position(x, y), new int[]{2, 4}, CardinalDirection.East));
         x = 6;
         generateBlock(
                 map,
@@ -460,7 +460,6 @@ public final class MapBuilder {
 
     private static void generateBlock(
             Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
-        AbstractTileBehaviour[] beh = behaviours;
-        map[x][y] = new Block(beh, null, new Position(x, y));
+        map[x][y] = new Block(behaviours, null, new Position(x, y));
     }
 }

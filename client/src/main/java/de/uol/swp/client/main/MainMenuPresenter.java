@@ -63,9 +63,9 @@ public class MainMenuPresenter extends AbstractPresenter {
 
     @FXML private ListView<String> usersView;
 
-    @FXML private TextArea TextChatOutput;
+    @FXML private TextArea textChatOutput;
 
-    @FXML private TextField TextChatInput;
+    @FXML private TextField textChatInput;
 
     /**
      * Handles successful login
@@ -289,7 +289,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @since 2022-11-08
      */
     @FXML
-    private void onLogout(ActionEvent event) {
+    private void onLogoutButtonPressed(ActionEvent event) {
         tabPresenter.setInfoLabel(1);
         tabPresenter.updateInfoBox();
     }
@@ -314,21 +314,22 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (TextChatInput == null) {
-                return;
+            if (textChatInput.getLength() != 0 && !textChatInput.getText().isBlank()) {
+                textChat.sendTextMessage(textChatInput.getText());
+                textChatInput.setText("");
             }
-            textChat.sendTextMessage(TextChatInput.getText());
-            TextChatInput.setText("");
         }
     }
 
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         if (textChat == null) return;
-        TextChatOutput.setText(textChat.getChatString());
+        textChatOutput.setText(textChat.getChatString());
+        textChatOutput.appendText("");
+        textChatOutput.setWrapText(true);
         Platform.runLater(
                 () -> {
-                    TextChatOutput.setScrollTop(Double.MAX_VALUE);
+                    textChatOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
 }
