@@ -5,12 +5,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.*;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -267,5 +269,31 @@ public class LobbyService extends AbstractService {
                 new AllOnlineLobbiesResponse(lobbyManagement.getMultiplayerLobbies());
         response.initWithMessage(msg);
         post(response);
+    }
+
+    /**
+     * Handles StartGameRequest found on the EventBus
+     *
+     * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
+     * StartGameMessage to all the users in the lobby, containing the
+     *
+     * @param msg StartGameRequest found on the EventBus
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onStartGameRequest(StartGameRequest msg) {
+        Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
+        if(!tmp.isEmpty()) {
+            if(tmp.get().increaseCounterRequest() == tmp.get().getUsers().size()){
+                sendToAllInLobby(
+                        msg.getLobbyID(),
+                        new StartGameMessage(
+                                msg.getLobbyID(), tmp.get()));
+                tmp.get().resetCounterRequest();
+            }
+        }
     }
 }

@@ -10,19 +10,22 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.lobby.LobbyPresenterHandler;
+import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent;
-import de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent;
-import de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent;
-import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
-import de.uol.swp.client.lobby.presenter.CreateLobbyPresenter;
-import de.uol.swp.client.lobby.presenter.JoinOrCreatePresenter;
-import de.uol.swp.client.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
+import de.uol.swp.client.lobby.game.presenter.GamePresenter;
+import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.main.event.ShowMainMenuViewEvent;
+import de.uol.swp.client.preLobby.events.CreateLobbyCanceledEvent;
+import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
+import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
+import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter;
+import de.uol.swp.client.preLobby.presenter.JoinOrCreatePresenter;
 import de.uol.swp.client.register.RegistrationPresenter;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
@@ -33,15 +36,11 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.client.tab.event.CreateLobbyTabEvent;
-import de.uol.swp.client.tab.event.DeleteLobbyTabEvent;
-import de.uol.swp.client.tab.event.ShowNodeEvent;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyJoinedSuccessfulResponse;
-import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
+import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -92,17 +91,20 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
+    private Parent gameParent;
 
     @Inject private TabPresenter tabPresenter;
-    @Inject private LobbyPresenterHandler lobbyPresenterHandler;
+    @Inject private LobbyManagement lobbyManagement;
     @Inject private LobbyService lobbyService;
     @Inject private LobbyPresenterFactory lobbyPresenterFactory;
+    @Inject private GamePresenterFactory gamePresenterFactory;
+
+    private GamePresenter gamePresenter;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
     private double lastSceneWidth;
     private double lastSceneHeight;
-    private Scene changeAccountOptionsScene;
 
     private final Injector injector;
 
@@ -139,8 +141,11 @@ public class SceneManager {
         primaryStage.setMinHeight(600);
 
         this.injector = injected;
-        lobbyPresenterHandler = injector.getInstance(LobbyPresenterHandler.class);
+
+        lobbyManagement = injector.getInstance(LobbyManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
+        gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
+
         initViews();
     }
 
@@ -181,8 +186,12 @@ public class SceneManager {
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
         if (fxmlFile.equals("/fxml/LobbyView.fxml")) {
             LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
-            lobbyPresenterHandler.setNextLobbyPresenter(lobbyPresenter);
+            lobbyManagement.setNextLobbyPresenter(lobbyPresenter);
             loader.setController(lobbyPresenter);
+        } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
+            gamePresenter = gamePresenterFactory.create();
+            lobbyManagement.setNextGamePresenter(gamePresenter);
+            loader.setController(gamePresenter);
         }
         try {
             URL url = getClass().getResource(fxmlFile);
@@ -264,6 +273,20 @@ public class SceneManager {
         if (settingParent == null) {
             settingParent = initPresenter(SettingPresenter.FXML);
         }
+    }
+
+    /**
+     * Initializes the game view
+     *
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * by the GameView FXML file.
+     *
+     * @see GamePresenter
+     * @author Moritz Scheer
+     * @since 2023-02-20
+     */
+    private void initGameView() throws IOException {
+        gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
@@ -368,7 +391,7 @@ public class SceneManager {
      * <p>If the lobbyScene is null it gets set to a new scene containing a pane showing the lobby
      * view as specified by the lobbyView FXML file.
      *
-     * @see de.uol.swp.client.lobby.presenter.LobbyPresenter
+     * @see LobbyPresenter
      * @author Moritz Scheer
      * @since 2022-11-30
      */
@@ -392,7 +415,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyCreatedSuccessfulResponse(LobbyCreatedSuccessfulResponse message) {
-        createLobbyTab(message.getLobby());
+        createTab(message.getLobby(), message.getUser());
     }
 
     /**
@@ -407,37 +430,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
-        createLobbyTab(message.getLobby());
-    }
-
-    /**
-     * Handles successfully created Lobbies
-     *
-     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
-     * called. It calls a private method to set up a tab.
-     *
-     * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyLeftSuccessfulResponse(LobbyLeftSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobby().getLobbyID());
-    }
-
-    /**
-     * Handles successfully joined Lobbies
-     *
-     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
-     * called. It calls a private method to set up a tab.
-     *
-     * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
-     * @author Moritz Scheer
-     * @since 2022-12-27
-     */
-    @Subscribe
-    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        deleteLobbyTab(message.getLobbyID());
+        createTab(message.getLobby(), message.getUser());
     }
 
     /**
@@ -586,7 +579,7 @@ public class SceneManager {
      * <p>If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets called.
      *
      * @param event The ShowJoinOrCreateViewEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent
+     * @see ShowJoinOrCreateViewEvent
      * @since 2022-11-17
      */
     @Subscribe
@@ -600,7 +593,7 @@ public class SceneManager {
      * <p>If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets called.
      *
      * @param event The JoinOrCreateCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.JoinOrCreateCanceledEvent
+     * @see JoinOrCreateCanceledEvent
      * @since 2022-11-19
      */
     @Subscribe
@@ -614,7 +607,7 @@ public class SceneManager {
      * <p>If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets called.
      *
      * @param event The CreateLobbyCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.CreateLobbyCanceledEvent
+     * @see CreateLobbyCanceledEvent
      * @since 2022-11-15
      */
     @Subscribe
@@ -628,7 +621,7 @@ public class SceneManager {
      * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
      *
      * @param event The RegistrationCanceledEvent detected on the EventBus
-     * @see de.uol.swp.client.lobby.event.ShowCreateLobbyViewEvent
+     * @see ShowCreateLobbyViewEvent
      * @since 2022-11-17
      */
     @Subscribe
@@ -637,11 +630,39 @@ public class SceneManager {
     }
 
     /**
-     * Handles ShowCreateLobbyViewEvent detected on the EventBus
+     * Handles ShowGameViewEvent detected on the EventBus
      *
-     * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
+     * <p>If a ShowGameViewEvent is detected on the EventBus, this method gets called.
      *
-     * @param event The RegistrationCanceledEvent detected on the EventBus
+     * @param event The ShowGameViewEvent detected on the EventBus
+     * @see ShowGameViewEvent
+     * @since 2023-03-09
+     */
+    @Subscribe
+    public void onShowGameViewEvent(ShowGameViewEvent event) {
+        showGameScreen(event.getLobbyID());
+    }
+
+    /**
+     * Handles ShowLobbyViewEvent detected on the EventBus
+     *
+     * <p>If a ShowLobbyViewEvent is detected on the EventBus, this method gets called.
+     *
+     * @param event The ShowLobbyViewEvent detected on the EventBus
+     * @see ShowLobbyViewEvent
+     * @since 2023-03-09
+     */
+    @Subscribe
+    public void onShowLobbyViewEvent(ShowLobbyViewEvent event) {
+        showLobbyScreen(event.getLobbyID());
+    }
+
+    /**
+     * Handles CloseClientEvent detected on the EventBus
+     *
+     * <p>If a CloseClientEvent is detected on the EventBus, this method gets called.
+     *
+     * @param event The CloseClientEvent detected on the EventBus
      * @see de.uol.swp.client.CloseClientEvent
      * @since 2023-01-04
      */
@@ -760,7 +781,7 @@ public class SceneManager {
         this.lastParent = currentParent;
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
-        eventBus.post(new ShowNodeEvent(tab, parent));
+        tabPresenter.showNode(tab, parent);
     }
 
     /**
@@ -872,6 +893,28 @@ public class SceneManager {
     }
 
     /**
+     * Shows the game screen
+     *
+     * <p>Switches the current Parent to the gameParent
+     *
+     * @since 2023-03-09
+     */
+    public void showGameScreen(Integer lobbyID) {
+        showNode(lobbyID, lobbyManagement.getGameParent(lobbyID));
+    }
+
+    /**
+     * Shows the lobby screen
+     *
+     * <p>Switches the current Parent to the lobbyParent
+     *
+     * @since 2023-03-09
+     */
+    public void showLobbyScreen(Integer lobbyID) {
+        showNode(lobbyID, lobbyManagement.getLobbyParent(lobbyID));
+    }
+
+    /**
      * Shows the account screen
      *
      * <p>Switches the current Scene to the accountScene and sets the title of the window to
@@ -907,44 +950,60 @@ public class SceneManager {
         showNode(0, createLobbyParent);
     }
 
+    // -----------------------------------------------------
+    // lobby methods
+    // -----------------------------------------------------
+
     /**
-     * Shows the lobby screen
+     * Helper method to create a tab and initialize the lobby view
      *
-     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
-     * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
-     * and posts an Event on the Eventbus to create a tab in the TabPresenter.
+     * <p>This method initializes the lobbyview and shows different views depending on if the lobby
+     * is set to private or not. Also it opens the setup method to setup the lobby and opens the
+     * createTab method to create a tab with the given content.
      *
+     * @param lobby the LobbyDTO Object containing all the information of the lobby
+     * @param user the UserDTO Object containing all the information of the User
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @see de.uol.swp.common.user.UserDTO
      * @author Moritz Scheer
-     * @since 2022-12-27
+     * @since 2023-03-09
      */
-    private void createLobbyTab(LobbyDTO lobby) {
+    private void createTab(LobbyDTO lobby, UserDTO user) {
         try {
-            // show main menu if lobby is singleplayer, else it shows the joinOrCreate view
+            initLobbyView();
+
             if (lobby.isMultiplayer()) {
                 showJoinOrCreateScreen();
             } else {
                 showMainScreen();
             }
-            // create new Tab and switch to the tab
-            eventBus.post(new CreateLobbyTabEvent(lobby, lobbyParent));
-            // load new File and Controller for the next lobby
-            initLobbyView();
+
+            lobbyManagement.setupLobby(lobby, user, lobbyParent);
+            tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Shows the lobby screen
+     * Handles StartGameMessage detected on the EventBus
      *
-     * <p>This method initializes the lobby view and assigns an lobbyPresenter to the view. Then it
-     * shows the main menu view, if the gamemode is singleplayer and else to the joinOrCreate view
-     * and posts an Event on the Eventbus to create a tab in the TabPresenter.
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
-     * @author Moritz Scheer
-     * @since 2022-12-27
+     * @param msg The StartGameMessage detected on the EventBus
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
      */
-    private void deleteLobbyTab(Integer lobbyID) {
-        eventBus.post(new DeleteLobbyTabEvent(lobbyID));
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage msg) {
+        try {
+            initGameView();
+
+            lobbyManagement.setupGame(msg.getLobbyID(), msg.getLobby(), gameParent);
+            showGameScreen(msg.getLobbyID());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

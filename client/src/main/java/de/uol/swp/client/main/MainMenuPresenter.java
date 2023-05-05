@@ -8,8 +8,8 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
@@ -153,7 +153,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * out the user, then to drop the user.
      *
      * @param event The ActionEvent created by pressing the Delete User button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-08
      */
     @FXML
@@ -194,7 +194,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * Eventbus.
      *
      * @param actionEvent The ActionEvent created by pressing the join lobby button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-30
      */
     @FXML
@@ -210,7 +210,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * specified lobby. Therefore, it uses as the parameter name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-30
      */
     @FXML
@@ -285,7 +285,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * out.
      *
      * @param event The ActionEvent created by pressing the logout button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-08
      */
     @FXML
