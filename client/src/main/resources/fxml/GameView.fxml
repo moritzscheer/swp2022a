@@ -16,7 +16,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
 
-<GridPane style="-fx-padding: 10; -fx-background-color: lightgray" minHeight="200" fx:id="mainGrid" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane style="-fx-padding: 10; -fx-background-color: lightgray" minHeight="200" fx:id="mainGrid" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="15" minWidth="100"/>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" />
@@ -100,11 +100,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player3HP" text="3" GridPane.columnIndex="1"/>
                                 <Text text="Checkpoint:" GridPane.rowIndex="1"/>
-                                <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Text fx:id="player3Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player3RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
@@ -136,11 +136,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
-                                <Text text="Checkpoint:" GridPane.rowIndex="1"/>
+                                <Text fx:id="player4HP" text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player4checkpoint" text="Checkpoint:" GridPane.rowIndex="1"/>
                                 <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player4RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
@@ -172,11 +172,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player5HP" text="3" GridPane.columnIndex="1"/>
                                 <Text text="Checkpoint:" GridPane.rowIndex="1"/>
-                                <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Text fx:id="player5Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player5RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
@@ -208,11 +208,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player6HP" text="3" GridPane.columnIndex="1"/>
                                 <Text text="Checkpoint:" GridPane.rowIndex="1"/>
-                                <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Text fx:id="player6Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player6RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
@@ -244,11 +244,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player7HP" text="3" GridPane.columnIndex="1"/>
                                 <Text text="Checkpoint:" GridPane.rowIndex="1"/>
-                                <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Text fx:id="player7Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player7RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
@@ -280,11 +280,11 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Player HP:"/>
-                                <Text text="3" GridPane.columnIndex="1"/>
+                                <Text fx:id="player8HP" text="3" GridPane.columnIndex="1"/>
                                 <Text text="Checkpoint:" GridPane.rowIndex="1"/>
-                                <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Text fx:id="player8Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
                                 <Text text="Roboter HP:" GridPane.rowIndex="2"/>
-                                <Text text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Text fx:id="player8RobotLives" text="9" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
                             </children>
                         </GridPane>
 
