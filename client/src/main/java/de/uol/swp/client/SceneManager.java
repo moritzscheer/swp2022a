@@ -12,6 +12,7 @@ import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
@@ -95,6 +96,7 @@ public class SceneManager {
 
     @Inject private TabPresenter tabPresenter;
     @Inject private LobbyManagement lobbyManagement;
+    @Inject private GameService gameService;
     @Inject private LobbyService lobbyService;
     @Inject private LobbyPresenterFactory lobbyPresenterFactory;
     @Inject private GamePresenterFactory gamePresenterFactory;
@@ -1000,10 +1002,13 @@ public class SceneManager {
     @Subscribe
     public void onStartGameMessage(StartGameMessage msg) {
         try {
+            System.out.println("SceneManager");
             initGameView();
+            lobbyManagement.setupGame(msg.getLobbyID(), msg.getLobby(), gameParent, msg.getGameID());
 
-            lobbyManagement.setupGame(msg.getLobbyID(), msg.getLobby(), gameParent);
             showGameScreen(msg.getLobbyID());
+            System.out.println("SceneManager before get Cards");
+            gameService.getProgramCardsForPlayers(msg.getGameID());
         } catch (Exception e) {
             e.printStackTrace();
         }
