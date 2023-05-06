@@ -154,7 +154,7 @@ public class LobbyManagement {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent) {
+    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent, Integer gameID) {
         // testing
         Integer[][][] board = new Integer[12][12][2];
         for (int col = 0; col < board.length; col++) {
@@ -167,8 +167,8 @@ public class LobbyManagement {
             }
         }
 
-        currentGamePresenter.init(lobbyID, lobby, board);
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
+        currentGamePresenter.init(lobbyID, lobby, board, gameID);
+        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
     }
 
     // -----------------------------------------------------
