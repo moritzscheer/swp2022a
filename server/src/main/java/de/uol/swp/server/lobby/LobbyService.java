@@ -20,6 +20,7 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.chat.TextChatService;
+import de.uol.swp.server.gamelogic.GameService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
 import org.apache.logging.log4j.LogManager;
@@ -40,6 +41,7 @@ public class LobbyService extends AbstractService {
 
     private static final Logger LOG = LogManager.getLogger(LobbyService.class);
     private final LobbyManagement lobbyManagement;
+    private final GameService gameService;
     private final AuthenticationService authenticationService;
 
     /**
@@ -54,10 +56,12 @@ public class LobbyService extends AbstractService {
     public LobbyService(
             LobbyManagement lobbyManagement,
             AuthenticationService authenticationService,
+            GameService gameService,
             EventBus eventBus) {
         super(eventBus);
         this.lobbyManagement = lobbyManagement;
         this.authenticationService = authenticationService;
+        this.gameService = gameService;
     }
 
     /**
@@ -288,10 +292,13 @@ public class LobbyService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if(!tmp.isEmpty()) {
             if(tmp.get().increaseCounterRequest() == tmp.get().getUsers().size()){
+                System.out.println("Creating game");
+                int gameID = gameService.createNewGame(msg.getLobbyID());
+                System.out.println("Sending Message to all in Lobby");
                 sendToAllInLobby(
                         msg.getLobbyID(),
                         new StartGameMessage(
-                                msg.getLobbyID(), tmp.get()));
+                                msg.getLobbyID(), tmp.get(), gameID));
                 tmp.get().resetCounterRequest();
             }
         }
