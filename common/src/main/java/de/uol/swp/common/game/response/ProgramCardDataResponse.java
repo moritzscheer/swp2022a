@@ -26,7 +26,7 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @since 2023-05-01
      */
     public ProgramCardDataResponse(Game game, CardDTO[] cards, Integer playerID) {
-        super(game.getName(), game.getGameID());
+        super(game.getGameID());
         this.cards = cards;
         this.playerID = playerID;
         this.gameID = game.getGameID();
