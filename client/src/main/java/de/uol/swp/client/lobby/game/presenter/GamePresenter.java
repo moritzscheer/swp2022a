@@ -3,22 +3,16 @@ package de.uol.swp.client.lobby.game.presenter;
 import static javafx.scene.paint.Color.DODGERBLUE;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 
-import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -274,10 +268,16 @@ public class GamePresenter extends AbstractPresenter {
                 for (int row = 0; row < board[col].length; row++) {
                     for (int img = 0; img < board[col][row].length; img++) {
                         String path = searchJSON(jsonArray, board[col][row][img].toString());
-                        ImageView imageView = new ImageView(path);
-                        imageView.setFitWidth(80);
-                        imageView.setFitHeight(80);
-                        gameBoard.add(imageView, col, row);
+                        if(path!= null){
+                            ImageView imageView = new ImageView(path);
+                            imageView.setFitWidth(80);
+                            imageView.setFitHeight(80);
+                            gameBoard.add(imageView, col, row);
+                        }
+                        else{
+                            System.out.println("Path is null for Block["+row+"]["+col+"]");
+                        }
+
                     }
                 }
             }
@@ -525,7 +525,6 @@ public class GamePresenter extends AbstractPresenter {
      *
      * @param array the JSONArray where the content is saved
      * @param searchValue the String that wants to be searched for
-     * @see client/src/main/resources/json/tile.json
      * @author Moritz Scheer
      * @since 2023-03-23
      */
