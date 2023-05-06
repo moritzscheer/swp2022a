@@ -21,11 +21,11 @@ public class Player extends AbstractPlayer {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-03-28
      */
-    public Player(User user) {
+    public Player(User user, Position startPosition) {
         super();
         this.user = user;
         // TODO: we might need to change the robot constructor
-        this.robot = new Robot("", new Position(1,1), true, CardinalDirection.East);
+        this.robot = new Robot("", startPosition, true, CardinalDirection.East);
     }
 
     // TODO
