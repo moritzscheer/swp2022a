@@ -10,13 +10,14 @@ import de.uol.swp.server.gamelogic.cards.Card;
 public abstract class AbstractPlayer {
     protected Robot robot;
     protected Card[] receivedCards;
-    protected Card[] chosenCards = new Card[5];
+    protected Card[] chosenCards;
     protected int numCardToPlay = 0;
 
-    public AbstractPlayer(Robot robot, Card[] cards) {
-        this.robot = robot;
-        this.receivedCards = cards;
-    }
+
+    /** Constructor
+     *
+     */
+    public AbstractPlayer() {}
 
     /**
      * Player receives 9 or fewer cards
@@ -56,6 +57,16 @@ public abstract class AbstractPlayer {
      */
     public Card[] getChosenCards() {
         return this.chosenCards;
+    }
+
+    /**
+     * Get Robot
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-06
+     */
+    public Robot getRobot() {
+        return this.robot;
     }
 
     /**
