@@ -5,6 +5,8 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.List;
+
 /** @author Ole Zimemrmann */
 public class WallBehaviour extends AbstractTileBehaviour {
 
@@ -18,7 +20,7 @@ public class WallBehaviour extends AbstractTileBehaviour {
      * @since 13-03-2023
      */
     public WallBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             CardinalDirection wallDirection) {
