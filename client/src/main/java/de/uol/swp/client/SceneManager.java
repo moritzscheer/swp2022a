@@ -168,6 +168,7 @@ public class SceneManager {
         initJoinOrCreateView();
         initCreateLobbyView();
         initLobbyView();
+        initGameView();
     }
 
     /**
@@ -286,7 +287,8 @@ public class SceneManager {
      * @since 2023-02-20
      */
     private void initGameView() throws IOException {
-        gameParent = initPresenter(GamePresenter.FXML);
+        if(gameParent == null)
+            gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
