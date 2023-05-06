@@ -27,7 +27,7 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
      * @since 2023/02/03
      */
     public ConveyorBeltBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             ArrowType arrowType,
@@ -67,8 +67,8 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
                         if (conBehaviourOnNextBlock != null) {
                             int rotation =
-                                    (conBehaviourOnNextBlock.direction.ordinal()
-                                            - direction.ordinal() + 4) % 4 ;
+                                    conBehaviourOnNextBlock.direction.ordinal()
+                                            - direction.ordinal();
                             robotState.setDirection(
                                     CardinalDirection.values()[
                                             robotState.getDirection().ordinal() + rotation]);

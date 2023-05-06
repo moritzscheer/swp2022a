@@ -27,7 +27,7 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      * @since 2023-02-26
      */
     public RepairBehaviour(
-            Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
+            List<Robot> robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
         this.repairSiteKey = repairSiteKey;
     }

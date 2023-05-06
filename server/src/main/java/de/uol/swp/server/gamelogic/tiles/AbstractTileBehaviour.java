@@ -16,11 +16,11 @@ import java.util.List;
  */
 public abstract class AbstractTileBehaviour implements Serializable {
 
-    protected Robot[] robotStates;
+    protected List<Robot> robotStates;
     protected Block[][] board;
     protected Position blockPos;
 
-    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public AbstractTileBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         this.robotStates = robotStates;
         this.board = board;
         this.blockPos = blockPos;
@@ -127,7 +127,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
         return null;
     }
 
-    public void setRobotStates(Robot[] robots){
+    public void setRobotStates(List<Robot> robots){
         robotStates = robots;
     }
 }

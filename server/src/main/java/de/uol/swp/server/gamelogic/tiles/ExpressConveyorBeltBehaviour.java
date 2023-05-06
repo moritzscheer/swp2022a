@@ -12,7 +12,7 @@ import java.util.List;
 public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
 
     public ExpressConveyorBeltBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             ArrowType arrowType,

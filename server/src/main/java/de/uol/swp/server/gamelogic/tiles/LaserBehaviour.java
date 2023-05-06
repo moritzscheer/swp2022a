@@ -21,7 +21,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private int laserBeam; // laserBeam is directed related to damage
 
     public LaserBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             int[] activeInProgramSteps,
             Position blockPos,

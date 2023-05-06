@@ -28,7 +28,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 06-02-2023
      */
-    public GearBehaviour(Robot[] robotStates, Block[][] board, Position blockPos, boolean turnC) {
+    public GearBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos, boolean turnC) {
         super(robotStates, board, blockPos);
         this.turnClockwise = turnC;
     }

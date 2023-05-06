@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class PitBehaviour extends AbstractTileBehaviour {
 
-    public PitBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public PitBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         super(robotStates, board, blockPos);
     }
 

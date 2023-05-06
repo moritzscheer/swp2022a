@@ -194,7 +194,7 @@ public class Block implements Serializable {
         return this.imgPath;
     }
 
-    public void setRobotsInfo(Robot[] robots) {
+    public void setRobotsInfo(List<Robot> robots) {
         for (int i = 0; i < behaviourList.length; i++) {
             behaviourList[i].setRobotStates(robots);
         }
