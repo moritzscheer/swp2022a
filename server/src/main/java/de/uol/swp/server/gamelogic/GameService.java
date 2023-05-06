@@ -50,7 +50,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public void createNewGame(Integer lobbyID) {
+    public Integer createNewGame(Integer lobbyID) {
         Integer gameID = 1;
         while (games.containsKey(lobbyID)) {
             gameID++;
@@ -74,6 +74,7 @@ public class GameService extends AbstractService {
                         lobbyManagement.getLobby(lobbyID).get().getUsers()
                 )
         );
+        return gameID;
     }
 
     /**
@@ -112,6 +113,9 @@ public class GameService extends AbstractService {
         Optional<Game> game = getGame(msg.getGameID());
         if(!game.isEmpty()) {
             game.get().distributeProgramCards();
+            // TODO: here it is called the function that give cards to all players,
+            // then one must send a response to each player individually with their cards
+
         }
     }
 
