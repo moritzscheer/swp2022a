@@ -13,8 +13,6 @@ import java.util.Objects;
  * @since 2023-05-01
  */
 public class AbstractGameResponse extends AbstractResponseMessage {
-
-    String name;
     Integer gameID;
 
     /**
@@ -28,33 +26,11 @@ public class AbstractGameResponse extends AbstractResponseMessage {
     /**
      * Constructor
      *
-     * @param name name of the game
      * @param gameID game responsible for the creation of this message
      * @since 2023-05-01
      */
-    public AbstractGameResponse(String name, Integer gameID) {
-        this.name = name;
+    public AbstractGameResponse(Integer gameID) {
         this.gameID = gameID;
-    }
-
-    /**
-     * Getter for the name variable
-     *
-     * @return String containing the game's name
-     * @since 2023-05-01
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Setter for the name variable
-     *
-     * @param name String containing the game's name
-     * @since 2023-05-01
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -82,11 +58,11 @@ public class AbstractGameResponse extends AbstractResponseMessage {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AbstractGameResponse that = (AbstractGameResponse) o;
-        return Objects.equals(name, that.name) && Objects.equals(gameID, that.gameID);
+        return Objects.equals(gameID, that.gameID);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, gameID);
+        return Objects.hash(gameID);
     }
 }
