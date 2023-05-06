@@ -17,6 +17,7 @@ public class Game {
     private Parent gameParent;
     private LobbyPresenter lobbyPresenter;
     private GamePresenter gamePresenter;
+    private Integer gameID;
 
     /**
      * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
@@ -39,9 +40,10 @@ public class Game {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
+    public void setGameView(GamePresenter gamePresenter, Parent gameParent, Integer gameID) {
         this.gamePresenter = gamePresenter;
         this.gameParent = gameParent;
+        this.gameID = gameID;
     }
 
     // -----------------------------------------------------
