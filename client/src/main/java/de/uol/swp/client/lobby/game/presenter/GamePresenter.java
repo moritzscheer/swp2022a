@@ -4,6 +4,7 @@ import static javafx.scene.paint.Color.DODGERBLUE;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
+import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 
@@ -158,7 +159,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board) {
+    public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board, Integer gameID) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
 
@@ -251,8 +252,16 @@ public class GamePresenter extends AbstractPresenter {
         markField.setFitWidth(50);
         markField.setImage(image);
 
+        //TODO: create board based on MapBuilder
+        // handle GetMapDataMessage
+        //GetMapDataRequest getMapDataRequest = new GetMapDataRequest(gameID);
+        //eventBus.post(getMapDataRequest);
+
+
+
         // creates the board
         try {
+
             JSONObject json =
                     new JSONObject(
                             new JSONTokener(
