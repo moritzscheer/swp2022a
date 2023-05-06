@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Manages the robot
@@ -12,7 +13,7 @@ import java.io.Serializable;
  */
 public class Robot implements Serializable {
 
-    private int id;
+    private final String id;
     private String imgPath;
     private Position currentPosition;
     private boolean alive;
@@ -44,6 +45,7 @@ public class Robot implements Serializable {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = -1;
+        this.id = UUID.randomUUID().toString();
     }
     /**
      * @author
@@ -104,8 +106,8 @@ public class Robot implements Serializable {
         return this.currentPosition;
     }
 
-    public int getID() {
-        return id;
+    public String getID() {
+        return this.id;
     }
 
     public CardinalDirection setDirection(CardinalDirection dir) {

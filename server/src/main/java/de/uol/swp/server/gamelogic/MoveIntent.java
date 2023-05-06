@@ -9,10 +9,10 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
  * @since 2023-02-03
  */
 public class MoveIntent {
-    public final int robotID;
+    public final String robotID;
     public final CardinalDirection direction;
 
-    public MoveIntent(int id, CardinalDirection dir) {
+    public MoveIntent(String id, CardinalDirection dir) {
         this.robotID = id;
         this.direction = dir;
     }
