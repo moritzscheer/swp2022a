@@ -16,18 +16,21 @@ public class StartGameMessage extends AbstractLobbyMessage {
     private Integer lobbyID;
     private LobbyDTO lobby;
 
+    private Integer gameID;
+
     /**
      * constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
-     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param lobby   LobbyDTO Object containing all the information of the lobby
+     * @param gameID
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23
      */
-    public StartGameMessage(Integer lobbyID, LobbyDTO lobby) {
+    public StartGameMessage(Integer lobbyID, LobbyDTO lobby, Integer gameID) {
         this.lobbyID = lobbyID;
         // TODO: create new Game and not Lobby
-        this.lobby = lobby.createWithoutUserPassword(lobby);
+        this.gameID = gameID;
     }
 
     /**
@@ -50,5 +53,16 @@ public class StartGameMessage extends AbstractLobbyMessage {
      */
     public LobbyDTO getLobby() {
         return lobby;
+    }
+
+    /**
+     * Getter for the gameID variable
+     *
+     * @return Integer containing the gameID
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-01
+     */
+    public Integer getGameID() {
+        return gameID;
     }
 }
