@@ -7,6 +7,7 @@ import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -96,8 +97,8 @@ public abstract class AbstractTileBehaviour implements Serializable {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public String GetImage() {
-        return "";
+    public List<int[]> getImage() {
+        return new ArrayList<>();
     }
 
     /**

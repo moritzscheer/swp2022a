@@ -5,6 +5,7 @@ import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,5 +63,10 @@ public class RepairBehaviour extends AbstractTileBehaviour {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        return new ArrayList<>(List.of(new int[] {25 , 0}));
     }
 }

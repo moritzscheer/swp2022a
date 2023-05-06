@@ -6,6 +6,8 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,4 +60,11 @@ public class GearBehaviour extends AbstractTileBehaviour {
         }
         return null;
     }
+
+    //TODO: Gea bilder fehlen in Tile.json
+
+//    @Override
+//    public List<int[]> getImage() {
+//        return new ArrayList<>(List.of(new int[] {turnClockwise ? , 0}));
+//    }
 }

@@ -20,9 +20,8 @@ public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
         super(robotStates, board, blockPos, arrowType, direction);
     }
 
-    // TODO
     @Override
     public List<MoveIntent> onExpressConveyorStage(int programmStep) {
-        return onConveyorStage(0);
+        return onConveyorStage(programmStep);
     }
 }

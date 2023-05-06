@@ -4,6 +4,8 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -42,5 +44,10 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
             return this.number;
         }
         return 0;
+    }
+
+    @Override
+    public List<int[]> getImage(){
+        return new ArrayList<>(List.of(new int[]{3 + number, 0}));
     }
 }
