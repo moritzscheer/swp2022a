@@ -99,6 +99,7 @@ public class LobbyService {
      * @since 2023-03-09
      */
     public void startGame(Integer lobbyID) {
+        System.out.println("Starting Game");
         StartGameRequest startGameRequest = new StartGameRequest(lobbyID);
         eventBus.post(startGameRequest);
     }
