@@ -51,7 +51,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private Integer lobbyID;
     private String lobbyName;
     private User owner;
-    private static ObservableList<String> users;
+    private ObservableList<String> users;
     private String password;
     private Boolean multiplayer;
     private Integer slots = 1;
