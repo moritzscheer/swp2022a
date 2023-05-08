@@ -167,9 +167,9 @@ public class LobbyManagement {
                 }
             }
         }
-
-        currentGamePresenter.init(lobbyID, lobby, board, gameID);
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
+        // TODO: remove this functions
+        //currentGamePresenter.init(lobbyID, lobby, board, gameID);
+        //lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
     }
 
     // -----------------------------------------------------
