@@ -51,10 +51,12 @@ public class GameService extends AbstractService {
      * @since 2023-02-28
      */
     public Integer createNewGame(Integer lobbyID) {
+        System.out.println("I am creating your game :)");
         Integer gameID = 1;
         while (games.containsKey(lobbyID)) {
             gameID++;
         }
+        System.out.println("New id :)");
         //TODO: fix docking positions
         Position[] dockings = {
                 new Position(1, 2),
@@ -66,6 +68,7 @@ public class GameService extends AbstractService {
                 new Position(2, 2),
                 new Position(2, 4)
         };
+        System.out.println("dockings :)");
         games.put(
                 gameID,
                 new Game(lobbyID,
@@ -74,6 +77,7 @@ public class GameService extends AbstractService {
                         lobbyManagement.getLobby(lobbyID).get().getUsers()
                 )
         );
+        System.out.println("New Game :)");
         return gameID;
     }
 
