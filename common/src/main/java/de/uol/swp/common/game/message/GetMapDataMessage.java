@@ -1,8 +1,11 @@
 package de.uol.swp.common.game.message;
 
-public class GetMapDataMessage {
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
+
+public class GetMapDataMessage extends AbstractLobbyMessage {
     private final Integer gameID;
-    private final int[][] boardImageIds; // TODO: fix how to send the information from the MapBuilder
+    private final int lobbyID;
+    private final int[][][][] boardImageIds;
 
     /**
      * constructor
@@ -11,9 +14,10 @@ public class GetMapDataMessage {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-06
      */
-    public GetMapDataMessage(Integer gameID, int[][] boardImageIds) {
+    public GetMapDataMessage(Integer gameID, int[][][][] boardImageIds, int lobbyId) {
         this.gameID = gameID;
         this.boardImageIds = boardImageIds;
+        this.lobbyID = lobbyId;
     }
 
     /**
@@ -33,7 +37,11 @@ public class GetMapDataMessage {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-06
      */
-    public int[][] getBoardImageIds() {
+    public int[][][][] getBoardImageIds() {
         return boardImageIds;
+    }
+
+    public int getLobbyID() {
+        return lobbyID;
     }
 }
