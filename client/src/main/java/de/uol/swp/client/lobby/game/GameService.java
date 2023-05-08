@@ -2,6 +2,7 @@ package de.uol.swp.client.lobby.game;
 
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
+import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 
 /**
@@ -25,6 +26,11 @@ public class GameService {
     public GameService(EventBus eventBus) {
         this.eventBus = eventBus;
         this.eventBus.register(this);
+    }
+
+    public void getMapData(Integer gameID) {
+        eventBus.post(new GetMapDataRequest(gameID));
+        System.out.println("Getting Map");
     }
 
     /** Get cards 9-5 Cards for each player
