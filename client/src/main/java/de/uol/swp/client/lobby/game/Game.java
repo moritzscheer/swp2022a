@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby;
+package de.uol.swp.client.lobby.game;
 
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;

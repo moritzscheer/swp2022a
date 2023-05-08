@@ -1,12 +1,8 @@
 package de.uol.swp.client.lobby.game;
 
 import com.google.common.eventbus.Subscribe;
-import de.uol.swp.client.lobby.Game;
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.common.game.message.GetMapDataMessage;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
-import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 

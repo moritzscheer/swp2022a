@@ -298,7 +298,7 @@ public class LobbyService extends AbstractService {
                 sendToAllInLobby(
                         msg.getLobbyID(),
                         new StartGameMessage(
-                                msg.getLobbyID(), tmp.get(), 0));
+                                msg.getLobbyID(), tmp.get(), gameID));
                 tmp.get().resetCounterRequest();
             }
         }
