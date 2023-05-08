@@ -42,7 +42,6 @@ public class LobbyService extends AbstractService {
 
     private static final Logger LOG = LogManager.getLogger(LobbyService.class);
     private final LobbyManagement lobbyManagement;
-    private final GameService gameService;
     private final AuthenticationService authenticationService;
 
     /**
@@ -57,12 +56,10 @@ public class LobbyService extends AbstractService {
     public LobbyService(
             LobbyManagement lobbyManagement,
             AuthenticationService authenticationService,
-            GameService gameService,
             EventBus eventBus) {
         super(eventBus);
         this.lobbyManagement = lobbyManagement;
         this.authenticationService = authenticationService;
-        this.gameService = gameService;
     }
 
     /**
@@ -274,32 +271,5 @@ public class LobbyService extends AbstractService {
                 new AllOnlineLobbiesResponse(lobbyManagement.getMultiplayerLobbies());
         response.initWithMessage(msg);
         post(response);
-    }
-
-    /**
-     * Handles StartGameRequest found on the EventBus
-     *
-     * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
-     * StartGameMessage to all the users in the lobby, containing the
-     *
-     * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
-     * @see de.uol.swp.common.game.request.StartGameRequest
-     * @see de.uol.swp.common.game.message.StartGameMessage
-     * @since 2023-02-28
-     */
-    @Subscribe
-    public void onStartGameRequest(StartGameRequest msg) {
-        Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
-        if (!tmp.isEmpty()) {
-            System.out.println("Creating game");
-            GameDTO game = gameService.createNewGame(msg.getLobbyID());
-            System.out.println("Sending Message to all in Lobby");
-            sendToAllInLobby(
-                    msg.getLobbyID(),
-                    new StartGameMessage(
-                            msg.getLobbyID(), msg.getLobby(), game));
-            tmp.get().resetCounterRequest();
-        }
     }
 }

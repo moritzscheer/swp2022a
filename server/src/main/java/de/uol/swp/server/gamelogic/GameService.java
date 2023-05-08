@@ -5,8 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataMessage;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.lobby.LobbyManagement;
@@ -110,6 +112,33 @@ public class GameService extends AbstractService {
             }
         }
         return Optional.empty();
+    }
+
+    /**
+     * Handles StartGameRequest found on the EventBus
+     *
+     * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
+     * StartGameMessage to all the users in the lobby, containing the
+     *
+     * @param msg StartGameRequest found on the EventBus
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onStartGameRequest(StartGameRequest msg) {
+        Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
+        if (!tmp.isEmpty()) {
+            System.out.println("Creating game");
+            GameDTO game = createNewGame(msg.getLobbyID());
+            System.out.println("Sending Message to all in Lobby");
+            lobbyService.sendToAllInLobby(
+                    msg.getLobbyID(),
+                    new StartGameMessage(
+                            msg.getLobbyID(), msg.getLobby(), game));
+            tmp.get().resetCounterRequest();
+        }
     }
 
 

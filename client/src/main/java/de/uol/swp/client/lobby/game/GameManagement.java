@@ -19,9 +19,9 @@ import java.util.Map;
 
 public class GameManagement {
 
-    private Parent lobbyParent;
+//    private Parent lobbyParent;
     private Parent gameParent;
-    private LobbyPresenter lobbyPresenter;
+//    private LobbyPresenter lobbyPresenter;
     private SceneManager sceneManager;
     private GamePresenter currentGamePresenter;
     private int currentLobbyId;
@@ -29,20 +29,23 @@ public class GameManagement {
     private User loggedInUser;
     private final Map<Integer, GameDTO> gameMap = new HashMap<>();
     private final Map<Integer, LobbyDTO> gameIdToLobby = new HashMap<>();
-    @Inject private GameService gameService;
+    private GameService gameService;
 
     /**
      * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
      *
-     * @param lobbyPresenter the Presenter of the lobby view
-     * @param lobbyParent the Parent Object of the lobby view
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public GameManagement(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
-        this.lobbyPresenter = lobbyPresenter;
-        this.lobbyParent = lobbyParent;
+    @Inject
+    public GameManagement(GameService gameService) {
+        this.gameService = gameService;
     }
+
+//    public void maybeNeedInLobby(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
+//        this.lobbyPresenter = lobbyPresenter;
+//        this.lobbyParent = lobbyParent;
+//    }
 
     /**
      * Method to save the gamePresenter and gameParent in the given attributes *
@@ -69,9 +72,9 @@ public class GameManagement {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public Parent getLobbyParent() {
-        return lobbyParent;
-    }
+//    public Parent getLobbyParent() {
+//        return lobbyParent;
+//    }
 
     /**
      * Getter for the gameParent variable
@@ -103,9 +106,9 @@ public class GameManagement {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public LobbyPresenter getLobbyPresenter() {
-        return lobbyPresenter;
-    }
+//    public LobbyPresenter getLobbyPresenter() {
+//        return lobbyPresenter;
+//    }
 
     /**
      * Handles successful login

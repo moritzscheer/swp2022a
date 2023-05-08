@@ -22,6 +22,7 @@ public final class MapBuilder {
             objIn.close();
             return map;
         } catch (IOException | ClassNotFoundException IOExcept) {
+            System.out.println(IOExcept.getMessage());
             return null;
         }
     }
