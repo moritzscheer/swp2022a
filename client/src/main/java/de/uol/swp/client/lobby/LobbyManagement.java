@@ -172,19 +172,6 @@ public class LobbyManagement {
      * @since 2023-03-23
      */
     public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent, Integer gameID) {
-        // testing
-        int[][][][] board = new int[1][][][];
-//        for (int col = 0; col < board.length; col++) {
-//            for (int row = 0; row < board[col].length; row++) {
-//                int count = 0;
-//                for (int img = 0; img < board[col][row].length; img++) {
-//                    board[col][row][img] = count;
-//                    count++;
-//                }
-//            }
-//        }
-        // TODO: remove this functions
-        currentGamePresenter.init(lobbyID, lobby, board, gameID);
         lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
     }
 

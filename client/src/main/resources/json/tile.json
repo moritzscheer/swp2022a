@@ -3,7 +3,7 @@
     {
       "id": "0",
       "name": "Field",
-      "source": "images/tiles/field.png"
+      "source": "images/tiles/other/field.png"
     },
     {
       "id": "1",
@@ -13,7 +13,7 @@
     {
       "id": "2",
       "name": "Pit",
-      "source": "images/tiles/pit.png"
+      "source": "images/tiles/other/pit.png"
     },
     {
       "id": "3",
@@ -84,52 +84,52 @@
     {
       "id": "16",
       "name": "LaserStart",
-      "source": "images/tiles/laserStart.png"
+      "source": "images/tiles/laser/laserStart.png"
     },
     {
       "id": "17",
       "name": "Laser",
-      "source": "images/tiles/laser.png"
+      "source": "images/tiles/laser/laser.png"
     },
     {
       "id": "18",
       "name": "LaserHalf",
-      "source": "images/tiles/laserHalf.png"
+      "source": "images/tiles/laser/laserHalf.png"
     },
     {
       "id": "19",
       "name": "LaserStart2",
-      "source": "images/tiles/laserStart2.png"
+      "source": "images/tiles/laser/laserStart2.png"
     },
     {
       "id": "20",
       "name": "Laser2",
-      "source": "images/tiles/laser2.png"
+      "source": "images/tiles/laser/laser2.png"
     },
     {
       "id": "21",
       "name": "LaserHalf2",
-      "source": "images/tiles/laserHalf2.png"
+      "source": "images/tiles/laser/laserHalf2.png"
     },
     {
       "id": "22",
       "name": "LaserStart3",
-      "source": "images/tiles/laserStart3.png"
+      "source": "images/tiles/laser/laserStart3.png"
     },
     {
       "id": "23",
       "name": "Laser3",
-      "source": "images/tiles/laser3.png"
+      "source": "images/tiles/laser/laser3.png"
     },
     {
       "id": "24",
       "name": "LaserHalf3",
-      "source": "images/tiles/laserHalf3.png"
+      "source": "images/tiles/laser/laserHalf3.png"
     },
     {
       "id": "25",
       "name": "Repair",
-      "source": "images/tiles/Repair.png"
+      "source": "images/tiles/other/Repair.png"
     },
     {
       "id": "26",

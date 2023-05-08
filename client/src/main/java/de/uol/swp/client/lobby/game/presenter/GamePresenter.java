@@ -356,6 +356,9 @@ public class GamePresenter extends AbstractPresenter {
 
             for (int i = 0; i < board.length; i++) {
                 gameBoard.addColumn(i);
+            }
+
+            for (int i = 0; i < board[0].length; i++) {
                 gameBoard.addRow(i);
             }
 
@@ -365,11 +368,14 @@ public class GamePresenter extends AbstractPresenter {
                         String path = searchJSON(jsonArray, String.valueOf(board[col][row][img][0]));
                         path = "client/src/main/resources/" + path;
                         File file = new File(path);
+                        if(!file.exists()){
+                            System.out.println(col + " " + row + " could not be resolved to a path");
+                        }
                         Image image = new Image(file.toURI().toString());
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(30);
-                        imageView.setFitHeight(30);
-                        gameBoard.add(imageView, col, row);
+                        imageView.setFitWidth(50);
+                        imageView.setFitHeight(50);
+                        gameBoard.add(imageView, col + 1, row + 1);
                     }
                 }
             }
@@ -767,8 +773,8 @@ public class GamePresenter extends AbstractPresenter {
             File file = new File(path2);
             Image image = new Image(file.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(30);
-            imageView.setFitHeight(30);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
             gameBoard.add(imageView, x, y);
 
             x++;
@@ -777,8 +783,8 @@ public class GamePresenter extends AbstractPresenter {
             file = new File(path);
             image = new Image(file.toURI().toString());
             imageView = new ImageView(image);
-            imageView.setFitWidth(30);
-            imageView.setFitHeight(30);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
             gameBoard.add(imageView, x, y);
             if (!playerReady) {
                 readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
@@ -807,8 +813,8 @@ public class GamePresenter extends AbstractPresenter {
             File file = new File(path2);
             Image image = new Image(file.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(30);
-            imageView.setFitHeight(30);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
             gameBoard.add(imageView, x, y);
 
             y++;
@@ -817,8 +823,8 @@ public class GamePresenter extends AbstractPresenter {
             file = new File(path);
             image = new Image(file.toURI().toString());
             imageView = new ImageView(image);
-            imageView.setFitWidth(30);
-            imageView.setFitHeight(30);
+            imageView.setFitWidth(50);
+            imageView.setFitHeight(50);
             gameBoard.add(imageView, x, y);
         } catch (Exception e) {
             e.printStackTrace();
