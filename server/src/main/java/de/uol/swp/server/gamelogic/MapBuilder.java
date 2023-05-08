@@ -14,10 +14,10 @@ import java.io.*;
  */
 public final class MapBuilder {
 
-    public static Block[][] getMap(String xmlPath) {
+    public static Block[][] getMap(String mapPath) {
         ObjectInputStream objIn = null;
         try {
-            objIn = new ObjectInputStream(new FileInputStream(xmlPath));
+            objIn = new ObjectInputStream(new FileInputStream(mapPath));
             Block[][] map = (Block[][]) objIn.readObject();
             objIn.close();
             return map;
@@ -29,7 +29,7 @@ public final class MapBuilder {
     public static void main(String[] args) throws IOException {
         mapGen();
 
-        Block[][] map = getMap("C:\\\\Temp\\\\tempMap.map");
+        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -40,7 +40,7 @@ public final class MapBuilder {
         mapGenExtracted(map);
 
         ObjectOutputStream objOut =
-                new ObjectOutputStream(new FileOutputStream("C:\\Temp\\tempMap.map"));
+                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/tempMap.map"));
         objOut.writeObject(map);
         objOut.flush();
         objOut.close();

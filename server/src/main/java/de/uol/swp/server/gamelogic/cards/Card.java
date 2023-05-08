@@ -39,18 +39,25 @@ public class Card {
         switch (behaviourType){
             case "1":
                 this.behaviour = new Turn(Direction.Left);
+                break;
             case "3":
                 this.behaviour = new Turn(Direction.Right);
+                break;
             case "4":
                 this.behaviour = new UTurn();
+                break;
             case "8":
                 this.behaviour = new Straight(-1);
+                break;
             case "6":
                 this.behaviour = new Straight(1);
+                break;
             case "7":
                 this.behaviour = new Straight(2);
+                break;
             case "5":
                 this.behaviour = new Straight(3);
+                break;
             default:
                 throw new Exception("Behaviour not found.");
         }

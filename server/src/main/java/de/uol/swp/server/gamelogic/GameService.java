@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.lobby.LobbyManagement;
 import org.apache.logging.log4j.LogManager;
@@ -50,10 +51,10 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public Integer createNewGame(Integer lobbyID) {
+    public int createNewGame(int lobbyID) {
         System.out.println("I am creating your game :)");
-        Integer gameID = 1;
-        while (games.containsKey(lobbyID)) {
+        int gameID = 1;
+        while (games.containsKey(gameID)) {
             gameID++;
         }
         System.out.println("New id :)");
@@ -69,12 +70,16 @@ public class GameService extends AbstractService {
                 new Position(2, 4)
         };
         System.out.println("dockings :)");
+        Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
+        if(!lobby.isPresent()){
+            System.out.println("GameService: lobby not found");
+        }
         games.put(
                 gameID,
                 new Game(lobbyID,
-                        MapBuilder.getMap("maps/tempMap.map"),
+                        MapBuilder.getMap("server/src/main/resources/maps/tempMap.map"),
                         dockings,
-                        lobbyManagement.getLobby(lobbyID).get().getUsers()
+                        lobby.get().getUsers()
                 )
         );
         System.out.println("New Game :)");

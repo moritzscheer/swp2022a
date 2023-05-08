@@ -4,7 +4,6 @@ import static javafx.scene.paint.Color.DODGERBLUE;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
-import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 
@@ -276,7 +275,7 @@ public class GamePresenter extends AbstractPresenter {
             for (int col = 0; col < board.length; col++) {
                 for (int row = 0; row < board[col].length; row++) {
                     for (int img = 0; img < board[col][row].length; img++) {
-                        String path = searchJSON(jsonArray, board[col][row][img].toString());
+                        String path = searchJSONForID(jsonArray, board[col][row][img].toString());
                         if(path!= null){
                             ImageView imageView = new ImageView(path);
                             imageView.setFitWidth(80);
@@ -538,7 +537,7 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-03-23
      */
 
-    private String searchJSON(JSONArray array, String searchValue) {
+    private String searchJSONForID(JSONArray array, String searchValue) {
         for (int i = 0; i < array.length(); i++) {
             JSONObject obj = null;
             try {

@@ -551,7 +551,7 @@ public class Game {
                     obj = jsonArray.getJSONObject(i);
                     if (obj.getInt("card-id") == cardId) {
                         Card card;
-                        String  cardType = obj.getString("card-type");
+                        String  cardType = obj.getString("type-id");
                         int priority = obj.getInt("priority");
                         String imgPath = obj.getString("source");
                         card = new Card(cardId, cardType, priority, imgPath);
