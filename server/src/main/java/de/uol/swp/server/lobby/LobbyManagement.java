@@ -81,14 +81,12 @@ public class LobbyManagement {
      * @see Optional
      * @since 2022-12-13
      */
-    public Optional<LobbyDTO> getLobby(Integer lobbyID) {
-        for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getKey().equals(lobbyID)) {
-                LobbyDTO lobby = lobbies.get(entry.getKey());
-                return Optional.of(lobby);
-            }
+    public Optional<LobbyDTO> getLobby(int lobbyID) {
+        if (!lobbies.containsKey(lobbyID)) {
+            System.out.println(lobbyID + " could not be found");
+            return Optional.empty();
         }
-        return Optional.empty();
+        return Optional.of(lobbies.get(lobbyID));
     }
 
     /**

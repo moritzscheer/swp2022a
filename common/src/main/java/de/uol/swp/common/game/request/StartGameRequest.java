@@ -10,7 +10,7 @@ package de.uol.swp.common.game.request;
  */
 public class StartGameRequest extends AbstractGameRequest {
 
-    private Integer lobbyID;
+    private int lobbyID;
 
     /**
      * constructor
@@ -19,7 +19,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public StartGameRequest(Integer lobbyID) {
+    public StartGameRequest(int lobbyID) {
         this.lobbyID = lobbyID;
     }
 
@@ -30,7 +30,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public Integer getLobbyID() {
+    public int getLobbyID() {
         return lobbyID;
     }
 }

@@ -98,7 +98,7 @@ public class LobbyService {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void startGame(Integer lobbyID) {
+    public void startGame(int lobbyID) {
         System.out.println("Starting Game");
         StartGameRequest startGameRequest = new StartGameRequest(lobbyID);
         eventBus.post(startGameRequest);
