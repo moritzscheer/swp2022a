@@ -999,7 +999,7 @@ public class SceneManager {
      * @author Moritz Scheer & Maxim Erden
      * @since 2023-02-28
      */
-    @Subscribe
+    // TODO: remove this function
     public void onStartGameMessage(StartGameMessage msg) {
         try {
             System.out.println("SceneManager");
