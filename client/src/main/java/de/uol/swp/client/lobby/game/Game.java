@@ -11,6 +11,7 @@ import javafx.scene.Parent;
  * @author Moritz Scheer
  * @since 2023-03-09
  */
+// TODO: delete this class
 public class Game {
 
     private Parent lobbyParent;
