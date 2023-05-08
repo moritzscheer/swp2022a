@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
@@ -292,12 +293,12 @@ public class LobbyService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            int gameID = gameService.createNewGame(msg.getLobbyID());
+            GameDTO game = gameService.createNewGame(msg.getLobbyID());
             System.out.println("Sending Message to all in Lobby");
             sendToAllInLobby(
                     msg.getLobbyID(),
                     new StartGameMessage(
-                            msg.getLobbyID(), tmp.get(), gameID));
+                            msg.getLobbyID(), msg.getLobby(), game));
             tmp.get().resetCounterRequest();
         }
     }
