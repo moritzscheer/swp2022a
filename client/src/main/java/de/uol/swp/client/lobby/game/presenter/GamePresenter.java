@@ -158,7 +158,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(Integer lobbyID, LobbyDTO lobby, Integer[][][] board, Integer gameID) {
+    public void init(Integer lobbyID, LobbyDTO lobby, int[][][][] board, Integer gameID) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
 
