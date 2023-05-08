@@ -4,7 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.dto.GameDTO;
-import de.uol.swp.common.game.message.GetMapDataMessage;
+import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
@@ -174,7 +174,7 @@ public class GameService extends AbstractService {
      * @param msg GetMapDataRequest found on the EventBus
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.common.game.request.GetMapDataRequest
-     * @see de.uol.swp.common.game.message.GetMapDataMessage
+     * @see GetMapDataResponse
      * @since 2023-02-28
      */
     @Subscribe
@@ -183,16 +183,18 @@ public class GameService extends AbstractService {
         Optional<Game> game = getGame(msg.getGameID());
         if(game.isPresent()){ //TODO: change to game.getBoard()
             //Block[][] board = game.get().getBoard();
-            Block[][] board = MapBuilder.getMap("maps/tempMap.map");
+            Block[][] board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
             int[][][][] boardIDs = new int[board.length][board[0].length][][];
             for(int row= 0; row< board.length; row++){
                 for(int col=0; col < board[0].length; col++){
                     boardIDs[row][col] = board[row][col].getImages();
                 }
             }
-            lobbyService.sendToAllInLobby(msg.getLobby().getLobbyID(), new GetMapDataMessage(
-                    msg.getGameID(), boardIDs, msg.getLobby().getLobbyID()
-            ));
+
+            GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
+                    msg.getGameID(), boardIDs, msg.getLobby());
+            getMapDataResponse.initWithMessage(msg);
+            post(getMapDataResponse);
         }
         else {
             //TODO: send ErrorResponse

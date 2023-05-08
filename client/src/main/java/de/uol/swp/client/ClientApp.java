@@ -116,11 +116,12 @@ public class ClientApp extends Application implements ConnectionListener {
         // get gameService from guice
         this.gameService = injector.getInstance(GameService.class);
 
+        // get event bus from guice
+        eventBus = injector.getInstance(EventBus.class);
+
         // get gameManagement from guice
         this.gameManagement = injector.getInstance(GameManagement.class);
 
-        // get event bus from guice
-        eventBus = injector.getInstance(EventBus.class);
         // Register this class for de.uol.swp.client.events (e.g. for exceptions)
         eventBus.register(this);
 

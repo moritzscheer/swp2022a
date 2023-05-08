@@ -1,5 +1,7 @@
 package de.uol.swp.client.lobby.game.events;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+
 /**
  * Event used to show the Game window if the start button was pressed in the Lobby Window
  *
@@ -12,13 +14,29 @@ package de.uol.swp.client.lobby.game.events;
  */
 public class ShowGameViewEvent {
 
-    private Integer lobbyID;
+    private LobbyDTO lobby;
+    private int gameID;
+    private final int[][][][] boardImageIds;
 
-    public ShowGameViewEvent(Integer lobbyID) {
-        this.lobbyID = lobbyID;
+    public ShowGameViewEvent(LobbyDTO lobby, int gameID, int[][][][] boardImageIds) {
+        this.lobby = lobby;
+        this.gameID = gameID;
+        this.boardImageIds = boardImageIds;
     }
 
     public Integer getLobbyID() {
-        return lobbyID;
+        return lobby.getLobbyID();
+    }
+
+    public LobbyDTO getLobby() {
+        return lobby;
+    }
+
+    public int getGameID() {
+        return gameID;
+    }
+
+    public int[][][][] getBoardImageIds() {
+        return boardImageIds;
     }
 }

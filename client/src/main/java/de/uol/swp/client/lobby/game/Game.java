@@ -3,6 +3,7 @@ package de.uol.swp.client.lobby.game;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 
+import de.uol.swp.client.tab.TabPresenter;
 import javafx.scene.Parent;
 
 /**
@@ -45,6 +46,8 @@ public class Game {
         this.gamePresenter = gamePresenter;
         this.gameParent = gameParent;
         this.gameID = gameID;
+
+
     }
 
     // -----------------------------------------------------

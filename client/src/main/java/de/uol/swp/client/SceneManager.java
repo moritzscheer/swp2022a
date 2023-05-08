@@ -12,6 +12,7 @@ import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
@@ -94,12 +95,18 @@ public class SceneManager {
     private Parent settingParent;
     private Parent gameParent;
 
-    @Inject private TabPresenter tabPresenter;
-    @Inject private LobbyManagement lobbyManagement;
-    @Inject private GameService gameService;
-    @Inject private LobbyService lobbyService;
-    @Inject private LobbyPresenterFactory lobbyPresenterFactory;
-    @Inject private GamePresenterFactory gamePresenterFactory;
+    @Inject
+    private TabPresenter tabPresenter;
+    @Inject
+    private LobbyManagement lobbyManagement;
+    @Inject
+    private GameService gameService;
+    @Inject
+    private LobbyService lobbyService;
+    @Inject
+    private LobbyPresenterFactory lobbyPresenterFactory;
+    @Inject
+    private GamePresenterFactory gamePresenterFactory;
 
     private GamePresenter gamePresenter;
 
@@ -251,8 +258,8 @@ public class SceneManager {
      * <p>If the tabScene is null it gets set to a new scene containing a pane showing the tab view
      * as specified by the TabView FXML file.
      *
-     * @see de.uol.swp.client.register.RegistrationPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.register.RegistrationPresenter
      * @since 2022-12-27
      */
     private void initTabView() throws IOException {
@@ -284,13 +291,14 @@ public class SceneManager {
      * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
      * by the GameView FXML file.
      *
-     * @see GamePresenter
      * @author Moritz Scheer
+     * @see GamePresenter
      * @since 2023-02-20
      */
     private void initGameView() throws IOException {
-        if(gameParent == null)
+        if (gameParent == null)
             gameParent = initPresenter(GamePresenter.FXML);
+//        GameManagement.getInstance().setGameParent(gameParent);
     }
 
     /**
@@ -299,8 +307,8 @@ public class SceneManager {
      * <p>If the mainParent is null it gets set to a new Parent showing the main menu view as
      * specified by the MainMenuView FXML file.
      *
-     * @see de.uol.swp.client.main.MainMenuPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.main.MainMenuPresenter
      * @since 2022-12-27
      */
     private void initMainView() throws IOException {
@@ -315,8 +323,8 @@ public class SceneManager {
      * <p>If the rulebookParent is null it gets set to a new Parent showing the rule book view as
      * specified by the RuleBookView FXML file.
      *
-     * @see de.uol.swp.client.rulebook.RulebookPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.rulebook.RulebookPresenter
      * @since 2022-12-27
      */
     private void initRulebookView() throws IOException {
@@ -331,8 +339,8 @@ public class SceneManager {
      * <p>If the creditParent is null it gets set to a new Parent showing the credit view as
      * specified by the RuleBookView FXML file.
      *
-     * @see de.uol.swp.client.credit.CreditPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.credit.CreditPresenter
      * @since 2022-12-27
      */
     private void initCreditView() throws IOException {
@@ -347,8 +355,8 @@ public class SceneManager {
      * <p>If the changeAccountOptionsParent is null it gets set to a new Parent showing the change
      * account option view as specified by the changeAccountOptionView FXML file.
      *
-     * @see de.uol.swp.client.main.AccountMenuPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.main.AccountMenuPresenter
      * @since 2022-12-27
      */
     private void initAccountOptionsView() throws IOException {
@@ -363,8 +371,8 @@ public class SceneManager {
      * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create view as
      * specified by the JoinOrCreate FXML file.
      *
-     * @see de.uol.swp.client.register.RegistrationPresenter
      * @author Moritz Scheer
+     * @see de.uol.swp.client.register.RegistrationPresenter
      * @since 2022-12-27
      */
     private void initJoinOrCreateView() throws IOException {
@@ -379,8 +387,8 @@ public class SceneManager {
      * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create lobby
      * view as specified by the CreateLobby FXML file.
      *
-     * @see de.uol.swp.client.register.RegistrationPresenter
      * @author Moritz Scheerini
+     * @see de.uol.swp.client.register.RegistrationPresenter
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {
@@ -395,8 +403,8 @@ public class SceneManager {
      * <p>If the lobbyScene is null it gets set to a new scene containing a pane showing the lobby
      * view as specified by the lobbyView FXML file.
      *
-     * @see LobbyPresenter
      * @author Moritz Scheer
+     * @see LobbyPresenter
      * @since 2022-11-30
      */
     private void initLobbyView() throws IOException {
@@ -553,9 +561,9 @@ public class SceneManager {
      * shows the AccountOptionView.
      *
      * @param event The ShowAccountOptionsViewEvent detected on the EventBus
+     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
      * @since 2022-12-03
-     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
      */
     @Subscribe
     public void onShowAccountOptionsViewEvent(ShowAccountOptionsViewEvent event) {
@@ -644,6 +652,8 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) {
+        System.out.println("SceneManager.onShowGameViewEvent");
+        createGameView(event.getLobby(), event.getGameID(), event.getBoardImageIds());
         showGameScreen(event.getLobbyID());
     }
 
@@ -683,7 +693,7 @@ public class SceneManager {
      * Shows an error message inside an error alert
      *
      * @param message The type of error to be shown
-     * @param e The error message
+     * @param e       The error message
      * @since 2019-09-03
      */
     public void showError(String message, String e) {
@@ -776,7 +786,7 @@ public class SceneManager {
      * <p>The current scene and title are saved in the lastScene and lastTitle variables, before the
      * new scene and title are set and shown.
      *
-     * @param tab Integer containing the lobbyID and also the tabID
+     * @param tab    Integer containing the lobbyID and also the tabID
      * @param parent New Parent to show
      * @author Moritz Scheer
      * @since 2022-12-27
@@ -905,6 +915,7 @@ public class SceneManager {
      */
     public void showGameScreen(Integer lobbyID) {
         showNode(lobbyID, lobbyManagement.getGameParent(lobbyID));
+//        showNode(lobbyID, GameManagement.getInstance().getGameParent());
     }
 
     /**
@@ -966,10 +977,10 @@ public class SceneManager {
      * createTab method to create a tab with the given content.
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
-     * @param user the UserDTO Object containing all the information of the User
+     * @param user  the UserDTO Object containing all the information of the User
+     * @author Moritz Scheer
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
      * @see de.uol.swp.common.user.UserDTO
-     * @author Moritz Scheer
      * @since 2023-03-09
      */
     private void createTab(LobbyDTO lobby, UserDTO user) {
@@ -994,21 +1005,16 @@ public class SceneManager {
      *
      * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
-     * @param msg The StartGameMessage detected on the EventBus
-     * @see de.uol.swp.common.game.message.StartGameMessage
      * @author Moritz Scheer & Maxim Erden
+     * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    // TODO: remove this function
-    public void onStartGameMessage(StartGameMessage msg) {
+    public void createGameView(LobbyDTO lobby, int gameID, int[][][][] board) {
         try {
-            System.out.println("SceneManager");
+            System.out.println("SceneManager.createGameView");
             initGameView();
-            lobbyManagement.setupGame(msg.getLobbyID(), msg.getLobby(), gameParent, msg.getGameID());
-
-            showGameScreen(msg.getLobbyID());
-            System.out.println("SceneManager before get Cards");
-            gameService.getProgramCardsForPlayers(msg.getGameID());
+            gamePresenter.init(lobby.getLobbyID(), lobby, board, gameID);
+            lobbyManagement.setupGame(lobby.getLobbyID(), lobby, gameParent, gameID);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -209,6 +209,12 @@ public class Block implements Serializable {
         for (int i = 0; i < behaviourList.length; i++) {
             images.addAll(behaviourList[i].getImage());
         }
-        return (int[][]) images.toArray();
+
+        int[][] imagesArr = new int[images.size()][];
+        for (int i = 0; i < images.size(); i++) {
+            imagesArr[i] = images.get(i);
+        }
+
+        return imagesArr;
     }
 }

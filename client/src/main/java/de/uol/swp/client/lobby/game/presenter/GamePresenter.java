@@ -1,18 +1,43 @@
 package de.uol.swp.client.lobby.game.presenter;
 
-import static javafx.scene.paint.Color.DODGERBLUE;
+import com.google.inject.Inject;
+import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.common.user.User;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.*;
+import javafx.scene.layout.StackPane;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import javafx.scene.shape.Rectangle;
+
+import java.util.*;
+
+import static javafx.scene.paint.Color.*;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.Card;
+import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
@@ -25,6 +50,8 @@ import org.json.JSONTokener;
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
+
+import static javafx.scene.paint.Color.DODGERBLUE;
 
 /**
  * Manages the game window
@@ -40,105 +67,166 @@ public class GamePresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
 
     private Integer lobbyID;
+    private User loggedInUser;
+    @FXML
+    private Button readyButton;
+    GameManagement gameManagement;
+    @FXML
+    private GridPane mainGrid;
+    @FXML
+    private GridPane gameBoard;
+    @FXML
+    private Text player2HP;
+    @FXML
+    private Text player3HP;
+    @FXML
+    private Text player4HP;
+    @FXML
+    private Text player5HP;
+    @FXML
+    private Text player6HP;
+    @FXML
+    private Text player7HP;
+    @FXML
+    private Text player8HP;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /*
-     @FXML private Rectangle card1;
-     @FXML private Rectangle card2;
-     @FXML private Rectangle card3;
-     @FXML private Rectangle card4;
-     @FXML private Rectangle card5;
-     @FXML private Rectangle card6;
-     @FXML private Rectangle card7;
-     @FXML private Rectangle card8;
-     @FXML private Rectangle card9;
+    @FXML
+    private Text player2Checkpoint;
+    @FXML
+    private Text player3Checkpoint;
+    @FXML
+    private Text player4Checkpoint;
+    @FXML
+    private Text player5Checkpoint;
+    @FXML
+    private Text player6Checkpoint;
+    @FXML
+    private Text player7Checkpoint;
+    @FXML
+    private Text player8Checkpoint;
 
-     @FXML private Rectangle slot1;
-     @FXML private Rectangle slot2;
-     @FXML private Rectangle slot3;
-     @FXML private Rectangle slot4;
-     @FXML private Rectangle slot5;*/
+    @FXML
+    private Text player2RobotLives;
+    @FXML
+    private Text player3RobotLives;
+    @FXML
+    private Text player4RobotLives;
+    @FXML
+    private Text player5RobotLives;
+    @FXML
+    private Text player6RobotLives;
+    @FXML
+    private Text player7RobotLives;
+    @FXML
+    private Text player8RobotLives;
 
-     @FXML private StackPane paneCard1;
-     @FXML private javafx.scene.control.Button data;
+    @FXML
+    private StackPane player2Ready;
+    @FXML
+    private StackPane player3Ready;
+    @FXML
+    private StackPane player4Ready;
+    @FXML
+    private StackPane player5Ready;
+    @FXML
+    private StackPane player6Ready;
+    @FXML
+    private StackPane player7Ready;
+    @FXML
+    private StackPane player8Ready;
 
-     Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
-     Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
-     Map<Label, Rectangle> valueLabels = new LinkedHashMap<>();
+    @FXML
+    private Text player2Name;
+    @FXML
+    private Text player3Name;
+    @FXML
+    private Text player4Name;
+    @FXML
+    private Text player5Name;
+    @FXML
+    private Text player6Name;
+    @FXML
+    private Text player7Name;
+    @FXML
+    private Text player8Name;
 
-     static ArrayList<Card> cardDeck = new ArrayList<>();
-     ArrayList<Card> cardHand = new ArrayList<>();
-     ArrayList<Card> submittedCards = new ArrayList<>();
-
-     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-     @FXML private GridPane mainGrid;
-     @FXML private GridPane gameBoard;
-     @FXML private Text player2HP;
-     @FXML private Text player3HP;
-     @FXML private Text player4HP;
-     @FXML private Text player5HP;
-     @FXML private Text player6HP;
-     @FXML private Text player7HP;
-     @FXML private Text player8HP;
-
-     @FXML private Text player2Checkpoint;
-     @FXML private Text player3Checkpoint;
-     @FXML private Text player4Checkpoint;
-     @FXML private Text player5Checkpoint;
-     @FXML private Text player6Checkpoint;
-     @FXML private Text player7Checkpoint;
-     @FXML private Text player8Checkpoint;
-
-     @FXML private Text player2RobotLives;
-     @FXML private Text player3RobotLives;
-     @FXML private Text player4RobotLives;
-     @FXML private Text player5RobotLives;
-     @FXML private Text player6RobotLives;
-     @FXML private Text player7RobotLives;
-     @FXML private Text player8RobotLives;
-
-     @FXML private StackPane player2Ready;
-     @FXML private StackPane player3Ready;
-     @FXML private StackPane player4Ready;
-     @FXML private StackPane player5Ready;
-     @FXML private StackPane player6Ready;
-     @FXML private StackPane player7Ready;
-     @FXML private StackPane player8Ready;
-
-     @FXML private Text player2Name;
-     @FXML private Text player3Name;
-     @FXML private Text player4Name;
-     @FXML private Text player5Name;
-     @FXML private Text player6Name;
-     @FXML private Text player7Name;
-     @FXML private Text player8Name;
-
-     @FXML private ImageView player2Card;
-     @FXML private ImageView player3Card;
-     @FXML private ImageView player4Card;
-     @FXML private ImageView player5Card;
-     @FXML private ImageView player6Card;
-     @FXML private ImageView player7Card;
-     @FXML private ImageView player8Card;
-     @FXML private ImageView card1;
-     @FXML private ImageView card2;
-     @FXML private ImageView card3;
-     @FXML private ImageView card4;
-     @FXML private ImageView card5;
-     @FXML private ImageView card6;
-     @FXML private ImageView card7;
-     @FXML private ImageView card8;
-     @FXML private ImageView card9;
-     @FXML private ImageView chosenCard1;
-     @FXML private ImageView chosenCard2;
-     @FXML private ImageView chosenCard3;
-     @FXML private ImageView chosenCard4;
-     @FXML private ImageView chosenCard5;
-     @FXML private ImageView markField;
-     private LobbyDTO lobby;
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    @FXML
+    private ImageView player2Card;
+    @FXML
+    private ImageView player3Card;
+    @FXML
+    private ImageView player4Card;
+    @FXML
+    private ImageView player5Card;
+    @FXML
+    private ImageView player6Card;
+    @FXML
+    private ImageView player7Card;
+    @FXML
+    private ImageView player8Card;
+    @FXML
+    private Rectangle card1;
+    @FXML
+    private Rectangle card2;
+    @FXML
+    private Rectangle card3;
+    @FXML
+    private Rectangle card4;
+    @FXML
+    private Rectangle card5;
+    @FXML
+    private Rectangle card6;
+    @FXML
+    private Rectangle card7;
+    @FXML
+    private Rectangle card8;
+    @FXML
+    private Rectangle card9;
+    @FXML
+    private Rectangle chosenCard1;
+    @FXML
+    private Rectangle chosenCard2;
+    @FXML
+    private Rectangle chosenCard3;
+    @FXML
+    private Rectangle chosenCard4;
+    @FXML
+    private Rectangle chosenCard5;
+    @FXML
+    private ImageView markField;
+    @FXML
+    private GridPane player2Grid;
+    @FXML
+    private GridPane player3Grid;
+    @FXML
+    private GridPane player4Grid;
+    @FXML
+    private GridPane player5Grid;
+    @FXML
+    private GridPane player6Grid;
+    @FXML
+    private GridPane player7Grid;
+    @FXML
+    private GridPane player8Grid;
+    Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
+    Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
+    ArrayList<Card> cardHand = new ArrayList<>();
+    static ArrayList<Card> cardDeck = new ArrayList<>();
+    ArrayList<Card> submittedCards = new ArrayList<>();
+    private LobbyDTO lobby;
+    private ArrayList<User> users = new ArrayList<User>();
+    private int playerCount;
+    private boolean playerReady = false;
+    private ArrayList<StackPane> playerReadyStackPanes;
+    private ArrayList<Text> playerHpTexts;
+    private ArrayList<Text> playerCpTexts;
+    private ArrayList<Text> playerRlTexts;
+    private ArrayList<ImageView> playerCards;
+    private int[][][][] board;
+    @FXML
+    private Button robotOffButton;
+    private int x = 2;
+    private int y = 2;
 
     /**
      * Default Constructor
@@ -158,105 +246,104 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(Integer lobbyID, LobbyDTO lobby, int[][][][] board, Integer gameID) {
+    public void init(int lobbyID, LobbyDTO lobby, int[][][][] board, Integer gameID) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
+        this.board = board;
 
-        /*for (User user: lobby.getUsers()) {
-            player2Name.setText(user.getUsername());
-            player3Name.setText(user.getUsername());
-            player4Name.setText(user.getUsername());
-            player5Name.setText(user.getUsername());
-            player6Name.setText(user.getUsername());
-            player7Name.setText(user.getUsername());
-            player8Name.setText(user.getUsername());
-        };*/
+        gameManagement = GameManagement.getInstance();
+        loggedInUser = gameManagement.getLoggedInUser();
 
-        File file = new File("C:/Users/Jann/IdeaProjects/swpbaseproject/client/src/main/resources/images/Cards/prgcard001.jpg");
-        Image image = new Image(file.toURI().toString());
+        //users.addAll(lobby.getUsers());
 
-        setPlayerCard(null, image);
-        card1.setPreserveRatio(true);
-        card1.setFitHeight(150);
-        card1.setFitWidth(50);
-        card1.setImage(image);
+        for (User user : users) {
+            if (user.getUsername() == loggedInUser.getUsername()) {
+                users.remove(user);
+            }
+        }
+        ;
 
-        card2.setPreserveRatio(true);
-        card2.setFitHeight(150);
-        card2.setFitWidth(50);
-        card2.setImage(image);
+        playerCount = users.size();
 
-        card3.setPreserveRatio(true);
-        card3.setFitHeight(150);
-        card3.setFitWidth(50);
-        card3.setImage(image);
+        ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
+        playerGrids.add(player2Grid);
+        playerGrids.add(player3Grid);
+        playerGrids.add(player4Grid);
+        playerGrids.add(player5Grid);
+        playerGrids.add(player6Grid);
+        playerGrids.add(player7Grid);
+        playerGrids.add(player8Grid);
 
-        card4.setPreserveRatio(true);
-        card4.setFitHeight(150);
-        card4.setFitWidth(50);
-        card4.setImage(image);
+        ArrayList<Text> playerNames = new ArrayList<Text>();
+        playerNames.add(player2Name);
+        playerNames.add(player3Name);
+        playerNames.add(player4Name);
+        playerNames.add(player5Name);
+        playerNames.add(player6Name);
+        playerNames.add(player7Name);
+        playerNames.add(player8Name);
 
-        card5.setPreserveRatio(true);
-        card5.setFitHeight(150);
-        card5.setFitWidth(50);
-        card5.setImage(image);
+        playerReadyStackPanes = new ArrayList<StackPane>();
+        playerReadyStackPanes.add(player2Ready);
+        playerReadyStackPanes.add(player3Ready);
+        playerReadyStackPanes.add(player4Ready);
+        playerReadyStackPanes.add(player5Ready);
+        playerReadyStackPanes.add(player6Ready);
+        playerReadyStackPanes.add(player7Ready);
+        playerReadyStackPanes.add(player8Ready);
 
-        card6.setPreserveRatio(true);
-        card6.setFitHeight(150);
-        card6.setFitWidth(50);
-        card6.setImage(image);
+        playerHpTexts = new ArrayList<Text>();
+        playerHpTexts.add(player2HP);
+        playerHpTexts.add(player3HP);
+        playerHpTexts.add(player4HP);
+        playerHpTexts.add(player5HP);
+        playerHpTexts.add(player6HP);
+        playerHpTexts.add(player7HP);
+        playerHpTexts.add(player8HP);
 
-        card7.setPreserveRatio(true);
-        card7.setFitHeight(150);
-        card7.setFitWidth(50);
-        card7.setImage(image);
+        playerCpTexts = new ArrayList<Text>();
+        playerCpTexts.add(player2Checkpoint);
+        playerCpTexts.add(player3Checkpoint);
+        playerCpTexts.add(player4Checkpoint);
+        playerCpTexts.add(player5Checkpoint);
+        playerCpTexts.add(player6Checkpoint);
+        playerCpTexts.add(player7Checkpoint);
+        playerCpTexts.add(player8Checkpoint);
 
-        card8.setPreserveRatio(true);
-        card8.setFitHeight(150);
-        card8.setFitWidth(50);
-        card8.setImage(image);
+        playerRlTexts = new ArrayList<Text>();
+        playerRlTexts.add(player2RobotLives);
+        playerRlTexts.add(player3RobotLives);
+        playerRlTexts.add(player4RobotLives);
+        playerRlTexts.add(player5RobotLives);
+        playerRlTexts.add(player6RobotLives);
+        playerRlTexts.add(player7RobotLives);
+        playerRlTexts.add(player8RobotLives);
 
-        card9.setPreserveRatio(true);
-        card9.setFitHeight(150);
-        card9.setFitWidth(50);
-        card9.setImage(image);
+        for (int i = 0; i < users.size(); i++) {
+            playerGrids.get(i).setVisible(true);
+            playerNames.get(i).setText(users.get(i).getUsername());
+        }
 
-        chosenCard1.setPreserveRatio(true);
-        chosenCard1.setFitHeight(150);
-        chosenCard1.setFitWidth(50);
-        chosenCard1.setImage(image);
+        cards.put(card1, false);
+        cards.put(card2, false);
+        cards.put(card3, false);
+        cards.put(card4, false);
+        cards.put(card5, false);
+        cards.put(card6, false);
+        cards.put(card7, false);
+        cards.put(card8, false);
+        cards.put(card9, false);
 
-        chosenCard2.setPreserveRatio(true);
-        chosenCard2.setFitHeight(150);
-        chosenCard2.setFitWidth(50);
-        chosenCard2.setImage(image);
+        slots.put(chosenCard1, false);
+        slots.put(chosenCard2, false);
+        slots.put(chosenCard3, false);
+        slots.put(chosenCard4, false);
+        slots.put(chosenCard5, false);
 
-        chosenCard3.setPreserveRatio(true);
-        chosenCard3.setFitHeight(150);
-        chosenCard3.setFitWidth(50);
-        chosenCard3.setImage(image);
-
-        chosenCard4.setPreserveRatio(true);
-        chosenCard4.setFitHeight(150);
-        chosenCard4.setFitWidth(50);
-        chosenCard4.setImage(image);
-
-        chosenCard5.setPreserveRatio(true);
-        chosenCard5.setFitHeight(150);
-        chosenCard5.setFitWidth(50);
-        chosenCard5.setImage(image);
-
-        markField.setPreserveRatio(true);
-        markField.setFitHeight(150);
-        markField.setFitWidth(50);
-        markField.setImage(image);
-
-        //TODO: create board based on MapBuilder
-        // handle GetMapDataMessage
-        //GetMapDataRequest getMapDataRequest = new GetMapDataRequest(gameID);
-        //eventBus.post(getMapDataRequest);
-
-
+//        markField.setPreserveRatio(true);
+//        markField.setFitHeight(50);
+//        markField.setFitWidth(50);
+//        markField.setImage(image);
 
         // creates the board
         try {
@@ -275,294 +362,29 @@ public class GamePresenter extends AbstractPresenter {
             for (int col = 0; col < board.length; col++) {
                 for (int row = 0; row < board[col].length; row++) {
                     for (int img = 0; img < board[col][row].length; img++) {
-                        String path = searchJSONForID(jsonArray, board[col][row][img].toString());
-                        if(path!= null){
-                            ImageView imageView = new ImageView(path);
-                            imageView.setFitWidth(80);
-                            imageView.setFitHeight(80);
-                            gameBoard.add(imageView, col, row);
-                        }
-                        else{
-                            System.out.println("Path is null for Block["+row+"]["+col+"]");
-                        }
-
+                        String path = searchJSON(jsonArray, String.valueOf(board[col][row][img][0]));
+                        path = "client/src/main/resources/" + path;
+                        File file = new File(path);
+                        Image image = new Image(file.toURI().toString());
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitWidth(30);
+                        imageView.setFitHeight(30);
+                        gameBoard.add(imageView, col, row);
                     }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-/*
-        cards.put(card1, false);
-        cards.put(card2, false);
-        cards.put(card3, false);
-        cards.put(card4, false);
-        cards.put(card5, false);
-        cards.put(card6, false);
-        cards.put(card7, false);
-        cards.put(card8, false);
-        cards.put(card9, false);
-
-        slots.put(slot1, false);
-        slots.put(slot2, false);
-        slots.put(slot3, false);
-        slots.put(slot4, false);
-        slots.put(slot5, false);
-*/
-
-        // owner = true      //sonst erstellt jeder spieler der Lobby ein eigenes carddeck
-        //resetCardsAndSlots();
-        //setLabels();
-    }
-    /**
-     * Setting all players to not ready
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setAllPlayersNotReady() {
-        player2Ready.setStyle("-fx-background-color: red");
-        player3Ready.setStyle("-fx-background-color: red");
-        player4Ready.setStyle("-fx-background-color: red");
-        player5Ready.setStyle("-fx-background-color: red");
-        player6Ready.setStyle("-fx-background-color: red");
-        player7Ready.setStyle("-fx-background-color: red");
-        player8Ready.setStyle("-fx-background-color: red");
-    }
-    /**
-     * Setting ready status of the user
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerReadyStatus(User user, boolean ready){
-        int i = 0;
-        String style;
-        if(ready)
-            style = "-fx-background-color: green";
-        else
-            style = "-fx-background-color: red";
-
-        for (User countUser:lobby.getUsers()) {
-            if(user.getUsername() == countUser.getUsername())
-                break;
-            i++;
-        };
-        switch (i){
-            case 0: player2Ready.setStyle(style);
-                break;
-            case 1: player3Ready.setStyle(style);
-                break;
-            case 2: player4Ready.setStyle(style);
-                break;
-            case 3: player5Ready.setStyle(style);
-                break;
-            case 4: player6Ready.setStyle(style);
-                break;
-            case 5: player7Ready.setStyle(style);
-                break;
-            case 6: player8Ready.setStyle(style);
-                break;
-        }
-    }
-    /**
-     * Setting health points of the user
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerHP(User user, String hp){
-        int i = 0;
-
-        for (User countUser:lobby.getUsers()) {
-            if(user.getUsername() == countUser.getUsername())
-                break;
-            i++;
-        };
-        switch (i){
-            case 0: player2HP.setText(hp);
-                break;
-            case 1: player3HP.setText(hp);
-                break;
-            case 2: player4HP.setText(hp);
-                break;
-            case 3: player5HP.setText(hp);
-                break;
-            case 4: player6HP.setText(hp);
-                break;
-            case 5: player7HP.setText(hp);
-                break;
-            case 6: player8HP.setText(hp);
-                break;
-        }
-    }
-    /**
-     * Setting roboter health pojnts of the user
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setRoboterHP(User user, String hp){
-        int i = 0;
-
-        for (User countUser:lobby.getUsers()) {
-            if(user.getUsername() == countUser.getUsername())
-                break;
-            i++;
-        };
-        switch (i){
-            case 0: player2RobotLives.setText(hp);
-                break;
-            case 1: player3RobotLives.setText(hp);
-                break;
-            case 2: player4RobotLives.setText(hp);
-                break;
-            case 3: player5RobotLives.setText(hp);
-                break;
-            case 4: player6RobotLives.setText(hp);
-                break;
-            case 5: player7RobotLives.setText(hp);
-                break;
-            case 6: player8RobotLives.setText(hp);
-                break;
-        }
-    }
-    /**
-     * Setting Checkpoint of the user
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerCheckpoint(User user, String cp){
-        int i = 0;
-
-        for (User countUser:lobby.getUsers()) {
-            if(user.getUsername() == countUser.getUsername())
-                break;
-            i++;
-        };
-        switch (i){
-            case 0: player2Checkpoint.setText(cp);
-                break;
-            case 1: player3Checkpoint.setText(cp);
-                break;
-            case 2: player4Checkpoint.setText(cp);
-                break;
-            case 3: player5Checkpoint.setText(cp);
-                break;
-            case 4: player6Checkpoint.setText(cp);
-                break;
-            case 5: player7Checkpoint.setText(cp);
-                break;
-            case 6: player8Checkpoint.setText(cp);
-                break;
-        }
+        resetCardsAndSlots();
     }
 
-    /**
-     * Setting playercard of the user
-     *
-     * @param user
-     * @param image
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerCard(User user, Image image){
-        int i = 0;
-        /*
-        for (User countUser:lobby.getUsers()) {
-            if(user.getUsername() == countUser.getUsername())
-                break;
-            i++;
-        };*/
-        switch (i){
-            case 0:
-                player2Card.setImage(image);
-                player2Card.setFitHeight(150);
-                player2Card.setFitWidth(100);
-                break;
-            case 1:
-                player3Card.setImage(image);
-                player3Card.setFitHeight(150);
-                player3Card.setFitWidth(100);
-                break;
-            case 2:
-                player4Card.setImage(image);
-                player4Card.setFitHeight(150);
-                player4Card.setFitWidth(100);
-                break;
-            case 3:
-                player5Card.setImage(image);
-                player5Card.setFitHeight(150);
-                player5Card.setFitWidth(100);
-                break;
-            case 4:
-                player6Card.setImage(image);
-                player6Card.setFitHeight(150);
-                player6Card.setFitWidth(100);
-                break;
-            case 5:
-                player7Card.setImage(image);
-                player7Card.setFitHeight(150);
-                player7Card.setFitWidth(100);
-                break;
-            case 6:
-                player8Card.setImage(image);
-                player8Card.setFitHeight(150);
-                player8Card.setFitWidth(100);
-                break;
-        }
-    }
-
-
-    /**
-     * Helper method to search a given value in a JSON array
-     *
-     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
-     * the value from the parameter. Then in returns the path of the image.
-     *
-     * @param array the JSONArray where the content is saved
-     * @param searchValue the String that wants to be searched for
-     * @author Moritz Scheer
-     * @since 2023-03-23
-     */
-
-    private String searchJSONForID(JSONArray array, String searchValue) {
-        for (int i = 0; i < array.length(); i++) {
-            JSONObject obj = null;
-            try {
-                obj = array.getJSONObject(i);
-                if (obj.getString("id").equals(searchValue.toString())) {
-                    return obj.getString("source");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-    // -----------------------------------------------------
-    // methods for the cards
-    // -----------------------------------------------------
-
-    // Clickevent auf deinen Kartenbereich
+    @FXML
     public void onCardClicked(MouseEvent click) {
         if (slots.containsValue(false)) {
-            for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
-                if (cardz.getKey().equals(getCardOrSlot(click.toString()))
-                        && cardz.getValue() == true) {
-                    for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz :
-                            slots.entrySet()) {
+            for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
+                if (cardz.getKey().equals(getCardOrSlot(click.toString())) && cardz.getValue() == true) {
+                    for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
                         if (slotz.getValue() == false) {
                             switchTwoCardsOrSlots(getCardOrSlot(click.toString()), slotz.getKey());
                             break;
@@ -574,14 +396,13 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-    // Clickevent auf deinen Slotbereich
+    @FXML
+    //Clickevent auf deinen Slotbereich
     public void onSlotClicked(MouseEvent click) {
-        //cardsGridPane.setVisible(true);
 
-        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
-            if (slotz.getKey().equals(getCardOrSlot(click.toString()))
-                    && slotz.getValue() == true) {
-                for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
+        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
+            if (slotz.getKey().equals(getCardOrSlot(click.toString())) && slotz.getValue() == true) {
+                for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
                     if (cardz.getValue() == false) {
                         switchTwoCardsOrSlots(getCardOrSlot(click.toString()), cardz.getKey());
                         break;
@@ -592,10 +413,10 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-    // Gibt dir aus einem Target.toString() den passenden Slot aus
-    public javafx.scene.shape.Rectangle getCardOrSlot(String click) {
-/*
-        // checkt obs im Kartenbereich ist
+    //Gibt dir aus einem Target.toString() den passenden Slot aus
+    public Rectangle getCardOrSlot(String click) {
+
+        //checkt obs im Kartenbereich ist
         if (click.contains("card1")) {
             return card1;
         } else if (click.contains("card2")) {
@@ -616,85 +437,54 @@ public class GamePresenter extends AbstractPresenter {
             return card9;
         }
 
-        // checkt obs im SlotBereich ist
-        else if (click.contains("slot1")) {
-            return slot1;
-        } else if (click.contains("slot2")) {
-            return slot2;
-        } else if (click.contains("slot3")) {
-            return slot3;
-        } else if (click.contains("slot4")) {
-            return slot4;
-        } else if (click.contains("slot5")) {
-            return slot5;
-        }*/
+        //checkt obs im SlotBereich ist
+        else if (click.contains("chosenCard1")) {
+            return chosenCard1;
+        } else if (click.contains("chosenCard2")) {
+            return chosenCard2;
+        } else if (click.contains("chosenCard3")) {
+            return chosenCard3;
+        } else if (click.contains("chosenCard4")) {
+            return chosenCard4;
+        } else if (click.contains("chosenCard5")) {
+            return chosenCard5;
+        }
         return null;
     }
-    /*
-    // DEAD CODE
 
-        public void cardSwitchSlot(Rectangle card){
-            cards.replace(card, false);
-
-            for( Map.Entry<Rectangle, Boolean> value : slots.entrySet()){
-                if(value.getValue() == false){
-                    slots.replace(value.getKey(), true);
-                    changeCard(value.getKey(), card);
-                    break;
-                }
-            }
-        }
-    */
-    //Tauscht den Slot mit der Karte
-    public void slotSwitchCard (Rectangle slot){
-        for( Map.Entry<Rectangle, Boolean> valueSlot : slots.entrySet()){
-            if(valueSlot.getKey().equals(slot) && valueSlot.getValue() == true){
-                slots.replace(slot, false);
-
-                for( Map.Entry<Rectangle, Boolean> valueCard : cards.entrySet()){
-                    if(valueCard.getValue() == false){
-                        cards.replace(valueCard.getKey(), true);
-                        //changeCard(valueCard.getKey(), slot);
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-
-    }
     // Tauscht 2 Karten miteinander egal welche
-    public void switchTwoCardsOrSlots(
-            javafx.scene.shape.Rectangle start, javafx.scene.shape.Rectangle end) {
+    public void switchTwoCardsOrSlots(Rectangle start, Rectangle end) {
 
         System.out.println(start.toString());
         System.out.println(end.toString());
         System.out.println("---------------");
 
-        // change pictures
-        javafx.scene.shape.Rectangle copy = new javafx.scene.shape.Rectangle();
+        //change pictures
+        Rectangle copy = new Rectangle();
         copy.setFill(start.getFill());
 
         start.setFill(end.getFill());
         end.setFill(copy.getFill());
 
-        // change slotmaps
+
+        //change slotmaps
         boolean startBool = getSwitchTwoCardsOrSlotsBoolean(start);
         boolean endBool = getSwitchTwoCardsOrSlotsBoolean(end);
 
         if (start.toString().contains("card")) {
             cards.replace(start, endBool);
-        } else if (start.toString().contains("slot")) {
+        } else if (start.toString().contains("chosenCard")) {
             slots.replace(start, endBool);
         }
 
         if (end.toString().contains("card")) {
             cards.replace(end, startBool);
-        } else if (end.toString().contains("slot")) {
+        } else if (end.toString().contains("chosenCard")) {
             slots.replace(end, startBool);
         }
 
-        // change cardpositions
+
+        //change cardpositions
         int startID = -1;
         int endID = -1;
         for (int i = 0; i < cardHand.size(); i++) {
@@ -723,37 +513,21 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
+
     // gibt den Boolean vom Kartenslot raus
-    public boolean getSwitchTwoCardsOrSlotsBoolean(javafx.scene.shape.Rectangle cardslot) {
-        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
+    public boolean getSwitchTwoCardsOrSlotsBoolean(Rectangle cardslot) {
+        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
             if (cardz.getKey().equals(cardslot)) {
                 return cardz.getValue();
             }
         }
-        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
+        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
             if (slotz.getKey().equals(cardslot)) {
                 return slotz.getValue();
             }
         }
         return false;
     }
-
-    /* DEAD CODE
-    //Tauscht design
-        public void changeCard(Rectangle valueCard, Rectangle slot){
-
-            for(int i = 0; i<cardHand.size(); i++){
-
-                if (cardHand.get(i).getPosition().equals(slot)){
-
-                    cardHand.get(i).setPosition(valueCard);
-                    valueCard.setFill(cardHand.get(i).getPicture());
-                    slot.setFill(DODGERBLUE);
-                    break;
-                }
-            }
-        }
-    */
 
     public ArrayList<Card> newCardDeck() {
 
@@ -765,99 +539,25 @@ public class GamePresenter extends AbstractPresenter {
         return cards;
     }
 
-
-        public void setLabels(){
-            if(valueLabels.size() <= 9){
-                for(int i = 1; i< 10; i++){
-                    valueLabels.put(new Label(), null);
-
-                }
-            }
-
-            ArrayList<String> alreadyDone = new ArrayList<>();
-
-            for(Map.Entry<Label, Rectangle> labMap : valueLabels.entrySet()){
-                boolean done = false;
-
-                for(Map.Entry<Rectangle, Boolean> value : cards.entrySet()){
-                    if(value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false){
-                        setLabelText(labMap.getKey(), value.getKey());
-                        alreadyDone.add(value.getKey().toString());
-                        done = true;
-
-                        break;
-                    }
-                }
-                if( done == false) {
-                    for (Map.Entry<Rectangle, Boolean> value : slots.entrySet()) {
-                        if (value.getValue() == true && alreadyDone.contains(value.getKey().toString()) == false) {
-
-                            setLabelText(labMap.getKey(), value.getKey());
-                            alreadyDone.add(value.getKey().toString());
-                            done = true;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        public void setLabelText(Label label, Rectangle box){
-
-            System.out.println(box.toString());
-
-            for( int i = 0; i< cardHand.size(); i++){
-                if(cardHand.get(i).getPosition().equals(box)){
-                label.setText(String.valueOf(cardHand.get(i).getValue()));
-
-                    label.setTranslateX(box.getX()+32);
-                    label.setTranslateY(box.getY()-41);
-                    /*label.setAlignment(Pos.CENTER);
-                    label.setTextFill(BLACK);
-                    handCards.getChildren().add(label);*/
-
-                }
-            }
-        }
-
-    public void getData(MouseEvent mouseEvent) {
-        /*System.out.println("--------------------");
-        for(Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()){
-            System.out.println(cardz.getKey().toString()+ "  " + cardz.getValue());
-        }
-        System.out.println("--------------------");
-        for(Map.Entry<Rectangle, Boolean> cardz : slots.entrySet()){
-            System.out.println(cardz.getKey().toString()+ "  " + cardz.getValue());
-        }
-        System.out.println("--------------------");
-        for (int i = 0; i< cardHand.size(); i++){
-            System.out.println(cardHand.get(i).getCardType().toString() + "  " + cardHand.get(i).getPosition().toString());
-        }
-        */
-
-        //cardsGridPane.setVisible(false);
-
-        resetCardsAndSlots();
-    }
-
-
     public void resetCardsAndSlots() {
         // if(loggedInUser == owner) {
         cardDeck = newCardDeck();
         System.out.println("KartenDeck größe " + cardDeck.size());
-        // }
+        //}
         cardHand.clear();
         submittedCards.clear();
 
-        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardz : cards.entrySet()) {
+
+        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
             if (cardz.getKey() != null) {
                 cards.replace(cardz.getKey(), false);
                 cardz.getKey().setFill(DODGERBLUE);
                 System.out.print("1");
             }
+
         }
 
-        for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> slotz : slots.entrySet()) {
+        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
             if (slotz.getKey() != null) {
                 slots.replace(slotz.getKey(), false);
                 slotz.getKey().setFill(DODGERBLUE);
@@ -866,7 +566,7 @@ public class GamePresenter extends AbstractPresenter {
         }
 
         for (int i = 0; i < 9; i++) {
-            for (Map.Entry<javafx.scene.shape.Rectangle, Boolean> cardSlot : cards.entrySet()) {
+            for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
                 if (cardSlot.getValue() == false && cardSlot.getKey() != null) {
                     cards.replace(cardSlot.getKey(), true);
                     cardSlot.getKey().setFill(cardDeck.get(0).getPicture());
@@ -878,27 +578,28 @@ public class GamePresenter extends AbstractPresenter {
                 }
             }
         }
+
     }
 
-
     @FXML
-    private void onSubmit(MouseEvent mouseEvent) {
+    public void onSubmit(MouseEvent mouseEvent) {
 
         if (slots.containsValue(false) == false) {
-            /*submittedCards.add(getCardBySlot(slot1));
-            submittedCards.add(getCardBySlot(slot2));
-            submittedCards.add(getCardBySlot(slot3));
-            submittedCards.add(getCardBySlot(slot4));
-            submittedCards.add(getCardBySlot(slot5));*/
+            submittedCards.add(getCardBySlot(chosenCard1));
+            submittedCards.add(getCardBySlot(chosenCard2));
+            submittedCards.add(getCardBySlot(chosenCard3));
+            submittedCards.add(getCardBySlot(chosenCard4));
+            submittedCards.add(getCardBySlot(chosenCard5));
 
             for (int i = 0; i < submittedCards.size(); i++) {
                 System.out.println(submittedCards.get(i).getValue());
             }
 
-            //cardsGridPane.setVisible(false);
 
-            // resetCardsAndSlots();
+            resetCardsAndSlots();
         }
+
+
     }
 
     public Card getCardBySlot(Rectangle slot) {
@@ -910,6 +611,7 @@ public class GamePresenter extends AbstractPresenter {
         return null;
     }
 
+    @FXML
     public void dragDropped(DragEvent event) {
         event.acceptTransferModes(TransferMode.ANY);
         System.out.println(event.toString());
@@ -917,23 +619,28 @@ public class GamePresenter extends AbstractPresenter {
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
 
+
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
+
     }
 
+    @FXML
     public void dragEntered(MouseEvent mouseEvent) {
 
         if (getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
             return;
         }
-        Dragboard dragboard =
-                getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
+        Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
+
 
         ClipboardContent content = new ClipboardContent();
 
         content.putString(mouseEvent.toString());
         dragboard.setContent(content);
+
     }
 
+    @FXML
     public void dragOver(DragEvent event) {
         event.acceptTransferModes(TransferMode.ANY);
     }
@@ -941,9 +648,209 @@ public class GamePresenter extends AbstractPresenter {
     /*
     @Author Maxim Erden
      */
-
     public ArrayList<Card> getSubmittedCards() {
         return this.submittedCards;
     }
+
+    /**
+     * Setting all players to not ready
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setAllPlayersNotReady() {//to implement onNextRoundMessage
+        for (int i = 0; i < playerCount; i++) {
+            playerReadyStackPanes.get(i).setStyle("-fx-background-color: red");
+        }
+    }
+
+    /**
+     * Setting ready status of the user
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setPlayerReadyStatus() { //To implement onPlayerReadyChangedMessage
+        User user = users.get(0);
+        boolean ready = false;
+        String style;
+        if (ready)
+            style = "-fx-background-color: green";
+        else
+            style = "-fx-background-color: red";
+
+        for (int i = 0; i < playerCount; i++) {
+            if (users.get(i).getUsername() == user.getUsername()) {
+                playerReadyStackPanes.get(i).setStyle(style);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Setting health points of the user
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setPlayerHP() {  //To implement onPlayerHPChangedMessage
+        User user = users.get(0);
+        for (int i = 0; i < playerCount; i++) {
+            if (users.get(i).getUsername() == user.getUsername()) {
+                playerHpTexts.get(i).setText("1");//to implement
+                break;
+            }
+        }
+    }
+
+    /**
+     * Setting roboter health pojnts of the user
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setRoboterHP() {//To implement onPlayerHPChangedMessage
+        User user = users.get(0);
+        for (int i = 0; i < playerCount; i++) {
+            if (users.get(i).getUsername() == user.getUsername()) {
+                playerRlTexts.get(i).setText("1");//to implement
+                break;
+            }
+        }
+    }
+
+    /**
+     * Setting Checkpoint of the user
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setPlayerCheckpoint() {//To implement onPlayerHPChangedMessage
+        User user = users.get(0);
+        for (int i = 0; i < playerCount; i++) {
+            if (users.get(i).getUsername() == user.getUsername()) {
+                playerCpTexts.get(i).setText("1");//to implement
+                break;
+            }
+        }
+    }
+
+    /**
+     * Setting playercard of the user
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-05-05
+     */
+    private void setPlayerCard() {//To implement onPlayerHPChangedMessage
+        User user = users.get(0);
+        for (int i = 0; i < playerCount; i++) {
+            if (users.get(i).getUsername() == user.getUsername()) {
+                playerCards.get(i).setImage(new Image(""));//to implement
+                playerCards.get(i).setFitHeight(150);
+                playerCards.get(i).setFitWidth(100);
+                break;
+            }
+        }
+    }
+
+    @FXML
+    private void onReadyButtonPressed(ActionEvent actionEvent) {
+
+        try {
+
+            JSONObject json =
+                    new JSONObject(
+                            new JSONTokener(
+                                    new FileReader("client/src/main/resources/json/tile.json")));
+            JSONArray jsonArray = json.getJSONArray("array");
+            String path2 = "client/src/main/resources/images/tiles/other/field.png";
+            File file = new File(path2);
+            Image image = new Image(file.toURI().toString());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(30);
+            imageView.setFitHeight(30);
+            gameBoard.add(imageView, x, y);
+
+            x++;
+
+            String path = "client/src/main/resources/images/tiles/player/Player01.png";
+            file = new File(path);
+            image = new Image(file.toURI().toString());
+            imageView = new ImageView(image);
+            imageView.setFitWidth(30);
+            imageView.setFitHeight(30);
+            gameBoard.add(imageView, x, y);
+            if (!playerReady) {
+                readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                playerReady = true;
+
+            } else {
+                readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                playerReady = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onRobotOffButtonPressed(ActionEvent actionEvent) {
+        try {
+
+            JSONObject json =
+                    new JSONObject(
+                            new JSONTokener(
+                                    new FileReader("client/src/main/resources/json/tile.json")));
+            JSONArray jsonArray = json.getJSONArray("array");
+
+            String path2 = "client/src/main/resources/images/tiles/other/field.png";
+            File file = new File(path2);
+            Image image = new Image(file.toURI().toString());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(30);
+            imageView.setFitHeight(30);
+            gameBoard.add(imageView, x, y);
+
+            y++;
+
+            String path = "client/src/main/resources/images/tiles/player/Player01.png";
+            file = new File(path);
+            image = new Image(file.toURI().toString());
+            imageView = new ImageView(image);
+            imageView.setFitWidth(30);
+            imageView.setFitHeight(30);
+            gameBoard.add(imageView, x, y);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Helper method to search a given value in a JSON array
+     *
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * the value from the parameter. Then in returns the path of the image.
+     *
+     * @param array       the JSONArray where the content is saved
+     * @param searchValue the String that wants to be searched for
+     * @author Moritz Scheer
+     * @since 2023-03-23
+     */
+
+    private String searchJSON(JSONArray array, String searchValue) {
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = array.getJSONObject(i);
+                if (obj.getString("id").equals(searchValue.toString())) {
+                    return obj.getString("source");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 }
 

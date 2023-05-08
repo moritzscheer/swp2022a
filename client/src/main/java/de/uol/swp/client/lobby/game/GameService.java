@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
  * Classes that manages game
@@ -28,8 +29,8 @@ public class GameService {
         this.eventBus.register(this);
     }
 
-    public void getMapData(Integer gameID) {
-        eventBus.post(new GetMapDataRequest(gameID));
+    public void getMapData(Integer gameID, LobbyDTO lobby) {
+        eventBus.post(new GetMapDataRequest(lobby, gameID));
         System.out.println("Getting Map");
     }
 

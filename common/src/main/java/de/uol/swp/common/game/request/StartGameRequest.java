@@ -1,6 +1,8 @@
 package de.uol.swp.common.game.request;
 
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+
 /**
  * Request sent to the server when the game has been started
  *
@@ -19,8 +21,9 @@ public class StartGameRequest extends AbstractGameRequest {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public StartGameRequest(int lobbyID) {
-        this.lobbyID = lobbyID;
+    public StartGameRequest(LobbyDTO lobby) {
+        this.lobbyID = lobby.getLobbyID();
+        this.lobby = lobby;
     }
 
     /**

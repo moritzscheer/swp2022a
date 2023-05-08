@@ -1,12 +1,13 @@
 package de.uol.swp.client.lobby.game;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import de.uol.swp.client.SceneManager;
+import de.uol.swp.client.lobby.LobbyManagement;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.common.game.dto.GameDTO;
-import de.uol.swp.common.game.message.GetMapDataMessage;
+import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -19,10 +20,10 @@ import java.util.Map;
 
 public class GameManagement {
 
+    EventBus eventBus;
 //    private Parent lobbyParent;
     private Parent gameParent;
 //    private LobbyPresenter lobbyPresenter;
-    private SceneManager sceneManager;
     private GamePresenter currentGamePresenter;
     private int currentLobbyId;
     private int currentGameId;
@@ -31,6 +32,11 @@ public class GameManagement {
     private final Map<Integer, LobbyDTO> gameIdToLobby = new HashMap<>();
     private GameService gameService;
 
+    private static GameManagement instance;
+    public static GameManagement getInstance(){
+        return instance;
+    }
+
     /**
      * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
      *
@@ -38,8 +44,11 @@ public class GameManagement {
      * @since 2023-03-09
      */
     @Inject
-    public GameManagement(GameService gameService) {
+    public GameManagement(EventBus eventBus, GameService gameService) {
+        this.eventBus = eventBus;
+        eventBus.register(this);
         this.gameService = gameService;
+        instance = this;
     }
 
 //    public void maybeNeedInLobby(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
@@ -60,7 +69,21 @@ public class GameManagement {
         this.gameParent = gameParent;
         this.currentLobbyId = lobbyId;
         this.currentGameId = gameId;
+        LobbyManagement.getInstance().setGameView(lobbyId, this.gameParent, gameId);
     }
+
+//    /**
+//     * Method to save the gamePresenter and gameParent in the given attributes *
+//     *
+//     * @param gamePresenter the Presenter of the game view
+//     * @param gameParent the Parent Object of the game view
+//     * @author Moritz Scheer
+//     * @since 2023-03-09
+//     */
+//    public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
+//        this.currentGamePresenter = gamePresenter;
+//        this.gameParent = gameParent;
+//    }
 
     // -----------------------------------------------------
     // parents
@@ -147,24 +170,26 @@ public class GameManagement {
                 msg.getGameID(),
                 msg.getLobby()
         );
-        setGameView(currentGamePresenter, gameParent, msg.getLobbyID(), msg.getGameID());
-        gameService.getMapData(msg.getGameID());
+
+        gameService.getMapData(msg.getGameID(), msg.getLobby());
     }
 
     /**
      * Handles GetMapDataMessage
      *
      * @param msg the GetMapDataMessage object seen on the EventBus
-     * @see de.uol.swp.common.game.message.GetMapDataMessage
+     * @see GetMapDataResponse
      * @author Maria Andrade
      * @since 2023-05-06
      */
     @Subscribe
-    public void onGetMapDataMessage(GetMapDataMessage msg){
+    public void onGetMapDataMessage(GetMapDataResponse msg){
          // TODO: handle board
-        // TODO: change view to gameView
-        currentGamePresenter.init(msg.getLobbyID(), gameIdToLobby.get(msg.getGameID()) , msg.getBoardImageIds(), msg.getGameID());
-        sceneManager.showGameScreen(msg.getLobbyID());
+//        // TODO: change view to gameView
+        //currentGamePresenter.init(msg.getLobbyID(), gameIdToLobby.get(msg.getGameID()) , msg.getBoardImageIds(), msg.getGameID());
+//        setGameView(currentGamePresenter, gameParent, msg.getLobbyID(), msg.getGameID());
+//        sceneManager.showGameScreen(msg.getLobbyID());
+        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID(), msg.getBoardImageIds()));
     }
 
     /**
@@ -197,5 +222,9 @@ public class GameManagement {
 
     public void setLoggedInUser(User loggedInUser) {
         this.loggedInUser = loggedInUser;
+    }
+
+    public void setGameParent(Parent gameParent) {
+        this.gameParent = gameParent;
     }
 }
