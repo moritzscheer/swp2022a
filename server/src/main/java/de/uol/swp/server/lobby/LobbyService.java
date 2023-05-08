@@ -47,9 +47,9 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement The management class for creating, storing and deleting lobbies
+     * @param lobbyManagement       The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
-     * @param eventBus the server-wide EventBus
+     * @param eventBus              the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
@@ -123,9 +123,9 @@ public class LobbyService extends AbstractService {
      * is sent to the client.
      *
      * @param joinLobbyRequest The JoinLobbyRequest found on the EventBus
+     * @author Moritz Scheer & Maxim Erden
      * @see de.uol.swp.common.lobby.Lobby
      * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
-     * @author Moritz Scheer & Maxim Erden
      * @since 2019-10-08
      */
     @Subscribe
@@ -290,17 +290,15 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onStartGameRequest(StartGameRequest msg) {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
-        if(!tmp.isEmpty()) {
-            if(tmp.get().increaseCounterRequest() == tmp.get().getUsers().size()){
-                System.out.println("Creating game");
-                int gameID = gameService.createNewGame(msg.getLobbyID());
-                System.out.println("Sending Message to all in Lobby");
-                sendToAllInLobby(
-                        msg.getLobbyID(),
-                        new StartGameMessage(
-                                msg.getLobbyID(), tmp.get(), gameID));
-                tmp.get().resetCounterRequest();
-            }
+        if (!tmp.isEmpty()) {
+            System.out.println("Creating game");
+            int gameID = gameService.createNewGame(msg.getLobbyID());
+            System.out.println("Sending Message to all in Lobby");
+            sendToAllInLobby(
+                    msg.getLobbyID(),
+                    new StartGameMessage(
+                            msg.getLobbyID(), tmp.get(), gameID));
+            tmp.get().resetCounterRequest();
         }
     }
 }
