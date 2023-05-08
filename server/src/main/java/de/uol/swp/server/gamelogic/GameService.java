@@ -3,10 +3,14 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.message.GetMapDataMessage;
+import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.lobby.LobbyManagement;
+import de.uol.swp.server.lobby.LobbyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +28,7 @@ public class GameService extends AbstractService {
 
     private static final Logger LOG = LogManager.getLogger(GameService.class);
     private final LobbyManagement lobbyManagement;
+    private final LobbyService lobbyService;
 
 
     private final Map<Integer, Game> games = new HashMap<>();
@@ -31,13 +36,15 @@ public class GameService extends AbstractService {
     /**
      * Constructor
      *
-     * @param bus the EvenBus used throughout the server
+     * @param bus          the EvenBus used throughout the server
+     * @param lobbyService
      * @since 2019-10-08
      */
     @Inject
-    public GameService(EventBus bus, LobbyManagement lobbyManagement) {
+    public GameService(EventBus bus, LobbyManagement lobbyManagement, LobbyService lobbyService) {
         super(bus);
         this.lobbyManagement = lobbyManagement;
+        this.lobbyService = lobbyService;
     }
 
     /**
@@ -51,7 +58,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public int createNewGame(int lobbyID) {
+    public GameDTO createNewGame(int lobbyID) {
         System.out.println("I am creating your game :)");
         int gameID = 1;
         while (games.containsKey(gameID)) {
@@ -82,8 +89,9 @@ public class GameService extends AbstractService {
                         lobby.get().getUsers()
                 )
         );
+        GameDTO game = new GameDTO(gameID);
         System.out.println("New Game :)");
-        return gameID;
+        return game;
     }
 
     /**
@@ -125,6 +133,40 @@ public class GameService extends AbstractService {
             // TODO: here it is called the function that give cards to all players,
             // then one must send a response to each player individually with their cards
 
+        }
+    }
+
+    /**
+     * Handles GetMapDataRequest found on the EventBus
+     *
+     * If a GetMapDataRequest is detected on the EventBus, this method is called. It posts a
+     * GetMapDataMessage to all the users in the lobby, containing the game board
+     *
+     * @param msg GetMapDataRequest found on the EventBus
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.GetMapDataRequest
+     * @see de.uol.swp.common.game.message.GetMapDataMessage
+     * @since 2023-02-28
+     */
+    @Subscribe
+    public void onGetMapDataRequest(GetMapDataRequest msg) {
+        System.out.println("Get Map Data server");
+        Optional<Game> game = getGame(msg.getGameID());
+        if(game.isPresent()){ //TODO: change to game.getBoard()
+            //Block[][] board = game.get().getBoard();
+            Block[][] board = MapBuilder.getMap("maps/tempMap.map");
+            int[][][][] boardIDs = new int[board.length][board[0].length][][];
+            for(int row= 0; row< board.length; row++){
+                for(int col=0; col < board[0].length; col++){
+                    boardIDs[row][col] = board[row][col].getImages();
+                }
+            }
+            lobbyService.sendToAllInLobby(msg.getLobby().getLobbyID(), new GetMapDataMessage(
+                    msg.getGameID(), boardIDs, msg.getLobby().getLobbyID()
+            ));
+        }
+        else {
+            //TODO: send ErrorResponse
         }
     }
 
