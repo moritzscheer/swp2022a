@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.lobby.game.Game;
 import de.uol.swp.client.lobby.game.GameManagement;
+import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @author Moritz Scheer
  * @since 2023-01-05
  */
-public class LobbyManagement {
+public class LobbyManagement extends AbstractPresenter {
 
     private User loggedInUser;
     private final Map<Integer, Game> lobbyMap = new HashMap<>();

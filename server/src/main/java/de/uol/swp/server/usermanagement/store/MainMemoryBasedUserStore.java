@@ -12,7 +12,7 @@ import java.util.*;
  *
  * <p>This is the user store that is used for the start of the software project. The user accounts
  * in this user store only reside within the RAM of your computer and only for as long as the server
- * is running. Therefore, the users have to be added every time the server is started.
+ * is running. Therefore the users have to be added every time the server is started.
  *
  * @implNote This store will never return the password of a user!
  * @see de.uol.swp.server.usermanagement.store.AbstractUserStore
@@ -47,8 +47,11 @@ public class MainMemoryBasedUserStore extends AbstractUserStore implements UserS
         if (Strings.isNullOrEmpty(username)) {
             throw new IllegalArgumentException("Username must not be null");
         }
-        User usr = new UserDTO(username, hash(password), eMail);
+        String passwordHash = hash(password);
+
+        User usr = new UserDTO(username, passwordHash, eMail);
         users.put(username, usr);
+
         return usr;
     }
 
