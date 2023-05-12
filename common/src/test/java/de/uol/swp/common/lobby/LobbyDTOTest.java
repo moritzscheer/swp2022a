@@ -291,7 +291,7 @@ class LobbyDTOTest {
     void updateMapTest()
     {
         Map m = new Map(0);
-        LobbyDTO lobby = new LobbyDTO(1, "test", defaultUser, "1234", true);
+        LobbyDTO lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
 
         Map before = lobby.getMap();
         lobby.setMap(m);

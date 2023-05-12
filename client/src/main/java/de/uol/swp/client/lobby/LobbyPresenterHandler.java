@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
@@ -69,6 +70,7 @@ public class LobbyPresenterHandler extends AbstractPresenter {
     public void onLobbyJoinedSuccessfulResponse(LobbyJoinedSuccessfulResponse message) {
         lobbyMap.put(message.getLobby().getLobbyID(), currentLobbyPresenter);
         lobbyMap.get(message.getLobby().getLobbyID()).setInformation(message.getLobby(), message.getUser());
+        lobbyMap.get(message.getLobby().getLobbyID()).updateMapDisplay(message.getMap());
     }
 
     /**
@@ -146,5 +148,19 @@ public class LobbyPresenterHandler extends AbstractPresenter {
      */
     public void setNextLobbyPresenter(LobbyPresenter currentLobbyPresenter) {
         this.currentLobbyPresenter = currentLobbyPresenter;
+    }
+
+    /**
+     * Updates the displayed map in the lobby when a MapChangedMessage is received
+     *
+     * @param mapChangedMessage The MapChangedMessage object
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @author Mathis Eilers
+     * @since 2023-05-12
+     */
+    @Subscribe
+    public void onMapChangedMessage(MapChangedMessage mapChangedMessage)
+    {
+        currentLobbyPresenter.updateMapDisplay(mapChangedMessage.getMap());
     }
 }

@@ -6,10 +6,11 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
+import de.uol.swp.client.lobby.LobbyPresenterHandler;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
+//import de.uol.swp.client.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.MapChangedMessage;
@@ -125,11 +126,30 @@ public class LobbyPresenter extends AbstractPresenter {
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
 
-        mapList.setMouseTransparent(true);
-        mapList.setFocusTraversable(false);
-        this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
+        if(!owner.equals(loggedInUser)) {
+            mapList.setMouseTransparent(true);
+            mapList.setFocusTraversable(false);
+        }
+        else
+        {
+            ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
+                int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
+                Map m = new Map(mapIndex);
 
-        updateMapDisplay(message.getMap());
+                updateMapDisplay(m);
+
+                if (this.multiplayer) {
+                    User u = this.loggedInUser;
+                    UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+                    eventBus.post(new MapChangeRequest(this.lobbyName, dto, m));
+                }
+            };
+            this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
+        }
+
+        this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
+        textFieldMapName.setText("None");
+
 
         // display data in GUI
         textFieldLobbyName.setText(lobbyName);
@@ -392,31 +412,18 @@ public class LobbyPresenter extends AbstractPresenter {
     }
 
     /**
-     * Updates the displayed map in the lobby when a MapChangedMessage is received
-     *
-     * @param mapChangedMessage The MapChangedMessage object
-     * @see de.uol.swp.common.lobby.message.MapChangedMessage
-     * @since 2022-12-31
-     */
-    @Subscribe
-    public void onMapChangedMessage(MapChangedMessage mapChangedMessage)
-    {
-        Map m = new Map(this.mapList.getSelectionModel().getSelectedIndex());
-        if(!mapChangedMessage.getMap().equals(m))
-        {
-            updateMapDisplay(mapChangedMessage.getMap());
-        }
-    }
-
-    /**
      * Updates the displayed map in the lobby according to the parameter
      *
      * @param m The Map object
      * @see de.uol.swp.common.game.Map
-     * @since 2022-12-31
+     * @author Mathis Eilers
+     * @since 2023-05-12
      */
-    private void updateMapDisplay(Map m)
+    public void updateMapDisplay(Map m)
     {
+        if(m == null)
+            return;
+
         Platform.runLater(() -> {
             textFieldMapName.setText(m.getName());
             mapThumb.setImage(new Image(m.getImageResource().toString()));
