@@ -22,7 +22,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private CardinalDirection direction;
 
     public PusherBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             int[] activeInProgramSteps,

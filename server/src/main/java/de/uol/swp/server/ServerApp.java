@@ -9,6 +9,8 @@ import de.uol.swp.server.communication.ServerHandler;
 import de.uol.swp.server.communication.netty.NettyServerHandler;
 import de.uol.swp.server.communication.netty.Server;
 import de.uol.swp.server.di.ServerModule;
+import de.uol.swp.server.gamelogic.GameService;
+import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 import de.uol.swp.server.usermanagement.UserManagement;
@@ -73,9 +75,11 @@ class ServerApp {
 
         // Remark: As these services are not referenced by any other class
         // we will need to create instances here (and inject dependencies)
+        injector.getInstance(LobbyManagement.class);
         injector.getInstance(UserService.class);
         injector.getInstance(AuthenticationService.class);
         injector.getInstance(LobbyService.class);
         injector.getInstance(TextChatService.class);
+        injector.getInstance(GameService.class);
     }
 }

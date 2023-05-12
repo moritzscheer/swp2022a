@@ -9,6 +9,8 @@ import com.google.inject.Injector;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.GameManagement;
+import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
@@ -67,6 +69,10 @@ public class ClientApp extends Application implements ConnectionListener {
 
     private TabPresenter tabPresenter;
 
+    private GameService gameService;
+
+    private GameManagement gameManagement;
+
     // -----------------------------------------------------
     // Java FX Methods
     // ----------------------------------------------------
@@ -107,8 +113,15 @@ public class ClientApp extends Application implements ConnectionListener {
         // get tabPresenter from guice
         this.tabPresenter = injector.getInstance(TabPresenter.class);
 
+        // get gameService from guice
+        this.gameService = injector.getInstance(GameService.class);
+
         // get event bus from guice
         eventBus = injector.getInstance(EventBus.class);
+
+        // get gameManagement from guice
+        this.gameManagement = injector.getInstance(GameManagement.class);
+
         // Register this class for de.uol.swp.client.events (e.g. for exceptions)
         eventBus.register(this);
 

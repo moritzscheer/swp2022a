@@ -3,6 +3,7 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.user.UserDTO;
@@ -98,8 +99,9 @@ public class LobbyService {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void startGame(Integer lobbyID) {
-        StartGameRequest startGameRequest = new StartGameRequest(lobbyID);
+    public void startGame(LobbyDTO lobby) {
+        System.out.println("Starting Game");
+        StartGameRequest startGameRequest = new StartGameRequest(lobby);
         eventBus.post(startGameRequest);
     }
 }

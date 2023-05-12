@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * Base class of all game request messages. Basic handling of game data.
  *
- * @see de.uol.swp.common.user.User
+ * @see de.uol.swp.common.lobby.Lobby
  * @see de.uol.swp.common.message.AbstractRequestMessage
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-01
@@ -34,6 +34,7 @@ public class AbstractGameRequest extends AbstractRequestMessage {
      */
     public AbstractGameRequest(String name, LobbyDTO lobby) {
         this.name = name;
+        // TODO: check if it is lobbyID, or gameID
         this.lobby = lobby;
     }
 

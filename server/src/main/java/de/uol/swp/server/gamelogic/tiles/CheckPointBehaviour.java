@@ -4,6 +4,10 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Checks, if a robot is on the checkpoint tile and changes to the new one, if needed
  *
@@ -15,7 +19,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     protected int number;
 
     public CheckPointBehaviour(
-            Robot[] robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
+            List<Robot> robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
         super(robotStates, board, blockPos);
         this.number = checkPointNumber;
     }
@@ -33,12 +37,17 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     public int setCheckPoint(int indexOfMovedRobot) {
-        if (robotStates[indexOfMovedRobot].getLastCheckPoint() < this.number) {
-            robotStates[indexOfMovedRobot].setLastCheckPoint(this.number);
-            robotStates[indexOfMovedRobot].setLastCheckPointPosition(blockPos);
-            robotStates[indexOfMovedRobot].setBackupCopy(true);
+        if (robotStates.get(indexOfMovedRobot).getLastCheckPoint() < this.number) {
+            robotStates.get(indexOfMovedRobot).setLastCheckPoint(this.number);
+            robotStates.get(indexOfMovedRobot).setLastCheckPointPosition(blockPos);
+            robotStates.get(indexOfMovedRobot).setBackupCopy(true);
             return this.number;
         }
         return 0;
+    }
+
+    @Override
+    public List<int[]> getImage(){
+        return new ArrayList<>(List.of(new int[]{3 + number, 0}));
     }
 }

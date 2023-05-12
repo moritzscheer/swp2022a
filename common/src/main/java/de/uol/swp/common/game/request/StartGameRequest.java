@@ -1,6 +1,8 @@
 package de.uol.swp.common.game.request;
 
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+
 /**
  * Request sent to the server when the game has been started
  *
@@ -10,7 +12,7 @@ package de.uol.swp.common.game.request;
  */
 public class StartGameRequest extends AbstractGameRequest {
 
-    private Integer lobbyID;
+    private int lobbyID;
 
     /**
      * constructor
@@ -19,8 +21,9 @@ public class StartGameRequest extends AbstractGameRequest {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public StartGameRequest(Integer lobbyID) {
-        this.lobbyID = lobbyID;
+    public StartGameRequest(LobbyDTO lobby) {
+        this.lobbyID = lobby.getLobbyID();
+        this.lobby = lobby;
     }
 
     /**
@@ -30,7 +33,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public Integer getLobbyID() {
+    public int getLobbyID() {
         return lobbyID;
     }
 }

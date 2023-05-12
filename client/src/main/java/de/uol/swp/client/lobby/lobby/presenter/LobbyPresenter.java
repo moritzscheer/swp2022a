@@ -48,7 +48,8 @@ public class LobbyPresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
-    private Integer lobbyID;
+    private LobbyDTO lobbyDTO;
+    private int lobbyID;
     private String lobbyName;
     private User owner;
     private ObservableList<String> users;
@@ -99,7 +100,7 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     public void setInformation(LobbyDTO lobby, UserDTO user) {
         loggedInUser = user;
-
+        lobbyDTO = lobby;
         lobbyID = lobby.getLobbyID();
         lobbyName = lobby.getName();
         owner = lobby.getOwner();
@@ -273,7 +274,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onStartButtonPressed(ActionEvent actionEvent) {
         if (loggedInUser == owner) {
-            lobbyService.startGame(lobbyID);
+            lobbyService.startGame(lobbyDTO);
         }
     }
 

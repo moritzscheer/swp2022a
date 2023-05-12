@@ -194,9 +194,27 @@ public class Block implements Serializable {
         return this.imgPath;
     }
 
-    public void setRobotsInfo(Robot[] robots) {
+    public void setRobotsInfo(List<Robot> robots) {
         for (int i = 0; i < behaviourList.length; i++) {
             behaviourList[i].setRobotStates(robots);
         }
+    }
+
+    /** Get all imagesIDs as Array to send to client
+     * @author Finn & Maria
+     * @return imagesIDs
+     */
+    public int[][] getImages(){
+        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0,0})) ;
+        for (int i = 0; i < behaviourList.length; i++) {
+            images.addAll(behaviourList[i].getImage());
+        }
+
+        int[][] imagesArr = new int[images.size()][];
+        for (int i = 0; i < images.size(); i++) {
+            imagesArr[i] = images.get(i);
+        }
+
+        return imagesArr;
     }
 }

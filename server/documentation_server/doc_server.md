@@ -236,11 +236,11 @@ Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse 
 **Methode**
 </span>**
 
-Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int prgramStep``` und
+Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int programStep``` und
 gibt entweder eine Liste von ```List<MoveIntent>```, oder den Wert ```Null``` zurück.
 Innerhalb der Methode werden alle Roboter, die in der Liste ```Robot[] robotStates``` sich befinden
 iteriert. Falls ein Roboter dieselbe Position wie ```Position blockPos``` des GearBehaviours besitzt,
-wird der Roboter bei einem positiven "turnC-Wert" um 180° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false",
+wird der Roboter bei einem positiven "turnC-Wert" um 90° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false",
 wird eine Ausrichtung gegen den Uhrzeigersinn vorgenommen.
 
 

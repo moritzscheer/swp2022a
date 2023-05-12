@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
@@ -20,6 +21,7 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.chat.TextChatService;
+import de.uol.swp.server.gamelogic.GameService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
 import org.apache.logging.log4j.LogManager;
@@ -45,9 +47,9 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement The management class for creating, storing and deleting lobbies
+     * @param lobbyManagement       The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
-     * @param eventBus the server-wide EventBus
+     * @param eventBus              the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
@@ -119,9 +121,9 @@ public class LobbyService extends AbstractService {
      * is sent to the client.
      *
      * @param joinLobbyRequest The JoinLobbyRequest found on the EventBus
+     * @author Moritz Scheer & Maxim Erden
      * @see de.uol.swp.common.lobby.Lobby
      * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
-     * @author Moritz Scheer & Maxim Erden
      * @since 2019-10-08
      */
     @Subscribe
@@ -269,31 +271,5 @@ public class LobbyService extends AbstractService {
                 new AllOnlineLobbiesResponse(lobbyManagement.getMultiplayerLobbies());
         response.initWithMessage(msg);
         post(response);
-    }
-
-    /**
-     * Handles StartGameRequest found on the EventBus
-     *
-     * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
-     * StartGameMessage to all the users in the lobby, containing the
-     *
-     * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
-     * @see de.uol.swp.common.game.request.StartGameRequest
-     * @see de.uol.swp.common.game.message.StartGameMessage
-     * @since 2023-02-28
-     */
-    @Subscribe
-    public void onStartGameRequest(StartGameRequest msg) {
-        Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
-        if(!tmp.isEmpty()) {
-            if(tmp.get().increaseCounterRequest() == tmp.get().getUsers().size()){
-                sendToAllInLobby(
-                        msg.getLobbyID(),
-                        new StartGameMessage(
-                                msg.getLobbyID(), tmp.get()));
-                tmp.get().resetCounterRequest();
-            }
-        }
     }
 }

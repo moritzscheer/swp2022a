@@ -1,36 +1,45 @@
 package de.uol.swp.server.gamelogic;
 
+import com.google.common.primitives.Ints;
+import de.uol.swp.common.user.User;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.server.lobby.LobbyManagement;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
+import java.io.FileReader;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
  * @see
- * @since
+ * @since 2023
  */
 public class Game {
 
+    private final Integer lobbyID;
     private Block[][] board;
 
     // TODO: Remove dockingBays field
     private Position[] dockingBays;
-    private final Robot[] robots;
-    private int nRobots;
+    private final List<Robot> robots = new ArrayList<>();
+    private final int nRobots;
     private int rowCount;
     private int columnCount;
-    private int columCount;
     private int programStep; // program steps from 1 to 5
-    private Timer timer;
+    private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
-    private final AbstractPlayer[] players;
+    private final List<AbstractPlayer> players = new ArrayList<>();
     private final Card[][] playedCards;
+
+    private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
+    List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
 
     /**
      * Constructor
@@ -41,18 +50,29 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Block[][] board, Position[] dockingBays, Robot[] robots, Timer timer, AbstractPlayer[] players) {
+    public Game(Integer lobbyID, Block[][] board, Position[] dockingBays, Set<User> users) {
+        this.lobbyID = lobbyID;
         this.board = board;
         this.dockingBays = dockingBays;
-        this.robots = robots;
-        this.nRobots = robots.length;
         this.rowCount = board.length;
         this.columnCount = board[0].length;
-        this.timer = timer;
         this.programStep = 0;
-        this.players = players;
         this.readyRegister = 0;
-        this.playedCards = new Card[nRobots][5];
+
+        // there must be as many docking as users
+        assert dockingBays.length == users.size();
+
+        // create players and robots
+        int i = 0;
+        for(User user: users) {
+            Player newPlayer = new Player(user, dockingBays[i]);
+            this.players.add(newPlayer);
+            this.robots.add(newPlayer.getRobot());
+            i++;
+        }
+
+        this.nRobots = robots.size();
+        this.playedCards = new Card[this.nRobots][5];
     }
 
     /**
@@ -86,8 +106,8 @@ public class Game {
             startTimer();
         } else if (this.readyRegister == this.nRobots) {
             this.programStep = 1; // start in the first program step, until 5
-            for (int playerIterator = 0; playerIterator < players.length; playerIterator++) {
-                this.playedCards[playerIterator] = players[playerIterator].getChosenCards();
+            for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
+                this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
             }
             revealProgramCards();
             goToNextRound();
@@ -96,7 +116,44 @@ public class Game {
     }
 
     /**
+     * Generate random cards for a player (max. 9, min. 5)
+     * The cards are generated based on the id, from 1 to 84
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Player
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @since 2023-04-25
+     */
+    public void distributeProgramCards() {
+        Collections.shuffle(cardsIDsList);
+        Integer[] intArray = new Integer[84];
+        cardsIDsList.toArray(intArray);
+        System.out.println(Arrays.toString(intArray));
+        int count = 0;
+
+        for(AbstractPlayer player: this.players){
+            int damage = player.getRobot().getDamageToken();
+
+            if(damage < 5){
+                int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, 9-damage);
+                Card[] cards = new Card[9-damage];
+                int i = 0;
+                for(int cardID: cardsIDs){
+                    cards[i] = searchCardInJSON(cardID);
+                    i++;
+                }
+                player.receiveCards(cards);
+                count = count + 9 - damage;
+
+            }
+            // TODO: lock the registers
+            else{}
+        }
+    }
+
+    /**
      * Sends response to client with cards to be displayed
+     * One from each Player
      *
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Player
@@ -107,7 +164,7 @@ public class Game {
         // TODO: send message to client
 
         Card[] cardsInThisProgramStep = new Card[this.nRobots];
-        for (int playerIterator = 0; playerIterator < players.length; playerIterator++) {
+        for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             cardsInThisProgramStep[playerIterator] =
                     this.playedCards[playerIterator][this.programStep];
         }
@@ -143,6 +200,9 @@ public class Game {
         }
         // round is over
         this.programStep = 0;
+        // recreate all possible cards
+        this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
+        this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     }
 
     private void startGame(){
@@ -154,7 +214,7 @@ public class Game {
         setRobotsInfoInBehaviours(board, robots);
     }
 
-    private void setRobotsInfoInBehaviours(Block[][] board, Robot[] robots) {
+    private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (int x = 0; x < board.length; x++) {
             for (int y = 0; y < board[x].length; y++) {
                 board[x][y].setRobotsInfo(robots);
@@ -244,16 +304,16 @@ public class Game {
         List<List<MoveIntent>> moves = new ArrayList<>();
         // TODO: handle rotations
         if (card.getDirectionCard() != null) {
-            turn(robots[robotID], card.getDirectionCard());
+            turn(robots.get(robotID), card.getDirectionCard());
         }
         if (card.getUTurn()) {
-            uTurn(robots[robotID]);
+            uTurn(robots.get(robotID));
         }
         for (int i = 0;
                 i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
                 i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
-            subMoveList.add(new MoveIntent(robotID, robots[robotID].getDirection()));
+            subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
             moves.add(subMoveList);
         }
         return moves;
@@ -267,7 +327,7 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
-                robots[move.robotID].move(move.direction);
+                robots.get(move.robotID).move(move.direction);
             }
         }
     }
@@ -319,13 +379,13 @@ public class Game {
             Position destinationTile = move.getTargetPosition();
             CardinalDirection moveDir = move.getDirection();
 
-            for (int j = 0; j < robots.length; j++) {
-                Robot robot = robots[j];
-                if (!robot.equals(robots[move.robotID])) {
+            for (int j = 0; j < robots.size(); j++) {
+                Robot robot = robots.get(j);
+                if (!robot.equals(robots.get(move.robotID))) {
                     if (robot.getPosition() == destinationTile) {
                         boolean alreadyHasMoveIntent = false;
                         for (MoveResult moveResult : moveList) {
-                            if (robot.equals(robots[moveResult.robotID])) {
+                            if (robot.equals(robots.get(moveResult.robotID))) {
                                 alreadyHasMoveIntent = true;
                                 break;
                             }
@@ -444,7 +504,7 @@ public class Game {
         }
 
         public Position getTargetPosition() {
-            Position p = robots[robotID].getPosition();
+            Position p = robots.get(robotID).getPosition();
             switch (direction) {
                 case East:
                     return new Position(p.x + 1, p.y);
@@ -459,7 +519,55 @@ public class Game {
         }
 
         public Position getOriginPosition() {
-            return robots[robotID].getPosition();
+            return robots.get(robotID).getPosition();
         }
+    }
+
+
+    /**
+     * Helper method to search a card in a JSON array
+     *
+     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * the value from the parameter. Then in returns the path of the image.
+     *
+     * @param cardId the cardID that wants to be searched for
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
+    private Card searchCardInJSON(int cardId) {
+        JSONObject json;
+        JSONArray jsonArray;
+
+        try {
+            json =
+                    new JSONObject(
+                            new JSONTokener(
+                                    new FileReader("server/src/main/resources/json/cards.json")));
+            jsonArray = json.getJSONArray("cards");
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = null;
+                try {
+                    obj = jsonArray.getJSONObject(i);
+                    if (obj.getInt("card-id") == cardId) {
+                        Card card;
+                        String  cardType = obj.getString("type-id");
+                        int priority = obj.getInt("priority");
+                        String imgPath = obj.getString("source");
+                        card = new Card(cardId, cardType, priority, imgPath);
+                        return card;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Integer getLobbyID() {
+        return lobbyID;
     }
 }

@@ -2,6 +2,8 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
 
+import de.uol.swp.client.lobby.game.Game;
+import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
@@ -31,6 +33,19 @@ public class LobbyManagement extends AbstractPresenter {
     private final Map<Integer, Game> lobbyMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
     private GamePresenter currentGamePresenter;
+
+    private static LobbyManagement instance;
+    public static LobbyManagement getInstance() {
+        return  instance;
+    }
+
+    public LobbyManagement(){
+        instance = this;
+    }
+
+    public void setGameView(int lobbyID, Parent gameParent, int gameID){
+        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
+    }
 
     /**
      * Handles successful login
@@ -67,6 +82,8 @@ public class LobbyManagement extends AbstractPresenter {
     public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
         currentLobbyPresenter.setInformation(lobby, user);
         lobbyMap.put(lobby.getLobbyID(), new Game(currentLobbyPresenter, lobbyParent));
+        //TODO: besser machen
+        //GameManagement.getInstance().setGameView(currentGamePresenter, getGameParent(lobby.getLobbyID()));
     }
 
     /**
@@ -155,21 +172,8 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent) {
-        // testing
-        Integer[][][] board = new Integer[12][12][2];
-        for (int col = 0; col < board.length; col++) {
-            for (int row = 0; row < board[col].length; row++) {
-                int count = 0;
-                for (int img = 0; img < board[col][row].length; img++) {
-                    board[col][row][img] = count;
-                    count++;
-                }
-            }
-        }
-
-        currentGamePresenter.init(lobbyID, lobby, board);
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
+    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent, Integer gameID) {
+        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
     }
 
     // -----------------------------------------------------

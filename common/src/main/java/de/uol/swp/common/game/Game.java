@@ -20,4 +20,5 @@ public interface Game extends Serializable {
      * @since 2023-05-01
      */
     Integer getGameID();
+
 }

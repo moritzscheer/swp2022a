@@ -13,6 +13,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * Test CheckPointBehaviour
  *
@@ -30,7 +32,7 @@ public class CheckPointBehaviourTest {
     @Before
     public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
-        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber);
+        behaviours1[0] = new CheckPointBehaviour(List.of(robots), board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
     }
 

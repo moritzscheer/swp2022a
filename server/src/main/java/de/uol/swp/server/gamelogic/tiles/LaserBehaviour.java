@@ -6,6 +6,7 @@ import de.uol.swp.server.gamelogic.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private int laserBeam; // laserBeam is directed related to damage
 
     public LaserBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             int[] activeInProgramSteps,
             Position blockPos,
@@ -73,5 +74,10 @@ public class LaserBehaviour extends AbstractTileBehaviour {
      */
     public int getLaserBeam() {
         return this.laserBeam;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        return new ArrayList<>(List.of(new int[] {17 + laserBeam * 3 , 0}));
     }
 }

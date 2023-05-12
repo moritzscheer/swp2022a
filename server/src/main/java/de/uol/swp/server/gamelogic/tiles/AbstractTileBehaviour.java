@@ -7,6 +7,7 @@ import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,11 +17,11 @@ import java.util.List;
  */
 public abstract class AbstractTileBehaviour implements Serializable {
 
-    protected Robot[] robotStates;
+    protected List<Robot> robotStates;
     protected Block[][] board;
     protected Position blockPos;
 
-    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public AbstractTileBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         this.robotStates = robotStates;
         this.board = board;
         this.blockPos = blockPos;
@@ -96,8 +97,8 @@ public abstract class AbstractTileBehaviour implements Serializable {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public String GetImage() {
-        return "";
+    public List<int[]> getImage() {
+        return new ArrayList<>();
     }
 
     /**
@@ -127,7 +128,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
         return null;
     }
 
-    public void setRobotStates(Robot[] robots){
+    public void setRobotStates(List<Robot> robots){
         robotStates = robots;
     }
 }

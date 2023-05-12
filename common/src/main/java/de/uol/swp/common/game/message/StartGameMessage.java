@@ -1,5 +1,7 @@
 package de.uol.swp.common.game.message;
 
+import de.uol.swp.common.game.Game;
+import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 
@@ -14,19 +16,25 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 public class StartGameMessage extends AbstractLobbyMessage {
 
     private Integer lobbyID;
-    private LobbyDTO lobby;
 
+    private Integer gameID;
+
+    private LobbyDTO lobby;
+    private GameDTO game;
     /**
      * constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
-     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param lobby   LobbyDTO Object containing all the information of the lobby
+     * @param game GameDTO object
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23
      */
-    public StartGameMessage(Integer lobbyID, LobbyDTO lobby) {
+    public StartGameMessage(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
         this.lobbyID = lobbyID;
-        this.lobby = lobby.createWithoutUserPassword(lobby);
+        this.gameID = game.getGameID();
+        this.lobby = lobby;
+        this.game = game; // TODO: add more attributes to gameDTO class
     }
 
     /**
@@ -41,7 +49,29 @@ public class StartGameMessage extends AbstractLobbyMessage {
     }
 
     /**
-     * Getter for the lobbyID variable
+     * Getter for the gameID variable
+     *
+     * @return Integer containing the gameID
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-01
+     */
+    public Integer getGameID() {
+        return gameID;
+    }
+
+    /**
+     * Getter for the gameDTO variable
+     *
+     * @return GameDTO Object containing all the information of the lobby
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2022-05-07
+     */
+    public GameDTO getGame() {
+        return game;
+    }
+
+    /**
+     * Getter for the lobbyDTO variable
      *
      * @return LobbyDTO Object containing all the information of the lobby
      * @author Maria Eduarda Costa Leite Andrade, WKempel

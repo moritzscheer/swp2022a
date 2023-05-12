@@ -12,6 +12,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 public class gameTest {
     // Create Players
 
@@ -43,7 +45,7 @@ public class gameTest {
         for (Position p : positions) {
             board[p.x - 1][p.y - 1] =
                     new Block(
-                            new CheckPointBehaviour(robots, board, p, checkPointNumber), "CP1", p);
+                            new CheckPointBehaviour(List.of(robots), board, p, checkPointNumber), "CP1", p);
             checkPointNumber += 1;
         }
 
@@ -54,7 +56,7 @@ public class gameTest {
             }
             System.out.println("");
         }
-        behaviours1[0] = new CheckPointBehaviour(robots, board, pos1, checkPointNumber);
+        behaviours1[0] = new CheckPointBehaviour(List.of(robots), board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
     }
 

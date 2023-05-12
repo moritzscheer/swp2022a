@@ -8,6 +8,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
      * @since 2023/02/03
      */
     public ConveyorBeltBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             ArrowType arrowType,
@@ -82,5 +83,42 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
             }
         }
         return moves;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        int rotation = (direction.ordinal() + 1) % 2;
+        int arrowType;
+        int secondArrowType = 0;
+        boolean hasSecondArrow = false;
+        switch (this.arrowType){
+
+            case Straight:
+                arrowType = 10;
+                break;
+            case TurnRight:
+                arrowType = 11;
+                break;
+            case TurnLeft:
+                arrowType = 12;
+                break;
+            case StraightTurnRight:
+                arrowType = 10;
+                hasSecondArrow = true;
+                secondArrowType = 11;
+                break;
+            case StraightTurnLeft:
+                arrowType = 10;
+                hasSecondArrow = true;
+                secondArrowType = 12;
+                break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + this.arrowType + " or ");
+        }
+        if(hasSecondArrow){
+            return new ArrayList<>(Arrays.asList( new int[] {9, rotation}, new int[] {arrowType, rotation}, new int[] {secondArrowType, rotation}));
+        }
+        return new ArrayList<>(Arrays.asList( new int[] {9, rotation}, new int[] {arrowType, rotation}));
     }
 }
