@@ -14,6 +14,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * Test PressorBehaviour
  *
@@ -35,7 +37,7 @@ public class PressorBehaviourTest {
         robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        pressorBehaviour = new PressorBehaviour(robotStates, board, activeInProgramSteps, blockPos);
+        pressorBehaviour = new PressorBehaviour(List.of(robotStates), board, activeInProgramSteps, blockPos);
     }
 
     /**

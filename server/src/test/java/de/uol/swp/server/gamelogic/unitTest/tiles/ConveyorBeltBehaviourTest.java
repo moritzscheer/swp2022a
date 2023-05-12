@@ -12,6 +12,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * Test ConveyorBeltBehaviour
  *
@@ -35,28 +37,28 @@ public class ConveyorBeltBehaviourTest {
 
         behaviours1[0] =
                 new ConveyorBeltBehaviour(
-                        robots,
+                        List.of(robots),
                         board,
                         new Position(1, 1),
                         ArrowType.Straight,
                         CardinalDirection.East);
         behaviours2[0] =
                 new ConveyorBeltBehaviour(
-                        robots,
+                        List.of(robots),
                         board,
                         new Position(1, 2),
                         ArrowType.Straight,
                         CardinalDirection.East);
         behaviours3[0] =
                 new ConveyorBeltBehaviour(
-                        robots,
+                        List.of(robots),
                         board,
                         new Position(1, 4),
                         ArrowType.Straight,
                         CardinalDirection.West);
         behaviours4[0] =
                 new ConveyorBeltBehaviour(
-                        robots,
+                        List.of(robots),
                         board,
                         new Position(2, 1),
                         ArrowType.TurnRight,

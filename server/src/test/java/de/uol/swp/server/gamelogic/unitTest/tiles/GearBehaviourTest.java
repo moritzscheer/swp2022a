@@ -12,6 +12,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 /**
  * Test GearBehaviour
  *
@@ -31,8 +33,8 @@ public class GearBehaviourTest {
     public void setup() throws Exception {
         robots[0] = new Robot("", pos1, true, CardinalDirection.East);
         robots[1] = new Robot("", pos2, true, CardinalDirection.East);
-        behaviours1[0] = new GearBehaviour(robots, board, pos1, true);
-        behaviours2[0] = new GearBehaviour(robots, board, pos2, false);
+        behaviours1[0] = new GearBehaviour(List.of(robots), board, pos1, true);
+        behaviours2[0] = new GearBehaviour(List.of(robots), board, pos2, false);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
     }

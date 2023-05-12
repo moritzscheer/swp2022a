@@ -11,6 +11,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
 public class PitBehaviourTest {
 
     private Robot[] robotStates;
@@ -27,7 +29,7 @@ public class PitBehaviourTest {
         robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        pitBehaviour = new PitBehaviour(robotStates, board, blockPos);
+        pitBehaviour = new PitBehaviour(List.of(robotStates), board, blockPos);
     }
 
     /**
