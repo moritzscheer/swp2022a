@@ -1,6 +1,7 @@
 package de.uol.swp.common.game.dto;
 
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 /**
  * Object to transfer the information of a Robot
@@ -16,9 +17,12 @@ public class RobotDTO {
 
     private Position position;
 
-    public RobotDTO(String imgPath, Position position){
+    private CardinalDirection direction;
+
+    public RobotDTO(String imgPath, Position position, CardinalDirection direction){
         this.imgPath = imgPath;
         this.position = position;
+        this.direction = direction;
     }
 
     public String getImgPath() {
@@ -35,5 +39,13 @@ public class RobotDTO {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public CardinalDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(CardinalDirection direction) {
+        this.direction = direction;
     }
 }

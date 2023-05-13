@@ -3,7 +3,6 @@ package de.uol.swp.server.utils;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
 /** This is a utility class
@@ -40,7 +39,7 @@ public final class ConvertToDTOUtils {
      * @since 2023-05-13
      */
     public static RobotDTO convertRobotToRobotDTO(Robot robot){
-        RobotDTO robotDTO = new RobotDTO(robot.getImgPath(), robot.getPosition());
+        RobotDTO robotDTO = new RobotDTO(robot.getImgPath(), robot.getPosition(), robot.getDirection());
         return robotDTO;
     }
 }
