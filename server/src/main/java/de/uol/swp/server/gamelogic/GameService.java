@@ -3,7 +3,9 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import de.uol.swp.common.game.dto.BoardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -16,9 +18,7 @@ import de.uol.swp.server.lobby.LobbyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Handles the game requests send by the users
@@ -83,6 +83,8 @@ public class GameService extends AbstractService {
         if(!lobby.isPresent()){
             System.out.println("GameService: lobby not found");
         }
+
+        // create and save Game Object
         games.put(
                 gameID,
                 new Game(lobbyID,
@@ -91,7 +93,20 @@ public class GameService extends AbstractService {
                         lobby.get().getUsers()
                 )
         );
-        GameDTO game = new GameDTO(gameID);
+
+        // Create DTOs objects
+        // TODO: create Player
+        List<PlayerDTO> players = new ArrayList<>();
+        for(AbstractPlayer player: games.get(gameID).getPlayers()) {
+            players.add(
+                    new PlayerDTO()
+            );
+        }
+
+        // TODO: create Board, instead of using 4d array
+        BoardDTO boardDTO = new BoardDTO();
+
+        GameDTO game = new GameDTO(gameID, players, boardDTO);
         System.out.println("New Game :)");
         return game;
     }
