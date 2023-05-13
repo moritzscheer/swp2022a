@@ -21,6 +21,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertRobotToRobotDTO;
+
 /**
  * Handles the game requests send by the users
  *
@@ -35,6 +37,7 @@ public class GameService extends AbstractService {
 
 
     private final Map<Integer, Game> games = new HashMap<>();
+    private final Map<Integer, GameDTO> gamesDTO = new HashMap<>();
 
     /**
      * Constructor
@@ -99,12 +102,18 @@ public class GameService extends AbstractService {
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(gameID).getPlayers()) {
-            RobotDTO robotDTO = new RobotDTO(
-                    //player.getRobot().getImage()
-            );
-            players.add(
-                    new PlayerDTO(robotDTO)
-            );
+            // convert Robot to RobotDTO
+            RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
+
+            // create playerDTO
+            PlayerDTO playerDTO = new PlayerDTO(robotDTO);
+
+            // check if the player is controlled by a user
+            if(player.getClass() == Player.class)
+                playerDTO.setUser(((Player) player).getUser());
+
+            // add in the list
+            players.add(playerDTO);
 
             // set currentCards later in the GameDTO Object
         }
@@ -112,9 +121,12 @@ public class GameService extends AbstractService {
         // TODO: create Board, instead of using 4d array
         BoardDTO boardDTO = new BoardDTO();
 
-        GameDTO game = new GameDTO(gameID, players, boardDTO);
+        GameDTO gameDTO = new GameDTO(gameID, players, boardDTO);
+
+        gamesDTO.put(gameID, gameDTO); // save reference to the GameDTO
+
         System.out.println("New Game :)");
-        return game;
+        return gameDTO;
     }
 
     /**

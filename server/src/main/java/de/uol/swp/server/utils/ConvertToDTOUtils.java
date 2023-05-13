@@ -1,7 +1,9 @@
 package de.uol.swp.server.utils;
 
+import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.server.gamelogic.Robot;
 
 /** This is a utility class
  *
@@ -19,10 +21,25 @@ public final class ConvertToDTOUtils {
      * This is necessary because the lobbyDTO saves a Set<User>
      *
      * @param user user to be converted to DTO
-     * @return
+     * @return userDTO
+     * @author Maria Andrade
+     * @since 2023-05-13
      */
     public static UserDTO convertUserToUserDTO(User user){
         UserDTO userDTO = new UserDTO(user.getUsername(), user.getPassword(), user.getEMail());
         return userDTO;
+    }
+
+    /** This function converts Robot to RobotDTO
+     *
+     *
+     * @param robot robot to be converted to DTO
+     * @return robotDTO
+     * @author Maria Andrade
+     * @since 2023-05-13
+     */
+    public static RobotDTO convertRobotToRobotDTO(Robot robot){
+        RobotDTO robotDTO = new RobotDTO();
+        return robotDTO;
     }
 }
