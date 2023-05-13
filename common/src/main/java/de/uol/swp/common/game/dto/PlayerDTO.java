@@ -38,7 +38,7 @@ public class PlayerDTO implements Serializable {
      * @see de.uol.swp.common.game.dto.RobotDTO
      * @since 2023-05-13
      */
-    public RobotDTO getRobotsDTO() {
+    public RobotDTO getRobotDTO() {
         return robotDTO;
     }
 
@@ -49,7 +49,7 @@ public class PlayerDTO implements Serializable {
      * @see de.uol.swp.common.game.dto.RobotDTO
      * @since 2023-05-13
      */
-    public void setRobotsDTO(RobotDTO robotDTO) {
+    public void setRobotDTO(RobotDTO robotDTO) {
         this.robotDTO = robotDTO;
     }
 
