@@ -15,12 +15,12 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
  */
 public class StartGameMessage extends AbstractLobbyMessage {
 
-    private Integer lobbyID;
+    private final Integer lobbyID;
 
-    private Integer gameID;
+    private final Integer gameID;
 
-    private LobbyDTO lobby;
-    private GameDTO game;
+    private final LobbyDTO lobby;
+    private final GameDTO game;
     /**
      * constructor
      *
@@ -34,7 +34,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
         this.lobbyID = lobbyID;
         this.gameID = game.getGameID();
         this.lobby = lobby;
-        this.game = game; // TODO: add more attributes to gameDTO class
+        this.game = game;
     }
 
     /**
