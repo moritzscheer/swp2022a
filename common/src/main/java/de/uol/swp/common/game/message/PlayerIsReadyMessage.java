@@ -1,4 +1,4 @@
-package de.uol.swp.common.user.message;
+package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.message.AbstractServerMessage;
 import de.uol.swp.common.user.Session;

@@ -1,4 +1,4 @@
-package de.uol.swp.common.user.request;
+package de.uol.swp.common.game.request;
 
 import de.uol.swp.common.message.AbstractRequestMessage;
 
