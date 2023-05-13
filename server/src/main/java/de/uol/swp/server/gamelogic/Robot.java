@@ -181,4 +181,24 @@ public class Robot implements Serializable {
     public int getOptionCard() {
         return this.optionCard;
     }
+
+    /**
+     * Getter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * Setter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
 }
