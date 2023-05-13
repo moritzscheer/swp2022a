@@ -588,4 +588,14 @@ public class Game {
     public List<AbstractPlayer> getPlayers(){
         return this.players;
     }
+
+//    public Player getPlayerByUserName(String userName){
+//        for(AbstractPlayer player: players){
+//            if(player.getClass() == Player.class &&
+//                    Objects.equals(((Player) player).getUser().getUsername(), userName)){
+//                return ((Player)player);
+//            }
+//        }
+//        return null;
+//    }
 }
