@@ -567,7 +567,25 @@ public class Game {
         return null;
     }
 
+    /**
+     * Getter for lobbyID
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @since 2023-05-08
+     */
     public Integer getLobbyID() {
         return lobbyID;
+    }
+
+    /**
+     * Getter for list of Players
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-13
+     */
+    public List<AbstractPlayer> getPlayers(){
+        return this.players;
     }
 }
