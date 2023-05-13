@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import de.uol.swp.common.game.dto.BoardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -98,9 +99,14 @@ public class GameService extends AbstractService {
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(gameID).getPlayers()) {
-            players.add(
-                    new PlayerDTO()
+            RobotDTO robotDTO = new RobotDTO(
+                    //player.getRobot().getImage()
             );
+            players.add(
+                    new PlayerDTO(robotDTO)
+            );
+
+            // set currentCards later in the GameDTO Object
         }
 
         // TODO: create Board, instead of using 4d array
