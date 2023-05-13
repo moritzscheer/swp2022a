@@ -40,10 +40,7 @@ public final class ConvertToDTOUtils {
      * @since 2023-05-13
      */
     public static RobotDTO convertRobotToRobotDTO(Robot robot){
-        RobotDTO robotDTO = new RobotDTO(robot.getImgPath());
-        Position robotPosition = robot.getPosition();
-        robotDTO.setPosX(robotPosition.x);
-        robotDTO.setPoxY(robotPosition.y);
+        RobotDTO robotDTO = new RobotDTO(robot.getImgPath(), robot.getPosition());
         return robotDTO;
     }
 }

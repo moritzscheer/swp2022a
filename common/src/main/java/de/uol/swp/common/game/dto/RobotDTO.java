@@ -1,5 +1,7 @@
 package de.uol.swp.common.game.dto;
 
+import de.uol.swp.common.game.Position;
+
 /**
  * Object to transfer the information of a Robot
  *
@@ -12,12 +14,11 @@ package de.uol.swp.common.game.dto;
 public class RobotDTO {
     private String imgPath;
 
-    private int posX;
+    private Position position;
 
-    private int poxY;
-
-    public RobotDTO(String imgPath){
+    public RobotDTO(String imgPath, Position position){
         this.imgPath = imgPath;
+        this.position = position;
     }
 
     public String getImgPath() {
@@ -28,19 +29,11 @@ public class RobotDTO {
         this.imgPath = imgPath;
     }
 
-    public int getPosX() {
-        return posX;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setPosX(int posX) {
-        this.posX = posX;
-    }
-
-    public int getPoxY() {
-        return poxY;
-    }
-
-    public void setPoxY(int poxY) {
-        this.poxY = poxY;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 }
