@@ -66,9 +66,9 @@ public class gameTest {
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-04-25
      */
-    @Test
-    public void writeTest() {
-        // TODO
-
-    }
+//    @Test
+//    public void writeTest() {
+//        // TODO
+//
+//    }
 }
