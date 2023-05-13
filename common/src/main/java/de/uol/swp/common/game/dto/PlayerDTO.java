@@ -2,6 +2,7 @@ package de.uol.swp.common.game.dto;
 
 import de.uol.swp.common.user.UserDTO;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-13
  */
-public class PlayerDTO {
+public class PlayerDTO implements Serializable {
     private RobotDTO robotDTO;
     private List<CardDTO> currentCards;
 

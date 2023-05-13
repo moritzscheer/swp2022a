@@ -3,6 +3,8 @@ package de.uol.swp.common.game.dto;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 
+import java.io.Serializable;
+
 /**
  * Object to transfer the information of a Robot
  *
@@ -12,7 +14,7 @@ import de.uol.swp.common.game.enums.CardinalDirection;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-13
  */
-public class RobotDTO {
+public class RobotDTO implements Serializable {
     private String imgPath;
 
     private Position position;

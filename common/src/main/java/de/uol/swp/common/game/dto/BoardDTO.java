@@ -1,4 +1,6 @@
 package de.uol.swp.common.game.dto;
 
-public class BoardDTO {
+import java.io.Serializable;
+
+public class BoardDTO implements Serializable {
 }
