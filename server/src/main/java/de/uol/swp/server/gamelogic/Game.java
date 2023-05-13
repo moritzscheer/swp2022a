@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
 import com.google.common.primitives.Ints;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.common.user.User;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
@@ -43,7 +44,7 @@ public class Game {
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.Block
-     * @see de.uol.swp.server.gamelogic.Position
+     * @see Position
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */

@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 import static junit.framework.TestCase.*;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.common.game.enums.CardinalDirection;

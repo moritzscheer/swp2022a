@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BoardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;

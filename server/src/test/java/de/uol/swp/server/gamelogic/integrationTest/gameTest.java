@@ -2,7 +2,7 @@ package de.uol.swp.server.gamelogic.integrationTest;
 
 import de.uol.swp.server.gamelogic.AbstractPlayer;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;

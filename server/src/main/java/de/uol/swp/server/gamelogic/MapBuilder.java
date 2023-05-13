@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import de.uol.swp.common.game.enums.CardinalDirection;

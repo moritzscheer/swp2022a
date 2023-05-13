@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.*;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
