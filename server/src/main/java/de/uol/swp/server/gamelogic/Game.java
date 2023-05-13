@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertUserToUserDTO;
 import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
@@ -61,7 +62,7 @@ public class Game {
         // create players and robots
         int i = 0;
         for(User user: users) {
-            Player newPlayer = new Player(user, dockingBays[i]);
+            Player newPlayer = new Player(convertUserToUserDTO(user), dockingBays[i]);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
             i++;
