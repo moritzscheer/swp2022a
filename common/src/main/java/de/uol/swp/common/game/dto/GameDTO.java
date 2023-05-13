@@ -4,7 +4,15 @@ import de.uol.swp.common.game.Game;
 
 import java.util.List;
 
-// TODO
+/**
+ * Object to transfer the information of a Game
+ *
+ * This object is used to communicate the current state of game between the server and
+ * clients. It contains information about the gameID, Board state and Players list
+ *
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-05-02
+ */
 public class GameDTO implements Game {
     private final Integer gameID;
 
