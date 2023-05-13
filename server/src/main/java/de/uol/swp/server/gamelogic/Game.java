@@ -5,16 +5,12 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import de.uol.swp.server.lobby.LobbyManagement;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.FileReader;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
@@ -521,50 +517,6 @@ public class Game {
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
-    }
-
-
-    /**
-     * Helper method to search a card in a JSON array
-     *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
-     * the value from the parameter. Then in returns the path of the image.
-     *
-     * @param cardId the cardID that wants to be searched for
-     * @author Maria Andrade
-     * @since 2023-05-06
-     */
-    private Card searchCardInJSON(int cardId) {
-        JSONObject json;
-        JSONArray jsonArray;
-
-        try {
-            json =
-                    new JSONObject(
-                            new JSONTokener(
-                                    new FileReader("server/src/main/resources/json/cards.json")));
-            jsonArray = json.getJSONArray("cards");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = null;
-                try {
-                    obj = jsonArray.getJSONObject(i);
-                    if (obj.getInt("card-id") == cardId) {
-                        Card card;
-                        String  cardType = obj.getString("type-id");
-                        int priority = obj.getInt("priority");
-                        String imgPath = obj.getString("source");
-                        card = new Card(cardId, cardType, priority, imgPath);
-                        return card;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
