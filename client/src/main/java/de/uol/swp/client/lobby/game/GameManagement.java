@@ -189,7 +189,7 @@ public class GameManagement {
         //currentGamePresenter.init(msg.getLobbyID(), gameIdToLobby.get(msg.getGameID()) , msg.getBoardImageIds(), msg.getGameID());
 //        setGameView(currentGamePresenter, gameParent, msg.getLobbyID(), msg.getGameID());
 //        sceneManager.showGameScreen(msg.getLobbyID());
-        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID(), msg.getBoardImageIds()));
+        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID(), msg.getBoardImageIds(), gameMap.get(msg.getGameID())));
     }
 
     /**

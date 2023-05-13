@@ -38,6 +38,7 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
@@ -652,7 +653,7 @@ public class SceneManager {
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) {
         System.out.println("SceneManager.onShowGameViewEvent");
-        createGameView(event.getLobby(), event.getGameID(), event.getBoardImageIds());
+        createGameView(event.getLobby(), event.getGameID(), event.getBoardImageIds(), event.getGame());
         showGameScreen(event.getLobbyID());
     }
 
@@ -1008,11 +1009,11 @@ public class SceneManager {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public void createGameView(LobbyDTO lobby, int gameID, int[][][][] board) {
+    public void createGameView(LobbyDTO lobby, int gameID, int[][][][] board, GameDTO game) {
         try {
             System.out.println("SceneManager.createGameView");
             initGameView();
-            gamePresenter.init(lobby.getLobbyID(), lobby, board, gameID);
+            gamePresenter.init(lobby.getLobbyID(), lobby, board, game);
             lobbyManagement.setupGame(lobby.getLobbyID(), lobby, gameParent, gameID);
         } catch (Exception e) {
             e.printStackTrace();
