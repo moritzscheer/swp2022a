@@ -11,7 +11,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
  * @since 2023-03-28
  */
 public class Player extends AbstractPlayer {
-    protected User user;
+    private User user;
 
     /**
      * Constructor
@@ -28,6 +28,12 @@ public class Player extends AbstractPlayer {
         this.robot = new Robot("", startPosition, true, CardinalDirection.East);
     }
 
-    // TODO
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }
