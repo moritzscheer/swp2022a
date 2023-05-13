@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.server.gamelogic.*;
 import de.uol.swp.server.gamelogic.tiles.*;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;

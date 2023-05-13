@@ -8,7 +8,7 @@ import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.LaserBehaviour;
 import de.uol.swp.server.gamelogic.tiles.WallBehaviour;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -77,7 +77,7 @@ public class LaserBehaviourTest {
      * Test not damage second robot, because first was damaged
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-03-13
@@ -96,7 +96,7 @@ public class LaserBehaviourTest {
      * Test not damage second robot, because there is a wall
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-03-13

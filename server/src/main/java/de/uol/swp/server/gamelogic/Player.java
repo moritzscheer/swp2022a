@@ -1,8 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 
 /**

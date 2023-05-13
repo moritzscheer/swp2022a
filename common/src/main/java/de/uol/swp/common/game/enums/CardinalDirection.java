@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic.tiles.enums;
+package de.uol.swp.common.game.enums;
 
 /**
  * @author
