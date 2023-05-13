@@ -291,6 +291,7 @@ public class GamePresenter extends AbstractPresenter {
         playerReadyStackPanes.add(player7Ready);
         playerReadyStackPanes.add(player8Ready);
 
+        // damage tokens -> refers to how many cards a player receives
         playerHpTexts = new ArrayList<Text>();
         playerHpTexts.add(player2HP);
         playerHpTexts.add(player3HP);
@@ -300,6 +301,7 @@ public class GamePresenter extends AbstractPresenter {
         playerHpTexts.add(player7HP);
         playerHpTexts.add(player8HP);
 
+        // last checkpoint
         playerCpTexts = new ArrayList<Text>();
         playerCpTexts.add(player2Checkpoint);
         playerCpTexts.add(player3Checkpoint);
@@ -309,6 +311,7 @@ public class GamePresenter extends AbstractPresenter {
         playerCpTexts.add(player7Checkpoint);
         playerCpTexts.add(player8Checkpoint);
 
+        // life tokens
         playerRlTexts = new ArrayList<Text>();
         playerRlTexts.add(player2RobotLives);
         playerRlTexts.add(player3RobotLives);
@@ -357,6 +360,12 @@ public class GamePresenter extends AbstractPresenter {
             if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())){
                 playerGrids.get(count).setVisible(true);
                 playerNames.get(count).setText(playerDTO.getUser().getUsername());
+                playerCpTexts.get(count).setText(
+                        String.valueOf(playerDTO.getRobotDTO().getLastCheckpoint()));
+                playerHpTexts.get(count).setText(
+                        String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
+                playerRlTexts.get(count).setText(
+                        String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
         }

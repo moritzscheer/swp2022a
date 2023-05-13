@@ -21,6 +21,12 @@ public class RobotDTO implements Serializable {
 
     private CardinalDirection direction;
 
+    private int lifeToken;
+
+    private int damageToken;
+
+    private int lastCheckpoint;
+
     public RobotDTO(String imgPath, Position position, CardinalDirection direction){
         this.imgPath = imgPath;
         this.position = position;
@@ -49,5 +55,29 @@ public class RobotDTO implements Serializable {
 
     public void setDirection(CardinalDirection direction) {
         this.direction = direction;
+    }
+
+    public int getLifeToken() {
+        return lifeToken;
+    }
+
+    public void setLifeToken(int lifeToken) {
+        this.lifeToken = lifeToken;
+    }
+
+    public int getDamageToken() {
+        return damageToken;
+    }
+
+    public void setDamageToken(int damageToken) {
+        this.damageToken = damageToken;
+    }
+
+    public int getLastCheckpoint() {
+        return lastCheckpoint;
+    }
+
+    public void setLastCheckpoint(int lastCheckpoint) {
+        this.lastCheckpoint = lastCheckpoint;
     }
 }

@@ -202,4 +202,44 @@ public class Robot implements Serializable {
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
     }
+
+    /**
+     * Getter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public int getLifeToken() {
+        return lifeToken;
+    }
+
+    /**
+     * Setter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setLifeToken(int lifeToken) {
+        this.lifeToken = lifeToken;
+    }
+
+    /**
+     * Getter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    /**
+     * Setter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setPowerDown(boolean powerDown) {
+        this.powerDown = powerDown;
+    }
 }
