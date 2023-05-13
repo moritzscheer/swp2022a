@@ -148,6 +148,24 @@ public class GameService extends AbstractService {
     }
 
     /**
+     * Searches for the gameDTO with the requested gameID
+     *
+     * @param gameID Integer containing the gameID of the game to search for
+     * @return either empty Optional or Optional containing the gameDTO
+     * @author Maria Andrade
+     * @since 2023-05-13
+     */
+    public Optional<GameDTO> getGameDTO(Integer gameID) {
+        for (Map.Entry<Integer, GameDTO> entry : gamesDTO.entrySet()) {
+            if (entry.getKey().equals(gameID)) {
+                GameDTO game = gamesDTO.get(entry.getKey());
+                return Optional.of(game);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Handles StartGameRequest found on the EventBus
      *
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
