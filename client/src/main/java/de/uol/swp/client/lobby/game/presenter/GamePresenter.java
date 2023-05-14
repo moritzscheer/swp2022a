@@ -1,18 +1,14 @@
 package de.uol.swp.client.lobby.game.presenter;
 
-import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.*;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,19 +16,10 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
 import java.util.*;
-
-import static javafx.scene.paint.Color.*;
-
-import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -41,12 +28,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -251,14 +234,12 @@ public class GamePresenter extends AbstractPresenter {
      *
      * @param lobbyID the Integer identifier of the lobby
      * @param lobby LobbyDTO Object containing all the information of the lobby
-     * @param board an Integer array containing all the information of the board
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(int lobbyID, LobbyDTO lobby, int[][][][] board, GameDTO game) {
+    public void init(int lobbyID, LobbyDTO lobby, GameDTO game) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
-        this.board = board;
         this.playersDTO = game.getPlayers();
 
         gameManagement = GameManagement.getInstance();
@@ -348,7 +329,7 @@ public class GamePresenter extends AbstractPresenter {
 //        markField.setImage(image);
 
         // creates the board
-        reloadMap(null);
+        //reloadMap(null);
 
         resetCardsAndSlots();
     }
@@ -371,33 +352,43 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
-    public void reloadMap(int[][][][] currentBoard){
-        if(currentBoard != null)
-            this.board = currentBoard;
-        try {
-            for (int i = 0; i < board.length; i++) {
-                gameBoard.addColumn(i);
-            }
+    /**
+     * Handles GetMapDataMessage
+     *
+     * @param msg the GetMapDataMessage object seen on the EventBus
+     * @see GetMapDataResponse
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
+    public void reloadMap(GetMapDataResponse msg){
+        Platform.runLater(
+                () -> {
+                    this.board = msg.getBoardImageIds();
+                    try {
+                        for (int i = 0; i < board.length; i++) {
+                            gameBoard.addColumn(i);
+                        }
 
-            for (int i = 0; i < board[0].length; i++) {
-                gameBoard.addRow(i);
-            }
+                        for (int i = 0; i < board[0].length; i++) {
+                            gameBoard.addRow(i);
+                        }
 
-            for (int col = 0; col < board.length; col++) {
-                for (int row = 0; row < board[col].length; row++) {
-                    for (int img = 0; img < board[col][row].length; img++) {
-                        File file = jsonUtils.searchInTileJSON(String.valueOf(board[col][row][img][0]));
-                        Image image = new Image(file.toURI().toString());
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(50);
-                        imageView.setFitHeight(50);
-                        gameBoard.add(imageView, col + 1, row + 1);
+                        for (int col = 0; col < board.length; col++) {
+                            for (int row = 0; row < board[col].length; row++) {
+                                for (int img = 0; img < board[col][row].length; img++) {
+                                    File file = jsonUtils.searchInTileJSON(String.valueOf(board[col][row][img][0]));
+                                    Image image = new Image(file.toURI().toString());
+                                    ImageView imageView = new ImageView(image);
+                                    imageView.setFitWidth(50);
+                                    imageView.setFitHeight(50);
+                                    gameBoard.add(imageView, col + 1, row + 1);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                });
     }
 
     @FXML

@@ -6,12 +6,14 @@ import com.google.inject.Inject;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
+import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.scene.Parent;
 
@@ -21,12 +23,14 @@ import java.util.Map;
 public class GameManagement {
 
     EventBus eventBus;
-//    private Parent lobbyParent;
-    private Parent gameParent;
-//    private LobbyPresenter lobbyPresenter;
+    // give access of GamePresenter/LobbyPresenter to GameManagement
+    // still does not work as expected
+    // TODO: when works as expected, remove subscribe from GamePresenter
+    private final Map<Integer, LobbyGame> lobbyGameMap = new HashMap<>();
     private GamePresenter currentGamePresenter;
     private int currentLobbyId;
     private int currentGameId;
+    private GameDTO currentGame;
     private User loggedInUser;
     private final Map<Integer, GameDTO> gameMap = new HashMap<>();
     private final Map<Integer, LobbyDTO> gameIdToLobby = new HashMap<>();
@@ -51,87 +55,6 @@ public class GameManagement {
         instance = this;
     }
 
-//    public void maybeNeedInLobby(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
-//        this.lobbyPresenter = lobbyPresenter;
-//        this.lobbyParent = lobbyParent;
-//    }
-
-    /**
-     * Method to save the gamePresenter and gameParent in the given attributes *
-     *
-     * @param gamePresenter the Presenter of the game view
-     * @param gameParent the Parent Object of the game view
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public void setGameView(GamePresenter gamePresenter, Parent gameParent, int lobbyId, int gameId) {
-        this.currentGamePresenter = gamePresenter;
-        this.gameParent = gameParent;
-        this.currentLobbyId = lobbyId;
-        this.currentGameId = gameId;
-        LobbyManagement.getInstance().setGameView(lobbyId, this.gameParent, gameId);
-    }
-
-//    /**
-//     * Method to save the gamePresenter and gameParent in the given attributes *
-//     *
-//     * @param gamePresenter the Presenter of the game view
-//     * @param gameParent the Parent Object of the game view
-//     * @author Moritz Scheer
-//     * @since 2023-03-09
-//     */
-//    public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
-//        this.currentGamePresenter = gamePresenter;
-//        this.gameParent = gameParent;
-//    }
-
-    // -----------------------------------------------------
-    // parents
-    // -----------------------------------------------------
-
-    /**
-     * Getter for the lobbyParent variable
-     *
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-//    public Parent getLobbyParent() {
-//        return lobbyParent;
-//    }
-
-    /**
-     * Getter for the gameParent variable
-     *
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public Parent getGameParent() {
-        return gameParent;
-    }
-
-    // -----------------------------------------------------
-    // presenter
-    // -----------------------------------------------------
-
-    /**
-     * Getter for the gamePresenter variable
-     *
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public GamePresenter getCurrentGamePresenter() {
-        return currentGamePresenter;
-    }
-
-    /**
-     * Getter for the lobbyPresenter variable
-     *
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-//    public LobbyPresenter getLobbyPresenter() {
-//        return lobbyPresenter;
-//    }
 
     /**
      * Handles successful login
@@ -170,8 +93,35 @@ public class GameManagement {
                 msg.getGameID(),
                 msg.getLobby()
         );
+        this.currentGame = msg.getGame();
+        this.currentGameId = msg.getGameID();
+        this.currentLobbyId = msg.getLobbyID();
 
+        /**this post is to create the gamePresenter and save the reference of it
+         * inside the LobbyGame class
+         * LobbyManagement and GameManagement both need access to same reference
+         * For this reason, both instantiate a hashmap lobbyGameMap
+         */
+        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID()));
+
+        // create request to get the cards
         gameService.getMapData(msg.getGameID(), msg.getLobby());
+    }
+
+    /**
+     * Handles the reference to LobbyGame class
+     *
+     * Handles references to lobbyPresenter and gamePresenter
+     *
+     * @see de.uol.swp.client.lobby.game.LobbyGame
+     * @see de.uol.swp.client.lobby.LobbyManagement
+     * @author Maria Andrade
+     * @since 2023-05-14
+     */
+    public void setupLobbyGame(LobbyGame lobbyGameReference, LobbyDTO lobby) {
+        lobbyGameMap.put(lobby.getLobbyID(), lobbyGameReference); // same as in Lobby Management
+        // initialize presenter here
+        lobbyGameMap.get(lobby.getLobbyID()).getGamePresenter().init(lobby.getLobbyID(), lobby, this.currentGame);
     }
 
     /**
@@ -182,16 +132,12 @@ public class GameManagement {
      * @author Maria Andrade
      * @since 2023-05-06
      */
-    @Subscribe
-    public void onGetMapDataMessage(GetMapDataResponse msg){
-         // TODO: handle board
-//        // TODO: change view to gameView
-        //currentGamePresenter.init(msg.getLobbyID(), gameIdToLobby.get(msg.getGameID()) , msg.getBoardImageIds(), msg.getGameID());
-//        setGameView(currentGamePresenter, gameParent, msg.getLobbyID(), msg.getGameID());
-//        sceneManager.showGameScreen(msg.getLobbyID());
-        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID(), msg.getBoardImageIds(), gameMap.get(msg.getGameID())));
+    public void onGetMapDataResponse(GetMapDataResponse msg){
+        //TODO: fix the reference to getGamePresenter
+        // the reference seems correct, but during runtime it says it´s null
+        // there might be more than one thread running this code
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
     }
-
     /**
      * Handles ProgramCardDataResponse
      *
@@ -224,7 +170,14 @@ public class GameManagement {
         this.loggedInUser = loggedInUser;
     }
 
-    public void setGameParent(Parent gameParent) {
-        this.gameParent = gameParent;
+    /**
+     * Setter for the currentGamePresenter variable
+     *
+     * @author Moritz Scheer & Maxim Erden
+     * @since 2023-02-28
+     */
+    public void setNextGamePresenter(GamePresenter currentGamePresenter) {
+        this.currentGamePresenter = currentGamePresenter;
     }
+
 }

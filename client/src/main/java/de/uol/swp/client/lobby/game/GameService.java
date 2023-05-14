@@ -33,7 +33,7 @@ public class GameService {
     /**
      * Posts a request to start the game on the EventBus
      *
-     * @param lobbyID To identify the lobby with a unique key
+     * @param lobby To identify the lobby with a unique key
      * @see StartGameRequest
      * @author Moritz Scheer
      * @since 2023-03-09

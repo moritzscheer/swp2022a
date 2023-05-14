@@ -2,12 +2,13 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
 
-import de.uol.swp.client.lobby.game.Game;
-import de.uol.swp.client.lobby.game.GameManagement;
+import de.uol.swp.client.lobby.game.LobbyGame;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -30,7 +31,9 @@ import java.util.Map;
 public class LobbyManagement extends AbstractPresenter {
 
     private User loggedInUser;
-    private final Map<Integer, Game> lobbyMap = new HashMap<>();
+
+    // give access of GamePresenter/LobbyPresenter to LobbyManagement
+    private final Map<Integer, LobbyGame> lobbyGameMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
     private GamePresenter currentGamePresenter;
 
@@ -43,9 +46,6 @@ public class LobbyManagement extends AbstractPresenter {
         instance = this;
     }
 
-    public void setGameView(int lobbyID, Parent gameParent, int gameID){
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
-    }
 
     /**
      * Handles successful login
@@ -81,9 +81,7 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
         currentLobbyPresenter.setInformation(lobby, user);
-        lobbyMap.put(lobby.getLobbyID(), new Game(currentLobbyPresenter, lobbyParent));
-        //TODO: besser machen
-        //GameManagement.getInstance().setGameView(currentGamePresenter, getGameParent(lobby.getLobbyID()));
+        lobbyGameMap.put(lobby.getLobbyID(), new LobbyGame(currentLobbyPresenter, lobbyParent));
     }
 
     /**
@@ -99,7 +97,7 @@ public class LobbyManagement extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        lobbyMap.remove(message.getLobbyID());
+        lobbyGameMap.remove(message.getLobbyID());
     }
 
     /**
@@ -116,7 +114,7 @@ public class LobbyManagement extends AbstractPresenter {
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
+            LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userJoinedLobby(message);
         }
     }
@@ -135,7 +133,7 @@ public class LobbyManagement extends AbstractPresenter {
     @Subscribe
     public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = lobbyMap.get(message.getLobbyID()).getLobbyPresenter();
+            LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
         }
     }
@@ -152,7 +150,7 @@ public class LobbyManagement extends AbstractPresenter {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        LobbyPresenter a = lobbyMap.get(event.getLobbyID()).getLobbyPresenter();
+        LobbyPresenter a = lobbyGameMap.get(event.getLobbyID()).getLobbyPresenter();
         a.switchButtonDisableEffect();
     }
 
@@ -167,13 +165,14 @@ public class LobbyManagement extends AbstractPresenter {
      * lobbyMap HashMap.
      *
      * @param lobbyID the Integer identifier of the lobby
-     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param gameID gameID
      * @param gameParent the Parent object of the game view
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public void setupGame(Integer lobbyID, LobbyDTO lobby, Parent gameParent, Integer gameID) {
-        lobbyMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
+    public LobbyGame setupLobbyGame(Integer lobbyID, Parent gameParent, Integer gameID) {
+        lobbyGameMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
+        return lobbyGameMap.get(lobbyID);
     }
 
     // -----------------------------------------------------
@@ -187,7 +186,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @since 2023-03-09
      */
     public Parent getLobbyParent(Integer lobbyID) {
-        return lobbyMap.get(lobbyID).getLobbyParent();
+        return lobbyGameMap.get(lobbyID).getLobbyParent();
     }
 
     /**
@@ -197,7 +196,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @since 2023-03-09
      */
     public Parent getGameParent(Integer lobbyID) {
-        return lobbyMap.get(lobbyID).getGameParent();
+        return lobbyGameMap.get(lobbyID).getGameParent();
     }
 
     /**
@@ -218,5 +217,21 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public void setNextGamePresenter(GamePresenter currentGamePresenter) {
         this.currentGamePresenter = currentGamePresenter;
+    }
+
+    /**
+     * Handles GetMapDataMessage
+     *
+     * @param msg the GetMapDataMessage object seen on the EventBus
+     * @see GetMapDataResponse
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
+    @Subscribe
+    public void onGetMapDataResponse(GetMapDataResponse msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.reloadMap(msg);
+        System.out.println("In Lobby Management");
+        System.out.println("GamePresenter Vsajcbjsdb = " + a);
     }
 }
