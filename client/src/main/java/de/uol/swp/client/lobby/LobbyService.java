@@ -1,12 +1,19 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
-import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.client.lobby.game.LobbyGameTuple;
+import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
+import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+import javafx.scene.Parent;
 
 /**
  * Classes that manages lobbies
@@ -19,16 +26,21 @@ public class LobbyService {
 
     private final EventBus eventBus;
 
+    @Inject
+    private final LobbyManagement lobbyManagement;
+
     /**
      * Constructor
      *
-     * @param eventBus The EventBus set in ClientModule
+     * @param eventBus        The EventBus set in ClientModule
+     * @param lobbyManagement
      * @see de.uol.swp.client.di.ClientModule
      * @since 2019-11-20
      */
     @Inject
-    public LobbyService(EventBus eventBus) {
+    public LobbyService(EventBus eventBus, LobbyManagement lobbyManagement) {
         this.eventBus = eventBus;
+        this.lobbyManagement = lobbyManagement;
         this.eventBus.register(this);
     }
 
@@ -90,4 +102,89 @@ public class LobbyService {
                 new RetrieveAllOnlineLobbiesRequest();
         eventBus.post(retrieveAllLobbiesRequest);
     }
+
+
+    /////////////////////
+    // Response/Message
+    /////////////////////
+
+    /**
+     * Handles successful login
+     *
+     * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
+     * set to the one in the message received.
+     *
+     * @param message the LoginSuccessfulResponse object seen on the EventBus
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @author Moritz Scheer
+     * @since 2022-12-27
+     */
+    @Subscribe
+    public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
+        lobbyManagement.setLoggingUser((UserDTO) message.getUser());
+    }
+
+    /**
+     * Handles dropped lobbies
+     *
+     * <p>If a new LobbyDroppedSuccessfulResponse object is posted to the EventBus the
+     * LobbyPresenter method is called in the lobbyPresenter with the given lobbyID.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    @Subscribe
+    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+        lobbyManagement.removeLobby(message);
+    }
+
+    /**
+     * Handles joined users
+     *
+     * <p>If a new UserJoinedLobbyMessage object is posted to the EventBus the userJoinedLobby
+     * method is called in the lobbyPresenter with the given lobbyID.
+     *
+     * @param message the UserJoinedLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    @Subscribe
+    public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
+        lobbyManagement.newUserJoined(message);
+    }
+
+    /**
+     * Handles left users
+     *
+     * <p>If a new UserLeftLobbyMessage object is posted to the EventBus the userLeftLobby method is
+     * called in the lobbyPresenter with the given lobbyID.
+     *
+     * @param message the UserLeftLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    @Subscribe
+    public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
+        lobbyManagement.userLeftLobby(message);
+    }
+
+    /**
+     * Handles when window in the tab gets open
+     *
+     * <p>If a ChangeElementEvent is posted to the EventBus this method is called.
+     *
+     * @param event the ChangeElementEvent object seen on the EventBus
+     * @see de.uol.swp.client.tab.event.ChangeElementEvent
+     * @author Moritz Scheer
+     * @since 2023-01-05
+     */
+    @Subscribe
+    public void onChangeElementEvent(ChangeElementEvent event) {
+        lobbyManagement.changeElement(event);
+    }
+
 }

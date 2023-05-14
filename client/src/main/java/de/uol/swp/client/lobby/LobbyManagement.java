@@ -29,7 +29,7 @@ import java.util.Map;
  */
 public class LobbyManagement extends AbstractPresenter {
 
-    private User loggedInUser;
+    private UserDTO loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
     private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
@@ -52,14 +52,13 @@ public class LobbyManagement extends AbstractPresenter {
      * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
      * set to the one in the message received.
      *
-     * @param message the LoginSuccessfulResponse object seen on the EventBus
+     * @param user UserDTO to be saved
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    @Subscribe
-    public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
-        this.loggedInUser = message.getUser();
+    public void setLoggingUser(UserDTO user) {
+        this.loggedInUser = user;
     }
 
     // -----------------------------------------------------
@@ -94,8 +93,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    @Subscribe
-    public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
+    public void removeLobby(LobbyDroppedSuccessfulResponse message) {
         lobbyGameMap.remove(message.getLobbyID());
     }
 
@@ -110,8 +108,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    @Subscribe
-    public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
+    public void newUserJoined(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
             LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userJoinedLobby(message);
@@ -129,8 +126,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    @Subscribe
-    public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
+    public void userLeftLobby(UserLeftLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
             LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
@@ -147,8 +143,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    @Subscribe
-    public void onChangeElementEvent(ChangeElementEvent event) {
+    public void changeElement(ChangeElementEvent event) {
         LobbyPresenter a = lobbyGameMap.get(event.getLobbyID()).getLobbyPresenter();
         a.switchButtonDisableEffect();
     }
