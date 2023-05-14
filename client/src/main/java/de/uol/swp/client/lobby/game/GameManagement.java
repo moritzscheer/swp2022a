@@ -3,19 +3,15 @@ package de.uol.swp.client.lobby.game;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
-import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-import javafx.scene.Parent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +22,7 @@ public class GameManagement {
     // give access of GamePresenter/LobbyPresenter to GameManagement
     // still does not work as expected
     // TODO: when works as expected, remove subscribe from GamePresenter
-    private final Map<Integer, LobbyGame> lobbyGameMap = new HashMap<>();
+    private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
     private GamePresenter currentGamePresenter;
     private int currentLobbyId;
     private int currentGameId;
@@ -113,13 +109,13 @@ public class GameManagement {
      *
      * Handles references to lobbyPresenter and gamePresenter
      *
-     * @see de.uol.swp.client.lobby.game.LobbyGame
+     * @see LobbyGameTuple
      * @see de.uol.swp.client.lobby.LobbyManagement
      * @author Maria Andrade
      * @since 2023-05-14
      */
-    public void setupLobbyGame(LobbyGame lobbyGameReference, LobbyDTO lobby) {
-        lobbyGameMap.put(lobby.getLobbyID(), lobbyGameReference); // same as in Lobby Management
+    public void setupLobbyGame(LobbyGameTuple lobbyGameTupleReference, LobbyDTO lobby) {
+        lobbyGameMap.put(lobby.getLobbyID(), lobbyGameTupleReference); // same as in Lobby Management
         // initialize presenter here
         lobbyGameMap.get(lobby.getLobbyID()).getGamePresenter().init(lobby.getLobbyID(), lobby, this.currentGame);
     }

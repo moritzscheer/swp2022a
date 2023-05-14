@@ -14,7 +14,7 @@ import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.client.lobby.game.GameService;
-import de.uol.swp.client.lobby.game.LobbyGame;
+import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
@@ -39,7 +39,6 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
@@ -1014,8 +1013,8 @@ public class SceneManager {
      */
     public void createGameView(LobbyDTO lobby, int gameID) {
         try {
-            LobbyGame lobbyGameReference = lobbyManagement.setupLobbyGame(lobby.getLobbyID(), gameParent, gameID);
-            gameManagement.setupLobbyGame(lobbyGameReference, lobby);
+            LobbyGameTuple lobbyGameTupleReference = lobbyManagement.setupLobbyGame(lobby.getLobbyID(), gameParent, gameID);
+            gameManagement.setupLobbyGame(lobbyGameTupleReference, lobby);
         } catch (Exception e) {
             e.printStackTrace();
         }

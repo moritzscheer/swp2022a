@@ -11,7 +11,7 @@ import javafx.scene.Parent;
  * @author Moritz Scheer
  * @since 2023-03-09
  */
-public class LobbyGame {
+public class LobbyGameTuple {
 
     private Parent lobbyParent;
     private Parent gameParent;
@@ -27,7 +27,7 @@ public class LobbyGame {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public LobbyGame(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
+    public LobbyGameTuple(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
         this.lobbyPresenter = lobbyPresenter;
         this.lobbyParent = lobbyParent;
     }

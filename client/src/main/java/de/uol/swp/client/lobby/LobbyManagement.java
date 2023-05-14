@@ -2,12 +2,11 @@ package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.Subscribe;
 
-import de.uol.swp.client.lobby.game.LobbyGame;
+import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
@@ -33,7 +32,7 @@ public class LobbyManagement extends AbstractPresenter {
     private User loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
-    private final Map<Integer, LobbyGame> lobbyGameMap = new HashMap<>();
+    private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
     private LobbyPresenter currentLobbyPresenter;
     private GamePresenter currentGamePresenter;
 
@@ -81,7 +80,7 @@ public class LobbyManagement extends AbstractPresenter {
      */
     public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
         currentLobbyPresenter.setInformation(lobby, user);
-        lobbyGameMap.put(lobby.getLobbyID(), new LobbyGame(currentLobbyPresenter, lobbyParent));
+        lobbyGameMap.put(lobby.getLobbyID(), new LobbyGameTuple(currentLobbyPresenter, lobbyParent));
     }
 
     /**
@@ -170,7 +169,7 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public LobbyGame setupLobbyGame(Integer lobbyID, Parent gameParent, Integer gameID) {
+    public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, Integer gameID) {
         lobbyGameMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
         return lobbyGameMap.get(lobbyID);
     }
