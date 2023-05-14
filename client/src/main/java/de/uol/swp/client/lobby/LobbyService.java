@@ -90,18 +90,4 @@ public class LobbyService {
                 new RetrieveAllOnlineLobbiesRequest();
         eventBus.post(retrieveAllLobbiesRequest);
     }
-
-    /**
-     * Posts a request to start the game on the EventBus
-     *
-     * @param lobbyID To identify the lobby with a unique key
-     * @see StartGameRequest
-     * @author Moritz Scheer
-     * @since 2023-03-09
-     */
-    public void startGame(LobbyDTO lobby) {
-        System.out.println("Starting Game");
-        StartGameRequest startGameRequest = new StartGameRequest(lobby);
-        eventBus.post(startGameRequest);
-    }
 }

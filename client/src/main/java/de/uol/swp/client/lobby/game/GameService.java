@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
@@ -27,6 +28,20 @@ public class GameService {
     public GameService(EventBus eventBus) {
         this.eventBus = eventBus;
         this.eventBus.register(this);
+    }
+
+    /**
+     * Posts a request to start the game on the EventBus
+     *
+     * @param lobbyID To identify the lobby with a unique key
+     * @see StartGameRequest
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    public void startGame(LobbyDTO lobby) {
+        System.out.println("Starting Game");
+        StartGameRequest startGameRequest = new StartGameRequest(lobby);
+        eventBus.post(startGameRequest);
     }
 
     public void getMapData(Integer gameID, LobbyDTO lobby) {

@@ -7,6 +7,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
@@ -59,6 +60,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private TextChatChannel textChat;
 
     @Inject private LobbyService lobbyService;
+    @Inject private GameService gameService;
     @Inject private TabPresenter tabPresenter;
 
     @FXML private ListView<String> usersView;
@@ -274,7 +276,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onStartButtonPressed(ActionEvent actionEvent) {
         if (loggedInUser == owner) {
-            lobbyService.startGame(lobbyDTO);
+            gameService.startGame(lobbyDTO);
         }
     }
 
