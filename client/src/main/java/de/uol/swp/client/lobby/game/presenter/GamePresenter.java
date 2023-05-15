@@ -5,6 +5,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.user.User;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -228,6 +229,11 @@ public class GamePresenter extends AbstractPresenter {
     private int x = 2;
     private int y = 2;
 
+    @FXML
+    private GridPane leftGrid;
+    @FXML
+    private GridPane rightGrid;
+
     /**
      * Default Constructor
      *
@@ -345,6 +351,10 @@ public class GamePresenter extends AbstractPresenter {
 //        markField.setFitWidth(50);
 //        markField.setImage(image);
 
+        mainGrid.autosize();
+
+
+
         // creates the board
         try {
 
@@ -373,12 +383,37 @@ public class GamePresenter extends AbstractPresenter {
                         }
                         Image image = new Image(file.toURI().toString());
                         ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(50);
-                        imageView.setFitHeight(50);
+                        //imageView.setFitWidth(50);
+                        //imageView.setFitHeight();
+
                         gameBoard.add(imageView, col + 1, row + 1);
+
+                        Platform.runLater(() -> {
+                            //mainGrid.autosize();
+
+                            //gameBoard.resize(mainGrid.getWidth() * 0.6, mainGrid.getHeight());
+                            //gameBoard.resize(650, 650);
+
+
+                            imageView.fitHeightProperty().bind(gameBoard.heightProperty().divide(board.length));
+                            imageView.fitWidthProperty().bind(gameBoard.widthProperty().divide(board[0].length));
+
+                            leftGrid.autosize();
+                            rightGrid.autosize();
+
+                            gameBoard.autosize();
+
+                        });
+
+
                     }
+
                 }
+
             }
+
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -773,8 +808,8 @@ public class GamePresenter extends AbstractPresenter {
             File file = new File(path2);
             Image image = new Image(file.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
             gameBoard.add(imageView, x, y);
 
             x++;
@@ -783,8 +818,8 @@ public class GamePresenter extends AbstractPresenter {
             file = new File(path);
             image = new Image(file.toURI().toString());
             imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
             gameBoard.add(imageView, x, y);
             if (!playerReady) {
                 readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
@@ -813,8 +848,8 @@ public class GamePresenter extends AbstractPresenter {
             File file = new File(path2);
             Image image = new Image(file.toURI().toString());
             ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
             gameBoard.add(imageView, x, y);
 
             y++;
@@ -823,8 +858,8 @@ public class GamePresenter extends AbstractPresenter {
             file = new File(path);
             image = new Image(file.toURI().toString());
             imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
             gameBoard.add(imageView, x, y);
         } catch (Exception e) {
             e.printStackTrace();
