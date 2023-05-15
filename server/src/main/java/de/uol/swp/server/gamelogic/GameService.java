@@ -232,7 +232,7 @@ public class GameService extends AbstractService {
     @Subscribe
     public void onGetMapDataRequest(GetMapDataRequest msg) {
         System.out.println("Get Map Data server");
-        Optional<Game> game = getGame(msg.getGameID());
+        Optional<Game> game = getGame(msg.getLobby().getLobbyID());
         if(game.isPresent()){ //TODO: change to game.getBoard()
             //Block[][] board = game.get().getBoard();
             Block[][] board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
@@ -243,8 +243,10 @@ public class GameService extends AbstractService {
                 }
             }
 
+            // todo: remove gameID tomorrow
+
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    msg.getGameID(), boardIDs, msg.getLobby());
+                    msg.getLobby().getLobbyID(), boardIDs, msg.getLobby());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }
