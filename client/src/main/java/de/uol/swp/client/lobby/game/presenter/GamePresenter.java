@@ -208,6 +208,8 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player7Grid;
     @FXML
     private GridPane player8Grid;
+    @FXML private TextArea chatOutput;
+    @FXML private TextField chatInput;
     Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
     Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
     ArrayList<Card> cardHand = new ArrayList<>();
@@ -250,6 +252,7 @@ public class GamePresenter extends AbstractPresenter {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
         this.board = board;
+        this.textChat = new TextChatChannel(lobby.getTextChatID(),eventBus);
 
         gameManagement = GameManagement.getInstance();
         loggedInUser = gameManagement.getLoggedInUser();

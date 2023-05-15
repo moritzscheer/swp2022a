@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -13,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainGrid" style="-fx-padding: 10; -fx-background-color: lightgray" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="mainGrid" style="-fx-padding: 10; -fx-background-color: lightgray" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="100" percentWidth="15" />
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" />
@@ -329,7 +331,11 @@
                         </Tab>
                         <Tab text="Chat">
                             <content>
-                                <AnchorPane />
+                                <AnchorPane>
+                           <children>
+                              <TextArea fx:id="chatOutput" editable="false" prefHeight="281.0" prefWidth="276.0" />
+                              <TextField fx:id="chatInput" onKeyPressed="#textChatInputKeyPressed" layoutY="281.0" prefHeight="25.0" prefWidth="276.0" />
+                           </children></AnchorPane>
                             </content>
                         </Tab>
                     </tabs>
@@ -398,7 +404,7 @@
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </GridPane.margin>
                         </Button>
-                        <Button fx:id="robotOffButton" maxWidth="Infinity" text="Turn Robot OFF" onAction="#onRobotOffButtonPressed" GridPane.columnIndex="1">
+                        <Button fx:id="robotOffButton" maxWidth="Infinity" onAction="#onRobotOffButtonPressed" text="Turn Robot OFF" GridPane.columnIndex="1">
                             <GridPane.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                             </GridPane.margin>
