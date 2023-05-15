@@ -14,6 +14,8 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import javafx.scene.Parent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Classes that manages lobbies
@@ -25,6 +27,8 @@ import javafx.scene.Parent;
 public class LobbyService {
 
     private final EventBus eventBus;
+
+    private static final Logger LOG = LogManager.getLogger(LobbyService.class);
 
     @Inject
     private final LobbyManagement lobbyManagement;
@@ -43,6 +47,10 @@ public class LobbyService {
         this.lobbyManagement = lobbyManagement;
         this.eventBus.register(this);
     }
+
+    ///////////////
+    // Requests
+    ///////////////
 
     /**
      * Posts a request to create a lobby on the EventBus
@@ -105,7 +113,7 @@ public class LobbyService {
 
 
     /////////////////////
-    // Response/Message
+    // Responses/Messages
     /////////////////////
 
     /**
