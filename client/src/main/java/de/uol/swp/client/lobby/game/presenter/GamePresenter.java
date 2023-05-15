@@ -1,14 +1,17 @@
 package de.uol.swp.client.lobby.game.presenter;
 
+import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.chat.TextChatChannel;
+import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.user.User;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.StackPane;
 import org.apache.logging.log4j.LogManager;
@@ -225,6 +228,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
     private int[][][][] board;
+    private TextChatChannel textChat;
     @FXML
     private Button robotOffButton;
     private int x = 2;
@@ -859,6 +863,28 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
         return null;
+    }
+
+    @FXML
+    private void textChatInputKeyPressed(KeyEvent actionEvent) {
+        if (actionEvent.getCode() == KeyCode.ENTER) {
+            if (chatInput.getLength() != 0 && !chatInput.getText().isBlank()) {
+                textChat.sendTextMessage(chatInput.getText());
+                chatInput.setText("");
+            }
+        }
+    }
+
+    @Subscribe
+    public void onNewTextChatMessage(NewTextChatMessageReceived message) {
+        if (textChat == null) return;
+        chatOutput.setText(textChat.getChatString());
+        chatOutput.appendText("");
+        chatOutput.setWrapText(true);
+        Platform.runLater(
+                () -> {
+                    chatOutput.setScrollTop(Double.MAX_VALUE);
+                });
     }
 
 }
