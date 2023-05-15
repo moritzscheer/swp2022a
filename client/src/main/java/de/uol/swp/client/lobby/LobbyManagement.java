@@ -1,22 +1,25 @@
 package de.uol.swp.client.lobby;
 
-import com.google.common.eventbus.Subscribe;
-
+import com.google.common.eventbus.EventBus;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.scene.Parent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +32,11 @@ import java.util.Map;
  */
 public class LobbyManagement extends AbstractPresenter {
 
+
+    private final EventBus eventBus;
+
+    private static final Logger LOG = LogManager.getLogger(LobbyGameManagement.class);
+
     private UserDTO loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
@@ -36,12 +44,17 @@ public class LobbyManagement extends AbstractPresenter {
     private LobbyPresenter currentLobbyPresenter;
     private GamePresenter currentGamePresenter;
 
+    private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
+    private final Map<Integer, LobbyDTO> lobbyIdToLobbyDTOMap = new HashMap<>();
+
     private static LobbyManagement instance;
     public static LobbyManagement getInstance() {
         return  instance;
     }
 
-    public LobbyManagement(){
+
+    public LobbyManagement(EventBus eventBus){
+        this.eventBus = eventBus;
         instance = this;
     }
 
@@ -213,6 +226,43 @@ public class LobbyManagement extends AbstractPresenter {
         this.currentGamePresenter = currentGamePresenter;
     }
 
+    //////////////////////
+    // Responses/Messages
+    //////////////////////
+
+    /**
+     * Handles StartGameMessage detected on the EventBus
+     *
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The StartGameMessage detected on the EventBus
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @author Moritz Scheer & Maxim Erden & Maria Eduarda
+     * @since 2023-02-28
+     */
+    public void startGame(StartGameMessage msg){
+        // save game and id
+        lobbyIdToGameDTOMap.put(
+                msg.getGameID(),
+                msg.getGame()
+        );
+        lobbyIdToLobbyDTOMap.put(
+                msg.getGameID(),
+                msg.getLobby()
+        );
+
+        /**this post is to create the gamePresenter and save the reference of it
+         * inside the LobbyGame class
+         * LobbyManagement and GameManagement both need access to same reference
+         * For this reason, both instantiate a hashmap lobbyGameMap
+         */
+        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID()));
+
+        // create request to get the cards
+        eventBus.post(new RequestMapDataEvent(msg.getLobby()));
+        //gameService.getMapData(msg.getLobby());
+    }
+
     /**
      * Handles GetMapDataMessage
      *
@@ -221,11 +271,8 @@ public class LobbyManagement extends AbstractPresenter {
      * @author Maria Andrade
      * @since 2023-05-06
      */
-    @Subscribe
-    public void onGetMapDataResponse(GetMapDataResponse msg){
+    public void reloadMapData(GetMapDataResponse msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
-        System.out.println("In Lobby Management");
-        System.out.println("GamePresenter Vsajcbjsdb = " + a);
     }
 }
