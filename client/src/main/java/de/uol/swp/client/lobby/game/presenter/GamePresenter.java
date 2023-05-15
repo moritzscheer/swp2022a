@@ -17,7 +17,6 @@ import javafx.scene.shape.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.*;
 import de.uol.swp.client.lobby.game.Card;
-import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
@@ -52,13 +51,11 @@ public class GamePresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/GameView.fxml";
     private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
-
     private JsonUtils jsonUtils;
     private Integer lobbyID;
     private User loggedInUser;
     @FXML
     private Button readyButton;
-    GameManagement gameManagement;
     @FXML
     private GridPane mainGrid;
     @FXML
@@ -242,8 +239,7 @@ public class GamePresenter extends AbstractPresenter {
         this.lobby = lobby;
         this.playersDTO = game.getPlayers();
 
-        gameManagement = GameManagement.getInstance();
-        loggedInUser = gameManagement.getLoggedInUser();
+        //TODO: ADD LOGGEDINUSER
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
