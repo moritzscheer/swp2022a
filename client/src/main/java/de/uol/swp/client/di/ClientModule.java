@@ -22,7 +22,7 @@ import javafx.fxml.FXMLLoader;
 public class ClientModule extends AbstractModule {
     final EventBus eventBus = new EventBus();
     final TabPresenter tabPresenter = new TabPresenter();
-    final LobbyManagement lobbyManagement = new LobbyManagement();
+    final LobbyManagement lobbyManagement = new LobbyManagement(eventBus);
 
     @Override
     protected void configure() {
