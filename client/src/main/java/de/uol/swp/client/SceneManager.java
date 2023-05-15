@@ -12,7 +12,6 @@ import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
@@ -99,7 +98,6 @@ public class SceneManager {
     private TabPresenter tabPresenter;
     @Inject
     private LobbyManagement lobbyManagement;
-    @Inject GameManagement gameManagement;
     @Inject
     private GameService gameService;
     @Inject
@@ -153,7 +151,7 @@ public class SceneManager {
         this.injector = injected;
 
         lobbyManagement = injector.getInstance(LobbyManagement.class);
-        gameManagement = injector.getInstance(GameManagement.class);
+        //gameManagement = injector.getInstance(GameManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
         gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
 
@@ -203,7 +201,7 @@ public class SceneManager {
         } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
             GamePresenter gamePresenter = gamePresenterFactory.create();
             lobbyManagement.setNextGamePresenter(gamePresenter);
-            gameManagement.setNextGamePresenter(gamePresenter);
+            //gameManagement.setNextGamePresenter(gamePresenter);
             loader.setController(gamePresenter);
         }
         try {
@@ -299,8 +297,7 @@ public class SceneManager {
      * @since 2023-02-20
      */
     private void initGameView() throws IOException {
-        if (gameParent == null)
-            gameParent = initPresenter(GamePresenter.FXML);
+        gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
@@ -1013,8 +1010,9 @@ public class SceneManager {
      */
     public void createGameView(LobbyDTO lobby, int gameID) {
         try {
-            LobbyGameTuple lobbyGameTupleReference = lobbyManagement.setupLobbyGame(lobby.getLobbyID(), gameParent, gameID);
-            gameManagement.setupLobbyGame(lobbyGameTupleReference, lobby);
+            initGameView();
+            lobbyManagement.setupLobbyGame(lobby.getLobbyID(), gameParent, gameID);
+            //gameManagement.setupLobbyGame(lobbyGameTupleReference, lobby);
         } catch (Exception e) {
             e.printStackTrace();
         }
