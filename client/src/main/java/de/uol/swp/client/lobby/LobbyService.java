@@ -4,6 +4,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
+import com.google.inject.Singleton;
+import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
+import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
+import de.uol.swp.client.lobby.lobby.event.UpdateLobbiesListEvent;
+import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -21,6 +26,7 @@ import org.apache.logging.log4j.Logger;
  * @since 2019-11-20
  */
 @SuppressWarnings("UnstableApiUsage")
+@Singleton
 public class LobbyService {
 
     private final EventBus eventBus;
@@ -47,46 +53,46 @@ public class LobbyService {
     /**
      * Posts a request to create a lobby on the EventBus
      *
-     * @param name Name chosen for the new lobby
-     * @param user User who wants to create the new lobby
      * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
      * @author Moritz Scheer
      * @since 2022-11-23
      */
-    public void createNewLobby(String name, UserDTO user, Boolean multiplayer, String password) {
+    @Subscribe
+    public void onCreateNewLobbyEvent(CreateNewLobbyEvent msg) {
+        LOG.info("onCreateNewLobbyEvent {}", msg.getName());
         CreateLobbyRequest createLobbyRequest =
-                new CreateLobbyRequest(name, user, multiplayer, password);
+                new CreateLobbyRequest(msg.getName(), msg.getUser(), msg.getMultiplayer(), msg.getPassword());
         eventBus.post(createLobbyRequest);
     }
 
     /**
      * Posts a request to join a specified lobby on the EventBus
      *
-     * @param name Name of the lobby the user wants to join
-     * @param user User who wants to join the lobby
      * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
      * @author Moritz Scheer
      * @since 2022-11-27
      */
-    public void joinLobby(Integer lobbyID, String name, UserDTO user, String password) {
-        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(lobbyID, name, user, password);
+    @Subscribe
+    public void joinLobby(UserJoinLobbyEvent event) {
+        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(
+                event.getLobby().getLobbyID(),
+                event.getLobby().getName(),
+                event.getLoggedInUser(),
+                event.getPassword());
         eventBus.post(joinUserRequest);
     }
 
     /**
      * Posts a request to leave a specified lobby on the EventBus
      *
-     * @param name Name of the lobby the user wants to join
-     * @param user User who wants to join the lobby
-     * @param lobbyID To identify the lobby with a unique key
-     * @param multiplayer Boolean value to query if the user is in the multiplayer
      * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
      * @author Daniel Merzo, Moritz Scheer
      * @since 2022-12-15
      */
-    public void leaveLobby(Integer lobbyID, String name, UserDTO user, Boolean multiplayer) {
+    @Subscribe
+    public void leaveLobby(LeaveLobbyEvent event) {
         LeaveLobbyRequest leaveUserRequest =
-                new LeaveLobbyRequest(lobbyID, name, user, multiplayer);
+                new LeaveLobbyRequest(event.getLobbyID(), event.getLobbyName(), event.getLoggedInUser(), event.isMultiplayer());
         eventBus.post(leaveUserRequest);
     }
 
@@ -97,7 +103,8 @@ public class LobbyService {
      * @author Moritz Scheer
      * @since 2022-11-30
      */
-    public void retrieveAllLobbies() {
+    @Subscribe
+    public void retrieveAllLobbies(UpdateLobbiesListEvent msg) {
         RetrieveAllOnlineLobbiesRequest retrieveAllLobbiesRequest =
                 new RetrieveAllOnlineLobbiesRequest();
         eventBus.post(retrieveAllLobbiesRequest);
