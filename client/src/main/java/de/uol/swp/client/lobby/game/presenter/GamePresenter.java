@@ -2,8 +2,10 @@ package de.uol.swp.client.lobby.game.presenter;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.utils.JsonUtils;
+import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -17,6 +19,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import javafx.event.ActionEvent;
@@ -210,7 +213,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerCpTexts;
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
-    private int[][][][] board;
+    private BlockDTO[][] board;
     @FXML
     private Button robotOffButton;
     private int x = 2;
@@ -231,7 +234,7 @@ public class GamePresenter extends AbstractPresenter {
      * <p>This method creates a board with the given information and adds all images to the board.
      *
      * @param lobbyID the Integer identifier of the lobby
-     * @param lobby LobbyDTO Object containing all the information of the lobby
+     * @param lobby   LobbyDTO Object containing all the information of the lobby
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
@@ -334,10 +337,10 @@ public class GamePresenter extends AbstractPresenter {
     }
 
 
-    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames){
+    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
-        for(PlayerDTO playerDTO: this.playersDTO){
-            if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())){
+        for (PlayerDTO playerDTO : this.playersDTO) {
+            if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
                 playerNames.get(count).setText(playerDTO.getUser().getUsername());
                 playerCpTexts.get(count).setText(
@@ -355,11 +358,11 @@ public class GamePresenter extends AbstractPresenter {
      * Handles GetMapDataMessage
      *
      * @param msg the GetMapDataMessage object seen on the EventBus
-     * @see GetMapDataResponse
      * @author Maria Andrade
+     * @see GetMapDataResponse
      * @since 2023-05-06
      */
-    public void reloadMap(GetMapDataResponse msg){
+    public void reloadMap(GetMapDataResponse msg) {
         Platform.runLater(
                 () -> {
                     this.board = msg.getBoardImageIds();
@@ -372,15 +375,18 @@ public class GamePresenter extends AbstractPresenter {
                             gameBoard.addRow(i);
                         }
 
-                        for (int col = 0; col < board.length; col++) {
-                            for (int row = 0; row < board[col].length; row++) {
-                                for (int img = 0; img < board[col][row].length; img++) {
-                                    File file = jsonUtils.searchInTileJSON(String.valueOf(board[col][row][img][0]));
+                        for (int row = 0; row < board.length; row++) {
+                            for (int col = 0; col < board[row].length; col++) {
+                                int[] images = board[row][col].getBlockImages();
+                                for (int img = 0; img < images.length; img++) {
+                                    File file = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
+
                                     Image image = new Image(file.toURI().toString());
                                     ImageView imageView = new ImageView(image);
+                                    imageView.setRotate(board[row][col].getBlockImagesDirection()[img].ordinal() * 90); // Rotate the image
                                     imageView.setFitWidth(50);
                                     imageView.setFitHeight(50);
-                                    gameBoard.add(imageView, col + 1, row + 1);
+                                    gameBoard.add(imageView, row + 1, col + 1);
                                 }
                             }
                         }
@@ -771,75 +777,19 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
 
+        if (!playerReady) {
+            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            playerReady = true;
 
-        // TODO: remove this
-//        try {
-//
-//            JSONObject json =
-//                    new JSONObject(
-//                            new JSONTokener(
-//                                    new FileReader("client/src/main/resources/json/tile.json")));
-//            JSONArray jsonArray = json.getJSONArray("array");
-//            String path2 = "client/src/main/resources/images/tiles/other/field.png";
-//            File file = new File(path2);
-//            Image image = new Image(file.toURI().toString());
-//            ImageView imageView = new ImageView(image);
-//            imageView.setFitWidth(50);
-//            imageView.setFitHeight(50);
-//            gameBoard.add(imageView, x, y);
-//
-//            x++;
-//
-//            String path = "client/src/main/resources/images/tiles/player/Player01.png";
-//            file = new File(path);
-//            image = new Image(file.toURI().toString());
-//            imageView = new ImageView(image);
-//            imageView.setFitWidth(50);
-//            imageView.setFitHeight(50);
-//            gameBoard.add(imageView, x, y);
-//            if (!playerReady) {
-//                readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-//                playerReady = true;
-//
-//            } else {
-//                readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-//                playerReady = false;
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        } else {
+            readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            playerReady = false;
+        }
     }
 
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {
-        try {
 
-            JSONObject json =
-                    new JSONObject(
-                            new JSONTokener(
-                                    new FileReader("client/src/main/resources/json/tile.json")));
-            JSONArray jsonArray = json.getJSONArray("array");
-
-            String path2 = "client/src/main/resources/images/tiles/other/field.png";
-            File file = new File(path2);
-            Image image = new Image(file.toURI().toString());
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
-            gameBoard.add(imageView, x, y);
-
-            y++;
-
-            String path = "client/src/main/resources/images/tiles/player/Player01.png";
-            file = new File(path);
-            image = new Image(file.toURI().toString());
-            imageView = new ImageView(image);
-            imageView.setFitWidth(50);
-            imageView.setFitHeight(50);
-            gameBoard.add(imageView, x, y);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 }

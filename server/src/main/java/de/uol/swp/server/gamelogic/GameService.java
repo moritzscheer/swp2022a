@@ -4,9 +4,11 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -89,11 +91,13 @@ public class GameService extends AbstractService {
         games.put(
                 lobbyID,
                 new Game(lobbyID,
-                        MapBuilder.getMap("server/src/main/resources/maps/tempMap.map"),
                         dockings,
                         lobby.get().getUsers()
                 )
         );
+        games.get(lobbyID).startGame();
+
+
 
         // Create DTOs objects
         // TODO: create Player
@@ -229,17 +233,17 @@ public class GameService extends AbstractService {
     public void onGetMapDataRequest(GetMapDataRequest msg) {
         System.out.println("Get Map Data server");
         Optional<Game> game = getGame(msg.getLobby().getLobbyID());
-        if(game.isPresent()){ //TODO: change to game.getBoard()
-            //Block[][] board = game.get().getBoard();
-            Block[][] board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
-            int[][][][] boardIDs = new int[board.length][board[0].length][][];
+        if(game.isPresent()){
+            Block[][] board = game.get().getBoard();
+            BlockDTO[][] boardDTOs= new BlockDTO[board.length][board[0].length];
+
             for(int row= 0; row< board.length; row++){
                 for(int col=0; col < board[0].length; col++){
-                    boardIDs[row][col] = board[row][col].getImages();
+                    boardDTOs[row][col] = new BlockDTO(board[row][col].getImages());
                 }
             }
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    boardIDs, msg.getLobby());
+                    boardDTOs, msg.getLobby());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }

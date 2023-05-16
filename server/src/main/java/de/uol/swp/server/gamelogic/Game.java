@@ -48,12 +48,11 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Block[][] board, Position[] dockingBays, Set<User> users) {
+    public Game(Integer lobbyID, Position[] dockingBays, Set<User> users) {
         this.lobbyID = lobbyID;
-        this.board = board;
         this.dockingBays = dockingBays;
-        this.rowCount = board.length;
-        this.columnCount = board[0].length;
+        //this.rowCount = board.length;
+        //this.columnCount = board[0].length;
         this.programStep = 0;
         this.readyRegister = 0;
 
@@ -203,8 +202,8 @@ public class Game {
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     }
 
-    private void startGame(){
-        board = MapBuilder.getMap("maps/tempMap.map");
+    public void startGame(){
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;
@@ -531,7 +530,22 @@ public class Game {
     public Integer getLobbyID() {
         return lobbyID;
     }
-
+    /**
+     * Getter for Board Array
+     *
+     * @author Jann Erik Bruns, Daniel Merzo
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-16
+     */
+    public Block[][] getBoard(){ return board;}
+    /**
+     * Setter for Board Array
+     *
+     * @author Jann Erik Bruns, Daniel Merzo
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-16
+     */
+    public void setBoard(Block[][] board){ this.board = board;}
     /**
      * Getter for list of Players
      *
