@@ -6,8 +6,10 @@ import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.*;
@@ -233,6 +235,8 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane leftGrid;
     @FXML
     private GridPane rightGrid;
+    @FXML
+    private GridPane gameBoardWrapper;
 
     /**
      * Default Constructor
@@ -270,6 +274,9 @@ public class GamePresenter extends AbstractPresenter {
         ;
 
         playerCount = users.size();
+
+        readyButton.setText("not ready");
+        robotOffButton.setText("Turn Robot OFF");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
@@ -351,9 +358,15 @@ public class GamePresenter extends AbstractPresenter {
 //        markField.setFitWidth(50);
 //        markField.setImage(image);
 
-        mainGrid.autosize();
+//        mainGrid.autosize();
 
 
+
+//        gameBoard.setPrefSize(600, 600);
+//        gameBoard.prefWidthProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(), gameBoardWrapper.heightProperty()));
+//        gameBoard.prefHeightProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(), gameBoardWrapper.heightProperty()));
+        gameBoard.prefHeightProperty().bind(gameBoardWrapper.heightProperty());
+        gameBoard.prefWidthProperty().bind(gameBoardWrapper.widthProperty());
 
         // creates the board
         try {
@@ -383,28 +396,16 @@ public class GamePresenter extends AbstractPresenter {
                         }
                         Image image = new Image(file.toURI().toString());
                         ImageView imageView = new ImageView(image);
-                        //imageView.setFitWidth(50);
-                        //imageView.setFitHeight();
+//                        imageView.setFitWidth(50);
+//                        imageView.setFitHeight();
+
 
                         gameBoard.add(imageView, col + 1, row + 1);
 
-                        Platform.runLater(() -> {
-                            //mainGrid.autosize();
-
-                            //gameBoard.resize(mainGrid.getWidth() * 0.6, mainGrid.getHeight());
-                            //gameBoard.resize(650, 650);
-
-
-                            imageView.fitHeightProperty().bind(gameBoard.heightProperty().divide(board.length));
-                            imageView.fitWidthProperty().bind(gameBoard.widthProperty().divide(board[0].length));
-
-                            leftGrid.autosize();
-                            rightGrid.autosize();
-
-                            gameBoard.autosize();
-
-                        });
-
+                        imageView.fitWidthProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(),
+                                gameBoardWrapper.heightProperty().divide(board[0].length + 0.5)));
+                        imageView.fitHeightProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(),
+                                gameBoardWrapper.heightProperty().divide(board.length + .5)));
 
                     }
 
@@ -823,16 +824,21 @@ public class GamePresenter extends AbstractPresenter {
             gameBoard.add(imageView, x, y);
             if (!playerReady) {
                 readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                robotOffButton.setText("Ready");
                 playerReady = true;
 
             } else {
-                readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                readyButton.setStyle("-fx-background-color: #B22222;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                robotOffButton.setText("Not Ready");
                 playerReady = false;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+
 
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {
@@ -861,6 +867,18 @@ public class GamePresenter extends AbstractPresenter {
             imageView.setFitWidth(100);
             imageView.setFitHeight(100);
             gameBoard.add(imageView, x, y);
+
+            //TODO: change playerReady to TurnRobotOff and change
+            if (!playerReady) {
+                robotOffButton.setStyle("-fx-background-color: #B22222;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                robotOffButton.setText("Turn Robot ON");
+                playerReady = true;
+
+            } else {
+                robotOffButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                robotOffButton.setText("Turn Robot OFF");
+                playerReady = false;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
