@@ -15,8 +15,8 @@ public class GetMapDataResponse extends AbstractLobbyResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-06
      */
-    public GetMapDataResponse(int[][][][] boardImageIds, LobbyDTO lobby ) {
-        this.boardImageIds = boardImageIds;
+    public GetMapDataResponse(BlockDTO[][] boardDTOs, LobbyDTO lobby ) {
+        this.boardDTOs = boardDTOs;
         this.lobby = lobby;
     }
 
