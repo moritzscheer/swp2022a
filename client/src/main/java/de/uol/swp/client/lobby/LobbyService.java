@@ -128,7 +128,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
-        LobbyGameManagement.getInstance().setLoggingUser(message.getUser());
+        LobbyGameManagement.getInstance().setLoggingUser((UserDTO) message.getUser());
     }
 
     /**
