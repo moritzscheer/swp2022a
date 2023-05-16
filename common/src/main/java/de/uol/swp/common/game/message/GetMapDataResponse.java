@@ -1,10 +1,11 @@
 package de.uol.swp.common.game.message;
 
+import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
 
 public class GetMapDataResponse extends AbstractLobbyResponse {
-    private final int[][][][] boardImageIds;
+    private final BlockDTO[][] boardDTOs;
     private final LobbyDTO lobby;
 
     /**
@@ -14,8 +15,8 @@ public class GetMapDataResponse extends AbstractLobbyResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-06
      */
-    public GetMapDataResponse(int[][][][] boardImageIds, LobbyDTO lobby ) {
-        this.boardImageIds = boardImageIds;
+    public GetMapDataResponse(BlockDTO[][] boardDTOs, LobbyDTO lobby ) {
+        this.boardDTOs = boardDTOs;
         this.lobby = lobby;
     }
 
@@ -25,8 +26,8 @@ public class GetMapDataResponse extends AbstractLobbyResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-06
      */
-    public int[][][][] getBoardImageIds() {
-        return boardImageIds;
+    public BlockDTO[][] getBoardImageIds() {
+        return boardDTOs;
     }
 
     public int getLobbyID() {

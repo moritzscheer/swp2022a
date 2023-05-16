@@ -19,10 +19,13 @@ public class BlockDTO implements Serializable {
     private final int[] blockImages;
     private final CardinalDirection[] blockImagesDirection;
 
-    public BlockDTO(int[] blockImages, CardinalDirection[] blockImagesDirection){
-
-        this.blockImages = blockImages;
-        this.blockImagesDirection = blockImagesDirection;
+    public BlockDTO(int[][] inputImageInfo){
+        blockImages = new int[inputImageInfo.length];
+        blockImagesDirection = new CardinalDirection[inputImageInfo.length];
+        for (int i = 0; i < inputImageInfo.length; i++) {
+            blockImages[i] = inputImageInfo[i][0];
+            blockImagesDirection[i] = CardinalDirection.values()[(inputImageInfo[i][1] + 4) % 4];
+        }
     }
 
     public int[] getBlockImages() {
