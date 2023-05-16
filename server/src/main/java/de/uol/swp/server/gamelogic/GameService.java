@@ -204,13 +204,13 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onGetProgramCardsRequest(GetProgramCardsRequest msg) {
-        Optional<Game> game = getGame(msg.getGameID());
-        if(!game.isEmpty()) {
-            game.get().distributeProgramCards();
-            // TODO: here it is called the function that give cards to all players,
-            // then one must send a response to each player individually with their cards
-
-        }
+//        Optional<Game> game = getGame();
+//        if(!game.isEmpty()) {
+//            game.get().distributeProgramCards();
+//            // TODO: here it is called the function that give cards to all players,
+//            // then one must send a response to each player individually with their cards
+//
+//        }
     }
 
     /**
@@ -238,11 +238,8 @@ public class GameService extends AbstractService {
                     boardIDs[row][col] = board[row][col].getImages();
                 }
             }
-
-            // todo: remove gameID tomorrow
-
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    msg.getLobby().getLobbyID(), boardIDs, msg.getLobby());
+                    boardIDs, msg.getLobby());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }

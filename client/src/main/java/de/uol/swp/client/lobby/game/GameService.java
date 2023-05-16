@@ -76,7 +76,7 @@ public class GameService {
     public void getProgramCardsForPlayers(Integer gameID) {
         LOG.debug("Getting Cards");
         GetProgramCardsRequest getProgramCardsRequest =
-                new GetProgramCardsRequest(gameID);
+                new GetProgramCardsRequest();
         eventBus.post(getProgramCardsRequest);
     }
 

@@ -16,9 +16,6 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 public class StartGameMessage extends AbstractLobbyMessage {
 
     private final Integer lobbyID;
-
-    private final Integer gameID;
-
     private final LobbyDTO lobby;
     private final GameDTO game;
     /**
@@ -32,7 +29,6 @@ public class StartGameMessage extends AbstractLobbyMessage {
      */
     public StartGameMessage(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
         this.lobbyID = lobbyID;
-        this.gameID = game.getGameID();
         this.lobby = lobby;
         this.game = game;
     }
@@ -46,17 +42,6 @@ public class StartGameMessage extends AbstractLobbyMessage {
      */
     public Integer getLobbyID() {
         return lobbyID;
-    }
-
-    /**
-     * Getter for the gameID variable
-     *
-     * @return Integer containing the gameID
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-05-01
-     */
-    public Integer getGameID() {
-        return gameID;
     }
 
     /**
