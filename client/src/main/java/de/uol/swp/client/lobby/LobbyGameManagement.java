@@ -242,11 +242,11 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void startGame(StartGameMessage msg){
         // save game and id
         lobbyIdToGameDTOMap.put(
-                msg.getGameID(),
+                msg.getLobbyID(),
                 msg.getGame()
         );
         lobbyIdToLobbyDTOMap.put(
-                msg.getGameID(),
+                msg.getLobbyID(),
                 msg.getLobby()
         );
 
