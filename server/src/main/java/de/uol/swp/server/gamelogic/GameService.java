@@ -68,16 +68,12 @@ public class GameService extends AbstractService {
         }
         System.out.println("New id :)");
         //TODO: fix docking positions
-        Position[] dockings = {
-                new Position(1, 2),
-                new Position(1, 3),
-                new Position(1, 4),
-                new Position(1, 5),
-                new Position(1, 6),
-                new Position(2, 3),
-                new Position(2, 2),
-                new Position(2, 4)
-        };
+        Position[] checkpointsList = {
+                new Position(0, 11),
+                new Position(9,3),
+                new Position(7,4),
+                new Position(1,9)}
+                ;
         System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
         if(!lobby.isPresent()){
@@ -87,7 +83,7 @@ public class GameService extends AbstractService {
                 gameID,
                 new Game(lobbyID,
                         MapBuilder.getMap("server/src/main/resources/maps/tempMap.map"),
-                        dockings,
+                        checkpointsList,
                         lobby.get().getUsers()
                 )
         );
