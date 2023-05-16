@@ -6,6 +6,7 @@ import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -234,12 +235,14 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(int lobbyID, LobbyDTO lobby, GameDTO game) {
+    public void init(int lobbyID, LobbyDTO lobby, GameDTO game, UserDTO loggedInUser) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
         this.playersDTO = game.getPlayers();
 
         //TODO: ADD LOGGEDINUSER
+        this.loggedInUser = loggedInUser;
+
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
