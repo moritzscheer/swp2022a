@@ -25,7 +25,7 @@ public class Game {
     private Block[][] board;
 
     // TODO: Remove dockingBays field
-    private Position[] dockingBays;
+    private Position[] checkpointsList;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
     private int rowCount;
@@ -48,39 +48,27 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Block[][] board, Position[] dockingBays, Set<User> users) {
+    public Game(Integer lobbyID, Block[][] board, Position[] checkpointsList, Set<User> users) {
         this.lobbyID = lobbyID;
         this.board = board;
-        this.dockingBays = dockingBays;
+        this.checkpointsList = checkpointsList;
         this.rowCount = board.length;
         this.columnCount = board[0].length;
         this.programStep = 0;
         this.readyRegister = 0;
 
         // there must be as many docking as users
-        assert dockingBays.length == users.size();
+        //assert dockingBays.length == users.size();
 
         // create players and robots
-        int i = 0;
         for(User user: users) {
-            Player newPlayer = new Player(convertUserToUserDTO(user), dockingBays[i]);
+            Player newPlayer = new Player(convertUserToUserDTO(user), checkpointsList[0]);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
-            i++;
         }
 
         this.nRobots = robots.size();
         this.playedCards = new Card[this.nRobots][5];
-    }
-
-    /**
-     * Set docking bays, might not be necessary if only set in constructor
-     *
-     * @author Maria
-     * @since 2023-04-18
-     */
-    public void setDockingBaysPositions(Position[] positions) {
-        this.dockingBays = positions;
     }
 
     /**

@@ -5,7 +5,6 @@ import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.common.game.enums.CardinalDirection;
-
 import java.util.List;
 import java.util.Objects;
 
