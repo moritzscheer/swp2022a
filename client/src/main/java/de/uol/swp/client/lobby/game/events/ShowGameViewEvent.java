@@ -14,11 +14,9 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class ShowGameViewEvent {
 
     private LobbyDTO lobby;
-    private int gameID;
 
-    public ShowGameViewEvent(LobbyDTO lobby, int gameID) {
+    public ShowGameViewEvent(LobbyDTO lobby) {
         this.lobby = lobby;
-        this.gameID = gameID;
     }
 
     public Integer getLobbyID() {
@@ -27,10 +25,6 @@ public class ShowGameViewEvent {
 
     public LobbyDTO getLobby() {
         return lobby;
-    }
-
-    public int getGameID() {
-        return gameID;
     }
 
 }

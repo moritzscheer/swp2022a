@@ -4,7 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.game.dto.BoardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
@@ -67,10 +66,7 @@ public class GameService extends AbstractService {
      */
     public GameDTO createNewGame(int lobbyID) {
         System.out.println("I am creating your game :)");
-        int gameID = 1;
-        while (games.containsKey(gameID)) {
-            gameID++;
-        }
+
         System.out.println("New id :)");
         //TODO: fix docking positions
         Position[] dockings = {
@@ -91,7 +87,7 @@ public class GameService extends AbstractService {
 
         // create and save Game Object
         games.put(
-                gameID,
+                lobbyID,
                 new Game(lobbyID,
                         MapBuilder.getMap("server/src/main/resources/maps/tempMap.map"),
                         dockings,
@@ -102,7 +98,7 @@ public class GameService extends AbstractService {
         // Create DTOs objects
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
-        for(AbstractPlayer player: games.get(gameID).getPlayers()) {
+        for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
             // convert Robot to RobotDTO
             RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
 
@@ -120,11 +116,11 @@ public class GameService extends AbstractService {
         }
 
         // TODO: create Board, instead of using 4d array
-        BoardDTO boardDTO = new BoardDTO();
+        //BlockDTO blockDTO = new BlockDTO();
 
-        GameDTO gameDTO = new GameDTO(gameID, players, boardDTO);
+        GameDTO gameDTO = new GameDTO(players);
 
-        gamesDTO.put(gameID, gameDTO); // save reference to the GameDTO
+        gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
         System.out.println("New Game :)");
         return gameDTO;

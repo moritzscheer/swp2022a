@@ -13,12 +13,4 @@ import java.io.Serializable;
  */
 public interface Game extends Serializable {
 
-    /**
-     * Getter for gameID of the game
-     *
-     * @return an Integer containing the game ID
-     * @since 2023-05-01
-     */
-    Integer getGameID();
-
 }

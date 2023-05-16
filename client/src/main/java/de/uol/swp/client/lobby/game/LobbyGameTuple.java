@@ -17,7 +17,6 @@ public class LobbyGameTuple {
     private Parent gameParent;
     private final LobbyPresenter lobbyPresenter;
     private GamePresenter gamePresenter;
-    private Integer gameID;
 
     /**
      * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
@@ -40,10 +39,9 @@ public class LobbyGameTuple {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void setGameView(GamePresenter gamePresenter, Parent gameParent, Integer gameID) {
+    public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
         this.gamePresenter = gamePresenter;
         this.gameParent = gameParent;
-        this.gameID = gameID;
 
 
     }

@@ -172,13 +172,12 @@ public class LobbyGameManagement extends AbstractPresenter {
      * lobbyMap HashMap.
      *
      * @param lobbyID the Integer identifier of the lobby
-     * @param gameID gameID
      * @param gameParent the Parent object of the game view
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, Integer gameID) {
-        lobbyGameMap.get(lobbyID).setGameView(currentGamePresenter, gameParent, gameID);
+    public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent) {
+        lobbyGameMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
         return lobbyGameMap.get(lobbyID);
     }
 
@@ -256,7 +255,7 @@ public class LobbyGameManagement extends AbstractPresenter {
          * LobbyManagement and GameManagement both need access to same reference
          * For this reason, both instantiate a hashmap lobbyGameMap
          */
-        eventBus.post(new ShowGameViewEvent(msg.getLobby(), msg.getGameID()));
+        eventBus.post(new ShowGameViewEvent(msg.getLobby()));
 
         // create request to get the cards
         eventBus.post(new RequestMapDataEvent(msg.getLobby()));
