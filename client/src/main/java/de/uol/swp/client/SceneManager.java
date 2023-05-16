@@ -192,15 +192,6 @@ public class SceneManager {
     private Parent initPresenter(String fxmlFile) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        if (fxmlFile.equals("/fxml/LobbyView.fxml")) {
-            LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
-            lobbyGameManagement.setNextLobbyPresenter(lobbyPresenter);
-            loader.setController(lobbyPresenter);
-        } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
-            GamePresenter gamePresenter = gamePresenterFactory.create();
-            lobbyGameManagement.setNextGamePresenter(gamePresenter);
-            loader.setController(gamePresenter);
-        }
         try {
             URL url = getClass().getResource(fxmlFile);
             LOG.debug("Loading {}", url);
@@ -403,8 +394,21 @@ public class SceneManager {
      * @see LobbyPresenter
      * @since 2022-11-30
      */
-    private void initLobbyView() throws IOException {
-        lobbyParent = initPresenter(LobbyPresenter.FXML);
+    private Parent initLobbyView(int lobbyID) throws IOException {
+        Parent lobbyParent;
+        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
+        loader.setController(lobbyPresenter);
+        try {
+            URL url = getClass().getResource(LobbyPresenter.FXML);
+            LOG.debug("Loading {}", url);
+            loader.setLocation(url);
+            lobbyParent = loader.load();
+        } catch (Exception e) {
+            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
+        }
+        lobbyGameManagement.setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
+        return lobbyParent;
     }
 
     // -----------------------------------------------------
@@ -980,7 +984,7 @@ public class SceneManager {
      */
     private void createTab(LobbyDTO lobby, UserDTO user) {
         try {
-            initLobbyView();
+            Parent lobbyParent = initLobbyView(lobby.getLobbyID());
 
             if (lobby.isMultiplayer()) {
                 showJoinOrCreateScreen();
@@ -988,7 +992,7 @@ public class SceneManager {
                 showMainScreen();
             }
 
-            lobbyGameManagement.setupLobby(lobby, user, lobbyParent);
+            lobbyGameManagement.setupLobby(lobby, user);
             tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
             e.printStackTrace();
