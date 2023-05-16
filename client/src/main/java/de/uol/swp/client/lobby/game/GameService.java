@@ -6,12 +6,12 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
+import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,14 +47,15 @@ public class GameService {
     /**
      * Posts a request to start the game on the EventBus
      *
-     * @param lobby To identify the lobby with a unique key
+     * @param event To identify the lobby with a unique key
      * @see StartGameRequest
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void startGame(LobbyDTO lobby) {
+    @Subscribe
+    public void startGameRequest(RequestStartGameEvent event) {
         LOG.debug("Starting Game");
-        StartGameRequest startGameRequest = new StartGameRequest(lobby);
+        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO());
         eventBus.post(startGameRequest);
     }
 

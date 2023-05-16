@@ -1,10 +1,9 @@
 package de.uol.swp.client.tab;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
@@ -29,8 +28,6 @@ public class TabPresenter extends AbstractPresenter {
     public static final String FXML = "/fxml/TabView.fxml";
 
     private User loggedInUser;
-
-    @Inject private LobbyService lobbyService;
 
     @FXML private TabPane tabPane;
     @FXML private Button yesButton;
@@ -353,22 +350,25 @@ public class TabPresenter extends AbstractPresenter {
                         if (tabPane.getTabs().size() > 1) {
                             for (Tab tabs : tabPane.getTabs()) {
                                 if (tabs.getId() != null) {
-                                    lobbyService.leaveLobby(
+                                    eventBus.post(new LeaveLobbyEvent(
+                                            (UserDTO) loggedInUser,
                                             Integer.valueOf(tabs.getId()),
                                             tabs.getText(),
-                                            (UserDTO) loggedInUser,
-                                            !tab.getText().equals("Singleplayer"));
+                                            !tab.getText().equals("Singleplayer")
+                                    ));
                                 }
                             }
                         }
 
                         userService.logout(loggedInUser);
                     } else if (infoLabel3.isVisible()) {
-                        lobbyService.leaveLobby(
+                        eventBus.post(new LeaveLobbyEvent(
+                                (UserDTO) loggedInUser,
                                 Integer.valueOf(tab.getId()),
                                 tab.getText(),
-                                (UserDTO) loggedInUser,
-                                true);
+                                true)
+
+                        );
                         updateInfoBox();
 
                         tabPane.getTabs().remove(tab);
