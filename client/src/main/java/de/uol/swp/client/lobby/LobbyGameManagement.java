@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Moritz Scheer
  * @since 2023-01-05
  */
-public class LobbyManagement extends AbstractPresenter {
+public class LobbyGameManagement extends AbstractPresenter {
 
 
     private final EventBus eventBus;
@@ -47,13 +47,13 @@ public class LobbyManagement extends AbstractPresenter {
     private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
     private final Map<Integer, LobbyDTO> lobbyIdToLobbyDTOMap = new HashMap<>();
 
-    private static LobbyManagement instance;
-    public static LobbyManagement getInstance() {
+    private static LobbyGameManagement instance;
+    public static LobbyGameManagement getInstance() {
         return  instance;
     }
 
 
-    public LobbyManagement(EventBus eventBus){
+    public LobbyGameManagement(EventBus eventBus){
         this.eventBus = eventBus;
         instance = this;
     }

@@ -5,9 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.client.lobby.LobbyGameManagement;
-import de.uol.swp.client.lobby.LobbyManagement;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -99,7 +97,7 @@ public class GameService {
     @Subscribe
     public void onStartGameMessage(StartGameMessage msg){
         LOG.debug("onStartGameMessage");
-        LobbyManagement.getInstance().startGame(msg);
+        LobbyGameManagement.getInstance().startGame(msg);
     }
 
     /**
@@ -113,6 +111,6 @@ public class GameService {
     @Subscribe
     public void onGetMapDataResponse(GetMapDataResponse msg){
         LOG.debug("onGetMapDataResponse");
-        LobbyManagement.getInstance().reloadMapData(msg);
+        LobbyGameManagement.getInstance().reloadMapData(msg);
     }
 }

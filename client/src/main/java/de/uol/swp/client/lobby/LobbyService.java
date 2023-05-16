@@ -4,8 +4,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
-import de.uol.swp.client.lobby.game.LobbyGameTuple;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -13,7 +11,6 @@ import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
-import javafx.scene.Parent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,20 +28,20 @@ public class LobbyService {
     private static final Logger LOG = LogManager.getLogger(LobbyService.class);
 
     @Inject
-    private final LobbyManagement lobbyManagement;
+    private final LobbyGameManagement lobbyGameManagement;
 
     /**
      * Constructor
      *
      * @param eventBus        The EventBus set in ClientModule
-     * @param lobbyManagement
+     * @param lobbyGameManagement
      * @see de.uol.swp.client.di.ClientModule
      * @since 2019-11-20
      */
     @Inject
-    public LobbyService(EventBus eventBus, LobbyManagement lobbyManagement) {
+    public LobbyService(EventBus eventBus, LobbyGameManagement lobbyGameManagement) {
         this.eventBus = eventBus;
-        this.lobbyManagement = lobbyManagement;
+        this.lobbyGameManagement = lobbyGameManagement;
         this.eventBus.register(this);
     }
 
@@ -129,7 +126,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
-        lobbyManagement.setLoggingUser((UserDTO) message.getUser());
+        lobbyGameManagement.setLoggingUser((UserDTO) message.getUser());
     }
 
     /**
@@ -145,7 +142,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        lobbyManagement.removeLobby(message);
+        lobbyGameManagement.removeLobby(message);
     }
 
     /**
@@ -161,7 +158,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        lobbyManagement.newUserJoined(message);
+        lobbyGameManagement.newUserJoined(message);
     }
 
     /**
@@ -177,7 +174,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
-        lobbyManagement.userLeftLobby(message);
+        lobbyGameManagement.userLeftLobby(message);
     }
 
     /**
@@ -192,7 +189,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        lobbyManagement.changeElement(event);
+        lobbyGameManagement.changeElement(event);
     }
 
 }
