@@ -9,7 +9,6 @@ import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
@@ -31,9 +30,16 @@ import javafx.scene.shape.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static javafx.scene.paint.Color.*;
+
+import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -42,8 +48,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -348,16 +358,6 @@ public class GamePresenter extends AbstractPresenter {
 //        markField.setFitWidth(50);
 //        markField.setImage(image);
 
-//        mainGrid.autosize();
-
-
-
-//        gameBoard.setPrefSize(600, 600);
-//        gameBoard.prefWidthProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(), gameBoardWrapper.heightProperty()));
-//        gameBoard.prefHeightProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(), gameBoardWrapper.heightProperty()));
-        gameBoard.prefHeightProperty().bind(gameBoardWrapper.heightProperty());
-        gameBoard.prefWidthProperty().bind(gameBoardWrapper.widthProperty());
-
         // creates the board
         //reloadMap(null);
 
@@ -415,10 +415,6 @@ public class GamePresenter extends AbstractPresenter {
                                     imageView.setFitWidth(50);
                                     imageView.setFitHeight(50);
                                     gameBoard.add(imageView, row + 1, col + 1);
-                                    gameBoard.add(imageView, col + 1, row + 1);imageView.fitWidthProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(),
-                                    gameBoardWrapper.heightProperty().divide(board[0].length + 0.5)));
-                                    imageView.fitHeightProperty().bind(Bindings.min(gameBoardWrapper.widthProperty(),
-                                            gameBoardWrapper.heightProperty().divide(board.length + .5)));
 
                     }
 
@@ -776,6 +772,17 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
+    @FXML
+    private void onReadyButtonPressed(ActionEvent actionEvent) {
+
+        if (!playerReady) {
+            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            playerReady = true;
+        } else {
+            readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            playerReady = false;
+        }
+    }
     /**
      * Setting Checkpoint of the user
      *
@@ -811,20 +818,6 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
     }
-
-    @FXML
-    private void onReadyButtonPressed(ActionEvent actionEvent) {
-
-        if (!playerReady) {
-            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            playerReady = true;
-
-        } else {
-            readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            playerReady = false;
-        }
-    }
-
 
 
 
