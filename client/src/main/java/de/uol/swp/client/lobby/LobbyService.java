@@ -27,21 +27,16 @@ public class LobbyService {
 
     private static final Logger LOG = LogManager.getLogger(LobbyService.class);
 
-    @Inject
-    private final LobbyGameManagement lobbyGameManagement;
-
     /**
      * Constructor
      *
      * @param eventBus        The EventBus set in ClientModule
-     * @param lobbyGameManagement
      * @see de.uol.swp.client.di.ClientModule
      * @since 2019-11-20
      */
     @Inject
-    public LobbyService(EventBus eventBus, LobbyGameManagement lobbyGameManagement) {
+    public LobbyService(EventBus eventBus) {
         this.eventBus = eventBus;
-        this.lobbyGameManagement = lobbyGameManagement;
         this.eventBus.register(this);
     }
 
@@ -126,7 +121,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
-        lobbyGameManagement.setLoggingUser((UserDTO) message.getUser());
+        LobbyGameManagement.getInstance().setLoggingUser(message.getUser());
     }
 
     /**
@@ -142,7 +137,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        lobbyGameManagement.removeLobby(message);
+        LobbyGameManagement.getInstance().removeLobby(message);
     }
 
     /**
@@ -158,7 +153,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onUserJoinedLobbyMessage(UserJoinedLobbyMessage message) {
-        lobbyGameManagement.newUserJoined(message);
+        LobbyGameManagement.getInstance().newUserJoined(message);
     }
 
     /**
@@ -174,7 +169,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onUserLeftLobbyMessage(UserLeftLobbyMessage message) {
-        lobbyGameManagement.userLeftLobby(message);
+        LobbyGameManagement.getInstance().userLeftLobby(message);
     }
 
     /**
@@ -189,7 +184,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onChangeElementEvent(ChangeElementEvent event) {
-        lobbyGameManagement.changeElement(event);
+        LobbyGameManagement.getInstance().changeElement(event);
     }
 
 }
