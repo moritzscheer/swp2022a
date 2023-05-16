@@ -174,8 +174,6 @@ public class SceneManager {
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
-        initLobbyView();
-        initGameView();
     }
 
     /**
@@ -272,20 +270,6 @@ public class SceneManager {
         if (settingParent == null) {
             settingParent = initPresenter(SettingPresenter.FXML);
         }
-    }
-
-    /**
-     * Initializes the game view
-     *
-     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
-     * by the GameView FXML file.
-     *
-     * @author Moritz Scheer
-     * @see GamePresenter
-     * @since 2023-02-20
-     */
-    private void initGameView() throws IOException {
-        gameParent = initPresenter(GamePresenter.FXML);
     }
 
     /**
@@ -409,6 +393,34 @@ public class SceneManager {
         }
         lobbyGameManagement.setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
         return lobbyParent;
+    }
+
+    /**
+     * Initializes the game view
+     *
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * by the GameView FXML file.
+     *
+     * @author Moritz Scheer
+     * @see GamePresenter
+     * @since 2023-02-20
+     */
+    private Parent initGameView(int lobbyID) throws IOException {
+
+        Parent gameParent;
+        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        GamePresenter gamePresenter = gamePresenterFactory.create();
+        loader.setController(gamePresenter);
+        try {
+            URL url = getClass().getResource(GamePresenter.FXML);
+            LOG.debug("Loading {}", url);
+            loader.setLocation(url);
+            gameParent = loader.load();
+        } catch (Exception e) {
+            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
+        }
+        lobbyGameManagement.setupLobbyGame(lobbyID, gameParent, gamePresenter);
+        return gameParent;
     }
 
     // -----------------------------------------------------
@@ -1010,9 +1022,7 @@ public class SceneManager {
      */
     public void createGameView(LobbyDTO lobby) {
         try {
-            initGameView();
-            lobbyGameManagement.setupLobbyGame(lobby.getLobbyID(), gameParent);
-            //gameManagement.setupLobbyGame(lobbyGameTupleReference, lobby);
+            Parent gameParent = initGameView(lobby.getLobbyID());
         } catch (Exception e) {
             e.printStackTrace();
         }
