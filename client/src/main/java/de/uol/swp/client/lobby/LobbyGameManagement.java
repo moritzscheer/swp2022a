@@ -84,13 +84,11 @@ public class LobbyGameManagement extends AbstractPresenter {
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
      * @param user the UserDTO Object containing all the information of the user
-     * @param lobbyParent the Parent object of the lobby view
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void setupLobby(LobbyDTO lobby, UserDTO user, Parent lobbyParent) {
-        currentLobbyPresenter.setInformation(lobby, user);
-        lobbyGameMap.put(lobby.getLobbyID(), new LobbyGameTuple(currentLobbyPresenter, lobbyParent));
+    public void setupLobby(LobbyDTO lobby, UserDTO user) {
+        lobbyGameMap.get(lobby.getLobbyID()).getLobbyPresenter().setInformation(lobby, user);
     }
 
     /**
@@ -190,8 +188,8 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    public void setNextLobbyPresenter(LobbyPresenter currentLobbyPresenter) {
-        this.currentLobbyPresenter = currentLobbyPresenter;
+    public void setThisLobbyPresenter(LobbyPresenter lobbyPresenter, Parent lobbyParent, int lobbyID) {
+        lobbyGameMap.put(lobbyID, new LobbyGameTuple(lobbyPresenter, lobbyParent));
     }
 
     // -----------------------------------------------------
