@@ -150,7 +150,6 @@ public class SceneManager {
         this.injector = injected;
 
         lobbyGameManagement = injector.getInstance(LobbyGameManagement.class);
-        //gameManagement = injector.getInstance(GameManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
         gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
 
@@ -200,7 +199,6 @@ public class SceneManager {
         } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
             GamePresenter gamePresenter = gamePresenterFactory.create();
             lobbyGameManagement.setNextGamePresenter(gamePresenter);
-            //gameManagement.setNextGamePresenter(gamePresenter);
             loader.setController(gamePresenter);
         }
         try {
@@ -651,7 +649,7 @@ public class SceneManager {
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) {
         System.out.println("SceneManager.onShowGameViewEvent");
-        createGameView(event.getLobby(), event.getGameID());
+        createGameView(event.getLobby());
         showGameScreen(event.getLobbyID());
     }
 
@@ -913,7 +911,6 @@ public class SceneManager {
      */
     public void showGameScreen(Integer lobbyID) {
         showNode(lobbyID, lobbyGameManagement.getGameParent(lobbyID));
-//        showNode(lobbyID, GameManagement.getInstance().getGameParent());
     }
 
     /**
@@ -1007,10 +1004,10 @@ public class SceneManager {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public void createGameView(LobbyDTO lobby, int gameID) {
+    public void createGameView(LobbyDTO lobby) {
         try {
             initGameView();
-            lobbyGameManagement.setupLobbyGame(lobby.getLobbyID(), gameParent, gameID);
+            lobbyGameManagement.setupLobbyGame(lobby.getLobbyID(), gameParent);
             //gameManagement.setupLobbyGame(lobbyGameTupleReference, lobby);
         } catch (Exception e) {
             e.printStackTrace();
