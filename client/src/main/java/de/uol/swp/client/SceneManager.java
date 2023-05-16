@@ -83,7 +83,6 @@ public class SceneManager {
 
     private Parent lastParent;
     private Parent currentParent;
-    private Parent lobbyParent;
     private Parent joinOrCreateParent;
     private Parent createLobbyParent;
     private Parent mainParent;
@@ -91,22 +90,16 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
-    private Parent gameParent;
 
     @Inject
     private TabPresenter tabPresenter;
-    @Inject
-    private LobbyGameManagement lobbyGameManagement;
-    @Inject
     private GameService gameService;
-    @Inject
     private LobbyService lobbyService;
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
     @Inject
     private GamePresenterFactory gamePresenterFactory;
 
-    //private GamePresenter gamePresenter;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
@@ -116,8 +109,10 @@ public class SceneManager {
     private final Injector injector;
 
     @Inject
-    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage)
+    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage, GameService gameService, LobbyService lobbyService)
             throws IOException {
+        this.gameService = gameService;
+        this.lobbyService = lobbyService;
         eventBus.register(this);
         this.eventBus = eventBus;
         this.primaryStage = primaryStage;
@@ -149,7 +144,6 @@ public class SceneManager {
 
         this.injector = injected;
 
-        lobbyGameManagement = injector.getInstance(LobbyGameManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
         gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
 
@@ -391,7 +385,7 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        lobbyGameManagement.setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
+        LobbyGameManagement.getInstance().setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
         return lobbyParent;
     }
 
@@ -419,7 +413,7 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        lobbyGameManagement.setupLobbyGame(lobbyID, gameParent, gamePresenter);
+        LobbyGameManagement.getInstance().setupLobbyGame(lobbyID, gameParent, gamePresenter);
         return gameParent;
     }
 
@@ -926,7 +920,7 @@ public class SceneManager {
      * @since 2023-03-09
      */
     public void showGameScreen(Integer lobbyID) {
-        showNode(lobbyID, lobbyGameManagement.getGameParent(lobbyID));
+        showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
     }
 
     /**
@@ -937,7 +931,7 @@ public class SceneManager {
      * @since 2023-03-09
      */
     public void showLobbyScreen(Integer lobbyID) {
-        showNode(lobbyID, lobbyGameManagement.getLobbyParent(lobbyID));
+        showNode(lobbyID, LobbyGameManagement.getInstance().getLobbyParent(lobbyID));
     }
 
     /**
@@ -1004,7 +998,7 @@ public class SceneManager {
                 showMainScreen();
             }
 
-            lobbyGameManagement.setupLobby(lobby, user);
+            LobbyGameManagement.getInstance().setupLobby(lobby, user);
             tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
             e.printStackTrace();
