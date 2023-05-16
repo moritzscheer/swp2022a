@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2023-05-13
  */
 public class RobotDTO implements Serializable {
-    private String imgPath;
+    private String imgPath; // todo: change to id
 
     private Position position;
 
