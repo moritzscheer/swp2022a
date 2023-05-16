@@ -41,8 +41,6 @@ public class LobbyGameManagement extends AbstractPresenter {
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
     private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
-    private LobbyPresenter currentLobbyPresenter;
-    private GamePresenter currentGamePresenter;
 
     private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
     private final Map<Integer, LobbyDTO> lobbyIdToLobbyDTOMap = new HashMap<>();
@@ -161,25 +159,6 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.switchButtonDisableEffect();
     }
 
-    // -----------------------------------------------------
-    // game methods
-    // -----------------------------------------------------
-
-    /**
-     * Method to set up a game view
-     *
-     * <p>This method opens the init method in the GamePresenter and saves it with the parent in the
-     * lobbyMap HashMap.
-     *
-     * @param lobbyID the Integer identifier of the lobby
-     * @param gameParent the Parent object of the game view
-     * @author Moritz Scheer
-     * @since 2023-03-23
-     */
-    public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent) {
-        lobbyGameMap.get(lobbyID).setGameView(currentGamePresenter, gameParent);
-        return lobbyGameMap.get(lobbyID);
-    }
 
     // -----------------------------------------------------
     // getter and setter
@@ -215,14 +194,24 @@ public class LobbyGameManagement extends AbstractPresenter {
         this.currentLobbyPresenter = currentLobbyPresenter;
     }
 
+    // -----------------------------------------------------
+    // game methods
+    // -----------------------------------------------------
+
     /**
-     * Setter for the currentGamePresenter variable
+     * Method to set up a game view
      *
-     * @author Moritz Scheer & Maxim Erden
-     * @since 2023-02-28
+     * <p>This method opens the init method in the GamePresenter and saves it with the parent in the
+     * lobbyMap HashMap.
+     *
+     * @param lobbyID the Integer identifier of the lobby
+     * @param gameParent the Parent object of the game view
+     * @author Moritz Scheer
+     * @since 2023-03-23
      */
-    public void setNextGamePresenter(GamePresenter currentGamePresenter) {
-        this.currentGamePresenter = currentGamePresenter;
+    public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
+        lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
+        return lobbyGameMap.get(lobbyID);
     }
 
     //////////////////////
