@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
+import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
@@ -11,6 +12,7 @@ import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
+import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -254,6 +256,9 @@ public class LobbyGameManagement extends AbstractPresenter {
 
         // create request to get the map
         eventBus.post(new RequestMapDataEvent(msg.getLobby()));
+
+        // create request to get the cards
+        eventBus.post(new RequestDistributeCardsEvent(msg.getLobby(), this.loggedInUser));
     }
 
     /**
@@ -267,5 +272,19 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void reloadMapData(GetMapDataResponse msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
+    }
+
+    /**
+     * Handles GetMapDataMessage
+     *
+     * @param msg the GetMapDataMessage object seen on the EventBus
+     * @see GetMapDataResponse
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
+    public void showCardsToUser(ProgramCardDataResponse msg){
+        // TODO. FIX FRONTEND
+        //GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        //a.resetCardsAndSlots(msg);
     }
 }
