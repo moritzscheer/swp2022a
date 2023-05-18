@@ -7,6 +7,9 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -21,6 +24,7 @@ import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
  * @since 2023
  */
 public class Game {
+    private static final Logger LOG = LogManager.getLogger(Game.class);
 
     private final Integer lobbyID;
     private Block[][] board;
@@ -124,10 +128,12 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
+                LOG.debug("Distributing cards for player {}", ((Player)player).getUser().getUsername());
+
                 int damage = player.getRobot().getDamageToken();
 
                 if (damage < 5) {
-                    int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, 9 - damage);
+                    int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
                     Card[] cards = new Card[9 - damage];
                     int i = 0;
                     for (int cardID : cardsIDs) {
