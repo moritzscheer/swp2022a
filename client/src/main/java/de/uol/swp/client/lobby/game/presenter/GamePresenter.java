@@ -7,6 +7,7 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.dto.BlockDTO;
+import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
@@ -364,7 +365,7 @@ public class GamePresenter extends AbstractPresenter {
         // creates the board
         //reloadMap(null);
 
-        //resetCardsAndSlots();
+        resetCardsAndSlots();
     }
 
 
@@ -595,8 +596,8 @@ public class GamePresenter extends AbstractPresenter {
 
     public void resetCardsAndSlots() {
         // if(loggedInUser == owner) {
-        cardDeck = newCardDeck();
-        System.out.println("KartenDeck größe " + cardDeck.size());
+//        cardDeck = newCardDeck();
+//        System.out.println("KartenDeck größe " + cardDeck.size());
         //}
         cardHand.clear();
         submittedCards.clear();
@@ -606,7 +607,6 @@ public class GamePresenter extends AbstractPresenter {
             if (cardz.getKey() != null) {
                 cards.replace(cardz.getKey(), false);
                 cardz.getKey().setFill(DODGERBLUE);
-                System.out.print("1");
             }
 
         }
@@ -615,24 +615,24 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 slots.replace(slotz.getKey(), false);
                 slotz.getKey().setFill(DODGERBLUE);
-                System.out.print("2");
             }
         }
+    }
 
-        for (int i = 0; i < 9; i++) {
+    public void setReceivedCards(List<CardDTO> receivedCards){
+        for (CardDTO receivedCard: receivedCards) {
             for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
-                if (cardSlot.getValue() == false && cardSlot.getKey() != null) {
+                if (!cardSlot.getValue() && cardSlot.getKey() != null) {
                     cards.replace(cardSlot.getKey(), true);
-                    cardSlot.getKey().setFill(cardDeck.get(0).getPicture());
-                    cardDeck.get(0).setPosition(cardSlot.getKey());
-                    cardHand.add(cardDeck.get(0));
-                    cardDeck.remove(0);
-                    System.out.print("3");
+                    cardSlot.getKey().setFill(
+                            jsonUtils.getCardImageById(receivedCard.getID())
+                    );
+                    // TODO: implement cardHand
+                    // cardHand.add(cardDeck.get(0));
                     break;
                 }
             }
         }
-
     }
 
     @FXML
