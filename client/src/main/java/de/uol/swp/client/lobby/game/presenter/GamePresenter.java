@@ -242,7 +242,7 @@ public class GamePresenter extends AbstractPresenter {
     private Button robotOffButton;
     private int x = 2;
     private int y = 2;
-    
+
     /**
      * Default Constructor
      *
@@ -748,7 +748,6 @@ public class GamePresenter extends AbstractPresenter {
         User user = users.get(0);
         for (int i = 0; i < playerCount; i++) {
             if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO: Player HP
                 playerHpTexts.get(i).setText("1");//to implement
                 break;
             }
@@ -777,9 +776,11 @@ public class GamePresenter extends AbstractPresenter {
 
         if (!playerReady) {
             readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Ready");
             playerReady = true;
         } else {
             readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Not Ready");
             playerReady = false;
         }
     }
