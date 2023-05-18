@@ -4,7 +4,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
 import de.uol.swp.client.preLobby.events.CreateLobbyCanceledEvent;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.response.LobbyCreatedSuccessfulResponse;
@@ -27,8 +29,6 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     private static final Logger LOG = LogManager.getLogger(CreateLobbyPresenter.class);
 
     private User loggedInUser;
-
-    @Inject private LobbyService lobbyService;
 
     @FXML private ListView<String> usersView;
     @FXML private TextField nameField;
@@ -130,8 +130,8 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
         if (!nameField.getText().isBlank()) {
-            lobbyService.createNewLobby(
-                    nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText());
+            eventBus.post(new CreateNewLobbyEvent(
+                    nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText()));
             backToDefault();
         } else {
             errorMessage2.setVisible(false);

@@ -3,11 +3,11 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.GearBehaviour;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ public class GearBehaviourTest {
      * Test turn robot 1 clockwise (east -> south)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -61,7 +61,7 @@ public class GearBehaviourTest {
      * Test turn robot 1 clockwise (south -> west)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -79,7 +79,7 @@ public class GearBehaviourTest {
      * Test turn robot 1 clockwise (west -> north)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -97,7 +97,7 @@ public class GearBehaviourTest {
      * Test turn robot 1 clockwise (north -> east)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -115,7 +115,7 @@ public class GearBehaviourTest {
      * Test turn robot 2 counterclockwise (east -> north)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -133,7 +133,7 @@ public class GearBehaviourTest {
      * Test turn robot 2 counterclockwise (south -> east)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -151,7 +151,7 @@ public class GearBehaviourTest {
      * Test turn robot 2 counterclockwise (west -> south)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20
@@ -169,7 +169,7 @@ public class GearBehaviourTest {
      * Test turn robot 2 counterclockwise (north -> west)
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-02-20

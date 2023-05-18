@@ -14,7 +14,6 @@ import de.uol.swp.common.game.dto.CardDTO;
 public class ProgramCardDataResponse extends AbstractGameResponse {
     private final CardDTO[] cards;
     private final Integer playerID;
-    private final Integer gameID;
 
     /**
      * Constructor
@@ -26,10 +25,9 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @since 2023-05-01
      */
     public ProgramCardDataResponse(Game game, CardDTO[] cards, Integer playerID) {
-        super(game.getGameID());
+        super();
         this.cards = cards;
         this.playerID = playerID;
-        this.gameID = game.getGameID();
     }
 
     /**

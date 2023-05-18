@@ -4,11 +4,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class PusherBehaviourTest {
      * Test push robot west
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.PusherBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-03-05
@@ -68,7 +68,7 @@ public class PusherBehaviourTest {
      * Test try to push robot west, but pusher is not active
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.PusherBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-03-05

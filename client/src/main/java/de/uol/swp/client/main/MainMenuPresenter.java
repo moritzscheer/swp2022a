@@ -8,6 +8,8 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
+import de.uol.swp.client.lobby.lobby.event.UpdateLobbiesListEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
 import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
@@ -59,7 +61,6 @@ public class MainMenuPresenter extends AbstractPresenter {
             new ShowAccountOptionsViewEvent();
 
     @Inject private TabPresenter tabPresenter;
-    @Inject private LobbyService lobbyService;
 
     @FXML private ListView<String> usersView;
 
@@ -199,7 +200,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
-        lobbyService.retrieveAllLobbies();
+        eventBus.post(new UpdateLobbiesListEvent());
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -215,7 +216,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @FXML
     void onSingleplayerButtonPressed(ActionEvent event) {
-        lobbyService.createNewLobby("Singleplayer", (UserDTO) loggedInUser, false, null);
+        eventBus.post(new CreateNewLobbyEvent("Singleplayer", (UserDTO) loggedInUser, false, null));
     }
 
     /**

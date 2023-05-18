@@ -1,20 +1,18 @@
 package de.uol.swp.server.gamelogic;
 
 import com.google.common.primitives.Ints;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.common.user.User;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
-import de.uol.swp.server.lobby.LobbyManagement;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.FileReader;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertUserToUserDTO;
+import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
@@ -46,16 +44,15 @@ public class Game {
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.Block
-     * @see de.uol.swp.server.gamelogic.Position
+     * @see Position
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Block[][] board, Position[] checkpointsList, Set<User> users) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users) {
         this.lobbyID = lobbyID;
-        this.board = board;
         this.checkpointsList = checkpointsList;
-        this.rowCount = board.length;
-        this.columnCount = board[0].length;
+        //this.rowCount = board.length;
+        //this.columnCount = board[0].length;
         this.programStep = 0;
         this.readyRegister = 0;
 
@@ -64,7 +61,7 @@ public class Game {
 
         // create players and robots
         for(User user: users) {
-            Player newPlayer = new Player(user, checkpointsList[0]);
+            Player newPlayer = new Player(convertUserToUserDTO(user), checkpointsList[0]);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
         }
@@ -193,8 +190,8 @@ public class Game {
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     }
 
-    private void startGame(){
-        board = MapBuilder.getMap("maps/tempMap.map");
+    public void startGame(){
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;
@@ -511,51 +508,50 @@ public class Game {
         }
     }
 
-
     /**
-     * Helper method to search a card in a JSON array
+     * Getter for lobbyID
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
-     * the value from the parameter. Then in returns the path of the image.
-     *
-     * @param cardId the cardID that wants to be searched for
-     * @author Maria Andrade
-     * @since 2023-05-06
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @since 2023-05-08
      */
-    private Card searchCardInJSON(int cardId) {
-        JSONObject json;
-        JSONArray jsonArray;
-
-        try {
-            json =
-                    new JSONObject(
-                            new JSONTokener(
-                                    new FileReader("server/src/main/resources/json/cards.json")));
-            jsonArray = json.getJSONArray("cards");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject obj = null;
-                try {
-                    obj = jsonArray.getJSONObject(i);
-                    if (obj.getInt("card-id") == cardId) {
-                        Card card;
-                        String  cardType = obj.getString("type-id");
-                        int priority = obj.getInt("priority");
-                        String imgPath = obj.getString("source");
-                        card = new Card(cardId, cardType, priority, imgPath);
-                        return card;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public Integer getLobbyID() {
         return lobbyID;
     }
+    /**
+     * Getter for Board Array
+     *
+     * @author Jann Erik Bruns, Daniel Merzo
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-16
+     */
+    public Block[][] getBoard(){ return board;}
+    /**
+     * Setter for Board Array
+     *
+     * @author Jann Erik Bruns, Daniel Merzo
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-16
+     */
+    public void setBoard(Block[][] board){ this.board = board;}
+    /**
+     * Getter for list of Players
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-13
+     */
+    public List<AbstractPlayer> getPlayers(){
+        return this.players;
+    }
+
+//    public Player getPlayerByUserName(String userName){
+//        for(AbstractPlayer player: players){
+//            if(player.getClass() == Player.class &&
+//                    Objects.equals(((Player) player).getUser().getUsername(), userName)){
+//                return ((Player)player);
+//            }
+//        }
+//        return null;
+//    }
 }

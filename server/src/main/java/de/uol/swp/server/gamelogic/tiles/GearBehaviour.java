@@ -2,9 +2,9 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +13,7 @@ import java.util.Objects;
  *
  * @author Maria Eduarda Costa Leite Andrade
  * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
- * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+ * @see CardinalDirection
  * @since 06-02-2023
  */
 public class GearBehaviour extends AbstractTileBehaviour {
@@ -36,7 +36,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * Turn the robot given the robot original direction
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @since 06-02-2023
      */
     @Override

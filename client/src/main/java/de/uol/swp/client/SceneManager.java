@@ -10,9 +10,8 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.lobby.LobbyManagement;
+import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.game.GameManagement;
 import de.uol.swp.client.lobby.game.GameService;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
@@ -38,7 +37,6 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.User;
@@ -85,7 +83,6 @@ public class SceneManager {
 
     private Parent lastParent;
     private Parent currentParent;
-    private Parent lobbyParent;
     private Parent joinOrCreateParent;
     private Parent createLobbyParent;
     private Parent mainParent;
@@ -93,22 +90,16 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
-    private Parent gameParent;
 
     @Inject
     private TabPresenter tabPresenter;
-    @Inject
-    private LobbyManagement lobbyManagement;
-    @Inject
     private GameService gameService;
-    @Inject
     private LobbyService lobbyService;
     @Inject
     private LobbyPresenterFactory lobbyPresenterFactory;
     @Inject
     private GamePresenterFactory gamePresenterFactory;
 
-    private GamePresenter gamePresenter;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
@@ -118,8 +109,10 @@ public class SceneManager {
     private final Injector injector;
 
     @Inject
-    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage)
+    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage, GameService gameService, LobbyService lobbyService)
             throws IOException {
+        this.gameService = gameService;
+        this.lobbyService = lobbyService;
         eventBus.register(this);
         this.eventBus = eventBus;
         this.primaryStage = primaryStage;
@@ -151,7 +144,6 @@ public class SceneManager {
 
         this.injector = injected;
 
-        lobbyManagement = injector.getInstance(LobbyManagement.class);
         lobbyPresenterFactory = injector.getInstance(LobbyPresenterFactory.class);
         gamePresenterFactory = injector.getInstance(GamePresenterFactory.class);
 
@@ -176,8 +168,6 @@ public class SceneManager {
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
-        initLobbyView();
-        initGameView();
     }
 
     /**
@@ -194,15 +184,6 @@ public class SceneManager {
     private Parent initPresenter(String fxmlFile) throws IOException {
         Parent rootPane;
         FXMLLoader loader = injector.getInstance(FXMLLoader.class);
-        if (fxmlFile.equals("/fxml/LobbyView.fxml")) {
-            LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
-            lobbyManagement.setNextLobbyPresenter(lobbyPresenter);
-            loader.setController(lobbyPresenter);
-        } else if (fxmlFile.equals("/fxml/GameView.fxml")) {
-            gamePresenter = gamePresenterFactory.create();
-            lobbyManagement.setNextGamePresenter(gamePresenter);
-            loader.setController(gamePresenter);
-        }
         try {
             URL url = getClass().getResource(fxmlFile);
             LOG.debug("Loading {}", url);
@@ -283,22 +264,6 @@ public class SceneManager {
         if (settingParent == null) {
             settingParent = initPresenter(SettingPresenter.FXML);
         }
-    }
-
-    /**
-     * Initializes the game view
-     *
-     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
-     * by the GameView FXML file.
-     *
-     * @author Moritz Scheer
-     * @see GamePresenter
-     * @since 2023-02-20
-     */
-    private void initGameView() throws IOException {
-        if (gameParent == null)
-            gameParent = initPresenter(GamePresenter.FXML);
-//        GameManagement.getInstance().setGameParent(gameParent);
     }
 
     /**
@@ -407,8 +372,49 @@ public class SceneManager {
      * @see LobbyPresenter
      * @since 2022-11-30
      */
-    private void initLobbyView() throws IOException {
-        lobbyParent = initPresenter(LobbyPresenter.FXML);
+    private Parent initLobbyView(int lobbyID) throws IOException {
+        Parent lobbyParent;
+        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        LobbyPresenter lobbyPresenter = lobbyPresenterFactory.create();
+        loader.setController(lobbyPresenter);
+        try {
+            URL url = getClass().getResource(LobbyPresenter.FXML);
+            LOG.debug("Loading {}", url);
+            loader.setLocation(url);
+            lobbyParent = loader.load();
+        } catch (Exception e) {
+            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
+        }
+        LobbyGameManagement.getInstance().setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
+        return lobbyParent;
+    }
+
+    /**
+     * Initializes the game view
+     *
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * by the GameView FXML file.
+     *
+     * @author Moritz Scheer
+     * @see GamePresenter
+     * @since 2023-02-20
+     */
+    private Parent initGameView(int lobbyID) throws IOException {
+
+        Parent gameParent;
+        FXMLLoader loader = injector.getInstance(FXMLLoader.class);
+        GamePresenter gamePresenter = gamePresenterFactory.create();
+        loader.setController(gamePresenter);
+        try {
+            URL url = getClass().getResource(GamePresenter.FXML);
+            LOG.debug("Loading {}", url);
+            loader.setLocation(url);
+            gameParent = loader.load();
+        } catch (Exception e) {
+            throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
+        }
+        LobbyGameManagement.getInstance().setupLobbyGame(lobbyID, gameParent, gamePresenter);
+        return gameParent;
     }
 
     // -----------------------------------------------------
@@ -653,7 +659,7 @@ public class SceneManager {
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) {
         System.out.println("SceneManager.onShowGameViewEvent");
-        createGameView(event.getLobby(), event.getGameID(), event.getBoardImageIds());
+        createGameView(event.getLobby());
         showGameScreen(event.getLobbyID());
     }
 
@@ -914,8 +920,7 @@ public class SceneManager {
      * @since 2023-03-09
      */
     public void showGameScreen(Integer lobbyID) {
-        showNode(lobbyID, lobbyManagement.getGameParent(lobbyID));
-//        showNode(lobbyID, GameManagement.getInstance().getGameParent());
+        showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
     }
 
     /**
@@ -926,7 +931,7 @@ public class SceneManager {
      * @since 2023-03-09
      */
     public void showLobbyScreen(Integer lobbyID) {
-        showNode(lobbyID, lobbyManagement.getLobbyParent(lobbyID));
+        showNode(lobbyID, LobbyGameManagement.getInstance().getLobbyParent(lobbyID));
     }
 
     /**
@@ -985,7 +990,7 @@ public class SceneManager {
      */
     private void createTab(LobbyDTO lobby, UserDTO user) {
         try {
-            initLobbyView();
+            Parent lobbyParent = initLobbyView(lobby.getLobbyID());
 
             if (lobby.isMultiplayer()) {
                 showJoinOrCreateScreen();
@@ -993,7 +998,7 @@ public class SceneManager {
                 showMainScreen();
             }
 
-            lobbyManagement.setupLobby(lobby, user, lobbyParent);
+            LobbyGameManagement.getInstance().setupLobby(lobby, user);
             tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
             e.printStackTrace();
@@ -1009,12 +1014,9 @@ public class SceneManager {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public void createGameView(LobbyDTO lobby, int gameID, int[][][][] board) {
+    public void createGameView(LobbyDTO lobby) {
         try {
-            System.out.println("SceneManager.createGameView");
-            initGameView();
-            gamePresenter.init(lobby.getLobbyID(), lobby, board, gameID);
-            lobbyManagement.setupGame(lobby.getLobbyID(), lobby, gameParent, gameID);
+            Parent gameParent = initGameView(lobby.getLobbyID());
         } catch (Exception e) {
             e.printStackTrace();
         }

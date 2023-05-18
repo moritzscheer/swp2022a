@@ -3,11 +3,11 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,7 +74,7 @@ public class ConveyorBeltBehaviourTest {
      * Test move robot in conveyor belt
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
      * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
      * @see de.uol.swp.server.gamelogic.Robot
@@ -93,7 +93,7 @@ public class ConveyorBeltBehaviourTest {
      * Test try to move two robots in conveyor belts against each other
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
      * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
      * @see de.uol.swp.server.gamelogic.Robot
@@ -109,7 +109,7 @@ public class ConveyorBeltBehaviourTest {
      * Test move robot in conveyor belt
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection
+     * @see CardinalDirection
      * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
      * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
      * @see de.uol.swp.server.gamelogic.Robot

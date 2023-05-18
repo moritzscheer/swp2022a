@@ -3,7 +3,12 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.dto.RobotDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -16,9 +21,9 @@ import de.uol.swp.server.lobby.LobbyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertRobotToRobotDTO;
 
 /**
  * Handles the game requests send by the users
@@ -34,6 +39,7 @@ public class GameService extends AbstractService {
 
 
     private final Map<Integer, Game> games = new HashMap<>();
+    private final Map<Integer, GameDTO> gamesDTO = new HashMap<>();
 
     /**
      * Constructor
@@ -62,10 +68,7 @@ public class GameService extends AbstractService {
      */
     public GameDTO createNewGame(int lobbyID) {
         System.out.println("I am creating your game :)");
-        int gameID = 1;
-        while (games.containsKey(gameID)) {
-            gameID++;
-        }
+
         System.out.println("New id :)");
         //TODO: fix docking positions
         Position[] checkpointsList = {
@@ -79,17 +82,48 @@ public class GameService extends AbstractService {
         if(!lobby.isPresent()){
             System.out.println("GameService: lobby not found");
         }
+
+        // create and save Game Object
         games.put(
-                gameID,
+                lobbyID,
                 new Game(lobbyID,
-                        MapBuilder.getMap("server/src/main/resources/maps/tempMap.map"),
                         checkpointsList,
                         lobby.get().getUsers()
                 )
         );
-        GameDTO game = new GameDTO(gameID);
+        games.get(lobbyID).startGame();
+
+
+
+        // Create DTOs objects
+        // TODO: create Player
+        List<PlayerDTO> players = new ArrayList<>();
+        for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
+            // convert Robot to RobotDTO
+            RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
+
+            // create playerDTO
+            PlayerDTO playerDTO = new PlayerDTO(robotDTO);
+
+            // check if the player is controlled by a user
+            if(player.getClass() == Player.class)
+                playerDTO.setUser(((Player) player).getUser());
+
+            // add in the list
+            players.add(playerDTO);
+
+            // set currentCards later in the GameDTO Object
+        }
+
+        // TODO: create Board, instead of using 4d array
+        //BlockDTO blockDTO = new BlockDTO();
+
+        GameDTO gameDTO = new GameDTO(players);
+
+        gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
+
         System.out.println("New Game :)");
-        return game;
+        return gameDTO;
     }
 
     /**
@@ -104,6 +138,24 @@ public class GameService extends AbstractService {
         for (Map.Entry<Integer, Game> entry : games.entrySet()) {
             if (entry.getKey().equals(gameID)) {
                 Game game = games.get(entry.getKey());
+                return Optional.of(game);
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Searches for the gameDTO with the requested gameID
+     *
+     * @param gameID Integer containing the gameID of the game to search for
+     * @return either empty Optional or Optional containing the gameDTO
+     * @author Maria Andrade
+     * @since 2023-05-13
+     */
+    public Optional<GameDTO> getGameDTO(Integer gameID) {
+        for (Map.Entry<Integer, GameDTO> entry : gamesDTO.entrySet()) {
+            if (entry.getKey().equals(gameID)) {
+                GameDTO game = gamesDTO.get(entry.getKey());
                 return Optional.of(game);
             }
         }
@@ -152,13 +204,13 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onGetProgramCardsRequest(GetProgramCardsRequest msg) {
-        Optional<Game> game = getGame(msg.getGameID());
-        if(!game.isEmpty()) {
-            game.get().distributeProgramCards();
-            // TODO: here it is called the function that give cards to all players,
-            // then one must send a response to each player individually with their cards
-
-        }
+//        Optional<Game> game = getGame();
+//        if(!game.isEmpty()) {
+//            game.get().distributeProgramCards();
+//            // TODO: here it is called the function that give cards to all players,
+//            // then one must send a response to each player individually with their cards
+//
+//        }
     }
 
     /**
@@ -176,19 +228,18 @@ public class GameService extends AbstractService {
     @Subscribe
     public void onGetMapDataRequest(GetMapDataRequest msg) {
         System.out.println("Get Map Data server");
-        Optional<Game> game = getGame(msg.getGameID());
-        if(game.isPresent()){ //TODO: change to game.getBoard()
-            //Block[][] board = game.get().getBoard();
-            Block[][] board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
-            int[][][][] boardIDs = new int[board.length][board[0].length][][];
+        Optional<Game> game = getGame(msg.getLobby().getLobbyID());
+        if(game.isPresent()){
+            Block[][] board = game.get().getBoard();
+            BlockDTO[][] boardDTOs= new BlockDTO[board.length][board[0].length];
+
             for(int row= 0; row< board.length; row++){
                 for(int col=0; col < board[0].length; col++){
-                    boardIDs[row][col] = board[row][col].getImages();
+                    boardDTOs[row][col] = new BlockDTO(board[row][col].getImages());
                 }
             }
-
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    msg.getGameID(), boardIDs, msg.getLobby());
+                    boardDTOs, msg.getLobby());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }

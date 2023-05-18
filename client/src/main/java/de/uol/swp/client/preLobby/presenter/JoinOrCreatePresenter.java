@@ -1,10 +1,9 @@
 package de.uol.swp.client.preLobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -49,8 +48,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     private User loggedInUser;
 
     private ObservableList<LobbyDTO> lobbiesList;
-
-    @Inject private LobbyService lobbyService;
 
     @FXML private TableView<LobbyDTO> lobbiesView;
     @FXML private TableColumn<LobbyDTO, Integer> column1;
@@ -327,11 +324,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(
-                        selectedLobby.getLobbyID(),
-                        selectedLobby.getName(),
-                        (UserDTO) loggedInUser,
-                        "");
+                eventBus.post(new UserJoinLobbyEvent(selectedLobby, (UserDTO) loggedInUser, ""));
             } else {
                 updatePasswordView();
             }
@@ -351,11 +344,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
         if (click.getClickCount() == 2 && selectedLobby != null) {
             if (selectedLobby.getPassword().equals("")) {
-                lobbyService.joinLobby(
-                        selectedLobby.getLobbyID(),
-                        selectedLobby.getName(),
-                        (UserDTO) loggedInUser,
-                        "");
+                eventBus.post(new UserJoinLobbyEvent(selectedLobby, (UserDTO) loggedInUser, ""));
             } else {
                 updatePasswordView();
             }
@@ -410,11 +399,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
-        lobbyService.joinLobby(
-                lobbiesView.getSelectionModel().getSelectedItem().getLobbyID(),
-                lobbiesView.getSelectionModel().getSelectedItem().getName(),
-                (UserDTO) loggedInUser,
-                textFieldPassword.getText());
+        eventBus.post(new UserJoinLobbyEvent(
+                lobbiesView.getSelectionModel().getSelectedItem(),
+                (UserDTO) loggedInUser, textFieldPassword.getText()));
         textFieldPassword.clear();
         updatePasswordView();
     }

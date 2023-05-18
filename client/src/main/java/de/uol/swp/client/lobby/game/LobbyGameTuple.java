@@ -3,7 +3,6 @@ package de.uol.swp.client.lobby.game;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 
-import de.uol.swp.client.tab.TabPresenter;
 import javafx.scene.Parent;
 
 /**
@@ -12,14 +11,12 @@ import javafx.scene.Parent;
  * @author Moritz Scheer
  * @since 2023-03-09
  */
-// TODO: delete this class
-public class Game {
+public class LobbyGameTuple {
 
     private Parent lobbyParent;
     private Parent gameParent;
-    private LobbyPresenter lobbyPresenter;
+    private final LobbyPresenter lobbyPresenter;
     private GamePresenter gamePresenter;
-    private Integer gameID;
 
     /**
      * Constructor to save the lobbyPresenter and lobbyParent in the given attributes *
@@ -29,7 +26,7 @@ public class Game {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public Game(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
+    public LobbyGameTuple(LobbyPresenter lobbyPresenter, Parent lobbyParent) {
         this.lobbyPresenter = lobbyPresenter;
         this.lobbyParent = lobbyParent;
     }
@@ -42,10 +39,9 @@ public class Game {
      * @author Moritz Scheer
      * @since 2023-03-09
      */
-    public void setGameView(GamePresenter gamePresenter, Parent gameParent, Integer gameID) {
+    public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
         this.gamePresenter = gamePresenter;
         this.gameParent = gameParent;
-        this.gameID = gameID;
 
 
     }

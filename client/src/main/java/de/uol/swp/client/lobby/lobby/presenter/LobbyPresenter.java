@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
-import de.uol.swp.client.lobby.LobbyService;
+import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
@@ -58,7 +58,6 @@ public class LobbyPresenter extends AbstractPresenter {
     private Integer slots = 1;
     private TextChatChannel textChat;
 
-    @Inject private LobbyService lobbyService;
     @Inject private TabPresenter tabPresenter;
 
     @FXML private ListView<String> usersView;
@@ -203,7 +202,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-12-13
      */
     public void userJoinedLobby(UserJoinedLobbyMessage message) {
-        LOG.debug("New user {}  joined the lobby,", message.getUser().getUsername());
+        LOG.debug("New user {} joined the lobby,", message.getUser().getUsername());
         Platform.runLater(
                 () -> {
                     if (users != null
@@ -274,7 +273,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onStartButtonPressed(ActionEvent actionEvent) {
         if (loggedInUser == owner) {
-            lobbyService.startGame(lobbyDTO);
+            eventBus.post(new RequestStartGameEvent(lobbyDTO));
         }
     }
 

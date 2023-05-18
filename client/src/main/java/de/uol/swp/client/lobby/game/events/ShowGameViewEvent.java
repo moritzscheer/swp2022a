@@ -1,5 +1,4 @@
 package de.uol.swp.client.lobby.game.events;
-
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
@@ -15,13 +14,9 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class ShowGameViewEvent {
 
     private LobbyDTO lobby;
-    private int gameID;
-    private final int[][][][] boardImageIds;
 
-    public ShowGameViewEvent(LobbyDTO lobby, int gameID, int[][][][] boardImageIds) {
+    public ShowGameViewEvent(LobbyDTO lobby) {
         this.lobby = lobby;
-        this.gameID = gameID;
-        this.boardImageIds = boardImageIds;
     }
 
     public Integer getLobbyID() {
@@ -32,11 +27,4 @@ public class ShowGameViewEvent {
         return lobby;
     }
 
-    public int getGameID() {
-        return gameID;
-    }
-
-    public int[][][][] getBoardImageIds() {
-        return boardImageIds;
-    }
 }

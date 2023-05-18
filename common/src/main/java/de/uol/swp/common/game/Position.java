@@ -1,6 +1,6 @@
-package de.uol.swp.server.gamelogic;
+package de.uol.swp.common.game;
 
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.Serializable;
 import java.util.Objects;

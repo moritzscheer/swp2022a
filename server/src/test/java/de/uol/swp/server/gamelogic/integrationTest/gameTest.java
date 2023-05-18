@@ -2,12 +2,12 @@ package de.uol.swp.server.gamelogic.integrationTest;
 
 import de.uol.swp.server.gamelogic.AbstractPlayer;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,9 +66,9 @@ public class gameTest {
      * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-04-25
      */
-    @Test
-    public void writeTest() {
-        // TODO
-
-    }
+//    @Test
+//    public void writeTest() {
+//        // TODO
+//
+//    }
 }

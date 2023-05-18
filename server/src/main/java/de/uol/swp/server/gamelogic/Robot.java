@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.Serializable;
 
@@ -180,5 +181,65 @@ public class Robot implements Serializable {
 
     public int getOptionCard() {
         return this.optionCard;
+    }
+
+    /**
+     * Getter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * Setter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    /**
+     * Getter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public int getLifeToken() {
+        return lifeToken;
+    }
+
+    /**
+     * Setter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setLifeToken(int lifeToken) {
+        this.lifeToken = lifeToken;
+    }
+
+    /**
+     * Getter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    /**
+     * Setter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setPowerDown(boolean powerDown) {
+        this.powerDown = powerDown;
     }
 }
