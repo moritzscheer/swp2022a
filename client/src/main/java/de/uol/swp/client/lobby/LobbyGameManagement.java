@@ -218,6 +218,15 @@ public class LobbyGameManagement extends AbstractPresenter {
         return lobbyGameMap.get(lobbyID);
     }
 
+    /**
+     * Method to initialize the GamePresenter and call the resquests for the
+     * map and cards, only after it is certain that the GamePresenter was created
+     *
+     *
+     * @param lobbyID the Integer identifier of the lobby
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void initPresenterAndStartRequests(Integer lobbyID){
         // after presenter is created, we must call init() with the data
         lobbyGameMap.get(lobbyID).getGamePresenter().init(
@@ -283,10 +292,10 @@ public class LobbyGameManagement extends AbstractPresenter {
     }
 
     /**
-     * Handles GetMapDataMessage
+     * Handles ProgramCardDataResponse
      *
      * @param msg the GetMapDataMessage object seen on the EventBus
-     * @see GetMapDataResponse
+     * @see ProgramCardDataResponse
      * @author Maria Andrade
      * @since 2023-05-18
      */
