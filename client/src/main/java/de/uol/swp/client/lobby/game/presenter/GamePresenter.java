@@ -364,7 +364,7 @@ public class GamePresenter extends AbstractPresenter {
         // creates the board
         //reloadMap(null);
 
-        resetCardsAndSlots();
+        //resetCardsAndSlots();
     }
 
 
