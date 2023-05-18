@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.primitives.Ints;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.common.game.enums.CardinalDirection;
@@ -39,6 +40,7 @@ public class Game {
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
 
+    private boolean notDistributedCards = true;
     /**
      * Constructor
      *
@@ -110,29 +112,36 @@ public class Game {
      * @since 2023-04-25
      */
     public void distributeProgramCards() {
-        Collections.shuffle(cardsIDsList);
-        Integer[] intArray = new Integer[84];
-        cardsIDsList.toArray(intArray);
-        System.out.println(Arrays.toString(intArray));
-        int count = 0;
+        if(notDistributedCards) {
+            // there will be many request to get the cards, one from each player
+            // therefore the distribution should be done one single time
+            notDistributedCards = false;
 
-        for(AbstractPlayer player: this.players){
-            int damage = player.getRobot().getDamageToken();
+            Collections.shuffle(cardsIDsList);
+            Integer[] intArray = new Integer[84];
+            cardsIDsList.toArray(intArray);
+            System.out.println(Arrays.toString(intArray));
+            int count = 0;
 
-            if(damage < 5){
-                int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, 9-damage);
-                Card[] cards = new Card[9-damage];
-                int i = 0;
-                for(int cardID: cardsIDs){
-                    cards[i] = searchCardInJSON(cardID);
-                    i++;
+            for (AbstractPlayer player : this.players) {
+                int damage = player.getRobot().getDamageToken();
+
+                if (damage < 5) {
+                    int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, 9 - damage);
+                    Card[] cards = new Card[9 - damage];
+                    int i = 0;
+                    for (int cardID : cardsIDs) {
+                        cards[i] = searchCardInJSON(cardID);
+                        i++;
+                    }
+                    player.receiveCards(cards);
+                    count = count + 9 - damage;
+
                 }
-                player.receiveCards(cards);
-                count = count + 9 - damage;
-
+                // TODO: lock the registers
+                else {
+                }
             }
-            // TODO: lock the registers
-            else{}
         }
     }
 
@@ -185,6 +194,7 @@ public class Game {
         }
         // round is over
         this.programStep = 0;
+        this.notDistributedCards = true; // set to distribute for next round
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
@@ -545,13 +555,20 @@ public class Game {
         return this.players;
     }
 
-//    public Player getPlayerByUserName(String userName){
-//        for(AbstractPlayer player: players){
-//            if(player.getClass() == Player.class &&
-//                    Objects.equals(((Player) player).getUser().getUsername(), userName)){
-//                return ((Player)player);
-//            }
-//        }
-//        return null;
-//    }
+    /**
+     * Getter a single Player based on User id
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-18
+     */
+    public Player getPlayerByUserDTO(UserDTO user){
+        for(AbstractPlayer player: players){
+            if(player.getClass() == Player.class &&
+                    Objects.equals(((Player) player).getUser(), user)){
+                return ((Player)player);
+            }
+        }
+        return null;
+    }
 }
