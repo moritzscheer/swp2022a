@@ -1,5 +1,7 @@
 package de.uol.swp.client.utils;
 
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -20,12 +22,21 @@ public final class JsonUtils {
     private final JSONObject jsonTile;
     private final JSONArray jsonTileArray;
 
+    private final JSONObject jsonCard;
+    private final JSONArray jsonCardArray;
+
     public JsonUtils() throws FileNotFoundException {
         jsonTile =
                 new JSONObject(
                         new JSONTokener(
                                 new FileReader("client/src/main/resources/json/tile.json")));
         jsonTileArray = jsonTile.getJSONArray("array");
+
+        jsonCard =
+                new JSONObject(
+                        new JSONTokener(
+                                new FileReader("client/src/main/resources/json/cards.json")));
+        jsonCardArray = jsonCard.getJSONArray("cards");
     }
 
     /**
@@ -60,5 +71,24 @@ public final class JsonUtils {
             }
         }
         return null;
+    }
+
+    public ImagePattern getCardImageById(int cardID){
+        String path;
+        for (int i = 0; i < this.jsonCardArray.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = this.jsonCardArray.getJSONObject(i);
+                if (obj.get("card-id").equals(cardID)) {
+                    path = obj.getString("source");
+                    ImagePattern picture = new ImagePattern(new Image(path));
+                    return picture;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+
     }
 }
