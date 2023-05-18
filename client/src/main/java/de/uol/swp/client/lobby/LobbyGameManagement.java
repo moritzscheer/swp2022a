@@ -209,6 +209,14 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
         lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
+
+        // after presenter is created, we must call init() with the data
+        lobbyGameMap.get(lobbyID).getGamePresenter().init(
+                lobbyID,
+                lobbyIdToLobbyDTOMap.get(lobbyID),
+                lobbyIdToGameDTOMap.get(lobbyID),
+                this.loggedInUser
+        );
         return lobbyGameMap.get(lobbyID);
     }
 
@@ -244,7 +252,7 @@ public class LobbyGameManagement extends AbstractPresenter {
          */
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
 
-        // create request to get the cards
+        // create request to get the cardstest1 test1
         eventBus.post(new RequestMapDataEvent(msg.getLobby()));
         //gameService.getMapData(msg.getLobby());
     }

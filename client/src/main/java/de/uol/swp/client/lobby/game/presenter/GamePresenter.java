@@ -271,8 +271,10 @@ public class GamePresenter extends AbstractPresenter {
         //TODO: ADD LOGGEDINUSER
         this.loggedInUser = loggedInUser;
 
+        LOG.debug("LoggedInUser", this.loggedInUser);
 
-        readyButton.setText("not ready");
+
+        readyButton.setText("Not Ready");
         robotOffButton.setText("Turn Robot OFF");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
@@ -333,6 +335,7 @@ public class GamePresenter extends AbstractPresenter {
         playerRlTexts.add(player8RobotLives);
 
         // create users list, minus the loggedInUser
+        LOG.debug("Loading players");
         loadPlayers(playerGrids, playerNames);
 
         // TODO: load cards
