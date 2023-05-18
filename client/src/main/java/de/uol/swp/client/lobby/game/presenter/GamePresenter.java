@@ -284,6 +284,7 @@ public class GamePresenter extends AbstractPresenter {
 
         readyButton.setText("not ready");
         robotOffButton.setText("Turn Robot OFF");
+        robotOffButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
@@ -831,12 +832,12 @@ public class GamePresenter extends AbstractPresenter {
             gameBoard.add(imageView, x, y);
             if (!playerReady) {
                 readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-                robotOffButton.setText("Ready");
+                readyButton.setText("Ready");
                 playerReady = true;
 
             } else {
                 readyButton.setStyle("-fx-background-color: #B22222;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-                robotOffButton.setText("Not Ready");
+                readyButton.setText("Not Ready");
                 playerReady = false;
             }
         } catch (Exception e) {
