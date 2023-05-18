@@ -1,6 +1,7 @@
 package de.uol.swp.client.utils;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ public final class JsonUtils {
      * @author Maria Andrade
      * @since 2023-05-14
      */
-    public File searchInTileJSON(String tileId){
+    public ImageView searchInTileJSON(String tileId){
         String path;
         for (int i = 0; i < this.jsonTileArray.length(); i++) {
             JSONObject obj = null;
@@ -59,12 +60,9 @@ public final class JsonUtils {
                 obj = this.jsonTileArray.getJSONObject(i);
                 if (obj.getString("id").equals(tileId.toString())) {
                     path = obj.getString("source");
-                    path = "client/src/main/resources/" + path;
-                    File file = new File(path);
-                    if(!file.exists()){
-                        System.out.println( "TileID:" + tileId + ", could not be resolved to a path");
-                    }
-                    return file;
+                    Image image = new Image(path);
+                    ImageView imageView = new ImageView(image);
+                    return imageView;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -73,6 +71,16 @@ public final class JsonUtils {
         return null;
     }
 
+    /**
+     * Helper method to search a card in a JSON array
+     *
+     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * the value from the parameter. Then in returns the Image of the card.
+     *
+     * @param cardID the cardID that wants to be searched for
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public ImagePattern getCardImageById(int cardID){
         String path;
         for (int i = 0; i < this.jsonCardArray.length(); i++) {
