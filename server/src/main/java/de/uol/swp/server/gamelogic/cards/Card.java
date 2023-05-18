@@ -9,7 +9,7 @@ import de.uol.swp.server.gamelogic.Robot;
  */
 public class Card {
 
-    private int id;
+    private final int id;
     private CardBehaviour behaviour;
     private int priority;
     private String imgPath;
@@ -111,5 +111,15 @@ public class Card {
      */
     public int getPriority() {
         return priority;
+    }
+
+    /**
+     * Get card id
+     *
+     * @author Maria
+     * @since 2023-05-18
+     */
+    public int getId() {
+        return id;
     }
 }
