@@ -252,9 +252,8 @@ public class LobbyGameManagement extends AbstractPresenter {
          */
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
 
-        // create request to get the cardstest1 test1
+        // create request to get the map
         eventBus.post(new RequestMapDataEvent(msg.getLobby()));
-        //gameService.getMapData(msg.getLobby());
     }
 
     /**
