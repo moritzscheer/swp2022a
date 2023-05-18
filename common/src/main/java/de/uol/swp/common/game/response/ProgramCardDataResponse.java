@@ -16,23 +16,22 @@ import java.util.List;
 public class ProgramCardDataResponse extends AbstractGameResponse {
     private final List<CardDTO> cards;
 
-    private final LobbyDTO lobbyDTO;
+    private final int lobbyID;
     //private final Integer playerID;
 
     /**
      * Constructor
      *
-     * @param playerID player that is in this game
      * @param cards    cards that were assigned to a player
-     * @param lobbyDTO
+     * @param lobbyID
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public ProgramCardDataResponse(List<CardDTO> cards, LobbyDTO lobbyDTO) {
+    public ProgramCardDataResponse(List<CardDTO> cards, int lobbyID) {
         super();
         this.cards = cards;
         //this.playerID = playerID;
-        this.lobbyDTO = lobbyDTO;
+        this.lobbyID = lobbyID;
     }
 
     /**
@@ -46,12 +45,8 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
         return this.cards;
     }
 
-    public LobbyDTO getLobbyDTO() {
-        return lobbyDTO;
-    }
-
     public int getLobbyID() {
-        return lobbyDTO.getLobbyID();
+        return this.lobbyID;
     }
 
     /**

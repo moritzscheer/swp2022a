@@ -215,7 +215,7 @@ public class GameService extends AbstractService {
             ProgramCardDataResponse response = new ProgramCardDataResponse(
                     convertCardToCardDTO(
                             game.get().getPlayerByUserDTO(user).getReceivedCards()),
-                    msg.getLobby());
+                    msg.getLobbyID());
             response.initWithMessage(msg);
             post(response);
             LOG.debug("Server, cards received by user {}", user.getUsername());
