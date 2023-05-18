@@ -212,6 +212,13 @@ public class LobbyGameManagement extends AbstractPresenter {
     public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
         lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
 
+        // init presenter after it was created and then call requests
+        initPresenterAndStartRequests(lobbyID);
+
+        return lobbyGameMap.get(lobbyID);
+    }
+
+    public void initPresenterAndStartRequests(Integer lobbyID){
         // after presenter is created, we must call init() with the data
         lobbyGameMap.get(lobbyID).getGamePresenter().init(
                 lobbyID,
@@ -219,7 +226,14 @@ public class LobbyGameManagement extends AbstractPresenter {
                 lobbyIdToGameDTOMap.get(lobbyID),
                 this.loggedInUser
         );
-        return lobbyGameMap.get(lobbyID);
+
+        // create request to get the map
+        eventBus.post(new RequestMapDataEvent(lobbyIdToLobbyDTOMap.get(lobbyID)));
+
+        // create request to get the cards
+        eventBus.post(new RequestDistributeCardsEvent(
+                lobbyIdToLobbyDTOMap.get(lobbyID), this.loggedInUser));
+
     }
 
     //////////////////////
@@ -253,12 +267,6 @@ public class LobbyGameManagement extends AbstractPresenter {
          * For this reason, both instantiate a hashmap lobbyGameMap
          */
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
-
-        // create request to get the map
-        eventBus.post(new RequestMapDataEvent(msg.getLobby()));
-
-        // create request to get the cards
-        eventBus.post(new RequestDistributeCardsEvent(msg.getLobby(), this.loggedInUser));
     }
 
     /**
@@ -280,11 +288,10 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @param msg the GetMapDataMessage object seen on the EventBus
      * @see GetMapDataResponse
      * @author Maria Andrade
-     * @since 2023-05-06
+     * @since 2023-05-18
      */
     public void showCardsToUser(ProgramCardDataResponse msg){
-        // TODO. FIX FRONTEND
-        //GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
-        //a.resetCardsAndSlots(msg);
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.setReceivedCards(msg.getAssignedProgramCards());
     }
 }
