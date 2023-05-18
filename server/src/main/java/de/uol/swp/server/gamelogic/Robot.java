@@ -44,7 +44,7 @@ public class Robot implements Serializable {
         this.lifeToken = 3;
         this.powerDown = false;
         this.optionCard = 0;
-        this.lastCheckPoint = -1;
+        this.lastCheckPoint = 1;
     }
     /**
      * @author
