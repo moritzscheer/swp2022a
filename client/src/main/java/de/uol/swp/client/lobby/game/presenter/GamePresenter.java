@@ -369,6 +369,13 @@ public class GamePresenter extends AbstractPresenter {
     }
 
 
+    /**
+     * Handles the player list
+     * Simplify it from init
+     *
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
         for (PlayerDTO playerDTO : this.playersDTO) {
@@ -411,22 +418,14 @@ public class GamePresenter extends AbstractPresenter {
                             for (int col = 0; col < board[row].length; col++) {
                                 int[] images = board[row][col].getBlockImages();
                                 for (int img = 0; img < images.length; img++) {
-                                    File file = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
-
-                                    Image image = new Image(file.toURI().toString());
-                                    ImageView imageView = new ImageView(image);
+                                    ImageView imageView = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
                                     imageView.setRotate(board[row][col].getBlockImagesDirection()[img].ordinal() * 90); // Rotate the image
                                     imageView.setFitWidth(50);
                                     imageView.setFitHeight(50);
                                     gameBoard.add(imageView, row + 1, col + 1);
-
-                    }
-
-                }
-
-            }
-
-
+                                }
+                            }
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -594,14 +593,15 @@ public class GamePresenter extends AbstractPresenter {
         return cards;
     }
 
+    /**
+     * Reset slots
+     *
+     * @author Moritz
+     * @since 2023-05-06
+     */
     public void resetCardsAndSlots() {
-        // if(loggedInUser == owner) {
-//        cardDeck = newCardDeck();
-//        System.out.println("KartenDeck größe " + cardDeck.size());
-        //}
         cardHand.clear();
         submittedCards.clear();
-
 
         for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
             if (cardz.getKey() != null) {
@@ -619,6 +619,11 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
+    /** Implement cards based on response with given ids to each player
+     *
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void setReceivedCards(List<CardDTO> receivedCards){
         for (CardDTO receivedCard: receivedCards) {
             for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
@@ -627,7 +632,7 @@ public class GamePresenter extends AbstractPresenter {
                     cardSlot.getKey().setFill(
                             jsonUtils.getCardImageById(receivedCard.getID())
                     );
-                    // TODO: implement cardHand
+                    // TODO: implement cardHand?
                     // cardHand.add(cardDeck.get(0));
                     break;
                 }
