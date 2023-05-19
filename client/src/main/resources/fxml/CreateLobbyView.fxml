@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter">
+<GridPane stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="35.0" />
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />

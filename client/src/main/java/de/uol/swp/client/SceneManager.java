@@ -229,7 +229,7 @@ public class SceneManager {
         if (registrationScene == null) {
             Parent rootPane = initPresenter(RegistrationPresenter.FXML);
             registrationScene = new Scene(rootPane);
-            registrationScene.getStylesheets().add(STYLE_SHEET);
+            registrationScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
         }
     }
 
