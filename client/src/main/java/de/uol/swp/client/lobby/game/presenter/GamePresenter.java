@@ -277,6 +277,7 @@ public class GamePresenter extends AbstractPresenter {
 
 
         readyButton.setText("Not Ready");
+        readyButton.setDisable(true);
         robotOffButton.setText("Turn Robot OFF");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
@@ -450,34 +451,38 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     public void onCardClicked(MouseEvent click) {
+        LOG.debug("CARD CLICKED");
         if (slots.containsValue(false)) {
-            for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-                if (cardz.getKey().equals(getCardOrSlot(click.toString())) && cardz.getValue() == true) {
-                    for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
-                        if (slotz.getValue() == false) {
-                            switchTwoCardsOrSlots(getCardOrSlot(click.toString()), slotz.getKey());
-                            break;
-                        }
-                    }
+            setNotReadyWhileAllCardsWereNotChosen();
+
+            // simplify
+            for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
+                if (!slotz.getValue()) {
+                    // click.getSource() is a Rectangle
+                    switchTwoCardsOrSlots((Rectangle) click.getSource(), slotz.getKey());
                     break;
                 }
             }
+            if(!slots.containsValue(false))
+                readyButton.setDisable(false);
+        }
+        else {
+            LOG.debug("NO MORE SLOTS AVAILABLE");
         }
     }
 
     @FXML
     //Clickevent auf deinen Slotbereich
     public void onSlotClicked(MouseEvent click) {
+        LOG.debug("SLOT CLICKED");
 
-        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
-            if (slotz.getKey().equals(getCardOrSlot(click.toString())) && slotz.getValue() == true) {
-                for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-                    if (cardz.getValue() == false) {
-                        switchTwoCardsOrSlots(getCardOrSlot(click.toString()), cardz.getKey());
-                        break;
-                    }
+        if (slots.get((Rectangle) click.getSource())) {
+            setNotReadyWhileAllCardsWereNotChosen();
+            for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
+                if (!cardz.getValue()) {
+                    switchTwoCardsOrSlots((Rectangle)click.getSource(), cardz.getKey());
+                    break;
                 }
-                break;
             }
         }
     }
@@ -618,13 +623,13 @@ public class GamePresenter extends AbstractPresenter {
         cardHand.clear();
         submittedCards.clear();
 
-        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-            if (cardz.getKey() != null) {
-                cards.replace(cardz.getKey(), false);
-                cardz.getKey().setFill(DODGERBLUE);
-            }
-
-        }
+        //TODO: check if this function may be removed
+//        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
+//            if (cardz.getKey() != null) {
+//                cards.replace(cardz.getKey(), false);
+//                cardz.getKey().setFill(DODGERBLUE);
+//            }
+//        }
 
         for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
             if (slotz.getKey() != null) {
@@ -657,7 +662,6 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     public void onSubmit(MouseEvent mouseEvent) {
-
         if (slots.containsValue(false) == false) {
             submittedCards.add(getCardBySlot(chosenCard1));
             submittedCards.add(getCardBySlot(chosenCard2));
@@ -672,7 +676,6 @@ public class GamePresenter extends AbstractPresenter {
 
             resetCardsAndSlots();
         }
-
 
     }
 
@@ -807,6 +810,19 @@ public class GamePresenter extends AbstractPresenter {
             playerReady = false;
         }
     }
+
+    /** Prevent Player from sending requests while all cards were not yet chosen
+     *
+     * @author Maria Eduarda
+     * @since 2023-05-18
+     */
+    private void setNotReadyWhileAllCardsWereNotChosen(){
+        readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+        readyButton.setText("Not Ready");
+        readyButton.setDisable(true);
+        playerReady = false;
+    }
+
     /**
      * Setting Checkpoint of the user
      *
