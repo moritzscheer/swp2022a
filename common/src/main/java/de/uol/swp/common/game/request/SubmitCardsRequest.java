@@ -10,7 +10,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
     private static final long serialVersionUID = -5910486927806761643L;
     private final List<CardDTO> cardDTO;
     private final int lobbyID;
-    private final UserDTO userDTO;
+    private final UserDTO loggedInUser;
 
     /**
      * @author Ole Zimmermann
@@ -18,7 +18,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      */
     public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO>  cardDTOS) {
         this.lobbyID = lobbyID;
-        this.userDTO = userDTO;
+        this.loggedInUser = userDTO;
         this.cardDTO = cardDTOS;
     }
 
@@ -47,7 +47,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      * @author Maria Andrade
      * @since 2023-05-18
      */
-    public UserDTO getUserDTO() {
-        return userDTO;
+    public UserDTO getloggedInUser() {
+        return loggedInUser;
     }
 }
