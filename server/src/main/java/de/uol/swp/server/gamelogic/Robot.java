@@ -35,8 +35,8 @@ public class Robot implements Serializable {
      * @since 06-02-2023
      */
     public Robot(
-            String imgPath, Position currentPosition, boolean alive, CardinalDirection direction) {
-        this.imgPath = imgPath;
+            int id, Position currentPosition, boolean alive, CardinalDirection direction) {
+        this.id = id;
         this.currentPosition = currentPosition;
         this.alive = alive;
         this.damageToken = 0;
