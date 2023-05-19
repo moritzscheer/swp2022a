@@ -6,6 +6,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.utils.JsonUtils;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
@@ -426,6 +427,20 @@ public class GamePresenter extends AbstractPresenter {
                                 }
                             }
                         }
+
+                        Position startPosition = msg.getCheckPoint1Position();
+                        LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
+
+                        // show this player robot, since they all start in checkpoint 1
+                        for(PlayerDTO playerDTO: this.playersDTO){
+                            if(Objects.equals(playerDTO.getUser(), this.loggedInUser)){
+                                ImageView imageView = jsonUtils.getRobotImage(
+                                        playerDTO.getRobotDTO().getRobotID());
+                                gameBoard.add(imageView, startPosition.x +1, startPosition.y +1);
+                                break;
+                            }
+                        }
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
