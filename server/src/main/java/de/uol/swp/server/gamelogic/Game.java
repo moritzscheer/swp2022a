@@ -30,11 +30,10 @@ public class Game {
     private Block[][] board;
 
     // TODO: Remove dockingBays field
-    private Position[] checkpointsList;
+    private final Position[] checkpointsList;
+    private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
-    private int rowCount;
-    private int columnCount;
     private int programStep; // program steps from 1 to 5
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
@@ -57,19 +56,20 @@ public class Game {
     public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
-        //this.rowCount = board.length;
-        //this.columnCount = board[0].length;
         this.programStep = 0;
         this.readyRegister = 0;
 
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
+        this.dockingStartPosition = checkpointsList[0];
 
         // create players and robots
+        int i=1;
         for(User user: users) {
-            Player newPlayer = new Player(convertUserToUserDTO(user), checkpointsList[0]);
+            Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
+            i++;
         }
 
         this.nRobots = robots.size();
@@ -576,5 +576,27 @@ public class Game {
             }
         }
         return null;
+    }
+
+    /**
+     * Getter for the checkPointsList
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @since 2023-05-19
+     */
+    public Position[] getCheckpointsList() {
+        return this.checkpointsList;
+    }
+
+    /**
+     * Getter for the Start Position = First CheckPoint
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @since 2023-05-19
+     */
+    public Position getDockingStartPosition() {
+        return this.dockingStartPosition;
     }
 }
