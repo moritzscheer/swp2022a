@@ -8,12 +8,14 @@ import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
+import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.game.request.SubmitCardsRequest;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -70,9 +72,6 @@ public class GameService {
 
     /** Get cards 9-5 Cards for each player
      *
-     * One single request, but several responses one to each player
-     * One single request, so all players get the cards at the same time
-     *
      * @param event RequestDistributeCardsEvent
      * @author Maria Andrade
      * @since 2023-05-06
@@ -81,6 +80,20 @@ public class GameService {
     public void onRequestDistributeCardsEvent(RequestDistributeCardsEvent event){
         LOG.debug("Requesting to distribute cards");
         eventBus.post(new GetProgramCardsRequest(event.getLobby().getLobbyID(), event.getLoggedInUser()));
+    }
+
+    /** Send chosen cards of player
+     *
+     *
+     * @param event RequestDistributeCardsEvent
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
+    @Subscribe
+    public void onSubmitCardsEvent(SubmitCardsEvent event){
+        LOG.debug("Requesting to distribute cards");
+        eventBus.post(new SubmitCardsRequest(
+                event.getLobbyID(), event.getLoggedInUser(), event.getCardDTOS()));
     }
 
 
