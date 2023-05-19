@@ -252,7 +252,7 @@ public class GameService extends AbstractService {
                 }
             }
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    boardDTOs, msg.getLobby());
+                    boardDTOs, msg.getLobby(), game.get().getDockingStartPosition());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }
