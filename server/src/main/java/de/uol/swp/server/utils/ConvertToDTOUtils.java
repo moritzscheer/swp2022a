@@ -44,7 +44,7 @@ public final class ConvertToDTOUtils {
      * @since 2023-05-13
      */
     public static RobotDTO convertRobotToRobotDTO(Robot robot){
-        RobotDTO robotDTO = new RobotDTO(robot.getImgPath(), robot.getPosition(), robot.getDirection());
+        RobotDTO robotDTO = new RobotDTO(robot.getID(), robot.getPosition(), robot.getDirection());
         robotDTO.setLifeToken(robot.getLifeToken());
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
