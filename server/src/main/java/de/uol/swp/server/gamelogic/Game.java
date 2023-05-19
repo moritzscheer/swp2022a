@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic;
 
 import com.google.common.primitives.Ints;
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -42,6 +43,7 @@ public class Game {
 
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+    private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
     /**
@@ -86,12 +88,18 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void register(AbstractPlayer playerIsReady, Card[] playerCards)
+    public void register(UserDTO loggedInUser, List<CardDTO> playerCards)
             throws InterruptedException {
         // TODO
         // check when all players are ready to register the next cards
         this.readyRegister += 1;
-        playerIsReady.chooseCardsOrder(playerCards); // set cards of this player
+        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
+        Card[] chosenCards = new Card[5];
+        int i = 0;
+        for(CardDTO cardDTO: playerCards)
+            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
+
+        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
 
         if (this.readyRegister == this.nRobots - 1) {
             startTimer();
@@ -138,6 +146,8 @@ public class Game {
                     int i = 0;
                     for (int cardID : cardsIDs) {
                         cards[i] = searchCardInJSON(cardID);
+                        // save references to these Card objetcs
+                        cardIdCardMap.put(cards[i].getId(), cards[i]);
                         i++;
                     }
                     player.receiveCards(cards);
