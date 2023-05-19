@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
@@ -60,8 +59,7 @@ public final class JsonUtils {
                 obj = this.jsonTileArray.getJSONObject(i);
                 if (obj.getString("id").equals(tileId.toString())) {
                     path = obj.getString("source");
-                    Image image = new Image(path);
-                    ImageView imageView = new ImageView(image);
+                    ImageView imageView = new ImageView(new Image(path));
                     return imageView;
                 }
             } catch (Exception e) {
@@ -98,5 +96,24 @@ public final class JsonUtils {
         }
         return null;
 
+    }
+
+    /**
+     * Helper method to create the Image for the robot
+     *
+     * @param robotID the robotID to get the path
+     * @author Maria Andrade
+     * @since 2023-05-19
+     */
+    public ImageView getRobotImage(int robotID){
+        String path = String.format("images/player/Player0%d.png", robotID);
+
+        ImageView imageView = new ImageView(new Image(path));
+
+        //TODO: cut out the black parts around the robot
+        imageView.setFitWidth(35);
+        imageView.setFitHeight(35);
+
+        return imageView;
     }
 }
