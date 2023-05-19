@@ -278,6 +278,7 @@ public class GamePresenter extends AbstractPresenter {
     private List<PlayerDTO> playersDTO;
     private int playerCount;
     private boolean playerReady = false;
+    private Map<UserDTO, Integer> userToPositionInStackPanes = new HashMap<>();
     private ArrayList<StackPane> playerReadyStackPanes;
     private ArrayList<Text> playerHpTexts;
     private ArrayList<Text> playerCpTexts;
@@ -314,6 +315,7 @@ public class GamePresenter extends AbstractPresenter {
         this.lobby = lobby;
         this.textChat = new TextChatChannel(lobby.getTextChatID(),eventBus);
         this.playersDTO = game.getPlayers();
+        this.playerCount = playersDTO.size();
 
         //TODO: ADD LOGGEDINUSER
         this.loggedInUser = loggedInUser;
@@ -443,6 +445,7 @@ public class GamePresenter extends AbstractPresenter {
                         String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
                 playerRlTexts.get(count).setText(
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
+                userToPositionInStackPanes.put(playerDTO.getUser(),count);
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
         }
@@ -748,21 +751,29 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    private void setPlayerReadyStatus() { //To implement onPlayerReadyChangedMessage
-        User user = users.get(0);
-        boolean ready = false;
-        String style;
-        if (ready)
-            style = "-fx-background-color: green";
-        else
-            style = "-fx-background-color: red";
-
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                playerReadyStackPanes.get(i).setStyle(style);
-                break;
-            }
+    public void setPlayerReadyStatus(UserDTO playerIsReady) { //To implement onPlayerReadyChangedMessage
+        if(Objects.equals(playerIsReady, loggedInUser)){
+            readyButton.setDisable(true);
         }
+        else{
+            // TODO: for now keep it only to set ready
+            int position = userToPositionInStackPanes.get(playerIsReady);
+            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green");
+        }
+
+
+//        String style;
+//        if (ready)
+//            style = "-fx-background-color: green";
+//        else
+//            style = "-fx-background-color: red";
+//
+//        for (int i = 0; i < playerCount; i++) {
+//            if (users.get(i).getUsername() == user.getUsername()) {
+//                playerReadyStackPanes.get(i).setStyle(style);
+//                break;
+//            }
+//        }
     }
 
     /**
