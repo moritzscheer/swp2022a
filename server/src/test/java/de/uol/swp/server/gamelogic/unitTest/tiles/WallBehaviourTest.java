@@ -21,8 +21,8 @@ public class WallBehaviourTest {
 
     @Before
     public void setUp() {
-        robots[0] = new Robot("1", new Position(1, 1), true, CardinalDirection.East);
-        robots[1] = new Robot("2", new Position(2, 1), true, CardinalDirection.East);
+        robots[0] = new Robot(1, new Position(1, 1), true, CardinalDirection.East);
+        robots[1] = new Robot(2, new Position(2, 1), true, CardinalDirection.East);
 
         tileBehaviours[0] =
                 new WallBehaviour(List.of(robots), board, new Position(1, 1), CardinalDirection.East);
