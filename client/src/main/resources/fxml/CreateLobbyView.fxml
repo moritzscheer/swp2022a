@@ -54,16 +54,16 @@
                         <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
-                    <TextField id="nameField" fx:id="nameField" promptText="Enter Room Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <TextField id="nameField" fx:id="nameField" promptText="Enter Room Name" GridPane.columnIndex="1">
                   <GridPane.margin>
                      <Insets right="10.0" />
                   </GridPane.margin></TextField>
-                    <TextField id="passwordField" fx:id="passwordField" promptText="Enter Room Password" GridPane.columnIndex="1">
+                    <TextField id="passwordField" fx:id="passwordField" promptText="Enter Room Password" GridPane.columnIndex="1" GridPane.rowIndex="1">
                   <GridPane.margin>
                      <Insets right="10.0" />
                   </GridPane.margin></TextField>
-                    <Label text="Room Name" translateX="-10.0" GridPane.rowIndex="1" />
-                    <Label text="Password" translateX="-10.0" />
+                    <Label text="Room Name" translateX="-10.0" />
+                    <Label text="Password" translateX="-10.0" GridPane.rowIndex="1" />
                 </GridPane>
                 <Label fx:id="errorMessage1" alignment="CENTER" contentDisplay="CENTER" text="Enter name please!" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
                 <Label fx:id="errorMessage2" alignment="CENTER" contentDisplay="CENTER" text="Name already exists!" visible="false" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
