@@ -1,6 +1,9 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
+
 
 /**
  * @author Maria Eduarda Costa Leite Andrade
@@ -9,6 +12,7 @@ import de.uol.swp.server.gamelogic.cards.Card;
  * @since 2023-03-28
  */
 public class Player extends AbstractPlayer {
+    private UserDTO userDTO;
 
     /**
      * Constructor
@@ -18,10 +22,19 @@ public class Player extends AbstractPlayer {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-03-28
      */
-    public Player(Robot robot, Card[] cards) {
-        super(robot, cards);
+    public Player(UserDTO userDTO, Position startPosition, int robotID) {
+        super();
+        this.userDTO = userDTO;
+        // TODO: we might need to change the robot constructor
+        this.robot = new Robot(robotID, startPosition, true, CardinalDirection.East);
     }
 
-    // TODO
+    public UserDTO getUser() {
+        return userDTO;
+    }
+
+    public void setUser(UserDTO user) {
+        this.userDTO = user;
+    }
 
 }

@@ -2,7 +2,7 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
 
     public PressorBehaviour(
-            Robot[] robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos) {
+            List<Robot> robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
     }

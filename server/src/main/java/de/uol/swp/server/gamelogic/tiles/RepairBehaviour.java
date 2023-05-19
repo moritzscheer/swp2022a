@@ -2,9 +2,10 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +28,7 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      * @since 2023-02-26
      */
     public RepairBehaviour(
-            Robot[] robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
+            List<Robot> robotStates, Block[][] board, Position blockPos, int repairSiteKey) {
         super(robotStates, board, blockPos);
         this.repairSiteKey = repairSiteKey;
     }
@@ -62,5 +63,10 @@ public class RepairBehaviour extends AbstractTileBehaviour {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        return new ArrayList<>(List.of(new int[] {25 , 0}));
     }
 }

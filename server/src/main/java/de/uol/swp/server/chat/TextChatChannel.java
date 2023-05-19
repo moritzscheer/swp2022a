@@ -7,7 +7,10 @@ import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.user.Session;
 
+import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class TextChatChannel {
@@ -16,14 +19,20 @@ public class TextChatChannel {
     private ArrayList<Session> loggedInUsers;
     private EventBus eventBus;
 
+    private String getCurrentTimeStamp() {
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
+
     public void addUserTextMessage(String sender, String message) {
-        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">");
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }
 
     public void addServerTextMessage(String message) {
-        TextChatMessage text = new TextChatMessage(message, "[Server]");
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "[Server]", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }

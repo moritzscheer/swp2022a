@@ -1,7 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 /**
  * Turns the robot 90 degree in clockwise or counterclockwise

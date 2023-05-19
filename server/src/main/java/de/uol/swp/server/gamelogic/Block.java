@@ -1,13 +1,15 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.tiles.*;
-import de.uol.swp.server.gamelogic.tiles.enums.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /** @author Ole Zimmermann */
-public class Block {
+public class Block implements Serializable {
 
     private AbstractTileBehaviour[] behaviourList;
     private String imgPath;
@@ -20,10 +22,40 @@ public class Block {
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
-     * @since 20-02-2023
+     * @since 2023-02-20
      */
     public Block(AbstractTileBehaviour[] behaviourList, String imgPath, Position pos) {
         this.behaviourList = behaviourList;
+        this.imgPath = imgPath;
+        this.pos = pos;
+    }
+
+    /**
+     * Constructor with only one behaviour
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public Block(AbstractTileBehaviour behaviour, String imgPath, Position pos) {
+        AbstractTileBehaviour[] behaviourList = new AbstractTileBehaviour[1];
+        behaviourList[0] = behaviour;
+
+        this.behaviourList = behaviourList;
+        this.imgPath = imgPath;
+        this.pos = pos;
+    }
+
+    /**
+     * Constructor with no behaviour
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public Block(String imgPath, Position pos) {
+
+        this.behaviourList = null;
         this.imgPath = imgPath;
         this.pos = pos;
     }
@@ -139,5 +171,51 @@ public class Block {
             }
         }
         return moves;
+    }
+
+    /**
+     * Getter behaviouList
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public AbstractTileBehaviour[] getBehaviourList() {
+        return this.behaviourList;
+    }
+
+    /**
+     * Getter imagePath
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-04-25
+     */
+    public String getImgPath() {
+        return this.imgPath;
+    }
+
+    public void setRobotsInfo(List<Robot> robots) {
+        for (int i = 0; i < behaviourList.length; i++) {
+            behaviourList[i].setRobotStates(robots);
+        }
+    }
+
+    /** Get all imagesIDs as Array to send to client
+     * @author Finn & Maria
+     * @return imagesIDs
+     */
+    public int[][] getImages(){
+        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0,0})) ;
+        for (int i = 0; i < behaviourList.length; i++) {
+            images.addAll(behaviourList[i].getImage());
+        }
+
+        int[][] imagesArr = new int[images.size()][];
+        for (int i = 0; i < images.size(); i++) {
+            imagesArr[i] = images.get(i);
+        }
+
+        return imagesArr;
     }
 }

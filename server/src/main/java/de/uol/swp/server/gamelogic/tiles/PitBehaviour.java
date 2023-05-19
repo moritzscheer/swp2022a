@@ -2,9 +2,10 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,7 +16,7 @@ import java.util.Objects;
  */
 public class PitBehaviour extends AbstractTileBehaviour {
 
-    public PitBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public PitBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         super(robotStates, board, blockPos);
     }
 
@@ -35,5 +36,10 @@ public class PitBehaviour extends AbstractTileBehaviour {
             }
         }
         return null;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        return new ArrayList<>(List.of(new int[] {2 , 0}));
     }
 }

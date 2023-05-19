@@ -1,9 +1,12 @@
 package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** @author Ole Zimemrmann */
 public class WallBehaviour extends AbstractTileBehaviour {
@@ -18,7 +21,7 @@ public class WallBehaviour extends AbstractTileBehaviour {
      * @since 13-03-2023
      */
     public WallBehaviour(
-            Robot[] robotStates,
+            List<Robot> robotStates,
             Block[][] board,
             Position blockPos,
             CardinalDirection wallDirection) {
@@ -39,5 +42,10 @@ public class WallBehaviour extends AbstractTileBehaviour {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<int[]> getImage() {
+        return new ArrayList<>(List.of(new int[] {1, wallDirection.ordinal()}));
     }
 }

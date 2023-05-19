@@ -7,10 +7,10 @@ import de.uol.swp.server.gamelogic.Robot;
  * @see
  * @since 2023-04-03
  */
-public class Card extends CardBehaviour {
+public class Card {
 
-    private int id;
-    private final CardBehaviour behaviour;
+    private final int id;
+    private CardBehaviour behaviour;
     private int priority;
     private String imgPath;
 
@@ -24,6 +24,44 @@ public class Card extends CardBehaviour {
         this.behaviour = behaviour;
         this.priority = priority;
         this.imgPath = imgPath;
+    }
+
+    /**
+     * @author Maria
+     * @see
+     * @since 2023-05-06
+     */
+    public Card(int id, String behaviourType, int priority, String imgPath) throws Exception {
+        this.id = id;
+        this.priority = priority;
+        this.imgPath = imgPath;
+
+        switch (behaviourType){
+            case "1":
+                this.behaviour = new Turn(Direction.Left);
+                break;
+            case "3":
+                this.behaviour = new Turn(Direction.Right);
+                break;
+            case "4":
+                this.behaviour = new UTurn();
+                break;
+            case "8":
+                this.behaviour = new Straight(-1);
+                break;
+            case "6":
+                this.behaviour = new Straight(1);
+                break;
+            case "7":
+                this.behaviour = new Straight(2);
+                break;
+            case "5":
+                this.behaviour = new Straight(3);
+                break;
+            default:
+                throw new Exception("Behaviour not found.");
+        }
+
     }
 
     /**
@@ -63,5 +101,25 @@ public class Card extends CardBehaviour {
      */
     public boolean getUTurn() {
         return behaviour.getUTurn();
+    }
+
+    /**
+     * Get card priority
+     *
+     * @author Finn Oldeboershuis
+     * @since 2023-04-24
+     */
+    public int getPriority() {
+        return priority;
+    }
+
+    /**
+     * Get card id
+     *
+     * @author Maria
+     * @since 2023-05-18
+     */
+    public int getId() {
+        return id;
     }
 }

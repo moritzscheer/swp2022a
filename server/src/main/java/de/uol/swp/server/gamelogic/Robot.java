@@ -1,6 +1,9 @@
 package de.uol.swp.server.gamelogic;
 
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
+
+import java.io.Serializable;
 
 /**
  * Manages the robot
@@ -8,7 +11,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 06-02-2023
  */
-public class Robot {
+public class Robot implements Serializable {
 
     private int id;
     private String imgPath;
@@ -32,8 +35,8 @@ public class Robot {
      * @since 06-02-2023
      */
     public Robot(
-            String imgPath, Position currentPosition, boolean alive, CardinalDirection direction) {
-        this.imgPath = imgPath;
+            int id, Position currentPosition, boolean alive, CardinalDirection direction) {
+        this.id = id;
         this.currentPosition = currentPosition;
         this.alive = alive;
         this.damageToken = 0;
@@ -41,7 +44,7 @@ public class Robot {
         this.lifeToken = 3;
         this.powerDown = false;
         this.optionCard = 0;
-        this.lastCheckPoint = -1;
+        this.lastCheckPoint = 1;
     }
     /**
      * @author
@@ -178,5 +181,65 @@ public class Robot {
 
     public int getOptionCard() {
         return this.optionCard;
+    }
+
+    /**
+     * Getter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * Setter for the robot Image Path
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    /**
+     * Getter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public int getLifeToken() {
+        return lifeToken;
+    }
+
+    /**
+     * Setter for the robot Life Token
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setLifeToken(int lifeToken) {
+        this.lifeToken = lifeToken;
+    }
+
+    /**
+     * Getter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    /**
+     * Setter for the robot PowerDown
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
+    public void setPowerDown(boolean powerDown) {
+        this.powerDown = powerDown;
     }
 }

@@ -104,9 +104,9 @@ Der Konstruktor des AbstractTileBehaviours ist folgendermaßen aufgebaut:
     Block[][] board: ist ein zweidimensionales Array von Blöcken
     Position blockPos: ist eine Position des Blocks auf dem Spielbrett
 
-*<span style="color:DodgerBlue">
+**<span style="color:DodgerBlue">
 **Methode**
-</span>*
+</span>**
 
 Eine relevante Information vorab, jede folgende beschriebene Methode mit dem Rückgabetypen einer Liste ```List<MoveIntent>```
 repräsentiert die mögliche Abfolge, aber nicht unbedingt nötige Ausführung an Spielzügen.
@@ -144,6 +144,56 @@ Der CheckPointBehaviour funktioniert so, dass überprüft wird, ob sich ein Robo
 
 ## ConveyorBeltBehaviour
 
+**<span style="color:DodgerBlue">
+**Verwendete Klassen und Interfaces**
+</span>**
+
+    Robot: ist ein Klasse, die den Zustand und das Verhalten eines Roboters repräsentiert
+    Block: ist eine Klasse, die ein Objekt eines Behaviours beinhaltet / aufruft und zurückgibt
+    Position: ist eine Klasse, die die Position eines Objekts auf dem Spielbrett darstellt
+    MoveIntent: ist eine Klasse, die einem Roboter eine einmalige sowie eindeutige ID zuweist
+    und die Reihenfolge des Spielablaufs koordiniert
+    CardinalDirection: ist eine Enumeration, die festgelegte Variablen, in diesem Fall die vier
+    Himmelsrichtungen aufzählt / vorgibt
+    ArrowType: ist eine Enumeration, die die Pfeilrichtung auf dem Förderband angibt
+
+**<span style="color:DodgerBlue">
+**Vererbungshierarchie**
+</span>**
+
+Das ConveyorBeltBehaviour erbt die Methode ```onConveyorStage``` von der abstrakten Oberklasse AbstractTileBehaviour
+und besitzt zwei weitere Attribute ```arrowType``` und ```direction```, welche die Pfeilausrichtung des Förderbandes
+sowie die Ausrichtung des Roboters darstellt.
+
+**<span style="color:DodgerBlue">
+**Konstruktor**
+</span>**
+
+Der Konstruktor des ConveyorBeltBehaviour ist folgendermaßen aufgebaut:
+
+    Robot[] robotStates: ist ein Array von Roboterzuständen
+    Block[][] board: ist ein zweidimensionales Array von Blöcken
+    Position blockPos: ist eine Position des Zahnrads auf dem Spielbrett
+    ArrowType arrowType: ist Pfeilausrichtung des Förderbandes
+    CardinalDirection direction: ist die Bewegungsausrichtung des Roboters
+    bzw. Himmelsausrichtung 
+
+Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
+
+**<span style="color:DodgerBlue">
+**Methode**
+</span>**
+
+Das ConveyorBeltBehaviour besitzt eine Methode namens ```onConveyorStage```, welche die Bewegungsabsicht eines bzw.
+mehrerer Roboter darstellen soll. Hierbei wird das Array ```robotStates``` durchlaufen und überprüft, ob ein
+Roboter sich auf dem Feld befindet. Falls das der Fall ist, wird ein Objekt vom Typ ```MoveIntent``` erstellt, welches
+wiederum die Bewegungsrichtung des Roboters, dem der Pfeilrichtung des Förderbandes anpasst / übergibt.
+
+Zusätzlich überprüft die Methode, ob ein weiteres Förderband-Feld nach der Ausrichtung vorkommt. Wenn ein 
+weiteres Förderband auftritt, wird die Methode wiederholt bzw. die Bewegungsausrichtung der Pfeilrichtung angepasst.
+
+Anschließend werden alle MoveIntent's als Rückgabetyp der Methode zurückgegeben.
+Falls der Roboter sich nicht auf dem Förderband befindet, wird eine leere Liste zurückgegeben.
 
 ## GearBehaviour
 
@@ -186,11 +236,11 @@ Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse 
 **Methode**
 </span>**
 
-Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int prgramStep``` und
+Die Methode ```OnRotatorStage``` besitzt einen Parameter namens ```int programStep``` und
 gibt entweder eine Liste von ```List<MoveIntent>```, oder den Wert ```Null``` zurück.
 Innerhalb der Methode werden alle Roboter, die in der Liste ```Robot[] robotStates``` sich befinden
 iteriert. Falls ein Roboter dieselbe Position wie ```Position blockPos``` des GearBehaviours besitzt,
-wird der Roboter bei einem positiven "turnC-Wert" um 180° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false",
+wird der Roboter bei einem positiven "turnC-Wert" um 90° mit dem Uhrzeigersinn gedreht. Fällt der "turnC-Wert" auf "false",
 wird eine Ausrichtung gegen den Uhrzeigersinn vorgenommen.
 
 

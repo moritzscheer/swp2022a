@@ -11,7 +11,7 @@ import de.uol.swp.server.gamelogic.cards.Card;
 public class BotPlayer extends AbstractPlayer {
 
     public BotPlayer(Robot robot, Card[] cards) {
-        super(robot, cards);
+        super();
     }
 
     // TODO

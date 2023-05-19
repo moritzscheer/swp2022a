@@ -2,24 +2,26 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.server.gamelogic.Position;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.server.gamelogic.tiles.enums.CardinalDirection;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author
+ * @author Tommy Dang & WKempel & Maria Andrade & Finn Oldeboershuis
  * @see
- * @since
+ * @since 2023-03-05
  */
-public abstract class AbstractTileBehaviour {
+public abstract class AbstractTileBehaviour implements Serializable {
 
-    protected Robot[] robotStates;
+    protected List<Robot> robotStates;
     protected Block[][] board;
     protected Position blockPos;
 
-    public AbstractTileBehaviour(Robot[] robotStates, Block[][] board, Position blockPos) {
+    public AbstractTileBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         this.robotStates = robotStates;
         this.board = board;
         this.blockPos = blockPos;
@@ -95,8 +97,8 @@ public abstract class AbstractTileBehaviour {
      * @author Finn Oldeboershuis
      * @since 2023-01-29
      */
-    public String GetImage() {
-        return "";
+    public List<int[]> getImage() {
+        return new ArrayList<>();
     }
 
     /**
@@ -124,5 +126,9 @@ public abstract class AbstractTileBehaviour {
 
     public List<MoveIntent> onCheckPointStage(int programStep) {
         return null;
+    }
+
+    public void setRobotStates(List<Robot> robots){
+        robotStates = robots;
     }
 }

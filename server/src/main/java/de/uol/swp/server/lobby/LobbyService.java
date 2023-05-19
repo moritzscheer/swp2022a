@@ -5,12 +5,15 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.*;
+import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
@@ -18,6 +21,7 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.chat.TextChatService;
+import de.uol.swp.server.gamelogic.GameService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,9 +47,9 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement The management class for creating, storing and deleting lobbies
+     * @param lobbyManagement       The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
-     * @param eventBus the server-wide EventBus
+     * @param eventBus              the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
@@ -117,9 +121,9 @@ public class LobbyService extends AbstractService {
      * is sent to the client.
      *
      * @param joinLobbyRequest The JoinLobbyRequest found on the EventBus
+     * @author Moritz Scheer & Maxim Erden
      * @see de.uol.swp.common.lobby.Lobby
      * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
-     * @author Moritz Scheer & Maxim Erden
      * @since 2019-10-08
      */
     @Subscribe

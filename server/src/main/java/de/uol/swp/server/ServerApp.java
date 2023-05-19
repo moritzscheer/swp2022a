@@ -4,12 +4,13 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import de.uol.swp.common.Configuration;
-import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.communication.ServerHandler;
 import de.uol.swp.server.communication.netty.NettyServerHandler;
 import de.uol.swp.server.communication.netty.Server;
 import de.uol.swp.server.di.ServerModule;
+import de.uol.swp.server.gamelogic.GameService;
+import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 import de.uol.swp.server.usermanagement.UserManagement;
@@ -66,22 +67,19 @@ class ServerApp {
     /**
      * Helper method to create the services the server uses and for the time being the test users
      *
-     * @param injector the Google guice injector used for dependency injection
+     * @param injector the google guice injector used for dependency injection
      * @since 2019-09-18
      */
     private static void createServices(Injector injector) {
         UserManagement userManagement = injector.getInstance(UserManagement.class);
 
-        // TODO: Remove after registration is implemented
-        for (int i = 0; i < 5; i++) {
-            userManagement.createUser(new UserDTO("test" + i, "test" + i, "test" + i + "@test.de"));
-        }
-
         // Remark: As these services are not referenced by any other class
         // we will need to create instances here (and inject dependencies)
+        injector.getInstance(LobbyManagement.class);
         injector.getInstance(UserService.class);
         injector.getInstance(AuthenticationService.class);
         injector.getInstance(LobbyService.class);
         injector.getInstance(TextChatService.class);
+        injector.getInstance(GameService.class);
     }
 }

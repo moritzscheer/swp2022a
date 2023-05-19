@@ -40,7 +40,7 @@ Der Button Multiplayer öffnet die JoinOrCreateView. Dort werden alle öffentlic
 
 Die Umsetzung der Lobby wird mithilfe eines LobbyPresenterHandler realisiert. Dieser erhält jedes Mal, wenn einer Lobby beigetreten oder erstellt wird einen LobbyPresenter vom SceneManager und speichert diesen zusammen mit einer lobbyID als Schlüsselwert in eine HashMap. Ebenso empfängt dieser alle Lobby bezogene Responses und Messages und ruft die Methoden in dem LobbyPresenter auf, mit derselben lobbyID. Dadurch wird garantiert, dass nur der LobbyPresenter die Nachricht erhält, für die die Nachricht auch gedacht wurde. Beim Erstellen oder beitreten einer Lobby wird ein LobbyPresenter in die HashMap gespeichert und wenn eine Lobby verlassen wird, wird diese aus der HashMap gelöscht.
 
-![LobbyPresenterHandler](../src/main/java/de/uol/swp/client/lobby/diagrams/LobbyPresenterHandler.png)
+![LobbyPresenterHandler](IdeaProjects/swp2022a/client/src/main/java/de/uol/swp/client/lobby/lobby/diagrams/LobbyPresenterHandler.png)
 
 # ClientApp
 
@@ -56,4 +56,4 @@ Im SceneManager wird die LoginView, die RegistrationView und die TabView als Sce
 
 Die Tab-Funktion wird realisiert anhand eines TabPresenters und einer TabView. Diese wird geöffnet, wenn sich der Spieler einloggt. Es gibt ein Haupt Tab, welcher das hauptmenü und alle Einstellungen beinhaltet. Dieser Tab ist nicht schließbar und kann jederzeit aufgerufen werden. Ein neuer Tab wird geöffnet, wenn einer Lobby beigetreten oder erstellt wird und jeweils geschlossen, wenn eine Lobby verlassen wird. Um den inhalt eines Tabs zu ändern wird ein Parent Objekt von SceneManager zum TabPresenter geschickt, welcher dann den Inhalt umtauscht.
 
-![TabPresenter](../src/main/java/de/uol/swp/client/tab/diagrams/TabPresenter.png)
+![TabPresenter](IdeaProjects/swp2022a/client/src/main/java/de/uol/swp/client/tab/diagrams/TabPresenter.png)
