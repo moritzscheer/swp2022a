@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="Background" maxHeight="1080.0" maxWidth="1920.0" minHeight="600.0" minWidth="1000.0" prefHeight="600.0" prefWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
+<GridPane id="Background" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     </columnConstraints>
@@ -33,4 +33,7 @@
         <Label fx:id="infoLabel2" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to exit?" visible="false" />
         <Label fx:id="infoLabel3" alignment="CENTER" layoutY="25.0" prefHeight="30.0" prefWidth="400.0" text="Are you sure you want to leave the Lobby?" visible="false" />
     </Pane>
+   <padding>
+      <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+   </padding>
 </GridPane>
