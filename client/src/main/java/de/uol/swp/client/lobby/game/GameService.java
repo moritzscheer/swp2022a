@@ -11,6 +11,7 @@ import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
+import de.uol.swp.common.game.message.PlayerIsReadyMessage;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
@@ -140,5 +141,11 @@ public class GameService {
             LOG.debug("   id={} priority={}", cardDTO.getID(), cardDTO.getPriority());
         }
         LobbyGameManagement.getInstance().showCardsToUser(msg);
+    }
+
+    @Subscribe
+    public void onPlayerIsReadyMessage(PlayerIsReadyMessage msg){
+        LOG.debug("Player {} is ready", msg.getPlayerIsReady().getUsername());
+        LobbyGameManagement.getInstance().sendMessagePlayerIsReady(msg);
     }
 }

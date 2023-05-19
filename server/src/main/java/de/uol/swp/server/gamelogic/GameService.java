@@ -6,10 +6,12 @@ import com.google.inject.Inject;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.message.GetMapDataResponse;
+import de.uol.swp.common.game.message.PlayerIsReadyMessage;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.game.request.SubmitCardsRequest;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
@@ -258,6 +260,21 @@ public class GameService extends AbstractService {
         }
         else {
             //TODO: send ErrorResponse
+        }
+    }
+
+    @Subscribe
+    public void onSubmitCardsRequest(SubmitCardsRequest request) throws InterruptedException {
+        Optional<Game> game = getGame(request.getLobbyID());
+        if(game.isPresent()){
+            // TODO
+            LOG.debug("IN SERVER: RECEIVED CARDS");
+            for(CardDTO card: request.getCardDTOs())
+                LOG.debug(card.getID() + " -  " + card.getPriority());
+
+            game.get().register(request.getloggedInUser(), request.getCardDTOs());
+            PlayerIsReadyMessage msg = new PlayerIsReadyMessage(request.getloggedInUser(), request.getLobbyID());
+            lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
         }
     }
 
