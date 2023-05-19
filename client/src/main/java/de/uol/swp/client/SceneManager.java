@@ -131,7 +131,7 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-15
          */
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
 
         /**
          * Set the minimum size of the stage
@@ -139,8 +139,8 @@ public class SceneManager {
          * @author Tommy Dang
          * @since 2022-12-23
          */
-        primaryStage.setMinWidth(1000);
-        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(1200);
+        primaryStage.setMinHeight(700);
 
         this.injector = injected;
 
@@ -246,8 +246,9 @@ public class SceneManager {
     private void initTabView() throws IOException {
         if (tabScene == null) {
             Parent rootPane = initPresenter(TabPresenter.FXML);
-            tabScene = new Scene(rootPane, screenSizeWidth, screenSizeHeight);
+            tabScene = new Scene(rootPane);
             tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+
         }
     }
 
@@ -754,8 +755,7 @@ public class SceneManager {
         this.lastScene = currentScene;
         this.lastTitle = primaryStage.getTitle();
         this.currentScene = scene;
-        this.lastSceneWidth = primaryStage.getWidth();
-        this.lastSceneHeight = primaryStage.getHeight();
+
         Platform.runLater(
                 () -> {
                     /**
@@ -778,8 +778,7 @@ public class SceneManager {
                                     tabPresenter.setInfoLabel(2);
                                 });
                     }
-                    primaryStage.setWidth(lastSceneWidth);
-                    primaryStage.setHeight(lastSceneHeight);
+                    primaryStage.sizeToScene();
                     primaryStage.setTitle(title);
                     primaryStage.setScene(scene);
                     primaryStage.show();
@@ -802,6 +801,7 @@ public class SceneManager {
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
         tabPresenter.showNode(tab, parent);
+
     }
 
     /**
