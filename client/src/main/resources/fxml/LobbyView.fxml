@@ -1,115 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" scaleShape="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" scaleShape="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="25.0" prefWidth="25.0" />
-        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
-        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="42.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="25.0" minWidth="10.0" prefWidth="25.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" percentWidth="2.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="47.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" />
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="47.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="2.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints percentHeight="1.0" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="2.0" vgrow="SOMETIMES" />
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="66.6666259765625" minHeight="-Infinity" prefHeight="46.66668701171875" vgrow="SOMETIMES" />
+        <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" percentHeight="2.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+    <GridPane vgap="30.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="10.0" prefHeight="234.9999796549479" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="150.6666768391927" minHeight="0.0" prefHeight="4.333353678385407" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="208.33332316080728" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="0.0" percentHeight="2.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="60.0" vgrow="SOMETIMES" />
         </rowConstraints>
-        <GridPane styleClass="InnerBox">
+        <GridPane prefHeight="202.0" prefWidth="588.0" styleClass="InnerBox">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints minHeight="10.0" percentHeight="10.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="86.66667556762695" minHeight="0.0" percentHeight="1.0" prefHeight="86.66667556762695" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="270.0" minHeight="144.33332443237305" prefHeight="144.33332443237305" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="0.0" percentHeight="2.0" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="85.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
-            <ListView fx:id="usersView" prefWidth="839.0" GridPane.rowIndex="2" />
-            <Separator prefHeight="0.0" prefWidth="1021.0" style="-fx-background-color: black;" GridPane.rowIndex="1" />
+            <ListView fx:id="usersView" GridPane.rowIndex="2" />
+            <Separator style="-fx-background-color: black;" GridPane.rowIndex="1" />
             <GridPane>
                 <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
-                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" />
+                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="50.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="50.0" />
                 </columnConstraints>
                 <rowConstraints>
-                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                 </rowConstraints>
-                <Label minWidth="89.0" prefHeight="45.0" prefWidth="89.0" styleClass="header" text="Player" />
-                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="header" text="Online:" GridPane.columnIndex="2" />
-                <Label fx:id="textFieldLobbyName" alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="172.0" prefHeight="45.0" prefWidth="728.0" styleClass="header" text="LobbyName" GridPane.columnIndex="1" />
-                <Label fx:id="textFieldOnlineUsers" alignment="CENTER_RIGHT" contentDisplay="RIGHT" minWidth="32.0" prefHeight="45.0" prefWidth="32.0" styleClass="header" text="1" GridPane.columnIndex="3" />
-                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" minWidth="33.0" prefHeight="45.0" prefWidth="33.0" styleClass="header" text="/8" textAlignment="RIGHT" GridPane.columnIndex="4" />
+                <Label styleClass="header" text="Player" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="header" text="Online:" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                <Label fx:id="textFieldLobbyName" alignment="CENTER" styleClass="header" text="LobbyName" GridPane.columnIndex="1" />
+                <Label fx:id="textFieldOnlineUsers" alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="header" text="1 " GridPane.columnIndex="3" />
+                <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" styleClass="header" text="/ 8" textAlignment="RIGHT" GridPane.columnIndex="4" />
             </GridPane>
         </GridPane>
         <GridPane styleClass="InnerBox" GridPane.rowIndex="2">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints maxHeight="150.0" minHeight="33.888885498046875" percentHeight="80.0" prefHeight="33.888885498046875" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="116.11111450195312" minHeight="0.0" percentHeight="20.0" prefHeight="116.11111450195312" vgrow="SOMETIMES" />
+                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints minHeight="0.0" percentHeight="10.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </padding>
-            <TextArea fx:id="chatOutput" editable="false" />
+            <TextArea fx:id="chatOutput" editable="false">
+            <GridPane.margin>
+               <Insets bottom="5.0" />
+            </GridPane.margin></TextArea>
             <TextField fx:id="chatInput" onKeyPressed="#textChatInputKeyPressed" GridPane.rowIndex="1" />
         </GridPane>
     </GridPane>
-    <Button fx:id="startButton" maxHeight="40.0" minHeight="40.0" mnemonicParsing="false" onAction="#onStartButtonPressed" prefHeight="40.0" prefWidth="200.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-    <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="40.0" prefWidth="200.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+    <Button fx:id="startButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStartButtonPressed" prefWidth="150.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2">
+      <GridPane.margin>
+         <Insets bottom="5.0" top="7.0" />
+      </GridPane.margin></Button>
+    <Button fx:id="backButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackButtonPressed" prefWidth="150.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <GridPane.margin>
+         <Insets bottom="5.0" top="7.0" />
+      </GridPane.margin></Button>
     <GridPane minHeight="100.0" minWidth="30.0" styleClass="InnerBox" GridPane.columnIndex="3" GridPane.rowIndex="1">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="532.3333740234375" minWidth="10.0" prefWidth="399.0000305175781" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="374.9999694824219" minWidth="10.0" prefWidth="374.9999694824219" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints maxHeight="58.0" minHeight="0.0" percentHeight="4.5" prefHeight="58.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="58.0" minHeight="0.0" percentHeight="1.0" prefHeight="0.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="445.0" minHeight="251.11111450195312" prefHeight="308.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="193.88888549804688" minHeight="0.0" prefHeight="137.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="25.0" percentHeight="5.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="2.0" percentHeight="1.0" vgrow="SOMETIMES" />
+            <RowConstraints percentHeight="60.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="BOTTOM" vgrow="SOMETIMES" />
             <RowConstraints percentHeight="1.0" vgrow="SOMETIMES" />
             <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
             <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
             <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
-            <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
         </rowConstraints>
         <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
         </padding>
         <Label styleClass="header" text="Map:" />
-        <Label styleClass="header" text="Game rules" GridPane.rowIndex="3" />
-        <Label fx:id="textFieldMapName" prefHeight="45.0" prefWidth="251.0" styleClass="header" text="current map name" GridPane.columnIndex="1" GridPane.halignment="RIGHT" />
+        <Label styleClass="header" text="Game Rules" GridPane.rowIndex="3" />
+        <Label fx:id="textFieldMapName" styleClass="header" text="current_map_name" GridPane.columnIndex="1" GridPane.halignment="RIGHT">
+         <GridPane.margin>
+            <Insets right="5.0" />
+         </GridPane.margin></Label>
         <Label text="Password:" GridPane.rowIndex="6" />
         <Label text="Owner:" GridPane.rowIndex="5" />
-        <Label text="checkpoints" GridPane.rowIndex="7" />
-        <Label fx:id="textFieldPassword" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-        <Label fx:id="textFieldOwner" text="Owner" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-        <Spinner fx:id="spinnerCheckpoints" prefHeight="25.0" prefWidth="217.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-        <ImageView fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+        <Label text="Checkpoints" GridPane.rowIndex="7" />
+        <Label fx:id="textFieldPassword" text="Password" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></Label>
+        <Label fx:id="textFieldOwner" text="Owner" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></Label>
+        <Spinner fx:id="spinnerCheckpoints" GridPane.columnIndex="1" GridPane.rowIndex="7">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></Spinner>
+        <ImageView fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
         </ImageView>
-        <ListView fx:id="mapList" prefHeight="350.0" prefWidth="291.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Separator prefHeight="0.0" prefWidth="1021.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <Separator prefHeight="0.0" prefWidth="1021.0" style="-fx-background-color: black;" GridPane.rowIndex="1" />
-        <Separator prefHeight="0.0" prefWidth="1021.0" style="-fx-background-color: black;" GridPane.rowIndex="4" />
-        <Separator prefHeight="0.0" prefWidth="1021.0" style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <ListView fx:id="mapList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Separator style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Separator style="-fx-background-color: black;" GridPane.rowIndex="1" />
+        <Separator style="-fx-background-color: black;" GridPane.rowIndex="4" />
+        <Separator style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </GridPane>
 </GridPane>
