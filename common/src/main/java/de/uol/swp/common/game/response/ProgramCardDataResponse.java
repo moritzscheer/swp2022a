@@ -1,7 +1,9 @@
 package de.uol.swp.common.game.response;
 
-import de.uol.swp.common.game.Game;
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
+
+import java.util.List;
 
 /**
  * Response sent to the Client with all the cards data in it
@@ -12,22 +14,24 @@ import de.uol.swp.common.game.dto.CardDTO;
  * @since 2023-05-01
  */
 public class ProgramCardDataResponse extends AbstractGameResponse {
-    private final CardDTO[] cards;
-    private final Integer playerID;
+    private final List<CardDTO> cards;
+
+    private final int lobbyID;
+    //private final Integer playerID;
 
     /**
      * Constructor
      *
-     * @param game the game to which this player belong
-     * @param cards cards that were assigned to a player
-     * @param playerID player that is in this game
+     * @param cards    cards that were assigned to a player
+     * @param lobbyID
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public ProgramCardDataResponse(Game game, CardDTO[] cards, Integer playerID) {
+    public ProgramCardDataResponse(List<CardDTO> cards, int lobbyID) {
         super();
         this.cards = cards;
-        this.playerID = playerID;
+        //this.playerID = playerID;
+        this.lobbyID = lobbyID;
     }
 
     /**
@@ -37,8 +41,12 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public CardDTO[] getAssignedProgramCards() {
+    public List<CardDTO> getAssignedProgramCards() {
         return this.cards;
+    }
+
+    public int getLobbyID() {
+        return this.lobbyID;
     }
 
     /**
@@ -48,7 +56,7 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public Integer getPlayerID() {
-        return this.playerID;
-    }
+    //public Integer getPlayerID() {
+//        return this.playerID;
+//    }
 }

@@ -6,7 +6,9 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.utils.JsonUtils;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
+import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
@@ -368,6 +370,13 @@ public class GamePresenter extends AbstractPresenter {
     }
 
 
+    /**
+     * Handles the player list
+     * Simplify it from init
+     *
+     * @author Maria Andrade
+     * @since 2023-05-06
+     */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
         for (PlayerDTO playerDTO : this.playersDTO) {
@@ -410,21 +419,27 @@ public class GamePresenter extends AbstractPresenter {
                             for (int col = 0; col < board[row].length; col++) {
                                 int[] images = board[row][col].getBlockImages();
                                 for (int img = 0; img < images.length; img++) {
-                                    File file = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
-
-                                    Image image = new Image(file.toURI().toString());
-                                    ImageView imageView = new ImageView(image);
+                                    ImageView imageView = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
                                     imageView.setRotate(board[row][col].getBlockImagesDirection()[img].ordinal() * 90); // Rotate the image
                                     imageView.setFitWidth(50);
                                     imageView.setFitHeight(50);
                                     gameBoard.add(imageView, row + 1, col + 1);
+                                }
+                            }
+                        }
 
-                    }
+                        Position startPosition = msg.getCheckPoint1Position();
+                        LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 
-                }
-
-            }
-
+                        // show this player robot, since they all start in checkpoint 1
+                        for(PlayerDTO playerDTO: this.playersDTO){
+                            if(Objects.equals(playerDTO.getUser(), this.loggedInUser)){
+                                ImageView imageView = jsonUtils.getRobotImage(
+                                        playerDTO.getRobotDTO().getRobotID());
+                                gameBoard.add(imageView, startPosition.x +1, startPosition.y +1);
+                                break;
+                            }
+                        }
 
 
                     } catch (Exception e) {
@@ -593,20 +608,20 @@ public class GamePresenter extends AbstractPresenter {
         return cards;
     }
 
+    /**
+     * Reset slots
+     *
+     * @author Moritz
+     * @since 2023-05-06
+     */
     public void resetCardsAndSlots() {
-        // if(loggedInUser == owner) {
-        cardDeck = newCardDeck();
-        System.out.println("KartenDeck größe " + cardDeck.size());
-        //}
         cardHand.clear();
         submittedCards.clear();
-
 
         for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
             if (cardz.getKey() != null) {
                 cards.replace(cardz.getKey(), false);
                 cardz.getKey().setFill(DODGERBLUE);
-                System.out.print("1");
             }
 
         }
@@ -615,24 +630,29 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 slots.replace(slotz.getKey(), false);
                 slotz.getKey().setFill(DODGERBLUE);
-                System.out.print("2");
             }
         }
+    }
 
-        for (int i = 0; i < 9; i++) {
+    /** Implement cards based on response with given ids to each player
+     *
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
+    public void setReceivedCards(List<CardDTO> receivedCards){
+        for (CardDTO receivedCard: receivedCards) {
             for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
-                if (cardSlot.getValue() == false && cardSlot.getKey() != null) {
+                if (!cardSlot.getValue() && cardSlot.getKey() != null) {
                     cards.replace(cardSlot.getKey(), true);
-                    cardSlot.getKey().setFill(cardDeck.get(0).getPicture());
-                    cardDeck.get(0).setPosition(cardSlot.getKey());
-                    cardHand.add(cardDeck.get(0));
-                    cardDeck.remove(0);
-                    System.out.print("3");
+                    cardSlot.getKey().setFill(
+                            jsonUtils.getCardImageById(receivedCard.getID())
+                    );
+                    // TODO: implement cardHand?
+                    // cardHand.add(cardDeck.get(0));
                     break;
                 }
             }
         }
-
     }
 
     @FXML

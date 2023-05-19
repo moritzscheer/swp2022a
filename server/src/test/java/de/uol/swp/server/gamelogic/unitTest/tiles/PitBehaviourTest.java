@@ -26,7 +26,7 @@ public class PitBehaviourTest {
     @Before
     public void SetUp() throws Exception {
         robotStates = new Robot[1];
-        robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
+        robotStates[0] = new Robot(1, new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
         pitBehaviour = new PitBehaviour(List.of(robotStates), board, blockPos);

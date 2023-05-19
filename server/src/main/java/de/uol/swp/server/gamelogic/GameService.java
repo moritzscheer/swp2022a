@@ -4,18 +4,17 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.game.dto.BlockDTO;
-import de.uol.swp.common.game.dto.GameDTO;
-import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.game.dto.RobotDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
+import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
 import org.apache.logging.log4j.LogManager;
@@ -23,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertCardToCardDTO;
 import static de.uol.swp.server.utils.ConvertToDTOUtils.convertRobotToRobotDTO;
 
 /**
@@ -204,13 +204,26 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onGetProgramCardsRequest(GetProgramCardsRequest msg) {
-//        Optional<Game> game = getGame();
-//        if(!game.isEmpty()) {
-//            game.get().distributeProgramCards();
-//            // TODO: here it is called the function that give cards to all players,
-//            // then one must send a response to each player individually with their cards
-//
-//        }
+        LOG.debug("onGetProgramCardsRequest");
+        Optional<Game> game = getGame(msg.getLobbyID());
+        if(!game.isEmpty()) {
+            // only distribute once, then we get all cards for all players
+            game.get().distributeProgramCards();
+
+            // get loggedInUser
+            UserDTO user = msg.getLoggedInUser();
+            ProgramCardDataResponse response = new ProgramCardDataResponse(
+                    convertCardToCardDTO(
+                            game.get().getPlayerByUserDTO(user).getReceivedCards()),
+                    msg.getLobbyID());
+            response.initWithMessage(msg);
+            post(response);
+            LOG.debug("Server, cards received by user {}", user.getUsername());
+            for(Card card: game.get().getPlayerByUserDTO(user).getReceivedCards()){
+                LOG.debug("   id={} priority={}", card.getId(), card.getPriority());
+            }
+
+        }
     }
 
     /**
@@ -239,7 +252,7 @@ public class GameService extends AbstractService {
                 }
             }
             GetMapDataResponse getMapDataResponse = new GetMapDataResponse(
-                    boardDTOs, msg.getLobby());
+                    boardDTOs, msg.getLobby(), game.get().getDockingStartPosition());
             getMapDataResponse.initWithMessage(msg);
             post(getMapDataResponse);
         }

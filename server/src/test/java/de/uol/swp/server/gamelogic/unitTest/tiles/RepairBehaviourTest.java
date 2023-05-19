@@ -33,8 +33,8 @@ public class RepairBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot("", pos1, true, CardinalDirection.East);
-        robots[1] = new Robot("", pos2, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
         behaviours1[0] = new RepairBehaviour(List.of(robots), board, pos1, repairSiteKey1);
         behaviours2[0] = new RepairBehaviour(List.of(robots), board, pos2, repairSiteKey2);
         board[0][0] = new Block(behaviours1, "", pos1);

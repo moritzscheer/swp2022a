@@ -31,9 +31,9 @@ public class ConveyorBeltBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot("", new Position(1, 1), true, CardinalDirection.East);
-        robots[1] = new Robot("", new Position(1, 4), true, CardinalDirection.West);
-        robots[2] = new Robot("", new Position(2, 1), true, CardinalDirection.North);
+        robots[0] = new Robot(1, new Position(1, 1), true, CardinalDirection.East);
+        robots[1] = new Robot(2, new Position(1, 4), true, CardinalDirection.West);
+        robots[2] = new Robot(3, new Position(2, 1), true, CardinalDirection.North);
 
         behaviours1[0] =
                 new ConveyorBeltBehaviour(

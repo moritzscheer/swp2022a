@@ -31,7 +31,7 @@ public class CheckPointBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot("", pos1, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
         behaviours1[0] = new CheckPointBehaviour(List.of(robots), board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
     }

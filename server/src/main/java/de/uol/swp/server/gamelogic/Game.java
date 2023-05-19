@@ -3,9 +3,13 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.primitives.Ints;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -20,16 +24,16 @@ import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
  * @since 2023
  */
 public class Game {
+    private static final Logger LOG = LogManager.getLogger(Game.class);
 
     private final Integer lobbyID;
     private Block[][] board;
 
     // TODO: Remove dockingBays field
-    private Position[] checkpointsList;
+    private final Position[] checkpointsList;
+    private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
-    private int rowCount;
-    private int columnCount;
     private int programStep; // program steps from 1 to 5
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
@@ -39,6 +43,7 @@ public class Game {
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
 
+    private boolean notDistributedCards = true;
     /**
      * Constructor
      *
@@ -51,19 +56,20 @@ public class Game {
     public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
-        //this.rowCount = board.length;
-        //this.columnCount = board[0].length;
         this.programStep = 0;
         this.readyRegister = 0;
 
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
+        this.dockingStartPosition = checkpointsList[0];
 
         // create players and robots
+        int i=1;
         for(User user: users) {
-            Player newPlayer = new Player(convertUserToUserDTO(user), checkpointsList[0]);
+            Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
+            i++;
         }
 
         this.nRobots = robots.size();
@@ -110,29 +116,38 @@ public class Game {
      * @since 2023-04-25
      */
     public void distributeProgramCards() {
-        Collections.shuffle(cardsIDsList);
-        Integer[] intArray = new Integer[84];
-        cardsIDsList.toArray(intArray);
-        System.out.println(Arrays.toString(intArray));
-        int count = 0;
+        if(notDistributedCards) {
+            // there will be many request to get the cards, one from each player
+            // therefore the distribution should be done one single time
+            notDistributedCards = false;
 
-        for(AbstractPlayer player: this.players){
-            int damage = player.getRobot().getDamageToken();
+            Collections.shuffle(cardsIDsList);
+            Integer[] intArray = new Integer[84];
+            cardsIDsList.toArray(intArray);
+            System.out.println(Arrays.toString(intArray));
+            int count = 0;
 
-            if(damage < 5){
-                int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, 9-damage);
-                Card[] cards = new Card[9-damage];
-                int i = 0;
-                for(int cardID: cardsIDs){
-                    cards[i] = searchCardInJSON(cardID);
-                    i++;
+            for (AbstractPlayer player : this.players) {
+                LOG.debug("Distributing cards for player {}", ((Player)player).getUser().getUsername());
+
+                int damage = player.getRobot().getDamageToken();
+
+                if (damage < 5) {
+                    int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
+                    Card[] cards = new Card[9 - damage];
+                    int i = 0;
+                    for (int cardID : cardsIDs) {
+                        cards[i] = searchCardInJSON(cardID);
+                        i++;
+                    }
+                    player.receiveCards(cards);
+                    count = count + 9 - damage;
+
                 }
-                player.receiveCards(cards);
-                count = count + 9 - damage;
-
+                // TODO: lock the registers
+                else {
+                }
             }
-            // TODO: lock the registers
-            else{}
         }
     }
 
@@ -185,6 +200,7 @@ public class Game {
         }
         // round is over
         this.programStep = 0;
+        this.notDistributedCards = true; // set to distribute for next round
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
@@ -545,13 +561,42 @@ public class Game {
         return this.players;
     }
 
-//    public Player getPlayerByUserName(String userName){
-//        for(AbstractPlayer player: players){
-//            if(player.getClass() == Player.class &&
-//                    Objects.equals(((Player) player).getUser().getUsername(), userName)){
-//                return ((Player)player);
-//            }
-//        }
-//        return null;
-//    }
+    /**
+     * Getter a single Player based on User id
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @since 2023-05-18
+     */
+    public Player getPlayerByUserDTO(UserDTO user){
+        for(AbstractPlayer player: players){
+            if(player.getClass() == Player.class &&
+                    Objects.equals(((Player) player).getUser(), user)){
+                return ((Player)player);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Getter for the checkPointsList
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @since 2023-05-19
+     */
+    public Position[] getCheckpointsList() {
+        return this.checkpointsList;
+    }
+
+    /**
+     * Getter for the Start Position = First CheckPoint
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @since 2023-05-19
+     */
+    public Position getDockingStartPosition() {
+        return this.dockingStartPosition;
+    }
 }

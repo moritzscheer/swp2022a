@@ -40,9 +40,9 @@ public class LaserBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot("", pos1, true, CardinalDirection.East);
-        robots[1] = new Robot("", pos2, true, CardinalDirection.East);
-        robots[2] = new Robot("", pos3, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
+        robots[2] = new Robot(3, pos3, true, CardinalDirection.East);
         behaviours1[0] =
                 new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam);
         behaviours3[0] = new WallBehaviour(List.of(robots), board, pos3, wallDirection);

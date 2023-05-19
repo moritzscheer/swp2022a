@@ -1,9 +1,14 @@
 package de.uol.swp.server.utils;
 
+import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.cards.Card;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** This is a utility class
  *
@@ -39,10 +44,34 @@ public final class ConvertToDTOUtils {
      * @since 2023-05-13
      */
     public static RobotDTO convertRobotToRobotDTO(Robot robot){
-        RobotDTO robotDTO = new RobotDTO(robot.getImgPath(), robot.getPosition(), robot.getDirection());
+        RobotDTO robotDTO = new RobotDTO(robot.getID(), robot.getPosition(), robot.getDirection());
         robotDTO.setLifeToken(robot.getLifeToken());
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         return robotDTO;
     }
+
+    /** This function converts Card[] to CardDTO[]
+     *
+     * This is necessary to send a response with array of cardsDTO
+     *
+     * @param cards cards to be converted to DTO
+     * @return List<CardDTO>
+     * @author Maria Andrade
+     * @since 2023-05-13
+     */
+    public static List<CardDTO> convertCardToCardDTO(Card[] cards){
+        List<CardDTO> cardDTOS = new ArrayList<>();
+        for(Card card: cards){
+            cardDTOS.add(
+                    new CardDTO(
+                            card.getId(),
+                            card.getPriority()
+                    )
+            );
+        }
+
+        return cardDTOS;
+    }
+
 }

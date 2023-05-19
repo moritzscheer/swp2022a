@@ -34,7 +34,7 @@ public class PressorBehaviourTest {
     @Before
     public void setUp() throws Exception {
         robotStates = new Robot[1];
-        robotStates[0] = new Robot("Pressor", new Position(0, 0), true, CardinalDirection.East);
+        robotStates[0] = new Robot(1, new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
         pressorBehaviour = new PressorBehaviour(List.of(robotStates), board, activeInProgramSteps, blockPos);

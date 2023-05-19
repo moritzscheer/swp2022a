@@ -5,13 +5,16 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.client.lobby.LobbyGameManagement;
+import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
+import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -70,16 +73,17 @@ public class GameService {
      * One single request, but several responses one to each player
      * One single request, so all players get the cards at the same time
      *
-     * @param gameID
+     * @param event RequestDistributeCardsEvent
      * @author Maria Andrade
      * @since 2023-05-06
      */
-    public void getProgramCardsForPlayers(Integer gameID) {
-        LOG.debug("Getting Cards");
-        GetProgramCardsRequest getProgramCardsRequest =
-                new GetProgramCardsRequest();
-        eventBus.post(getProgramCardsRequest);
+    @Subscribe
+    public void onRequestDistributeCardsEvent(RequestDistributeCardsEvent event){
+        LOG.debug("Requesting to distribute cards");
+        eventBus.post(new GetProgramCardsRequest(event.getLobby().getLobbyID(), event.getLoggedInUser()));
     }
+
+
 
     /////////////////////
     // Responses/Messages
@@ -113,5 +117,15 @@ public class GameService {
     public void onGetMapDataResponse(GetMapDataResponse msg){
         LOG.debug("onGetMapDataResponse");
         LobbyGameManagement.getInstance().reloadMapData(msg);
+    }
+
+    @Subscribe
+    public void onProgramCardDataResponse(ProgramCardDataResponse msg){
+        LOG.debug("onProgramCardDataResponse");
+        LOG.debug("Showing received cards");
+        for(CardDTO cardDTO: msg.getAssignedProgramCards()){
+            LOG.debug("   id={} priority={}", cardDTO.getID(), cardDTO.getPriority());
+        }
+        LobbyGameManagement.getInstance().showCardsToUser(msg);
     }
 }

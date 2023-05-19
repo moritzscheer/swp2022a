@@ -15,7 +15,7 @@ import java.io.Serializable;
  * @since 2023-05-13
  */
 public class RobotDTO implements Serializable {
-    private String imgPath; // todo: change to id
+    private int robotID;
 
     private Position position;
 
@@ -27,18 +27,18 @@ public class RobotDTO implements Serializable {
 
     private int lastCheckpoint;
 
-    public RobotDTO(String imgPath, Position position, CardinalDirection direction){
-        this.imgPath = imgPath;
+    public RobotDTO(int robotID, Position position, CardinalDirection direction){
+        this.robotID = robotID;
         this.position = position;
         this.direction = direction;
     }
 
-    public String getImgPath() {
-        return imgPath;
+    public int getRobotID() {
+        return robotID;
     }
 
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
+    public void setRobotID(int robotID) {
+        this.robotID = robotID;
     }
 
     public Position getPosition() {

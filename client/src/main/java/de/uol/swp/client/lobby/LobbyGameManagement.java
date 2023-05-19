@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
+import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
@@ -11,6 +12,7 @@ import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.StartGameMessage;
+import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -210,6 +212,22 @@ public class LobbyGameManagement extends AbstractPresenter {
     public LobbyGameTuple setupLobbyGame(Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
         lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
 
+        // init presenter after it was created and then call requests
+        initPresenterAndStartRequests(lobbyID);
+
+        return lobbyGameMap.get(lobbyID);
+    }
+
+    /**
+     * Method to initialize the GamePresenter and call the resquests for the
+     * map and cards, only after it is certain that the GamePresenter was created
+     *
+     *
+     * @param lobbyID the Integer identifier of the lobby
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
+    public void initPresenterAndStartRequests(Integer lobbyID){
         // after presenter is created, we must call init() with the data
         lobbyGameMap.get(lobbyID).getGamePresenter().init(
                 lobbyID,
@@ -217,7 +235,14 @@ public class LobbyGameManagement extends AbstractPresenter {
                 lobbyIdToGameDTOMap.get(lobbyID),
                 this.loggedInUser
         );
-        return lobbyGameMap.get(lobbyID);
+
+        // create request to get the map
+        eventBus.post(new RequestMapDataEvent(lobbyIdToLobbyDTOMap.get(lobbyID)));
+
+        // create request to get the cards
+        eventBus.post(new RequestDistributeCardsEvent(
+                lobbyIdToLobbyDTOMap.get(lobbyID), this.loggedInUser));
+
     }
 
     //////////////////////
@@ -251,9 +276,6 @@ public class LobbyGameManagement extends AbstractPresenter {
          * For this reason, both instantiate a hashmap lobbyGameMap
          */
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
-
-        // create request to get the map
-        eventBus.post(new RequestMapDataEvent(msg.getLobby()));
     }
 
     /**
@@ -267,5 +289,18 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void reloadMapData(GetMapDataResponse msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
+    }
+
+    /**
+     * Handles ProgramCardDataResponse
+     *
+     * @param msg the GetMapDataMessage object seen on the EventBus
+     * @see ProgramCardDataResponse
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
+    public void showCardsToUser(ProgramCardDataResponse msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.setReceivedCards(msg.getAssignedProgramCards());
     }
 }
