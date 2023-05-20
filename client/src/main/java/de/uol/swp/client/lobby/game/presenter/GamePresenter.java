@@ -20,7 +20,9 @@ import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
@@ -413,11 +415,17 @@ public class GamePresenter extends AbstractPresenter {
                     this.board = msg.getBoardImageIds();
                     try {
                         for (int i = 0; i < board.length; i++) {
-                            gameBoard.addColumn(i);
+                            //gameBoard.addColumn(i);
+                            ColumnConstraints gameBoardColum = new ColumnConstraints();
+                            gameBoardColum.setHalignment(HPos.CENTER);
+                            gameBoard.getColumnConstraints().add(gameBoardColum);
                         }
 
                         for (int i = 0; i < board[0].length; i++) {
-                            gameBoard.addRow(i);
+                            //gameBoard.addRow(i);
+                            RowConstraints gameBoardRow = new RowConstraints();
+                            gameBoardRow.setValignment(VPos.CENTER);
+                            gameBoard.getRowConstraints().add(gameBoardRow);
                         }
 
                         for (int row = 0; row < board.length; row++) {
