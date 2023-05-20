@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static de.uol.swp.server.utils.ConvertToDTOUtils.convertUserToUserDTO;
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
 import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
@@ -88,7 +88,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void register(UserDTO loggedInUser, List<CardDTO> playerCards)
+    public boolean register(UserDTO loggedInUser, List<CardDTO> playerCards)
             throws InterruptedException {
         // TODO
         // check when all players are ready to register the next cards
@@ -101,7 +101,6 @@ public class Game {
             i++;
         }
 
-
         playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
 
         if (this.readyRegister == this.nRobots - 1) {
@@ -111,10 +110,11 @@ public class Game {
             for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
                 this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
             }
-            revealProgramCards();
             goToNextRound();
             this.readyRegister = 0;
+            return true; // return true when all players have played
         }
+        return false;
     }
 
     /**
@@ -173,15 +173,17 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public Card[] revealProgramCards() {
-        // TODO: send message to client
+    public Map<UserDTO, CardDTO> revealProgramCards() {
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = new HashMap<>();
 
-        Card[] cardsInThisProgramStep = new Card[this.nRobots];
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
-            cardsInThisProgramStep[playerIterator] =
-                    this.playedCards[playerIterator][this.programStep];
+            userDTOCardDTOMap.put(
+                    ((Player)this.players.get(playerIterator)).getUser(),
+                    // program steps starts in 1 and this array in 0
+                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep - 1])
+            );
         }
-        return cardsInThisProgramStep;
+        return userDTOCardDTOMap;
     }
 
     /**
@@ -237,6 +239,7 @@ public class Game {
     }
 
     private void calcGameRound() {
+        LOG.debug("Calculating game for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -296,6 +299,11 @@ public class Game {
 
         // Send back a collective result of the whole GameRound
     }
+
+
+    //////////////////////////////
+    // SOLVING MOVE INTENTS
+    /////////////////////////////
 
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
@@ -537,6 +545,10 @@ public class Game {
         }
     }
 
+
+    //////////////////////////////
+    // GETTERS // SETTERS
+    /////////////////////////////
     /**
      * Getter for lobbyID
      *
