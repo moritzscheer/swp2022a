@@ -60,7 +60,7 @@ public final class ConvertToDTOUtils {
      * @author Maria Andrade
      * @since 2023-05-13
      */
-    public static List<CardDTO> convertCardToCardDTO(Card[] cards){
+    public static List<CardDTO> convertCardsToCardsDTO(Card[] cards){
         List<CardDTO> cardDTOS = new ArrayList<>();
         for(Card card: cards){
             cardDTOS.add(
@@ -72,6 +72,22 @@ public final class ConvertToDTOUtils {
         }
 
         return cardDTOS;
+    }
+
+    /** This function converts Card to CardDTO
+     *
+     * This is necessary to send a response with array of cardsDTO
+     *
+     * @param card card to be converted to DTO
+     * @return List<CardDTO>
+     * @author Maria Andrade
+     * @since 2023-05-20
+     */
+    public static CardDTO convertCardToCardDTO(Card card){
+        return new CardDTO(
+                card.getId(),
+                card.getPriority()
+        );
     }
 
 }
