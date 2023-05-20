@@ -7,6 +7,7 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.message.PlayerIsReadyMessage;
+import de.uol.swp.common.game.message.ShowAllPlayersCardsMessage;
 import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.game.request.GetMapDataRequest;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
@@ -24,8 +25,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-import static de.uol.swp.server.utils.ConvertToDTOUtils.convertCardToCardDTO;
-import static de.uol.swp.server.utils.ConvertToDTOUtils.convertRobotToRobotDTO;
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
 
 /**
  * Handles the game requests send by the users
@@ -215,7 +215,7 @@ public class GameService extends AbstractService {
             // get loggedInUser
             UserDTO user = msg.getLoggedInUser();
             ProgramCardDataResponse response = new ProgramCardDataResponse(
-                    convertCardToCardDTO(
+                    convertCardsToCardsDTO(
                             game.get().getPlayerByUserDTO(user).getReceivedCards()),
                     msg.getLobbyID());
             response.initWithMessage(msg);
@@ -268,13 +268,23 @@ public class GameService extends AbstractService {
         Optional<Game> game = getGame(request.getLobbyID());
         if(game.isPresent()){
             // TODO
-            LOG.debug("IN SERVER: RECEIVED CARDS");
+            LOG.debug("IN SERVER: RECEIVED CARDS from " + request.getloggedInUser().getUsername());
             for(CardDTO card: request.getCardDTOs())
                 LOG.debug(card.getID() + " -  " + card.getPriority());
 
-            game.get().register(request.getloggedInUser(), request.getCardDTOs());
+            Boolean allChosen = game.get().register(request.getloggedInUser(), request.getCardDTOs());
             PlayerIsReadyMessage msg = new PlayerIsReadyMessage(request.getloggedInUser(), request.getLobbyID());
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
+
+            if(allChosen){
+                LOG.debug("All players have chosen cards");
+                Map<UserDTO, CardDTO> userDTOCardDTOMap = game.get().revealProgramCards();
+                for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
+                    LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
+                            " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
+                lobbyService.sendToAllInLobby(request.getLobbyID(),
+                        new ShowAllPlayersCardsMessage(userDTOCardDTOMap, request.getLobbyID()));
+            }
         }
     }
 
