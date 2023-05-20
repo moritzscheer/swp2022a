@@ -106,7 +106,8 @@ public final class JsonUtils {
      * @since 2023-05-19
      */
     public ImageView getRobotImage(int robotID){
-        String path = String.format("images/player/Player0%d.png", robotID);
+        // robot id starts in 0
+        String path = String.format("images/player/Player0%d.png", robotID+1);
 
         ImageView imageView = new ImageView(new Image(path));
 
