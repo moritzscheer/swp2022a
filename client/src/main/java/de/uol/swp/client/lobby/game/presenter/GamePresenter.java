@@ -323,8 +323,9 @@ public class GamePresenter extends AbstractPresenter {
         LOG.debug("LoggedInUser", this.loggedInUser);
 
 
-        readyButton.setText("Not Ready");
+        readyButton.setText("Submit Cards");
         readyButton.setDisable(true);
+        readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
         robotOffButton.setText("Turn Robot OFF");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
@@ -814,8 +815,9 @@ public class GamePresenter extends AbstractPresenter {
         // TODO: mabye change READY  to SUBMIT
         if (!playerReady) {
             LOG.debug("Submitting chosen cards");
-            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            readyButton.setText("Ready");
+            readyButton.setStyle("-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Submitted");
+            readyButton.setDisable(true);
             playerReady = true;
 
             // submit cards when ready is clicked
@@ -824,8 +826,8 @@ public class GamePresenter extends AbstractPresenter {
                     this.lobbyID, (UserDTO) this.loggedInUser, chosenCards
             ));
         } else {
-            readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            readyButton.setText("Not Ready");
+            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Submit Cards");
             playerReady = false;
         }
     }
@@ -836,8 +838,8 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-18
      */
     private void setNotReadyWhileAllCardsWereNotChosen(){
-        readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-        readyButton.setText("Not Ready");
+        readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+        readyButton.setText("Submit Cards");
         readyButton.setDisable(true);
         playerReady = false;
     }
