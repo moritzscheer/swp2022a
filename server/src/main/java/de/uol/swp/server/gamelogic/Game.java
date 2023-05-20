@@ -242,6 +242,8 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
+        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
@@ -250,6 +252,9 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
+        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
         // Iterate through all the traps
         for (Block[] blocksX : board) {
             for (Block blockXY : blocksX) {
@@ -288,6 +293,9 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
+        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
 
         // Send back a collective result of the whole GameRound
     }
@@ -488,6 +496,9 @@ public class Game {
             CardinalDirection moveDir,
             Block[][] board) {
         try {
+            if (destinationTile.x < 0 || destinationTile.y < 0 ||
+                    destinationTile.x >= board.length || destinationTile.y >= board[0].length)
+                return true;
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
                     CardinalDirection.values()[moveDir.ordinal() + 2]);
