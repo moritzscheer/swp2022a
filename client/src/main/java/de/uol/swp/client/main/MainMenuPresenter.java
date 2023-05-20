@@ -69,6 +69,15 @@ public class MainMenuPresenter extends AbstractPresenter {
     @FXML private TextField textChatInput;
 
     /**
+     * Default Constructor
+     *
+     * @since 2023-05-19
+     */
+    public MainMenuPresenter() {
+        // needed for javafx
+    }
+
+    /**
      * Handles successful login
      *
      * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
