@@ -96,8 +96,11 @@ public class Game {
         AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
         Card[] chosenCards = new Card[5];
         int i = 0;
-        for(CardDTO cardDTO: playerCards)
+        for(CardDTO cardDTO: playerCards){
             chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
+            i++;
+        }
+
 
         playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
 
