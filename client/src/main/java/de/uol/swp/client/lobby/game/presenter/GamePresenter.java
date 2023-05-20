@@ -385,6 +385,15 @@ public class GamePresenter extends AbstractPresenter {
         playerRlTexts.add(player7RobotLives);
         playerRlTexts.add(player8RobotLives);
 
+        playerCards = new ArrayList<ImageView>();
+        playerCards.add(player2Card);
+        playerCards.add(player3Card);
+        playerCards.add(player4Card);
+        playerCards.add(player5Card);
+        playerCards.add(player6Card);
+        playerCards.add(player7Card);
+        playerCards.add(player8Card);
+
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
         loadPlayers(playerGrids, playerNames);
@@ -817,7 +826,6 @@ public class GamePresenter extends AbstractPresenter {
             LOG.debug("Submitting chosen cards");
             readyButton.setStyle("-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
             readyButton.setText("Submitted");
-            readyButton.setDisable(true);
             playerReady = true;
 
             // submit cards when ready is clicked
@@ -867,17 +875,32 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    private void setPlayerCard() {//To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO: set Player Card
-                playerCards.get(i).setImage(new Image(""));//to implement
-                playerCards.get(i).setFitHeight(150);
-                playerCards.get(i).setFitWidth(100);
-                break;
+    public void setPlayerCard(Map<UserDTO, CardDTO> userDTOCardDTOMap) {//To implement onPlayerHPChangedMessage
+        for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet()){
+            if(Objects.equals(userCurrentCard.getKey(), this.loggedInUser)){
+                LOG.debug("Current User is logged In, should skip " + userCurrentCard.getKey().getUsername());
+                continue;
             }
+
+            int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
+            playerCards.get(position).setImage(
+                    jsonUtils.getCardImage(userCurrentCard.getValue().getID())
+            );
+            playerCards.get(position).setFitHeight(150);
+            playerCards.get(position).setFitWidth(100);
         }
+
+
+//        User user = users.get(0);
+//        for (int i = 0; i < playerCount; i++) {
+//            if (users.get(i).getUsername() == user.getUsername()) {
+//                //TODO: set Player Card
+//                playerCards.get(i).setImage(new Image(""));//to implement
+//                playerCards.get(i).setFitHeight(150);
+//                playerCards.get(i).setFitWidth(100);
+//                break;
+//            }
+//        }
     }
 
 
