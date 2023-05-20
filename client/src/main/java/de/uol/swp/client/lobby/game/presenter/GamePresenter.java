@@ -87,6 +87,11 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane mainGrid;
     @FXML
     private GridPane gameBoard;
+
+    @FXML
+    private GridPane gameBoardWrapper;
+
+
     @FXML
     private Text player2HP;
     @FXML
@@ -421,8 +426,16 @@ public class GamePresenter extends AbstractPresenter {
                                 for (int img = 0; img < images.length; img++) {
                                     ImageView imageView = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
                                     imageView.setRotate(board[row][col].getBlockImagesDirection()[img].ordinal() * 90); // Rotate the image
-                                    imageView.setFitWidth(50);
-                                    imageView.setFitHeight(50);
+                                    // Aktuelle Version, sieht im kleinen Client gut aus, aber zu klein in Vollbild
+//                                    imageView.setFitWidth(50);
+//                                    imageView.setFitHeight(50);
+
+                                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1));
+                                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1));
+
+
+
+
                                     gameBoard.add(imageView, row + 1, col + 1);
                                 }
                             }
