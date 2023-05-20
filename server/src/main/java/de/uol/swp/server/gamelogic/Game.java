@@ -79,45 +79,6 @@ public class Game {
     }
 
     /**
-     * When a player has chosen its cards, he will press "register" button this function will call
-     * the player function that will register his cards Once all players have chosen, the calcGame
-     * will be called
-     *
-     * @author Maria
-     * @see de.uol.swp.server.gamelogic.Player
-     * @see de.uol.swp.server.gamelogic.cards.Card
-     * @since 2023-04-25
-     */
-    public boolean register(UserDTO loggedInUser, List<CardDTO> playerCards)
-            throws InterruptedException {
-        // TODO
-        // check when all players are ready to register the next cards
-        this.readyRegister += 1;
-        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
-        Card[] chosenCards = new Card[5];
-        int i = 0;
-        for(CardDTO cardDTO: playerCards){
-            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
-            i++;
-        }
-
-        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
-
-        if (this.readyRegister == this.nRobots - 1) {
-            startTimer();
-        } else if (this.readyRegister == this.nRobots) {
-            this.programStep = 1; // start in the first program step, until 5
-            for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
-                this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
-            }
-            goToNextRound();
-            this.readyRegister = 0;
-            return true; // return true when all players have played
-        }
-        return false;
-    }
-
-    /**
      * Generate random cards for a player (max. 9, min. 5)
      * The cards are generated based on the id, from 1 to 84
      *
@@ -162,6 +123,45 @@ public class Game {
                 }
             }
         }
+    }
+
+    /**
+     * When a player has chosen its cards, he will press "register" button this function will call
+     * the player function that will register his cards Once all players have chosen, the calcGame
+     * will be called
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Player
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @since 2023-04-25
+     */
+    public boolean register(UserDTO loggedInUser, List<CardDTO> playerCards)
+            throws InterruptedException {
+        // TODO
+        // check when all players are ready to register the next cards
+        this.readyRegister += 1;
+        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
+        Card[] chosenCards = new Card[5];
+        int i = 0;
+        for(CardDTO cardDTO: playerCards){
+            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
+            i++;
+        }
+
+        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
+
+        if (this.readyRegister == this.nRobots - 1) {
+            startTimer();
+        } else if (this.readyRegister == this.nRobots) {
+            this.programStep = 1; // start in the first program step, until 5
+            for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
+                this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
+            }
+            goToNextRound();
+            this.readyRegister = 0;
+            return true; // return true when all players have played
+        }
+        return false;
     }
 
     /**
