@@ -88,12 +88,15 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private GridPane mainGrid;
     @FXML
+    private GridPane rightGrid;
+    @FXML
     private GridPane gameBoard;
-
     @FXML
     private GridPane gameBoardWrapper;
-
-
+    @FXML
+    private GridPane handCardGridPane;
+    @FXML
+    private GridPane selectedCardGridPane;
     @FXML
     private Text player2HP;
     @FXML
@@ -373,6 +376,13 @@ public class GamePresenter extends AbstractPresenter {
         // creates the board
         //reloadMap(null);
 
+        /**
+         * @author Tommy Dang
+         * @since 2023-05-20
+         */
+
+
+
         resetCardsAndSlots();
     }
 
@@ -405,7 +415,7 @@ public class GamePresenter extends AbstractPresenter {
      * Handles GetMapDataMessage
      *
      * @param msg the GetMapDataMessage object seen on the EventBus
-     * @author Maria Andrade
+     * @author Maria Andrade and Tommy Dang
      * @see GetMapDataResponse
      * @since 2023-05-06
      */
@@ -456,10 +466,52 @@ public class GamePresenter extends AbstractPresenter {
                             }
                         }
 
+                        double width = 6;
+                        double height = 3;
+
+                        double divide = 2;
+                        double subtract = 0;
+                        double add = 5; // 5 ist gut
+                        double add2 = 5; // 5 ist gut
+
+                        card1.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card2.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card3.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card4.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card5.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card6.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card7.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card8.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        card9.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+
+                        card1.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card2.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card3.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card4.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card5.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card6.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card7.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card8.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+                        card9.heightProperty().bind(handCardGridPane.heightProperty().divide(height).subtract(subtract).add(add));
+
+                        chosenCard1.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        chosenCard2.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        chosenCard3.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+                        chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(width).subtract(subtract).add(add));
+
+                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(divide).subtract(subtract).add(add2));
+                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(divide).subtract(subtract).add(add2));
+                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(divide).subtract(subtract).add(add2));
+                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(divide).subtract(subtract).add(add2));
+                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(divide).subtract(subtract).add(add2));
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
+
                 });
     }
 
