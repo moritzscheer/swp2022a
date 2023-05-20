@@ -917,6 +917,12 @@ public class GamePresenter extends AbstractPresenter {
 
     }
 
+    /** Update robot states every time server sends a message
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-05-20
+     */
     public void updateRobotState(UserDTO userToUpdate, Position newPos, CardinalDirection newDir){
 
         LOG.debug("in updateRobotState");
@@ -949,6 +955,12 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    /** Remove last ImageView from the board when robot moves
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-05-20
+     */
     public void removeNodeByRowColumnIndex(final int row, final int column, ImageView toRemove) {
         ObservableList<Node> childrens = gameBoard.getChildren();
         if(Objects.equals(toRemove, null)){
