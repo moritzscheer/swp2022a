@@ -35,7 +35,7 @@ public class Game {
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
-    private int programStep; // program steps from 1 to 5
+    private int programStep; // program steps from 0 to 4
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
     private final List<AbstractPlayer> players = new ArrayList<>();
@@ -66,7 +66,7 @@ public class Game {
         this.dockingStartPosition = checkpointsList[0];
 
         // create players and robots
-        int i=1;
+        int i=0; // start robots id in 0
         for(User user: users) {
             Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
@@ -153,11 +153,10 @@ public class Game {
         if (this.readyRegister == this.nRobots - 1) {
             startTimer();
         } else if (this.readyRegister == this.nRobots) {
-            this.programStep = 1; // start in the first program step, until 5
+            this.programStep = 0; // start in the first (0) program step, until 4
             for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
                 this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
             }
-            goToNextRound();
             this.readyRegister = 0;
             return true; // return true when all players have played
         }
@@ -175,12 +174,12 @@ public class Game {
      */
     public Map<UserDTO, CardDTO> revealProgramCards() {
         Map<UserDTO, CardDTO> userDTOCardDTOMap = new HashMap<>();
-
+        LOG.debug("REVEALING PROGRAM CARDS STEP: "+ this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
                     ((Player)this.players.get(playerIterator)).getUser(),
                     // program steps starts in 1 and this array in 0
-                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep - 1])
+                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
             );
         }
         return userDTOCardDTOMap;
@@ -204,15 +203,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void goToNextRound() throws InterruptedException {
-        // TODO
-        while (this.programStep <= 5) {
-            calcGameRound();
-            // sleep
-            TimeUnit.SECONDS.sleep(30);
-            // go to next step
-            this.programStep += 1;
-        }
+    public void roundIsOver() throws InterruptedException {
+
         // round is over
         this.programStep = 0;
         this.notDistributedCards = true; // set to distribute for next round
@@ -238,7 +230,7 @@ public class Game {
         }
     }
 
-    private void calcGameRound() {
+    public void calcGameRound() {
         LOG.debug("Calculating game for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
@@ -495,9 +487,15 @@ public class Game {
             Position destinationTile,
             CardinalDirection moveDir,
             Block[][] board) {
-        return board[currentTile.x][currentTile.y].getObstruction(moveDir)
-                || board[destinationTile.x][destinationTile.y].getObstruction(
-                        CardinalDirection.values()[moveDir.ordinal() + 2]);
+        try {
+            return board[currentTile.x][currentTile.y].getObstruction(moveDir)
+                    || board[destinationTile.x][destinationTile.y].getObstruction(
+                    CardinalDirection.values()[moveDir.ordinal() + 2]);
+        } catch (ArrayIndexOutOfBoundsException e){
+            // testing for out of bounds
+            return false;
+        }
+
     }
 
     private static void removeMoveResultAndParents(
@@ -623,5 +621,13 @@ public class Game {
      */
     public Position getDockingStartPosition() {
         return this.dockingStartPosition;
+    }
+
+    public int getProgramStep(){
+        return this.programStep;
+    }
+
+    public void increaseProgramStep(){
+        this.programStep++;
     }
 }
