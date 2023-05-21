@@ -21,7 +21,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private CardinalDirection direction;
 
-    int type;
+
 
     public PusherBehaviour(
             List<Robot> robotStates,
@@ -34,15 +34,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         this.direction = direction;
 
 
-        if(activeInProgramSteps.length == 3){
-            this.type = 42;
-        }
-        else if (activeInProgramSteps.length == 2){
-            this.type = 43;
-        }
-        else{
-            this.type = activeInProgramSteps[0] + 38;
-        }
+
 
     }
 
@@ -77,6 +69,17 @@ public class PusherBehaviour extends AbstractTileBehaviour {
 
     @Override
     public List<int[]> getImage() {
-        return new ArrayList<>(List.of(new int[] {type , direction.ordinal()}));
+        int type;
+        if(this.activeInProgramSteps.length == 3){
+            type = 42;
+        }
+        else if (this.activeInProgramSteps.length == 2){
+            type = 43;
+        }
+        else{
+            type = this.activeInProgramSteps[0] + 38;
+        }
+        return new ArrayList<>(List.of(new int[] {type , direction.ordinal()
+        }));
     }
 }

@@ -44,10 +44,10 @@ public class LaserBehaviourTest {
         robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
         robots[2] = new Robot(3, pos3, true, CardinalDirection.East);
         behaviours1[0] =
-                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam);
+                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam, true, true);
         behaviours3[0] = new WallBehaviour(List.of(robots), board, pos3, wallDirection);
         behaviours4[0] =
-                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam);
+                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam, true, true);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
         board[1][2] = new Block(behaviours3, "", pos3);
