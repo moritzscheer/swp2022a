@@ -72,6 +72,17 @@
       "source": "images/tiles/Conveyor/TurnTopLeft.png"
     },
     {
+      "id": "14",
+      "name": "ArrowUpAndTurnLeft",
+      "source": "images/tiles/Conveyor/ArrowUpAndTurnLeft.png"
+    },
+    {
+      "id": "15",
+      "name": "ArrowUpAndTurnRight",
+      "source": "images/tiles/Conveyor/ArrowUpAndTurnRight.png"
+    },
+
+    {
       "id": "16",
       "name": "LaserStart",
       "source": "images/tiles/laser/laserStart.png"
@@ -142,6 +153,17 @@
       "name": "ExpressTurnLeftTop",
       "source": "images/tiles/expressConveyor/ExpressTurnLeftTop.png"
     },
+    {
+      "id": "30",
+      "name": "ExpressArrowUpAndTurnLeft",
+      "source": "images/tiles/expressConveyor/ExpressArrowUpAndTurnLeft.png"
+    },
+    {
+      "id": "31",
+      "name": "ExpressArrowUpAndTurnRight",
+      "source": "images/tiles/expressConveyor/ExpressArrowUpAndTurnRight.png"
+    },
+
 
     {
       "id": "32",
@@ -185,23 +207,25 @@
     },
     {
       "id": "40",
-      "name": "Pusher_1_3_5",
-      "source": "images/tiles/pusher/Pusher_1_3_5.png"
-    },{
-      "id": "41",
       "name": "Pusher_2",
       "source": "images/tiles/pusher/Pusher_2.png"
     },
     {
-      "id": "42",
-      "name": "Pusher_2_4",
-      "source": "images/tiles/pusher/Pusher_2_4.png"
-    },
-    {
-      "id": "43",
+      "id": "41",
       "name": "Pusher_3",
       "source": "images/tiles/pusher/Pusher_3.png"
     },
+    {
+      "id": "42",
+      "name": "Pusher_1_3_5",
+      "source": "images/tiles/pusher/Pusher_1_3_5.png"
+    },
+    {
+      "id": "43",
+      "name": "Pusher_2_4",
+      "source": "images/tiles/pusher/Pusher_2_4.png"
+    },
+
     {
       "id": "44",
       "name": "Player01",
@@ -241,6 +265,17 @@
       "id": "51",
       "name": "Player08",
       "source": "images/tiles/player/Player08.png"
+    },
+    {
+      "id": "52",
+      "name": "T-Turn",
+      "source": "images/tiles/conveyor/T-Turn.png"
+    }
+  ,
+    {
+      "id": "53",
+      "name": "ExpressT-Turn",
+      "source": "images/tiles/expressConveyor/ExpressT-Turn.png"
     }
   ]
 }

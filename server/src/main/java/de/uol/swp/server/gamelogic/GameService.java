@@ -240,10 +240,17 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onGetMapDataRequest(GetMapDataRequest msg) {
+
+
         System.out.println("Get Map Data server");
         Optional<Game> game = getGame(msg.getLobby().getLobbyID());
         if(game.isPresent()){
             Block[][] board = game.get().getBoard();
+
+            if(board == null){
+                throw new IllegalStateException("Board is nicht initialisiert");
+            }
+
             BlockDTO[][] boardDTOs= new BlockDTO[board.length][board[0].length];
 
             for(int row= 0; row< board.length; row++){

@@ -164,8 +164,8 @@ public final class MapBuilder {
                 x,
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
-                new PusherBehaviour(
-                        null, map, new Position(x, y), new int[]{2, 4}, CardinalDirection.East));
+                new PusherBehaviour2(
+                        null, map, new Position(x, y), new int[]{2, 4}, CardinalDirection.West));
         x = 6;
         generateBlock(
                 map,
@@ -238,7 +238,7 @@ public final class MapBuilder {
                 x,
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.South),
-                new PusherBehaviour(
+                new PusherBehaviour2(
                         null, map, new Position(x, y), new int[]{2, 4}, CardinalDirection.South));
 
         x = 7;
@@ -279,7 +279,7 @@ public final class MapBuilder {
                         null,
                         map,
                         new Position(x, y),
-                        ArrowType.TurnRight,
+                        ArrowType.StraightTurnLeft,
                         CardinalDirection.East));
         x = 1;
         generateBlock(
@@ -290,7 +290,7 @@ public final class MapBuilder {
                         null,
                         map,
                         new Position(x, y),
-                        ArrowType.TurnLeft,
+                        ArrowType.TurnRight,
                         CardinalDirection.South));
 
         x = 2;
@@ -318,7 +318,7 @@ public final class MapBuilder {
                         null,
                         map,
                         new Position(x, y),
-                        ArrowType.StraightTurnLeft,
+                        ArrowType.Straight,
                         CardinalDirection.North));
 
         x = 11;
@@ -425,7 +425,7 @@ public final class MapBuilder {
                 x,
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
-                new PusherBehaviour(
+                new PusherBehaviour2(
                         null, map, new Position(x, y), new int[]{1,3,5}, CardinalDirection.West));
 
         x = 10;
@@ -450,7 +450,7 @@ public final class MapBuilder {
                 x,
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East),
-                new PusherBehaviour(null, map, new Position(x, y), new int[]{1,3,5}, CardinalDirection.East));
+                new PusherBehaviour2(null, map, new Position(x, y), new int[]{1,3,5}, CardinalDirection.East));
 
         x = 3;
         generateBlock(map, x, y);
@@ -474,7 +474,7 @@ public final class MapBuilder {
                 x,
                 y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
-                new PusherBehaviour(null, map, new Position(x, y), new int[]{1,3,5}, CardinalDirection.West));
+                new PusherBehaviour2(null, map, new Position(x, y), new int[]{1,3,5}, CardinalDirection.West));
 
         x = 10;
         generateBlock(map, x, y,
@@ -581,7 +581,7 @@ public final class MapBuilder {
         x = 6;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
-                new PusherBehaviour(null, map, new Position(x, y), new int[]{3}, CardinalDirection.North));
+                new PusherBehaviour2(null, map, new Position(x, y), new int[]{3}, CardinalDirection.North));
 
 
         x = 7;

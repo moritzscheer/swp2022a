@@ -123,35 +123,34 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
                 break;
             case StraightTurnRight:
                 if(this instanceof ExpressConveyorBeltBehaviour){
-                    arrowType = 27;
-                    hasSecondArrow = true;
-                    secondArrowType = 28;
+                    arrowType = 31;
                 }
                 else {
-                    arrowType = 10;
-                    hasSecondArrow = true;
-                    secondArrowType = 11;
+                    arrowType = 15;
                 }
                 break;
             case StraightTurnLeft:
                 if(this instanceof ExpressConveyorBeltBehaviour){
-                    arrowType = 27;
-                    hasSecondArrow = true;
-                    secondArrowType = 29;
+                    arrowType = 30;
                 }
                 else {
-                    arrowType = 10;
-                    hasSecondArrow = true;
-                    secondArrowType = 12;
+                    arrowType = 14;
+                }
+                break;
+
+            case TTurn:
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 53;
+                }
+                else {
+                    arrowType = 52;
                 }
                 break;
 
             default:
                 throw new IllegalStateException("Unexpected value: " + this.arrowType + " or ");
         }
-        if(hasSecondArrow){
-            return new ArrayList<>(Arrays.asList( new int[] {type, rotation}, new int[] {arrowType, rotation}, new int[] {secondArrowType, rotation}));
-        }
+
         return new ArrayList<>(Arrays.asList( new int[] {type, rotation}, new int[] {arrowType, rotation}));
     }
 }

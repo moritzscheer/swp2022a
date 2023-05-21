@@ -30,6 +30,18 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = direction;
+
+        /*
+        if(activeInProgramSteps.length == 3){
+            this.type = 42;
+        }
+        else if (activeInProgramSteps.length == 2){
+            this.type = 43;
+        }
+        else{
+            this.type = activeInProgramSteps[0] + 38;
+        }
+        */
     }
 
     /**

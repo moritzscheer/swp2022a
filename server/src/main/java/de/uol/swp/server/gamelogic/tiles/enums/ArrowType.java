@@ -10,5 +10,7 @@ public enum ArrowType {
     TurnRight,
     TurnLeft,
     StraightTurnRight,
-    StraightTurnLeft
+    StraightTurnLeft,
+
+    TTurn
 }
