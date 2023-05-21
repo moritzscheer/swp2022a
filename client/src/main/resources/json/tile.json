@@ -89,18 +89,18 @@
     },
     {
       "id": "17",
-      "name": "Laser",
-      "source": "images/tiles/laser/laser.png"
+      "name": "LaserStart2",
+      "source": "images/tiles/laser/laserStart2.png"
     },
     {
       "id": "18",
-      "name": "LaserHalf",
-      "source": "images/tiles/laser/laserHalf.png"
+      "name": "LaserStart3",
+      "source": "images/tiles/laser/laserStart3.png"
     },
     {
       "id": "19",
-      "name": "LaserStart2",
-      "source": "images/tiles/laser/laserStart2.png"
+      "name": "Laser",
+      "source": "images/tiles/laser/laser.png"
     },
     {
       "id": "20",
@@ -109,18 +109,18 @@
     },
     {
       "id": "21",
-      "name": "LaserHalf2",
-      "source": "images/tiles/laser/laserHalf2.png"
+      "name": "Laser3",
+      "source": "images/tiles/laser/laser3.png"
     },
     {
       "id": "22",
-      "name": "LaserStart3",
-      "source": "images/tiles/laser/laserStart3.png"
+      "name": "LaserHalf",
+      "source": "images/tiles/laser/laserHalf.png"
     },
     {
       "id": "23",
-      "name": "Laser3",
-      "source": "images/tiles/laser/laser3.png"
+      "name": "LaserHalf2",
+      "source": "images/tiles/laser/laserHalf2.png"
     },
     {
       "id": "24",
@@ -183,22 +183,22 @@
     {
       "id": "35",
       "name": "Presse_1_5",
-      "source": "images/tiles/pressor/Presse_1_5.png"
+      "source": "images/tiles/pressor/Pressor_1_5.png"
     },
     {
       "id": "36",
       "name": "Presse_2_4",
-      "source": "images/tiles/pressor/Presse_2_4.png"
+      "source": "images/tiles/pressor/Pressor_2_4.png"
     },
     {
       "id": "37",
       "name": "PresseMitKreuzung_2_4",
-      "source": "images/tiles/pressor/PresseMitKreuzung_2_4.png"
+      "source": "images/tiles/pressor/PressorCrossing_2_4.png"
     },
     {
       "id": "38",
       "name": "PresseMitKreuzung_3",
-      "source": "images/tiles/pressor/PresseMitKreuzung_3.png"
+      "source": "images/tiles/pressor/PressorCrossing_3.png"
     },
     {
       "id": "39",

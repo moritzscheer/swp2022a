@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class GearBehaviour extends AbstractTileBehaviour {
 
-    //private  boolean turnClockwise;
+    private  final boolean turnClockwise;
     int type;
 
     /**
@@ -32,13 +32,8 @@ public class GearBehaviour extends AbstractTileBehaviour {
      */
     public GearBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos, boolean turnC) {
         super(robotStates, board, blockPos);
-        //turnClockwise = turnC;
-        if(turnC){
-            type = 34;
-        }
-        else{
-            type = 33;
-        }
+        turnClockwise = turnC;
+
 
     }
 
@@ -49,7 +44,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @see CardinalDirection
      * @since 06-02-2023
      */
-    /*@Override
+    @Override
     public List<MoveIntent> onRotatorStage(int programStep) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
@@ -67,11 +62,17 @@ public class GearBehaviour extends AbstractTileBehaviour {
         }
         return null;
     }
-*/
+
 
 
     @Override
      public List<int[]> getImage() {
+        if(this.turnClockwise){
+            type = 34;
+        }
+        else{
+            type = 33;
+        }
          return new ArrayList<>(List.of(new int[] {type , 0}));
      }
 }

@@ -21,17 +21,25 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private int laserBeam; // laserBeam is directed related to damage
 
+    private boolean start;
+
+    private boolean fullLaser;
+
     public LaserBehaviour(
             List<Robot> robotStates,
             Block[][] board,
             int[] activeInProgramSteps,
             Position blockPos,
             CardinalDirection laserDir,
-            int laserBeam) {
+            int laserBeam,
+            boolean start,
+            boolean fullLaser) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = laserDir;
         this.laserBeam = laserBeam;
+        this.start = start;
+        this.fullLaser = fullLaser;
     }
 
     /**
@@ -78,6 +86,13 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     @Override
     public List<int[]> getImage() {
-        return new ArrayList<>(List.of(new int[] {17 + laserBeam * 3 , 0}));
+        int placeholder = 17;
+        if (this.start){
+            placeholder = 15;
+        }
+        else if (this.fullLaser){
+            placeholder = 18;
+        }
+        return new ArrayList<>(List.of(new int[] {placeholder + laserBeam, direction.ordinal()}));
     }
 }
