@@ -122,7 +122,15 @@ public final class MapBuilder {
         y = 1;
 
         x = 0;
-        generateBlock(map, x, y, new GearBehaviour(null, map, new Position(x, y), true));
+        generateBlock(
+                map,
+                x,
+                y,
+                new GearBehaviour(
+                        null,
+                        map,
+                        new Position(x, y),
+                        true));
         x = 1;
         generateBlock(
                 map,
@@ -526,7 +534,7 @@ public final class MapBuilder {
                 new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.West));
         x = 1;
         generateBlock(map, x, y,
-                new GearBehaviour(null, map, new Position(x, y), true));
+                new GearBehaviour(null, map, new Position(x, y), false));
         x = 2;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),

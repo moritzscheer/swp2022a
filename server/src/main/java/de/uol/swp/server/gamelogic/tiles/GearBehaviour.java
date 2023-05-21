@@ -5,6 +5,8 @@ import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.common.game.enums.CardinalDirection;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +20,8 @@ import java.util.Objects;
  */
 public class GearBehaviour extends AbstractTileBehaviour {
 
-    private final boolean turnClockwise;
+    //private  boolean turnClockwise;
+    int type;
 
     /**
      * Constructor
@@ -29,7 +32,14 @@ public class GearBehaviour extends AbstractTileBehaviour {
      */
     public GearBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos, boolean turnC) {
         super(robotStates, board, blockPos);
-        this.turnClockwise = turnC;
+        //turnClockwise = turnC;
+        if(turnC){
+            type = 34;
+        }
+        else{
+            type = 33;
+        }
+
     }
 
     /**
@@ -39,7 +49,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @see CardinalDirection
      * @since 06-02-2023
      */
-    @Override
+    /*@Override
     public List<MoveIntent> onRotatorStage(int programStep) {
         for (Robot robotState : robotStates) {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
@@ -57,11 +67,11 @@ public class GearBehaviour extends AbstractTileBehaviour {
         }
         return null;
     }
+*/
 
-    //TODO: Gea bilder fehlen in Tile.json
 
-//    @Override
-//    public List<int[]> getImage() {
-//        return new ArrayList<>(List.of(new int[] {turnClockwise ? , 0}));
-//    }
+    @Override
+     public List<int[]> getImage() {
+         return new ArrayList<>(List.of(new int[] {type , 0}));
+     }
 }

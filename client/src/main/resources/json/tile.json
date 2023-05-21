@@ -47,39 +47,29 @@
     },
     {
       "id": "9",
-      "name": "ConveyorBeltHorizontal",
-      "source": "images/tiles/Conveyor/ConveyorHorizontal.png"
+      "name": "ConveyorBeltVertical",
+      "source": "images/tiles/Conveyor/ConveyorVertical.png"
     },
 
     {
       "id": "10",
       "name": "Arrow",
-      "source": "images/tiles/Conveyor/ArrowRight.png"
+      "source": "images/tiles/Conveyor/ArrowUp.png"
     },
     {
       "id": "11",
-      "name": "TurnTopRight",
-      "source": "images/tiles/Conveyor/TurnTopRight.png"
+      "name": "TurnRightTop",
+      "source": "images/tiles/Conveyor/TurnRightTop.png"
     },
     {
       "id": "12",
-      "name": "TurnBottomRight",
-      "source": "images/tiles/Conveyor/TurnBottomRight.png"
+      "name": "TurnLeftTop",
+      "source": "images/tiles/Conveyor/TurnLeftTop.png"
     },
     {
       "id": "13",
       "name": "TurnTopLeft",
       "source": "images/tiles/Conveyor/TurnTopLeft.png"
-    },
-    {
-      "id": "14",
-      "name": "TurnBottomLeft",
-      "source": "images/tiles/Conveyor/TurnBottomLeft.png"
-    },
-    {
-      "id": "15",
-      "name": "StartArrow",
-      "source": "images/tiles/Conveyor/StartArrowRight.png"
     },
     {
       "id": "16",
@@ -133,39 +123,30 @@
     },
     {
       "id": "26",
-      "name": "ExpressConveyorBeltHorizontal",
-      "source": "images/tiles/expressConveyor/ExpressConveyorHorizontal.png"
+      "name": "ExpressConveyorBeltVertical",
+      "source": "images/tiles/expressConveyor/ExpressConveyorVertical.png"
     },
 
     {
       "id": "27",
       "name": "ExpressArrow",
-      "source": "images/tiles/expressConveyor/ExpressArrowRight.png"
+      "source": "images/tiles/expressConveyor/ExpressArrowUp.png"
     },
     {
       "id": "28",
-      "name": "ExpressTurnTopRight",
-      "source": "images/tiles/expressConveyor/ExpressTurnTopRight.png"
+      "name": "ExpressTurnRightTop",
+      "source": "images/tiles/expressConveyor/ExpressTurnRightTop.png"
     },
     {
       "id": "29",
-      "name": "ExpressTurnBottomRight",
-      "source": "images/tiles/expressConveyor/ExpressTurnBottomRight.png"
+      "name": "ExpressTurnLeftTop",
+      "source": "images/tiles/expressConveyor/ExpressTurnLeftTop.png"
     },
-    {
-      "id": "30",
-      "name": "ExpressTurnTopLeft",
-      "source": "images/tiles/expressConveyor/ExpressTurnTopLeft.png"
-    },
-    {
-      "id": "31",
-      "name": "ExpressTurnBottomLeft",
-      "source": "images/tiles/expressConveyor/ExpressTurnBottomLeft.png"
-    },
+
     {
       "id": "32",
       "name": "ExpressStartArrow",
-      "source": "images/tiles/expressConveyor/ExpressStartArrowRight.png"
+      "source": "images/tiles/expressConveyor/ExpressStartArrowUp.png"
     },
     {
       "id": "33",
