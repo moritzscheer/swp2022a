@@ -30,6 +30,11 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         this.crossing = crossing;
     }
 
+    public PressorBehaviour(List<Robot> robotStates, Block[][] board, int[] activeInProgramSteps, Position blockPos) {
+        super(robotStates, board, blockPos);
+        this.activeInProgramSteps = activeInProgramSteps;
+    }
+
     /**
      * When the robot is under a pressor then it will die.
      *
