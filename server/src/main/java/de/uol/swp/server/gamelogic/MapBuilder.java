@@ -580,7 +580,7 @@ public final class MapBuilder {
         x = 4;
         generateBlock(map, x, y);
         x = 5;
-        generateBlock(map, x, y, new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West));
+        generateBlock(map, x, y, new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North));
         x = 6;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
