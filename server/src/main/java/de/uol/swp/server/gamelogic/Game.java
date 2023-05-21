@@ -207,7 +207,7 @@ public class Game {
     }
 
     public void startGame(){
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/tempMap.map");
+        this.board = MapBuilderTESTMAP.getMap("server/src/main/resources/maps/tempMap.map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;
