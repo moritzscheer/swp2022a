@@ -17,9 +17,8 @@ import java.io.*;
 public final class MapBuilder {
 
     public static Block[][] getMap(String mapPath) {
-        ObjectInputStream objIn = null;
         try {
-            objIn = new ObjectInputStream(new FileInputStream(mapPath));
+            ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath));
             Block[][] map = (Block[][]) objIn.readObject();
             objIn.close();
             return map;
@@ -540,8 +539,9 @@ public final class MapBuilder {
                 new GearBehaviour(null, map, new Position(x, y), false));
         x = 2;
         generateBlock(map, x, y,
-                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true));
+                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true),
+                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
+        );
         x = 3;
         generateBlock(map, x, y);
         x = 4;
