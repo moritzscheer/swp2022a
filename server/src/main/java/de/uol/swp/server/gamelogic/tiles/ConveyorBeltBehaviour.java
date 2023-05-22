@@ -87,38 +87,70 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
     @Override
     public List<int[]> getImage() {
-        int rotation = (direction.ordinal() + 1) % 2;
+        int rotation = direction.ordinal() ;
         int arrowType;
         int secondArrowType = 0;
         boolean hasSecondArrow = false;
+        int type = 9;
+        if(this instanceof ExpressConveyorBeltBehaviour){
+            type = 26;
+        }
         switch (this.arrowType){
 
             case Straight:
-                arrowType = 10;
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 27;
+                }
+                else {
+                    arrowType = 10;
+                }
                 break;
             case TurnRight:
-                arrowType = 11;
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 28;
+                }
+                else {
+                    arrowType = 11;
+                }
                 break;
             case TurnLeft:
-                arrowType = 12;
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 29;
+                }
+                else {
+                    arrowType = 12;
+                }
                 break;
             case StraightTurnRight:
-                arrowType = 10;
-                hasSecondArrow = true;
-                secondArrowType = 11;
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 31;
+                }
+                else {
+                    arrowType = 15;
+                }
                 break;
             case StraightTurnLeft:
-                arrowType = 10;
-                hasSecondArrow = true;
-                secondArrowType = 12;
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 30;
+                }
+                else {
+                    arrowType = 14;
+                }
+                break;
+
+            case TTurn:
+                if(this instanceof ExpressConveyorBeltBehaviour){
+                    arrowType = 53;
+                }
+                else {
+                    arrowType = 52;
+                }
                 break;
 
             default:
                 throw new IllegalStateException("Unexpected value: " + this.arrowType + " or ");
         }
-        if(hasSecondArrow){
-            return new ArrayList<>(Arrays.asList( new int[] {9, rotation}, new int[] {arrowType, rotation}, new int[] {secondArrowType, rotation}));
-        }
-        return new ArrayList<>(Arrays.asList( new int[] {9, rotation}, new int[] {arrowType, rotation}));
+
+        return new ArrayList<>(Arrays.asList( new int[] {type, rotation}, new int[] {arrowType, rotation}));
     }
 }

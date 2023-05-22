@@ -47,24 +47,24 @@
     },
     {
       "id": "9",
-      "name": "ConveyorBeltHorizontal",
-      "source": "images/tiles/Conveyor/ConveyorHorizontal.png"
+      "name": "ConveyorBeltVertical",
+      "source": "images/tiles/Conveyor/ConveyorVertical.png"
     },
 
     {
       "id": "10",
       "name": "Arrow",
-      "source": "images/tiles/Conveyor/ArrowRight.png"
+      "source": "images/tiles/Conveyor/ArrowUp.png"
     },
     {
       "id": "11",
-      "name": "TurnTopRight",
-      "source": "images/tiles/Conveyor/TurnTopRight.png"
+      "name": "TurnRightTop",
+      "source": "images/tiles/Conveyor/TurnRightTop.png"
     },
     {
       "id": "12",
-      "name": "TurnBottomRight",
-      "source": "images/tiles/Conveyor/TurnBottomRight.png"
+      "name": "TurnLeftTop",
+      "source": "images/tiles/Conveyor/TurnLeftTop.png"
     },
     {
       "id": "13",
@@ -73,14 +73,15 @@
     },
     {
       "id": "14",
-      "name": "TurnBottomLeft",
-      "source": "images/tiles/Conveyor/TurnBottomLeft.png"
+      "name": "ArrowUpAndTurnLeft",
+      "source": "images/tiles/Conveyor/ArrowUpAndTurnLeft.png"
     },
     {
       "id": "15",
-      "name": "StartArrow",
-      "source": "images/tiles/Conveyor/StartArrowRight.png"
+      "name": "ArrowUpAndTurnRight",
+      "source": "images/tiles/Conveyor/ArrowUpAndTurnRight.png"
     },
+
     {
       "id": "16",
       "name": "LaserStart",
@@ -88,18 +89,18 @@
     },
     {
       "id": "17",
-      "name": "Laser",
-      "source": "images/tiles/laser/laser.png"
+      "name": "LaserStart2",
+      "source": "images/tiles/laser/laserStart2.png"
     },
     {
       "id": "18",
-      "name": "LaserHalf",
-      "source": "images/tiles/laser/laserHalf.png"
+      "name": "LaserStart3",
+      "source": "images/tiles/laser/laserStart3.png"
     },
     {
       "id": "19",
-      "name": "LaserStart2",
-      "source": "images/tiles/laser/laserStart2.png"
+      "name": "Laser",
+      "source": "images/tiles/laser/laser.png"
     },
     {
       "id": "20",
@@ -108,18 +109,18 @@
     },
     {
       "id": "21",
-      "name": "LaserHalf2",
-      "source": "images/tiles/laser/laserHalf2.png"
+      "name": "Laser3",
+      "source": "images/tiles/laser/laser3.png"
     },
     {
       "id": "22",
-      "name": "LaserStart3",
-      "source": "images/tiles/laser/laserStart3.png"
+      "name": "LaserHalf",
+      "source": "images/tiles/laser/laserHalf.png"
     },
     {
       "id": "23",
-      "name": "Laser3",
-      "source": "images/tiles/laser/laser3.png"
+      "name": "LaserHalf2",
+      "source": "images/tiles/laser/laserHalf2.png"
     },
     {
       "id": "24",
@@ -133,39 +134,41 @@
     },
     {
       "id": "26",
-      "name": "ExpressConveyorBeltHorizontal",
-      "source": "images/tiles/expressConveyor/ExpressConveyorHorizontal.png"
+      "name": "ExpressConveyorBeltVertical",
+      "source": "images/tiles/expressConveyor/ExpressConveyorVertical.png"
     },
 
     {
       "id": "27",
       "name": "ExpressArrow",
-      "source": "images/tiles/expressConveyor/ExpressArrowRight.png"
+      "source": "images/tiles/expressConveyor/ExpressArrowUp.png"
     },
     {
       "id": "28",
-      "name": "ExpressTurnTopRight",
-      "source": "images/tiles/expressConveyor/ExpressTurnTopRight.png"
+      "name": "ExpressTurnRightTop",
+      "source": "images/tiles/expressConveyor/ExpressTurnRightTop.png"
     },
     {
       "id": "29",
-      "name": "ExpressTurnBottomRight",
-      "source": "images/tiles/expressConveyor/ExpressTurnBottomRight.png"
+      "name": "ExpressTurnLeftTop",
+      "source": "images/tiles/expressConveyor/ExpressTurnLeftTop.png"
     },
     {
       "id": "30",
-      "name": "ExpressTurnTopLeft",
-      "source": "images/tiles/expressConveyor/ExpressTurnTopLeft.png"
+      "name": "ExpressArrowUpAndTurnLeft",
+      "source": "images/tiles/expressConveyor/ExpressArrowUpAndTurnLeft.png"
     },
     {
       "id": "31",
-      "name": "ExpressTurnBottomLeft",
-      "source": "images/tiles/expressConveyor/ExpressTurnBottomLeft.png"
+      "name": "ExpressArrowUpAndTurnRight",
+      "source": "images/tiles/expressConveyor/ExpressArrowUpAndTurnRight.png"
     },
+
+
     {
       "id": "32",
       "name": "ExpressStartArrow",
-      "source": "images/tiles/expressConveyor/ExpressStartArrowRight.png"
+      "source": "images/tiles/expressConveyor/ExpressStartArrowUp.png"
     },
     {
       "id": "33",
@@ -180,22 +183,22 @@
     {
       "id": "35",
       "name": "Presse_1_5",
-      "source": "images/tiles/pressor/Presse_1_5.png"
+      "source": "images/tiles/pressor/Pressor_1_5.png"
     },
     {
       "id": "36",
       "name": "Presse_2_4",
-      "source": "images/tiles/pressor/Presse_2_4.png"
+      "source": "images/tiles/pressor/Pressor_2_4.png"
     },
     {
       "id": "37",
       "name": "PresseMitKreuzung_2_4",
-      "source": "images/tiles/pressor/PresseMitKreuzung_2_4.png"
+      "source": "images/tiles/pressor/PressorCrossing_2_4.png"
     },
     {
       "id": "38",
       "name": "PresseMitKreuzung_3",
-      "source": "images/tiles/pressor/PresseMitKreuzung_3.png"
+      "source": "images/tiles/pressor/PressorCrossing_3.png"
     },
     {
       "id": "39",
@@ -204,23 +207,25 @@
     },
     {
       "id": "40",
-      "name": "Pusher_1_3_5",
-      "source": "images/tiles/pusher/Pusher_1_3_5.png"
-    },{
-      "id": "41",
       "name": "Pusher_2",
       "source": "images/tiles/pusher/Pusher_2.png"
     },
     {
-      "id": "42",
-      "name": "Pusher_2_4",
-      "source": "images/tiles/pusher/Pusher_2_4.png"
-    },
-    {
-      "id": "43",
+      "id": "41",
       "name": "Pusher_3",
       "source": "images/tiles/pusher/Pusher_3.png"
     },
+    {
+      "id": "42",
+      "name": "Pusher_1_3_5",
+      "source": "images/tiles/pusher/Pusher_1_3_5.png"
+    },
+    {
+      "id": "43",
+      "name": "Pusher_2_4",
+      "source": "images/tiles/pusher/Pusher_2_4.png"
+    },
+
     {
       "id": "44",
       "name": "Player01",
@@ -260,6 +265,17 @@
       "id": "51",
       "name": "Player08",
       "source": "images/tiles/player/Player08.png"
+    },
+    {
+      "id": "52",
+      "name": "T-Turn",
+      "source": "images/tiles/conveyor/T-Turn.png"
+    }
+  ,
+    {
+      "id": "53",
+      "name": "ExpressT-Turn",
+      "source": "images/tiles/expressConveyor/ExpressT-Turn.png"
     }
   ]
 }

@@ -63,7 +63,7 @@ public class WallBehaviourTest {
                         activeInProgramSteps,
                         new Position(1, 1),
                         CardinalDirection.East,
-                        3);
+                        3, true, true);
 
         board[1][1] = new Block(tileBehaviours, "", new Position(1, 1));
         board[2][2] = new Block(tileBehaviours, "", new Position(2, 2));

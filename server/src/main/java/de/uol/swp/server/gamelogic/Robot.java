@@ -25,6 +25,10 @@ public class Robot implements Serializable {
     private int lifeToken;
     private boolean powerDown;
 
+    private boolean a;
+
+    private boolean b;
+
     private int optionCard;
     private int lockedRegisters;
 

@@ -37,7 +37,7 @@ public class PressorBehaviourTest {
         robotStates[0] = new Robot(1, new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        pressorBehaviour = new PressorBehaviour(List.of(robotStates), board, activeInProgramSteps, blockPos);
+        pressorBehaviour = new PressorBehaviour(List.of(robotStates), board,  blockPos, activeInProgramSteps, CardinalDirection.West, true);
     }
 
     /**
