@@ -29,7 +29,7 @@ public final class MapBuilderTemplate {
     public static void main(String[] args) throws IOException {
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
+        Block[][] map = getMap("server/src/main/resources/maps/templateMap.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -40,7 +40,7 @@ public final class MapBuilderTemplate {
         mapGenExtracted(map);
 
         ObjectOutputStream objOut =
-                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/tempMap.map"));
+                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/templateMap.map"));
         objOut.writeObject(map);
         objOut.flush();
         objOut.close();
