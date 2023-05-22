@@ -439,10 +439,12 @@
                     </columnConstraints>
                     <children>
                         <Rectangle fx:id="chosenCard1" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
-                        <Text fx:id = "text_chosenCard1" fill="BLACK" text=""  translateY= "10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                         <GridPane.margin>
                         <Insets />
-                     </GridPane.margin></Rectangle>
+                    </GridPane.margin>
+                        </Rectangle>
+                        <Text fx:id = "text_chosenCard1" fill="BLACK" text=""  translateY= "10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="chosenCard2" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_chosenCard2" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
