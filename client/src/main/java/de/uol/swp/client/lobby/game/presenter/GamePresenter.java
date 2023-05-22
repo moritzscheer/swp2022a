@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
+import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
@@ -204,6 +205,49 @@ public class GamePresenter extends AbstractPresenter {
     private Rectangle chosenCard4;
     @FXML
     private Rectangle chosenCard5;
+
+    @FXML
+    private Text text_card1;
+
+    @FXML
+    private Text text_card2;
+
+    @FXML
+    private Text text_card3;
+
+    @FXML
+    private Text text_card4;
+
+    @FXML
+    private Text text_card5;
+
+    @FXML
+    private Text text_card6;
+
+    @FXML
+    private Text text_card7;
+
+    @FXML
+    private Text text_card8;
+
+    @FXML
+    private Text text_card9;
+
+    @FXML
+    private Text text_chosenCard1;
+
+    @FXML
+    private Text text_chosenCard2;
+
+    @FXML
+    private Text text_chosenCard3;
+
+    @FXML
+    private Text text_chosenCard4;
+
+    @FXML
+    private Text text_chosenCard5;
+
     @FXML
     private ImageView markField;
     @FXML
@@ -222,10 +266,11 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player8Grid;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
-    Map<Rectangle, Boolean> cards = new LinkedHashMap<>();
-    Map<Rectangle, Boolean> slots = new LinkedHashMap<>();
+    Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
+    Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
+
+    Map<Rectangle,Text> cardValues = new LinkedHashMap<>();
     ArrayList<Card> cardHand = new ArrayList<>();
-    static ArrayList<Card> cardDeck = new ArrayList<>();
     ArrayList<Card> submittedCards = new ArrayList<>();
     private LobbyDTO lobby;
     private ArrayList<User> users = new ArrayList<User>();
@@ -233,6 +278,7 @@ public class GamePresenter extends AbstractPresenter {
     private List<PlayerDTO> playersDTO;
     private int playerCount;
     private boolean playerReady = false;
+    private Map<UserDTO, Integer> userToPositionInStackPanes = new HashMap<>();
     private ArrayList<StackPane> playerReadyStackPanes;
     private ArrayList<Text> playerHpTexts;
     private ArrayList<Text> playerCpTexts;
@@ -269,6 +315,7 @@ public class GamePresenter extends AbstractPresenter {
         this.lobby = lobby;
         this.textChat = new TextChatChannel(lobby.getTextChatID(),eventBus);
         this.playersDTO = game.getPlayers();
+        this.playerCount = playersDTO.size();
 
         //TODO: ADD LOGGEDINUSER
         this.loggedInUser = loggedInUser;
@@ -276,7 +323,9 @@ public class GamePresenter extends AbstractPresenter {
         LOG.debug("LoggedInUser", this.loggedInUser);
 
 
-        readyButton.setText("Not Ready");
+        readyButton.setText("Submit Cards");
+        readyButton.setDisable(true);
+        readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
         robotOffButton.setText("Turn Robot OFF");
 
         ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
@@ -342,29 +391,37 @@ public class GamePresenter extends AbstractPresenter {
 
         // TODO: load cards
 
-        cards.put(card1, false);
-        cards.put(card2, false);
-        cards.put(card3, false);
-        cards.put(card4, false);
-        cards.put(card5, false);
-        cards.put(card6, false);
-        cards.put(card7, false);
-        cards.put(card8, false);
-        cards.put(card9, false);
+        cardsMap.put(card1, null);
+        cardsMap.put(card2, null);
+        cardsMap.put(card3, null);
+        cardsMap.put(card4, null);
+        cardsMap.put(card5, null);
+        cardsMap.put(card6, null);
+        cardsMap.put(card7, null);
+        cardsMap.put(card8, null);
+        cardsMap.put(card9, null);
 
-        slots.put(chosenCard1, false);
-        slots.put(chosenCard2, false);
-        slots.put(chosenCard3, false);
-        slots.put(chosenCard4, false);
-        slots.put(chosenCard5, false);
+        chosenCardsMap.put(chosenCard1, null);
+        chosenCardsMap.put(chosenCard2, null);
+        chosenCardsMap.put(chosenCard3, null);
+        chosenCardsMap.put(chosenCard4, null);
+        chosenCardsMap.put(chosenCard5, null);
 
-//        markField.setPreserveRatio(true);
-//        markField.setFitHeight(50);
-//        markField.setFitWidth(50);
-//        markField.setImage(image);
+        cardValues.put(card1,text_card1);
+        cardValues.put(card2,text_card2);
+        cardValues.put(card3,text_card3);
+        cardValues.put(card4,text_card4);
+        cardValues.put(card5,text_card5);
+        cardValues.put(card6,text_card6);
+        cardValues.put(card7,text_card7);
+        cardValues.put(card8,text_card8);
+        cardValues.put(card9,text_card9);
+        cardValues.put(chosenCard1,text_chosenCard1);
+        cardValues.put(chosenCard2,text_chosenCard2);
+        cardValues.put(chosenCard3,text_chosenCard3);
+        cardValues.put(chosenCard4,text_chosenCard4);
+        cardValues.put(chosenCard5,text_chosenCard5);
 
-        // creates the board
-        //reloadMap(null);
 
         resetCardsAndSlots();
     }
@@ -389,6 +446,7 @@ public class GamePresenter extends AbstractPresenter {
                         String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
                 playerRlTexts.get(count).setText(
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
+                userToPositionInStackPanes.put(playerDTO.getUser(),count);
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
         }
@@ -450,38 +508,43 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     public void onCardClicked(MouseEvent click) {
-        if (slots.containsValue(false)) {
-            for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-                if (cardz.getKey().equals(getCardOrSlot(click.toString())) && cardz.getValue() == true) {
-                    for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
-                        if (slotz.getValue() == false) {
-                            switchTwoCardsOrSlots(getCardOrSlot(click.toString()), slotz.getKey());
-                            break;
-                        }
+        LOG.debug("CARD CLICKED");
+        if (chosenCardsMap.containsValue(null)) {
+            setNotReadyWhileAllCardsWereNotChosen();
+
+                // simplify
+                for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
+                    if (slotz.getValue() == null) {
+                        // click.getSource() is a Rectangle
+                        switchTwoCardsOrSlots((Rectangle) click.getSource(), slotz.getKey());
+                        break;
                     }
-                    break;
                 }
-            }
+                if (!chosenCardsMap.containsValue(null))
+                    readyButton.setDisable(false);
+
+        }
+        else {
+            LOG.debug("NO MORE SLOTS AVAILABLE");
         }
     }
 
     @FXML
     //Clickevent auf deinen Slotbereich
     public void onSlotClicked(MouseEvent click) {
-
-        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
-            if (slotz.getKey().equals(getCardOrSlot(click.toString())) && slotz.getValue() == true) {
-                for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-                    if (cardz.getValue() == false) {
-                        switchTwoCardsOrSlots(getCardOrSlot(click.toString()), cardz.getKey());
-                        break;
-                    }
+        LOG.debug("SLOT CLICKED");
+        if (chosenCardsMap.get((Rectangle) click.getSource()) != null) {
+            setNotReadyWhileAllCardsWereNotChosen();
+            for (Map.Entry<Rectangle, CardDTO> cardz : cardsMap.entrySet()) {
+                if (cardz.getValue() == null) {
+                    switchTwoCardsOrSlots((Rectangle)click.getSource(), cardz.getKey());
+                    break;
                 }
-                break;
             }
         }
     }
 
+    // TODO: this method can be simplified
     //Gibt dir aus einem Target.toString() den passenden Slot aus
     public Rectangle getCardOrSlot(String click) {
 
@@ -524,9 +587,10 @@ public class GamePresenter extends AbstractPresenter {
     // Tauscht 2 Karten miteinander egal welche
     public void switchTwoCardsOrSlots(Rectangle start, Rectangle end) {
 
-        System.out.println(start.toString());
-        System.out.println(end.toString());
-        System.out.println("---------------");
+        //change Values
+        String copyStart = cardValues.get(start).getText();
+        cardValues.get(start).setText(cardValues.get(end).getText());
+        cardValues.get(end).setText(copyStart);
 
         //change pictures
         Rectangle copy = new Rectangle();
@@ -535,81 +599,29 @@ public class GamePresenter extends AbstractPresenter {
         start.setFill(end.getFill());
         end.setFill(copy.getFill());
 
+        if (start.toString().contains("card") && end.toString().contains("chosenCard")) {
+            CardDTO from = cardsMap.get(start);
+            CardDTO to = chosenCardsMap.get(end);
 
-        //change slotmaps
-        boolean startBool = getSwitchTwoCardsOrSlotsBoolean(start);
-        boolean endBool = getSwitchTwoCardsOrSlotsBoolean(end);
+            cardsMap.replace(start, to);
+            chosenCardsMap.replace(end, from);
+        } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
+            CardDTO from = chosenCardsMap.get(start);
+            CardDTO to = cardsMap.get(end);
 
-        if (start.toString().contains("card")) {
-            cards.replace(start, endBool);
-        } else if (start.toString().contains("chosenCard")) {
-            slots.replace(start, endBool);
+            chosenCardsMap.replace(start, to);
+            cardsMap.replace(end, from);
+        }
+        else{
+            // some weird case
+            LOG.debug("IS THIS CORRECT????");
         }
 
-        if (end.toString().contains("card")) {
-            cards.replace(end, startBool);
-        } else if (end.toString().contains("chosenCard")) {
-            slots.replace(end, startBool);
-        }
-
-
-        //change cardpositions
-        int startID = -1;
-        int endID = -1;
-        for (int i = 0; i < cardHand.size(); i++) {
-
-            if (cardHand.get(i).getPosition().equals(start)) {
-                startID = i;
-            }
-            if (cardHand.get(i).getPosition().equals(end)) {
-                endID = i;
-            }
-        }
-
-        System.out.println(startID);
-        System.out.println(endID);
-        System.out.println("---------------");
-
-        if (startID == -1 && endID > -1) {
-            cardHand.get(endID).setPosition(start);
-        } else if (endID == -1 && startID > -1) {
-            cardHand.get(startID).setPosition(end);
-        } else if (startID > -1 && endID > -1) {
-            copy = cardHand.get(startID).getPosition();
-
-            cardHand.get(startID).setPosition(end);
-            cardHand.get(endID).setPosition(copy);
-        }
     }
 
-
-    // gibt den Boolean vom Kartenslot raus
-    public boolean getSwitchTwoCardsOrSlotsBoolean(Rectangle cardslot) {
-        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-            if (cardz.getKey().equals(cardslot)) {
-                return cardz.getValue();
-            }
-        }
-        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
-            if (slotz.getKey().equals(cardslot)) {
-                return slotz.getValue();
-            }
-        }
-        return false;
-    }
-
-    public ArrayList<Card> newCardDeck() {
-
-        ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 10; i <= 840; i = i + 10) {
-            cards.add(new Card(i));
-        }
-        Collections.shuffle(cards);
-        return cards;
-    }
 
     /**
-     * Reset slots
+     * Reset chosenCardsSlots
      *
      * @author Moritz
      * @since 2023-05-06
@@ -618,17 +630,17 @@ public class GamePresenter extends AbstractPresenter {
         cardHand.clear();
         submittedCards.clear();
 
-        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-            if (cardz.getKey() != null) {
-                cards.replace(cardz.getKey(), false);
-                cardz.getKey().setFill(DODGERBLUE);
-            }
+        //TODO: check if this function may be removed
+//        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
+//            if (cardz.getKey() != null) {
+//                cards.replace(cardz.getKey(), false);
+//                cardz.getKey().setFill(DODGERBLUE);
+//            }
+//        }
 
-        }
-
-        for (Map.Entry<Rectangle, Boolean> slotz : slots.entrySet()) {
+        for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
-                slots.replace(slotz.getKey(), false);
+                chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(DODGERBLUE);
             }
         }
@@ -641,14 +653,13 @@ public class GamePresenter extends AbstractPresenter {
      */
     public void setReceivedCards(List<CardDTO> receivedCards){
         for (CardDTO receivedCard: receivedCards) {
-            for (Map.Entry<Rectangle, Boolean> cardSlot : cards.entrySet()) {
-                if (!cardSlot.getValue() && cardSlot.getKey() != null) {
-                    cards.replace(cardSlot.getKey(), true);
+            for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
+                if(cardSlot.getValue() == null) {
                     cardSlot.getKey().setFill(
                             jsonUtils.getCardImageById(receivedCard.getID())
                     );
-                    // TODO: implement cardHand?
-                    // cardHand.add(cardDeck.get(0));
+                    cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
+                    cardsMap.replace(cardSlot.getKey(), receivedCard);
                     break;
                 }
             }
@@ -657,22 +668,20 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     public void onSubmit(MouseEvent mouseEvent) {
-
-        if (slots.containsValue(false) == false) {
-            submittedCards.add(getCardBySlot(chosenCard1));
-            submittedCards.add(getCardBySlot(chosenCard2));
-            submittedCards.add(getCardBySlot(chosenCard3));
-            submittedCards.add(getCardBySlot(chosenCard4));
-            submittedCards.add(getCardBySlot(chosenCard5));
-
-            for (int i = 0; i < submittedCards.size(); i++) {
-                System.out.println(submittedCards.get(i).getValue());
-            }
-
-
-            resetCardsAndSlots();
-        }
-
+//        if (slots.containsValue(false) == false) {
+//            submittedCards.add(getCardBySlot(chosenCard1));
+//            submittedCards.add(getCardBySlot(chosenCard2));
+//            submittedCards.add(getCardBySlot(chosenCard3));
+//            submittedCards.add(getCardBySlot(chosenCard4));
+//            submittedCards.add(getCardBySlot(chosenCard5));
+//
+//            for (int i = 0; i < submittedCards.size(); i++) {
+//                System.out.println(submittedCards.get(i).getValue());
+//            }
+//
+//
+//            resetCardsAndSlots();
+//        }
 
     }
 
@@ -692,7 +701,6 @@ public class GamePresenter extends AbstractPresenter {
 
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
-
 
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
 
@@ -744,21 +752,29 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    private void setPlayerReadyStatus() { //To implement onPlayerReadyChangedMessage
-        User user = users.get(0);
-        boolean ready = false;
-        String style;
-        if (ready)
-            style = "-fx-background-color: green";
-        else
-            style = "-fx-background-color: red";
-
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                playerReadyStackPanes.get(i).setStyle(style);
-                break;
-            }
+    public void setPlayerReadyStatus(UserDTO playerIsReady) { //To implement onPlayerReadyChangedMessage
+        if(Objects.equals(playerIsReady, loggedInUser)){
+            readyButton.setDisable(true);
         }
+        else{
+            // TODO: for now keep it only to set ready
+            int position = userToPositionInStackPanes.get(playerIsReady);
+            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green");
+        }
+
+
+//        String style;
+//        if (ready)
+//            style = "-fx-background-color: green";
+//        else
+//            style = "-fx-background-color: red";
+//
+//        for (int i = 0; i < playerCount; i++) {
+//            if (users.get(i).getUsername() == user.getUsername()) {
+//                playerReadyStackPanes.get(i).setStyle(style);
+//                break;
+//            }
+//        }
     }
 
     /**
@@ -796,17 +812,38 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-
+        // TODO: mabye change READY  to SUBMIT
         if (!playerReady) {
-            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            readyButton.setText("Ready");
+            LOG.debug("Submitting chosen cards");
+            readyButton.setStyle("-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Submitted");
+            readyButton.setDisable(true);
             playerReady = true;
+
+            // submit cards when ready is clicked
+            List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
+            eventBus.post(new SubmitCardsEvent(
+                    this.lobbyID, (UserDTO) this.loggedInUser, chosenCards
+            ));
         } else {
-            readyButton.setStyle("-fx-background-color: red;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            readyButton.setText("Not Ready");
+            readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+            readyButton.setText("Submit Cards");
             playerReady = false;
         }
     }
+
+    /** Prevent Player from sending requests while all cards were not yet chosen
+     *
+     * @author Maria Eduarda
+     * @since 2023-05-18
+     */
+    private void setNotReadyWhileAllCardsWereNotChosen(){
+        readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+        readyButton.setText("Submit Cards");
+        readyButton.setDisable(true);
+        playerReady = false;
+    }
+
     /**
      * Setting Checkpoint of the user
      *

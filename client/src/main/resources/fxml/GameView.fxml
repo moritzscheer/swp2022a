@@ -382,14 +382,20 @@
                         <ColumnConstraints hgrow="SOMETIMES" />
                     </columnConstraints>
                     <children>
-                        <Rectangle fx:id="chosenCard1" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin></Rectangle>
+                        <Rectangle fx:id="chosenCard1" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" />
+                        <Text fx:id = "text_chosenCard1" fill="BLACK" text=""  translateY= "10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="chosenCard2" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="1" />
+                        <Text fx:id = "text_chosenCard2" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="chosenCard3" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="2" />
+                        <Text fx:id = "text_chosenCard3" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="chosenCard4" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="3" />
+                        <Text fx:id = "text_chosenCard4" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="chosenCard5" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="4" />
+                        <Text fx:id = "text_chosenCard5" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                     </children>
                <GridPane.margin>
                   <Insets top="10.0" />
@@ -413,14 +419,32 @@
                     </columnConstraints>
                     <children>
                         <Rectangle fx:id="card1" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" />
+                        <Text fx:id = "text_card1" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card2" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="1" />
+                        <Text fx:id = "text_card2" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card3" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="2" />
+                        <Text fx:id = "text_card3" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card4" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="3" />
+                        <Text fx:id = "text_card4" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card5" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="4" />
+                        <Text fx:id = "text_card5" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card6" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.rowIndex="1" />
+                        <Text fx:id = "text_card6" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card7" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Text fx:id = "text_card7" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card8" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Text fx:id = "text_card8" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <Rectangle fx:id="card9" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Text fx:id = "text_card9" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+
                         <ImageView fx:id="markField" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                     </children>
                <opaqueInsets>

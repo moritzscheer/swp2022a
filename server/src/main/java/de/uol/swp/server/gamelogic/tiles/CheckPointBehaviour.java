@@ -47,6 +47,6 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
 
     @Override
     public List<int[]> getImage(){
-        return new ArrayList<>(List.of(new int[]{3 + number, 0}));
+        return new ArrayList<>(List.of(new int[]{2 + number, 0}));
     }
 }
