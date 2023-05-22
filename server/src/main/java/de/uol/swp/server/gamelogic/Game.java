@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static de.uol.swp.server.utils.ConvertToDTOUtils.convertUserToUserDTO;
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
 import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
@@ -35,7 +35,7 @@ public class Game {
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
-    private int programStep; // program steps from 1 to 5
+    private int programStep; // program steps from 0 to 4
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
     private final List<AbstractPlayer> players = new ArrayList<>();
@@ -66,7 +66,7 @@ public class Game {
         this.dockingStartPosition = checkpointsList[0];
 
         // create players and robots
-        int i=1;
+        int i=0; // start robots id in 0
         for(User user: users) {
             Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
@@ -76,42 +76,6 @@ public class Game {
 
         this.nRobots = robots.size();
         this.playedCards = new Card[this.nRobots][5];
-    }
-
-    /**
-     * When a player has chosen its cards, he will press "register" button this function will call
-     * the player function that will register his cards Once all players have chosen, the calcGame
-     * will be called
-     *
-     * @author Maria
-     * @see de.uol.swp.server.gamelogic.Player
-     * @see de.uol.swp.server.gamelogic.cards.Card
-     * @since 2023-04-25
-     */
-    public void register(UserDTO loggedInUser, List<CardDTO> playerCards)
-            throws InterruptedException {
-        // TODO
-        // check when all players are ready to register the next cards
-        this.readyRegister += 1;
-        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
-        Card[] chosenCards = new Card[5];
-        int i = 0;
-        for(CardDTO cardDTO: playerCards)
-            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
-
-        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
-
-        if (this.readyRegister == this.nRobots - 1) {
-            startTimer();
-        } else if (this.readyRegister == this.nRobots) {
-            this.programStep = 1; // start in the first program step, until 5
-            for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
-                this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
-            }
-            revealProgramCards();
-            goToNextRound();
-            this.readyRegister = 0;
-        }
     }
 
     /**
@@ -162,6 +126,44 @@ public class Game {
     }
 
     /**
+     * When a player has chosen its cards, he will press "register" button this function will call
+     * the player function that will register his cards Once all players have chosen, the calcGame
+     * will be called
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Player
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @since 2023-04-25
+     */
+    public boolean register(UserDTO loggedInUser, List<CardDTO> playerCards)
+            throws InterruptedException {
+        // TODO
+        // check when all players are ready to register the next cards
+        this.readyRegister += 1;
+        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
+        Card[] chosenCards = new Card[5];
+        int i = 0;
+        for(CardDTO cardDTO: playerCards){
+            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
+            i++;
+        }
+
+        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
+
+        if (this.readyRegister == this.nRobots - 1) {
+            startTimer();
+        } else if (this.readyRegister == this.nRobots) {
+            this.programStep = 0; // start in the first (0) program step, until 4
+            for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
+                this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
+            }
+            this.readyRegister = 0;
+            return true; // return true when all players have played
+        }
+        return false;
+    }
+
+    /**
      * Sends response to client with cards to be displayed
      * One from each Player
      *
@@ -170,15 +172,17 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public Card[] revealProgramCards() {
-        // TODO: send message to client
-
-        Card[] cardsInThisProgramStep = new Card[this.nRobots];
+    public Map<UserDTO, CardDTO> revealProgramCards() {
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = new HashMap<>();
+        LOG.debug("REVEALING PROGRAM CARDS STEP: "+ this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
-            cardsInThisProgramStep[playerIterator] =
-                    this.playedCards[playerIterator][this.programStep];
+            userDTOCardDTOMap.put(
+                    ((Player)this.players.get(playerIterator)).getUser(),
+                    // program steps starts in 1 and this array in 0
+                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
+            );
         }
-        return cardsInThisProgramStep;
+        return userDTOCardDTOMap;
     }
 
     /**
@@ -199,15 +203,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void goToNextRound() throws InterruptedException {
-        // TODO
-        while (this.programStep <= 5) {
-            calcGameRound();
-            // sleep
-            TimeUnit.SECONDS.sleep(30);
-            // go to next step
-            this.programStep += 1;
-        }
+    public void roundIsOver() throws InterruptedException {
+
         // round is over
         this.programStep = 0;
         this.notDistributedCards = true; // set to distribute for next round
@@ -233,7 +230,8 @@ public class Game {
         }
     }
 
-    private void calcGameRound() {
+    public void calcGameRound() {
+        LOG.debug("Calculating game for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -244,6 +242,8 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
+        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
@@ -252,6 +252,9 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
+        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
         // Iterate through all the traps
         for (Block[] blocksX : board) {
             for (Block blockXY : blocksX) {
@@ -290,9 +293,17 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
+        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
 
         // Send back a collective result of the whole GameRound
     }
+
+
+    //////////////////////////////
+    // SOLVING MOVE INTENTS
+    /////////////////////////////
 
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
@@ -484,9 +495,18 @@ public class Game {
             Position destinationTile,
             CardinalDirection moveDir,
             Block[][] board) {
-        return board[currentTile.x][currentTile.y].getObstruction(moveDir)
-                || board[destinationTile.x][destinationTile.y].getObstruction(
-                        CardinalDirection.values()[moveDir.ordinal() + 2]);
+        try {
+            if (destinationTile.x < 0 || destinationTile.y < 0 ||
+                    destinationTile.x >= board.length || destinationTile.y >= board[0].length)
+                return true;
+            return board[currentTile.x][currentTile.y].getObstruction(moveDir)
+                    || board[destinationTile.x][destinationTile.y].getObstruction(
+                    CardinalDirection.values()[moveDir.ordinal() + 2]);
+        } catch (ArrayIndexOutOfBoundsException e){
+            // testing for out of bounds
+            return false;
+        }
+
     }
 
     private static void removeMoveResultAndParents(
@@ -534,6 +554,10 @@ public class Game {
         }
     }
 
+
+    //////////////////////////////
+    // GETTERS // SETTERS
+    /////////////////////////////
     /**
      * Getter for lobbyID
      *
@@ -608,5 +632,13 @@ public class Game {
      */
     public Position getDockingStartPosition() {
         return this.dockingStartPosition;
+    }
+
+    public int getProgramStep(){
+        return this.programStep;
+    }
+
+    public void increaseProgramStep(){
+        this.programStep++;
     }
 }

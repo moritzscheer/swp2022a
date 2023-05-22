@@ -10,9 +10,7 @@ import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.game.dto.GameDTO;
-import de.uol.swp.common.game.message.GetMapDataResponse;
-import de.uol.swp.common.game.message.PlayerIsReadyMessage;
-import de.uol.swp.common.game.message.StartGameMessage;
+import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
@@ -308,5 +306,15 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void sendMessagePlayerIsReady(PlayerIsReadyMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerReadyStatus(msg.getPlayerIsReady());
+    }
+
+    public void sendMessageAllPlayersAreReady(ShowAllPlayersCardsMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.setPlayerCard(msg.getUserDTOCardDTOMap());
+    }
+
+    public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
     }
 }

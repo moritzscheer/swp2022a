@@ -106,7 +106,8 @@ public final class JsonUtils {
      * @since 2023-05-19
      */
     public ImageView getRobotImage(int robotID){
-        String path = String.format("images/player/Player0%d.png", robotID);
+        // robot id starts in 0
+        String path = String.format("images/player/Player0%d.png", robotID+1);
 
         ImageView imageView = new ImageView(new Image(path));
 
@@ -115,5 +116,29 @@ public final class JsonUtils {
         imageView.setFitHeight(35);
 
         return imageView;
+    }
+
+    /**
+     * Helper method to create the ImageView for the card
+     *
+     * @param cardID the cardID to get the path
+     * @author Maria Andrade
+     * @since 2023-05-20
+     */
+    public Image getCardImage(int cardID){
+        String path;
+        for (int i = 0; i < this.jsonCardArray.length(); i++) {
+            JSONObject obj = null;
+            try {
+                obj = this.jsonCardArray.getJSONObject(i);
+                if (obj.get("card-id").equals(cardID)) {
+                    path = obj.getString("source");
+                    return new Image(path);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

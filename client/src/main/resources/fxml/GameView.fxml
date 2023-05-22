@@ -7,57 +7,66 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainGrid" style="-fx-padding: 10; -fx-background-color: lightgray" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="mainGrid" hgap="10.0" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" style="-fx-padding: 10; -fx-background-color: lightgray; -fx-background-radius: 5; -fx-border-radius: 5;" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="100" percentWidth="20.0" />
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="60" />
-        <ColumnConstraints hgrow="SOMETIMES" percentWidth="25" />
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="55.0" />
+        <ColumnConstraints hgrow="SOMETIMES" percentWidth="30.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-      <GridPane fx:id="gameBoardWrapper" alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 10;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <GridPane fx:id="gameBoardWrapper" alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 5;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-              <!-- Middle -->
-              <GridPane fx:id="gameBoard" alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                  <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" />
-                  </columnConstraints>
-                  <rowConstraints>
-                      <RowConstraints vgrow="SOMETIMES" />
-                  </rowConstraints>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
+            <HBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                <GridPane.margin>
-                  <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                  <Insets />
                </GridPane.margin>
-              </GridPane>
+               <children>
+                  <VBox alignment="CENTER">
+                     <children>
+                          <!-- Middle -->
+                          <GridPane fx:id="gameBoard" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                              <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" />
+                              </columnConstraints>
+                              <rowConstraints>
+                                  <RowConstraints vgrow="SOMETIMES" />
+                              </rowConstraints>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                          </GridPane>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
          <GridPane.margin>
-            <Insets left="10.0" right="10.0" />
+            <Insets />
          </GridPane.margin>
-         <padding>
-            <Insets left="40.0" right="40.0" />
-         </padding>
       </GridPane>
         <!-- Left side -->
-        <GridPane fx:id="leftGrid" style="-fx-border-color: black; -fx-border-radius: 10;">
+        <GridPane fx:id="leftGrid" style="-fx-border-color: black; -fx-border-radius: 5;" vgap="5.0">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" />
             </columnConstraints>
@@ -78,14 +87,14 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" />
-                                <ColumnConstraints hgrow="SOMETIMES" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints vgrow="SOMETIMES" />
@@ -115,8 +124,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -152,8 +161,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -189,8 +198,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -226,8 +235,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -263,8 +272,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -300,8 +309,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" percentWidth="50" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints percentHeight="33" vgrow="SOMETIMES" />
-                        <RowConstraints percentHeight="66" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <GridPane style="-fx-padding: 5" GridPane.rowIndex="1">
@@ -333,44 +342,91 @@
             </children>
         </GridPane>
         <!-- Right side-->
-        <GridPane fx:id="rightGrid" GridPane.columnIndex="2">
+        <GridPane fx:id="rightGrid" vgap="10.0" GridPane.columnIndex="2">
             <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" />
             </columnConstraints>
             <rowConstraints>
-                <RowConstraints percentHeight="45" vgrow="SOMETIMES" />
-                <RowConstraints percentHeight="20" vgrow="SOMETIMES" />
-                <RowConstraints percentHeight="30" vgrow="SOMETIMES" />
-                <RowConstraints percentHeight="5" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="34.0" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="20.0" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="40.0" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="6.0" vgrow="SOMETIMES" />
             </rowConstraints>
             <children>
-                <TabPane style="-fx-border-color: black; -fx-border-radius: 10;" tabClosingPolicy="UNAVAILABLE">
+                <TabPane style="-fx-border-color: black; -fx-border-radius: 5;" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab text="History">
-                            <content>
-                                <AnchorPane styleClass="HistoryAnchor" />
-                            </content>
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </content>
                         </Tab>
                         <Tab text="Chat">
-                            <content>
-                                <AnchorPane styleClass="ChatAnchor">
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                        </GridPane>
+                     </content>
+                     <content>
+                        <GridPane>
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" percentHeight="90.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" percentHeight="20.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
                            <children>
-                               <TextArea fx:id="chatOutput" editable="false" layoutX="8.0" layoutY="7.0" prefHeight="235.0" prefWidth="270.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="8.0" />
-                               <TextField fx:id="chatInput" layoutX="8.0" layoutY="249.0" onKeyPressed="#textChatInputKeyPressed" prefHeight="26.0" prefWidth="270.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="249.0" />
-                           </children></AnchorPane>
-                            </content>
+                              <TextArea fx:id="chatOutput" editable="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <GridPane.margin>
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="2.0" />
+                                 </GridPane.margin>
+                              </TextArea>
+                              <TextField fx:id="chatInput" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onKeyPressed="#textChatInputKeyPressed" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <GridPane.margin>
+                                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                 </GridPane.margin></TextField>
+                           </children>
+                        </GridPane>
+                     </content>
                         </Tab>
                     </tabs>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
                <padding>
-                  <Insets left="8.0" top="5.0" />
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </padding>
                 </TabPane>
+                <GridPane fx:id="selectedCardGridPane" GridPane.rowIndex="1">
+                    <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+            <children>
                 <!-- ChosenCards -->
 
-                <GridPane style="-fx-border-color: black; -fx-border-radius: 10;" GridPane.rowIndex="1">
+
+                <GridPane style="-fx-border-color: black; -fx-border-radius: 5;" vgap="5.0" GridPane.rowIndex="1">
                     <rowConstraints>
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
@@ -382,30 +438,42 @@
                         <ColumnConstraints hgrow="SOMETIMES" />
                     </columnConstraints>
                     <children>
-                        <Rectangle fx:id="chosenCard1" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" />
+                        <Rectangle fx:id="chosenCard1" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
+                        <GridPane.margin>
+                        <Insets />
+                    </GridPane.margin>
+                        </Rectangle>
                         <Text fx:id = "text_chosenCard1" fill="BLACK" text=""  translateY= "10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="chosenCard2" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="1" />
+                        <Rectangle fx:id="chosenCard2" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_chosenCard2" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="chosenCard3" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="2" />
+                        <Rectangle fx:id="chosenCard3" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_chosenCard3" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="chosenCard4" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="3" />
+                        <Rectangle fx:id="chosenCard4" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_chosenCard4" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="chosenCard5" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="54.6" GridPane.columnIndex="4" />
+                        <Rectangle fx:id="chosenCard5" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_chosenCard5" fill="BLACK" text=""   translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                     </children>
-               <GridPane.margin>
-                  <Insets top="10.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
                 </GridPane>
+            </children>
+        </GridPane>
+        <GridPane fx:id="handCardGridPane" GridPane.rowIndex="2">
+
+                <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
                 <!-- AvailableCards -->
-                <GridPane style="-fx-border-color: black; -fx-border-radius: 10;" GridPane.rowIndex="2">
+                <GridPane style="-fx-border-color: black; -fx-border-radius: 5;" vgap="5.0" GridPane.rowIndex="2">
                     <rowConstraints>
                         <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
@@ -418,45 +486,41 @@
                         <ColumnConstraints hgrow="SOMETIMES" />
                     </columnConstraints>
                     <children>
-                        <Rectangle fx:id="card1" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" />
+                        <Rectangle fx:id="card1" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card1" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card2" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="1" />
+                        <Rectangle fx:id="card2" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card2" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card3" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="2" />
+                        <Rectangle fx:id="card3" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card3" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card4" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="3" />
+                        <Rectangle fx:id="card4" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card4" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card5" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="4" />
+                        <Rectangle fx:id="card5" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card5" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card6" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="card6" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card6" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card7" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="card7" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card7" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card8" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="card8" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card8" fill="BLACK" text=""  translateY="10.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
-                        <Rectangle fx:id="card9" fill="dodgerblue" height="83.2" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="54.6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Rectangle fx:id="card9" fill="dodgerblue" height="80.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES" />
                         <Text fx:id = "text_card9" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
                         <ImageView fx:id="markField" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                     </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <GridPane.margin>
-                  <Insets bottom="5.0" top="10.0" />
-               </GridPane.margin>
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
                 </GridPane>
+            </children>
+        </GridPane>
                 <!-- Buttons -->
                 <GridPane GridPane.rowIndex="3">
                     <columnConstraints>
@@ -467,15 +531,21 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="readyButton" maxWidth="Infinity" onAction="#onReadyButtonPressed">
+                        <Button fx:id="readyButton" maxWidth="1.7976931348623157E308" onAction="#onReadyButtonPressed">
                             <GridPane.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                <Insets bottom="5.0" left="5.0" right="5.0" />
                             </GridPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                         </Button>
-                        <Button fx:id="robotOffButton" maxWidth="Infinity" onAction="#onRobotOffButtonPressed" GridPane.columnIndex="1">
+                        <Button fx:id="robotOffButton" maxWidth="1.7976931348623157E308" onAction="#onRobotOffButtonPressed" GridPane.columnIndex="1">
                             <GridPane.margin>
-                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                <Insets bottom="5.0" left="5.0" right="5.0" />
                             </GridPane.margin>
+                     <padding>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </padding>
                         </Button>
                     </children>
                 </GridPane>

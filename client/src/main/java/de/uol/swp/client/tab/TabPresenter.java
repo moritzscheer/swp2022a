@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class TabPresenter extends AbstractPresenter {
@@ -36,6 +37,11 @@ public class TabPresenter extends AbstractPresenter {
     @FXML private Label infoLabel2; // Are you sure you want to exit?
     @FXML private Label infoLabel3; // Are you sure you want to leave the Lobby?
     @FXML private Pane infoBox;
+
+    public TabPresenter(){
+    }
+
+
 
     // -----------------------------------------------------
     // subscribe methods
@@ -141,8 +147,10 @@ public class TabPresenter extends AbstractPresenter {
      * @since 2022-03-09
      */
     public void showNode(Integer lobbyID, Parent parent) {
+
         Platform.runLater(
                 () -> {
+
                     if (infoBox.isVisible()) {
                         updateInfoBox();
                     }
