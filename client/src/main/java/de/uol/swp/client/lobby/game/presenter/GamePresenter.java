@@ -22,7 +22,9 @@ import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.*;
@@ -89,7 +91,15 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private GridPane mainGrid;
     @FXML
+    private GridPane rightGrid;
+    @FXML
     private GridPane gameBoard;
+    @FXML
+    private GridPane gameBoardWrapper;
+    @FXML
+    private GridPane handCardGridPane;
+    @FXML
+    private GridPane selectedCardGridPane;
     @FXML
     private Text player2HP;
     @FXML
@@ -472,7 +482,7 @@ public class GamePresenter extends AbstractPresenter {
      * Handles GetMapDataMessage
      *
      * @param msg the GetMapDataMessage object seen on the EventBus
-     * @author Maria Andrade
+     * @author Maria Andrade and Tommy Dang
      * @see GetMapDataResponse
      * @since 2023-05-06
      */
@@ -482,11 +492,17 @@ public class GamePresenter extends AbstractPresenter {
                     this.board = msg.getBoardImageIds();
                     try {
                         for (int i = 0; i < board.length; i++) {
-                            gameBoard.addColumn(i);
+                            //gameBoard.addColumn(i);
+                            ColumnConstraints gameBoardColum = new ColumnConstraints();
+                            gameBoardColum.setHalignment(HPos.CENTER);
+                            gameBoard.getColumnConstraints().add(gameBoardColum);
                         }
 
                         for (int i = 0; i < board[0].length; i++) {
-                            gameBoard.addRow(i);
+                            //gameBoard.addRow(i);
+                            RowConstraints gameBoardRow = new RowConstraints();
+                            gameBoardRow.setValignment(VPos.CENTER);
+                            gameBoard.getRowConstraints().add(gameBoardRow);
                         }
 
                         for (int row = 0; row < board.length; row++) {
@@ -495,8 +511,8 @@ public class GamePresenter extends AbstractPresenter {
                                 for (int img = 0; img < images.length; img++) {
                                     ImageView imageView = jsonUtils.searchInTileJSON(String.valueOf(images[img]));
                                     imageView.setRotate(board[row][col].getBlockImagesDirection()[img].ordinal() * 90); // Rotate the image
-                                    imageView.setFitWidth(50);
-                                    imageView.setFitHeight(50);
+                                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1));
+                                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1));
                                     gameBoard.add(imageView, row + 1, col + 1);
                                 }
                             }
@@ -510,15 +526,60 @@ public class GamePresenter extends AbstractPresenter {
                             // show this player robot, since they all start in checkpoint 1
                             int robotID = player.getValue().getRobotDTO().getRobotID();
                             ImageView imageView = jsonUtils.getRobotImage(robotID);
+                            imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                            imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+
                             gameBoard.add(imageView, startPosition.x +1, startPosition.y +1);
 
                             this.userRobotImageViewReference.put(player.getKey(), imageView);
                         }
 
+                        /**
+                         * @author Tommy Dang
+                         * @since 2023-05-20
+                         */
+
+                        double widthOfRightGrid = 5.5;
+                        double heightOfHandCardGridPane = 2.5;
+                        double widthOfSelectedCardGridPane = 1.2;
+
+                        card1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card6.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card7.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card8.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        card9.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+
+                        card1.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card2.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card3.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card4.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card5.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card6.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card7.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card8.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        card9.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+
+                        chosenCard1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        chosenCard2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        chosenCard3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                        chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+
+                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+
                 });
     }
 
