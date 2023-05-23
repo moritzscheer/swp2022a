@@ -554,8 +554,17 @@ public class GamePresenter extends AbstractPresenter {
                             chosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
                         }
 
+
+                        /** Helps to align the Card priority text in the cards
+                         *
+                         * In the programming cards is a white box, where the value of the priority is. This helps to correctly align the text into the card
+                         * Needs to separate handcards and selected cards because of their different sizes.
+                         *
+                         * @author Tommy Dang
+                         * @since 2023-05-23
+                         */
                         for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
-                            handCardsText.getValue().translateYProperty().bind(selectedCardGridPane.heightProperty().divide(8).subtract(3.6)); // 10.3 / 0.5
+                            handCardsText.getValue().translateYProperty().bind(selectedCardGridPane.heightProperty().divide(8.1).subtract(3.5)); // 8.1 / 3.5
                         }
 
                         text_chosenCard1.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
