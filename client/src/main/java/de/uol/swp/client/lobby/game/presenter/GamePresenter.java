@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
@@ -82,6 +84,8 @@ import static javafx.scene.paint.Color.LIGHTGREY;
 public class GamePresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/GameView.fxml";
+    public static final String FXML1 = "/fxml/GameView.fxml";
+
     private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
     private JsonUtils jsonUtils;
     private Integer lobbyID;
@@ -144,6 +148,8 @@ public class GamePresenter extends AbstractPresenter {
     private Text player7RobotLives;
     @FXML
     private Text player8RobotLives;
+    @FXML
+    private Text winnerIs;
 
     @FXML
     private StackPane player2Ready;
@@ -1062,5 +1068,9 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    @Subscribe
+    public void onShowGameOverViewEvent(ShowGameOverEvent event){
+        winnerIs.setText(event.getUserWon() + "won the game!");
+    }
 }
 

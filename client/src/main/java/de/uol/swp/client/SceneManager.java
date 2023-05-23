@@ -13,6 +13,7 @@ import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.game.GameService;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
@@ -90,6 +91,7 @@ public class SceneManager {
     private Parent rulebookParent;
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
+    private Parent gameOverParent;
 
     @Inject
     private TabPresenter tabPresenter;
@@ -168,6 +170,7 @@ public class SceneManager {
         initAccountOptionsView();
         initJoinOrCreateView();
         initCreateLobbyView();
+        initGameOverView();
     }
 
     /**
@@ -198,6 +201,20 @@ public class SceneManager {
     // -----------------------------------------------------
     // init views
     // -----------------------------------------------------
+    /**
+     * Initializes the setting view
+     *
+     * <p>If the gameOverParent is null it gets set to a new scene containing the a pane showing the
+     * game over view as specified by the GamePresenter FXML file.
+     *
+     * @see de.uol.swp.client.lobby.game.presenter.GamePresenter
+     * @since 2022-12-11
+     */
+    public void initGameOverView() throws IOException{
+        if (gameOverParent == null) {
+            gameOverParent = initPresenter(GamePresenter.FXML1);
+        }
+    }
 
     /**
      * Initializes the login view
@@ -495,6 +512,10 @@ public class SceneManager {
     @Subscribe
     public void onShowSettingViewEvent(ShowSettingViewEvent event) {
         showSettingScreen();
+    }
+    @Subscribe
+    public void onShowGameOverViewEvent(ShowGameOverEvent event){
+        showGameOverScreen(event.getLobbyID());
     }
 
     // -----------------------------------------------------
@@ -923,6 +944,9 @@ public class SceneManager {
         showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
     }
 
+    public void showGameOverScreen(Integer lobbyID){
+        showNode(lobbyID, gameOverParent);
+    }
     /**
      * Shows the lobby screen
      *

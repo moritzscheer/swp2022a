@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
@@ -316,5 +317,9 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
+    }
+    public void gameOver(GameOverMessage msg) {
+        // create a Event, like in client/lobby/game/events
+        eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
     }
 }
