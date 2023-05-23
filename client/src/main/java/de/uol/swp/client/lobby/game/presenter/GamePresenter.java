@@ -64,6 +64,7 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.w3c.dom.css.Rect;
 
 import java.io.File;
 import java.io.FileReader;
@@ -100,8 +101,6 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane handCardGridPane;
     @FXML
     private GridPane selectedCardGridPane;
-    @FXML
-    private GridPane handCardWrapper1;
     @FXML
     private Text player2HP;
     @FXML
@@ -550,14 +549,20 @@ public class GamePresenter extends AbstractPresenter {
                             handCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
                             handCards.getKey().heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
                         }
-                        for (Map.Entry<Rectangle, CardDTO> choosenCards : chosenCardsMap.entrySet()) {
-                            choosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                            choosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        for (Map.Entry<Rectangle, CardDTO> chosenCards : chosenCardsMap.entrySet()) {
+                            chosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            chosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
                         }
 
                         for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
-                            //handCardsText.getKey().translateYProperty().bind(handCardWrapper1.heightProperty());
+                            handCardsText.getValue().translateYProperty().bind(selectedCardGridPane.heightProperty().divide(8).subtract(3.6)); // 10.3 / 0.5
                         }
+
+                        text_chosenCard1.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard2.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard3.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard4.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard5.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
 
                     } catch (Exception e) {
                         e.printStackTrace();
