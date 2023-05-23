@@ -61,35 +61,35 @@ public class Card {
 
         switch (this.cardType) {
             case MOVE1:
-                result = new ImagePattern(new Image("images/cards/prgcard006.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard006.png"));
                 break;
 
             case MOVE2:
-                result = new ImagePattern(new Image("images/cards/prgcard007.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard007.png"));
                 break;
 
             case MOVE3:
-                result = new ImagePattern(new Image("images/cards/prgcard005.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard005.png"));
                 break;
 
             case UTURN:
-                result = new ImagePattern(new Image("images/cards/prgcard004.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard004.png"));
                 break;
 
             case BACKUP:
-                result = new ImagePattern(new Image("images/cards/prgcard008.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard008.png"));
                 break;
 
             case LEFTTURN:
-                result = new ImagePattern(new Image("images/cards/prgcard001.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard001.png"));
                 break;
 
             case RIGHTTURN:
-                result = new ImagePattern(new Image("images/cards/prgcard003.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard003.png"));
                 break;
 
             default:
-                result = new ImagePattern(new Image("images/cards/prgcard002.jpg"));
+                result = new ImagePattern(new Image("images/cards/prgcard002.png"));
                 break;
         }
         return result;
