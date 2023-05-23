@@ -69,7 +69,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.*;
 
-import static javafx.scene.paint.Color.DODGERBLUE;
+import static javafx.scene.paint.Color.LIGHTGREY;
 
 /**
  * Manages the game window
@@ -526,6 +526,7 @@ public class GamePresenter extends AbstractPresenter {
                             // show this player robot, since they all start in checkpoint 1
                             int robotID = player.getValue().getRobotDTO().getRobotID();
                             ImageView imageView = jsonUtils.getRobotImage(robotID);
+                            imageView.setRotate((player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
                             imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
                             imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
 
@@ -538,10 +539,9 @@ public class GamePresenter extends AbstractPresenter {
                          * @author Tommy Dang
                          * @since 2023-05-20
                          */
-
-                        double widthOfRightGrid = 5.5;
-                        double heightOfHandCardGridPane = 2.5;
-                        double widthOfSelectedCardGridPane = 1.2;
+                        double widthOfRightGrid = 5.5; // 5.5 gut
+                        double heightOfHandCardGridPane = 2.2; // 2.2 gut
+                        double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
 
                         card1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
                         card2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
@@ -569,11 +569,11 @@ public class GamePresenter extends AbstractPresenter {
                         chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
                         chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
 
-                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
+                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
 
 
                     } catch (Exception e) {
@@ -718,7 +718,7 @@ public class GamePresenter extends AbstractPresenter {
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
-                slotz.getKey().setFill(DODGERBLUE);
+                slotz.getKey().setFill(LIGHTGREY);
             }
         }
     }
@@ -786,7 +786,7 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     public void dragEntered(MouseEvent mouseEvent) {
 
-        if (getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
+        if (getCardOrSlot(mouseEvent.toString()).getFill() == LIGHTGREY) {
             return;
         }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
@@ -1006,7 +1006,9 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     // TODO: we might have to fix all robots images facing north
                     // +3 is just a workaround
-                    imageView.setRotate((newDir.ordinal()+3) * 90); // Rotate the image
+                    imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
                     gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
 
                     // Update new position
