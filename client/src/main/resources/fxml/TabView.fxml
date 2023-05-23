@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane id="Background" alignment="CENTER" minHeight="700.0" minWidth="1200.0" snapToPixel="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
+<GridPane id="Background" alignment="CENTER" minHeight="700.0" minWidth="1200.0" snapToPixel="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.tab.TabPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
     </columnConstraints>
@@ -18,7 +18,7 @@
         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
     </rowConstraints>
     <TabPane fx:id="tabPane">
-        <Tab closable="false" text="Main Menu" />
+        <Tab fx:id="mainTab" closable="false" />
       <GridPane.margin>
          <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
       </GridPane.margin>
