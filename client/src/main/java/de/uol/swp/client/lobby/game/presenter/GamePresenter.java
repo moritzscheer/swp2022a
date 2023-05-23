@@ -535,46 +535,23 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.put(player.getKey(), imageView);
                         }
 
-                        /**
+                        /** Helps to resize the rectangles of the cards and makes it more automatic
+                         *
                          * @author Tommy Dang
-                         * @since 2023-05-20
+                         * @since 2023-05-23
                          */
                         double widthOfRightGrid = 5.5; // 5.5 gut
                         double heightOfHandCardGridPane = 2.2; // 2.2 gut
                         double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
 
-                        card1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card6.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card7.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card8.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card9.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-
-                        card1.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card2.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card3.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card4.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card5.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card6.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card7.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card8.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card9.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-
-                        chosenCard1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-
-                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-
+                        for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
+                            handCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            handCards.getKey().heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        }
+                        for (Map.Entry<Rectangle, CardDTO> choosenCards : chosenCardsMap.entrySet()) {
+                            choosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            choosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
