@@ -101,6 +101,8 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private GridPane selectedCardGridPane;
     @FXML
+    private GridPane handCardWrapper1;
+    @FXML
     private Text player2HP;
     @FXML
     private Text player3HP;
@@ -551,6 +553,10 @@ public class GamePresenter extends AbstractPresenter {
                         for (Map.Entry<Rectangle, CardDTO> choosenCards : chosenCardsMap.entrySet()) {
                             choosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
                             choosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        }
+
+                        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
+                            //handCardsText.getKey().translateYProperty().bind(handCardWrapper1.heightProperty());
                         }
 
                     } catch (Exception e) {
