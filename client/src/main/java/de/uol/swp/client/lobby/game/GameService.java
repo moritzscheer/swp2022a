@@ -90,7 +90,7 @@ public class GameService {
      */
     @Subscribe
     public void onSubmitCardsEvent(SubmitCardsEvent event){
-        LOG.debug("Requesting to distribute cards");
+        LOG.debug("Submitting cards from"+ event.getLoggedInUser().getUsername());
         eventBus.post(new SubmitCardsRequest(
                 event.getLobbyID(), event.getLoggedInUser(), event.getCardDTOS()));
     }
@@ -157,5 +157,12 @@ public class GameService {
     public void onShowRobotMovingMessage(ShowRobotMovingMessage msg){
         LOG.debug("Updating view, robot moving - "+msg.getUserDTO().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
+    }
+
+    @Subscribe
+    public void onRoundIsOverMessage(RoundIsOverMessage msg){
+        LOG.debug("Restarting rounds");
+        LobbyGameManagement.getInstance().restartRounds(msg);
+
     }
 }
