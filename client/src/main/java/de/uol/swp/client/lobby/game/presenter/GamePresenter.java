@@ -84,7 +84,6 @@ import static javafx.scene.paint.Color.LIGHTGREY;
 public class GamePresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/GameView.fxml";
-    public static final String FXML1 = "/fxml/GameView.fxml";
 
     private static final Logger LOG = LogManager.getLogger(GamePresenter.class);
     private JsonUtils jsonUtils;
@@ -1068,9 +1067,5 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
-    @Subscribe
-    public void onShowGameOverViewEvent(ShowGameOverEvent event){
-        winnerIs.setText(event.getUserWon() + "won the game!");
-    }
 }
 
