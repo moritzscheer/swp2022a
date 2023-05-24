@@ -158,10 +158,4 @@ public class GameService {
         LOG.debug("Updating view, robot moving - "+msg.getUserDTO().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
     }
-
-    @Subscribe
-    public void onGameOverMessage(GameOverMessage msg){
-        LOG.debug(msg.getUserWon() + "won the game");
-        LobbyGameManagement.getInstance().gameOver(msg);
-    }
 }
