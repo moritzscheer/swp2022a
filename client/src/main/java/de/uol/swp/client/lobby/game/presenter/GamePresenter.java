@@ -704,22 +704,24 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-06
      */
     public void resetCardsAndSlots() {
-        cardHand.clear();
-        submittedCards.clear();
-
-        //TODO: check if this function may be removed
-//        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-//            if (cardz.getKey() != null) {
-//                cards.replace(cardz.getKey(), false);
-//                cardz.getKey().setFill(DODGERBLUE);
-//            }
-//        }
+        //submittedCards.clear();
 
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
+                slotz.getKey().setDisable(false);
             }
+        }
+        for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+            if (card.getKey() != null) {
+                cardsMap.replace(card.getKey(), null);
+                card.getKey().setFill(LIGHTGREY);
+                card.getKey().setDisable(false);
+            }
+        }
+        for(Map.Entry<Rectangle, Text> cardText: cardValues.entrySet()){
+            cardText.getValue().setText("");
         }
     }
 
@@ -938,6 +940,23 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
+     * Block choosenCards and availableCards
+     *
+     * @author Maria Andrade
+     * @since 2023-05-23
+     */
+    public void blockPlayerCardsAfterSubmit(UserDTO playerReady){
+        if(Objects.equals(playerReady,this.loggedInUser)){
+            for(Map.Entry<Rectangle, CardDTO> card: cardsMap.entrySet()){
+                card.getKey().setDisable(true);
+            }
+            for(Map.Entry<Rectangle, CardDTO> card: chosenCardsMap.entrySet()){
+                card.getKey().setDisable(true);
+            }
+        }
+    }
+
+    /**
      * Setting playercard of the user
      *
      * @author Jann Erik Bruns
@@ -1030,14 +1049,9 @@ public class GamePresenter extends AbstractPresenter {
             LOG.debug("REMOVING NODE: but it is NULL");
             return;
         }
+        LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
+        gameBoard.getChildren().remove(toRemove);
 
-        for(Node node : childrens) {
-            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
-                gameBoard.getChildren().remove(toRemove);
-                break;
-            }
-        }
     }
 
     @FXML
