@@ -201,20 +201,6 @@ public class SceneManager {
     // -----------------------------------------------------
     // init views
     // -----------------------------------------------------
-    /**
-     * Initializes the setting view
-     *
-     * <p>If the gameOverParent is null it gets set to a new scene containing the a pane showing the
-     * game over view as specified by the GamePresenter FXML file.
-     *
-     * @see de.uol.swp.client.lobby.game.presenter.GamePresenter
-     * @since 2022-12-11
-     */
-    public void initGameOverView() throws IOException{
-        if (gameOverParent == null) {
-            gameOverParent = initPresenter(GamePresenter.FXML1);
-        }
-    }
 
     /**
      * Initializes the login view
