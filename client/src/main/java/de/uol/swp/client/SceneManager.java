@@ -77,10 +77,10 @@ public class SceneManager {
 
     private Scene lastScene = null;
     private Scene currentScene = null;
-    private Scene loginScene;
-    private Scene registrationScene;
     private Scene tabScene;
 
+    private Parent loginParent;
+    private Parent registrationParent;
     private Parent lastParent;
     private Parent currentParent;
     private Parent joinOrCreateParent;
@@ -200,40 +200,6 @@ public class SceneManager {
     // -----------------------------------------------------
 
     /**
-     * Initializes the login view
-     *
-     * <p>If the loginScene is null it gets set to a new scene containing a pane showing the login
-     * view as specified by the LoginView FXML file.
-     *
-     * @see de.uol.swp.client.auth.LoginPresenter
-     * @since 2019-09-03
-     */
-    private void initLoginView() throws IOException {
-        if (loginScene == null) {
-            Parent rootPane = initPresenter(LoginPresenter.FXML);
-            loginScene = new Scene(rootPane);
-            loginScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
-        }
-    }
-
-    /**
-     * Initializes the registration view
-     *
-     * <p>If the registrationScene is null it gets set to a new scene containing a pane showing the
-     * registration view as specified by the RegistrationView FXML file.
-     *
-     * @see de.uol.swp.client.register.RegistrationPresenter
-     * @since 2019-09-03
-     */
-    private void initRegistrationView() throws IOException {
-        if (registrationScene == null) {
-            Parent rootPane = initPresenter(RegistrationPresenter.FXML);
-            registrationScene = new Scene(rootPane);
-            registrationScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
-        }
-    }
-
-    /**
      * Initializes the tab view
      *
      * <p>If the tabScene is null it gets set to a new scene containing a pane showing the tab view
@@ -248,7 +214,36 @@ public class SceneManager {
             Parent rootPane = initPresenter(TabPresenter.FXML);
             tabScene = new Scene(rootPane);
             tabScene.getStylesheets().add(BASE_VIEW_STYLE_SHEET);
+        }
+    }
 
+    /**
+     * Initializes the login view
+     *
+     * <p>If the loginScene is null it gets set to a new scene containing a pane showing the login
+     * view as specified by the LoginView FXML file.
+     *
+     * @see de.uol.swp.client.auth.LoginPresenter
+     * @since 2019-09-03
+     */
+    private void initLoginView() throws IOException {
+        if (loginParent == null) {
+            loginParent = initPresenter(LoginPresenter.FXML);
+        }
+    }
+
+    /**
+     * Initializes the registration view
+     *
+     * <p>If the registrationScene is null it gets set to a new scene containing a pane showing the
+     * registration view as specified by the RegistrationView FXML file.
+     *
+     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @since 2019-09-03
+     */
+    private void initRegistrationView() throws IOException {
+        if (registrationParent == null) {
+            registrationParent = initPresenter(RegistrationPresenter.FXML);
         }
     }
 
@@ -543,7 +538,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onRegistrationCanceledEvent(RegistrationCanceledEvent event) {
-        showScene(lastScene, lastTitle);
+        showLoginScreen();
     }
 
     /**
@@ -801,7 +796,6 @@ public class SceneManager {
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
         tabPresenter.showNode(tab, parent);
-
     }
 
     /**
@@ -829,6 +823,20 @@ public class SceneManager {
     // -----------------------------------------------------
 
     /**
+     * Shows the tab screen
+     *
+     * <p>Switches the current Scene to the tabScene and sets the title of the window to "User:
+     * (username)" and also show the main menu node in the tabScene.
+     *
+     * @since 2019-09-03
+     */
+    public void showTabScreen() {
+        showScene(tabScene, "");
+        showNode(0, loginParent);
+        tabPresenter.changeMainTabTitle("Login");
+    }
+
+    /**
      * Shows the registration screen
      *
      * <p>Switches the current Scene to the registrationScene and sets the title of the window to
@@ -837,7 +845,8 @@ public class SceneManager {
      * @since 2019-09-03
      */
     public void showRegistrationScreen() {
-        showScene(registrationScene, "Registration");
+        tabPresenter.changeMainTabTitle("Registration");
+        showNode(0, registrationParent);
     }
 
     /**
@@ -848,20 +857,8 @@ public class SceneManager {
      * @since 2019-09-03
      */
     public void showLoginScreen() {
-        showScene(loginScene, "Login");
-    }
-
-    /**
-     * Shows the tab screen
-     *
-     * <p>Switches the current Scene to the tabScene and sets the title of the window to "User:
-     * (username)" and also show the main menu node in the tabScene.
-     *
-     * @since 2019-09-03
-     */
-    public void showTabScreen(User user) {
-        showScene(tabScene, "User: " + user.getUsername());
-        showNode(0, mainParent);
+        tabPresenter.changeMainTabTitle("Login");
+        showNode(0, loginParent);
     }
 
     /**
@@ -873,6 +870,7 @@ public class SceneManager {
      * @since 2019-09-03
      */
     public void showMainScreen() {
+        tabPresenter.changeMainTabTitle("Main Menu");
         showNode(0, mainParent);
     }
 
@@ -885,6 +883,7 @@ public class SceneManager {
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
+        tabPresenter.changeMainTabTitle("Rulebook");
         showNode(0, rulebookParent);
     }
 
@@ -897,6 +896,7 @@ public class SceneManager {
      * @since 2022-11-29
      */
     public void showCreditScreen() {
+        tabPresenter.changeMainTabTitle("Credits");
         showNode(0, creditParent);
     }
 
@@ -909,7 +909,47 @@ public class SceneManager {
      * @since 2022-12-11
      */
     public void showSettingScreen() {
+        tabPresenter.changeMainTabTitle("Settings");
         showNode(0, settingParent);
+    }
+
+    /**
+     * Shows the account screen
+     *
+     * <p>Switches the current Scene to the accountScene and sets the title of the window to
+     * "Account options"
+     *
+     * @since 2022-12-01
+     */
+    public void showAccountOptionScreen() {
+        tabPresenter.changeMainTabTitle("Account");
+        showNode(0, changeAccountOptionsParent);
+    }
+
+    /**
+     * Shows the joinOrCreate screen
+     *
+     * <p>Switches the current Scene to the joinOrCreateScene and sets the title of the window to
+     * "Lobbies"
+     *
+     * @since 2022-11-30
+     */
+    public void showJoinOrCreateScreen() {
+        tabPresenter.changeMainTabTitle("Join Or Create");
+        showNode(0, joinOrCreateParent);
+    }
+
+    /**
+     * Shows the createLobby screen
+     *
+     * <p>Switches the current Scene to the createLobbyScene and sets the title of the window to
+     * "Create Lobby"
+     *
+     * @since 2022-11-30
+     */
+    public void showCreateLobbyScreen() {
+        tabPresenter.changeMainTabTitle("Create Lobby");
+        showNode(0, createLobbyParent);
     }
 
     /**
@@ -932,42 +972,6 @@ public class SceneManager {
      */
     public void showLobbyScreen(Integer lobbyID) {
         showNode(lobbyID, LobbyGameManagement.getInstance().getLobbyParent(lobbyID));
-    }
-
-    /**
-     * Shows the account screen
-     *
-     * <p>Switches the current Scene to the accountScene and sets the title of the window to
-     * "Account options"
-     *
-     * @since 2022-12-01
-     */
-    public void showAccountOptionScreen() {
-        showNode(0, changeAccountOptionsParent);
-    }
-
-    /**
-     * Shows the joinOrCreate screen
-     *
-     * <p>Switches the current Scene to the joinOrCreateScene and sets the title of the window to
-     * "Lobbies"
-     *
-     * @since 2022-11-30
-     */
-    public void showJoinOrCreateScreen() {
-        showNode(0, joinOrCreateParent);
-    }
-
-    /**
-     * Shows the createLobby screen
-     *
-     * <p>Switches the current Scene to the createLobbyScene and sets the title of the window to
-     * "Create Lobby"
-     *
-     * @since 2022-11-30
-     */
-    public void showCreateLobbyScreen() {
-        showNode(0, createLobbyParent);
     }
 
     // -----------------------------------------------------

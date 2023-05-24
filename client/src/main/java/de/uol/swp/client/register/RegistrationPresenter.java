@@ -8,6 +8,7 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
+import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.user.UserDTO;
 
@@ -35,6 +36,8 @@ public class RegistrationPresenter extends AbstractPresenter {
     @FXML private PasswordField passwordField1;
 
     @FXML private PasswordField passwordField2;
+
+    @Inject private TabPresenter tabPresenter;
 
     /**
      * Default Constructor
@@ -113,6 +116,7 @@ public class RegistrationPresenter extends AbstractPresenter {
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
-        eventBus.post(new CloseClientEvent());
+        tabPresenter.updateInfoBox();
+        tabPresenter.setInfoLabel(2);
     }
 }
