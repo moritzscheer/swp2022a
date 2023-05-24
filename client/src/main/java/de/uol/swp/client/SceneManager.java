@@ -498,10 +498,7 @@ public class SceneManager {
     public void onShowSettingViewEvent(ShowSettingViewEvent event) {
         showSettingScreen();
     }
-    @Subscribe
-    public void onShowGameOverViewEvent(ShowGameOverEvent event){
-        showGameOverScreen(event.getLobbyID());
-    }
+
 
     // -----------------------------------------------------
     // MainManu_Events
@@ -955,9 +952,6 @@ public class SceneManager {
         showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
     }
 
-    public void showGameOverScreen(Integer lobbyID){
-        showNode(lobbyID, gameOverParent);
-    }
     /**
      * Shows the lobby screen
      *
