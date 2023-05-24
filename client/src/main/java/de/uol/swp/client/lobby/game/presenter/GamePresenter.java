@@ -682,12 +682,20 @@ public class GamePresenter extends AbstractPresenter {
 
             cardsMap.replace(start, to);
             chosenCardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            start.setDisable(Objects.equals(cardsMap.get(start), null));
+            end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
 
             chosenCardsMap.replace(start, to);
             cardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
+            end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
         else{
             // some weird case
@@ -710,16 +718,10 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
-                slotz.getKey().setDisable(false);
+                slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
         }
-        for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
-            if (card.getKey() != null) {
-                cardsMap.replace(card.getKey(), null);
-                card.getKey().setFill(LIGHTGREY);
-                card.getKey().setDisable(false);
-            }
-        }
+
         for(Map.Entry<Rectangle, Text> cardText: cardValues.entrySet()){
             cardText.getValue().setText("");
         }
@@ -739,6 +741,7 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
+                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
@@ -947,9 +950,20 @@ public class GamePresenter extends AbstractPresenter {
      */
     public void blockPlayerCardsAfterSubmit(UserDTO playerReady){
         if(Objects.equals(playerReady,this.loggedInUser)){
-            for(Map.Entry<Rectangle, CardDTO> card: cardsMap.entrySet()){
+            // remove available cards
+
+            for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+                if (card.getKey() != null) {
+                    cardsMap.replace(card.getKey(), null);
+                    card.getKey().setFill(LIGHTGREY);
+
+                    // remove text
+                    cardValues.get(card.getKey()).setText("");
+
+                }
                 card.getKey().setDisable(true);
             }
+            // block chosen cards
             for(Map.Entry<Rectangle, CardDTO> card: chosenCardsMap.entrySet()){
                 card.getKey().setDisable(true);
             }
