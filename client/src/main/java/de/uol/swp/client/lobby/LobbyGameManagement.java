@@ -244,6 +244,23 @@ public class LobbyGameManagement extends AbstractPresenter {
 
     }
 
+    /**
+     * Handles RoundIsOverMessage
+     *
+     * @param msg the RoundIsOverMessage object seen on the EventBus
+     * @see RoundIsOverMessage
+     * @author Maria Andrade
+     * @since 2023-05-23
+     */
+    public void restartRounds(RoundIsOverMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.resetCardsAndSlots();
+
+        // create request to get the cards
+        eventBus.post(new RequestDistributeCardsEvent(
+                lobbyIdToLobbyDTOMap.get(msg.getLobbyID()), this.loggedInUser));
+    }
+
     //////////////////////
     // Responses/Messages
     //////////////////////
@@ -303,16 +320,41 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.setReceivedCards(msg.getAssignedProgramCards());
     }
 
+    /**
+     * Handles PlayerIsReadyMessage
+     *
+     * @param msg the PlayerIsReadyMessage object seen on the EventBus
+     * @see PlayerIsReadyMessage
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void sendMessagePlayerIsReady(PlayerIsReadyMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerReadyStatus(msg.getPlayerIsReady());
+        a.blockPlayerCardsAfterSubmit(msg.getPlayerIsReady()); // block cards
     }
 
+    /**
+     * Handles ShowAllPlayersCardsMessage
+     *
+     * @param msg the ShowAllPlayersCardsMessage object seen on the EventBus
+     * @see ShowAllPlayersCardsMessage
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void sendMessageAllPlayersAreReady(ShowAllPlayersCardsMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerCard(msg.getUserDTOCardDTOMap());
     }
 
+    /**
+     * Handles ShowRobotMovingMessage
+     *
+     * @param msg the ShowRobotMovingMessage object seen on the EventBus
+     * @see ShowRobotMovingMessage
+     * @author Maria Andrade
+     * @since 2023-05-20
+     */
     public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
