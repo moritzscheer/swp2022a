@@ -837,7 +837,7 @@ public class SceneManager {
      * @since 2023-05-24
      */
     @Subscribe
-    public void showGameOverScreen(GameOverMessage msg) {
+    public void showGameOverScreen(ShowGameOverEvent event) {
         Platform.runLater(
                 () -> {
                     Dialog gameOverDialog = new Dialog();
@@ -846,7 +846,7 @@ public class SceneManager {
                     ButtonType type = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                     gameOverDialog.getDialogPane().getButtonTypes().add(type);
                     //Setting the content of the dialog
-                    gameOverDialog.setContentText(msg.getUserWon().getUsername() +" won the game!");
+                    gameOverDialog.setContentText(event.getUserWon().getUsername() +" won the game!");
 
                     // based on:
                     // https://www.tutorialspoint.com/how-to-create-a-dialog-in-javafx
