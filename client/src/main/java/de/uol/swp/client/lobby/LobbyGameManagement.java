@@ -319,7 +319,7 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
     }
     public void gameOver(GameOverMessage msg) {
-        // create a Event, like in client/lobby/game/events
+        // Todo Check if we need a lobbyGameMap
         eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
     }
 }
