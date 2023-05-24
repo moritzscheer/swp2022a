@@ -318,6 +318,15 @@ public class LobbyGameManagement extends AbstractPresenter {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
     }
+
+    /**
+     * Handles GameOverMessage detected on the EventBus
+     *
+     * @param msg The GameOverMessage seen on the EventBus
+     * @see de.uol.swp.common.game.message.GameOverMessage
+     * @author Daniel Merzo & Maria Eduarda
+     * @since 2023-05-24
+     */
     public void gameOver(GameOverMessage msg) {
         // Todo Check if we need a lobbyGameMap
         eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));

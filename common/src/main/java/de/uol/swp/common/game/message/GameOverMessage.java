@@ -2,17 +2,20 @@ package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
-
 /**
+ * Message sent by the server when the game is over
+ *
+ * @see AbstractLobbyMessage
  * @author Daniel Merzo
  * @since 2023-05-23
  */
+
 public class GameOverMessage extends AbstractLobbyMessage {
     private final int lobbyID;
     private final UserDTO userWon;
 
     /**
-     * constructor
+     * Constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
      * @param userWon GameDTO object

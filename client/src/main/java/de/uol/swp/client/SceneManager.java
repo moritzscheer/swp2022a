@@ -499,7 +499,6 @@ public class SceneManager {
         showSettingScreen();
     }
 
-
     // -----------------------------------------------------
     // MainManu_Events
     // -----------------------------------------------------
@@ -828,9 +827,11 @@ public class SceneManager {
     }
 
     /**
-     * Shows the game is oever screen
+     * Shows the GameOver Dialog
      *
+     * <p> If the Game is over, is appears a Dialog to shows this
      *
+     * @author Daniel Merzo & Maria Eduarda
      * @since 2023-05-24
      */
     @Subscribe
