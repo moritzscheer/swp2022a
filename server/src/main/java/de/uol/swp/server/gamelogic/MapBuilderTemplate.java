@@ -369,6 +369,8 @@ public final class MapBuilderTemplate {
         generateBlock(map, x, y);
         x = 11;
         generateBlock(map, x, y);
+
+
     }
 
     private static void generateBlock(

@@ -346,15 +346,15 @@ public final class MapBuilder {
                         map,
                         new Position(x, y),
                         ArrowType.Straight,
-                        CardinalDirection.South),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+                        CardinalDirection.South));
+
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 3;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 4;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
@@ -371,16 +371,16 @@ public final class MapBuilder {
 
 
         x = 8;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 9;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 10;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 11;
         generateBlock(
@@ -494,14 +494,14 @@ public final class MapBuilder {
                 new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, true, true));
         x = 1;
         generateBlock(map, x, y,
-                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South));
+
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 3;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 4;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
@@ -515,15 +515,15 @@ public final class MapBuilder {
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East),
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.South));
         x = 8;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 9;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 10;
         generateBlock(map, x, y,
-                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.North),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.North));
+
         x = 11;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East),
@@ -539,7 +539,7 @@ public final class MapBuilder {
                 new GearBehaviour(null, map, new Position(x, y), false));
         x = 2;
         generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true),
+
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
         );
         x = 3;
@@ -571,8 +571,9 @@ public final class MapBuilder {
         x = 1;
         generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true));
+        generateBlock(map, x, y);
+
+
         x = 3;
         generateBlock(map, x, y,
                 new PitBehaviour(null, map, new Position(x, y)));
@@ -609,7 +610,7 @@ public final class MapBuilder {
         x = 1;
         generateBlock(map, x, y, new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.TurnRight, CardinalDirection.South));
         x = 2;
-        generateBlock(map, x, y, new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true));
+        generateBlock(map, x, y);
         x = 3;
         generateBlock(map, x, y);
         x = 4;
@@ -657,6 +658,22 @@ public final class MapBuilder {
         generateBlock(map, x, y);
         x = 11;
         generateBlock(map, x, y, new RepairBehaviour(null, map, new Position(x, y), 1));
+
+
+
+        for (y = 0; y<12; y++){
+
+            for (x = 0; x< 12; x++){
+
+                for(int i = 0; i< map[x][y].getBehaviourList().length; i++){
+                    if(map[x][y].getBehaviourList()[i] instanceof LaserBehaviour){
+                        if(((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart() == true) {
+                            laserStart(map, x, y, ((LaserBehaviour) map[x][y].getBehaviourList()[i]).getLaserBeam(), ((LaserBehaviour) map[x][y].getBehaviourList()[i]).getLaserDirection());
+                        }
+                    }
+                }
+            }
+        }
     }
 
 
@@ -666,5 +683,60 @@ public final class MapBuilder {
     private static void generateBlock(
             Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
         map[x][y] = new Block(behaviours, null, new Position(x, y));
+    }
+
+    private static void laserStart(Block[][] map,int x, int y, int beam, CardinalDirection direction){
+        int x2 = x;
+        int y2 = y;
+        boolean loop = true;
+        CardinalDirection opposite = null;
+        boolean innerWallorLaser = false;
+        boolean fullLaser = true;
+
+        while(loop) {
+
+            switch (direction) {
+                case West:
+                    x2--;
+                    opposite = CardinalDirection.East;
+                    break;
+                case East:
+                    x2++;
+                    opposite = CardinalDirection.West;
+                    break;
+                case South:
+                    y2++;
+                    opposite = CardinalDirection.North;
+                    break;
+                case North:
+                    y2--;
+                    opposite = CardinalDirection.South;
+                    break;
+                default:
+                    break;
+            }
+            for (int i = 0; i < map[x2][y2].getBehaviourList().length; i++) {
+                if (map[x2][y2].getBehaviourList()[i] instanceof WallBehaviour) {
+                    if (map[x2][y2].getBehaviourList()[i].getObstruction(opposite)) {
+                        loop = false;
+                        innerWallorLaser = true;
+                    } else if (map[x2][y2].getBehaviourList()[i].getObstruction(direction)) {
+                        loop = false;
+                    }
+                }
+                if(map[x2][y2].getBehaviourList()[i] instanceof PusherBehaviour && map[x2][y2].getBehaviourList()[i].getObstruction(direction)){
+                    fullLaser = false;
+                }
+                if(map[x2][y2].getBehaviourList()[i] instanceof LaserBehaviour){
+                    innerWallorLaser = true;
+                }
+            }
+            if (!innerWallorLaser) {
+                AbstractTileBehaviour[] copy = new AbstractTileBehaviour[map[x2][y2].getBehaviourList().length + 1];
+                System.arraycopy(map[x2][y2].getBehaviourList(), 0, copy, 0, copy.length - 1);
+                copy[copy.length - 1] = new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x2, y2), direction, beam,  fullLaser);
+                map[x2][y2] = new Block(copy, null, new Position(x2, y2));
+            }
+        }
     }
 }

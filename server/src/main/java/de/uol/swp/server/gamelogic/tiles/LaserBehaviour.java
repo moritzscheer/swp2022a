@@ -42,6 +42,22 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         this.fullLaser = fullLaser;
     }
 
+    public LaserBehaviour(
+            List<Robot> robotStates,
+            Block[][] board,
+            int[] activeInProgramSteps,
+            Position blockPos,
+            CardinalDirection laserDir,
+            int laserBeam,
+            boolean fullLaser) {
+        super(robotStates, board, blockPos);
+        this.activeInProgramSteps = activeInProgramSteps;
+        this.direction = laserDir;
+        this.laserBeam = laserBeam;
+        this.fullLaser = fullLaser;
+
+    }
+
 
     /**
      * When the robot is before a laser then it will get so much damage like laserBeam exist.
@@ -84,6 +100,8 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     public int getLaserBeam() {
         return this.laserBeam;
     }
+
+    public boolean getStart() {return this.start;}
 
     @Override
     public List<int[]> getImage() {
