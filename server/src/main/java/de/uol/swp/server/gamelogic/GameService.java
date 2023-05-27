@@ -326,20 +326,8 @@ public class GameService extends AbstractService {
         int secondsToWait = 1;
 
         while (game.getProgramStep() < 5) {
-            List<Position> previousPositions = new ArrayList<>();
-            LOG.debug("Status of game BEFORE calcGameRound");
-            for(AbstractPlayer player: game.getPlayers()){
-                Position pos = player.getRobot().getPosition();
-                previousPositions.add(pos);
-                LOG.debug("     Robot Position {} pos = x {} y {}",
-                        ((Player)player).getUser().getUsername(),
-                        pos.x, pos.y);
-            }
-            LOG.debug("Showing chosen cards for round "+game.getProgramStep());
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
-                LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
-                        " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
+            List<Position> previousPositions = logInformation(game);
 
             // show cards and wait 1 second before moving
             scheduler.schedule(
@@ -353,47 +341,20 @@ public class GameService extends AbstractService {
             secondsToWait++;
 
             // TODO: FIX calcGame calculates wrong
-            game.calcGameRound();
+            game.calcGameRoundCards();
+            //game.calcGameRound();
+            secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions);
+            // get new previous positions
+            previousPositions = logInformation(game);
 
-            LOG.debug("Status of game AFTER calcGameRound");
-            int i = 0;
-            for(AbstractPlayer player: game.getPlayers()) {
-                UserDTO currentUser = ((Player) player).getUser();
-                Position currentPos = player.getRobot().getPosition();
-                Position previousPos = previousPositions.get(i);
-                CardinalDirection direction = player.getRobot().getDirection();
-                LOG.debug("     Robot Position {} pos = x {} y {}",
-                        currentUser.getUsername(),
-                        currentPos.x, currentPos.y);
+            game.calcGameRoundBoard();
+            // show board animation
+            sendBoardMoveMessage(
+                    lobbyID,
+                    convertPlayerListToPlayerDTOList(game.getPlayers()),
+                    secondsToWait
+            );
 
-                // ONLY DIRECTION CHANGED
-                if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) == 0) {
-                    LOG.debug("ROTATING");
-                    scheduler.schedule(
-                            new Runnable() {
-                                public void run() {
-                                    lobbyService.sendToAllInLobby(lobbyID,
-                                            new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
-                                }
-                            },
-                            secondsToWait, SECONDS);
-                    secondsToWait = secondsToWait + 2;
-                }
-                // DISPLAY IN SINGLE STEP
-                else if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) >= 1) {
-                    LOG.debug("MOVING FROM x={} y={} to x={} y={}",
-                            previousPos.x, previousPos.y, currentPos.x, currentPos.y);
-                    scheduler.schedule(
-                            new Runnable() {
-                                public void run() {
-                                    lobbyService.sendToAllInLobby(lobbyID,
-                                            new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
-                                }
-                            },
-                            secondsToWait, SECONDS);
-                    secondsToWait = secondsToWait + 2;
-                }
-            }
             // go to next step
             game.increaseProgramStep();
         }
@@ -409,4 +370,79 @@ public class GameService extends AbstractService {
 
     }
 
+    public List<Position> logInformation(Game game){
+        List<Position> previousPositions = new ArrayList<>();
+        LOG.debug("Status of game BEFORE calcGameRound");
+        for(AbstractPlayer player: game.getPlayers()){
+            Position pos = player.getRobot().getPosition();
+            previousPositions.add(pos);
+            LOG.debug("     Robot Position {} pos = x {} y {}",
+                    ((Player)player).getUser().getUsername(),
+                    pos.x, pos.y);
+        }
+        LOG.debug("Showing chosen cards for round "+game.getProgramStep());
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+        for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
+            LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
+                    " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
+
+        return previousPositions;
+    }
+
+    public int moveCards(int lobbyID, int secondsToWait, Game game, List<Position> previousPositions){
+        LOG.debug("Status of game AFTER calcGameRoundCards");
+        int i = 0;
+        // Move each player at a time
+        for(AbstractPlayer player: game.getPlayers()) {
+            UserDTO currentUser = ((Player) player).getUser();
+            Position currentPos = player.getRobot().getPosition();
+            Position previousPos = previousPositions.get(i);
+            CardinalDirection direction = player.getRobot().getDirection();
+            LOG.debug("     Robot Position {} pos = x {} y {}",
+                    currentUser.getUsername(),
+                    currentPos.x, currentPos.y);
+
+            // ONLY DIRECTION CHANGED
+            if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) == 0) {
+                LOG.debug("ROTATING");
+            }
+            // DISPLAY IN SINGLE STEP
+            else if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) >= 1) {
+                LOG.debug("MOVING FROM x={} y={} to x={} y={}",
+                        previousPos.x, previousPos.y, currentPos.x, currentPos.y);
+            }
+            sendCardMoveMessage(lobbyID, currentUser, currentPos, direction, secondsToWait);
+
+            secondsToWait = secondsToWait + 2;
+        }
+        return secondsToWait;
+    }
+
+    public void sendCardMoveMessage(int lobbyID,
+                                    UserDTO currentUser,
+                                    Position currentPos,
+                                    CardinalDirection direction,
+                                    int secondsToWait){
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
+                    }
+                },
+                secondsToWait, SECONDS);
+    }
+
+    public void sendBoardMoveMessage(int lobbyID,
+                                     List<PlayerDTO> players,
+                                    int secondsToWait){
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new ShowBoardMovingMessage(lobbyID, players));
+                    }
+                },
+                secondsToWait, SECONDS);
+    }
 }
