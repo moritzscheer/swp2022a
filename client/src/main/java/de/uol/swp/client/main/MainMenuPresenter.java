@@ -2,14 +2,16 @@ package de.uol.swp.client.main;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.event.ShowJoinOrCreateViewEvent;
+import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
+import de.uol.swp.client.lobby.lobby.event.UpdateLobbiesListEvent;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+import de.uol.swp.client.preLobby.events.ShowJoinOrCreateViewEvent;
 import de.uol.swp.client.rulebook.event.ShowRulebookViewEvent;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
@@ -19,6 +21,7 @@ import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.AllOnlineUsersResponse;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +31,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +43,6 @@ import java.util.List;
  * @author Marco Grawunder
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2019-08-29
- *
  */
 @SuppressWarnings("UnstableApiUsage")
 public class MainMenuPresenter extends AbstractPresenter {
@@ -58,23 +61,28 @@ public class MainMenuPresenter extends AbstractPresenter {
             new ShowAccountOptionsViewEvent();
 
     @Inject private TabPresenter tabPresenter;
-    @Inject private LobbyService lobbyService;
 
-    @FXML
-    private ListView<String> usersView;
+    @FXML private ListView<String> usersView;
 
-    @FXML
-    private TextArea TextChatOutput;
+    @FXML private TextArea textChatOutput;
 
-    @FXML
-    private TextField TextChatInput;
+    @FXML private TextField textChatInput;
+
+    /**
+     * Default Constructor
+     *
+     * @since 2023-05-19
+     */
+    public MainMenuPresenter() {
+        // needed for javafx
+    }
 
     /**
      * Handles successful login
      *
-     * If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser
-     * of this client is set to the one in the message received and the full
-     * list of users currently logged in is requested.
+     * <p>If a LoginSuccessfulResponse is posted to the EventBus the loggedInUser of this client is
+     * set to the one in the message received and the full list of users currently logged in is
+     * requested.
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
@@ -103,10 +111,13 @@ public class MainMenuPresenter extends AbstractPresenter {
     public void onUserLoggedInMessage(UserLoggedInMessage message) {
 
         LOG.debug("New user {}  logged in,", message.getUsername());
-        Platform.runLater(() -> {
-            if (users != null && loggedInUser != null && !loggedInUser.getUsername().equals(message.getUsername()))
-                users.add(message.getUsername());
-        });
+        Platform.runLater(
+                () -> {
+                    if (users != null
+                            && loggedInUser != null
+                            && !loggedInUser.getUsername().equals(message.getUsername()))
+                        users.add(message.getUsername());
+                });
     }
 
     /**
@@ -122,8 +133,9 @@ public class MainMenuPresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        LOG.debug("User {}  logged out.",  message.getUsername() );
-        Platform.runLater(() -> users.remove(message.getUsername()));
+        if (this.users != null) {
+            Platform.runLater(() -> users.remove(message.getUsername()));
+        }
     }
 
     /**
@@ -151,7 +163,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * out the user, then to drop the user.
      *
      * @param event The ActionEvent created by pressing the Delete User button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-08
      */
     @FXML
@@ -161,26 +173,10 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method called when the Logout button is pressed
-     *
-     * If the logout button is pressed, this method requests the user service
-     * to log this user out.
-     *
-     * @param event The ActionEvent created by pressing the logout button
-     * @see de.uol.swp.client.lobby.LobbyService
-     * @since 2022-11-08
-     */
-    @FXML
-    private void onLogout(ActionEvent event) {
-        tabPresenter.updateInfoBox();
-    }
-
-    /**
      * Updates the main menus user list according to the list given
      *
-     * This method clears the entire user list and then adds the name of each user
-     * in the list given to the main menus user list. If there ist no user list
-     * this it creates one.
+     * <p>This method clears the entire user list and then adds the name of each user in the list
+     * given to the main menus user list. If there ist no user list this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
      *     it is crucial not to remove the {@code Platform.runLater()}
@@ -204,15 +200,16 @@ public class MainMenuPresenter extends AbstractPresenter {
     /**
      * Method called when the multiplayer lobby button is pressed
      *
-     * If the multiplayer button is pressed, it posts an ShowJoinOrCreateViewEvent Object to the Eventbus.
+     * <p>If the multiplayer button is pressed, it posts an ShowJoinOrCreateViewEvent Object to the
+     * Eventbus.
      *
      * @param actionEvent The ActionEvent created by pressing the join lobby button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-30
      */
     @FXML
-     void onMultiplayerButtonPressed(ActionEvent actionEvent) {
-        lobbyService.retrieveAllLobbies();
+    void onMultiplayerButtonPressed(ActionEvent actionEvent) {
+        eventBus.post(new UpdateLobbiesListEvent());
         eventBus.post(new ShowJoinOrCreateViewEvent());
     }
 
@@ -223,12 +220,12 @@ public class MainMenuPresenter extends AbstractPresenter {
      * specified lobby. Therefore, it uses as the parameter name and password the value null.
      *
      * @param event The ActionEvent created by pressing the join lobby button
-     * @see de.uol.swp.client.lobby.LobbyService
+     * @see LobbyService
      * @since 2022-11-30
      */
     @FXML
-    void onSingleplayerButtonPressed(ActionEvent event){
-        lobbyService.createNewLobby("Singleplayer", (UserDTO) loggedInUser, false, null);
+    void onSingleplayerButtonPressed(ActionEvent event) {
+        eventBus.post(new CreateNewLobbyEvent("Singleplayer", (UserDTO) loggedInUser, false, null));
     }
 
     /**
@@ -292,40 +289,57 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
+     * Method called when the Logout button is pressed
+     *
+     * <p>If the logout button is pressed, this method requests the user service to log this user
+     * out.
+     *
+     * @param event The ActionEvent created by pressing the logout button
+     * @see LobbyService
+     * @since 2022-11-08
+     */
+    @FXML
+    private void onLogoutButtonPressed(ActionEvent event) {
+        tabPresenter.setInfoLabel(1);
+        tabPresenter.updateInfoBox();
+    }
+
+    /**
      * Method called when the exit button is pressed
      *
-     * This Method is called when the exit button is pressed. It posts an instance
-     * of the CloseClientEvent to the EventBus the SceneManager is subscribed
-     * to.
+     * <p>This Method is called when the exit button is pressed. It posts an instance of the
+     * CloseClientEvent to the EventBus the SceneManager is subscribed to.
      *
      * @param event The ActionEvent generated by pressing the exit button
      * @see de.uol.swp.client.CloseClientEvent
      * @see de.uol.swp.client.SceneManager
      * @since 2023-01-04
-     *
      */
     @FXML
     private void onExitButtonPressed(ActionEvent event) {
-        eventBus.post(new CloseClientEvent());
+        tabPresenter.setInfoLabel(2);
+        tabPresenter.updateInfoBox();
     }
 
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
-            if (TextChatInput == null) {
-                return;
+            if (textChatInput.getLength() != 0 && !textChatInput.getText().isBlank()) {
+                textChat.sendTextMessage(textChatInput.getText());
+                textChatInput.setText("");
             }
-            textChat.sendTextMessage(TextChatInput.getText());
-            TextChatInput.setText("");
         }
     }
 
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
-        if(textChat == null) return;
-        TextChatOutput.setText(textChat.getChatString());
-        Platform.runLater(() -> {
-                TextChatOutput.setScrollTop(Double.MAX_VALUE);
-        });
+        if (textChat == null) return;
+        textChatOutput.setText(textChat.getChatString());
+        textChatOutput.appendText("");
+        textChatOutput.setWrapText(true);
+        Platform.runLater(
+                () -> {
+                    textChatOutput.setScrollTop(Double.MAX_VALUE);
+                });
     }
 }

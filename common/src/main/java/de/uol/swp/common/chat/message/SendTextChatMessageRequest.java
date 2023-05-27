@@ -9,7 +9,7 @@ public class SendTextChatMessageRequest extends AbstractRequestMessage {
     TextChatChannelDTO channel;
     String message;
 
-    public SendTextChatMessageRequest(UUID channelID, String message){
+    public SendTextChatMessageRequest(UUID channelID, String message) {
         channel = new TextChatChannelDTO(channelID);
         this.message = message;
     }
@@ -18,7 +18,7 @@ public class SendTextChatMessageRequest extends AbstractRequestMessage {
         return channel;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 

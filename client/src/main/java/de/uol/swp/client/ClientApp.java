@@ -6,9 +6,11 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
+import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.main.MainMenuPresenter;
+import de.uol.swp.client.lobby.game.GameService;
+import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
@@ -25,6 +27,7 @@ import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import io.netty.channel.Channel;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -63,6 +66,10 @@ public class ClientApp extends Application implements ConnectionListener {
 
     private SceneManager sceneManager;
 
+    private TabPresenter tabPresenter;
+
+    private GameService gameService;
+
     // -----------------------------------------------------
     // Java FX Methods
     // ----------------------------------------------------
@@ -100,8 +107,15 @@ public class ClientApp extends Application implements ConnectionListener {
         // get lobby service from guice
         this.lobbyService = injector.getInstance(LobbyService.class);
 
+        // get tabPresenter from guice
+        this.tabPresenter = injector.getInstance(TabPresenter.class);
+
+        // get gameService from guice
+        this.gameService = injector.getInstance(GameService.class);
+
         // get event bus from guice
         eventBus = injector.getInstance(EventBus.class);
+
         // Register this class for de.uol.swp.client.events (e.g. for exceptions)
         eventBus.register(this);
 
@@ -152,12 +166,11 @@ public class ClientApp extends Application implements ConnectionListener {
 
     /**
      * Handles successful login
-     * <p>
-     * If an LoginSuccessfulResponse object is detected on the EventBus this
-     * method is called. It tells the SceneManager to show the main menu and sets
-     * this clients user to the user found in the object. If the loglevel is set
-     * to DEBUG or higher "user logged in successfully " and the username of the
-     * logged-in user are written to the log.
+     *
+     * <p>If an LoginSuccessfulResponse object is detected on the EventBus this method is called. It
+     * tells the SceneManager to show the main menu and sets this clients user to the user found in
+     * the object. If the loglevel is set to DEBUG or higher "user logged in successfully " and the
+     * username of the logged-in user are written to the log.
      *
      * @param message The LoginSuccessfulResponse object detected on the EventBus
      * @see SceneManager
@@ -222,9 +235,16 @@ public class ClientApp extends Application implements ConnectionListener {
     @Subscribe
     void onUserLoggedOutMessage(UserLoggedOutMessage message) {
         LOG.info("User {} logged out.", message.getUsername());
-        if (message.getUsername().equals(user.getUsername())) {
-            sceneManager.showLoginScreen();
-        }
+        Platform.runLater(
+                () -> {
+                    if (message.getUsername().equals(user.getUsername())) {
+                        if (tabPresenter.infoLabel2IsVisible()) {
+                            eventBus.post(new CloseClientEvent());
+                        } else {
+                            eventBus.post(new ShowLoginViewEvent());
+                        }
+                    }
+                });
     }
 
     /**
@@ -266,9 +286,9 @@ public class ClientApp extends Application implements ConnectionListener {
 
     /**
      * Handles the switch from account view to main-menu
-     * <p>
-     * If an ReturnToMainMenuRequest object is detected on the EventBus this
-     * method is called. It tells the SceneManager to show the main-menu window.
+     *
+     * <p>If an ReturnToMainMenuRequest object is detected on the EventBus this method is called. It
+     * tells the SceneManager to show the main-menu window.
      *
      * @param message The ReturnToMainMenuRequest object detected on the EventBus
      * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
@@ -304,9 +324,9 @@ public class ClientApp extends Application implements ConnectionListener {
 
     /**
      * Handles successful User-Updates
-     * <p>
-     * If an UpdatedUserSuccessfulResponse object is detected on the EventBus this
-     * method is called. It tells the SceneManager to show the main-menu window.
+     *
+     * <p>If an UpdatedUserSuccessfulResponse object is detected on the EventBus this method is
+     * called. It tells the SceneManager to show the main-menu window.
      *
      * @param message The UpdatedUserSuccessfulResponse object detected on the EventBus
      * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
@@ -323,10 +343,10 @@ public class ClientApp extends Application implements ConnectionListener {
 
     /**
      * Handles errors produced by the EventBus
-     * <p>
-     * If an DeadEvent object is detected on the EventBus, this method is called.
-     * It writes "DeadEvent detected " and the error message of the detected DeadEvent
-     * object to the log, if the loglevel is set to ERROR or higher.
+     *
+     * <p>If an DeadEvent object is detected on the EventBus, this method is called. It writes
+     * "DeadEvent detected " and the error message of the detected DeadEvent object to the log, if
+     * the loglevel is set to ERROR or higher.
      *
      * @param deadEvent The DeadEvent object found on the EventBus
      * @since 2019-08-07

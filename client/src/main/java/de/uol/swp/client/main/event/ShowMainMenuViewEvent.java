@@ -10,5 +10,4 @@ package de.uol.swp.client.main.event;
  * @see de.uol.swp.client.SceneManager
  * @since 2022-11-27
  */
-public class ShowMainMenuViewEvent {
-}
+public class ShowMainMenuViewEvent {}

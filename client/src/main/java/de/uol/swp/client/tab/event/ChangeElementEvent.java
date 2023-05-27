@@ -3,8 +3,8 @@ package de.uol.swp.client.tab.event;
 /**
  * Event used to enable and disable the buttons in the lobby presenter.
  *
- * In order to change elements using this event, post an instance of it
- * onto the eventBus the SceneManager is subscribed to.
+ * <p>In order to change elements using this event, post an instance of it onto the eventBus the
+ * SceneManager is subscribed to.
  *
  * @author Moritz Scheer
  * @see de.uol.swp.client.tab.event.ChangeElementEvent

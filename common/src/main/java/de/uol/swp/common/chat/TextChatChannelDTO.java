@@ -10,7 +10,7 @@ public class TextChatChannelDTO implements Serializable {
         this.channelID = channelID;
     }
 
-    public UUID getUUID(){
+    public UUID getUUID() {
         return channelID;
     }
 }

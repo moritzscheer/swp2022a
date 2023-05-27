@@ -30,6 +30,17 @@ public class LobbyCreatedSuccessfulResponse extends AbstractLobbyResponse {
     }
 
     /**
+     * Getter for the user variable of the parent class
+     *
+     * @return UserDTO containing the user's data
+     * @author Ole Zimmermann
+     * @since 2023-01-24
+     */
+    public UserDTO getUser() {
+        return super.getUser();
+    }
+
+    /**
      * Getter for the lobby variable
      *
      * @return LobbyDTO object of the lobby

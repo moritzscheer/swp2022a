@@ -1,12 +1,16 @@
 package de.uol.swp.server.chat;
 
 import com.google.common.eventbus.EventBus;
+
 import de.uol.swp.common.chat.TextChatChannelDTO;
 import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.user.Session;
 
+import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class TextChatChannel {
@@ -15,36 +19,42 @@ public class TextChatChannel {
     private ArrayList<Session> loggedInUsers;
     private EventBus eventBus;
 
+    private String getCurrentTimeStamp() {
+        return new SimpleDateFormat("HH:mm:ss").format(new Date());
+    }
 
-    public void addUserTextMessage(String sender, String message){
-        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">");
+    public void addUserTextMessage(String sender, String message) {
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }
 
-    public void addServerTextMessage(String message){
-        TextChatMessage text = new TextChatMessage(message, "[Server]");
+    public void addServerTextMessage(String message) {
+        String timeStamp = getCurrentTimeStamp();
+        TextChatMessage text = new TextChatMessage(message, "[Server]", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }
 
     private void sendTextToUsers(TextChatMessage text) {
-        NewTextChatMessageMessage message = new NewTextChatMessageMessage(new TextChatChannelDTO(ID), text);
+        NewTextChatMessageMessage message =
+                new NewTextChatMessageMessage(new TextChatChannelDTO(ID), text);
         message.setReceiver(loggedInUsers);
         eventBus.post(message);
     }
 
-    public void addUser(Session user){
+    public void addUser(Session user) {
         loggedInUsers.add(user);
     }
 
-    public void removeUser(Session user){
-        if(loggedInUsers.contains(user)){
+    public void removeUser(Session user) {
+        if (loggedInUsers.contains(user)) {
             loggedInUsers.remove((user));
         }
     }
 
-    TextChatChannel(UUID id, EventBus eventBus){
+    TextChatChannel(UUID id, EventBus eventBus) {
         ID = id;
         this.eventBus = eventBus;
         chatHistory = new ArrayList<>();

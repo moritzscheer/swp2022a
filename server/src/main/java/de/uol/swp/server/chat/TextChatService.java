@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
