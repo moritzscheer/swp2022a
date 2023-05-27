@@ -16,14 +16,10 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -37,17 +33,9 @@ import javafx.scene.shape.Rectangle;
 import java.io.FileNotFoundException;
 import java.util.*;
 
-import static javafx.scene.paint.Color.*;
-
-import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -55,21 +43,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.File;
-import java.io.FileReader;
-import java.util.*;
-
-import static javafx.scene.paint.Color.LIGHTGREY;
+import static javafx.scene.paint.Color.RED;
 
 /**
  * Manages the game window
@@ -535,46 +511,23 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.put(player.getKey(), imageView);
                         }
 
-                        /**
+                        /** Helps to resize the rectangles of the cards and makes it more automatic
+                         *
                          * @author Tommy Dang
-                         * @since 2023-05-20
+                         * @since 2023-05-23
                          */
                         double widthOfRightGrid = 5.5; // 5.5 gut
                         double heightOfHandCardGridPane = 2.2; // 2.2 gut
                         double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
 
-                        card1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card6.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card7.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card8.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card9.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-
-                        card1.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card2.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card3.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card4.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card5.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card6.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card7.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card8.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card9.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-
-                        chosenCard1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-
-                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
-
+                        for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
+                            handCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            handCards.getKey().heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        }
+                        for (Map.Entry<Rectangle, CardDTO> choosenCards : chosenCardsMap.entrySet()) {
+                            choosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            choosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -717,7 +670,7 @@ public class GamePresenter extends AbstractPresenter {
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
-                slotz.getKey().setFill(LIGHTGREY);
+                slotz.getKey().setFill(RED);
                 slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
         }
@@ -791,7 +744,7 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     public void dragEntered(MouseEvent mouseEvent) {
 
-        if (getCardOrSlot(mouseEvent.toString()).getFill() == LIGHTGREY) {
+        if (getCardOrSlot(mouseEvent.toString()).getFill() == RED) {
             return;
         }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
