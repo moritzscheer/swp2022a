@@ -6,20 +6,22 @@ import de.uol.swp.common.user.UserDTO;
 public class MapChangedMessage extends AbstractLobbyMessage {
 
     private final Map newMap;
+    private final int lobbyID;
 
     /**
      * The constructor for MapChangedMessages.
      * These messages are to notify clients that the map of a lobby has been changed
      *
-     * @param name The name of the lobby
+     * @param lobbyID The ID of the lobby
      * @param user The user responsible for the creation of this message
      * @param m The map selected by the owner of the lobby
      * @author Mathis Eilers
      * @since 2022-12-31
      */
-    public MapChangedMessage(String name, UserDTO user, Map m)
+    public MapChangedMessage(int lobbyID, UserDTO user, Map m)
     {
-        super(name, user);
+        this.user = user;
+        this.lobbyID = lobbyID;
         this.newMap = m;
     }
 
@@ -34,4 +36,8 @@ public class MapChangedMessage extends AbstractLobbyMessage {
         return newMap;
     }
 
+    public int getLobbyID()
+    {
+        return this.lobbyID;
+    }
 }

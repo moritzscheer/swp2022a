@@ -317,4 +317,17 @@ public class LobbyGameManagement extends AbstractPresenter {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
     }
+
+    /**
+     * Updates the game map (the board on which the game is played)
+     *
+     * @param lobbyID The ID of the lobby which is meant to be updated
+     * @param map The Map that is to be selected
+     * @author Mathis Eilers
+     * @since 2023-05-27
+     */
+    public void updateGameMap(int lobbyID, de.uol.swp.common.game.Map map)
+    {
+        lobbyGameMap.get(lobbyID).getLobbyPresenter().updateMapDisplay(map);
+    }
 }

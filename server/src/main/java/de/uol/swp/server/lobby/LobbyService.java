@@ -289,8 +289,8 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onMapChangeRequest(MapChangeRequest msg)
     {
-        String lobbyName = msg.getName();
-        Optional<Lobby> lobbyO = lobbyManagement.getLobby(lobbyName);
+        int lobbyID = msg.getID();
+        Optional<LobbyDTO> lobbyO = lobbyManagement.getLobby(lobbyID);
 
         if(lobbyO.isPresent())
         {
@@ -299,7 +299,7 @@ public class LobbyService extends AbstractService {
             if(lDTO.isPresent() && lobbyO.get().getOwner().equals(msg.getUser())) {
                 lDTO.get().setMap(msg.getMap());
 
-                sendToAllInLobby(lobbyName, new MapChangedMessage(lobbyName, msg.getUser(), lDTO.get().getMap()));
+                sendToAllInLobby(lobbyID, new MapChangedMessage(lobbyID, msg.getUser(), lDTO.get().getMap()));
             }
         }
     }

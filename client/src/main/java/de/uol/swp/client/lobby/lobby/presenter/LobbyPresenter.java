@@ -8,10 +8,12 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
+import de.uol.swp.common.lobby.request.MapChangeRequest;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
@@ -25,6 +27,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -128,7 +132,7 @@ public class LobbyPresenter extends AbstractPresenter {
                 if (this.multiplayer) {
                     User u = this.loggedInUser;
                     UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
-                    eventBus.post(new MapChangeRequest(this.lobbyName, dto, m));
+                    eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
                 }
             };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);

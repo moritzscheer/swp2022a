@@ -10,6 +10,7 @@ import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
 import de.uol.swp.client.lobby.lobby.event.UpdateLobbiesListEvent;
 import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.request.*;
@@ -194,4 +195,17 @@ public class LobbyService {
         LobbyGameManagement.getInstance().changeElement(event);
     }
 
+    /**
+     * Updates the displayed map in the lobby when a MapChangedMessage is received
+     *
+     * @param mapChangedMessage The MapChangedMessage object
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @author Mathis Eilers
+     * @since 2023-05-12
+     */
+    @Subscribe
+    public void onMapChangedMessage(MapChangedMessage mapChangedMessage)
+    {
+        LobbyGameManagement.getInstance().updateGameMap(mapChangedMessage.getLobbyID(), mapChangedMessage.getMap());
+    }
 }

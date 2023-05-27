@@ -6,18 +6,20 @@ import de.uol.swp.common.user.UserDTO;
 public class MapChangeRequest extends AbstractLobbyRequest {
 
     private final Map newMap;
+    private final int lobbyID;
 
     /**
      * Constructor for MapChangeRequests
-     * @param lobby The name of the lobby
+     * @param lobbyID The ID of the lobby
      * @param user The user responsible for creating this message
      * @param newMap The new Map
      * @author Mathis Eilers
      * @since 2022-12-31
      */
-    public MapChangeRequest(String lobby, UserDTO user, Map newMap)
+    public MapChangeRequest(int lobbyID, UserDTO user, Map newMap)
     {
-        super(lobby, user);
+        this.user = user;
+        this.lobbyID = lobbyID;
         this.newMap = newMap;
     }
 
@@ -31,6 +33,11 @@ public class MapChangeRequest extends AbstractLobbyRequest {
     public Map getMap()
     {
         return newMap;
+    }
+
+    public int getID()
+    {
+        return lobbyID;
     }
 
 }
