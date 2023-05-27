@@ -160,6 +160,12 @@ public class GameService {
     }
 
     @Subscribe
+    public void onShowBoardMovingMessage(ShowBoardMovingMessage msg){
+        LOG.debug("Updating view, board moving ");
+        LobbyGameManagement.getInstance().sendMessageBoardIsMoving(msg);
+    }
+
+    @Subscribe
     public void onRoundIsOverMessage(RoundIsOverMessage msg){
         LOG.debug("Restarting rounds");
         LobbyGameManagement.getInstance().restartRounds(msg);

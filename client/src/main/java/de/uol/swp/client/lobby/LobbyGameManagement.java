@@ -359,4 +359,9 @@ public class LobbyGameManagement extends AbstractPresenter {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
     }
+
+    public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.animateBoardElements(msg.getPlayersDTO());
+    }
 }

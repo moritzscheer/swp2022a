@@ -1004,6 +1004,12 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    public void animateBoardElements(List<PlayerDTO> playerDTOList){
+        // TODO ANIMATION
+        // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
+
+    }
+
     /** Remove last ImageView from the board when robot moves
      *
      * @author Maria Andrade
