@@ -908,7 +908,7 @@ public class GamePresenter extends AbstractPresenter {
             for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
                 if (card.getKey() != null) {
                     cardsMap.replace(card.getKey(), null);
-                    card.getKey().setFill(LIGHTGREY);
+                    card.getKey().setFill(RED);
 
                     // remove text
                     cardValues.get(card.getKey()).setText("");
