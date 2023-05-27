@@ -39,7 +39,7 @@ public class Map implements Serializable {
      * @since 2022-12-23
      */
     public String getName() {
-        return mapList.get(mapIndex).name;
+        return mapList[mapIndex][0];
     }
 
     /**
@@ -66,7 +66,7 @@ public class Map implements Serializable {
      * @since 2022-12-23
      */
     public URL getImageResource() {
-        String imgName = mapList.get(mapIndex).imageName;
+        String imgName = mapList[mapIndex][1];
         return this.getClass().getClassLoader().getResource("./mapImages/" + imgName);
     }
 
@@ -102,56 +102,24 @@ public class Map implements Serializable {
         return this.getName();
     }
 
-
-
-
-    /*
-    Note: The data structure below fits better in a database or file,
-    meaning: TODO: Refactor this
-     */
-
-    /*
-     * This class exists so that attributes of multiple different data types can be stored for each map.
-     */
-    private static class MapDataTuple implements Serializable {
-        public MapDataTuple(String name, String imageName)
-        {
-            this.name = name;
-            this.imageName = imageName;
-        }
-
-        public final String name;
-        public final String imageName;
-    }
-
     // Due to the instantiations of MapDataTuple this can not be done with 'static'
-    private final List<MapDataTuple> mapList = List.of(new MapDataTuple[] {
-            new MapDataTuple("Test 1", "map1.png"),
-            new MapDataTuple("Test 2", "map2.png")
-    });
+    private static final String[][] mapList = {
+            {"Map 1", "map1.png"}
+    };
 
     /**
-     * @return An immutable list of all available maps
+     * @return An immutable array of all available maps
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public static List<Map> getMapList()
+    public static Map[] getMapList()
     {
-        // Can't access the non-static mapList from here,
-        // so it has to be done like this
-        int mapNum = 0;
-        ArrayList<Map> mapList = new ArrayList<>();
-        Map m = new Map(mapNum);
-        try {
-            while (m.getName() != null) {
-                mapList.add(m);
-                mapNum++;
-                m = new Map(mapNum);
-            }
+        Map[] maps = new Map[mapList.length];
+        for(int i = 0; i < maps.length; i++)
+        {
+            maps[i] = new Map(i);
         }
-        catch(IndexOutOfBoundsException e)
-        {}
 
-        return mapList;
+        return maps;
     }
 }

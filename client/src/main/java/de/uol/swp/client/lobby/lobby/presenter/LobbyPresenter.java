@@ -37,6 +37,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -138,7 +139,7 @@ public class LobbyPresenter extends AbstractPresenter {
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }
 
-        this.mapList.setItems(FXCollections.observableList(Map.getMapList()));
+        this.mapList.setItems(FXCollections.observableList(Arrays.asList(Map.getMapList())));
         textFieldMapName.setText("None");
 
 

@@ -15,9 +15,9 @@ public class MapTest {
     @Test
     void getMapListTest()
     {
-        List<Map> maps = Map.getMapList();
+        Map[] maps = Map.getMapList();
         assertNotNull(maps);
-        assertNotEquals(maps.size(), 0);
+        assertNotEquals(maps.length, 0);
     }
 
 }
