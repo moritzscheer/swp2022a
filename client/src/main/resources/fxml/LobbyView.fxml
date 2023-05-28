@@ -11,6 +11,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
 <GridPane alignment="CENTER" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" scaleShape="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
@@ -92,10 +93,6 @@
             </GridPane.margin></TextField>
         </GridPane>
     </GridPane>
-    <Button fx:id="startButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onStartButtonPressed" prefWidth="150.0" text="GO!" GridPane.columnIndex="3" GridPane.rowIndex="2">
-      <GridPane.margin>
-         <Insets bottom="5.0" top="7.0" />
-      </GridPane.margin></Button>
     <Button fx:id="backButton" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#onBackButtonPressed" prefWidth="150.0" text="Back" GridPane.columnIndex="1" GridPane.rowIndex="2">
       <GridPane.margin>
          <Insets bottom="5.0" top="7.0" />
@@ -148,4 +145,11 @@
         <Separator style="-fx-background-color: black;" GridPane.rowIndex="4" />
         <Separator style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </GridPane>
+    <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0"
+          GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+        <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonPressed" prefWidth="150.0"
+                text="GO!"/>
+        <Button fx:id="readyButton" mnemonicParsing="false" onAction="#onReadyButtonPressed" prefHeight="16.0"
+                prefWidth="150.0" text="Not Ready"/>
+    </HBox>
 </GridPane>
