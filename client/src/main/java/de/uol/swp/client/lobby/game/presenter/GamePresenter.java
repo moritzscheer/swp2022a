@@ -102,6 +102,8 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private GridPane selectedCardGridPane;
     @FXML
+    private Text player1HP;
+    @FXML
     private Text player2HP;
     @FXML
     private Text player3HP;
@@ -117,6 +119,8 @@ public class GamePresenter extends AbstractPresenter {
     private Text player8HP;
 
     @FXML
+    private Text player1Checkpoint;
+    @FXML
     private Text player2Checkpoint;
     @FXML
     private Text player3Checkpoint;
@@ -131,6 +135,8 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private Text player8Checkpoint;
 
+    @FXML
+    private Text player1RobotLives;
     @FXML
     private Text player2RobotLives;
     @FXML
@@ -374,6 +380,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // damage tokens -> refers to how many cards a player receives
         playerHpTexts = new ArrayList<Text>();
+        playerHpTexts.add(player1HP);
         playerHpTexts.add(player2HP);
         playerHpTexts.add(player3HP);
         playerHpTexts.add(player4HP);
@@ -384,6 +391,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // last checkpoint
         playerCpTexts = new ArrayList<Text>();
+        playerCpTexts.add(player1Checkpoint);
         playerCpTexts.add(player2Checkpoint);
         playerCpTexts.add(player3Checkpoint);
         playerCpTexts.add(player4Checkpoint);
@@ -394,6 +402,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // life tokens
         playerRlTexts = new ArrayList<Text>();
+        playerRlTexts.add(player1RobotLives);
         playerRlTexts.add(player2RobotLives);
         playerRlTexts.add(player3RobotLives);
         playerRlTexts.add(player4RobotLives);
@@ -837,7 +846,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void setAllPlayersNotReady() {//to implement onNextRoundMessage
         for (int i = 0; i < playerCount; i++) {
-            playerReadyStackPanes.get(i).setStyle("-fx-background-color: red");
+            playerReadyStackPanes.get(i).setStyle("-fx-background-color: red;-fx-background-radius: 5");
         }
     }
 
@@ -854,7 +863,7 @@ public class GamePresenter extends AbstractPresenter {
         else{
             // TODO: for now keep it only to set ready
             int position = userToPositionInStackPanes.get(playerIsReady);
-            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green");
+            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green;-fx-background-radius: 5");
         }
 
 
@@ -889,7 +898,7 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Setting roboter health pojnts of the user
+     * Setting roboter health points of the user
      *
      * @author Jann Erik Bruns
      * @since 2023-05-05
