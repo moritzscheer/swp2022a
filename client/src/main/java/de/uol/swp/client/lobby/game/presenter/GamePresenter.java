@@ -753,7 +753,7 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
-                    //cardSlot.getKey().setDisable(false);
+                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
