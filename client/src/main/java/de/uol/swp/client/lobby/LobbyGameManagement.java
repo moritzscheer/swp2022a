@@ -16,6 +16,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
+import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
 import javafx.scene.Parent;
@@ -158,6 +159,20 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.switchButtonDisableEffect();
     }
 
+    /**
+     * Handles when a user pressed a ready or not ready button in the lobby
+     *
+     * <p>If a ChangeElementEvent is posted to the EventBus this method is called.
+     *
+     * @param message the PlayerReadyInLobbyResponse object seen on the EventBus
+     * @see PlayerReadyInLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    public void playerReadyInLobby(PlayerReadyInLobbyMessage message) {
+        LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
+        a.updatePlayerReadyStatus(message);
+    }
 
     // -----------------------------------------------------
     // getter and setter
