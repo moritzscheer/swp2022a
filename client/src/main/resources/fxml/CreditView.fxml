@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<GridPane minHeight="600.0" minWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.credit.CreditPresenter">
+<GridPane minHeight="600.0" minWidth="1000.0" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.uol.swp.client.credit.CreditPresenter">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -23,24 +29,114 @@
         <RowConstraints maxHeight="303.0" minHeight="10.0" prefHeight="76.0" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="241.0" minHeight="10.0" prefHeight="85.0" vgrow="SOMETIMES" />
     </rowConstraints>
-    <GridPane styleClass="InnerBox" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+    <GridPane styleClass="InnerBox" stylesheets="@../css/BaseViewStyle.css" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="4">
       <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
       </columnConstraints>
       <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="2.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="2.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="5.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" percentHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
       </rowConstraints>
+      <children>
+         <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+          <Label style="-fx-font-weight: bold;" text="Credits" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+              <font>
+                <Font size="28.0" />
+              </font>
+          </Label>
+         <Separator prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <GridPane.margin>
+               <Insets left="5.0" right="5.0" />
+            </GridPane.margin>
+         </Separator>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Roboter Images Source" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="https://opengameart.org/content/top-down-painted-tanks" wrappingWidth="183.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creators" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Text>
+         <Separator prefWidth="200.0" style="-fx-background-color: black;" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <GridPane.margin>
+               <Insets left="5.0" right="5.0" />
+            </GridPane.margin>
+         </Separator>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Jann Erik Bruns" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Maria Eduarda Costa Leite Andrade" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tommy Dang" GridPane.halignment="RIGHT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mathis Eilers" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Maxim Erden" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Waldemar Kempel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Finn Oldeboershuis" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Moritz Scheer" GridPane.halignment="RIGHT" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Ole Zimmermann" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets left="20.0" />
+            </GridPane.margin>
+         </Text>
+         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Daniel Merzo" GridPane.halignment="RIGHT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+            <GridPane.margin>
+               <Insets right="20.0" />
+            </GridPane.margin>
+         </Text>
+      </children>
+      <GridPane.margin>
+         <Insets />
+      </GridPane.margin>
+      <padding>
+         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+      </padding>
     </GridPane>
     <Button minWidth="60.0" mnemonicParsing="false" onAction="#onBackButtonPressed" prefHeight="41.0" prefWidth="83.0" text="Back" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-    <Label text="Credits" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
-        <padding>
-          <Insets bottom="10.0" />
-        </padding>
-        <font>
-          <Font size="28.0" />
-        </font>
-    </Label>
 </GridPane>
