@@ -1046,43 +1046,128 @@ public class GamePresenter extends AbstractPresenter {
      * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
      * @since 2023-05-20
      */
-    public void updateRobotState(UserDTO userToUpdate, Position newPos, CardinalDirection newDir){
+    public void updateRobotState(PlayerDTO playerDTO){
 
         LOG.debug("in updateRobotState");
-        LOG.debug("user {}", userToUpdate.getUsername());
-        LOG.debug("robotID {}", this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID());
+        LOG.debug("user {}", playerDTO.getUser().getUsername());
+        LOG.debug("robotID {}",  playerDTO.getRobotDTO().getRobotID());
         LOG.debug("gameBoard {}", gameBoard);
-        LOG.debug("newPosition x = {} y = {}", newPos.x, newPos.y);
-        LOG.debug("newDirection {}", newDir);
+        LOG.debug("newPosition x = {} y = {}", playerDTO.getRobotDTO().getPosition().x, playerDTO.getRobotDTO().getPosition().y);
+        LOG.debug("newDirection {}", playerDTO.getRobotDTO().getDirection());
+        int robotID = playerDTO.getRobotDTO().getRobotID();
+        UserDTO userToUpdate = playerDTO.getUser();
+        Position newPos = playerDTO.getRobotDTO().getPosition();
+        CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
 
-        Platform.runLater(
-                () -> {
-                    // show this player robot, since they all start in checkpoint 1
-                    int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
-                    Position prevPosition =
-                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
-                    LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
-                    ImageView imageView = jsonUtils.getRobotImage(robotID);
-                    removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
-                            this.userRobotImageViewReference.get(userToUpdate)
-                    );
-                    // TODO: we might have to fix all robots images facing north
-                    // +3 is just a workaround
-                    imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
-                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
-                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
-                    gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+        // set new info after this robot suffered from lasers and might have died
+        setPlayerHP(playerDTO);
+        setRoboterHP(playerDTO);
+        setPlayerCheckpoint(playerDTO);
 
-                    // Update new position
-                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
-                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
-                    this.userRobotImageViewReference.replace(userToUpdate, imageView);
-                });
+        // only create new image if robot is alive
+        if(playerDTO.getRobotDTO().isAlive())
+            Platform.runLater(
+                    () -> {
+                        // show this player robot, since they all start in checkpoint 1
+                        Position prevPosition =
+                                this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+                        LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                        removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                this.userRobotImageViewReference.get(userToUpdate)
+                        );
+
+                        ImageView imageView = jsonUtils.getRobotImage(robotID);
+                        imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                        imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                        imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+                        gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+
+                        // Update new position
+                        this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
+                        this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
+                        this.userRobotImageViewReference.replace(userToUpdate, imageView);
+                    });
+        else{
+            // try to remove last position where robot was
+            Platform.runLater(
+                    () -> {
+                        this.userRobotImageViewReference.get(playerDTO.getUser());
+                        Position prevPosition =
+                                this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                        LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                        if(!Objects.equals(this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                            removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                    this.userRobotImageViewReference.get(playerDTO.getUser())
+                            );
+                        this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                    });
+        }
     }
 
     public void animateBoardElements(List<PlayerDTO> playerDTOList){
         // TODO ANIMATION
         // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
+        // TODO: remove this temporary code
+
+        LOG.debug("in animateBoardElements");
+
+        for(PlayerDTO playerDTO: playerDTOList){
+            if(playerDTO.getRobotDTO().isAlive()){
+                LOG.debug("user {}", playerDTO.getUser().getUsername());
+                LOG.debug("robotID {}", this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getRobotID());
+                LOG.debug("gameBoard {}", gameBoard);
+                Position newPos = playerDTO.getRobotDTO().getPosition();
+                CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
+                LOG.debug("newPosition x = {} y = {}", newPos.x, newPos.y);
+                LOG.debug("newDirection {}", newDir);
+                int robotID = this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getRobotID();
+                Position prevPosition =
+                        this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                ImageView imageView = jsonUtils.getRobotImage(robotID);
+                UserDTO userToUpdate = playerDTO.getUser();
+
+                Platform.runLater(
+                        () -> {
+                            LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                            removeNodeByRowColumnIndex(prevPosition.x + 1, prevPosition.y + 1,
+                                    this.userRobotImageViewReference.get(playerDTO.getUser())
+                            );
+                            // TODO: we might have to fix all robots images facing north
+                            // +3 is just a workaround
+                            imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                            imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                            imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+                            gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+
+                            // Update new position
+                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
+                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
+                            this.userRobotImageViewReference.replace(userToUpdate, imageView);
+                        });
+            }
+            else {
+                // TODO: there is one step between not dead and dead misisng to be shown
+                // try to remove last position where robot was
+                Platform.runLater(
+                        () -> {
+                            this.userRobotImageViewReference.get(playerDTO.getUser());
+                            Position prevPosition =
+                                    this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                            LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                            if(!Objects.equals(this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                                removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                        this.userRobotImageViewReference.get(playerDTO.getUser())
+                                );
+                            this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                        });
+            }
+
+            // update
+            setPlayerHP(playerDTO);
+            setRoboterHP(playerDTO);
+            setPlayerCheckpoint(playerDTO);
+        }
+
 
     }
 
