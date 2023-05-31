@@ -637,8 +637,8 @@ public class GamePresenter extends AbstractPresenter {
             chosenCardsMap.replace(end, from);
 
             // if card is null, make it not clickable
-            start.setDisable(Objects.equals(cardsMap.get(start), null));
-            end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
+            //start.setDisable(Objects.equals(cardsMap.get(start), null));
+            //end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
@@ -647,12 +647,27 @@ public class GamePresenter extends AbstractPresenter {
             cardsMap.replace(end, from);
 
             // if card is null, make it not clickable
-            start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
-            end.setDisable(Objects.equals(cardsMap.get(end), null));
+            //start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
+            //end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
-        else{
-            // some weird case
-            LOG.debug("IS THIS CORRECT????");
+        else if (start.toString().contains("card") && end.toString().contains("card")){
+            CardDTO from = cardsMap.get(start);
+            CardDTO to = cardsMap.get(end);
+
+            cardsMap.replace(start, to);
+            cardsMap.replace(end, from);
+        }
+
+        else if (start.toString().contains("chosenCard") && end.toString().contains("chosenCard")) {
+            CardDTO from = chosenCardsMap.get(start);
+            CardDTO to = chosenCardsMap.get(end);
+
+            chosenCardsMap.replace(start, to);
+            chosenCardsMap.replace(end, from);
+        }
+            else{
+                // some weird case
+                    LOG.debug("IS THIS CORRECT????");
         }
 
     }
@@ -671,7 +686,7 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(RED);
-                slotz.getKey().setDisable(true); // disable empty slots from being clicked
+                //slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
         }
 
@@ -694,7 +709,7 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
-                    cardSlot.getKey().setDisable(false);
+                    //cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
@@ -736,9 +751,12 @@ public class GamePresenter extends AbstractPresenter {
 
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
-
+        setNotReadyWhileAllCardsWereNotChosen();
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
 
+        if (!chosenCardsMap.containsValue(null)) {
+            readyButton.setDisable(false);
+        }
     }
 
     @FXML
@@ -748,8 +766,6 @@ public class GamePresenter extends AbstractPresenter {
             return;
         }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
-
-
         ClipboardContent content = new ClipboardContent();
 
         content.putString(mouseEvent.toString());
