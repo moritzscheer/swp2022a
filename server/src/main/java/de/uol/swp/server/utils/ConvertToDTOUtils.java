@@ -51,6 +51,7 @@ public final class ConvertToDTOUtils {
         robotDTO.setLifeToken(robot.getLifeToken());
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
+        robotDTO.setAlive(robot.isAlive());
         return robotDTO;
     }
 
