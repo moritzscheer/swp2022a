@@ -884,34 +884,58 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting health points of the user
      *
-     * @author Jann Erik Bruns
+     * @author Jann Erik Bruns, Maria
      * @since 2023-05-05
      */
-    private void setPlayerHP() {  //To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                playerHpTexts.get(i).setText("1");//to implement
-                break;
-            }
+    private void setPlayerHP(PlayerDTO playerDTO) {  //To implement onPlayerHPChangedMessage
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerHpTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getDamageToken()
+            ));
+            return;
         }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerHpTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getDamageToken()));
     }
 
     /**
      * Setting roboter health points of the user
      *
-     * @author Jann Erik Bruns
+     * @author Jann Erik Bruns, Maria
      * @since 2023-05-05
      */
-    private void setRoboterHP() {//To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO: Robot HP
-                playerRlTexts.get(i).setText("1");//to implement
-                break;
-            }
+    private void setRoboterHP(PlayerDTO playerDTO) {//To implement onPlayerHPChangedMessage
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerRlTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getLifeToken()
+            ));
+            return;
         }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerRlTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getLifeToken()
+        ));
+    }
+
+    /**
+     * Setting Checkpoint of the user
+     *
+     * @author Jann Erik Bruns, Maria
+     * @since 2023-05-05
+     */
+    private void setPlayerCheckpoint(PlayerDTO playerDTO) {//To implement onPlayerHPChangedMessage
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerCpTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getLastCheckpoint()
+            ));
+            return;
+        }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerCpTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getLastCheckpoint()
+        ));
+
     }
 
     @FXML
@@ -945,23 +969,6 @@ public class GamePresenter extends AbstractPresenter {
         readyButton.setText("Submit Cards");
         readyButton.setDisable(true);
         playerReady = false;
-    }
-
-    /**
-     * Setting Checkpoint of the user
-     *
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerCheckpoint() {//To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO Checkpoint
-                playerCpTexts.get(i).setText("1");//to implement
-                break;
-            }
-        }
     }
 
     /**
