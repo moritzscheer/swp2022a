@@ -877,7 +877,7 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Setting roboter health pojnts of the user
+     * Setting roboter health points of the user
      *
      * @author Jann Erik Bruns
      * @since 2023-05-05
