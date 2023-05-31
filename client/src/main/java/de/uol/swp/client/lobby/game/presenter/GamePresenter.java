@@ -679,16 +679,39 @@ public class GamePresenter extends AbstractPresenter {
 
             cardsMap.replace(start, to);
             chosenCardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            //start.setDisable(Objects.equals(cardsMap.get(start), null));
+            //end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
 
             chosenCardsMap.replace(start, to);
             cardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            //start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
+            //end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
-        else{
-            // some weird case
-            LOG.debug("IS THIS CORRECT????");
+        else if (start.toString().contains("card") && end.toString().contains("card")){
+            CardDTO from = cardsMap.get(start);
+            CardDTO to = cardsMap.get(end);
+
+            cardsMap.replace(start, to);
+            cardsMap.replace(end, from);
+        }
+
+        else if (start.toString().contains("chosenCard") && end.toString().contains("chosenCard")) {
+            CardDTO from = chosenCardsMap.get(start);
+            CardDTO to = chosenCardsMap.get(end);
+
+            chosenCardsMap.replace(start, to);
+            chosenCardsMap.replace(end, from);
+        }
+            else{
+                // some weird case
+                    LOG.debug("IS THIS CORRECT????");
         }
 
     }
@@ -701,22 +724,18 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-06
      */
     public void resetCardsAndSlots() {
-        cardHand.clear();
-        submittedCards.clear();
-
-        //TODO: check if this function may be removed
-//        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-//            if (cardz.getKey() != null) {
-//                cards.replace(cardz.getKey(), false);
-//                cardz.getKey().setFill(DODGERBLUE);
-//            }
-//        }
+        //submittedCards.clear();
 
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
+                //slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
+        }
+
+        for(Map.Entry<Rectangle, Text> cardText: cardValues.entrySet()){
+            cardText.getValue().setText("");
         }
     }
 
@@ -734,6 +753,7 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
+                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
@@ -775,9 +795,12 @@ public class GamePresenter extends AbstractPresenter {
 
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
-
+        setNotReadyWhileAllCardsWereNotChosen();
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
 
+        if (!chosenCardsMap.containsValue(null)) {
+            readyButton.setDisable(false);
+        }
     }
 
     @FXML
@@ -787,8 +810,6 @@ public class GamePresenter extends AbstractPresenter {
             return;
         }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
-
-
         ClipboardContent content = new ClipboardContent();
 
         content.putString(mouseEvent.toString());
@@ -935,6 +956,34 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
+     * Block choosenCards and availableCards
+     *
+     * @author Maria Andrade
+     * @since 2023-05-23
+     */
+    public void blockPlayerCardsAfterSubmit(UserDTO playerReady){
+        if(Objects.equals(playerReady,this.loggedInUser)){
+            // remove available cards
+
+            for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+                if (card.getKey() != null) {
+                    cardsMap.replace(card.getKey(), null);
+                    card.getKey().setFill(RED);
+
+                    // remove text
+                    cardValues.get(card.getKey()).setText("");
+
+                }
+                card.getKey().setDisable(true);
+            }
+            // block chosen cards
+            for(Map.Entry<Rectangle, CardDTO> card: chosenCardsMap.entrySet()){
+                card.getKey().setDisable(true);
+            }
+        }
+    }
+
+    /**
      * Setting playercard of the user
      *
      * @author Jann Erik Bruns
@@ -1015,6 +1064,12 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    public void animateBoardElements(List<PlayerDTO> playerDTOList){
+        // TODO ANIMATION
+        // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
+
+    }
+
     /** Remove last ImageView from the board when robot moves
      *
      * @author Maria Andrade
@@ -1027,14 +1082,9 @@ public class GamePresenter extends AbstractPresenter {
             LOG.debug("REMOVING NODE: but it is NULL");
             return;
         }
+        LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
+        gameBoard.getChildren().remove(toRemove);
 
-        for(Node node : childrens) {
-            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
-                gameBoard.getChildren().remove(toRemove);
-                break;
-            }
-        }
     }
 
     @FXML
