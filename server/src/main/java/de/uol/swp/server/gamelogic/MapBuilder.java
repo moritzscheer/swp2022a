@@ -324,7 +324,7 @@ public final class MapBuilder {
                         CardinalDirection.North));
 
         x = 11;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 1));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 2));
 
         y = 4;
 
@@ -363,7 +363,7 @@ public final class MapBuilder {
         x = 5;
         generateBlock(map, x, y);
         x = 6;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 2));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
         x = 7;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
@@ -569,7 +569,7 @@ public final class MapBuilder {
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West));
 
         x = 1;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 4));
         x = 2;
         generateBlock(map, x, y);
 
@@ -633,7 +633,7 @@ public final class MapBuilder {
         y = 11;
 
         x = 0;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 0));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 1));
         x = 1;
         generateBlock(map, x, y, new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South));
         x = 2;
