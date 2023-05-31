@@ -103,6 +103,14 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     public boolean getStart() {return this.start;}
 
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
+    public void setLaserBeam(int beam){
+        this.laserBeam = beam;
+    }
+
     @Override
     public List<int[]> getImage() {
         int placeholder = 17;

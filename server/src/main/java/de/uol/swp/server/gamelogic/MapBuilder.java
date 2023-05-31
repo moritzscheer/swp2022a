@@ -6,6 +6,8 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 
 /**
@@ -353,7 +355,9 @@ public final class MapBuilder {
 
 
         x = 3;
-        generateBlock(map, x, y);
+        generateBlock(map, x, y,
+                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, true, true),
+                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East));
 
         x = 4;
         generateBlock(map, x, y,
@@ -411,6 +415,7 @@ public final class MapBuilder {
         generateBlock(map, x, y);
         x = 5;
         generateBlock(map, x, y,
+
                 new RepairBehaviour(null, map, new Position(x, y), 0));
 
         x = 6;
@@ -660,26 +665,47 @@ public final class MapBuilder {
         generateBlock(map, x, y, new RepairBehaviour(null, map, new Position(x, y), 1));
 
 
+        for (y = 0; y < 12; y++) {
 
-        for (y = 0; y<12; y++){
+            for (x = 0; x < 12; x++) {
+                boolean pitBehaviourFound = false;
+                boolean conveyorBeltBehaviourFound = false;
+                boolean repairBehaviourFound = false;
+                boolean gearBehaviourFound = false;
 
-            for (x = 0; x< 12; x++){
-
-                for(int i = 0; i< map[x][y].getBehaviourList().length; i++){
-                    if(map[x][y].getBehaviourList()[i] instanceof LaserBehaviour){
-                        if(((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart() == true) {
+                for (int i = 0; i < map[x][y].getBehaviourList().length; i++) {
+                    if (map[x][y].getBehaviourList()[i] instanceof LaserBehaviour) {
+                        if (((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart() == true) {
                             laserStart(map, x, y, ((LaserBehaviour) map[x][y].getBehaviourList()[i]).getLaserBeam(), ((LaserBehaviour) map[x][y].getBehaviourList()[i]).getLaserDirection());
                         }
                     }
+                    else if(map[x][y].getBehaviourList()[i] instanceof PitBehaviour){
+                        pitBehaviourFound = true;
+                    }
+                    else if(map[x][y].getBehaviourList()[i] instanceof ConveyorBeltBehaviour || map[x][y].getBehaviourList()[i] instanceof ExpressConveyorBeltBehaviour){
+                        conveyorBeltBehaviourFound = true;
+                    }
+                    else if(map[x][y].getBehaviourList()[i] instanceof RepairBehaviour){
+                        repairBehaviourFound = true;
+                    }
+                    else if(map[x][y].getBehaviourList()[i] instanceof GearBehaviour){
+                        gearBehaviourFound = true;
+                    }
                 }
+
+
+            }
+        }
+
+
+        for (y = 0; y < 12; y++) {
+
+            for (x = 0; x < 12; x++) {
+
+                map[x][y].setBehaviourList(sortBehaviourList(map[x][y].getBehaviourList()));
             }
         }
     }
-
-
-
-
-
     private static void generateBlock(
             Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
         map[x][y] = new Block(behaviours, null, new Position(x, y));
@@ -727,7 +753,11 @@ public final class MapBuilder {
                 if(map[x2][y2].getBehaviourList()[i] instanceof PusherBehaviour && map[x2][y2].getBehaviourList()[i].getObstruction(direction)){
                     fullLaser = false;
                 }
-                if(map[x2][y2].getBehaviourList()[i] instanceof LaserBehaviour){
+                if(map[x2][y2].getBehaviourList()[i] instanceof LaserBehaviour && (map[x2][y2].getBehaviourList()[i].getObstruction(direction) ||  map[x2][y2].getBehaviourList()[i].getObstruction(opposite))){
+                    if(((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getStart()){
+                        ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setStart(false);
+                        ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setLaserBeam(beam);
+                    }
                     innerWallorLaser = true;
                 }
             }
@@ -738,5 +768,14 @@ public final class MapBuilder {
                 map[x2][y2] = new Block(copy, null, new Position(x2, y2));
             }
         }
+    }
+
+
+    private static AbstractTileBehaviour[] sortBehaviourList(AbstractTileBehaviour[] behaviourList){
+        Arrays.sort(behaviourList, new BehaviourTypeComparator());
+
+        AbstractTileBehaviour[] uniqueBehaviourList = new LinkedHashSet<>(Arrays.asList(behaviourList)).toArray(new AbstractTileBehaviour[0]);
+
+        return behaviourList;
     }
 }
