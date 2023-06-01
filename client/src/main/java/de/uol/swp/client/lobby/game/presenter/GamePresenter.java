@@ -64,12 +64,13 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
+import org.w3c.dom.css.Rect;
 
 import java.io.File;
 import java.io.FileReader;
 import java.util.*;
 
-import static javafx.scene.paint.Color.DODGERBLUE;
+import static javafx.scene.paint.Color.LIGHTGREY;
 
 /**
  * Manages the game window
@@ -526,6 +527,7 @@ public class GamePresenter extends AbstractPresenter {
                             // show this player robot, since they all start in checkpoint 1
                             int robotID = player.getValue().getRobotDTO().getRobotID();
                             ImageView imageView = jsonUtils.getRobotImage(robotID);
+                            imageView.setRotate((player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
                             imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
                             imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
 
@@ -534,47 +536,42 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.put(player.getKey(), imageView);
                         }
 
-                        /**
+                        /** Helps to resize the rectangles of the cards and makes it more automatic
+                         *
                          * @author Tommy Dang
-                         * @since 2023-05-20
+                         * @since 2023-05-23
                          */
+                        double widthOfRightGrid = 5.5; // 5.5 gut
+                        double heightOfHandCardGridPane = 2.2; // 2.2 gut
+                        double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
 
-                        double widthOfRightGrid = 5.5;
-                        double heightOfHandCardGridPane = 2.5;
-                        double widthOfSelectedCardGridPane = 1.2;
+                        for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
+                            handCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            handCards.getKey().heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        }
+                        for (Map.Entry<Rectangle, CardDTO> chosenCards : chosenCardsMap.entrySet()) {
+                            chosenCards.getKey().widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+                            chosenCards.getKey().heightProperty().bind(selectedCardGridPane.heightProperty().divide(heightOfSelectedCardGridPane));
+                        }
 
-                        card1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card6.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card7.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card8.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        card9.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
 
-                        card1.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card2.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card3.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card4.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card5.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card6.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card7.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card8.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
-                        card9.heightProperty().bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
+                        /** Helps to align the Card priority text in the cards
+                         *
+                         * In the programming cards is a white box, where the value of the priority is. This helps to correctly align the text into the card
+                         * Needs to separate handcards and selected cards because of their different sizes.
+                         *
+                         * @author Tommy Dang
+                         * @since 2023-05-23
+                         */
+                        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
+                            handCardsText.getValue().translateYProperty().bind(selectedCardGridPane.heightProperty().divide(8.1).subtract(3.5)); // 8.1 / 3.5
+                        }
 
-                        chosenCard1.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard2.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard3.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard4.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                        chosenCard5.widthProperty().bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-
-                        chosenCard1.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard2.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard3.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard4.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-                        chosenCard5.heightProperty().bind(selectedCardGridPane.heightProperty().divide(widthOfSelectedCardGridPane));
-
+                        text_chosenCard1.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard2.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard3.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard4.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                        text_chosenCard5.translateYProperty().bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -682,16 +679,39 @@ public class GamePresenter extends AbstractPresenter {
 
             cardsMap.replace(start, to);
             chosenCardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            //start.setDisable(Objects.equals(cardsMap.get(start), null));
+            //end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
 
             chosenCardsMap.replace(start, to);
             cardsMap.replace(end, from);
+
+            // if card is null, make it not clickable
+            //start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
+            //end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
-        else{
-            // some weird case
-            LOG.debug("IS THIS CORRECT????");
+        else if (start.toString().contains("card") && end.toString().contains("card")){
+            CardDTO from = cardsMap.get(start);
+            CardDTO to = cardsMap.get(end);
+
+            cardsMap.replace(start, to);
+            cardsMap.replace(end, from);
+        }
+
+        else if (start.toString().contains("chosenCard") && end.toString().contains("chosenCard")) {
+            CardDTO from = chosenCardsMap.get(start);
+            CardDTO to = chosenCardsMap.get(end);
+
+            chosenCardsMap.replace(start, to);
+            chosenCardsMap.replace(end, from);
+        }
+            else{
+                // some weird case
+                    LOG.debug("IS THIS CORRECT????");
         }
 
     }
@@ -704,22 +724,18 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-06
      */
     public void resetCardsAndSlots() {
-        cardHand.clear();
-        submittedCards.clear();
-
-        //TODO: check if this function may be removed
-//        for (Map.Entry<Rectangle, Boolean> cardz : cards.entrySet()) {
-//            if (cardz.getKey() != null) {
-//                cards.replace(cardz.getKey(), false);
-//                cardz.getKey().setFill(DODGERBLUE);
-//            }
-//        }
+        //submittedCards.clear();
 
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
-                slotz.getKey().setFill(DODGERBLUE);
+                slotz.getKey().setFill(LIGHTGREY);
+                //slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
+        }
+
+        for(Map.Entry<Rectangle, Text> cardText: cardValues.entrySet()){
+            cardText.getValue().setText("");
         }
     }
 
@@ -737,6 +753,7 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
+                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
@@ -778,20 +795,21 @@ public class GamePresenter extends AbstractPresenter {
 
         Dragboard d = event.getDragboard();
         System.out.println(d.getString());
-
+        setNotReadyWhileAllCardsWereNotChosen();
         switchTwoCardsOrSlots(getCardOrSlot(d.getString()), getCardOrSlot(event.toString()));
 
+        if (!chosenCardsMap.containsValue(null)) {
+            readyButton.setDisable(false);
+        }
     }
 
     @FXML
     public void dragEntered(MouseEvent mouseEvent) {
 
-        if (getCardOrSlot(mouseEvent.toString()).getFill() == DODGERBLUE) {
+        if (getCardOrSlot(mouseEvent.toString()).getFill() == LIGHTGREY) {
             return;
         }
         Dragboard dragboard = getCardOrSlot(mouseEvent.toString()).startDragAndDrop(TransferMode.ANY);
-
-
         ClipboardContent content = new ClipboardContent();
 
         content.putString(mouseEvent.toString());
@@ -938,6 +956,34 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
+     * Block choosenCards and availableCards
+     *
+     * @author Maria Andrade
+     * @since 2023-05-23
+     */
+    public void blockPlayerCardsAfterSubmit(UserDTO playerReady){
+        if(Objects.equals(playerReady,this.loggedInUser)){
+            // remove available cards
+
+            for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+                if (card.getKey() != null) {
+                    cardsMap.replace(card.getKey(), null);
+                    card.getKey().setFill(RED);
+
+                    // remove text
+                    cardValues.get(card.getKey()).setText("");
+
+                }
+                card.getKey().setDisable(true);
+            }
+            // block chosen cards
+            for(Map.Entry<Rectangle, CardDTO> card: chosenCardsMap.entrySet()){
+                card.getKey().setDisable(true);
+            }
+        }
+    }
+
+    /**
      * Setting playercard of the user
      *
      * @author Jann Erik Bruns
@@ -1006,7 +1052,9 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     // TODO: we might have to fix all robots images facing north
                     // +3 is just a workaround
-                    imageView.setRotate((newDir.ordinal()+3) * 90); // Rotate the image
+                    imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
                     gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
 
                     // Update new position
@@ -1014,6 +1062,12 @@ public class GamePresenter extends AbstractPresenter {
                     this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
                     this.userRobotImageViewReference.replace(userToUpdate, imageView);
                 });
+    }
+
+    public void animateBoardElements(List<PlayerDTO> playerDTOList){
+        // TODO ANIMATION
+        // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
+
     }
 
     /** Remove last ImageView from the board when robot moves
@@ -1028,14 +1082,9 @@ public class GamePresenter extends AbstractPresenter {
             LOG.debug("REMOVING NODE: but it is NULL");
             return;
         }
+        LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
+        gameBoard.getChildren().remove(toRemove);
 
-        for(Node node : childrens) {
-            if(node instanceof ImageView && GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                LOG.debug("REMOVING NODE: row {} col {} img {}", row, column, toRemove.toString());
-                gameBoard.getChildren().remove(toRemove);
-                break;
-            }
-        }
     }
 
     @FXML

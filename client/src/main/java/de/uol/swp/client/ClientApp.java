@@ -145,7 +145,7 @@ public class ClientApp extends Application implements ConnectionListener {
 
     @Override
     public void connectionEstablished(Channel ch) {
-        sceneManager.showLoginScreen();
+        sceneManager.showTabScreen();
     }
 
     @Override
@@ -181,7 +181,7 @@ public class ClientApp extends Application implements ConnectionListener {
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
         LOG.debug("user logged in successfully {}", message.getUser().getUsername());
         this.user = message.getUser();
-        sceneManager.showTabScreen(user);
+        sceneManager.showMainScreen();
     }
 
     /**

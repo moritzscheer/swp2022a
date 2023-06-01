@@ -229,9 +229,8 @@ public class Game {
             }
         }
     }
-
-    public void calcGameRound() {
-        LOG.debug("Calculating game for round " + this.programStep);
+    public void calcGameRoundCards(){
+        LOG.debug("Calculating game cards for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -252,8 +251,14 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
-        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+    }
+
+    public void calcGameRoundBoard(){
+        LOG.debug("Calculating game board for round " + this.programStep);
+        // Iterate through the 5 cards
+        if (this.playedCards[0].length != 5) {
+            // TODO: Log Error regarding card count
+        }
 
         // Iterate through all the traps
         for (Block[] blocksX : board) {
@@ -293,8 +298,73 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
-        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+    }
+
+    public void calcGameRound() {
+//        LOG.debug("Calculating game for round " + this.programStep);
+//        // Iterate through the 5 cards
+//        if (this.playedCards[0].length != 5) {
+//            // TODO: Log Error regarding card count
+//        }
+//        // TODO: row is Player, column is card
+//        // idea: you can iterate over the players with:
+//        // this.playedCards[playerIterator][this.programStep]
+//        // programStep changes in goToNextRound(cards)
+//
+//        // Iterate through the X card of all Players and resolve them
+//        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+//        for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
+//            List<List<MoveIntent>> moves;
+//            moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
+//            for (List<MoveIntent> move : moves) {
+//                List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
+//                executeMoveIntents(resolvedMoves);
+//            }
+//        }
+//        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+//
+//        // Iterate through all the traps
+//        for (Block[] blocksX : board) {
+//            for (Block blockXY : blocksX) {
+//                List<MoveIntent> moves;
+//
+//                // TODO: implementation of ActionReports for use in a GameMoveHistory
+//                // Preferably altering the behaviour Methods to return (or get as parameters)
+//                // the list of ActionReports and MoveIntents
+//
+//                moves = blockXY.OnExpressConveyorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnConveyorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnPusherStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnRotatorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnPresserStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnLaserStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnCheckPointStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//            }
+//        }
+//        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
 
 
         // Send back a collective result of the whole GameRound

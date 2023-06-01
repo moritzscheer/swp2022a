@@ -7,9 +7,11 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
+import de.uol.swp.client.lobby.lobby.event.SetPlayerReadyEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
 import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
@@ -19,6 +21,7 @@ import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -60,6 +64,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private String lobbyName;
     private User owner;
     private ObservableList<String> users;
+    private ObservableList<User> usersNotReady;
     private String password;
     private Boolean multiplayer;
     private Integer slots = 1;
@@ -78,6 +83,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML private Button yesButton;
     @FXML private Button noButton;
     @FXML private Label infoLabel;
+    @FXML private Button readyButton;
     @FXML private Button startButton;
     @FXML private Button backButton;
     @FXML private TextArea chatOutput;
@@ -148,10 +154,21 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
+        if(!loggedInUser.equals(owner)) {
+            startButton.setManaged(false);
+            startButton.setVisible(false);
+        } else if (lobby.getUsers().size() == 1) {
+            readyButton.setVisible(false);
+        }
 
         // initialize user list
-        List<User> list = new ArrayList<>(lobby.getUsers());
-        updateUsersList(list);
+        List<User> list1 = new ArrayList<>(lobby.getUsers());
+        updateUsersList(list1);
+
+        // initialize user not ready list
+        List<User> list2 = new ArrayList<>(lobby.getUsers());
+        updateUsersNotReadyList(list2);
+
         eventBus.register(this);
     }
 
@@ -177,6 +194,31 @@ public class LobbyPresenter extends AbstractPresenter {
                     }
                     users.clear();
                     userList.forEach(u -> users.add(u.getUsername()));
+                });
+    }
+
+    /**
+     * Updates the list of players that are not ready on the client side
+     *
+     * <p>This method clears the entire userNotReady list and then adds each user in the list
+     * given to it. If there ist no userNotReady list this it creates one.
+     *
+     * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
+     *     it is crucial not to remove the {@code Platform.runLater()}
+     * @param userList A list of UserDTO objects including all users that are not ready
+     * @see de.uol.swp.common.user.UserDTO
+     * @authr Moritz Scheer
+     * @since 2023-05-28
+     */
+    private void updateUsersNotReadyList(List<User> userList) {
+        // Attention: This must be done on the FX Thread!
+        Platform.runLater(
+                () -> {
+                    if (usersNotReady == null) {
+                        usersNotReady = FXCollections.observableArrayList();
+                    }
+                    usersNotReady.clear();
+                    userList.forEach(u -> usersNotReady.add(u));
                 });
     }
 
@@ -214,13 +256,22 @@ public class LobbyPresenter extends AbstractPresenter {
         Platform.runLater(
                 () -> {
                     users.remove(message.getUser().getUsername());
+                    usersNotReady.remove(message.getUser());
 
                     slots--;
                     textFieldOnlineUsers.setText(String.valueOf(slots));
 
                     owner = message.getNewOwner();
                     textFieldOwner.setText(owner.getUsername());
-                    System.out.println(slots);
+
+                    if(loggedInUser.equals(owner)) {
+                        startButton.setManaged(true);
+                        startButton.setVisible(true);
+                    }
+                    if(users.size() == 1) {
+                        startButton.setDisable(false);
+                        readyButton.setVisible(false);
+                    }
                 });
     }
 
@@ -233,7 +284,8 @@ public class LobbyPresenter extends AbstractPresenter {
      * log.
      *
      * @param message the UserJoinedLobbyMessage object seen on the EventBus
-     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage @ Moritz Scheer
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @author Moritz Scheer
      * @since 2022-12-13
      */
     public void userJoinedLobby(UserJoinedLobbyMessage message) {
@@ -246,10 +298,47 @@ public class LobbyPresenter extends AbstractPresenter {
                                     .getUsername()
                                     .equals(message.getUser().getUsername())) {
                         users.add(message.getUser().getUsername());
+                        usersNotReady.add(message.getUser());
                     }
                     slots++;
                     textFieldOnlineUsers.setText(String.valueOf(slots));
+                    if(users.size() >= 1) {
+                        readyButton.setVisible(true);
+                        startButton.setDisable(true);
+                    }
                 });
+    }
+
+    /**
+     * Handles changes if a player pressed the ready or not ready button
+     *
+     * <p>If a new PlayerReadyInLobbyMessage object is posted to the EventBus
+     *
+     * @param message the PlayerReadyInLobbyMessage object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    public void updatePlayerReadyStatus(PlayerReadyInLobbyMessage message) {
+        if(message.isReady()) {
+            usersNotReady.remove(message.getUser());
+            if(loggedInUser.equals(message.getUser())) {
+                LOG.debug("you are now ready");
+            } else {
+                LOG.debug("user {} is now ready", message.getUser().getUsername());
+            }
+        } else {
+            usersNotReady.add(message.getUser());
+            startButton.setDisable(true);
+            if(loggedInUser.equals(message.getUser())) {
+                LOG.debug("you are now not ready");
+            } else {
+                LOG.debug("user {} is now not ready", message.getUser().getUsername());
+            }
+        }
+        if(usersNotReady.size() == 0 && loggedInUser.equals(owner)) {
+            startButton.setDisable(false);
+        }
     }
 
     // -----------------------------------------------------
@@ -295,6 +384,32 @@ public class LobbyPresenter extends AbstractPresenter {
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);
                 });
+    }
+
+    /**
+     * Method called when the ready button is pressed
+     *
+     * <p>This Method is called when the ready button is pressed.
+     *
+     * @param actionEvent The ActionEvent generated by pressing the ready button
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    @FXML
+    private void onReadyButtonPressed(ActionEvent actionEvent) {
+        if(readyButton.getText().equals("Not Ready")) {
+            Platform.runLater(() -> {
+                readyButton.setText("Ready");
+                readyButton.setStyle("-fx-background-color: GREEN");
+            });
+            eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, true));
+        } else {
+            Platform.runLater(() -> {
+                readyButton.setText("Not Ready");
+                readyButton.setStyle("-fx-background-color: RED");
+            });
+            eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, false));
+        }
     }
 
     /**

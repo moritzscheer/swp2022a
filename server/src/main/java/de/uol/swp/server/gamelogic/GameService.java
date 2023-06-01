@@ -276,6 +276,17 @@ public class GameService extends AbstractService {
         }
     }
 
+    /**
+     * Handles SubmitCardsRequest found on the EventBus
+     *
+     * If a SubmitCardsRequest is detected on the EventBus, this method is called. It posts a
+     * PlayerIsReadyMessage to all the users in the lobby, saying that this player is ready
+     *
+     * @param request SubmitCardsRequest found on the EventBus
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-05-18
+     */
     @Subscribe
     public void onSubmitCardsRequest(SubmitCardsRequest request) throws InterruptedException {
         Optional<Game> game = getGame(request.getLobbyID());
@@ -290,126 +301,148 @@ public class GameService extends AbstractService {
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
 
             if(allChosen){
-                LOG.debug("All players have chosen cards");
-                Map<UserDTO, CardDTO> userDTOCardDTOMap = game.get().revealProgramCards();
-                for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
-                    LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
-                            " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
-                lobbyService.sendToAllInLobby(request.getLobbyID(),
-                        new ShowAllPlayersCardsMessage(userDTOCardDTOMap, request.getLobbyID()));
                 manageRoundsUpdates(game.get(), request.getLobbyID());
             }
         }
     }
 
+
+    /**
+     * Handles all rounds, call calcGame() for every round and send messages to update the view
+     * using help of a scheduler to give some delay to display
+     *
+     * This method is called after all players are ready
+     *
+     *  TODO: maybe we could separate this into GameService and GameManagement so this class contains no logic
+     *
+     * @param game reference to which game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-05-24
+     */
     public void manageRoundsUpdates(Game game, int lobbyID) throws InterruptedException {
         // TODO
         int secondsToWait = 1;
 
         while (game.getProgramStep() < 5) {
-            List<Position> previousPositions = new ArrayList<>();
-            LOG.debug("Status of game BEFORE calcGameRound");
-            for(AbstractPlayer player: game.getPlayers()){
-                Position pos = player.getRobot().getPosition();
-                previousPositions.add(pos);
-                LOG.debug("     Robot Position {} pos = x {} y {}",
-                        ((Player)player).getUser().getUsername(),
-                        pos.x, pos.y);
-            }
+            Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+            List<Position> previousPositions = logInformation(game);
+
+            // show cards and wait 1 second before moving
+            scheduler.schedule(
+                    new Runnable() {
+                        public void run() {
+                            lobbyService.sendToAllInLobby(lobbyID,
+                                    new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                        }
+                    },
+                    secondsToWait, SECONDS);
+            secondsToWait++;
 
             // TODO: FIX calcGame calculates wrong
-            game.calcGameRound();
+            game.calcGameRoundCards();
+            //game.calcGameRound();
+            secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions);
+            // get new previous positions
+            previousPositions = logInformation(game);
 
-            LOG.debug("Status of game AFTER calcGameRound");
-            int i = 0;
-            for(AbstractPlayer player: game.getPlayers()){
-                UserDTO currentUser = ((Player)player).getUser();
-                Position currentPos = player.getRobot().getPosition();
-                Position previousPos = previousPositions.get(i);
-                CardinalDirection direction = player.getRobot().getDirection();
-                LOG.debug("     Robot Position {} pos = x {} y {}",
-                        currentUser.getUsername(),
-                        currentPos.x, currentPos.y);
+            game.calcGameRoundBoard();
+            // show board animation
+            sendBoardMoveMessage(
+                    lobbyID,
+                    convertPlayerListToPlayerDTOList(game.getPlayers()),
+                    secondsToWait
+            );
 
-                // ONLY DIRECTION CHANGED
-                if(abs(currentPos.x-previousPos.x) + abs(currentPos.y-previousPos.y) == 0){
-                    LOG.debug("ROTATING");
-                    scheduler.schedule(
-                            new Runnable(){
-                                public void run(){
-                                    lobbyService.sendToAllInLobby(lobbyID,
-                                            new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
-                                }
-                            },
-                            secondsToWait, SECONDS);
-                    secondsToWait = secondsToWait + 2;
-                }
-                // DISPLAY IN SINGLE STEP
-                else if(abs(currentPos.x-previousPos.x) + abs(currentPos.y-previousPos.y) >= 1){
-                    LOG.debug("MOVING FROM x={} y={} to x={} y={}",
-                            previousPos.x, previousPos.y, currentPos.x, currentPos.y);
-                    scheduler.schedule(
-                            new Runnable(){
-                                public void run(){
-                                    lobbyService.sendToAllInLobby(lobbyID,
-                                            new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
-                                }
-                            },
-                            secondsToWait, SECONDS);
-                    secondsToWait = secondsToWait + 2;
-                }
-                // TODO: display each step instead of moving over 3 blocks?
-                // DISPLAY IN SEVERAL STEPS
-//                else{
-//                    if(abs(currentPos.x-previousPos.x) > 1){
-//                        while(previousPos.x != currentPos.x){
-//                            LOG.debug("MOVING FROM x={} y={} to x={} y={}",
-//                                    previousPos.x, previousPos.y, currentPos.x, currentPos.y);
-//                            previousPos.x = helpMoveInDirection(previousPos.x, currentPos.x);
-//                            Position intermediatePos = new Position(previousPos.x, currentPos.y);
-//                            scheduler.schedule(
-//                                    new Runnable(){
-//                                        public void run(){
-//                                            lobbyService.sendToAllInLobby(lobbyID,
-//                                                    new ShowRobotMovingMessage(lobbyID, currentUser, intermediatePos, direction));
-//                                        }
-//                                    },
-//                                    secondsToWait, SECONDS);
-//                            secondsToWait = secondsToWait + 5;
-//                        }
-//                    }
-//                    else{
-//                        while(previousPos.y != currentPos.y){
-//                            LOG.debug("MOVING FROM x={} y={} to x={} y={}",
-//                                    previousPos.x, previousPos.y, currentPos.x, currentPos.y);
-//                            previousPos.y = helpMoveInDirection(previousPos.y, currentPos.y);
-//                            Position intermediatePos = new Position(currentPos.x, previousPos.y);
-//                            scheduler.schedule(
-//                                    new Runnable(){
-//                                        public void run(){
-//                                            lobbyService.sendToAllInLobby(lobbyID,
-//                                                    new ShowRobotMovingMessage(lobbyID, currentUser, intermediatePos, direction));
-//                                        }
-//                                    },
-//                                    secondsToWait, SECONDS);
-//                            secondsToWait = secondsToWait + 5;
-//                        }
-//                    }
-//                }
-            }
             // go to next step
             game.increaseProgramStep();
-            //break;
         }
 
         game.roundIsOver(); // reset variables
+        scheduler.schedule(
+                new Runnable(){
+                    public void run(){
+                        lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID));
+                    }
+                },
+                secondsToWait, SECONDS);
+
     }
 
-//    private int helpMoveInDirection(int prev, int cur){
-//        if(cur > prev){
-//            return prev+1;
-//        }
-//        return prev -1;
-//    }
+    public List<Position> logInformation(Game game){
+        List<Position> previousPositions = new ArrayList<>();
+        LOG.debug("Status of game BEFORE calcGameRound");
+        for(AbstractPlayer player: game.getPlayers()){
+            Position pos = player.getRobot().getPosition();
+            previousPositions.add(pos);
+            LOG.debug("     Robot Position {} pos = x {} y {}",
+                    ((Player)player).getUser().getUsername(),
+                    pos.x, pos.y);
+        }
+        LOG.debug("Showing chosen cards for round "+game.getProgramStep());
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+        for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
+            LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
+                    " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
 
+        return previousPositions;
+    }
+
+    public int moveCards(int lobbyID, int secondsToWait, Game game, List<Position> previousPositions){
+        LOG.debug("Status of game AFTER calcGameRoundCards");
+        int i = 0;
+        // Move each player at a time
+        for(AbstractPlayer player: game.getPlayers()) {
+            UserDTO currentUser = ((Player) player).getUser();
+            Position currentPos = player.getRobot().getPosition();
+            Position previousPos = previousPositions.get(i);
+            CardinalDirection direction = player.getRobot().getDirection();
+            LOG.debug("     Robot Position {} pos = x {} y {}",
+                    currentUser.getUsername(),
+                    currentPos.x, currentPos.y);
+
+            // ONLY DIRECTION CHANGED
+            if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) == 0) {
+                LOG.debug("ROTATING");
+            }
+            // DISPLAY IN SINGLE STEP
+            else if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) >= 1) {
+                LOG.debug("MOVING FROM x={} y={} to x={} y={}",
+                        previousPos.x, previousPos.y, currentPos.x, currentPos.y);
+            }
+            sendCardMoveMessage(lobbyID, currentUser, currentPos, direction, secondsToWait);
+
+            secondsToWait = secondsToWait + 2;
+        }
+        return secondsToWait;
+    }
+
+    public void sendCardMoveMessage(int lobbyID,
+                                    UserDTO currentUser,
+                                    Position currentPos,
+                                    CardinalDirection direction,
+                                    int secondsToWait){
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
+                    }
+                },
+                secondsToWait, SECONDS);
+    }
+
+    public void sendBoardMoveMessage(int lobbyID,
+                                     List<PlayerDTO> players,
+                                    int secondsToWait){
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new ShowBoardMovingMessage(lobbyID, players));
+                    }
+                },
+                secondsToWait, SECONDS);
+    }
 }

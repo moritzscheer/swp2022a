@@ -110,11 +110,6 @@ public final class JsonUtils {
         String path = String.format("images/player/Player0%d.png", robotID+1);
 
         ImageView imageView = new ImageView(new Image(path));
-
-        //TODO: cut out the black parts around the robot
-        imageView.setFitWidth(35);
-        imageView.setFitHeight(35);
-
         return imageView;
     }
 

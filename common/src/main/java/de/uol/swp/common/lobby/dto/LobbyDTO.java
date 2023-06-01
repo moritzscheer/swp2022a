@@ -26,6 +26,7 @@ public class LobbyDTO implements Lobby {
     private final String name;
     private User owner;
     private final Set<User> users = new TreeSet<>();
+    private final Set<User> notReadyUsers = new TreeSet<>();
     private final String password;
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
@@ -56,6 +57,7 @@ public class LobbyDTO implements Lobby {
         this.name = name;
         this.owner = creator;
         this.users.add(creator);
+        this.notReadyUsers.add(creator.getWithoutPassword());
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
@@ -136,6 +138,7 @@ public class LobbyDTO implements Lobby {
                 throw new IllegalArgumentException("Lobby is already full!");
             } else if (password.equals(this.password)) {
                 this.users.add(user);
+                this.notReadyUsers.add(user.getWithoutPassword());
             } else {
                 throw new IllegalArgumentException("password is incorrect!");
             }
@@ -162,6 +165,7 @@ public class LobbyDTO implements Lobby {
                 throw new IllegalArgumentException("Lobby must contain at least one user!");
             } else {
                 this.users.remove(user);
+                this.notReadyUsers.remove(user);
                 if (this.owner.equals(user)) {
                     updateOwner(users.iterator().next());
                 }
@@ -185,6 +189,34 @@ public class LobbyDTO implements Lobby {
                     "User " + user.getUsername() + "not found. Owner must be member of lobby!");
         }
         this.owner = user;
+    }
+
+    /**
+     * Handles ready players.
+     *
+     * If a user pressed ready in the lobby the user is removed from the notReadyUsers set
+     *
+     * @param user containing the User that is ready
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    @Override
+    public void makePlayerReady(User user) {
+        this.notReadyUsers.remove(user);
+    }
+
+    /**
+     * Handles not ready players.
+     *
+     * If a user pressed not ready in the lobby the user is added to the notReadyUsers set
+     *
+     * @param user containing the User that is not ready
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    @Override
+    public void makePlayerNotReady(User user) {
+        this.notReadyUsers.add(user.getWithoutPassword());
     }
 
     /**
@@ -218,6 +250,18 @@ public class LobbyDTO implements Lobby {
     @Override
     public Set<User> getUsers() {
         return Collections.unmodifiableSet(users);
+    }
+
+    /**
+     * Getter for the Set of users that are not ready in the lobby
+     *
+     * @return Set containing the user data in the lobby
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    @Override
+    public Set<User> getNotReadyUsers() {
+        return Collections.unmodifiableSet(notReadyUsers);
     }
 
     /**

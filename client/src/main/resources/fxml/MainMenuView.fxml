@@ -96,8 +96,8 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <TextArea fx:id="textChatOutput" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-      <TextField fx:id="textChatInput" alignment="CENTER" onKeyPressed="#textChatInputKeyPressed" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="TOP">
+      <TextArea fx:id="textChatOutput" editable="false" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+      <TextField fx:id="textChatInput" onKeyPressed="#textChatInputKeyPressed" style="-fx-border-color: black;" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="TOP">
          <GridPane.margin>
             <Insets top="5.0" />
          </GridPane.margin></TextField>
