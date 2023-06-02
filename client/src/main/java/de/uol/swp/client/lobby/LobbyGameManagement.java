@@ -375,8 +375,23 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.updateRobotState(msg.getPlayerDTO());
     }
 
+
     public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.animateBoardElements(msg.getPlayersDTO());
     }
+
+    /**
+     * Handles TextHistoryMessage
+     *
+     * @param msg the TextHistoryMessage object seen on the EventBus
+     * @see TextHistoryMessage
+     * @author Maria Andrade and Tommy Dang and Waldemar Kempel
+     * @since 2023-06-02
+     */
+    public void updateHistory(TextHistoryMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.updateHistoryMessage(msg.getMessage());
+    }
+
 }

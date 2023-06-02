@@ -283,8 +283,12 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player7Grid;
     @FXML
     private GridPane player8Grid;
-    @FXML private TextArea chatOutput;
-    @FXML private TextField chatInput;
+    @FXML
+    private TextArea chatOutput;
+    @FXML
+    private TextField chatInput;
+    @FXML
+    private TextArea historyOutput;
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 

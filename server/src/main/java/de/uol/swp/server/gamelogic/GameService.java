@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-import com.mysql.cj.log.Log;
+import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
@@ -328,7 +328,9 @@ public class GameService extends AbstractService {
 
         while (game.getProgramStep() < 5) {
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            List<Position> previousPositions = logInformation(game);
+            List<Position> previousPositions = logInformationPosition(game);
+            List<CardinalDirection> previousDirections = logInformationDirection(game);
+            List<CardDTO> cardDTOS = logInformationCards(game);
 
             // show cards and wait 1 second before moving
             scheduler.schedule(
@@ -344,10 +346,11 @@ public class GameService extends AbstractService {
             // TODO: FIX calcGame calculates wrong
             game.calcGameRoundCards();
             //game.calcGameRound();
-            secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions);
+            secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions,previousDirections,cardDTOS);
             // get new previous positions
 
-            previousPositions = logInformation(game);
+
+            previousPositions = logInformationPosition(game);
 
             game.calcGameRoundBoard();
             // show board animation
@@ -391,7 +394,28 @@ public class GameService extends AbstractService {
         return previousPositions;
     }
 
-    public int moveCards(int lobbyID, int secondsToWait, Game game, List<Position> previousPositions){
+    public List<CardinalDirection> logInformationDirection(Game game){
+        List<CardinalDirection> previousDirections = new ArrayList<>();
+        LOG.debug("Status of game BEFORE calcGameRound");
+        for(AbstractPlayer player: game.getPlayers()){
+            CardinalDirection dir = player.getRobot().getDirection();
+            previousDirections.add(dir);
+        }
+        return previousDirections;
+    }
+
+    public List<CardDTO> logInformationCards(Game game){
+        List<CardDTO> cards = new ArrayList<>();
+        LOG.debug("Showing chosen cards for round "+game.getProgramStep());
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+        for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet()){
+            cards.add(userCurrentCard.getValue());
+        }
+
+        return cards;
+    }
+
+    public int moveCards(int lobbyID, int secondsToWait, Game game, List<Position> previousPositions, List<CardinalDirection> previousDirections, List<CardDTO> cardDTOS){
         LOG.debug("Status of game AFTER calcGameRoundCards");
         int i = 0;
         // Move each player at a time
@@ -401,7 +425,9 @@ public class GameService extends AbstractService {
             UserDTO currentUser = ((Player) player).getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
+            CardinalDirection previousDirection = previousDirections.get(i);
             CardinalDirection direction = player.getRobot().getDirection();
+            CardDTO cardDTO = cardDTOS.get(i);
             LOG.debug("     Robot Position {} pos = x {} y {}",
                     currentUser.getUsername(),
                     currentPos.x, currentPos.y);
@@ -415,9 +441,26 @@ public class GameService extends AbstractService {
                 LOG.debug("MOVING FROM x={} y={} to x={} y={}",
                         previousPos.x, previousPos.y, currentPos.x, currentPos.y);
             }
+
+//        [Type] [Username] [oldPosition] [oldDirection] [CardName/BoardElement] to [newPosition] [newDirection]
+//        ======Round 1=======
+//        [Card] Test1 (x1,y1){East} Move3 to (x2,y2){East}
+
+            TextHistoryMessage msg = new TextHistoryMessage(
+                    lobbyID,
+                    "[Card] " + ((Player) player).getUser().getUsername()              // User
+                            + " (" + previousPos.x + ", " + previousPos.y + ")"                                     // old x and y position
+                            + "{" + previousDirection  + "} "                                                       // old direction
+                            + searchCardTypeInJSON(cardDTO.getID()) +                                               // CardType
+                    " to"                                                                                           //
+                            + " (" + currentPos.x + ", " + currentPos.y + ")"                                       // new x and y position
+                            + "{" + direction  + "} \n"                                                               // new direction
+            );
+
             sendCardMoveMessage(lobbyID,
                     convertPlayerToPlayerDTO(player),
-                    secondsToWait);
+                    secondsToWait,
+                    msg);
 
             secondsToWait = secondsToWait + 2;
         }
@@ -426,12 +469,13 @@ public class GameService extends AbstractService {
 
     public void sendCardMoveMessage(int lobbyID,
                                     PlayerDTO playerDTO,
-                                    int secondsToWait){
+                                    int secondsToWait, TextHistoryMessage msg){
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
                         lobbyService.sendToAllInLobby(lobbyID,
                                 new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        lobbyService.sendToAllInLobby(lobbyID,msg);
                     }
                 },
                 secondsToWait, SECONDS);
