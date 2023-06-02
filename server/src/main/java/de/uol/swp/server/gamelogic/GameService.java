@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
 import static java.lang.Math.abs;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
 
 /**
  * Handles the game requests send by the users
@@ -326,6 +327,10 @@ public class GameService extends AbstractService {
         // TODO
         int secondsToWait = 1;
 
+        lobbyService.sendToAllInLobby(lobbyID, new TextHistoryMessage(lobbyID,
+                "======= Round " + game.getRoundNumber() +" ======= \n"
+                ));
+
         while (game.getProgramStep() < 5) {
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
             List<Position> previousPositions = logInformationPosition(game);
@@ -375,7 +380,7 @@ public class GameService extends AbstractService {
 
     }
 
-    public List<Position> logInformation(Game game){
+    public List<Position> logInformationPosition(Game game){
         List<Position> previousPositions = new ArrayList<>();
         LOG.debug("Status of game BEFORE calcGameRound");
         for(AbstractPlayer player: game.getPlayers()){

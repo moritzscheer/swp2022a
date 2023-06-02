@@ -311,6 +311,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<ImageView> playerCards;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
+    private TextChatChannel textHistory;
+
     @FXML
     private Button robotOffButton;
     private int x = 2;
@@ -1213,6 +1215,15 @@ public class GamePresenter extends AbstractPresenter {
         Platform.runLater(
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);
+                });
+    }
+
+    public void updateHistoryMessage(String message) {
+        historyOutput.appendText(message);
+        historyOutput.setWrapText(true);
+        Platform.runLater(
+                () -> {
+                    historyOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
 
