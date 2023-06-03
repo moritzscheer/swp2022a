@@ -37,6 +37,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -90,6 +91,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML private TextField chatInput;
     @FXML private ListView<Map> mapList;
     @FXML private Label textFieldMapName;
+    @FXML private GridPane mapThumbWrapper;
     @FXML private ImageView mapThumb;
 
     /**
@@ -447,6 +449,8 @@ public class LobbyPresenter extends AbstractPresenter {
         Platform.runLater(() -> {
             textFieldMapName.setText(m.getName());
             mapThumb.setImage(new Image(m.getImageResource().toString()));
+            mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+            mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
         });
     }
 }
