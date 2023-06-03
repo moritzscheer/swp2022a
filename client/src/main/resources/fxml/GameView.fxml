@@ -114,7 +114,21 @@
                         <StackPane fx:id="player2Ready" style="-fx-background-color: red">
                             <Text fx:id="player2Name" text="Player 2" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player2Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player2Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player2Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player3 -->
@@ -151,7 +165,21 @@
                         <StackPane fx:id="player3Ready" style="-fx-background-color: red">
                             <Text fx:id="player3Name" text="Player 3" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player3Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player3Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player3Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player4 -->
@@ -188,7 +216,21 @@
                         <StackPane fx:id="player4Ready" style="-fx-background-color: red">
                             <Text fx:id="player4Name" text="Player 4" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player4Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player4Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player4Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player5 -->
@@ -225,7 +267,21 @@
                         <StackPane fx:id="player5Ready" style="-fx-background-color: red">
                             <Text fx:id="player5Name" text="Player 5" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player5Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player5Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player5Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player6 -->
@@ -262,7 +318,21 @@
                         <StackPane fx:id="player6Ready" style="-fx-background-color: red">
                             <Text fx:id="player6Name" text="Player 6" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player6Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player6Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player6Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player7 -->
@@ -299,7 +369,21 @@
                         <StackPane fx:id="player7Ready" style="-fx-background-color: red">
                             <Text fx:id="player7Name" text="Player 7" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player7Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player7Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player7Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <!-- Player8 -->
@@ -336,7 +420,21 @@
                         <StackPane fx:id="player8Ready" style="-fx-background-color: red">
                             <Text fx:id="player8Name" text="Player 8" StackPane.alignment="CENTER" />
                         </StackPane>
-                        <ImageView fx:id="player8Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" />
+                  <GridPane fx:id="player8Robot" GridPane.halignment="RIGHT" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets right="3.0" />
+                     </padding>
+                  </GridPane>
+                        <ImageView fx:id="player8Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
             </children>
@@ -527,6 +625,7 @@
                 <!-- Buttons -->
                 <GridPane GridPane.rowIndex="5">
                     <columnConstraints>
+                  <ColumnConstraints hgrow="ALWAYS" percentWidth="10.0" />
                         <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
                         <ColumnConstraints fillWidth="true" hgrow="ALWAYS" />
                     </columnConstraints>
@@ -534,7 +633,18 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="readyButton" maxWidth="1.7976931348623157E308" onAction="#onReadyButtonPressed">
+                  <GridPane fx:id="player1Robot" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <padding>
+                        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                     </padding>
+                  </GridPane>
+                        <Button fx:id="readyButton" maxWidth="1.7976931348623157E308" onAction="#onReadyButtonPressed" GridPane.columnIndex="1">
                             <GridPane.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                             </GridPane.margin>
@@ -542,7 +652,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding>
                         </Button>
-                        <Button fx:id="robotOffButton" maxWidth="1.7976931348623157E308" onAction="#onRobotOffButtonPressed" GridPane.columnIndex="1">
+                        <Button fx:id="robotOffButton" maxWidth="1.7976931348623157E308" onAction="#onRobotOffButtonPressed" GridPane.columnIndex="2">
                             <GridPane.margin>
                                 <Insets bottom="5.0" left="5.0" right="5.0" />
                             </GridPane.margin>

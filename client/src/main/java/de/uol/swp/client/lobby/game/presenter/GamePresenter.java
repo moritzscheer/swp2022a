@@ -191,6 +191,22 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private ImageView player8Card;
     @FXML
+    private GridPane player1Robot;
+    @FXML
+    private GridPane player2Robot;
+    @FXML
+    private GridPane player3Robot;
+    @FXML
+    private GridPane player4Robot;
+    @FXML
+    private GridPane player5Robot;
+    @FXML
+    private GridPane player6Robot;
+    @FXML
+    private GridPane player7Robot;
+    @FXML
+    private GridPane player8Robot;
+    @FXML
     private Rectangle card1;
     @FXML
     private Rectangle card2;
@@ -298,6 +314,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerCpTexts;
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
+    private ArrayList<GridPane> playerRobot;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     @FXML
@@ -411,9 +428,19 @@ public class GamePresenter extends AbstractPresenter {
         playerCards.add(player7Card);
         playerCards.add(player8Card);
 
+        playerRobot = new ArrayList<GridPane>();
+        playerRobot.add(player1Robot);
+        playerRobot.add(player2Robot);
+        playerRobot.add(player3Robot);
+        playerRobot.add(player4Robot);
+        playerRobot.add(player5Robot);
+        playerRobot.add(player6Robot);
+        playerRobot.add(player7Robot);
+        playerRobot.add(player8Robot);
+
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
-        loadPlayers(playerGrids, playerNames);
+        loadPlayers(playerGrids, playerNames, playerRobot);
 
         // TODO: load cards
 
@@ -460,7 +487,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Maria Andrade
      * @since 2023-05-06
      */
-    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
+    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames, ArrayList<GridPane> playerRobot) {
         int count = 0;
         for (Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()) {
             PlayerDTO playerDTO = player.getValue();
@@ -477,6 +504,19 @@ public class GamePresenter extends AbstractPresenter {
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
         }
+
+//        int imageCount = 0;
+//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
+//            PlayerDTO playerDTO = player.getValue();
+//            if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
+//                playerRobot.get(imageCount).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
+//                imageCount++;
+//            }
+//        }
+
+
+
+
     }
 
     /**
@@ -1050,8 +1090,6 @@ public class GamePresenter extends AbstractPresenter {
                     removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
                             this.userRobotImageViewReference.get(userToUpdate)
                     );
-                    // TODO: we might have to fix all robots images facing north
-                    // +3 is just a workaround
                     imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
                     imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
                     imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
@@ -1061,6 +1099,7 @@ public class GamePresenter extends AbstractPresenter {
                     this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
                     this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
                     this.userRobotImageViewReference.replace(userToUpdate, imageView);
+
                 });
     }
 
