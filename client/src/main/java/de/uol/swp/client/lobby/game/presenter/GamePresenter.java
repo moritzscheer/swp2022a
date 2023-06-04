@@ -295,6 +295,8 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player8Grid;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
+    @FXML private GridPane ButtonWrapper;
+    @FXML private GridPane player1Wrapper;
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
@@ -505,15 +507,51 @@ public class GamePresenter extends AbstractPresenter {
             }
         }
 
+
+        /**
+         * Gives player a robot image
+         *
+         * Each player in a lobby/game has a fixed robot image
+         *
+         * @author Tommy Dang
+         * @since 2023-06-04
+         */
+        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
+            int robotID = player.getValue().getRobotDTO().getRobotID();
+            ImageView imageView = jsonUtils.getRobotImage(robotID);
+            imageView.fitHeightProperty().bind(player1Wrapper.heightProperty().subtract(4));
+            imageView.fitWidthProperty().bind(player1Wrapper.heightProperty().subtract(4));
+            this.userRobotImageViewReference.put(player.getKey(), imageView);
+        }
+
+        int imageCount = 0;
+        int imageCount2 = 0;
+        // Methode funktioniert noch nicht. Roboter Image neben Button wird zum falschen Spieler zugewiesen
+        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
+            PlayerDTO playerDTO = player.getValue();
+            if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
+                playerRobot.get(imageCount).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
+                imageCount++;
+            } else{
+//                if(Objects.equals(userToPositionInStackPanes.get(playerDTO.getUser().getUsername()), userRobotImageViewReference.get(playerDTO.getUser().getUsername()))){
+//                    playerRobot.get(imageCount2).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
+//                } else {
+//                    imageCount2++;
+//                }
+            }
+        }
+
 //        int imageCount = 0;
 //        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-//            PlayerDTO playerDTO = player.getValue();
-//            if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
-//                playerRobot.get(imageCount).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
-//                imageCount++;
+//            UserDTO playerDTO = player.getKey();
+//            if(userToPositionInStackPanes.get(playerDTO.getUsername()).equals(this.userRobotImageViewReference.get(playerDTO.getUsername()))){
+//
+//
+//
+//                userToPositionInStackPanes.get(0)
 //            }
+//
 //        }
-
 
 
 
