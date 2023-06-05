@@ -1,7 +1,6 @@
 package de.uol.swp.client.lobby.game.presenter;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
@@ -16,14 +15,10 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -39,15 +34,9 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.*;
 
-import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -55,20 +44,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.w3c.dom.css.Rect;
-
-import java.io.File;
-import java.io.FileReader;
-import java.util.*;
 
 import static javafx.scene.paint.Color.LIGHTGREY;
 
@@ -296,7 +272,15 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
     @FXML private GridPane ButtonWrapper;
-    @FXML private GridPane player1Wrapper;
+    @FXML private GridPane playerGrid1Wrapper;
+    @FXML private GridPane playerGrid2Wrapper;
+    @FXML private GridPane playerGrid3Wrapper;
+    @FXML private GridPane playerGrid4Wrapper;
+    @FXML private GridPane playerGrid5Wrapper;
+    @FXML private GridPane playerGrid6Wrapper;
+    @FXML private GridPane playerGrid7Wrapper;
+    @FXML private GridPane playerGrid8Wrapper;
+
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
@@ -317,6 +301,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
     private ArrayList<GridPane> playerRobot;
+    private ArrayList<GridPane> playerGridWrapper;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     @FXML
@@ -431,7 +416,6 @@ public class GamePresenter extends AbstractPresenter {
         playerCards.add(player8Card);
 
         playerRobot = new ArrayList<GridPane>();
-        playerRobot.add(player1Robot);
         playerRobot.add(player2Robot);
         playerRobot.add(player3Robot);
         playerRobot.add(player4Robot);
@@ -440,9 +424,18 @@ public class GamePresenter extends AbstractPresenter {
         playerRobot.add(player7Robot);
         playerRobot.add(player8Robot);
 
+        playerGridWrapper = new ArrayList<GridPane>();
+        playerGridWrapper.add(playerGrid2Wrapper);
+        playerGridWrapper.add(playerGrid3Wrapper);
+        playerGridWrapper.add(playerGrid4Wrapper);
+        playerGridWrapper.add(playerGrid5Wrapper);
+        playerGridWrapper.add(playerGrid6Wrapper);
+        playerGridWrapper.add(playerGrid7Wrapper);
+        playerGridWrapper.add(playerGrid8Wrapper);
+
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
-        loadPlayers(playerGrids, playerNames, playerRobot);
+        loadPlayers(playerGrids, playerNames);
 
         // TODO: load cards
 
@@ -489,10 +482,18 @@ public class GamePresenter extends AbstractPresenter {
      * @author Maria Andrade
      * @since 2023-05-06
      */
-    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames, ArrayList<GridPane> playerRobot) {
+    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
+        int robotImageID;
         for (Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()) {
             PlayerDTO playerDTO = player.getValue();
+            robotImageID = playerDTO.getRobotDTO().getRobotID();
+            // robot image
+            ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
+            System.out.println("Player" + player.getKey().getUsername());
+            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
+            System.out.println(imageView);
+            // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
                 playerNames.get(count).setText(playerDTO.getUser().getUsername());
@@ -503,7 +504,22 @@ public class GamePresenter extends AbstractPresenter {
                 playerRlTexts.get(count).setText(
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(),count);
-                count++; // only counts when it is not the current user, to avoid empty grid
+                playerRobot.get(count).add(imageView, 0, 0);
+                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+
+                //imageView.fitHeightProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
+                //imageView.fitWidthProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
+
+                // only counts when it is not the current user, to avoid empty grid
+                count++;
+            }
+            else{
+                // player is logged in User
+                playerGrid1Wrapper.add(imageView, 0, 0);
+                //Noch ändern, weil robot icons links andere größe haben als unten rechts
+                imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
+                imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
         }
 
@@ -516,30 +532,29 @@ public class GamePresenter extends AbstractPresenter {
          * @author Tommy Dang
          * @since 2023-06-04
          */
-        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-            int robotID = player.getValue().getRobotDTO().getRobotID();
-            ImageView imageView = jsonUtils.getRobotImage(robotID);
-            imageView.fitHeightProperty().bind(player1Wrapper.heightProperty().subtract(4));
-            imageView.fitWidthProperty().bind(player1Wrapper.heightProperty().subtract(4));
-            this.userRobotImageViewReference.put(player.getKey(), imageView);
-        }
-
-        int imageCount = 0;
-        int imageCount2 = 0;
-        // Methode funktioniert noch nicht. Roboter Image neben Button wird zum falschen Spieler zugewiesen
-        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-            PlayerDTO playerDTO = player.getValue();
-            if(!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
-                playerRobot.get(imageCount).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
-                imageCount++;
-            } else{
+//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
+//            int robotID = player.getValue().getRobotDTO().getRobotID();
+//            ImageView imageView = jsonUtils.getRobotImage(robotID);
+//            //Noch ändern, weil robot icons links andere größe haben als unten rechts
+//            imageView.fitHeightProperty().bind(player1Wrapper.heightProperty().subtract(4));
+//            imageView.fitWidthProperty().bind(player1Wrapper.heightProperty().subtract(4));
+//            this.userRobotImageViewReference.put(player.getKey(), imageView);
+//        }
+//
+//        int imageCount2 = 0;
+//        // Methode funktioniert noch nicht. Roboter Image neben Button wird zum falschen Spieler zugewiesen
+//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
+//            PlayerDTO playerDTO = player.getValue();
+//            if(Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
+//                player1Wrapper.add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
+//            } else{
 //                if(Objects.equals(userToPositionInStackPanes.get(playerDTO.getUser().getUsername()), userRobotImageViewReference.get(playerDTO.getUser().getUsername()))){
 //                    playerRobot.get(imageCount2).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
 //                } else {
 //                    imageCount2++;
 //                }
-            }
-        }
+//            }
+//        }
 
 //        int imageCount = 0;
 //        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
