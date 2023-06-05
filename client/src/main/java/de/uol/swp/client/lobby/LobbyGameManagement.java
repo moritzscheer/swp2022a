@@ -9,6 +9,7 @@ import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
@@ -372,13 +373,28 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
-        a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
+        a.updateRobotState(msg.getPlayerDTO());
     }
+
 
     public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.animateBoardElements(msg.getPlayersDTO());
     }
+
+    /**
+     * Handles TextHistoryMessage
+     *
+     * @param msg the TextHistoryMessage object seen on the EventBus
+     * @see TextHistoryMessage
+     * @author Maria Andrade and Tommy Dang and Waldemar Kempel
+     * @since 2023-06-02
+     */
+    public void updateHistory(TextHistoryMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.updateHistoryMessage(msg.getMessage());
+    }
+
 
     /**
      * Updates the game map (the board on which the game is played)

@@ -29,6 +29,7 @@ public class Game {
 
     private final Integer lobbyID;
     private Block[][] board;
+    private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
     private final Position[] checkpointsList;
@@ -211,6 +212,7 @@ public class Game {
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+        this.roundNumber++;
     }
 
     public void startGame(){
@@ -244,6 +246,8 @@ public class Game {
         LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
         LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
+            if(!this.robots.get(playerIterator).isAlive())
+                continue; // if not alive, go on
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
@@ -251,6 +255,8 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
+
+        checkRobotFellFromBoard();
     }
 
     public void calcGameRoundBoard(){
@@ -298,6 +304,8 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
+
+        checkRobotFellFromBoard();
     }
 
     public void calcGameRound() {
@@ -419,6 +427,8 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
+                if(!this.robots.get(move.robotID).isAlive())
+                    continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
             }
         }
@@ -566,9 +576,6 @@ public class Game {
             CardinalDirection moveDir,
             Block[][] board) {
         try {
-            if (destinationTile.x < 0 || destinationTile.y < 0 ||
-                    destinationTile.x >= board.length || destinationTile.y >= board[0].length)
-                return true;
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
                     CardinalDirection.values()[moveDir.ordinal() + 2]);
@@ -587,6 +594,10 @@ public class Game {
                 move = move.parentMove;
             }
         }
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 
     /** @author Finn */
@@ -624,6 +635,22 @@ public class Game {
         }
     }
 
+
+    /**
+     * set Robot is dead when fell off the grid
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-31
+     */
+    private void checkRobotFellFromBoard(){
+        LOG.debug("set not alive");
+        for(Robot robot: this.robots){
+            Position position = robot.getPosition();
+            if(position.x < 0 || position.y < 0 || position.x >= board.length || position.y >= board[0].length){
+                robot.setAlive(false);
+            }
+        }
+    }
 
     //////////////////////////////
     // GETTERS // SETTERS

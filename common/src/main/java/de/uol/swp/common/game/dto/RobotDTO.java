@@ -27,6 +27,8 @@ public class RobotDTO implements Serializable {
 
     private int lastCheckpoint;
 
+    private boolean alive = true;
+
     public RobotDTO(int robotID, Position position, CardinalDirection direction){
         this.robotID = robotID;
         this.position = position;
@@ -79,5 +81,13 @@ public class RobotDTO implements Serializable {
 
     public void setLastCheckpoint(int lastCheckpoint) {
         this.lastCheckpoint = lastCheckpoint;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 }
