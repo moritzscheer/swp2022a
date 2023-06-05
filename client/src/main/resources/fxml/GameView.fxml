@@ -792,7 +792,7 @@
                         <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                  <GridPane fx:id="player1Wrapper" alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 5;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <GridPane fx:id="playerGrid1Wrapper" alignment="CENTER" style="-fx-border-color: black; -fx-border-radius: 5;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                      </columnConstraints>

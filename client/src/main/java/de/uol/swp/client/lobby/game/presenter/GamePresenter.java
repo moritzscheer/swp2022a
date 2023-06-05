@@ -515,9 +515,8 @@ public class GamePresenter extends AbstractPresenter {
                 count++;
             }
             else{
-                // player is logged in User
+                // for player is loggedInUser
                 playerGrid1Wrapper.add(imageView, 0, 0);
-                //Noch ändern, weil robot icons links andere größe haben als unten rechts
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
