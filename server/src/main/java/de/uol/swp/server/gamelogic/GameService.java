@@ -117,7 +117,7 @@ public class GameService extends AbstractService {
 
             // check if the player is controlled by a user
             if(player.getClass() == Player.class)
-                playerDTO.setUser(((Player) player).getUser());
+                playerDTO.setUser(player.getUser());
 
             // add in the list
             players.add(playerDTO);
@@ -387,7 +387,7 @@ public class GameService extends AbstractService {
             Position pos = player.getRobot().getPosition();
             previousPositions.add(pos);
             LOG.debug("     Robot Position {} pos = x {} y {}",
-                    ((Player)player).getUser().getUsername(),
+                    player.getUser().getUsername(),
                     pos.x, pos.y);
         }
         LOG.debug("Showing chosen cards for round "+game.getProgramStep());
@@ -427,7 +427,7 @@ public class GameService extends AbstractService {
         for(AbstractPlayer player: game.getPlayers()) {
             if(!player.getRobot().isAlive())
                 continue; // if robot is dead, do nothing
-            UserDTO currentUser = ((Player) player).getUser();
+            UserDTO currentUser = player.getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
             CardinalDirection previousDirection = previousDirections.get(i);
@@ -453,7 +453,7 @@ public class GameService extends AbstractService {
 
             TextHistoryMessage msg = new TextHistoryMessage(
                     lobbyID,
-                    "[Card] " + ((Player) player).getUser().getUsername()              // User
+                    "[Card] " + player.getUser().getUsername()              // User
                             + " (" + previousPos.x + ", " + previousPos.y + ")"                                     // old x and y position
                             + "{" + previousDirection  + "} "                                                       // old direction
                             + searchCardTypeInJSON(cardDTO.getID()) +                                               // CardType

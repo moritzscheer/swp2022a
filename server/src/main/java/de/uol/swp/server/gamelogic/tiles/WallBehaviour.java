@@ -38,10 +38,7 @@ public class WallBehaviour extends AbstractTileBehaviour {
      */
     @Override
     public boolean getObstruction(CardinalDirection direction) {
-        if (direction == this.wallDirection) {
-            return true;
-        }
-        return false;
+        return direction == this.wallDirection;
     }
 
     @Override

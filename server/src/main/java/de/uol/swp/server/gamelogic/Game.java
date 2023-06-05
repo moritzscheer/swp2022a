@@ -104,7 +104,7 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
-                LOG.debug("Distributing cards for player {}", ((Player) player).getUser().getUsername());
+                LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
 
                 int damage = player.getRobot().getDamageToken();
 
@@ -181,7 +181,7 @@ public class Game {
         LOG.debug("REVEALING PROGRAM CARDS STEP: " + this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
-                    ((Player) this.players.get(playerIterator)).getUser(),
+                    this.players.get(playerIterator).getUser(),
                     // program steps starts in 1 and this array in 0
                     convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
             );
@@ -228,9 +228,9 @@ public class Game {
     }
 
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < board[x].length; y++) {
-                board[x][y].setRobotsInfo(robots);
+        for (Block[] blocks : board) {
+            for (Block block : blocks) {
+                block.setRobotsInfo(robots);
             }
         }
     }
@@ -243,7 +243,7 @@ public class Game {
 
         for (int i = 0; i < 5; i++) {
             moves.addAll(calcGameRoundCardsNew(programStep));
-            moves.addAll(calcGameBoardCardsNew(programStep));
+            moves.addAll(calcGameRoundBoardNew(programStep));
         }
 
         return moves;
@@ -259,7 +259,45 @@ public class Game {
     }
 
     private List<List<PlayerDTO>> calcGameRoundBoardNew(int programStep) {
-        return null;
+        List<MoveIntent> currentMoves;
+        List<List<PlayerDTO>> moves = new ArrayList<>();
+
+        currentMoves = OnExpressConveyorStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnConveyorStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnPusherStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnRotatorStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnPresserStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnLaserStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        currentMoves = OnCheckPointStage(programStep);
+        currentMoves = resolveMoveIntentConflicts(currentMoves);
+        executeMoveIntents(currentMoves);
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        return moves;
     }
 
     private List<List<PlayerDTO>> calcGameRoundCardsNew(int programStep) {
@@ -303,7 +341,7 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
-        LOG.debug("1Current Position of " + ((Player) this.players.get(0)).getUser().getUsername());
+        LOG.debug("1Current Position of " + this.players.get(0).getUser().getUsername());
         LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             if(!this.robots.get(playerIterator).isAlive())
@@ -793,7 +831,7 @@ public class Game {
     public Player getPlayerByUserDTO(UserDTO user) {
         for (AbstractPlayer player : players) {
             if (player.getClass() == Player.class &&
-                    Objects.equals(((Player) player).getUser(), user)) {
+                    Objects.equals(player.getUser(), user)) {
                 return ((Player) player);
             }
         }
