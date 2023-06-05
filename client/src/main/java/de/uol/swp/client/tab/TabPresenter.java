@@ -3,6 +3,7 @@ package de.uol.swp.client.tab;
 import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -11,8 +12,10 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
+import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,7 +24,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 public class TabPresenter extends AbstractPresenter {
@@ -30,6 +32,7 @@ public class TabPresenter extends AbstractPresenter {
 
     private User loggedInUser;
 
+    @FXML private Tab mainTab;
     @FXML private TabPane tabPane;
     @FXML private Button yesButton;
     @FXML private Button noButton;
@@ -37,11 +40,6 @@ public class TabPresenter extends AbstractPresenter {
     @FXML private Label infoLabel2; // Are you sure you want to exit?
     @FXML private Label infoLabel3; // Are you sure you want to leave the Lobby?
     @FXML private Pane infoBox;
-
-    public TabPresenter(){
-    }
-
-
 
     // -----------------------------------------------------
     // subscribe methods
@@ -61,6 +59,23 @@ public class TabPresenter extends AbstractPresenter {
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
         this.loggedInUser = message.getUser();
+    }
+
+    /**
+     * Handles Logout
+     *
+     * <p>If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+     * method is called. It tells the SceneManager to show the login window. If the loglevel is set
+     * to INFO or higher "User {username} logged out." is written to the log.
+     *
+     * @param message The UserLoggedOutMessage object detected on the EventBus
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.message.UserLoggedOutMessage
+     * @since 2022-11-08
+     */
+    @Subscribe
+    void onUserLoggedOutMessage(UserLoggedOutMessage message) {
+        loggedInUser = null;
     }
 
     /**
@@ -147,10 +162,8 @@ public class TabPresenter extends AbstractPresenter {
      * @since 2022-03-09
      */
     public void showNode(Integer lobbyID, Parent parent) {
-
         Platform.runLater(
                 () -> {
-
                     if (infoBox.isVisible()) {
                         updateInfoBox();
                     }
@@ -271,6 +284,22 @@ public class TabPresenter extends AbstractPresenter {
                 tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
     }
 
+    /**
+     * method for checking if an user is loggedIn
+     *
+     * @author Moritz Scheer
+     * @since 2022-12-28
+     */
+    public boolean isLoggedIn() {
+        return loggedInUser != null;
+    }
+
+    public void changeMainTabTitle(String title) {
+        Platform.runLater(() -> {
+            mainTab.setText(title);
+        });
+    }
+
     // -----------------------------------------------------
     // private methods
     // -----------------------------------------------------
@@ -354,33 +383,39 @@ public class TabPresenter extends AbstractPresenter {
 
         Platform.runLater(
                 () -> {
-                    if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
-                        if (tabPane.getTabs().size() > 1) {
-                            for (Tab tabs : tabPane.getTabs()) {
-                                if (tabs.getId() != null) {
-                                    eventBus.post(new LeaveLobbyEvent(
-                                            (UserDTO) loggedInUser,
-                                            Integer.valueOf(tabs.getId()),
-                                            tabs.getText(),
-                                            !tab.getText().equals("Singleplayer")
-                                    ));
+                    if(loggedInUser != null) {
+                        System.out.println("1");
+                        if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
+                            if (tabPane.getTabs().size() > 1) {
+                                for (Tab tabs : tabPane.getTabs()) {
+                                    if (!tabs.getId().equals("mainTab")) {
+                                        eventBus.post(new LeaveLobbyEvent(
+                                                (UserDTO) loggedInUser,
+                                                Integer.valueOf(tabs.getId()),
+                                                tabs.getText(),
+                                                !tab.getText().equals("Singleplayer")
+                                        ));
+                                    }
                                 }
                             }
+
+                            userService.logout(loggedInUser);
+                        } else if (infoLabel3.isVisible()) {
+                            eventBus.post(new LeaveLobbyEvent(
+                                    (UserDTO) loggedInUser,
+                                    Integer.valueOf(tab.getId()),
+                                    tab.getText(),
+                                    true)
+
+                            );
+                            updateInfoBox();
+
+                            tabPane.getTabs().remove(tab);
+                            tabPane.getSelectionModel().select(0);
                         }
-
-                        userService.logout(loggedInUser);
-                    } else if (infoLabel3.isVisible()) {
-                        eventBus.post(new LeaveLobbyEvent(
-                                (UserDTO) loggedInUser,
-                                Integer.valueOf(tab.getId()),
-                                tab.getText(),
-                                true)
-
-                        );
-                        updateInfoBox();
-
-                        tabPane.getTabs().remove(tab);
-                        tabPane.getSelectionModel().select(0);
+                    } else {
+                        System.out.println("2");
+                        eventBus.post(new CloseClientEvent());
                     }
                 });
     }

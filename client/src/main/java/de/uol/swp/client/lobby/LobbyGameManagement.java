@@ -17,6 +17,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
+import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
 import javafx.scene.Parent;
@@ -159,6 +160,20 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.switchButtonDisableEffect();
     }
 
+    /**
+     * Handles when a user pressed a ready or not ready button in the lobby
+     *
+     * <p>If a ChangeElementEvent is posted to the EventBus this method is called.
+     *
+     * @param message the PlayerReadyInLobbyResponse object seen on the EventBus
+     * @see PlayerReadyInLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    public void playerReadyInLobby(PlayerReadyInLobbyMessage message) {
+        LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
+        a.updatePlayerReadyStatus(message);
+    }
 
     // -----------------------------------------------------
     // getter and setter
@@ -245,6 +260,23 @@ public class LobbyGameManagement extends AbstractPresenter {
 
     }
 
+    /**
+     * Handles RoundIsOverMessage
+     *
+     * @param msg the RoundIsOverMessage object seen on the EventBus
+     * @see RoundIsOverMessage
+     * @author Maria Andrade
+     * @since 2023-05-23
+     */
+    public void restartRounds(RoundIsOverMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.resetCardsAndSlots();
+
+        // create request to get the cards
+        eventBus.post(new RequestDistributeCardsEvent(
+                lobbyIdToLobbyDTOMap.get(msg.getLobbyID()), this.loggedInUser));
+    }
+
     //////////////////////
     // Responses/Messages
     //////////////////////
@@ -304,19 +336,49 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.setReceivedCards(msg.getAssignedProgramCards());
     }
 
+    /**
+     * Handles PlayerIsReadyMessage
+     *
+     * @param msg the PlayerIsReadyMessage object seen on the EventBus
+     * @see PlayerIsReadyMessage
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void sendMessagePlayerIsReady(PlayerIsReadyMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerReadyStatus(msg.getPlayerIsReady());
+        a.blockPlayerCardsAfterSubmit(msg.getPlayerIsReady()); // block cards
     }
 
+    /**
+     * Handles ShowAllPlayersCardsMessage
+     *
+     * @param msg the ShowAllPlayersCardsMessage object seen on the EventBus
+     * @see ShowAllPlayersCardsMessage
+     * @author Maria Andrade
+     * @since 2023-05-18
+     */
     public void sendMessageAllPlayersAreReady(ShowAllPlayersCardsMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerCard(msg.getUserDTOCardDTOMap());
     }
 
+    /**
+     * Handles ShowRobotMovingMessage
+     *
+     * @param msg the ShowRobotMovingMessage object seen on the EventBus
+     * @see ShowRobotMovingMessage
+     * @author Maria Andrade
+     * @since 2023-05-20
+     */
     public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg){
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateRobotState(msg.getUserDTO(), msg.getNewRobotPosition(), msg.getNewDirection());
+    }
+
+    public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg){
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.animateBoardElements(msg.getPlayersDTO());
     }
 
     /**
