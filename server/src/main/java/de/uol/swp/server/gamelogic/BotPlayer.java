@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 
 /**
@@ -12,6 +13,7 @@ public class BotPlayer extends AbstractPlayer {
 
     public BotPlayer(Robot robot, Card[] cards) {
         super();
+        userDTO = new UserDTO("Bot", "passwort", "mail");
     }
 
     // TODO

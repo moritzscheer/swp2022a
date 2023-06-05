@@ -1,5 +1,6 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 
 /**
@@ -12,6 +13,8 @@ public abstract class AbstractPlayer {
     protected Card[] receivedCards;
     protected Card[] chosenCards;
     protected int numCardToPlay = 0;
+    protected UserDTO userDTO;
+
 
 
     /** Constructor
@@ -79,5 +82,13 @@ public abstract class AbstractPlayer {
         Card nextCard = this.chosenCards[numCardToPlay];
         numCardToPlay += 1;
         return nextCard;
+    }
+
+    public UserDTO getUser() {
+        return userDTO;
+    }
+
+    public void setUser(UserDTO user) {
+        this.userDTO = user;
     }
 }

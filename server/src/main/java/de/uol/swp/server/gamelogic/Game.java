@@ -3,11 +3,13 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.primitives.Ints;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.utils.ConvertToDTOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -47,6 +49,7 @@ public class Game {
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
+
     /**
      * Constructor
      *
@@ -67,8 +70,8 @@ public class Game {
         this.dockingStartPosition = checkpointsList[0];
 
         // create players and robots
-        int i=0; // start robots id in 0
-        for(User user: users) {
+        int i = 0; // start robots id in 0
+        for (User user : users) {
             Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
@@ -89,7 +92,7 @@ public class Game {
      * @since 2023-04-25
      */
     public void distributeProgramCards() {
-        if(notDistributedCards) {
+        if (notDistributedCards) {
             // there will be many request to get the cards, one from each player
             // therefore the distribution should be done one single time
             notDistributedCards = false;
@@ -101,7 +104,7 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
-                LOG.debug("Distributing cards for player {}", ((Player)player).getUser().getUsername());
+                LOG.debug("Distributing cards for player {}", ((Player) player).getUser().getUsername());
 
                 int damage = player.getRobot().getDamageToken();
 
@@ -144,7 +147,7 @@ public class Game {
         AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
         Card[] chosenCards = new Card[5];
         int i = 0;
-        for(CardDTO cardDTO: playerCards){
+        for (CardDTO cardDTO : playerCards) {
             chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
             i++;
         }
@@ -175,10 +178,10 @@ public class Game {
      */
     public Map<UserDTO, CardDTO> revealProgramCards() {
         Map<UserDTO, CardDTO> userDTOCardDTOMap = new HashMap<>();
-        LOG.debug("REVEALING PROGRAM CARDS STEP: "+ this.programStep);
+        LOG.debug("REVEALING PROGRAM CARDS STEP: " + this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
-                    ((Player)this.players.get(playerIterator)).getUser(),
+                    ((Player) this.players.get(playerIterator)).getUser(),
                     // program steps starts in 1 and this array in 0
                     convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
             );
@@ -215,9 +218,9 @@ public class Game {
         this.roundNumber++;
     }
 
-    public void startGame(){
+    public void startGame() {
         this.board = MapBuilderTESTMAP.getMap("server/src/main/resources/maps/tempMap.map");
-        if(board == null){
+        if (board == null) {
             //TODO: Log error "Map couldn't be loaded"
             return;
         }
@@ -231,8 +234,65 @@ public class Game {
             }
         }
     }
-    public void calcGameRoundCards(){
-        LOG.debug("Calculating game cards for round " + this.programStep);
+
+    public List<List<PlayerDTO>> calcAllGameRounds(){
+
+        List<List<PlayerDTO>> moves = new ArrayList<>();
+
+        moves.add(getPlayerDTOSForAllPlayers());
+
+        for (int i = 0; i < 5; i++) {
+            moves.addAll(calcGameRoundCardsNew(programStep));
+            moves.addAll(calcGameBoardCardsNew(programStep));
+        }
+
+        return moves;
+    }
+
+    private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
+        List<PlayerDTO> initialPlayerStates = new ArrayList<>();
+        for (AbstractPlayer player :
+                players) {
+            initialPlayerStates.add(ConvertToDTOUtils.convertPlayerToPlayerDTO(player));
+        }
+        return initialPlayerStates;
+    }
+
+    private List<List<PlayerDTO>> calcGameRoundBoardNew(int programStep) {
+        return null;
+    }
+
+    private List<List<PlayerDTO>> calcGameRoundCardsNew(int programStep) {
+        List<List<PlayerDTO>> moves = new ArrayList<>();
+        Card[] cardsToPlay = playedCards[programStep];
+
+        //Get lists of the Priorities to execute cards in the right order
+        Integer[] sortedPriorities = Arrays.stream(cardsToPlay).map(Card::getPriority).sorted().toArray(Integer[]::new);
+        Integer[] priorities = Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
+
+        for (int i = 0; i < cardsToPlay.length; i++) {
+            //Get index of next card to play
+            int indexOfCurrentCard = Arrays.asList(priorities).indexOf(sortedPriorities[i]);
+            Card currentCard = cardsToPlay[indexOfCurrentCard];
+
+            //Check if executing robot is alive
+            if(!robots.get(indexOfCurrentCard).isAlive()){
+                continue;
+            }
+            //Get Move Intents and execute them
+            List<List<MoveIntent>> moveIntents = resolveCard(currentCard, indexOfCurrentCard);
+            for (List<MoveIntent> move : moveIntents) {
+                List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
+                executeMoveIntents(resolvedMoves);
+            }
+
+            moves.add(getPlayerDTOSForAllPlayers());
+        }
+        return moves;
+    }
+
+    public void calcGameRoundCards() {
+        LOG.debug("Calculating game cards for round " + programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -243,70 +303,88 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
-        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("1Current Position of " + ((Player) this.players.get(0)).getUser().getUsername());
         LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             if(!this.robots.get(playerIterator).isAlive())
                 continue; // if not alive, go on
             List<List<MoveIntent>> moves;
-            moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
+            moves = resolveCard(this.playedCards[playerIterator][programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
                 List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
                 executeMoveIntents(resolvedMoves);
             }
         }
 
-        checkRobotFellFromBoard();
     }
 
-    public void calcGameRoundBoard(){
-        LOG.debug("Calculating game board for round " + this.programStep);
-        // Iterate through the 5 cards
-        if (this.playedCards[0].length != 5) {
-            // TODO: Log Error regarding card count
-        }
+    public void calcGameRoundBoard() {
+        List<MoveIntent> moves;
 
-        // Iterate through all the traps
-        for (Block[] blocksX : board) {
-            for (Block blockXY : blocksX) {
-                List<MoveIntent> moves;
+        moves = OnExpressConveyorStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                // TODO: implementation of ActionReports for use in a GameMoveHistory
-                // Preferably altering the behaviour Methods to return (or get as parameters)
-                // the list of ActionReports and MoveIntents
+        moves = OnConveyorStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnExpressConveyorStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnPusherStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnConveyorStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnRotatorStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnPusherStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnPresserStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnRotatorStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnLaserStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnPresserStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnCheckPointStage(programStep);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
+    }
 
-                moves = blockXY.OnLaserStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
-
-                moves = blockXY.OnCheckPointStage(this.programStep);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+    private List<MoveIntent> OnExpressConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnExpressConveyorStage(programStep);
+                moves.addAll(blockMoves);
             }
         }
-
-        checkRobotFellFromBoard();
+        return  moves;
     }
+
+    private List<MoveIntent> OnConveyorStage(int programStep) {
+        return null;
+    }
+
+    private List<MoveIntent> OnPusherStage(int programStep) {
+        return null;
+    }
+
+    private List<MoveIntent> OnRotatorStage(int programStep) {
+        return null;
+    }
+
+    private List<MoveIntent> OnPresserStage(int programStep) {
+        return null;
+    }
+
+    private List<MoveIntent> OnLaserStage(int programStep) {
+        return null;
+    }
+
+    private List<MoveIntent> OnCheckPointStage(int programStep) {
+        return null;
+    }
+
 
     public void calcGameRound() {
 //        LOG.debug("Calculating game for round " + this.programStep);
@@ -379,9 +457,9 @@ public class Game {
     }
 
 
-    //////////////////////////////
-    // SOLVING MOVE INTENTS
-    /////////////////////////////
+//////////////////////////////
+// SOLVING MOVE INTENTS
+/////////////////////////////
 
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
@@ -410,8 +488,8 @@ public class Game {
             uTurn(robots.get(robotID));
         }
         for (int i = 0;
-                i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
-                i++) {
+             i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
+             i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
             moves.add(subMoveList);
@@ -432,6 +510,8 @@ public class Game {
                 robots.get(move.robotID).move(move.direction);
             }
         }
+
+        checkRobotFellFromBoard();
     }
 
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
@@ -555,8 +635,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                                    == CardinalDirection.values()[
-                                            moveList.get(j).getDirection().ordinal() + 2]
+                            == CardinalDirection.values()[
+                            moveList.get(j).getDirection().ordinal() + 2]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -579,7 +659,7 @@ public class Game {
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
                     CardinalDirection.values()[moveDir.ordinal() + 2]);
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             // testing for out of bounds
             return false;
         }
@@ -600,7 +680,9 @@ public class Game {
         return roundNumber;
     }
 
-    /** @author Finn */
+    /**
+     * @author Finn
+     */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
@@ -633,6 +715,7 @@ public class Game {
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
+
     }
 
 
@@ -655,6 +738,7 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
+
     /**
      * Getter for lobbyID
      *
@@ -665,6 +749,7 @@ public class Game {
     public Integer getLobbyID() {
         return lobbyID;
     }
+
     /**
      * Getter for Board Array
      *
@@ -672,7 +757,10 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-16
      */
-    public Block[][] getBoard(){ return board;}
+    public Block[][] getBoard() {
+        return board;
+    }
+
     /**
      * Setter for Board Array
      *
@@ -680,7 +768,10 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-16
      */
-    public void setBoard(Block[][] board){ this.board = board;}
+    public void setBoard(Block[][] board) {
+        this.board = board;
+    }
+
     /**
      * Getter for list of Players
      *
@@ -688,7 +779,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-13
      */
-    public List<AbstractPlayer> getPlayers(){
+    public List<AbstractPlayer> getPlayers() {
         return this.players;
     }
 
@@ -699,11 +790,11 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-18
      */
-    public Player getPlayerByUserDTO(UserDTO user){
-        for(AbstractPlayer player: players){
-            if(player.getClass() == Player.class &&
-                    Objects.equals(((Player) player).getUser(), user)){
-                return ((Player)player);
+    public Player getPlayerByUserDTO(UserDTO user) {
+        for (AbstractPlayer player : players) {
+            if (player.getClass() == Player.class &&
+                    Objects.equals(((Player) player).getUser(), user)) {
+                return ((Player) player);
             }
         }
         return null;
@@ -731,11 +822,11 @@ public class Game {
         return this.dockingStartPosition;
     }
 
-    public int getProgramStep(){
+    public int getProgramStep() {
         return this.programStep;
     }
 
-    public void increaseProgramStep(){
+    public void increaseProgramStep() {
         this.programStep++;
     }
 }

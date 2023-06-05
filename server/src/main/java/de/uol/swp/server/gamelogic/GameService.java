@@ -82,7 +82,7 @@ public class GameService extends AbstractService {
         System.out.println("New id :)");
         //TODO: fix docking positions
         Position[] checkpointsList = {
-                new Position(0, 11),
+                new Position(0,11),
                 new Position(9,3),
                 new Position(7,4),
                 new Position(1,9)}

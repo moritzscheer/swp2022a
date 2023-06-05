@@ -6,6 +6,7 @@ import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
+import de.uol.swp.server.gamelogic.BotPlayer;
 import de.uol.swp.server.gamelogic.Player;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -110,8 +111,8 @@ public final class ConvertToDTOUtils {
         PlayerDTO playerDTO = new PlayerDTO(
                 convertRobotToRobotDTO(player.getRobot())
         );
-        if(player instanceof Player)
-            playerDTO.setUser(((Player)player).getUser());
+
+        playerDTO.setUser(player.getUser());
 
         return playerDTO;
     }
