@@ -33,6 +33,7 @@ public class Game {
 
     // TODO: Remove dockingBays field
     private final Position[] checkpointsList;
+    private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
@@ -65,6 +66,7 @@ public class Game {
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
         this.dockingStartPosition = checkpointsList[0];
+        this.lastCheckPoint = checkpointsList.length;
 
         // create players and robots
         int i=0; // start robots id in 0
@@ -598,6 +600,10 @@ public class Game {
 
     public int getRoundNumber() {
         return roundNumber;
+    }
+
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
     }
 
     /** @author Finn */
