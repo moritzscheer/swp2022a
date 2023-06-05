@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<GridPane fx:id="mainGrid" hgap="10.0" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" style="-fx-padding: 10; -fx-background-color: lightgray; -fx-background-radius: 5; -fx-border-radius: 5;" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="mainGrid" hgap="10.0" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" style="-fx-padding: 10; -fx-background-color: lightgray; -fx-background-radius: 5; -fx-border-radius: 5;" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="100" percentWidth="20.0" />
         <ColumnConstraints hgrow="SOMETIMES" percentWidth="55.0" />
@@ -358,16 +358,23 @@
                 <TabPane style="-fx-border-color: black; -fx-border-radius: 5;" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                         <Tab text="History">
-                     <content>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                        </GridPane>
-                     </content>
+                            <content>
+                                <GridPane>
+                                    <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    </columnConstraints>
+                                    <rowConstraints>
+                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    </rowConstraints>
+                                    <children>
+                                        <TextArea fx:id="historyOutput" editable="false">
+                                            <GridPane.margin>
+                                                <Insets bottom="3.0" left="3.0" right="3.0" top="2.0" />
+                                            </GridPane.margin>
+                                        </TextArea>
+                                    </children>
+                                </GridPane>
+                            </content>
                         </Tab>
                         <Tab text="Chat">
                      <content>
@@ -426,7 +433,7 @@
                </rowConstraints>
                <children>
                       <!-- ChosenCards -->
-      
+
                       <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
                               <RowConstraints vgrow="SOMETIMES" />

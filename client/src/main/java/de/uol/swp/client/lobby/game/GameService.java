@@ -9,6 +9,7 @@ import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
+import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -155,8 +156,14 @@ public class GameService {
 
     @Subscribe
     public void onShowRobotMovingMessage(ShowRobotMovingMessage msg){
-        LOG.debug("Updating view, robot moving - "+msg.getUserDTO().getUsername());
+        LOG.debug("Updating view, robot moving - "+msg.getPlayerDTO().getUser().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
+    }
+
+    @Subscribe
+    public void onHistoryMessage(TextHistoryMessage msg){
+        LOG.debug("Updating history - "+msg.getMessage());
+        LobbyGameManagement.getInstance().updateHistory(msg);
     }
 
     @Subscribe
