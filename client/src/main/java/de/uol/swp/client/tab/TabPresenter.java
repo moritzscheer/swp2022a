@@ -15,7 +15,6 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
-import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,23 +58,6 @@ public class TabPresenter extends AbstractPresenter {
     @Subscribe
     public void onLoginSuccessfulResponse(LoginSuccessfulResponse message) {
         this.loggedInUser = message.getUser();
-    }
-
-    /**
-     * Handles Logout
-     *
-     * <p>If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
-     * method is called. It tells the SceneManager to show the login window. If the loglevel is set
-     * to INFO or higher "User {username} logged out." is written to the log.
-     *
-     * @param message The UserLoggedOutMessage object detected on the EventBus
-     * @see de.uol.swp.client.SceneManager
-     * @see de.uol.swp.common.user.message.UserLoggedOutMessage
-     * @since 2022-11-08
-     */
-    @Subscribe
-    void onUserLoggedOutMessage(UserLoggedOutMessage message) {
-        loggedInUser = null;
     }
 
     /**
@@ -129,45 +111,32 @@ public class TabPresenter extends AbstractPresenter {
     // -----------------------------------------------------
 
     /**
-     * helper method to delete a tab
-     *
-     * <p>This method removes the tab which has the same ID as the lobbyID given to it.
-     *
-     * @param lobbyID The Integer containing the lobbyID
-     * @author Moritz Scheer
-     * @since 2023-01-05
-     */
-    private void deleteLobbyTab(Integer lobbyID) {
-        Platform.runLater(
-                () -> {
-                    tabPane.getTabs()
-                            .removeIf(
-                                    tab ->
-                                            tab.getId() != null
-                                                    && tab.getId().equals(lobbyID.toString()));
-                    tabPane.getSelectionModel().select(0);
-                });
-    }
-
-    /**
      * method for the switching the content of a tab
      *
      * <p>This method sets the content of the tab with the tabID to the given parent given as a
      * parameter. If the infoBox is visible, it is set to invisible.
      *
-     * @param lobbyID Integer containing the ID of the lobby
+     * @param tabID Integer containing the lobbyID and also the tabID
      * @param parent Parent containing the content of the fxml
      * @author Moritz Scheer
      * @see de.uol.swp.client.SceneManager
      * @since 2022-03-09
      */
-    public void showNode(Integer lobbyID, Parent parent) {
+    public void showNode(int tabID, Parent parent) {
         Platform.runLater(
                 () -> {
                     if (infoBox.isVisible()) {
                         updateInfoBox();
                     }
-                    tabPane.getTabs().get(lobbyID).setContent(parent);
+                    if(tabID == 0) {
+                        tabPane.getTabs().get(tabID).setContent(parent);
+                    } else {
+                        for(Tab tab : tabPane.getTabs()) {
+                            if(tab.getId().equals(String.valueOf(tabID))) {
+                                tab.setContent(parent);
+                            }
+                        }
+                    }
                 });
     }
 
@@ -279,19 +248,9 @@ public class TabPresenter extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    public Integer getTabID() {
+    public Integer getCurrentTabID() {
         return Integer.valueOf(
                 tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
-    }
-
-    /**
-     * method for checking if an user is loggedIn
-     *
-     * @author Moritz Scheer
-     * @since 2022-12-28
-     */
-    public boolean isLoggedIn() {
-        return loggedInUser != null;
     }
 
     public void changeMainTabTitle(String title) {
@@ -310,19 +269,19 @@ public class TabPresenter extends AbstractPresenter {
      * <p>If an DeleteLobbyTabEvent object is detected on the EventBus this method is called. This
      * method deletes a tab with the given lobbyID.
      *
-     * @param lobbyID Integer containing the ID of the lobby
+     * @param tabID Integer containing the lobbyID and also the tabID
      * @author Moritz Scheer
      * @see de.uol.swp.client.SceneManager
      * @since 2023-01-24
      */
-    private void deleteTab(Integer lobbyID) {
+    private void deleteTab(Integer tabID) {
         Platform.runLater(
                 () -> {
                     tabPane.getTabs()
                             .removeIf(
                                     tab ->
                                             tab.getId() != null
-                                                    && tab.getId().equals(lobbyID.toString()));
+                                                    && tab.getId().equals(tabID.toString()));
                     tabPane.getSelectionModel().select(0);
                 });
     }
@@ -333,12 +292,12 @@ public class TabPresenter extends AbstractPresenter {
      * <p>This method sets the id to the tab id and defines EventHandler for different events
      *
      * @param tab The Tab containing the tab data
-     * @param lobbyID The Integer containing the lobbyID
+     * @param tabID Integer containing the lobbyID and also the tabID
      * @author Moritz Scheer
      * @since 2022-12-28
      */
-    private void setupTab(Tab tab, Integer lobbyID) {
-        tab.setId(lobbyID.toString());
+    private void setupTab(Tab tab, Integer tabID) {
+        tab.setId(tabID.toString());
 
         tab.setOnCloseRequest(
                 closeEvent -> {
@@ -346,11 +305,11 @@ public class TabPresenter extends AbstractPresenter {
                     if (infoLabel2.isVisible()) {
                         infoLabel2.setVisible(false);
                         infoLabel3.setVisible(true);
-                        eventBus.post(new ChangeElementEvent(lobbyID));
+                        eventBus.post(new ChangeElementEvent(tabID));
                     } else if (!infoLabel3.isVisible()) {
                         infoLabel3.setVisible(true);
                         updateInfoBox();
-                        eventBus.post(new ChangeElementEvent(lobbyID));
+                        eventBus.post(new ChangeElementEvent(tabID));
                     }
                 });
 
@@ -359,7 +318,7 @@ public class TabPresenter extends AbstractPresenter {
                     changeEvent.consume();
                     if (infoLabel3.isVisible()) {
                         updateInfoBox();
-                        eventBus.post(new ChangeElementEvent(lobbyID));
+                        eventBus.post(new ChangeElementEvent(tabID));
                     }
                 });
     }
@@ -381,43 +340,42 @@ public class TabPresenter extends AbstractPresenter {
     private void onYesButtonPressed(ActionEvent actionEvent) {
         Tab tab = tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex());
 
-        Platform.runLater(
-                () -> {
-                    if(loggedInUser != null) {
-                        System.out.println("1");
-                        if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
-                            if (tabPane.getTabs().size() > 1) {
-                                for (Tab tabs : tabPane.getTabs()) {
-                                    if (!tabs.getId().equals("mainTab")) {
-                                        eventBus.post(new LeaveLobbyEvent(
-                                                (UserDTO) loggedInUser,
-                                                Integer.valueOf(tabs.getId()),
-                                                tabs.getText(),
-                                                !tab.getText().equals("Singleplayer")
-                                        ));
-                                    }
-                                }
-                            }
-
-                            userService.logout(loggedInUser);
-                        } else if (infoLabel3.isVisible()) {
+        if(loggedInUser != null) {
+            // if user is logged In -> for exit buttons in register and login
+            if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
+                // if user wants to log out or exit
+                if (tabPane.getTabs().size() > 1) {
+                    // if tabPane has more than one tab -> leave lobbies
+                    for (Tab tabs : tabPane.getTabs()) {
+                        if (!tabs.getId().equals("mainTab")) {
                             eventBus.post(new LeaveLobbyEvent(
                                     (UserDTO) loggedInUser,
-                                    Integer.valueOf(tab.getId()),
-                                    tab.getText(),
-                                    true)
-
-                            );
-                            updateInfoBox();
-
-                            tabPane.getTabs().remove(tab);
-                            tabPane.getSelectionModel().select(0);
+                                    Integer.valueOf(tabs.getId()),
+                                    tabs.getText(),
+                                    !tab.getText().equals("Singleplayer")
+                            ));
                         }
-                    } else {
-                        System.out.println("2");
-                        eventBus.post(new CloseClientEvent());
                     }
-                });
+                }
+
+                userService.logout(loggedInUser);
+            } else if (infoLabel3.isVisible()) {
+                // if user wants to leave the lobby currently in
+                eventBus.post(new LeaveLobbyEvent(
+                        (UserDTO) loggedInUser,
+                        Integer.valueOf(tab.getId()),
+                        tab.getText(),
+                        true)
+
+                );
+                updateInfoBox();
+
+                tabPane.getTabs().remove(tab);
+                tabPane.getSelectionModel().select(0);
+            }
+        } else {
+            eventBus.post(new CloseClientEvent());
+        }
     }
 
     /**
