@@ -56,11 +56,13 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, int numberBots) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
+
+        assert users.size() + numberBots <= 8;
 
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
@@ -70,6 +72,14 @@ public class Game {
         int i=0; // start robots id in 0
         for(User user: users) {
             Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+            this.players.add(newPlayer);
+            this.robots.add(newPlayer.getRobot());
+            i++;
+        }
+
+        // create bots and robots
+        for(int j = 0; j < numberBots; j++) {
+            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
             i++;
@@ -88,7 +98,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void distributeProgramCards() {
+    public boolean distributeProgramCards() {
         if(notDistributedCards) {
             // there will be many request to get the cards, one from each player
             // therefore the distribution should be done one single time
@@ -101,7 +111,7 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
-                LOG.debug("Distributing cards for player {}", ((Player)player).getUser().getUsername());
+                LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
 
                 int damage = player.getRobot().getDamageToken();
 
@@ -123,7 +133,58 @@ public class Game {
                 else {
                 }
             }
+           return true;
         }
+        return false;
+    }
+
+    /**
+     * The method iterate over all AbstractPlayer if there are any players who are a BotPlayer we're
+     * saving the first five cards from the botPlayer received cards in chosenCards.
+     * Also, we set botPlayers of ready with the method register.
+     *
+     * @Author WKempel & Maria
+     * @return allReady
+     * @throws InterruptedException
+     */
+    public boolean registerCardsFromBot() throws InterruptedException {
+        boolean allReady = false;
+        for(AbstractPlayer botPlayer : this.players) {
+            if(botPlayer instanceof BotPlayer) {
+                Card[] chosenCards = botPlayer.getReceivedCards();
+
+                botPlayer.chooseCardsOrder(Arrays.copyOfRange(chosenCards,0,5));
+                System.out.println(chosenCards.length); // set cards of this bot
+                allReady = register();
+            }
+        }
+        return allReady;
+    }
+
+    /**
+     *
+     * When a player has chosen its cards, he will press "register" button this function will call
+     * the player function that will register his cards Once all players have chosen, the calcGame
+     * will be called
+     *
+     * @ Author WKempel & Maria
+     * @param loggedInUser
+     * @param playerCards
+     * @return register
+     * @throws InterruptedException
+     */
+    public boolean registerCardsFromUser(UserDTO loggedInUser, List<CardDTO> playerCards) throws InterruptedException {
+        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
+        Card[] chosenCards = new Card[5];
+        int i = 0;
+        for(CardDTO cardDTO: playerCards){
+            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
+            i++;
+        }
+
+        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
+
+       return register();
     }
 
     /**
@@ -136,20 +197,12 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public boolean register(UserDTO loggedInUser, List<CardDTO> playerCards)
+    public boolean register()
             throws InterruptedException {
         // TODO
         // check when all players are ready to register the next cards
         this.readyRegister += 1;
-        AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
-        Card[] chosenCards = new Card[5];
-        int i = 0;
-        for(CardDTO cardDTO: playerCards){
-            chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
-            i++;
-        }
 
-        playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
 
         if (this.readyRegister == this.nRobots - 1) {
             startTimer();
@@ -178,7 +231,7 @@ public class Game {
         LOG.debug("REVEALING PROGRAM CARDS STEP: "+ this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
-                    ((Player)this.players.get(playerIterator)).getUser(),
+                    this.players.get(playerIterator).getUser(),
                     // program steps starts in 1 and this array in 0
                     convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
             );
@@ -243,7 +296,7 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
-        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+        LOG.debug("1Current Position of "+ this.players.get(0).getUser().getUsername());
         LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             if(!this.robots.get(playerIterator).isAlive())
@@ -702,7 +755,7 @@ public class Game {
     public Player getPlayerByUserDTO(UserDTO user){
         for(AbstractPlayer player: players){
             if(player.getClass() == Player.class &&
-                    Objects.equals(((Player) player).getUser(), user)){
+                    Objects.equals(player.getUser(), user)){
                 return ((Player)player);
             }
         }

@@ -453,6 +453,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
+        LOG.debug("Number from players inlcuding Bots: ", this.userDTOPlayerDTOMap.size());
         for (Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()) {
             PlayerDTO playerDTO = player.getValue();
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
@@ -999,8 +1000,8 @@ public class GamePresenter extends AbstractPresenter {
             playerCards.get(position).setImage(
                     jsonUtils.getCardImage(userCurrentCard.getValue().getID())
             );
-            playerCards.get(position).setFitHeight(150);
-            playerCards.get(position).setFitWidth(100);
+            playerCards.get(position).setFitHeight(75);
+            playerCards.get(position).setFitWidth(50);
         }
 
 

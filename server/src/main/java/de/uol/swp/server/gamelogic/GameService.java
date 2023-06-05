@@ -76,7 +76,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public GameDTO createNewGame(int lobbyID) {
+    public GameDTO createNewGame(int lobbyID, int numberBots) {
         System.out.println("I am creating your game :)");
 
         System.out.println("New id :)");
@@ -98,7 +98,8 @@ public class GameService extends AbstractService {
                 lobbyID,
                 new Game(lobbyID,
                         checkpointsList,
-                        lobby.get().getUsers()
+                        lobby.get().getUsers(),
+                        numberBots
                 )
         );
         games.get(lobbyID).startGame();
@@ -109,18 +110,18 @@ public class GameService extends AbstractService {
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
+
+
             // convert Robot to RobotDTO
-            RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
+            //RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
 
             // create playerDTO
-            PlayerDTO playerDTO = new PlayerDTO(robotDTO);
-
-            // check if the player is controlled by a user
-            if(player.getClass() == Player.class)
-                playerDTO.setUser(((Player) player).getUser());
+            //PlayerDTO playerDTO = new PlayerDTO(robotDTO, player.getUser());
 
             // add in the list
-            players.add(playerDTO);
+            players.add(
+                    convertPlayerToPlayerDTO(player)
+            );
 
             // set currentCards later in the GameDTO Object
         }
@@ -132,7 +133,7 @@ public class GameService extends AbstractService {
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
-        System.out.println("New Game :)");
+        LOG.debug("Number of players including Bots: "+ players.size() );
         return gameDTO;
     }
 
@@ -189,7 +190,7 @@ public class GameService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            GameDTO game = createNewGame(msg.getLobbyID());
+            GameDTO game = createNewGame(msg.getLobbyID(), msg.getNumberBots());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(),
@@ -213,12 +214,15 @@ public class GameService extends AbstractService {
      * @since 2023-02-28
      */
     @Subscribe
-    public void onGetProgramCardsRequest(GetProgramCardsRequest msg) {
+    public void onGetProgramCardsRequest(GetProgramCardsRequest msg) throws InterruptedException {
         LOG.debug("onGetProgramCardsRequest");
         Optional<Game> game = getGame(msg.getLobbyID());
+        boolean callBot = false;
         if(!game.isEmpty()) {
             // only distribute once, then we get all cards for all players
-            game.get().distributeProgramCards();
+
+            callBot = game.get().distributeProgramCards();
+
 
             // get loggedInUser
             UserDTO user = msg.getLoggedInUser();
@@ -232,6 +236,11 @@ public class GameService extends AbstractService {
             for(Card card: game.get().getPlayerByUserDTO(user).getReceivedCards()){
                 LOG.debug("   id={} priority={}", card.getId(), card.getPriority());
             }
+            // todo verify we need to check if user is a bot
+            if(callBot) {
+                selectCardBot(game.get(), msg.getLobbyID());
+            }
+
 
         }
     }
@@ -250,8 +259,6 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onGetMapDataRequest(GetMapDataRequest msg) {
-
-
         System.out.println("Get Map Data server");
         Optional<Game> game = getGame(msg.getLobby().getLobbyID());
         if(game.isPresent()){
@@ -298,13 +305,36 @@ public class GameService extends AbstractService {
             for(CardDTO card: request.getCardDTOs())
                 LOG.debug(card.getID() + " -  " + card.getPriority());
 
-            Boolean allChosen = game.get().register(request.getloggedInUser(), request.getCardDTOs());
+            Boolean allChosen = game.get().registerCardsFromUser(request.getloggedInUser(), request.getCardDTOs());
             PlayerIsReadyMessage msg = new PlayerIsReadyMessage(request.getloggedInUser(), request.getLobbyID());
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
 
             if(allChosen){
                 manageRoundsUpdates(game.get(), request.getLobbyID());
             }
+        }
+    }
+
+    private void selectCardBot(Game game,int lobbyID) throws InterruptedException {
+        Boolean allChosen = game.registerCardsFromBot();
+        for(AbstractPlayer botPlayer : game.getPlayers()) {
+            if(botPlayer instanceof BotPlayer) {
+                //PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botUserDTO, lobbyID);
+                //lobbyService.sendToAllInLobby(lobbyID, msg);
+                // todo create BotUserDTO
+            }
+        }
+
+
+        if(allChosen){
+            LOG.debug("All players have chosen cards");
+            Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+            for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
+                LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
+                        " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
+            lobbyService.sendToAllInLobby(lobbyID,
+                    new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+            manageRoundsUpdates(game, lobbyID);
         }
     }
 
@@ -387,7 +417,7 @@ public class GameService extends AbstractService {
             Position pos = player.getRobot().getPosition();
             previousPositions.add(pos);
             LOG.debug("     Robot Position {} pos = x {} y {}",
-                    ((Player)player).getUser().getUsername(),
+                    player.getUser().getUsername(),
                     pos.x, pos.y);
         }
         LOG.debug("Showing chosen cards for round "+game.getProgramStep());
@@ -427,7 +457,7 @@ public class GameService extends AbstractService {
         for(AbstractPlayer player: game.getPlayers()) {
             if(!player.getRobot().isAlive())
                 continue; // if robot is dead, do nothing
-            UserDTO currentUser = ((Player) player).getUser();
+            UserDTO currentUser = player.getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
             CardinalDirection previousDirection = previousDirections.get(i);
@@ -453,7 +483,7 @@ public class GameService extends AbstractService {
 
             TextHistoryMessage msg = new TextHistoryMessage(
                     lobbyID,
-                    "[Card] " + ((Player) player).getUser().getUsername()              // User
+                    "[Card] " + player.getUser().getUsername()              // User
                             + " (" + previousPos.x + ", " + previousPos.y + ")"                                     // old x and y position
                             + "{" + previousDirection  + "} "                                                       // old direction
                             + searchCardTypeInJSON(cardDTO.getID()) +                                               // CardType
