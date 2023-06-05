@@ -476,10 +476,10 @@ public class GamePresenter extends AbstractPresenter {
 
 
     /**
-     * Handles the player list
+     * Handles the player list and adds robot icon into the view
      * Simplify it from init
      *
-     * @author Maria Andrade
+     * @author Maria Andrade and Tommy Dang
      * @since 2023-05-06
      */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
@@ -506,8 +506,16 @@ public class GamePresenter extends AbstractPresenter {
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
                 //playerRobot.get(count).add(imageView, 0, 0);
-                player3Robot.add(imageView, 0, 0);
-                player2Robot.add(imageView, 0, 0);
+                playerGrid2Wrapper.getChildren().add(imageView);
+//                playerGrid2Wrapper.add(imageView, 0, 0);
+//                playerGrid3Wrapper.add(imageView, 0, 0);
+                playerGrid3Wrapper.getChildren().add(imageView);
+//                player4Robot.add(imageView, 0, 0);
+//                player5Robot.add(imageView, 0, 0);
+//                player6Robot.add(imageView, 0, 0);
+//                player7Robot.add(imageView, 0, 0);
+//                player8Robot.add(imageView, 0, 0);
+
                 //imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
                 //imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
 
@@ -523,6 +531,7 @@ public class GamePresenter extends AbstractPresenter {
             else{
                 // for player is loggedInUser
                 playerGrid1Wrapper.add(imageView, 0, 0);
+
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
@@ -532,7 +541,7 @@ public class GamePresenter extends AbstractPresenter {
         /**
          * Gives player a robot image
          *
-         * Each player in a lobby/game has a fixed robot image
+         * Each player in a lobby/game has a fixed robotimage
          *
          * @author Tommy Dang
          * @since 2023-06-04
@@ -1098,8 +1107,8 @@ public class GamePresenter extends AbstractPresenter {
             playerCards.get(position).setImage(
                     jsonUtils.getCardImage(userCurrentCard.getValue().getID())
             );
-            playerCards.get(position).setFitHeight(150);
-            playerCards.get(position).setFitWidth(100);
+            playerCards.get(position).setFitHeight(75);
+            playerCards.get(position).setFitWidth(50);
         }
 
 

@@ -74,7 +74,7 @@
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
-                <RowConstraints vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
                 <RowConstraints percentHeight="14.28" vgrow="SOMETIMES" />
