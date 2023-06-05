@@ -284,4 +284,37 @@ public class LobbyService extends AbstractService {
             }
         }
     }
+
+    /**
+     * Handles MapChangeRequests sent by clients
+     *
+     * If the sender is the owner of the given lobby, the map of the lobby is set to the map
+     * specified by the request, and MapChangedMessages are sent to all users in the lobby
+     * to notify them of this change
+     *
+     * @param msg MapChangeRequest from the EventBus
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
+    @Subscribe
+    public void onMapChangeRequest(MapChangeRequest msg)
+    {
+        int lobbyID = msg.getID();
+        Optional<LobbyDTO> lobbyO = lobbyManagement.getLobby(lobbyID);
+
+        if(lobbyO.isPresent())
+        {
+            Optional<LobbyDTO> lDTO = lobbyManagement.getLobby(lobbyO.get().getLobbyID());
+            // Allow changing the map only if the user sending the request is also the owner
+            if(lDTO.isPresent() && lobbyO.get().getOwner().equals(msg.getUser())) {
+                lDTO.get().setMap(msg.getMap());
+
+                sendToAllInLobby(lobbyID, new MapChangedMessage(lobbyID, msg.getUser(), lDTO.get().getMap()));
+            }
+        }
+    }
+
+
 }

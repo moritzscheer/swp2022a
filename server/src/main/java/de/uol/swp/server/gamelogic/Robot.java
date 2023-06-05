@@ -49,6 +49,7 @@ public class Robot implements Serializable {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = 1;
+        this.lastCheckPointPosition = currentPosition;
     }
     /**
      * @author
@@ -124,6 +125,8 @@ public class Robot implements Serializable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+        this.lifeToken--;
+        setCurrentPosition(this.lastCheckPointPosition);
     }
 
     public void setCurrentPosition(Position currentPosition) {

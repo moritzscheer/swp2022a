@@ -4,6 +4,7 @@ import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
+import de.uol.swp.common.game.Map;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,6 +33,7 @@ public class LobbyDTO implements Lobby {
     private final UUID chatChannel;
 
     private int countRequestToStartGame = 0;
+    private Map currentMap;
 
     /**
      * Constructor
@@ -293,6 +295,31 @@ public class LobbyDTO implements Lobby {
     @Override
     public Integer getLobbyID() {
         return this.lobbyID;
+    }
+
+    /**
+     * Setter for the current map
+     *
+     * @param m The next Map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
+    public void setMap(Map m)
+    {
+        this.currentMap = m;
+    }
+
+    /**
+     * Getter for the current Map
+     *
+     * @return A Map object representing the current map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     *
+     */
+    public Map getMap()
+    {
+        return this.currentMap;
     }
 
     public UUID getTextChatID() {
