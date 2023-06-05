@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+import com.mysql.cj.log.Log;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
@@ -345,6 +346,7 @@ public class GameService extends AbstractService {
             //game.calcGameRound();
             secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions);
             // get new previous positions
+
             previousPositions = logInformation(game);
 
             game.calcGameRoundBoard();
@@ -394,6 +396,8 @@ public class GameService extends AbstractService {
         int i = 0;
         // Move each player at a time
         for(AbstractPlayer player: game.getPlayers()) {
+            if(!player.getRobot().isAlive())
+                continue; // if robot is dead, do nothing
             UserDTO currentUser = ((Player) player).getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
@@ -411,7 +415,9 @@ public class GameService extends AbstractService {
                 LOG.debug("MOVING FROM x={} y={} to x={} y={}",
                         previousPos.x, previousPos.y, currentPos.x, currentPos.y);
             }
-            sendCardMoveMessage(lobbyID, currentUser, currentPos, direction, secondsToWait);
+            sendCardMoveMessage(lobbyID,
+                    convertPlayerToPlayerDTO(player),
+                    secondsToWait);
 
             secondsToWait = secondsToWait + 2;
         }
@@ -419,15 +425,13 @@ public class GameService extends AbstractService {
     }
 
     public void sendCardMoveMessage(int lobbyID,
-                                    UserDTO currentUser,
-                                    Position currentPos,
-                                    CardinalDirection direction,
+                                    PlayerDTO playerDTO,
                                     int secondsToWait){
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
                         lobbyService.sendToAllInLobby(lobbyID,
-                                new ShowRobotMovingMessage(lobbyID, currentUser, currentPos, direction));
+                                new ShowRobotMovingMessage(lobbyID, playerDTO));
                     }
                 },
                 secondsToWait, SECONDS);
