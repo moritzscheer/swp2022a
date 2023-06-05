@@ -403,8 +403,8 @@ public class GameService extends AbstractService {
         }
 
         game.roundIsOver(); // reset variables
-
-        //Todo Ist nur zum Testen da
+        /*
+        //Todo is there to test the end of the game
         scheduler.schedule(
                 new Runnable(){
                     public void run(){
@@ -414,6 +414,8 @@ public class GameService extends AbstractService {
                 secondsToWait, SECONDS);
     }
 
+         */
+
 //    private int helpMoveInDirection(int prev, int cur){
 //        if(cur > prev){
 //            return prev+1;
@@ -421,9 +423,13 @@ public class GameService extends AbstractService {
 //        return prev -1;
 //    }
 
-    //Todo Ist nur zum Testen da
+    /*
+    //Todo is there to test the end of the game
     public void tempTestGameOver(int lobbyID, UserDTO userWon){
         lobbyService.sendToAllInLobby(lobbyID,
                 new GameOverMessage(lobbyID, userWon));
+    }
+
+     */
     }
 }
