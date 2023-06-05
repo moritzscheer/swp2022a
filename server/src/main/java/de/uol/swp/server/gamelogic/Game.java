@@ -29,6 +29,7 @@ public class Game {
 
     private final Integer lobbyID;
     private Block[][] board;
+    private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
     private final Position[] checkpointsList;
@@ -211,6 +212,7 @@ public class Game {
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+        this.roundNumber++;
     }
 
     public void startGame(){
@@ -592,6 +594,10 @@ public class Game {
                 move = move.parentMove;
             }
         }
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
     }
 
     /** @author Finn */

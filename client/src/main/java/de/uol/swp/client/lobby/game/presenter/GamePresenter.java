@@ -1,7 +1,6 @@
 package de.uol.swp.client.lobby.game.presenter;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
@@ -16,14 +15,10 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -39,15 +34,9 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.*;
 
-import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
-import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -55,20 +44,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-import org.w3c.dom.css.Rect;
-
-import java.io.File;
-import java.io.FileReader;
-import java.util.*;
 
 import static javafx.scene.paint.Color.LIGHTGREY;
 
@@ -283,8 +259,12 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player7Grid;
     @FXML
     private GridPane player8Grid;
-    @FXML private TextArea chatOutput;
-    @FXML private TextField chatInput;
+    @FXML
+    private TextArea chatOutput;
+    @FXML
+    private TextField chatInput;
+    @FXML
+    private TextArea historyOutput;
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
@@ -306,6 +286,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<ImageView> playerCards;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
+    private TextChatChannel textHistory;
+
     @FXML
     private Button robotOffButton;
     private int x = 2;
@@ -888,6 +870,7 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-05
      */
     private void setPlayerHP(PlayerDTO playerDTO) {  //To implement onPlayerHPChangedMessage
+        LOG.debug("in setPlayerHP "+ playerDTO.getUser().getUsername() + "   " );
         if(Objects.equals(playerDTO.getUser(), loggedInUser)){
             playerHpTexts.get(0).setText(String.valueOf(
                     playerDTO.getRobotDTO().getDamageToken()
@@ -1207,6 +1190,15 @@ public class GamePresenter extends AbstractPresenter {
         Platform.runLater(
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);
+                });
+    }
+
+    public void updateHistoryMessage(String message) {
+        historyOutput.appendText(message);
+        historyOutput.setWrapText(true);
+        Platform.runLater(
+                () -> {
+                    historyOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
 
