@@ -139,10 +139,10 @@
                            <children>
                               <GridPane fx:id="player2Robot" alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints minHeight="15.0" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
                                  </rowConstraints>
                               </GridPane>
                            </children>
@@ -191,6 +191,14 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+      
+                              <StackPane fx:id="player3Ready" style="-fx-background-color: red" GridPane.columnSpan="2">
+                                  <Text fx:id="player3Name" text="Player 3" StackPane.alignment="CENTER_LEFT">
+                              <StackPane.margin>
+                                 <Insets left="5.0" />
+                              </StackPane.margin>
+                           </Text>
+                              </StackPane>
                         <GridPane fx:id="playerGrid3Wrapper" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                            <GridPane.margin>
                               <Insets />
@@ -204,22 +212,14 @@
                            <children>
                               <GridPane fx:id="player3Robot" alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="15.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" />
                                  </columnConstraints>
                                  <rowConstraints>
-                                    <RowConstraints maxHeight="15.0" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
                                  </rowConstraints>
                               </GridPane>
                            </children>
                         </GridPane>
-      
-                              <StackPane fx:id="player3Ready" style="-fx-background-color: red" GridPane.columnSpan="2">
-                                  <Text fx:id="player3Name" text="Player 3" StackPane.alignment="CENTER_LEFT">
-                              <StackPane.margin>
-                                 <Insets left="5.0" />
-                              </StackPane.margin>
-                           </Text>
-                              </StackPane>
                      </children>
                   </GridPane>
                         <ImageView fx:id="player3Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />

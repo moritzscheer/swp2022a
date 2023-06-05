@@ -493,6 +493,7 @@ public class GamePresenter extends AbstractPresenter {
             System.out.println("Player" + player.getKey().getUsername());
             System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
             System.out.println(imageView);
+            System.out.println(playerRobot.size());
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
@@ -503,13 +504,18 @@ public class GamePresenter extends AbstractPresenter {
                         String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
                 playerRlTexts.get(count).setText(
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
-                userToPositionInStackPanes.put(playerDTO.getUser(),count);
-                playerRobot.get(count).add(imageView, 0, 0);
-                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
-                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                userToPositionInStackPanes.put(playerDTO.getUser(), count);
+                //playerRobot.get(count).add(imageView, 0, 0);
+                player3Robot.add(imageView, 0, 0);
+                player2Robot.add(imageView, 0, 0);
+                //imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                //imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
 
                 //imageView.fitHeightProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
                 //imageView.fitWidthProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
+
+                imageView.setFitWidth(15);
+                imageView.setFitHeight(15);
 
                 // only counts when it is not the current user, to avoid empty grid
                 count++;
