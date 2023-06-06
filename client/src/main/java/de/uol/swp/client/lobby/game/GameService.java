@@ -62,7 +62,7 @@ public class GameService {
     @Subscribe
     public void startGameRequest(RequestStartGameEvent event) {
         LOG.debug("Starting Game");
-        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO());
+        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO(), event.getNumberBots());
         eventBus.post(startGameRequest);
     }
 

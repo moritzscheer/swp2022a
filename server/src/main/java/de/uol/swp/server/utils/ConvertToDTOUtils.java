@@ -50,7 +50,6 @@ public final class ConvertToDTOUtils {
     public static RobotDTO convertRobotToRobotDTO(Robot robot) {
         RobotDTO robotDTO = new RobotDTO(robot.getID(), robot.getPosition(), robot.getDirection());
         robotDTO.setLifeToken(robot.getLifeToken());
-        System.out.println("Robot damage token: " + robot.getDamageToken());
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         robotDTO.setAlive(robot.isAlive());
@@ -102,8 +101,10 @@ public final class ConvertToDTOUtils {
      */
     public static PlayerDTO convertPlayerToPlayerDTO(AbstractPlayer player) {
 
-        PlayerDTO playerDTO = new PlayerDTO(convertRobotToRobotDTO(player.getRobot()));
-        if (player instanceof Player) playerDTO.setUser(((Player) player).getUser());
+        PlayerDTO playerDTO = new PlayerDTO(
+                convertRobotToRobotDTO(player.getRobot()),
+                player.getUser()
+        );
 
         return playerDTO;
     }

@@ -18,7 +18,7 @@ public class PlayerDTO implements Serializable {
     private RobotDTO robotDTO;
     private List<CardDTO> currentCards;
 
-    private UserDTO user = null; // this only in the case it is a real player
+    private final UserDTO user;
 
     /**
      * Constructor
@@ -27,8 +27,9 @@ public class PlayerDTO implements Serializable {
      * @see de.uol.swp.common.game.dto.RobotDTO
      * @author Maria Eduarda Costa Leite Andrade
      */
-    public PlayerDTO(RobotDTO robotDTO) {
+    public PlayerDTO(RobotDTO robotDTO, UserDTO userDTO) {
         this.robotDTO = robotDTO;
+        this.user = userDTO;
     }
 
     /**
@@ -86,14 +87,4 @@ public class PlayerDTO implements Serializable {
         return user;
     }
 
-    /**
-     * Setter for user that controls this player
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.common.user.UserDTO
-     * @since 2023-05-13
-     */
-    public void setUser(UserDTO user) {
-        this.user = user;
-    }
 }

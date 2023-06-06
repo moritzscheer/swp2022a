@@ -11,7 +11,6 @@ import de.uol.swp.common.user.UserDTO;
  * @since 2023-03-28
  */
 public class Player extends AbstractPlayer {
-    private UserDTO userDTO;
 
     /**
      * Constructor
@@ -26,10 +25,6 @@ public class Player extends AbstractPlayer {
         this.userDTO = userDTO;
         // TODO: we might need to change the robot constructor
         this.robot = new Robot(robotID, startPosition, true, CardinalDirection.North);
-    }
-
-    public UserDTO getUser() {
-        return userDTO;
     }
 
     public void setUser(UserDTO user) {
