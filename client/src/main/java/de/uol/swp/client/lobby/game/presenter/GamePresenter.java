@@ -5,6 +5,8 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
+import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
@@ -151,6 +153,8 @@ public class GamePresenter extends AbstractPresenter {
     private Text player7RobotLives;
     @FXML
     private Text player8RobotLives;
+    @FXML
+    private Text winnerIs;
 
     @FXML
     private StackPane player2Ready;
