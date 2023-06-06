@@ -10,14 +10,14 @@ public class MapChangeRequest extends AbstractLobbyRequest {
 
     /**
      * Constructor for MapChangeRequests
+     *
      * @param lobbyID The ID of the lobby
      * @param user The user responsible for creating this message
      * @param newMap The new Map
      * @author Mathis Eilers
      * @since 2022-12-31
      */
-    public MapChangeRequest(int lobbyID, UserDTO user, Map newMap)
-    {
+    public MapChangeRequest(int lobbyID, UserDTO user, Map newMap) {
         this.user = user;
         this.lobbyID = lobbyID;
         this.newMap = newMap;
@@ -30,14 +30,11 @@ public class MapChangeRequest extends AbstractLobbyRequest {
      * @author Mathis Eilers
      * @since 2022-12-31
      */
-    public Map getMap()
-    {
+    public Map getMap() {
         return newMap;
     }
 
-    public int getID()
-    {
+    public int getID() {
         return lobbyID;
     }
-
 }

@@ -60,13 +60,12 @@ public interface Lobby extends Serializable {
      */
     void makePlayerNotReady(User user);
 
-
     /**
-         * Getter for the lobby's name
-         *
-         * @return A String containing the name of the lobby
-         * @since 2019-10-08
-         */
+     * Getter for the lobby's name
+     *
+     * @return A String containing the name of the lobby
+     * @since 2019-10-08
+     */
     String getName();
 
     /**

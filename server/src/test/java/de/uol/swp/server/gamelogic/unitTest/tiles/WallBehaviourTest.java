@@ -3,9 +3,9 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.*;
 import de.uol.swp.server.gamelogic.tiles.*;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,25 +25,45 @@ public class WallBehaviourTest {
         robots[1] = new Robot(2, new Position(2, 1), true, CardinalDirection.East);
 
         tileBehaviours[0] =
-                new WallBehaviour(List.of(robots), board, new Position(1, 1), CardinalDirection.East);
+                new WallBehaviour(
+                        List.of(robots), board, new Position(1, 1), CardinalDirection.East);
         tileBehaviours[1] =
                 new PusherBehaviour(
-                        List.of(robots), board, new Position(1, 1), new int[] {1}, CardinalDirection.East);
+                        List.of(robots),
+                        board,
+                        new Position(1, 1),
+                        new int[] {1},
+                        CardinalDirection.East);
         tileBehaviours[2] =
-                new WallBehaviour(List.of(robots), board, new Position(1, 1), CardinalDirection.West);
+                new WallBehaviour(
+                        List.of(robots), board, new Position(1, 1), CardinalDirection.West);
         tileBehaviours[3] =
                 new PusherBehaviour(
-                        List.of(robots), board, new Position(1, 1), new int[] {1}, CardinalDirection.West);
+                        List.of(robots),
+                        board,
+                        new Position(1, 1),
+                        new int[] {1},
+                        CardinalDirection.West);
         tileBehaviours[4] =
-                new WallBehaviour(List.of(robots), board, new Position(1, 1), CardinalDirection.North);
+                new WallBehaviour(
+                        List.of(robots), board, new Position(1, 1), CardinalDirection.North);
         tileBehaviours[5] =
                 new PusherBehaviour(
-                        List.of(robots), board, new Position(1, 1), new int[] {1}, CardinalDirection.North);
+                        List.of(robots),
+                        board,
+                        new Position(1, 1),
+                        new int[] {1},
+                        CardinalDirection.North);
         tileBehaviours[6] =
-                new WallBehaviour(List.of(robots), board, new Position(1, 1), CardinalDirection.South);
+                new WallBehaviour(
+                        List.of(robots), board, new Position(1, 1), CardinalDirection.South);
         tileBehaviours[7] =
                 new PusherBehaviour(
-                        List.of(robots), board, new Position(1, 1), new int[] {1}, CardinalDirection.South);
+                        List.of(robots),
+                        board,
+                        new Position(1, 1),
+                        new int[] {1},
+                        CardinalDirection.South);
         tileBehaviours[8] =
                 new ConveyorBeltBehaviour(
                         List.of(robots), board, new Position(1, 1), null, CardinalDirection.East);
@@ -63,7 +83,9 @@ public class WallBehaviourTest {
                         activeInProgramSteps,
                         new Position(1, 1),
                         CardinalDirection.East,
-                        3, true, true);
+                        3,
+                        true,
+                        true);
 
         board[1][1] = new Block(tileBehaviours, "", new Position(1, 1));
         board[2][2] = new Block(tileBehaviours, "", new Position(2, 2));

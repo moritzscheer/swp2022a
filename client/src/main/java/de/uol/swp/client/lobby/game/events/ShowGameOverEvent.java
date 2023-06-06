@@ -5,12 +5,10 @@ import de.uol.swp.common.user.UserDTO;
 /**
  * Event used to show in the Game window if the game is finished
  *
- *
  * @author Daniel Merzo
  * @see de.uol.swp.client.SceneManager
  * @since 2023-05-23
  */
-
 public class ShowGameOverEvent {
     private final int lobbyID;
     private final UserDTO userWon;

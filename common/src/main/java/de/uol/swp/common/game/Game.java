@@ -11,6 +11,4 @@ import java.io.Serializable;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-01
  */
-public interface Game extends Serializable {
-
-}
+public interface Game extends Serializable {}

@@ -165,6 +165,11 @@
         <Separator style="-fx-background-color: black;" GridPane.rowIndex="1" />
         <Separator style="-fx-background-color: black;" GridPane.rowIndex="4" />
         <Separator style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label text="Bots" GridPane.rowIndex="8" />
+      <Spinner fx:id="numberBots" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></Spinner>
     </GridPane>
     <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
         <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonPressed" prefWidth="150.0" text="GO!" />

@@ -1,8 +1,6 @@
 package de.uol.swp.common.lobby.message;
 
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.message.AbstractServerMessage;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -18,7 +16,6 @@ public class PlayerReadyInLobbyMessage extends AbstractServerMessage {
     private final Integer lobbyID;
     private UserDTO user;
     private final Boolean ready;
-
 
     /**
      * Constructor
@@ -48,8 +45,7 @@ public class PlayerReadyInLobbyMessage extends AbstractServerMessage {
     /**
      * Getter for the lobbyID variable
      *
-     * @return Integer containing the Lobby ID
-     * Moritz Scheer
+     * @return Integer containing the Lobby ID Moritz Scheer
      * @since 2023-05-28
      */
     public UserDTO getUser() {

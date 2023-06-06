@@ -1,10 +1,8 @@
 package de.uol.swp.client.preLobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
 import de.uol.swp.client.preLobby.events.CreateLobbyCanceledEvent;
@@ -130,8 +128,12 @@ public class CreateLobbyPresenter extends AbstractPresenter {
     @FXML
     public void onCreateLobbyPressed(ActionEvent actionEvent) {
         if (!nameField.getText().isBlank()) {
-            eventBus.post(new CreateNewLobbyEvent(
-                    nameField.getText(), (UserDTO) loggedInUser, true, passwordField.getText()));
+            eventBus.post(
+                    new CreateNewLobbyEvent(
+                            nameField.getText(),
+                            (UserDTO) loggedInUser,
+                            true,
+                            passwordField.getText()));
             backToDefault();
         } else {
             errorMessage2.setVisible(false);

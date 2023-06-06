@@ -1,17 +1,17 @@
 package de.uol.swp.server.utils;
 
 import de.uol.swp.server.gamelogic.cards.Card;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.FileReader;
 
-
-/** This is a utility class
+/**
+ * This is a utility class
  *
- * The purpose of this class is to contain functions
- * to help handling the JSON files
+ * <p>The purpose of this class is to contain functions to help handling the JSON files
  *
  * @author Maria Andrade
  * @since 2023-05-13
@@ -20,7 +20,7 @@ public final class JsonUtils {
     /**
      * Helper method to search a card in a JSON array
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
      * the value from the parameter. Then in returns the path of the image.
      *
      * @param cardId the cardID that wants to be searched for
@@ -44,7 +44,7 @@ public final class JsonUtils {
                     obj = jsonArray.getJSONObject(i);
                     if (obj.getInt("card-id") == cardId) {
                         Card card;
-                        String  cardType = obj.getString("type-id");
+                        String cardType = obj.getString("type-id");
                         int priority = obj.getInt("priority");
                         String imgPath = obj.getString("source");
                         card = new Card(cardId, cardType, priority, imgPath);
@@ -63,7 +63,7 @@ public final class JsonUtils {
     /**
      * Helper method to search for a card Type in a JSON array
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
      * the value from the parameter. Then in returns the path of the image.
      *
      * @param cardId the cardID that wants to be searched for

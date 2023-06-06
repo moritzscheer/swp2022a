@@ -155,7 +155,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                         lobbiesList.removeIf(
                                 u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
                     }
-                    LobbyGameManagement.getInstance().updateGameMap(message.getLobby().getLobbyID(), message.getMap());
+                    LobbyGameManagement.getInstance()
+                            .updateGameMap(message.getLobby().getLobbyID(), message.getMap());
                 });
     }
 
@@ -425,9 +426,11 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      * @since 2022-12-11
      */
     public void onButtonJoinLobbyButtonPressed(ActionEvent actionEvent) {
-        eventBus.post(new UserJoinLobbyEvent(
-                lobbiesView.getSelectionModel().getSelectedItem(),
-                (UserDTO) loggedInUser, textFieldPassword.getText()));
+        eventBus.post(
+                new UserJoinLobbyEvent(
+                        lobbiesView.getSelectionModel().getSelectedItem(),
+                        (UserDTO) loggedInUser,
+                        textFieldPassword.getText()));
         textFieldPassword.clear();
         updatePasswordView();
     }

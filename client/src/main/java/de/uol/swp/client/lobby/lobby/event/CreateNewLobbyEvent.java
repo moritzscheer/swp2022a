@@ -2,8 +2,9 @@ package de.uol.swp.client.lobby.lobby.event;
 
 import de.uol.swp.common.user.UserDTO;
 
-/** This event class is used by the presenters to tell
- * the LobbyService to create a new request to the server
+/**
+ * This event class is used by the presenters to tell the LobbyService to create a new request to
+ * the server
  *
  * @author Maria Andrade
  * @since 2023-05-16
@@ -13,6 +14,7 @@ public class CreateNewLobbyEvent {
     private final UserDTO user;
     private final Boolean multiplayer;
     private final String password;
+
     public CreateNewLobbyEvent(String name, UserDTO user, Boolean multiplayer, String password) {
         this.name = name;
         this.user = user;

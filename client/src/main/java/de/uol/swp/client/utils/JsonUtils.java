@@ -3,6 +3,7 @@ package de.uol.swp.client.utils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -10,10 +11,10 @@ import org.json.JSONTokener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-/** This is a utility class
+/**
+ * This is a utility class
  *
- * The purpose of this class is to contain functions
- * to help handling the JSON files
+ * <p>The purpose of this class is to contain functions to help handling the JSON files
  *
  * @author Maria Andrade
  * @since 2023-05-14
@@ -42,7 +43,7 @@ public final class JsonUtils {
     /**
      * Helper method to search a tile in a JSON array
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
      * the value from the parameter. Then in returns the path of the image.
      *
      * @param tileId the tileID that wants to be searched for
@@ -51,7 +52,7 @@ public final class JsonUtils {
      * @author Maria Andrade
      * @since 2023-05-14
      */
-    public ImageView searchInTileJSON(String tileId){
+    public ImageView searchInTileJSON(String tileId) {
         String path;
         for (int i = 0; i < this.jsonTileArray.length(); i++) {
             JSONObject obj = null;
@@ -72,14 +73,14 @@ public final class JsonUtils {
     /**
      * Helper method to search a card in a JSON array
      *
-     * This method goes through all JSON Objects in the JSON Array and looks for id matching to
+     * <p>This method goes through all JSON Objects in the JSON Array and looks for id matching to
      * the value from the parameter. Then in returns the Image of the card.
      *
      * @param cardID the cardID that wants to be searched for
      * @author Maria Andrade
      * @since 2023-05-18
      */
-    public ImagePattern getCardImageById(int cardID){
+    public ImagePattern getCardImageById(int cardID) {
         String path;
         for (int i = 0; i < this.jsonCardArray.length(); i++) {
             JSONObject obj = null;
@@ -95,7 +96,6 @@ public final class JsonUtils {
             }
         }
         return null;
-
     }
 
     /**
@@ -105,9 +105,9 @@ public final class JsonUtils {
      * @author Maria Andrade
      * @since 2023-05-19
      */
-    public ImageView getRobotImage(int robotID){
+    public ImageView getRobotImage(int robotID) {
         // robot id starts in 0
-        String path = String.format("images/player/Player0%d.png", robotID+1);
+        String path = String.format("images/player/Player0%d.png", robotID + 1);
 
         ImageView imageView = new ImageView(new Image(path));
         return imageView;
@@ -120,7 +120,7 @@ public final class JsonUtils {
      * @author Maria Andrade
      * @since 2023-05-20
      */
-    public Image getCardImage(int cardID){
+    public Image getCardImage(int cardID) {
         String path;
         for (int i = 0; i < this.jsonCardArray.length(); i++) {
             JSONObject obj = null;
@@ -137,4 +137,3 @@ public final class JsonUtils {
         return null;
     }
 }
-
