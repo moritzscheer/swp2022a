@@ -4,9 +4,7 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
             Position blockPos,
             CardinalDirection laserDir,
             int laserBeam,
-            boolean fullLaser) {
+            boolean fullLaser, boolean b) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = laserDir;

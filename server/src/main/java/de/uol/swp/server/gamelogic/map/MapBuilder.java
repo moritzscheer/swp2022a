@@ -4,7 +4,6 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.BehaviourTypeComparator;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
-import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.*;
@@ -175,7 +174,7 @@ public final class MapBuilder {
                 if (!innerWallorLaser) {
                     AbstractTileBehaviour[] copy = new AbstractTileBehaviour[map[x2][y2].getBehaviourList().length + 1];
                     System.arraycopy(map[x2][y2].getBehaviourList(), 0, copy, 0, copy.length - 1);
-                    copy[copy.length - 1] = new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x2, y2), direction, beam, fullLaser);
+                    copy[copy.length - 1] = new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x2, y2), direction, beam, fullLaser, true);
                     map[x2][y2] = new Block(copy, null, new Position(x2, y2));
                 }
             }
