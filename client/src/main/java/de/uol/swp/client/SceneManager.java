@@ -39,7 +39,6 @@ import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
@@ -760,19 +759,17 @@ public class SceneManager {
                      * @author Moritz Scheer
                      * @since 2023-01-25
                      */
-                    if (currentScene.equals(tabScene)) {
-                        primaryStage.setOnCloseRequest(
-                                closeEvent -> {
-                                    closeEvent.consume();
-                                    if (tabPresenter.infoLabel3IsVisible()) {
-                                        tabPresenter.updateInfoBox();
-                                        eventBus.post(
-                                                new ChangeElementEvent(tabPresenter.getTabID()));
-                                    }
+                    primaryStage.setOnCloseRequest(
+                            closeEvent -> {
+                                closeEvent.consume();
+                                if (tabPresenter.infoLabel3IsVisible()) {
                                     tabPresenter.updateInfoBox();
-                                    tabPresenter.setInfoLabel(2);
-                                });
-                    }
+                                    eventBus.post(
+                                            new ChangeElementEvent(tabPresenter.getCurrentTabID()));
+                                }
+                                tabPresenter.updateInfoBox();
+                                tabPresenter.setInfoLabel(2);
+                            });
                     primaryStage.sizeToScene();
                     primaryStage.setTitle(title);
                     primaryStage.setScene(scene);
@@ -786,16 +783,16 @@ public class SceneManager {
      * <p>The current scene and title are saved in the lastScene and lastTitle variables, before the
      * new scene and title are set and shown.
      *
-     * @param tab    Integer containing the lobbyID and also the tabID
+     * @param tabID Integer containing the lobbyID and also the tabID
      * @param parent New Parent to show
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void showNode(int tab, Parent parent) {
+    private void showNode(int tabID, Parent parent) {
         this.lastParent = currentParent;
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
-        tabPresenter.showNode(tab, parent);
+        tabPresenter.showNode(tabID, parent);
     }
 
     /**

@@ -31,7 +31,7 @@ public final class MapBuilderTESTMAP {
     public static void main(String[] args) throws IOException {
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
+        Block[][] map = getMap("server/src/main/resources/maps/testMap.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -42,7 +42,7 @@ public final class MapBuilderTESTMAP {
         mapGenExtracted(map);
 
         ObjectOutputStream objOut =
-                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/tempMap.map"));
+                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/testMap.map"));
         objOut.writeObject(map);
         objOut.flush();
         objOut.close();

@@ -102,6 +102,8 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private GridPane selectedCardGridPane;
     @FXML
+    private Text player1HP;
+    @FXML
     private Text player2HP;
     @FXML
     private Text player3HP;
@@ -117,6 +119,8 @@ public class GamePresenter extends AbstractPresenter {
     private Text player8HP;
 
     @FXML
+    private Text player1Checkpoint;
+    @FXML
     private Text player2Checkpoint;
     @FXML
     private Text player3Checkpoint;
@@ -131,6 +135,8 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private Text player8Checkpoint;
 
+    @FXML
+    private Text player1RobotLives;
     @FXML
     private Text player2RobotLives;
     @FXML
@@ -277,8 +283,12 @@ public class GamePresenter extends AbstractPresenter {
     private GridPane player7Grid;
     @FXML
     private GridPane player8Grid;
-    @FXML private TextArea chatOutput;
-    @FXML private TextField chatInput;
+    @FXML
+    private TextArea chatOutput;
+    @FXML
+    private TextField chatInput;
+    @FXML
+    private TextArea historyOutput;
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
@@ -300,6 +310,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<ImageView> playerCards;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
+    private TextChatChannel textHistory;
+
     @FXML
     private Button robotOffButton;
     private int x = 2;
@@ -374,6 +386,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // damage tokens -> refers to how many cards a player receives
         playerHpTexts = new ArrayList<Text>();
+        playerHpTexts.add(player1HP);
         playerHpTexts.add(player2HP);
         playerHpTexts.add(player3HP);
         playerHpTexts.add(player4HP);
@@ -384,6 +397,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // last checkpoint
         playerCpTexts = new ArrayList<Text>();
+        playerCpTexts.add(player1Checkpoint);
         playerCpTexts.add(player2Checkpoint);
         playerCpTexts.add(player3Checkpoint);
         playerCpTexts.add(player4Checkpoint);
@@ -394,6 +408,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // life tokens
         playerRlTexts = new ArrayList<Text>();
+        playerRlTexts.add(player1RobotLives);
         playerRlTexts.add(player2RobotLives);
         playerRlTexts.add(player3RobotLives);
         playerRlTexts.add(player4RobotLives);
@@ -844,7 +859,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void setAllPlayersNotReady() {//to implement onNextRoundMessage
         for (int i = 0; i < playerCount; i++) {
-            playerReadyStackPanes.get(i).setStyle("-fx-background-color: red");
+            playerReadyStackPanes.get(i).setStyle("-fx-background-color: red;-fx-background-radius: 5");
         }
     }
 
@@ -861,7 +876,7 @@ public class GamePresenter extends AbstractPresenter {
         else{
             // TODO: for now keep it only to set ready
             int position = userToPositionInStackPanes.get(playerIsReady);
-            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green");
+            playerReadyStackPanes.get(position).setStyle("-fx-background-color: green;-fx-background-radius: 5");
         }
 
 
@@ -882,34 +897,59 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting health points of the user
      *
-     * @author Jann Erik Bruns
+     * @author Jann Erik Bruns, Maria
      * @since 2023-05-05
      */
-    private void setPlayerHP() {  //To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                playerHpTexts.get(i).setText("1");//to implement
-                break;
-            }
+    private void setPlayerHP(PlayerDTO playerDTO) {  //To implement onPlayerHPChangedMessage
+        LOG.debug("in setPlayerHP "+ playerDTO.getUser().getUsername() + "   " );
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerHpTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getDamageToken()
+            ));
+            return;
         }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerHpTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getDamageToken()));
     }
 
     /**
-     * Setting roboter health pojnts of the user
+     * Setting roboter health points of the user
      *
-     * @author Jann Erik Bruns
+     * @author Jann Erik Bruns, Maria
      * @since 2023-05-05
      */
-    private void setRoboterHP() {//To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO: Robot HP
-                playerRlTexts.get(i).setText("1");//to implement
-                break;
-            }
+    private void setRoboterHP(PlayerDTO playerDTO) {//To implement onPlayerHPChangedMessage
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerRlTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getLifeToken()
+            ));
+            return;
         }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerRlTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getLifeToken()
+        ));
+    }
+
+    /**
+     * Setting Checkpoint of the user
+     *
+     * @author Jann Erik Bruns, Maria
+     * @since 2023-05-05
+     */
+    private void setPlayerCheckpoint(PlayerDTO playerDTO) {//To implement onPlayerHPChangedMessage
+        if(Objects.equals(playerDTO.getUser(), loggedInUser)){
+            playerCpTexts.get(0).setText(String.valueOf(
+                    playerDTO.getRobotDTO().getLastCheckpoint()
+            ));
+            return;
+        }
+        int position = userToPositionInStackPanes.get(playerDTO.getUser());
+        playerCpTexts.get(position).setText(String.valueOf(
+                playerDTO.getRobotDTO().getLastCheckpoint()
+        ));
+
     }
 
     @FXML
@@ -943,23 +983,6 @@ public class GamePresenter extends AbstractPresenter {
         readyButton.setText("Submit Cards");
         readyButton.setDisable(true);
         playerReady = false;
-    }
-
-    /**
-     * Setting Checkpoint of the user
-     *
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
-     */
-    private void setPlayerCheckpoint() {//To implement onPlayerHPChangedMessage
-        User user = users.get(0);
-        for (int i = 0; i < playerCount; i++) {
-            if (users.get(i).getUsername() == user.getUsername()) {
-                //TODO Checkpoint
-                playerCpTexts.get(i).setText("1");//to implement
-                break;
-            }
-        }
     }
 
     /**
@@ -1037,43 +1060,128 @@ public class GamePresenter extends AbstractPresenter {
      * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
      * @since 2023-05-20
      */
-    public void updateRobotState(UserDTO userToUpdate, Position newPos, CardinalDirection newDir){
+    public void updateRobotState(PlayerDTO playerDTO){
 
         LOG.debug("in updateRobotState");
-        LOG.debug("user {}", userToUpdate.getUsername());
-        LOG.debug("robotID {}", this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID());
+        LOG.debug("user {}", playerDTO.getUser().getUsername());
+        LOG.debug("robotID {}",  playerDTO.getRobotDTO().getRobotID());
         LOG.debug("gameBoard {}", gameBoard);
-        LOG.debug("newPosition x = {} y = {}", newPos.x, newPos.y);
-        LOG.debug("newDirection {}", newDir);
+        LOG.debug("newPosition x = {} y = {}", playerDTO.getRobotDTO().getPosition().x, playerDTO.getRobotDTO().getPosition().y);
+        LOG.debug("newDirection {}", playerDTO.getRobotDTO().getDirection());
+        int robotID = playerDTO.getRobotDTO().getRobotID();
+        UserDTO userToUpdate = playerDTO.getUser();
+        Position newPos = playerDTO.getRobotDTO().getPosition();
+        CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
 
-        Platform.runLater(
-                () -> {
-                    // show this player robot, since they all start in checkpoint 1
-                    int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
-                    Position prevPosition =
-                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
-                    LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
-                    ImageView imageView = jsonUtils.getRobotImage(robotID);
-                    removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
-                            this.userRobotImageViewReference.get(userToUpdate)
-                    );
-                    // TODO: we might have to fix all robots images facing north
-                    // +3 is just a workaround
-                    imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
-                    imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
-                    imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
-                    gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+        // set new info after this robot suffered from lasers and might have died
+        setPlayerHP(playerDTO);
+        setRoboterHP(playerDTO);
+        setPlayerCheckpoint(playerDTO);
 
-                    // Update new position
-                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
-                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
-                    this.userRobotImageViewReference.replace(userToUpdate, imageView);
-                });
+        // only create new image if robot is alive
+        if(playerDTO.getRobotDTO().isAlive())
+            Platform.runLater(
+                    () -> {
+                        // show this player robot, since they all start in checkpoint 1
+                        Position prevPosition =
+                                this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+                        LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                        removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                this.userRobotImageViewReference.get(userToUpdate)
+                        );
+
+                        ImageView imageView = jsonUtils.getRobotImage(robotID);
+                        imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                        imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                        imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+                        gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+
+                        // Update new position
+                        this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
+                        this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
+                        this.userRobotImageViewReference.replace(userToUpdate, imageView);
+                    });
+        else{
+            // try to remove last position where robot was
+            Platform.runLater(
+                    () -> {
+                        this.userRobotImageViewReference.get(playerDTO.getUser());
+                        Position prevPosition =
+                                this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                        LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                        if(!Objects.equals(this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                            removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                    this.userRobotImageViewReference.get(playerDTO.getUser())
+                            );
+                        this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                    });
+        }
     }
 
     public void animateBoardElements(List<PlayerDTO> playerDTOList){
         // TODO ANIMATION
         // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
+        // TODO: remove this temporary code
+
+        LOG.debug("in animateBoardElements");
+
+        for(PlayerDTO playerDTO: playerDTOList){
+            if(playerDTO.getRobotDTO().isAlive()){
+                LOG.debug("user {}", playerDTO.getUser().getUsername());
+                LOG.debug("robotID {}", this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getRobotID());
+                LOG.debug("gameBoard {}", gameBoard);
+                Position newPos = playerDTO.getRobotDTO().getPosition();
+                CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
+                LOG.debug("newPosition x = {} y = {}", newPos.x, newPos.y);
+                LOG.debug("newDirection {}", newDir);
+                int robotID = this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getRobotID();
+                Position prevPosition =
+                        this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                ImageView imageView = jsonUtils.getRobotImage(robotID);
+                UserDTO userToUpdate = playerDTO.getUser();
+
+                Platform.runLater(
+                        () -> {
+                            LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                            removeNodeByRowColumnIndex(prevPosition.x + 1, prevPosition.y + 1,
+                                    this.userRobotImageViewReference.get(playerDTO.getUser())
+                            );
+                            // TODO: we might have to fix all robots images facing north
+                            // +3 is just a workaround
+                            imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                            imageView.fitWidthProperty().bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+                            imageView.fitHeightProperty().bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+                            gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+
+                            // Update new position
+                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setPosition(newPos);
+                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().setDirection(newDir);
+                            this.userRobotImageViewReference.replace(userToUpdate, imageView);
+                        });
+            }
+            else {
+                // TODO: there is one step between not dead and dead misisng to be shown
+                // try to remove last position where robot was
+                Platform.runLater(
+                        () -> {
+                            this.userRobotImageViewReference.get(playerDTO.getUser());
+                            Position prevPosition =
+                                    this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().getPosition();
+                            LOG.debug("old Position to delete x = {} y = {}", prevPosition.x, prevPosition.y);
+                            if(!Objects.equals(this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                                removeNodeByRowColumnIndex(prevPosition.x +1, prevPosition.y+1,
+                                        this.userRobotImageViewReference.get(playerDTO.getUser())
+                                );
+                            this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                        });
+            }
+
+            // update
+            setPlayerHP(playerDTO);
+            setRoboterHP(playerDTO);
+            setPlayerCheckpoint(playerDTO);
+        }
+
 
     }
 
@@ -1113,6 +1221,15 @@ public class GamePresenter extends AbstractPresenter {
         Platform.runLater(
                 () -> {
                     chatOutput.setScrollTop(Double.MAX_VALUE);
+                });
+    }
+
+    public void updateHistoryMessage(String message) {
+        historyOutput.appendText(message);
+        historyOutput.setWrapText(true);
+        Platform.runLater(
+                () -> {
+                    historyOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
 

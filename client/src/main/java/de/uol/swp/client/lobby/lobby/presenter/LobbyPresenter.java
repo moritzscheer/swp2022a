@@ -9,14 +9,18 @@ import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.lobby.lobby.event.SetPlayerReadyEvent;
 import de.uol.swp.client.tab.TabPresenter;
+import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
+import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
+import de.uol.swp.common.lobby.request.MapChangeRequest;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,15 +30,19 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -81,6 +89,10 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML private Button backButton;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
+    @FXML private ListView<Map> mapList;
+    @FXML private Label textFieldMapName;
+    @FXML private GridPane mapThumbWrapper;
+    @FXML private ImageView mapThumb;
 
     /**
      * Default Constructor
@@ -113,6 +125,31 @@ public class LobbyPresenter extends AbstractPresenter {
         multiplayer = lobby.isMultiplayer();
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
+
+        if(!owner.equals(loggedInUser)) {
+            mapList.setMouseTransparent(true);
+            mapList.setFocusTraversable(false);
+        }
+        else
+        {
+            ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
+                int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
+                Map m = new Map(mapIndex);
+
+                updateMapDisplay(m);
+
+                if (this.multiplayer) {
+                    User u = this.loggedInUser;
+                    UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+                    eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+                }
+            };
+            this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
+        }
+
+        this.mapList.setItems(FXCollections.observableList(Arrays.asList(Map.getMapList())));
+        textFieldMapName.setText("None");
+
 
         // display data in GUI
         textFieldLobbyName.setText(lobbyName);
@@ -394,5 +431,26 @@ public class LobbyPresenter extends AbstractPresenter {
 
     public ObservableList<String> getUsers() {
         return users;
+    }
+
+    /**
+     * Updates the displayed map in the lobby according to the parameter
+     *
+     * @param m The Map object
+     * @see de.uol.swp.common.game.Map
+     * @author Mathis Eilers
+     * @since 2023-05-12
+     */
+    public void updateMapDisplay(Map m)
+    {
+        if(m == null)
+            return;
+
+        Platform.runLater(() -> {
+            textFieldMapName.setText(m.getName());
+            mapThumb.setImage(new Image(m.getImageResource().toString()));
+            mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+            mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+        });
     }
 }
