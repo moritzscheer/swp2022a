@@ -1,10 +1,10 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,6 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         this.start = start;
         this.fullLaser = fullLaser;
     }
-
 
     /**
      * When the robot is before a laser then it will get so much damage like laserBeam exist.
@@ -88,10 +87,9 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     @Override
     public List<int[]> getImage() {
         int placeholder = 17;
-        if (this.start){
+        if (this.start) {
             placeholder = 15;
-        }
-        else if (this.fullLaser){
+        } else if (this.fullLaser) {
             placeholder = 18;
         }
         return new ArrayList<>(List.of(new int[] {placeholder + laserBeam, direction.ordinal()}));

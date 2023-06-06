@@ -1,10 +1,10 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -128,7 +128,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
         return null;
     }
 
-    public void setRobotStates(List<Robot> robots){
+    public void setRobotStates(List<Robot> robots) {
         robotStates = robots;
     }
 }

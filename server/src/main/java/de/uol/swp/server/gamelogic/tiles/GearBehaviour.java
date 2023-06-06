@@ -1,10 +1,10 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class GearBehaviour extends AbstractTileBehaviour {
 
-    private  final boolean turnClockwise;
+    private final boolean turnClockwise;
     int type;
 
     /**
@@ -30,11 +30,10 @@ public class GearBehaviour extends AbstractTileBehaviour {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 06-02-2023
      */
-    public GearBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos, boolean turnC) {
+    public GearBehaviour(
+            List<Robot> robotStates, Block[][] board, Position blockPos, boolean turnC) {
         super(robotStates, board, blockPos);
         turnClockwise = turnC;
-
-
     }
 
     /**
@@ -63,16 +62,13 @@ public class GearBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
-
-
     @Override
-     public List<int[]> getImage() {
-        if(this.turnClockwise){
+    public List<int[]> getImage() {
+        if (this.turnClockwise) {
             type = 34;
-        }
-        else{
+        } else {
             type = 33;
         }
-         return new ArrayList<>(List.of(new int[] {type , 0}));
-     }
+        return new ArrayList<>(List.of(new int[] {type, 0}));
+    }
 }

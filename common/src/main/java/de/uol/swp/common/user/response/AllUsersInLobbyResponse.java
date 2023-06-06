@@ -12,8 +12,8 @@ import java.util.Objects;
 /**
  * Response message for the RetrieveAllUsersInLobbyResponse
  *
- * This message gets sent to the client that sent an RetrieveAllUsersInLobbyRequest.
- * It contains a List with User objects of every user currently logged in to the lobby.
+ * <p>This message gets sent to the client that sent an RetrieveAllUsersInLobbyRequest. It contains
+ * a List with User objects of every user currently logged in to the lobby.
  *
  * @author Marco Grawunder
  * @see de.uol.swp.common.message.AbstractResponseMessage
@@ -33,17 +33,16 @@ public class AllUsersInLobbyResponse extends AbstractResponseMessage {
      * @implNote this constructor is needed for serialization
      * @since 2019-08-13
      */
-    public AllUsersInLobbyResponse(){
+    public AllUsersInLobbyResponse() {
         // needed for serialization
     }
 
     /**
      * Constructor
      *
-     * This constructor generates a new List of the logged in users from the given
-     * Collection. The significant difference between the two being that the new
-     * List contains copies of the User objects. These copies have their password
-     * variable set to an empty String.
+     * <p>This constructor generates a new List of the logged in users from the given Collection.
+     * The significant difference between the two being that the new List contains copies of the
+     * User objects. These copies have their password variable set to an empty String.
      *
      * @param users Collection of all users currently logged in
      * @since 2019-08-13

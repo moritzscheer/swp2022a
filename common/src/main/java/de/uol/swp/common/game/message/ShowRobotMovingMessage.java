@@ -1,11 +1,7 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
-import de.uol.swp.common.user.UserDTO;
-
 
 /**
  * Message sent by the server when there is an update of the robot position
@@ -19,11 +15,9 @@ public class ShowRobotMovingMessage extends AbstractLobbyMessage {
 
     private final PlayerDTO playerDTO;
 
-
-    public ShowRobotMovingMessage(int lobbyID,
-                                  PlayerDTO playerDTO) {
+    public ShowRobotMovingMessage(int lobbyID, PlayerDTO playerDTO) {
         this.lobbyID = lobbyID;
-        System.out.println("In ShowRobotMovingMessage, user: "+playerDTO.getUser().getUsername());
+        System.out.println("In ShowRobotMovingMessage, user: " + playerDTO.getUser().getUsername());
         this.playerDTO = playerDTO;
     }
 
