@@ -103,7 +103,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player2HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player2HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player2Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -140,7 +140,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player3HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player3HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player3Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -177,8 +177,9 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player4HP" text="9" GridPane.columnIndex="1" />
-                                <Text fx:id="player4Checkpoint" text="Check Point:" GridPane.rowIndex="1" />
+                                <Text fx:id="player4HP" text="0" GridPane.columnIndex="1" />
+                                <Text text="Check Point:" GridPane.rowIndex="1" />
+                                <Text fx:id="player4Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
                                 <Text fx:id="player4RobotLives" text="3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -214,7 +215,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player5HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player5HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player5Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -251,7 +252,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player6HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player6HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player6Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -288,7 +289,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player7HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player7HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player7Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -325,7 +326,7 @@
                             </rowConstraints>
                             <children>
                                 <Text text="Damage Token:" />
-                                <Text fx:id="player8HP" text="9" GridPane.columnIndex="1" />
+                                <Text fx:id="player8HP" text="0" GridPane.columnIndex="1" />
                                 <Text text="Check Point:" GridPane.rowIndex="1" />
                                 <Text fx:id="player8Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
@@ -565,7 +566,7 @@
                                     <Insets bottom="15.0" />
                                  </GridPane.margin>
                               </Text>
-                              <Text fx:id="player1HP" strokeType="OUTSIDE" strokeWidth="0.0" text="9" GridPane.columnIndex="1" />
+                              <Text fx:id="player1HP" strokeType="OUTSIDE" strokeWidth="0.0" text="0" GridPane.columnIndex="1" />
                               <Text fx:id="player1Checkpoint" strokeType="OUTSIDE" strokeWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Text fx:id="player1RobotLives" strokeType="OUTSIDE" strokeWidth="0.0" text="3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
