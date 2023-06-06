@@ -54,8 +54,7 @@ public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
      * @author Mathis Eilers
      * @since 2023-05-12
      */
-    public Map getMap()
-    {
+    public Map getMap() {
         return this.m;
     }
 }

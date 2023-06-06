@@ -38,7 +38,6 @@ import de.uol.swp.client.setting.SettingPresenter;
 import de.uol.swp.client.setting.event.ShowSettingViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
-import de.uol.swp.common.game.message.GameOverMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
 import de.uol.swp.common.user.UserDTO;
@@ -91,15 +90,11 @@ public class SceneManager {
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
 
-    @Inject
-    private TabPresenter tabPresenter;
+    @Inject private TabPresenter tabPresenter;
     private GameService gameService;
     private LobbyService lobbyService;
-    @Inject
-    private LobbyPresenterFactory lobbyPresenterFactory;
-    @Inject
-    private GamePresenterFactory gamePresenterFactory;
-
+    @Inject private LobbyPresenterFactory lobbyPresenterFactory;
+    @Inject private GamePresenterFactory gamePresenterFactory;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
@@ -109,7 +104,12 @@ public class SceneManager {
     private final Injector injector;
 
     @Inject
-    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage, GameService gameService, LobbyService lobbyService)
+    public SceneManager(
+            EventBus eventBus,
+            Injector injected,
+            @Assisted Stage primaryStage,
+            GameService gameService,
+            LobbyService lobbyService)
             throws IOException {
         this.gameService = gameService;
         this.lobbyService = lobbyService;
@@ -381,7 +381,8 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        LobbyGameManagement.getInstance().setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
+        LobbyGameManagement.getInstance()
+                .setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
         return lobbyParent;
     }
 
@@ -695,7 +696,7 @@ public class SceneManager {
      * Shows an error message inside an error alert
      *
      * @param message The type of error to be shown
-     * @param e       The error message
+     * @param e The error message
      * @since 2019-09-03
      */
     public void showError(String message, String e) {
@@ -819,7 +820,7 @@ public class SceneManager {
     /**
      * Shows the GameOver Dialog
      *
-     * <p> If the Game is over, is appears a Dialog to shows this
+     * <p>If the Game is over, is appears a Dialog to shows this
      *
      * @author Daniel Merzo & Maria Eduarda
      * @since 2023-05-24
@@ -829,12 +830,13 @@ public class SceneManager {
         Platform.runLater(
                 () -> {
                     Dialog gameOverDialog = new Dialog();
-                    //Setting the title
+                    // Setting the title
                     gameOverDialog.setTitle("Game Over");
                     ButtonType type = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
                     gameOverDialog.getDialogPane().getButtonTypes().add(type);
-                    //Setting the content of the dialog
-                    gameOverDialog.setContentText(event.getUserWon().getUsername() +" won the game!");
+                    // Setting the content of the dialog
+                    gameOverDialog.setContentText(
+                            event.getUserWon().getUsername() + " won the game!");
 
                     // based on:
                     // https://www.tutorialspoint.com/how-to-create-a-dialog-in-javafx
@@ -1012,7 +1014,7 @@ public class SceneManager {
      * createTab method to create a tab with the given content.
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
-     * @param user  the UserDTO Object containing all the information of the User
+     * @param user the UserDTO Object containing all the information of the User
      * @author Moritz Scheer
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
      * @see de.uol.swp.common.user.UserDTO

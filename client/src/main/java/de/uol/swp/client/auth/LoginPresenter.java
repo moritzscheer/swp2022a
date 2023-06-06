@@ -1,16 +1,15 @@
 package de.uol.swp.client.auth;
 
 import com.google.inject.Inject;
-import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.CloseClientEvent;
-import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
 
+import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.register.event.ShowRegistrationViewEvent;
 import de.uol.swp.client.tab.TabPresenter;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import org.checkerframework.common.value.qual.IntRangeFromGTENegativeOne;
 
 /**
  * Manages the login window
