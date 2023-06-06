@@ -1,9 +1,12 @@
 package de.uol.swp.server.utils;
 
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+import de.uol.swp.server.gamelogic.AbstractPlayer;
+import de.uol.swp.server.gamelogic.Player;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
 
@@ -46,8 +49,10 @@ public final class ConvertToDTOUtils {
     public static RobotDTO convertRobotToRobotDTO(Robot robot){
         RobotDTO robotDTO = new RobotDTO(robot.getID(), robot.getPosition(), robot.getDirection());
         robotDTO.setLifeToken(robot.getLifeToken());
+        System.out.println("Robot damage token: " + robot.getDamageToken());
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
+        robotDTO.setAlive(robot.isAlive());
         return robotDTO;
     }
 
@@ -88,6 +93,37 @@ public final class ConvertToDTOUtils {
                 card.getId(),
                 card.getPriority()
         );
+    }
+
+
+    /** This function converts Player to PlayerDTO
+     *
+     * This is necessary to send a response to move board elements
+     *
+     * @param player Player to be converted to DTO
+     * @return List<PlayerDTO>
+     * @author Maria Andrade
+     * @since 2023-05-27
+     */
+    public static PlayerDTO convertPlayerToPlayerDTO(AbstractPlayer player){
+
+        PlayerDTO playerDTO = new PlayerDTO(
+                convertRobotToRobotDTO(player.getRobot())
+        );
+        if(player instanceof Player)
+            playerDTO.setUser(((Player)player).getUser());
+
+        return playerDTO;
+    }
+
+    public static List<PlayerDTO> convertPlayerListToPlayerDTOList(List<AbstractPlayer> players){
+
+        List<PlayerDTO> playersDTO = new ArrayList<>();
+        for (AbstractPlayer player: players){
+            playersDTO.add(convertPlayerToPlayerDTO(player));
+        }
+
+        return playersDTO;
     }
 
 }

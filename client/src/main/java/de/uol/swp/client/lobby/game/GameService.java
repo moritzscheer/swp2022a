@@ -9,6 +9,7 @@ import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
+import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -90,7 +91,7 @@ public class GameService {
      */
     @Subscribe
     public void onSubmitCardsEvent(SubmitCardsEvent event){
-        LOG.debug("Requesting to distribute cards");
+        LOG.debug("Submitting cards from"+ event.getLoggedInUser().getUsername());
         eventBus.post(new SubmitCardsRequest(
                 event.getLobbyID(), event.getLoggedInUser(), event.getCardDTOS()));
     }
@@ -155,7 +156,42 @@ public class GameService {
 
     @Subscribe
     public void onShowRobotMovingMessage(ShowRobotMovingMessage msg){
-        LOG.debug("Updating view, robot moving - "+msg.getUserDTO().getUsername());
+        LOG.debug("Updating view, robot moving - "+msg.getPlayerDTO().getUser().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
+    }
+
+    @Subscribe
+    public void onHistoryMessage(TextHistoryMessage msg){
+        LOG.debug("Updating history - "+msg.getMessage());
+        LobbyGameManagement.getInstance().updateHistory(msg);
+    }
+
+    @Subscribe
+    public void onShowBoardMovingMessage(ShowBoardMovingMessage msg){
+        LOG.debug("Updating view, board moving ");
+        LobbyGameManagement.getInstance().sendMessageBoardIsMoving(msg);
+    }
+
+    @Subscribe
+    public void onRoundIsOverMessage(RoundIsOverMessage msg){
+        LOG.debug("Restarting rounds");
+        LobbyGameManagement.getInstance().restartRounds(msg);
+
+    }
+
+    /**
+     * Handles GameOverMessage detected on the EventBus
+     *
+     * <p>If a GameOverMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The GameOverMessage detected on the EventBus
+     * @see de.uol.swp.common.game.message.GameOverMessage
+     * @author Daniel Merzo & Maria Eduarda
+     * @since 2023-05-24
+     */
+    @Subscribe
+    public void onGameOverMessage(GameOverMessage msg){
+        LOG.debug(msg.getUserWon() + "won the game");
+        LobbyGameManagement.getInstance().gameOver(msg);
     }
 }

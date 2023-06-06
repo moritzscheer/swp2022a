@@ -29,9 +29,11 @@ public class Game {
 
     private final Integer lobbyID;
     private Block[][] board;
+    private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
     private final Position[] checkpointsList;
+    private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
@@ -64,6 +66,7 @@ public class Game {
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
         this.dockingStartPosition = checkpointsList[0];
+        this.lastCheckPoint = checkpointsList.length;
 
         // create players and robots
         int i=0; // start robots id in 0
@@ -211,6 +214,7 @@ public class Game {
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+        this.roundNumber++;
     }
 
     public void startGame(){
@@ -229,9 +233,8 @@ public class Game {
             }
         }
     }
-
-    public void calcGameRound() {
-        LOG.debug("Calculating game for round " + this.programStep);
+    public void calcGameRoundCards(){
+        LOG.debug("Calculating game cards for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -245,6 +248,8 @@ public class Game {
         LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
         LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
+            if(!this.robots.get(playerIterator).isAlive())
+                continue; // if not alive, go on
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
@@ -252,8 +257,16 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
-        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
+        checkRobotFellFromBoard();
+    }
+
+    public void calcGameRoundBoard(){
+        LOG.debug("Calculating game board for round " + this.programStep);
+        // Iterate through the 5 cards
+        if (this.playedCards[0].length != 5) {
+            // TODO: Log Error regarding card count
+        }
 
         // Iterate through all the traps
         for (Block[] blocksX : board) {
@@ -293,8 +306,75 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
-        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+
+        checkRobotFellFromBoard();
+    }
+
+    public void calcGameRound() {
+//        LOG.debug("Calculating game for round " + this.programStep);
+//        // Iterate through the 5 cards
+//        if (this.playedCards[0].length != 5) {
+//            // TODO: Log Error regarding card count
+//        }
+//        // TODO: row is Player, column is card
+//        // idea: you can iterate over the players with:
+//        // this.playedCards[playerIterator][this.programStep]
+//        // programStep changes in goToNextRound(cards)
+//
+//        // Iterate through the X card of all Players and resolve them
+//        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+//        for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
+//            List<List<MoveIntent>> moves;
+//            moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
+//            for (List<MoveIntent> move : moves) {
+//                List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
+//                executeMoveIntents(resolvedMoves);
+//            }
+//        }
+//        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+//
+//        // Iterate through all the traps
+//        for (Block[] blocksX : board) {
+//            for (Block blockXY : blocksX) {
+//                List<MoveIntent> moves;
+//
+//                // TODO: implementation of ActionReports for use in a GameMoveHistory
+//                // Preferably altering the behaviour Methods to return (or get as parameters)
+//                // the list of ActionReports and MoveIntents
+//
+//                moves = blockXY.OnExpressConveyorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnConveyorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnPusherStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnRotatorStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnPresserStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnLaserStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//
+//                moves = blockXY.OnCheckPointStage(this.programStep);
+//                moves = resolveMoveIntentConflicts(moves);
+//                executeMoveIntents(moves);
+//            }
+//        }
+//        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
+//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
 
 
         // Send back a collective result of the whole GameRound
@@ -349,6 +429,8 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
+                if(!this.robots.get(move.robotID).isAlive())
+                    continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
             }
         }
@@ -496,9 +578,6 @@ public class Game {
             CardinalDirection moveDir,
             Block[][] board) {
         try {
-            if (destinationTile.x < 0 || destinationTile.y < 0 ||
-                    destinationTile.x >= board.length || destinationTile.y >= board[0].length)
-                return true;
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
                     CardinalDirection.values()[moveDir.ordinal() + 2]);
@@ -517,6 +596,14 @@ public class Game {
                 move = move.parentMove;
             }
         }
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
     }
 
     /** @author Finn */
@@ -554,6 +641,22 @@ public class Game {
         }
     }
 
+
+    /**
+     * set Robot is dead when fell off the grid
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-31
+     */
+    private void checkRobotFellFromBoard(){
+        LOG.debug("set not alive");
+        for(Robot robot: this.robots){
+            Position position = robot.getPosition();
+            if(position.x < 0 || position.y < 0 || position.x >= board.length || position.y >= board[0].length){
+                robot.setAlive(false);
+            }
+        }
+    }
 
     //////////////////////////////
     // GETTERS // SETTERS

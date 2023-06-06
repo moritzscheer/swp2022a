@@ -35,4 +35,5 @@ public class CardDTO implements Card {
     public int getPriority() {
         return this.priority;
     }
+
 }
