@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby.game.presenter;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
@@ -17,10 +18,14 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.user.User;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import de.uol.swp.common.user.UserDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -36,9 +41,15 @@ import java.util.*;
 
 import static javafx.scene.paint.Color.*;
 
+import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.user.User;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
@@ -46,7 +57,20 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+import org.w3c.dom.css.Rect;
+
+import java.io.File;
+import java.io.FileReader;
+import java.util.*;
 
 import static javafx.scene.paint.Color.LIGHTGREY;
 
@@ -675,9 +699,6 @@ public class GamePresenter extends AbstractPresenter {
             cardsMap.replace(start, to);
             chosenCardsMap.replace(end, from);
 
-            // if card is null, make it not clickable
-            //start.setDisable(Objects.equals(cardsMap.get(start), null));
-            //end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
@@ -685,9 +706,6 @@ public class GamePresenter extends AbstractPresenter {
             chosenCardsMap.replace(start, to);
             cardsMap.replace(end, from);
 
-            // if card is null, make it not clickable
-            //start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
-            //end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
         else if (start.toString().contains("card") && end.toString().contains("card")){
             CardDTO from = cardsMap.get(start);
@@ -725,7 +743,6 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
-                //slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
         }
 
@@ -740,6 +757,13 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-18
      */
     public void setReceivedCards(List<CardDTO> receivedCards){
+
+        for(Map.Entry<Rectangle, CardDTO> chosenCard: chosenCardsMap.entrySet()){
+            chosenCard.getKey().setDisable(false);
+        }
+        for(Map.Entry<Rectangle, CardDTO> handCard: cardsMap.entrySet()){
+            handCard.getKey().setDisable(false);
+        }
         for (CardDTO receivedCard: receivedCards) {
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
                 if(cardSlot.getValue() == null) {
@@ -748,7 +772,6 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
-                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
