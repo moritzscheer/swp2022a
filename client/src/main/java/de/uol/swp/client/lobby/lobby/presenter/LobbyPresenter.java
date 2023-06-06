@@ -44,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Manages the Lobby window
@@ -163,7 +164,11 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
-        numberBots.setValueFactory(valueFactory);
+        if(Objects.equals(user.getUsername(), owner.getUsername())) {
+            numberBots.setValueFactory(valueFactory);
+        }else {
+            numberBots.setVisible(false);
+        }
         if(!loggedInUser.equals(owner)) {
             startButton.setManaged(false);
             startButton.setVisible(false);
