@@ -3,6 +3,7 @@ package de.uol.swp.client.preLobby.presenter;
 import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
@@ -152,6 +153,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                         lobbiesList.removeIf(
                                 u -> u.getLobbyID().equals(message.getLobby().getLobbyID()));
                     }
+                    LobbyGameManagement.getInstance()
+                            .updateGameMap(message.getLobby().getLobbyID(), message.getMap());
                 });
     }
 

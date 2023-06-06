@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
 import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
+import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
 
 import static java.lang.Math.abs;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -9,6 +10,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
+import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
@@ -80,7 +82,7 @@ public class GameService extends AbstractService {
         System.out.println("New id :)");
         // TODO: fix docking positions
         Position[] checkpointsList = {
-            new Position(0, 11), new Position(9, 3), new Position(7, 4), new Position(1, 9)
+            new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
         };
         System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
@@ -311,9 +313,16 @@ public class GameService extends AbstractService {
         // TODO
         int secondsToWait = 1;
 
+        lobbyService.sendToAllInLobby(
+                lobbyID,
+                new TextHistoryMessage(
+                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+
         while (game.getProgramStep() < 5) {
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            List<Position> previousPositions = logInformation(game);
+            List<Position> previousPositions = logInformationPosition(game);
+            List<CardinalDirection> previousDirections = logInformationDirection(game);
+            List<CardDTO> cardDTOS = logInformationCards(game);
 
             // show cards and wait 1 second before moving
             scheduler.schedule(
@@ -331,14 +340,28 @@ public class GameService extends AbstractService {
             // TODO: FIX calcGame calculates wrong
             game.calcGameRoundCards();
             // game.calcGameRound();
-            secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions);
+            secondsToWait =
+                    moveCards(
+                            lobbyID,
+                            secondsToWait,
+                            game,
+                            previousPositions,
+                            previousDirections,
+                            cardDTOS);
             // get new previous positions
-            previousPositions = logInformation(game);
+            if (isGameOver(lobbyID, game, secondsToWait)) {
+                break;
+            }
+
+            previousPositions = logInformationPosition(game);
 
             game.calcGameRoundBoard();
             // show board animation
             sendBoardMoveMessage(
                     lobbyID, convertPlayerListToPlayerDTOList(game.getPlayers()), secondsToWait);
+            if (isGameOver(lobbyID, game, secondsToWait)) {
+                break;
+            }
 
             // go to next step
             game.increaseProgramStep();
@@ -355,7 +378,7 @@ public class GameService extends AbstractService {
                 SECONDS);
     }
 
-    public List<Position> logInformation(Game game) {
+    public List<Position> logInformationPosition(Game game) {
         List<Position> previousPositions = new ArrayList<>();
         LOG.debug("Status of game BEFORE calcGameRound");
         for (AbstractPlayer player : game.getPlayers()) {
@@ -381,16 +404,45 @@ public class GameService extends AbstractService {
         return previousPositions;
     }
 
+    public List<CardinalDirection> logInformationDirection(Game game) {
+        List<CardinalDirection> previousDirections = new ArrayList<>();
+        LOG.debug("Status of game BEFORE calcGameRound");
+        for (AbstractPlayer player : game.getPlayers()) {
+            CardinalDirection dir = player.getRobot().getDirection();
+            previousDirections.add(dir);
+        }
+        return previousDirections;
+    }
+
+    public List<CardDTO> logInformationCards(Game game) {
+        List<CardDTO> cards = new ArrayList<>();
+        LOG.debug("Showing chosen cards for round " + game.getProgramStep());
+        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+        for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
+            cards.add(userCurrentCard.getValue());
+        }
+
+        return cards;
+    }
+
     public int moveCards(
-            int lobbyID, int secondsToWait, Game game, List<Position> previousPositions) {
+            int lobbyID,
+            int secondsToWait,
+            Game game,
+            List<Position> previousPositions,
+            List<CardinalDirection> previousDirections,
+            List<CardDTO> cardDTOS) {
         LOG.debug("Status of game AFTER calcGameRoundCards");
         int i = 0;
         // Move each player at a time
         for (AbstractPlayer player : game.getPlayers()) {
+            if (!player.getRobot().isAlive()) continue; // if robot is dead, do nothing
             UserDTO currentUser = ((Player) player).getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
+            CardinalDirection previousDirection = previousDirections.get(i);
             CardinalDirection direction = player.getRobot().getDirection();
+            CardDTO cardDTO = cardDTOS.get(i);
             LOG.debug(
                     "     Robot Position {} pos = x {} y {}",
                     currentUser.getUsername(),
@@ -410,7 +462,39 @@ public class GameService extends AbstractService {
                         currentPos.x,
                         currentPos.y);
             }
-            sendCardMoveMessage(lobbyID, currentUser, currentPos, direction, secondsToWait);
+
+            //        [Type] [Username] [oldPosition] [oldDirection] [CardName/BoardElement] to
+            // [newPosition] [newDirection]
+            //        ======Round 1=======
+            //        [Card] Test1 (x1,y1){East} Move3 to (x2,y2){East}
+
+            TextHistoryMessage msg =
+                    new TextHistoryMessage(
+                            lobbyID,
+                            "[Card] "
+                                    + ((Player) player).getUser().getUsername() // User
+                                    + " ("
+                                    + previousPos.x
+                                    + ", "
+                                    + previousPos.y
+                                    + ")" // old x and y position
+                                    + "{"
+                                    + previousDirection
+                                    + "} " // old direction
+                                    + searchCardTypeInJSON(cardDTO.getID())
+                                    + // CardType
+                                    " to" //
+                                    + " ("
+                                    + currentPos.x
+                                    + ", "
+                                    + currentPos.y
+                                    + ")" // new x and y position
+                                    + "{"
+                                    + direction
+                                    + "} \n" // new direction
+                            );
+
+            sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait, msg);
 
             secondsToWait = secondsToWait + 2;
         }
@@ -418,18 +502,13 @@ public class GameService extends AbstractService {
     }
 
     public void sendCardMoveMessage(
-            int lobbyID,
-            UserDTO currentUser,
-            Position currentPos,
-            CardinalDirection direction,
-            int secondsToWait) {
+            int lobbyID, PlayerDTO playerDTO, int secondsToWait, TextHistoryMessage msg) {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
                         lobbyService.sendToAllInLobby(
-                                lobbyID,
-                                new ShowRobotMovingMessage(
-                                        lobbyID, currentUser, currentPos, direction));
+                                lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        lobbyService.sendToAllInLobby(lobbyID, msg);
                     }
                 },
                 secondsToWait,
@@ -442,6 +521,48 @@ public class GameService extends AbstractService {
                     public void run() {
                         lobbyService.sendToAllInLobby(
                                 lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                    }
+                },
+                secondsToWait,
+                SECONDS);
+    }
+
+    /**
+     * Check if a Player achived the last checkpoint
+     *
+     * @param game reference to which game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-05
+     */
+    private boolean isGameOver(int lobbyID, Game game, int secondsToWait) {
+        for (AbstractPlayer player : game.getPlayers()) {
+            if (player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()) {
+                // TODO: fix when AbstractPlayer has User
+                // playerWonTheGame(lobbyID, player.getUser());
+                playerWonTheGame(lobbyID, ((Player) player).getUser(), secondsToWait);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Send Message when a Player achieved the last checkpoint
+     *
+     * @param userWon user that won the game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.message.GameOverMessage
+     * @since 2023-06-05
+     */
+    private void playerWonTheGame(int lobbyID, UserDTO userWon, int secondsToWait) {
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(
+                                lobbyID, new GameOverMessage(lobbyID, userWon));
                     }
                 },
                 secondsToWait,

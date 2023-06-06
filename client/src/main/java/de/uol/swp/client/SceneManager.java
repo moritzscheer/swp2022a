@@ -13,6 +13,7 @@ import de.uol.swp.client.credit.event.ShowCreditViewEvent;
 import de.uol.swp.client.lobby.LobbyGameManagement;
 import de.uol.swp.client.lobby.LobbyService;
 import de.uol.swp.client.lobby.game.GameService;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobby.game.presenter.GamePresenter;
 import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
@@ -45,8 +46,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DialogPane;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -761,19 +761,17 @@ public class SceneManager {
                      * @author Moritz Scheer
                      * @since 2023-01-25
                      */
-                    if (currentScene.equals(tabScene)) {
-                        primaryStage.setOnCloseRequest(
-                                closeEvent -> {
-                                    closeEvent.consume();
-                                    if (tabPresenter.infoLabel3IsVisible()) {
-                                        tabPresenter.updateInfoBox();
-                                        eventBus.post(
-                                                new ChangeElementEvent(tabPresenter.getTabID()));
-                                    }
+                    primaryStage.setOnCloseRequest(
+                            closeEvent -> {
+                                closeEvent.consume();
+                                if (tabPresenter.infoLabel3IsVisible()) {
                                     tabPresenter.updateInfoBox();
-                                    tabPresenter.setInfoLabel(2);
-                                });
-                    }
+                                    eventBus.post(
+                                            new ChangeElementEvent(tabPresenter.getCurrentTabID()));
+                                }
+                                tabPresenter.updateInfoBox();
+                                tabPresenter.setInfoLabel(2);
+                            });
                     primaryStage.sizeToScene();
                     primaryStage.setTitle(title);
                     primaryStage.setScene(scene);
@@ -787,16 +785,16 @@ public class SceneManager {
      * <p>The current scene and title are saved in the lastScene and lastTitle variables, before the
      * new scene and title are set and shown.
      *
-     * @param tab Integer containing the lobbyID and also the tabID
+     * @param tabID Integer containing the lobbyID and also the tabID
      * @param parent New Parent to show
      * @author Moritz Scheer
      * @since 2022-12-27
      */
-    private void showNode(int tab, Parent parent) {
+    private void showNode(int tabID, Parent parent) {
         this.lastParent = currentParent;
         this.lastTitle = primaryStage.getTitle();
         this.currentParent = parent;
-        tabPresenter.showNode(tab, parent);
+        tabPresenter.showNode(tabID, parent);
     }
 
     /**
@@ -816,6 +814,35 @@ public class SceneManager {
                     pane.getStylesheets().add(DIALOG_STYLE_SHEET);
                     alert.showAndWait();
                     showLoginScreen();
+                });
+    }
+
+    /**
+     * Shows the GameOver Dialog
+     *
+     * <p>If the Game is over, is appears a Dialog to shows this
+     *
+     * @author Daniel Merzo & Maria Eduarda
+     * @since 2023-05-24
+     */
+    @Subscribe
+    public void showGameOverScreen(ShowGameOverEvent event) {
+        Platform.runLater(
+                () -> {
+                    Dialog gameOverDialog = new Dialog();
+                    // Setting the title
+                    gameOverDialog.setTitle("Game Over");
+                    ButtonType type = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                    gameOverDialog.getDialogPane().getButtonTypes().add(type);
+                    // Setting the content of the dialog
+                    gameOverDialog.setContentText(
+                            event.getUserWon().getUsername() + " won the game!");
+
+                    // based on:
+                    // https://www.tutorialspoint.com/how-to-create-a-dialog-in-javafx
+                    DialogPane pane = gameOverDialog.getDialogPane();
+                    pane.getStylesheets().add(DIALOG_STYLE_SHEET);
+                    gameOverDialog.showAndWait();
                 });
     }
 

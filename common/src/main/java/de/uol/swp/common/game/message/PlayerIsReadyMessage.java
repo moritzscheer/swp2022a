@@ -1,13 +1,13 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.message.AbstractServerMessage;
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.List;
 import java.util.Objects;
 
-public class PlayerIsReadyMessage extends AbstractServerMessage {
+public class PlayerIsReadyMessage extends AbstractLobbyMessage {
     private static final long serialVersionUID = -6003337260190748189L;
     //    private final boolean isReady;
     private final UserDTO playerIsReady;

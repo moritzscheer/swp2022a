@@ -30,7 +30,7 @@ public final class MapBuilder {
     public static void main(String[] args) throws IOException {
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
+        Block[][] map = getMap("server/src/main/resources/maps/Map1.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -42,7 +42,7 @@ public final class MapBuilder {
 
         ObjectOutputStream objOut =
                 new ObjectOutputStream(
-                        new FileOutputStream("server/src/main/resources/maps/tempMap.map"));
+                        new FileOutputStream("server/src/main/resources/maps/Map1.map"));
         objOut.writeObject(map);
         objOut.flush();
         objOut.close();
