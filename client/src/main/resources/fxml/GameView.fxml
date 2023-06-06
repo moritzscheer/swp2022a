@@ -264,6 +264,14 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+      
+                              <StackPane fx:id="player4Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                  <Text fx:id="player4Name" text="Player 4" StackPane.alignment="CENTER_LEFT">
+                              <StackPane.margin>
+                                 <Insets left="5.0" />
+                              </StackPane.margin>
+                           </Text>
+                              </StackPane>
                         <GridPane fx:id="playerGrid4Wrapper" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                            <GridPane.margin>
                               <Insets />
@@ -285,14 +293,6 @@
                               </GridPane>
                            </children>
                         </GridPane>
-      
-                              <StackPane fx:id="player4Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                  <Text fx:id="player4Name" text="Player 4" StackPane.alignment="CENTER_LEFT">
-                              <StackPane.margin>
-                                 <Insets left="5.0" />
-                              </StackPane.margin>
-                           </Text>
-                              </StackPane>
                      </children>
                   </GridPane>
                         <ImageView fx:id="player4Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
@@ -413,6 +413,14 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+      
+                              <StackPane fx:id="player6Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                  <Text fx:id="player6Name" text="Player 6" StackPane.alignment="CENTER_LEFT">
+                              <StackPane.margin>
+                                 <Insets left="5.0" />
+                              </StackPane.margin>
+                           </Text>
+                              </StackPane>
                         <GridPane fx:id="playerGrid6Wrapper" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                            <GridPane.margin>
                               <Insets />
@@ -434,14 +442,6 @@
                               </GridPane>
                            </children>
                         </GridPane>
-      
-                              <StackPane fx:id="player6Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                  <Text fx:id="player6Name" text="Player 6" StackPane.alignment="CENTER_LEFT">
-                              <StackPane.margin>
-                                 <Insets left="5.0" />
-                              </StackPane.margin>
-                           </Text>
-                              </StackPane>
                      </children>
                   </GridPane>
                         <ImageView fx:id="player6Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
@@ -486,6 +486,14 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+      
+                              <StackPane fx:id="player7Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                  <Text fx:id="player7Name" text="Player 7" StackPane.alignment="CENTER_LEFT">
+                              <StackPane.margin>
+                                 <Insets left="5.0" />
+                              </StackPane.margin>
+                           </Text>
+                              </StackPane>
                         <GridPane fx:id="playerGrid7Wrapper" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                            <GridPane.margin>
                               <Insets />
@@ -507,14 +515,6 @@
                               </GridPane>
                            </children>
                         </GridPane>
-      
-                              <StackPane fx:id="player7Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                  <Text fx:id="player7Name" text="Player 7" StackPane.alignment="CENTER_LEFT">
-                              <StackPane.margin>
-                                 <Insets left="5.0" />
-                              </StackPane.margin>
-                           </Text>
-                              </StackPane>
                      </children>
                   </GridPane>
                         <ImageView fx:id="player7Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
@@ -559,6 +559,14 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+      
+                              <StackPane fx:id="player8Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                  <Text fx:id="player8Name" text="Player 8" StackPane.alignment="CENTER_LEFT">
+                              <StackPane.margin>
+                                 <Insets left="5.0" />
+                              </StackPane.margin>
+                           </Text>
+                              </StackPane>
                         <GridPane fx:id="playerGrid8Wrapper" alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
                            <GridPane.margin>
                               <Insets />
@@ -580,14 +588,6 @@
                               </GridPane>
                            </children>
                         </GridPane>
-      
-                              <StackPane fx:id="player8Ready" style="-fx-background-color: red" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                                  <Text fx:id="player8Name" text="Player 8" StackPane.alignment="CENTER_LEFT">
-                              <StackPane.margin>
-                                 <Insets left="5.0" />
-                              </StackPane.margin>
-                           </Text>
-                              </StackPane>
                      </children>
                   </GridPane>
                         <ImageView fx:id="player8Card" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
