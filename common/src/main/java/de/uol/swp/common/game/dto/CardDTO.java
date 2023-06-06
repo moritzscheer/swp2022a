@@ -11,7 +11,7 @@ package de.uol.swp.common.game.dto;
  */
 public class CardDTO implements Card {
     private final Integer cardID;
-    private  int priority;
+    private final int priority;
 
     /**
      * Constructor
@@ -36,8 +36,4 @@ public class CardDTO implements Card {
         return this.priority;
     }
 
-
-    public void setPriority(int priority){
-        this.priority = priority;
-    }
 }
