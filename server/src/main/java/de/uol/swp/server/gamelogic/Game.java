@@ -1,23 +1,24 @@
 package de.uol.swp.server.gamelogic;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
+import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
+
 import com.google.common.primitives.Ints;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
-import de.uol.swp.common.game.enums.CardinalDirection;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
-import static de.uol.swp.server.utils.JsonUtils.searchCardInJSON;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
@@ -29,9 +30,11 @@ public class Game {
 
     private final Integer lobbyID;
     private Block[][] board;
+    private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
     private final Position[] checkpointsList;
+    private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
@@ -66,12 +69,13 @@ public class Game {
         this.readyRegister = 0;
 
         // there must be as many docking as users
-        //assert dockingBays.length == users.size();
+        // assert dockingBays.length == users.size();
         this.dockingStartPosition = checkpointsList[0];
+        this.lastCheckPoint = checkpointsList.length;
 
         // create players and robots
-        int i=0; // start robots id in 0
-        for(User user: users) {
+        int i = 0; // start robots id in 0
+        for (User user : users) {
             Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
@@ -83,8 +87,8 @@ public class Game {
     }
 
     /**
-     * Generate random cards for a player (max. 9, min. 5)
-     * The cards are generated based on the id, from 1 to 84
+     * Generate random cards for a player (max. 9, min. 5) The cards are generated based on the id,
+     * from 1 to 84
      *
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Player
@@ -92,7 +96,7 @@ public class Game {
      * @since 2023-04-25
      */
     public void distributeProgramCards() {
-        if(notDistributedCards) {
+        if (notDistributedCards) {
             // there will be many request to get the cards, one from each player
             // therefore the distribution should be done one single time
             notDistributedCards = false;
@@ -104,13 +108,17 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
-                LOG.debug("Distributing cards for player {}", ((Player)player).getUser().getUsername());
+                LOG.debug(
+                        "Distributing cards for player {}",
+                        ((Player) player).getUser().getUsername());
 
                 int damage = player.getRobot().getDamageToken();
 
                 if (damage < 5) {
+                    int[] cardsIDs =
+                            Arrays.copyOfRange(
+                                    Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
-                    int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
                     while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
                         LOG.debug("Ups, all cards are turn type",((Player)player).getUser().getUsername());
                         Collections.shuffle(cardsIDsList);
@@ -161,7 +169,7 @@ public class Game {
         AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
         Card[] chosenCards = new Card[5];
         int i = 0;
-        for(CardDTO cardDTO: playerCards){
+        for (CardDTO cardDTO : playerCards) {
             chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
             i++;
         }
@@ -182,8 +190,7 @@ public class Game {
     }
 
     /**
-     * Sends response to client with cards to be displayed
-     * One from each Player
+     * Sends response to client with cards to be displayed One from each Player
      *
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Player
@@ -192,13 +199,12 @@ public class Game {
      */
     public Map<UserDTO, CardDTO> revealProgramCards() {
         Map<UserDTO, CardDTO> userDTOCardDTOMap = new HashMap<>();
-        LOG.debug("REVEALING PROGRAM CARDS STEP: "+ this.programStep);
+        LOG.debug("REVEALING PROGRAM CARDS STEP: " + this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
-                    ((Player)this.players.get(playerIterator)).getUser(),
+                    ((Player) this.players.get(playerIterator)).getUser(),
                     // program steps starts in 1 and this array in 0
-                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep])
-            );
+                    convertCardToCardDTO(this.playedCards[playerIterator][this.programStep]));
         }
         return userDTOCardDTOMap;
     }
@@ -229,12 +235,13 @@ public class Game {
         // recreate all possible cards
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+        this.roundNumber++;
     }
 
-    public void startGame(){
-        this.board = MapBuilderTESTMAP.getMap("server/src/main/resources/maps/tempMap.map");
-        if(board == null){
-            //TODO: Log error "Map couldn't be loaded"
+    public void startGame() {
+        this.board = MapBuilderTESTMAP.getMap("server/src/main/resources/maps/Map1.map");
+        if (board == null) {
+            // TODO: Log error "Map couldn't be loaded"
             return;
         }
         setRobotsInfoInBehaviours(board, robots);
@@ -247,7 +254,8 @@ public class Game {
             }
         }
     }
-    public void calcGameRoundCards(){
+
+    public void calcGameRoundCards() {
         LOG.debug("Calculating game cards for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
@@ -259,9 +267,13 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
-        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
+        LOG.debug("1Current Position of " + ((Player) this.players.get(0)).getUser().getUsername());
+        LOG.debug(
+                "     Position x = {} y = {}",
+                this.robots.get(0).getPosition().x,
+                this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
+            if (!this.robots.get(playerIterator).isAlive()) continue; // if not alive, go on
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
@@ -269,9 +281,11 @@ public class Game {
                 executeMoveIntents(resolvedMoves);
             }
         }
+
+        checkRobotFellFromBoard();
     }
 
-    public void calcGameRoundBoard(){
+    public void calcGameRoundBoard() {
         LOG.debug("Calculating game board for round " + this.programStep);
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
@@ -316,78 +330,87 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
+
+        checkRobotFellFromBoard();
     }
 
     public void calcGameRound() {
-//        LOG.debug("Calculating game for round " + this.programStep);
-//        // Iterate through the 5 cards
-//        if (this.playedCards[0].length != 5) {
-//            // TODO: Log Error regarding card count
-//        }
-//        // TODO: row is Player, column is card
-//        // idea: you can iterate over the players with:
-//        // this.playedCards[playerIterator][this.programStep]
-//        // programStep changes in goToNextRound(cards)
-//
-//        // Iterate through the X card of all Players and resolve them
-//        LOG.debug("1Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
-//        for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
-//            List<List<MoveIntent>> moves;
-//            moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
-//            for (List<MoveIntent> move : moves) {
-//                List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
-//                executeMoveIntents(resolvedMoves);
-//            }
-//        }
-//        LOG.debug("2Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
-//
-//        // Iterate through all the traps
-//        for (Block[] blocksX : board) {
-//            for (Block blockXY : blocksX) {
-//                List<MoveIntent> moves;
-//
-//                // TODO: implementation of ActionReports for use in a GameMoveHistory
-//                // Preferably altering the behaviour Methods to return (or get as parameters)
-//                // the list of ActionReports and MoveIntents
-//
-//                moves = blockXY.OnExpressConveyorStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnConveyorStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnPusherStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnRotatorStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnPresserStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnLaserStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//
-//                moves = blockXY.OnCheckPointStage(this.programStep);
-//                moves = resolveMoveIntentConflicts(moves);
-//                executeMoveIntents(moves);
-//            }
-//        }
-//        LOG.debug("3Current Position of "+((Player)this.players.get(0)).getUser().getUsername());
-//        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x, this.robots.get(0).getPosition().y);
-
+        //        LOG.debug("Calculating game for round " + this.programStep);
+        //        // Iterate through the 5 cards
+        //        if (this.playedCards[0].length != 5) {
+        //            // TODO: Log Error regarding card count
+        //        }
+        //        // TODO: row is Player, column is card
+        //        // idea: you can iterate over the players with:
+        //        // this.playedCards[playerIterator][this.programStep]
+        //        // programStep changes in goToNextRound(cards)
+        //
+        //        // Iterate through the X card of all Players and resolve them
+        //        LOG.debug("1Current Position of
+        // "+((Player)this.players.get(0)).getUser().getUsername());
+        //        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x,
+        // this.robots.get(0).getPosition().y);
+        //        for (int playerIterator = 0; playerIterator < this.playedCards.length;
+        // playerIterator++) {
+        //            List<List<MoveIntent>> moves;
+        //            moves = resolveCard(this.playedCards[playerIterator][this.programStep],
+        // playerIterator);
+        //            for (List<MoveIntent> move : moves) {
+        //                List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
+        //                executeMoveIntents(resolvedMoves);
+        //            }
+        //        }
+        //        LOG.debug("2Current Position of
+        // "+((Player)this.players.get(0)).getUser().getUsername());
+        //        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x,
+        // this.robots.get(0).getPosition().y);
+        //
+        //        // Iterate through all the traps
+        //        for (Block[] blocksX : board) {
+        //            for (Block blockXY : blocksX) {
+        //                List<MoveIntent> moves;
+        //
+        //                // TODO: implementation of ActionReports for use in a GameMoveHistory
+        //                // Preferably altering the behaviour Methods to return (or get as
+        // parameters)
+        //                // the list of ActionReports and MoveIntents
+        //
+        //                moves = blockXY.OnExpressConveyorStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnConveyorStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnPusherStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnRotatorStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnPresserStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnLaserStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //
+        //                moves = blockXY.OnCheckPointStage(this.programStep);
+        //                moves = resolveMoveIntentConflicts(moves);
+        //                executeMoveIntents(moves);
+        //            }
+        //        }
+        //        LOG.debug("3Current Position of
+        // "+((Player)this.players.get(0)).getUser().getUsername());
+        //        LOG.debug("     Position x = {} y = {}", this.robots.get(0).getPosition().x,
+        // this.robots.get(0).getPosition().y);
 
         // Send back a collective result of the whole GameRound
     }
-
 
     //////////////////////////////
     // SOLVING MOVE INTENTS
@@ -437,6 +460,7 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
+                if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
             }
         }
@@ -584,17 +608,13 @@ public class Game {
             CardinalDirection moveDir,
             Block[][] board) {
         try {
-            if (destinationTile.x < 0 || destinationTile.y < 0 ||
-                    destinationTile.x >= board.length || destinationTile.y >= board[0].length)
-                return true;
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
-                    CardinalDirection.values()[moveDir.ordinal() + 2]);
-        } catch (ArrayIndexOutOfBoundsException e){
+                            CardinalDirection.values()[moveDir.ordinal() + 2]);
+        } catch (ArrayIndexOutOfBoundsException e) {
             // testing for out of bounds
             return false;
         }
-
     }
 
     private static void removeMoveResultAndParents(
@@ -605,6 +625,14 @@ public class Game {
                 move = move.parentMove;
             }
         }
+    }
+
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
     }
 
     /** @author Finn */
@@ -642,6 +670,24 @@ public class Game {
         }
     }
 
+    /**
+     * set Robot is dead when fell off the grid
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-31
+     */
+    private void checkRobotFellFromBoard() {
+        LOG.debug("set not alive");
+        for (Robot robot : this.robots) {
+            Position position = robot.getPosition();
+            if (position.x < 0
+                    || position.y < 0
+                    || position.x >= board.length
+                    || position.y >= board[0].length) {
+                robot.setAlive(false);
+            }
+        }
+    }
 
     //////////////////////////////
     // GETTERS // SETTERS
@@ -663,7 +709,9 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-16
      */
-    public Block[][] getBoard(){ return board;}
+    public Block[][] getBoard() {
+        return board;
+    }
     /**
      * Setter for Board Array
      *
@@ -671,7 +719,9 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-16
      */
-    public void setBoard(Block[][] board){ this.board = board;}
+    public void setBoard(Block[][] board) {
+        this.board = board;
+    }
     /**
      * Getter for list of Players
      *
@@ -679,7 +729,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-13
      */
-    public List<AbstractPlayer> getPlayers(){
+    public List<AbstractPlayer> getPlayers() {
         return this.players;
     }
 
@@ -690,11 +740,11 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @since 2023-05-18
      */
-    public Player getPlayerByUserDTO(UserDTO user){
-        for(AbstractPlayer player: players){
-            if(player.getClass() == Player.class &&
-                    Objects.equals(((Player) player).getUser(), user)){
-                return ((Player)player);
+    public Player getPlayerByUserDTO(UserDTO user) {
+        for (AbstractPlayer player : players) {
+            if (player.getClass() == Player.class
+                    && Objects.equals(((Player) player).getUser(), user)) {
+                return ((Player) player);
             }
         }
         return null;
@@ -722,11 +772,11 @@ public class Game {
         return this.dockingStartPosition;
     }
 
-    public int getProgramStep(){
+    public int getProgramStep() {
         return this.programStep;
     }
 
-    public void increaseProgramStep(){
+    public void increaseProgramStep() {
         this.programStep++;
     }
 }

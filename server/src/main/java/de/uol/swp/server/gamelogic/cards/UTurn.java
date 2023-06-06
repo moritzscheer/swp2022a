@@ -1,7 +1,7 @@
 package de.uol.swp.server.gamelogic.cards;
 
-import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.Robot;
 
 /**
  * Turns the robot 180 degree

@@ -1,5 +1,6 @@
 package de.uol.swp.common.lobby.dto;
 
+import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -32,6 +33,7 @@ public class LobbyDTO implements Lobby {
     private final UUID chatChannel;
 
     private int countRequestToStartGame = 0;
+    private Map currentMap;
 
     /**
      * Constructor
@@ -192,7 +194,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles ready players.
      *
-     * If a user pressed ready in the lobby the user is removed from the notReadyUsers set
+     * <p>If a user pressed ready in the lobby the user is removed from the notReadyUsers set
      *
      * @param user containing the User that is ready
      * @author Moritz Scheer
@@ -206,7 +208,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles not ready players.
      *
-     * If a user pressed not ready in the lobby the user is added to the notReadyUsers set
+     * <p>If a user pressed not ready in the lobby the user is added to the notReadyUsers set
      *
      * @param user containing the User that is not ready
      * @author Moritz Scheer
@@ -295,6 +297,28 @@ public class LobbyDTO implements Lobby {
         return this.lobbyID;
     }
 
+    /**
+     * Setter for the current map
+     *
+     * @param m The next Map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
+    public void setMap(Map m) {
+        this.currentMap = m;
+    }
+
+    /**
+     * Getter for the current Map
+     *
+     * @return A Map object representing the current map
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
+    public Map getMap() {
+        return this.currentMap;
+    }
+
     public UUID getTextChatID() {
         return chatChannel;
     }
@@ -318,9 +342,8 @@ public class LobbyDTO implements Lobby {
      * @since 2023-05-01
      */
     public int increaseCounterRequest() {
-        this.countRequestToStartGame +=1;
+        this.countRequestToStartGame += 1;
         return this.countRequestToStartGame;
-
     }
 
     /**

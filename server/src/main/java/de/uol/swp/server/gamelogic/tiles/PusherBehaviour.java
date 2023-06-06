@@ -1,10 +1,10 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,6 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private CardinalDirection direction;
 
-
-
     public PusherBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -32,10 +30,6 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = direction;
-
-
-
-
     }
 
     /**
@@ -70,16 +64,13 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     @Override
     public List<int[]> getImage() {
         int type;
-        if(this.activeInProgramSteps.length == 3){
+        if (this.activeInProgramSteps.length == 3) {
             type = 42;
-        }
-        else if (this.activeInProgramSteps.length == 2){
+        } else if (this.activeInProgramSteps.length == 2) {
             type = 43;
-        }
-        else{
+        } else {
             type = this.activeInProgramSteps[0] + 38;
         }
-        return new ArrayList<>(List.of(new int[] {type , direction.ordinal()
-        }));
+        return new ArrayList<>(List.of(new int[] {type, direction.ordinal()}));
     }
 }

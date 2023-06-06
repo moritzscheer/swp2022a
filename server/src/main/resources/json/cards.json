@@ -4,334 +4,334 @@
       "type-id": "1",
       "card-id": 1,
       "name": "RotateLeft",
-      "priority": 190,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 70,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 2,
       "name": "RotateLeft",
-      "priority": 330,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 90,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 3,
       "name": "RotateLeft",
-      "priority": 370,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 110,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 4,
       "name": "RotateLeft",
-      "priority": 390,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 130,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 5,
       "name": "RotateLeft",
-      "priority": 290,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 150,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 6,
       "name": "RotateLeft",
-      "priority": 410,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 170,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 7,
       "name": "RotateLeft",
-      "priority": 130,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 190,
+      "source": "images/cards/prgcard001.png"
     },{
       "type-id": "1",
       "card-id": 8,
       "name": "RotateLeft",
-      "priority": 170,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 210,
+      "source": "images/cards/prgcard001.png"
     },{
       "type-id": "1",
       "card-id": 9,
       "name": "RotateLeft",
-      "priority": 270,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 230,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 10,
       "name": "RotateLeft",
-      "priority": 110,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 250,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 11,
       "name": "RotateLeft",
-      "priority": 230,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 270,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 12,
       "name": "RotateLeft",
-      "priority": 70,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 290,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 13,
       "name": "RotateLeft",
-      "priority": 210,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 310,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 14,
       "name": "RotateLeft",
-      "priority": 350,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 330,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 15,
       "name": "RotateLeft",
-      "priority": 250,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 350,
+      "source": "images/cards/prgcard001.png"
     },
     {
       "type-id": "1",
       "card-id": 16,
       "name": "RotateLeft",
-      "priority": 319,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 370,
+      "source": "images/cards/prgcard001.png"
     },{
       "type-id": "1",
       "card-id": 17,
       "name": "RotateLeft",
-      "priority": 150,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 390,
+      "source": "images/cards/prgcard001.png"
     },{
       "type-id": "1",
       "card-id": 18,
       "name": "RotateLeft",
-      "priority": 90,
-      "source": "images/cards/prgcard001.jpg"
+      "priority": 410,
+      "source": "images/cards/prgcard001.png"
     },
 
     {
       "type-id": "3",
       "card-id": 19,
       "name": "RotateRight",
-      "priority": 260,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 80,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 20,
       "name": "RotateRight",
-      "priority": 300,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 100,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 21,
       "name": "RotateRight",
-      "priority": 160,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 120,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 22,
       "name": "RotateRight",
-      "priority": 400,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 140,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 23,
       "name": "RotateRight",
-      "priority": 100,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 160,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 24,
       "name": "RotateRight",
-      "priority": 240,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 180,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 25,
       "name": "RotateRight",
-      "priority": 380,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 200,
+      "source": "images/cards/prgcard003.png"
     },{
       "type-id": "3",
       "card-id": 26,
       "name": "RotateRight",
-      "priority": 420,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 220,
+      "source": "images/cards/prgcard003.png"
     },{
       "type-id": "3",
       "card-id": 27,
       "name": "RotateRight",
-      "priority": 320,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 240,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 28,
       "name": "RotateRight",
-      "priority": 180,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 260,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 29,
       "name": "RotateRight",
-      "priority": 200,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 280,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 30,
       "name": "RotateRight",
-      "priority": 120,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 300,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 31,
       "name": "RotateRight",
-      "priority": 220,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 320,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 32,
       "name": "RotateRight",
-      "priority": 280,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 340,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 33,
       "name": "RotateRight",
       "priority": 360,
-      "source": "images/cards/prgcard003.jpg"
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 34,
       "name": "RotateRight",
-      "priority": 140,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 380,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 35,
       "name": "RotateRight",
-      "priority": 80,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 400,
+      "source": "images/cards/prgcard003.png"
     },
     {
       "type-id": "3",
       "card-id": 36,
       "name": "RotateRight",
-      "priority": 340,
-      "source": "images/cards/prgcard003.jpg"
+      "priority": 420,
+      "source": "images/cards/prgcard003.png"
     },
 
     {
       "type-id": "4",
       "card-id": 37,
       "name": "U-Turn",
-      "priority": 20,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 10,
+      "source": "images/cards/prgcard004.png"
     },
     {
       "type-id": "4",
       "card-id": 38,
       "name": "U-Turn",
-      "priority": 10,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 20,
+      "source": "images/cards/prgcard004.png"
     },
     {
       "type-id": "4",
       "card-id": 39,
       "name": "U-Turn",
-      "priority": 50,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 30,
+      "source": "images/cards/prgcard004.png"
     },
     {
       "type-id": "4",
       "card-id": 40,
       "name": "U-Turn",
-      "priority": 60,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 40,
+      "source": "images/cards/prgcard004.png"
     },
     {
       "type-id": "4",
       "card-id": 41,
       "name": "U-Turn",
-      "priority": 40,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 50,
+      "source": "images/cards/prgcard004.png"
     },
     {
       "type-id": "4",
       "card-id": 42,
       "name": "U-Turn",
-      "priority": 30,
-      "source": "images/cards/prgcard004.jpg"
+      "priority": 60,
+      "source": "images/cards/prgcard004.png"
     },
 
     {
       "type-id": "8",
       "card-id": 43,
       "name": "Back-Up",
-      "priority": 480,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 430,
+      "source": "images/cards/prgcard008.png"
     },
     {
       "type-id": "8",
       "card-id": 44,
       "name": "Back-Up",
-      "priority": 470,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 440,
+      "source": "images/cards/prgcard008.png"
     },
     {
       "type-id": "8",
       "card-id": 45,
       "name": "Back-Up",
-      "priority": 460,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 450,
+      "source": "images/cards/prgcard008.png"
     },
     {
       "type-id": "8",
       "card-id": 46,
       "name": "Back-Up",
-      "priority": 430,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 460,
+      "source": "images/cards/prgcard008.png"
     },
     {
       "type-id": "8",
       "card-id": 47,
       "name": "Back-Up",
-      "priority": 440,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 470,
+      "source": "images/cards/prgcard008.png"
     },
     {
       "type-id": "8",
       "card-id": 48,
       "name": "Back-Up",
-      "priority": 450,
-      "source": "images/cards/prgcard008.jpg"
+      "priority": 480,
+      "source": "images/cards/prgcard008.png"
     },
 
 
@@ -339,127 +339,127 @@
       "type-id": "6",
       "card-id": 49,
       "name": "Move1",
-      "priority": 580,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 490,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 50,
       "name": "Move1",
-      "priority": 520,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 500,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 51,
       "name": "Move1",
-      "priority": 570,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 510,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 52,
       "name": "Move1",
-      "priority": 600,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 520,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 53,
       "name": "Move1",
-      "priority": 550,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 530,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 54,
       "name": "Move1",
       "priority": 540,
-      "source": "images/cards/prgcard006.jpg"
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 55,
       "name": "Move1",
-      "priority": 620,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 550,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 56,
       "name": "Move1",
-      "priority": 530,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 560,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 57,
       "name": "Move1",
-      "priority": 640,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 570,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 58,
       "name": "Move1",
-      "priority": 630,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 580,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 59,
       "name": "Move1",
-      "priority": 610,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 590,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 60,
       "name": "Move1",
-      "priority": 500,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 600,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 61,
       "name": "Move1",
-      "priority": 590,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 610,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 62,
       "name": "Move1",
-      "priority": 660,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 620,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 63,
       "name": "Move1",
-      "priority": 490,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 630,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 64,
       "name": "Move1",
-      "priority": 650,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 640,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 65,
       "name": "Move1",
-      "priority": 560,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 650,
+      "source": "images/cards/prgcard006.png"
     },
     {
       "type-id": "6",
       "card-id": 66,
       "name": "Move1",
-      "priority": 510,
-      "source": "images/cards/prgcard006.jpg"
+      "priority": 660,
+      "source": "images/cards/prgcard006.png"
     },
 
 
@@ -468,85 +468,85 @@
       "type-id": "7",
       "card-id": 67,
       "name": "Move2",
-      "priority": 770,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 670,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 68,
       "name": "Move2",
       "priority": 680,
-      "source": "images/cards/prgcard007.jpg"
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 69,
       "name": "Move2",
       "priority": 690,
-      "source": "images/cards/prgcard007.jpg"
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 70,
       "name": "Move2",
-      "priority": 730,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 700,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 71,
       "name": "Move2",
-      "priority": 780,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 710,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 72,
       "name": "Move2",
-      "priority": 710,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 720,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 73,
       "name": "Move2",
-      "priority": 720,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 730,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 74,
       "name": "Move2",
-      "priority": 700,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 740,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 75,
       "name": "Move2",
       "priority": 750,
-      "source": "images/cards/prgcard007.jpg"
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 76,
       "name": "Move2",
-      "priority": 740,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 760,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 77,
       "name": "Move2",
-      "priority": 760,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 770,
+      "source": "images/cards/prgcard007.png"
     },
     {
       "type-id": "7",
       "card-id": 78,
       "name": "Move2",
-      "priority": 670,
-      "source": "images/cards/prgcard007.jpg"
+      "priority": 780,
+      "source": "images/cards/prgcard007.png"
     },
 
 
@@ -554,44 +554,43 @@
       "type-id": "5",
       "card-id": 79,
       "name": "Move3",
-      "priority": 840,
-      "source": "images/cards/prgcard005.jpg"
+      "priority": 790,
+      "source": "images/cards/prgcard005.png"
     },
     {
       "type-id": "5",
       "card-id": 80,
       "name": "Move3",
-      "priority": 810,
-      "source": "images/cards/prgcard005.jpg"
+      "priority": 800,
+      "source": "images/cards/prgcard005.png"
     },
     {
       "type-id": "5",
       "card-id": 81,
       "name": "Move3",
-      "priority": 800,
-      "source": "images/cards/prgcard005.jpg"
+      "priority": 810,
+      "source": "images/cards/prgcard005.png"
     },
     {
       "type-id": "5",
       "card-id": 82,
       "name": "Move3",
-      "priority": 790,
-      "source": "images/cards/prgcard005.jpg"
+      "priority": 820,
+      "source": "images/cards/prgcard005.png"
     },
     {
       "type-id": "5",
       "card-id": 83,
       "name": "Move3",
       "priority": 830,
-      "source": "images/cards/prgcard005.jpg"
+      "source": "images/cards/prgcard005.png"
     },
     {
       "type-id": "5",
       "card-id": 84,
       "name": "Move3",
-      "priority": 820,
-      "source": "images/cards/prgcard005.jpg"
+      "priority": 840,
+      "source": "images/cards/prgcard005.png"
     }
   ]
 }
-

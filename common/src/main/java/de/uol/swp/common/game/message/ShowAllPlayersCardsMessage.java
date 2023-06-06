@@ -1,12 +1,12 @@
 package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.message.AbstractServerMessage;
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
 import java.util.Map;
 
-public class ShowAllPlayersCardsMessage extends AbstractServerMessage {
+public class ShowAllPlayersCardsMessage extends AbstractLobbyMessage {
     private final Map<UserDTO, CardDTO> userDTOCardDTOMap;
     private final int lobbyID;
 
