@@ -43,6 +43,10 @@ public class Game {
 
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
+    private static final Set<Integer> cardsIdsOnlyTurn =
+            new HashSet<>
+            (Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+                    21,22,23,24,2,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42));
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
@@ -105,7 +109,21 @@ public class Game {
                 int damage = player.getRobot().getDamageToken();
 
                 if (damage < 5) {
+
                     int[] cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
+                    while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
+                        LOG.debug("Ups, all cards are turn type",((Player)player).getUser().getUsername());
+                        Collections.shuffle(cardsIDsList);
+                        cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
+
+                        // prevent that it runs forever, then redistribute to all players again
+                        if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
+                            LOG.debug("New Distribution of cards to all players",((Player)player).getUser().getUsername());
+                            notDistributedCards = true;
+                            distributeProgramCards();
+                        }
+                    }
+
                     Card[] cards = new Card[9 - damage];
                     int i = 0;
                     for (int cardID : cardsIDs) {
