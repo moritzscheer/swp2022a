@@ -249,7 +249,8 @@
                             <children>
                                 <Text text="Damage Token:" />
                                 <Text fx:id="player4HP" text="0" GridPane.columnIndex="1" />
-                                <Text fx:id="player4Checkpoint" text="Checkpoint:" GridPane.rowIndex="1" />
+                                <Text text="Checkpoint:" GridPane.rowIndex="1" />
+                                <Text fx:id="player4Checkpoint" text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <Text text="Life Token:" GridPane.rowIndex="2" />
                                 <Text fx:id="player4RobotLives" text="3" GridPane.columnIndex="1" GridPane.rowIndex="2" />
