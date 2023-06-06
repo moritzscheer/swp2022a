@@ -110,20 +110,10 @@ public class GameService extends AbstractService {
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
-
-
-            // convert Robot to RobotDTO
-            //RobotDTO robotDTO = convertRobotToRobotDTO(player.getRobot());
-
-            // create playerDTO
-            //PlayerDTO playerDTO = new PlayerDTO(robotDTO, player.getUser());
-
             // add in the list
             players.add(
                     convertPlayerToPlayerDTO(player)
             );
-
-            // set currentCards later in the GameDTO Object
         }
 
         // TODO: create Board, instead of using 4d array
@@ -223,7 +213,6 @@ public class GameService extends AbstractService {
 
             callBot = game.get().distributeProgramCards();
 
-
             // get loggedInUser
             UserDTO user = msg.getLoggedInUser();
             ProgramCardDataResponse response = new ProgramCardDataResponse(
@@ -240,8 +229,6 @@ public class GameService extends AbstractService {
             if(callBot) {
                 selectCardBot(game.get(), msg.getLobbyID());
             }
-
-
         }
     }
 
@@ -319,9 +306,8 @@ public class GameService extends AbstractService {
         Boolean allChosen = game.registerCardsFromBot();
         for(AbstractPlayer botPlayer : game.getPlayers()) {
             if(botPlayer instanceof BotPlayer) {
-                //PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botUserDTO, lobbyID);
-                //lobbyService.sendToAllInLobby(lobbyID, msg);
-                // todo create BotUserDTO
+                PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botPlayer.getUser(), lobbyID);
+                lobbyService.sendToAllInLobby(lobbyID, msg);
             }
         }
 
