@@ -63,6 +63,8 @@ public class LobbyPresenter extends AbstractPresenter {
     private LobbyDTO lobbyDTO;
     private int lobbyID;
     private String lobbyName;
+
+    private String mapName;
     private User owner;
     private ObservableList<String> users;
     private ObservableList<User> usersNotReady;
@@ -126,23 +128,50 @@ public class LobbyPresenter extends AbstractPresenter {
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
 
+        boolean first = false;
+        if(first == false){
+            Map m = new Map(0);
+            updateMapDisplay(m);
+            User u = this.loggedInUser;
+            UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+            eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+            lobby.setMapName("MapOne");
+            first = true;
+        }
+
         if(!owner.equals(loggedInUser)) {
             mapList.setMouseTransparent(true);
             mapList.setFocusTraversable(false);
         }
+
         else
         {
             ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
                 int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
                 Map m = new Map(mapIndex);
-
                 updateMapDisplay(m);
+                System.out.println(m.getName());
 
                 if (this.multiplayer) {
                     User u = this.loggedInUser;
                     UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
                     eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
                 }
+
+                switch(m.getName()) {
+                    case "Map 1":
+                        mapName = "MapOne";
+                        break;
+                    case "Map 2":
+                        mapName = "MapTwo";
+                        break;
+                    case "Map 3":
+                        mapName = "MapThree";
+                        break;
+                    default:
+                }
+                lobby.setMapName(mapName);
+
             };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }

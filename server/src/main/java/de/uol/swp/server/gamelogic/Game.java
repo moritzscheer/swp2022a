@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic;
 import com.google.common.primitives.Ints;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -43,6 +44,8 @@ public class Game {
     private final List<AbstractPlayer> players = new ArrayList<>();
     private final Card[][] playedCards;
 
+    private final String mapName;
+
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
@@ -57,11 +60,12 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
+        this.mapName = mapName;
 
         // there must be as many docking as users
         //assert dockingBays.length == users.size();
@@ -218,7 +222,8 @@ public class Game {
     }
 
     public void startGame(){
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/MapTwo.map");
+
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+".map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;

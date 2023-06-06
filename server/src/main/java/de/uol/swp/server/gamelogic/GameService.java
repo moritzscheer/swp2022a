@@ -76,7 +76,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public GameDTO createNewGame(int lobbyID) {
+    public GameDTO createNewGame(int lobbyID, String mapName) {
         System.out.println("I am creating your game :)");
 
         System.out.println("New id :)");
@@ -98,7 +98,8 @@ public class GameService extends AbstractService {
                 lobbyID,
                 new Game(lobbyID,
                         checkpointsList,
-                        lobby.get().getUsers()
+                        lobby.get().getUsers(),
+                        mapName
                 )
         );
         games.get(lobbyID).startGame();
@@ -189,12 +190,12 @@ public class GameService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            GameDTO game = createNewGame(msg.getLobbyID());
+            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(),
                     new StartGameMessage(
-                            msg.getLobbyID(), msg.getLobby(), game));
+                            msg.getLobbyID(), msg.getLobby() , game));
             tmp.get().resetCounterRequest();
         }
     }

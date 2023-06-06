@@ -13,6 +13,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class StartGameRequest extends AbstractGameRequest {
 
     private int lobbyID;
+    private String mapName;
 
     /**
      * constructor
@@ -24,6 +25,8 @@ public class StartGameRequest extends AbstractGameRequest {
     public StartGameRequest(LobbyDTO lobby) {
         this.lobbyID = lobby.getLobbyID();
         this.lobby = lobby;
+
+
     }
 
     /**
