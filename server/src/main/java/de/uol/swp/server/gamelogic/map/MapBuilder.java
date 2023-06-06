@@ -45,7 +45,7 @@ public final class MapBuilder {
 
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
+        Block[][] map = getMap("server/src/main/resources/maps/MapOne.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -55,7 +55,7 @@ public final class MapBuilder {
         for (AbstractMap mapClass : maps) {
             Block[][] map = mapGenExtracted(mapClass.getMap());
 
-            System.out.println(mapClass.getClass().getName());
+
             String path = "server/src/main/resources/maps/" + mapClass.getClass().getName().replace("de.uol.swp.server.gamelogic.map.", "") + ".map";
 
             ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
@@ -150,7 +150,7 @@ public final class MapBuilder {
                 default:
                     break;
             }
-            System.out.println(x2+" "+y2);
+
             if(x2 >= 0 && y2 >= 0) {
                 for (int i = 0; i < map[x2][y2].getBehaviourList().length; i++) {
                     if (map[x2][y2].getBehaviourList()[i] instanceof WallBehaviour) {
