@@ -8,11 +8,11 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.map.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -214,7 +214,7 @@ public class Game {
     }
 
     public void startGame(){
-        this.board = MapBuilderTESTMAP.getMap("server/src/main/resources/maps/tempMap.map");
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/MapTwo.map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;

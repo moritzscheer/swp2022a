@@ -1,57 +1,15 @@
-package de.uol.swp.server.gamelogic;
+package de.uol.swp.server.gamelogic.map;
 
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
-import java.io.*;
+public class MapTwo extends AbstractMap{
 
-/**
- * Map Builder
- *
- * @author Finn Oldeboershuis
- * @since 2023-04-28
- */
-public final class MapBuilderTESTMAP {
-
-    public static Block[][] getMap(String mapPath) {
-        ObjectInputStream objIn = null;
-        try {
-            objIn = new ObjectInputStream(new FileInputStream(mapPath));
-            Block[][] map = (Block[][]) objIn.readObject();
-            objIn.close();
-            return map;
-        } catch (IOException | ClassNotFoundException IOExcept) {
-            System.out.println(IOExcept.getMessage());
-            return null;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        mapGen();
-
-        Block[][] map = getMap("server/src/main/resources/maps/tempMap.map");
-        if (map != null) {
-            System.out.println(map.length);
-        }
-    }
-
-    public static void mapGen() throws IOException {
-        Block[][] map = new Block[12][12];
-        mapGenExtracted(map);
-
-        ObjectOutputStream objOut =
-                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/tempMap.map"));
-        objOut.writeObject(map);
-        objOut.flush();
-        objOut.close();
-    }
-
-    private static void mapGenExtracted(Block[][] map) {
-
-
-    // SECOND TESTMAP
+    public MapTwo(){
+        // SECOND TESTMAP
         int x = 0;
         int y = 0;
 
@@ -328,7 +286,7 @@ public final class MapBuilderTESTMAP {
 
         x = 0;
         generateBlock(map, x, y,
-                new CheckPointBehaviour(null, map, new Position(x, y), 3));
+                new CheckPointBehaviour(null, map, new Position(x, y), 4));
         x = 1;
         generateBlock(map, x, y);
         x = 2;
@@ -358,7 +316,7 @@ public final class MapBuilderTESTMAP {
 
         x = 0;
         generateBlock(map, x, y,
-                new CheckPointBehaviour(null, map, new Position(x, y), 2));
+                new CheckPointBehaviour(null, map, new Position(x, y), 3));
 
         x = 1;
         generateBlock(map, x, y);
@@ -394,7 +352,7 @@ public final class MapBuilderTESTMAP {
 
         x = 0;
         generateBlock(map, x, y,
-                new CheckPointBehaviour(null, map, new Position(x, y), 1));
+                new CheckPointBehaviour(null, map, new Position(x, y), 2));
         x = 1;
         generateBlock(map, x, y);
         x = 2;
@@ -427,7 +385,7 @@ public final class MapBuilderTESTMAP {
 
         x = 0;
         generateBlock(map, x, y,
-                new CheckPointBehaviour(null, map, new Position(x, y), 0));
+                new CheckPointBehaviour(null, map, new Position(x, y), 1));
         x = 1;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.South),
@@ -471,10 +429,6 @@ public final class MapBuilderTESTMAP {
         x = 11;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.South));
-    }
 
-    private static void generateBlock(
-            Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
-        map[x][y] = new Block(behaviours, null, new Position(x, y));
     }
 }
