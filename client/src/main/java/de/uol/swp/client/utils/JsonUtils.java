@@ -136,23 +136,5 @@ public final class JsonUtils {
         }
         return null;
     }
-
-    public int getPriorityByID(int cardID) {
-        int priority;
-        for (int i = 0; i < this.jsonCardArray.length(); i++) {
-            JSONObject obj = null;
-            try {
-                obj = this.jsonCardArray.getJSONObject(i);
-                if (obj.get("card-id").equals(cardID)) {
-                    priority = obj.getInt("priority");
-
-                    return priority;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return 0;
-    }
 }
 

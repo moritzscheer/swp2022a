@@ -767,9 +767,6 @@ public class GamePresenter extends AbstractPresenter {
             handCard.getKey().setDisable(false);
         }
         for (CardDTO receivedCard: receivedCards) {
-            System.out.println(receivedCard.getID());
-
-
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
                 if(cardSlot.getValue() == null) {
                     cardSlot.getKey().setFill(
