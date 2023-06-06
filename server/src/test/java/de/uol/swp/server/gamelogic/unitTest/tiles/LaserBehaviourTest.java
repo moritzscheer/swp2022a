@@ -2,13 +2,13 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.LaserBehaviour;
 import de.uol.swp.server.gamelogic.tiles.WallBehaviour;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,10 +44,26 @@ public class LaserBehaviourTest {
         robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
         robots[2] = new Robot(3, pos3, true, CardinalDirection.East);
         behaviours1[0] =
-                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam, true, true);
+                new LaserBehaviour(
+                        List.of(robots),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        laserDir,
+                        laserBeam,
+                        true,
+                        true);
         behaviours3[0] = new WallBehaviour(List.of(robots), board, pos3, wallDirection);
         behaviours4[0] =
-                new LaserBehaviour(List.of(robots), board, activeInProgramSteps, pos1, laserDir, laserBeam, true, true);
+                new LaserBehaviour(
+                        List.of(robots),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        laserDir,
+                        laserBeam,
+                        true,
+                        true);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block(behaviours2, "", pos2);
         board[1][2] = new Block(behaviours3, "", pos3);

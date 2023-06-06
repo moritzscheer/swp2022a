@@ -1,9 +1,8 @@
 package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
-
+import de.uol.swp.common.user.UserDTO;
 
 /**
  * @author Maria Eduarda Costa Leite Andrade
@@ -36,5 +35,4 @@ public class Player extends AbstractPlayer {
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }
-
 }

@@ -2,6 +2,7 @@ package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
+
 /**
  * Message sent by the server when the game is over
  *
@@ -9,7 +10,6 @@ import de.uol.swp.common.user.UserDTO;
  * @author Daniel Merzo
  * @since 2023-05-23
  */
-
 public class GameOverMessage extends AbstractLobbyMessage {
     private final int lobbyID;
     private final UserDTO userWon;
@@ -22,7 +22,7 @@ public class GameOverMessage extends AbstractLobbyMessage {
      * @author Daniel Merzo
      * @since 2023-05-23
      */
-    public GameOverMessage (int lobbyID, UserDTO userWon){
+    public GameOverMessage(int lobbyID, UserDTO userWon) {
         this.lobbyID = lobbyID;
         this.userWon = userWon;
     }
@@ -33,7 +33,9 @@ public class GameOverMessage extends AbstractLobbyMessage {
      * @author Daniel Merzo
      * @since 2023-05-23
      */
-    public int getLobbyID() {return lobbyID;}
+    public int getLobbyID() {
+        return lobbyID;
+    }
     /**
      * Getter for the userWon variable
      *
@@ -41,5 +43,7 @@ public class GameOverMessage extends AbstractLobbyMessage {
      * @author Daniel Merzo
      * @since 2023-05-23
      */
-    public UserDTO getUserWon() {return userWon;}
+    public UserDTO getUserWon() {
+        return userWon;
+    }
 }
