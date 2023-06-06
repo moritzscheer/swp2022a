@@ -764,7 +764,7 @@ public class GamePresenter extends AbstractPresenter {
         }
         for (CardDTO receivedCard: receivedCards) {
             System.out.println(receivedCard.getID());
-            receivedCard.setPriority(jsonUtils.getPriorityByID(receivedCard.getID()));
+
 
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
                 if(cardSlot.getValue() == null) {
