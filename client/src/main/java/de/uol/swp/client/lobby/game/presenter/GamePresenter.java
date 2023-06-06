@@ -695,9 +695,6 @@ public class GamePresenter extends AbstractPresenter {
             cardsMap.replace(start, to);
             chosenCardsMap.replace(end, from);
 
-            // if card is null, make it not clickable
-            //start.setDisable(Objects.equals(cardsMap.get(start), null));
-            //end.setDisable(Objects.equals(chosenCardsMap.get(end), null));
         } else if (start.toString().contains("chosenCard") && end.toString().contains("card")) {
             CardDTO from = chosenCardsMap.get(start);
             CardDTO to = cardsMap.get(end);
@@ -705,9 +702,6 @@ public class GamePresenter extends AbstractPresenter {
             chosenCardsMap.replace(start, to);
             cardsMap.replace(end, from);
 
-            // if card is null, make it not clickable
-            //start.setDisable(Objects.equals(chosenCardsMap.get(start), null));
-            //end.setDisable(Objects.equals(cardsMap.get(end), null));
         }
         else if (start.toString().contains("card") && end.toString().contains("card")){
             CardDTO from = cardsMap.get(start);
@@ -745,7 +739,6 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
-                //slotz.getKey().setDisable(true); // disable empty slots from being clicked
             }
         }
 
@@ -775,7 +768,6 @@ public class GamePresenter extends AbstractPresenter {
                     );
                     cardValues.get(cardSlot.getKey()).setText(String.valueOf(receivedCard.getPriority()));
                     cardsMap.replace(cardSlot.getKey(), receivedCard);
-                    cardSlot.getKey().setDisable(false);
                     break;
                 }
             }
