@@ -255,20 +255,13 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private ImageView markField;
-    @FXML
-    private GridPane player2Grid;
-    @FXML
-    private GridPane player3Grid;
-    @FXML
-    private GridPane player4Grid;
-    @FXML
-    private GridPane player5Grid;
-    @FXML
-    private GridPane player6Grid;
-    @FXML
-    private GridPane player7Grid;
-    @FXML
-    private GridPane player8Grid;
+    @FXML private GridPane player2Grid;
+    @FXML private GridPane player3Grid;
+    @FXML private GridPane player4Grid;
+    @FXML private GridPane player5Grid;
+    @FXML private GridPane player6Grid;
+    @FXML private GridPane player7Grid;
+    @FXML private GridPane player8Grid;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
     @FXML private GridPane ButtonWrapper;
@@ -476,24 +469,23 @@ public class GamePresenter extends AbstractPresenter {
 
 
     /**
-     * Handles the player list
+     * Handles the player list and add images next to username
      * Simplify it from init
      *
-     * @author Maria Andrade
-     * @since 2023-05-06
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-06
      */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
         int robotImageID;
+
         for (Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()) {
             PlayerDTO playerDTO = player.getValue();
             robotImageID = playerDTO.getRobotDTO().getRobotID();
+
             // robot image
             ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
-            System.out.println("Player" + player.getKey().getUsername());
-            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
-            System.out.println(imageView);
-            System.out.println(playerRobot.size());
+
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
@@ -505,24 +497,29 @@ public class GamePresenter extends AbstractPresenter {
                 playerRlTexts.get(count).setText(
                         String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
+
+                playerRobot.get(count).add(imageView, 0,0);
+                playerRobot.get(count).setVisible(true);
+                //player2Ready.getChildren().add(imageView);
+                //player3Ready.getChildren().add(imageView);
                 //playerRobot.get(count).add(imageView, 0, 0);
-                player3Robot.add(imageView, 0, 0);
-                player2Robot.add(imageView, 0, 0);
-                //imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
-                //imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                //player3Robot.add(imageView, 0, 0);
+                //player2Robot.add(imageView, 0, 0);
+                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
 
                 //imageView.fitHeightProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
                 //imageView.fitWidthProperty().bind(playerGrid2Wrapper.heightProperty().subtract(4));
 
-                imageView.setFitWidth(15);
-                imageView.setFitHeight(15);
+                //imageView.setFitWidth(15);
+                //imageView.setFitHeight(15);
 
                 // only counts when it is not the current user, to avoid empty grid
                 count++;
             }
             else{
                 // for player is loggedInUser
-                playerGrid1Wrapper.add(imageView, 0, 0);
+                player1Robot.add(imageView, 0, 0);
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
