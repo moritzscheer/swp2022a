@@ -745,6 +745,13 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-18
      */
     public void setReceivedCards(List<CardDTO> receivedCards){
+
+        for(Map.Entry<Rectangle, CardDTO> chosenCard: chosenCardsMap.entrySet()){
+            chosenCard.getKey().setDisable(false);
+        }
+        for(Map.Entry<Rectangle, CardDTO> handCard: cardsMap.entrySet()){
+            handCard.getKey().setDisable(false);
+        }
         for (CardDTO receivedCard: receivedCards) {
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
                 if(cardSlot.getValue() == null) {
