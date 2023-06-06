@@ -1,6 +1,5 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.Game;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
@@ -22,7 +21,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * constructor
      *
      * @param lobbyID Integer containing the ID of the lobby
-     * @param lobby   LobbyDTO Object containing all the information of the lobby
+     * @param lobby LobbyDTO Object containing all the information of the lobby
      * @param game GameDTO object
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23

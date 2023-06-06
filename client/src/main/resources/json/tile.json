@@ -8,94 +8,94 @@
     {
       "id": "1",
       "name": "Wall",
-      "source": "images/tiles/Wall/WallTop.png"
+      "source": "images/tiles/wall/WallTop.png"
     },
     {
       "id": "2",
       "name": "Pit",
-      "source": "images/tiles/other/pit.png"
+      "source": "images/tiles/other/Pit.png"
     },
     {
       "id": "3",
       "name": "Checkpoint1",
-      "source": "images/tiles/CheckPoint/CheckPoint_1.png"
+      "source": "images/tiles/checkPoint/CheckPoint_1.png"
     },
     {
       "id": "4",
       "name": "Checkpoint2",
-      "source": "images/tiles/CheckPoint/CheckPoint_2.png"
+      "source": "images/tiles/checkPoint/CheckPoint_2.png"
     },
     {
       "id": "5",
       "name": "Checkpoint3",
-      "source": "images/tiles/CheckPoint/CheckPoint_3.png"
+      "source": "images/tiles/checkPoint/CheckPoint_3.png"
     },
     {
       "id": "6",
       "name": "Checkpoint4",
-      "source": "images/tiles/CheckPoint/CheckPoint_4.png"
+      "source": "images/tiles/checkPoint/CheckPoint_4.png"
     },
     {
       "id": "7",
       "name": "Checkpoint5",
-      "source": "images/tiles/CheckPoint/CheckPoint_5.png"
+      "source": "images/tiles/checkPoint/CheckPoint_5.png"
     },
     {
       "id": "8",
       "name": "Checkpoint6",
-      "source": "images/tiles/CheckPoint/CheckPoint_6.png"
+      "source": "images/tiles/checkPoint/CheckPoint_6.png"
     },
     {
       "id": "9",
       "name": "ConveyorBeltVertical",
-      "source": "images/tiles/Conveyor/ConveyorVertical.png"
+      "source": "images/tiles/conveyor/ConveyorVertical.png"
     },
 
     {
       "id": "10",
       "name": "Arrow",
-      "source": "images/tiles/Conveyor/ArrowUp.png"
+      "source": "images/tiles/conveyor/ArrowUp.png"
     },
     {
       "id": "11",
       "name": "TurnRightTop",
-      "source": "images/tiles/Conveyor/TurnRightTop.png"
+      "source": "images/tiles/conveyor/TurnRightTop.png"
     },
     {
       "id": "12",
       "name": "TurnLeftTop",
-      "source": "images/tiles/Conveyor/TurnLeftTop.png"
+      "source": "images/tiles/conveyor/TurnLeftTop.png"
     },
     {
       "id": "13",
       "name": "TurnTopLeft",
-      "source": "images/tiles/Conveyor/TurnTopLeft.png"
+      "source": "images/tiles/conveyor/TurnTopLeft.png"
     },
     {
       "id": "14",
       "name": "ArrowUpAndTurnLeft",
-      "source": "images/tiles/Conveyor/ArrowUpAndTurnLeft.png"
+      "source": "images/tiles/conveyor/ArrowUpAndTurnLeft.png"
     },
     {
       "id": "15",
       "name": "ArrowUpAndTurnRight",
-      "source": "images/tiles/Conveyor/ArrowUpAndTurnRight.png"
+      "source": "images/tiles/conveyor/ArrowUpAndTurnRight.png"
     },
 
     {
       "id": "16",
       "name": "LaserStart",
-      "source": "images/tiles/laser/laserStart.png"
+      "source": "images/tiles/laser/LaserStart.png"
     },
     {
       "id": "17",
       "name": "LaserStart2",
-      "source": "images/tiles/laser/laserStart2.png"
+      "source": "images/tiles/laser/LaserStart2.png"
     },
     {
       "id": "18",
       "name": "LaserStart3",
-      "source": "images/tiles/laser/laserStart3.png"
+      "source": "images/tiles/laser/LaserStart3.png"
     },
     {
       "id": "19",

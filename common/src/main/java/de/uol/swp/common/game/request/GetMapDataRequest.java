@@ -9,7 +9,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-06
  */
-public class GetMapDataRequest extends AbstractGameRequest{
+public class GetMapDataRequest extends AbstractGameRequest {
 
     /**
      * constructor
@@ -20,5 +20,4 @@ public class GetMapDataRequest extends AbstractGameRequest{
     public GetMapDataRequest(LobbyDTO lobby) {
         this.lobby = lobby;
     }
-
 }

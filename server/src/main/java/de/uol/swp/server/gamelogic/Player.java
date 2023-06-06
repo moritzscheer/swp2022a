@@ -1,9 +1,8 @@
 package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
-
+import de.uol.swp.common.user.UserDTO;
 
 /**
  * @author Maria Eduarda Costa Leite Andrade
@@ -12,7 +11,6 @@ import de.uol.swp.common.game.enums.CardinalDirection;
  * @since 2023-03-28
  */
 public class Player extends AbstractPlayer {
-    private UserDTO userDTO;
 
     /**
      * Constructor
@@ -29,12 +27,7 @@ public class Player extends AbstractPlayer {
         this.robot = new Robot(robotID, startPosition, true, CardinalDirection.North);
     }
 
-    public UserDTO getUser() {
-        return userDTO;
-    }
-
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }
-
 }

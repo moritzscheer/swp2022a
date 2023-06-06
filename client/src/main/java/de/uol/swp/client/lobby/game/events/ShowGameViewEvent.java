@@ -1,4 +1,5 @@
 package de.uol.swp.client.lobby.game.events;
+
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
@@ -26,5 +27,4 @@ public class ShowGameViewEvent {
     public LobbyDTO getLobby() {
         return lobby;
     }
-
 }

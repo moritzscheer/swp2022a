@@ -2,13 +2,13 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,8 @@ public class PusherBehaviourTest {
     @Before
     public void setup() throws Exception {
         robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
-        behaviours1[0] = new PusherBehaviour(List.of(robots), board, pos1, activeInProgramSteps, direction);
+        behaviours1[0] =
+                new PusherBehaviour(List.of(robots), board, pos1, activeInProgramSteps, direction);
         board[0][0] = new Block(behaviours1, "", pos1);
         board[0][1] = new Block("", pos2);
     }
