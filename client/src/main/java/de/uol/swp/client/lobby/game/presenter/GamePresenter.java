@@ -136,6 +136,14 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Rectangle chosenCard3;
     @FXML private Rectangle chosenCard4;
     @FXML private Rectangle chosenCard5;
+    @FXML private GridPane player1Robot;
+    @FXML private GridPane player2Robot;
+    @FXML private GridPane player3Robot;
+    @FXML private GridPane player4Robot;
+    @FXML private GridPane player5Robot;
+    @FXML private GridPane player6Robot;
+    @FXML private GridPane player7Robot;
+    @FXML private GridPane player8Robot;
 
     @FXML private Text text_card1;
 
@@ -175,6 +183,15 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane player8Grid;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
+    @FXML private GridPane ButtonWrapper;
+    @FXML private GridPane playerGrid1Wrapper;
+    @FXML private GridPane playerGrid2Wrapper;
+    @FXML private GridPane playerGrid3Wrapper;
+    @FXML private GridPane playerGrid4Wrapper;
+    @FXML private GridPane playerGrid5Wrapper;
+    @FXML private GridPane playerGrid6Wrapper;
+    @FXML private GridPane playerGrid7Wrapper;
+    @FXML private GridPane playerGrid8Wrapper;
     @FXML private TextArea historyOutput;
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
@@ -195,6 +212,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerCpTexts;
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
+    private ArrayList<GridPane> playerRobot;
+    private ArrayList<GridPane> playerGridWrapper;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
@@ -312,6 +331,24 @@ public class GamePresenter extends AbstractPresenter {
         playerCards.add(player7Card);
         playerCards.add(player8Card);
 
+        playerRobot = new ArrayList<GridPane>();
+        playerRobot.add(player2Robot);
+        playerRobot.add(player3Robot);
+        playerRobot.add(player4Robot);
+        playerRobot.add(player5Robot);
+        playerRobot.add(player6Robot);
+        playerRobot.add(player7Robot);
+        playerRobot.add(player8Robot);
+
+        playerGridWrapper = new ArrayList<GridPane>();
+        playerGridWrapper.add(playerGrid2Wrapper);
+        playerGridWrapper.add(playerGrid3Wrapper);
+        playerGridWrapper.add(playerGrid4Wrapper);
+        playerGridWrapper.add(playerGrid5Wrapper);
+        playerGridWrapper.add(playerGrid6Wrapper);
+        playerGridWrapper.add(playerGrid7Wrapper);
+        playerGridWrapper.add(playerGrid8Wrapper);
+
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
         loadPlayers(playerGrids, playerNames);
@@ -353,16 +390,27 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles the player list Simplify it from init
+     * Handles the player list and add images next to username
+     * Simplify it from init
      *
-     * @author Maria Andrade
-     * @since 2023-05-06
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-06
      */
     private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
         int count = 0;
-        LOG.debug("Number from players inlcuding Bots: ", this.userDTOPlayerDTOMap.size());
+        int robotImageID;
+
         for (Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()) {
             PlayerDTO playerDTO = player.getValue();
+            robotImageID = playerDTO.getRobotDTO().getRobotID();
+
+            // robot image
+            ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
+            System.out.println("Player" + player.getKey().getUsername());
+            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
+            System.out.println(imageView);
+            System.out.println(playerRobot.size());
+            // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
                 playerNames.get(count).setText(playerDTO.getUser().getUsername());
@@ -376,7 +424,18 @@ public class GamePresenter extends AbstractPresenter {
                         .get(count)
                         .setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
+                playerRobot.get(count).add(imageView, 0,0);
+                playerRobot.get(count).setVisible(true);
+                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+
                 count++; // only counts when it is not the current user, to avoid empty grid
+            }
+            else{
+                // for player is loggedInUser
+                player1Robot.add(imageView, 0, 0);
+                imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
+                imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
         }
     }
