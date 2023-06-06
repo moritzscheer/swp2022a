@@ -408,17 +408,17 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        if (readyButton.getText().equals("Not Ready")) {
+        if (readyButton.getText().equals("Ready?")) {
             Platform.runLater(
                     () -> {
-                        readyButton.setText("Ready");
+                        readyButton.setText("Ready!");
                         readyButton.setStyle("-fx-background-color: GREEN");
                     });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, true));
         } else {
             Platform.runLater(
                     () -> {
-                        readyButton.setText("Not Ready");
+                        readyButton.setText("Ready?");
                         readyButton.setStyle("-fx-background-color: RED");
                     });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, false));
