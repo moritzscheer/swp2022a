@@ -1,10 +1,10 @@
 package de.uol.swp.client.lobby.lobby.event;
 
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
-/** This event class is used by the presenters to tell
- * the LobbyService to create a new request to the server
+/**
+ * This event class is used by the presenters to tell the LobbyService to create a new request to
+ * the server
  *
  * @author Maria Andrade
  * @since 2023-05-16
@@ -15,13 +15,13 @@ public class LeaveLobbyEvent {
     private final UserDTO loggedInUser;
     private final Boolean multiplayer;
 
-    public LeaveLobbyEvent(UserDTO loggedInUser, Integer lobbyID, String lobbyName, Boolean multiplayer){
+    public LeaveLobbyEvent(
+            UserDTO loggedInUser, Integer lobbyID, String lobbyName, Boolean multiplayer) {
         this.lobbyID = lobbyID;
         this.loggedInUser = loggedInUser;
         this.lobbyName = lobbyName;
         this.multiplayer = multiplayer;
     }
-
 
     public UserDTO getLoggedInUser() {
         return loggedInUser;

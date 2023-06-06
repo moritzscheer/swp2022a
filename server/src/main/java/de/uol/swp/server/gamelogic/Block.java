@@ -212,12 +212,14 @@ public class Block implements Serializable {
         }
     }
 
-    /** Get all imagesIDs as Array to send to client
+    /**
+     * Get all imagesIDs as Array to send to client
+     *
      * @author Finn & Maria
      * @return imagesIDs
      */
-    public int[][] getImages(){
-        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0,0})) ;
+    public int[][] getImages() {
+        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0, 0}));
         for (int i = 0; i < behaviourList.length; i++) {
             images.addAll(behaviourList[i].getImage());
         }

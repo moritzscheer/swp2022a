@@ -43,6 +43,24 @@ public interface Lobby extends Serializable {
     void updateOwner(User user);
 
     /**
+     * Changes the ready status of a user to ready
+     *
+     * @param user The user who is now ready
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    void makePlayerReady(User user);
+
+    /**
+     * Changes the ready status of a user to not ready
+     *
+     * @param user The user who is now not ready
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    void makePlayerNotReady(User user);
+
+    /**
      * Getter for the lobby's name
      *
      * @return A String containing the name of the lobby
@@ -65,6 +83,15 @@ public interface Lobby extends Serializable {
      * @since 2019-10-08
      */
     Set<User> getUsers();
+
+    /**
+     * Getter for all users that are not ready in the lobby
+     *
+     * @return A Set containing all user that are not ready in this lobby
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    Set<User> getNotReadyUsers();
 
     /**
      * Getter for the Password of the lobby

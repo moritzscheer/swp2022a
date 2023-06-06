@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.common.game.Position;
@@ -25,22 +27,6 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     private boolean fullLaser;
 
-    public LaserBehaviour(
-            List<Robot> robotStates,
-            Block[][] board,
-            int[] activeInProgramSteps,
-            Position blockPos,
-            CardinalDirection laserDir,
-            int laserBeam,
-            boolean start,
-            boolean fullLaser) {
-        super(robotStates, board, blockPos);
-        this.activeInProgramSteps = activeInProgramSteps;
-        this.direction = laserDir;
-        this.laserBeam = laserBeam;
-        this.start = start;
-        this.fullLaser = fullLaser;
-    }
 
     public LaserBehaviour(
             List<Robot> robotStates,
@@ -57,6 +43,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         this.fullLaser = fullLaser;
 
     }
+
 
 
     /**
@@ -114,10 +101,9 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     @Override
     public List<int[]> getImage() {
         int placeholder = 17;
-        if (this.start){
+        if (this.start) {
             placeholder = 15;
-        }
-        else if (this.fullLaser){
+        } else if (this.fullLaser) {
             placeholder = 18;
         }
         return new ArrayList<>(List.of(new int[] {placeholder + laserBeam, direction.ordinal()}));

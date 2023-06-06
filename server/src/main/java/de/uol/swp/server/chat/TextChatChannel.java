@@ -25,7 +25,8 @@ public class TextChatChannel {
 
     public void addUserTextMessage(String sender, String message) {
         String timeStamp = getCurrentTimeStamp();
-        TextChatMessage text = new TextChatMessage(message, "<" + sender + ">", "[" + timeStamp + "] ");
+        TextChatMessage text =
+                new TextChatMessage(message, "<" + sender + ">", "[" + timeStamp + "] ");
         chatHistory.add(text);
         sendTextToUsers(text);
     }

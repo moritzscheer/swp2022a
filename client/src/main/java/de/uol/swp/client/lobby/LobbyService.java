@@ -3,19 +3,20 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-
 import com.google.inject.Singleton;
-import de.uol.swp.client.lobby.lobby.event.CreateNewLobbyEvent;
-import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
-import de.uol.swp.client.lobby.lobby.event.UpdateLobbiesListEvent;
-import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
+
+import de.uol.swp.client.lobby.lobby.event.*;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
+import de.uol.swp.common.game.request.StartGameRequest;
+import de.uol.swp.common.lobby.message.MapChangedMessage;
+import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +37,7 @@ public class LobbyService {
     /**
      * Constructor
      *
-     * @param eventBus        The EventBus set in ClientModule
+     * @param eventBus The EventBus set in ClientModule
      * @see de.uol.swp.client.di.ClientModule
      * @since 2019-11-20
      */
@@ -61,7 +62,8 @@ public class LobbyService {
     public void onCreateNewLobbyEvent(CreateNewLobbyEvent msg) {
         LOG.info("onCreateNewLobbyEvent {}", msg.getName());
         CreateLobbyRequest createLobbyRequest =
-                new CreateLobbyRequest(msg.getName(), msg.getUser(), msg.getMultiplayer(), msg.getPassword());
+                new CreateLobbyRequest(
+                        msg.getName(), msg.getUser(), msg.getMultiplayer(), msg.getPassword());
         eventBus.post(createLobbyRequest);
     }
 
@@ -74,11 +76,12 @@ public class LobbyService {
      */
     @Subscribe
     public void joinLobby(UserJoinLobbyEvent event) {
-        JoinLobbyRequest joinUserRequest = new JoinLobbyRequest(
-                event.getLobby().getLobbyID(),
-                event.getLobby().getName(),
-                event.getLoggedInUser(),
-                event.getPassword());
+        JoinLobbyRequest joinUserRequest =
+                new JoinLobbyRequest(
+                        event.getLobby().getLobbyID(),
+                        event.getLobby().getName(),
+                        event.getLoggedInUser(),
+                        event.getPassword());
         eventBus.post(joinUserRequest);
     }
 
@@ -92,7 +95,11 @@ public class LobbyService {
     @Subscribe
     public void leaveLobby(LeaveLobbyEvent event) {
         LeaveLobbyRequest leaveUserRequest =
-                new LeaveLobbyRequest(event.getLobbyID(), event.getLobbyName(), event.getLoggedInUser(), event.isMultiplayer());
+                new LeaveLobbyRequest(
+                        event.getLobbyID(),
+                        event.getLobbyName(),
+                        event.getLoggedInUser(),
+                        event.isMultiplayer());
         eventBus.post(leaveUserRequest);
     }
 
@@ -110,6 +117,21 @@ public class LobbyService {
         eventBus.post(retrieveAllLobbiesRequest);
     }
 
+    /**
+     * Posts a request to start the game on the EventBus
+     *
+     * @param event To identify the lobby with a unique key
+     * @see StartGameRequest
+     * @author Moritz Scheer
+     * @since 2023-03-09
+     */
+    @Subscribe
+    public void onSetPlayerReadyEvent(SetPlayerReadyEvent event) {
+        SetPlayerReadyInLobbyRequest setPlayerReadyInLobbyRequest =
+                new SetPlayerReadyInLobbyRequest(
+                        event.getLobbyID(), (UserDTO) event.getUser(), event.isReady());
+        eventBus.post(setPlayerReadyInLobbyRequest);
+    }
 
     /////////////////////
     // Responses/Messages
@@ -194,4 +216,32 @@ public class LobbyService {
         LobbyGameManagement.getInstance().changeElement(event);
     }
 
+    /**
+     * Handles when a user pressed a ready button in the lobby
+     *
+     * <p>If a PlayerReadyInLobbyMessage is posted to the EventBus this method is called.
+     *
+     * @param message the PlayerReadyInLobbyResponse object seen on the EventBus
+     * @see de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage
+     * @author Moritz Scheer
+     * @since 2023-05-28
+     */
+    @Subscribe
+    public void onPlayerReadyInLobbyMessage(PlayerReadyInLobbyMessage message) {
+        LobbyGameManagement.getInstance().playerReadyInLobby(message);
+    }
+
+    /**
+     * Updates the displayed map in the lobby when a MapChangedMessage is received
+     *
+     * @param mapChangedMessage The MapChangedMessage object
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @author Mathis Eilers
+     * @since 2023-05-12
+     */
+    @Subscribe
+    public void onMapChangedMessage(MapChangedMessage mapChangedMessage) {
+        LobbyGameManagement.getInstance()
+                .updateGameMap(mapChangedMessage.getLobbyID(), mapChangedMessage.getMap());
+    }
 }

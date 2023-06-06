@@ -220,10 +220,6 @@
 /**
     In this section you can change the style the InGameViewView.
  */
-
-
-
-
-/**
-    In this section you can change the style the InGameMultiClientView.
- */
+#cardPriorityText{
+    -fx-font-weight: bold;
+}
