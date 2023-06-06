@@ -485,7 +485,10 @@ public class GamePresenter extends AbstractPresenter {
 
             // robot image
             ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
-
+            System.out.println("Player" + player.getKey().getUsername());
+            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
+            System.out.println(imageView);
+            System.out.println(playerRobot.size());
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
@@ -1095,8 +1098,8 @@ public class GamePresenter extends AbstractPresenter {
             playerCards.get(position).setImage(
                     jsonUtils.getCardImage(userCurrentCard.getValue().getID())
             );
-            playerCards.get(position).setFitHeight(150);
-            playerCards.get(position).setFitWidth(100);
+            playerCards.get(position).setFitHeight(75);
+            playerCards.get(position).setFitWidth(50);
         }
 
 
