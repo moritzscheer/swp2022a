@@ -527,54 +527,6 @@ public class GamePresenter extends AbstractPresenter {
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
         }
-
-
-        /**
-         * Gives player a robot image
-         *
-         * Each player in a lobby/game has a fixed robot image
-         *
-         * @author Tommy Dang
-         * @since 2023-06-04
-         */
-//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-//            int robotID = player.getValue().getRobotDTO().getRobotID();
-//            ImageView imageView = jsonUtils.getRobotImage(robotID);
-//            //Noch ändern, weil robot icons links andere größe haben als unten rechts
-//            imageView.fitHeightProperty().bind(player1Wrapper.heightProperty().subtract(4));
-//            imageView.fitWidthProperty().bind(player1Wrapper.heightProperty().subtract(4));
-//            this.userRobotImageViewReference.put(player.getKey(), imageView);
-//        }
-//
-//        int imageCount2 = 0;
-//        // Methode funktioniert noch nicht. Roboter Image neben Button wird zum falschen Spieler zugewiesen
-//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-//            PlayerDTO playerDTO = player.getValue();
-//            if(Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
-//                player1Wrapper.add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
-//            } else{
-//                if(Objects.equals(userToPositionInStackPanes.get(playerDTO.getUser().getUsername()), userRobotImageViewReference.get(playerDTO.getUser().getUsername()))){
-//                    playerRobot.get(imageCount2).add(this.userRobotImageViewReference.get(player.getKey()), 0, 0);
-//                } else {
-//                    imageCount2++;
-//                }
-//            }
-//        }
-
-//        int imageCount = 0;
-//        for(Map.Entry<UserDTO, PlayerDTO> player : this.userDTOPlayerDTOMap.entrySet()){
-//            UserDTO playerDTO = player.getKey();
-//            if(userToPositionInStackPanes.get(playerDTO.getUsername()).equals(this.userRobotImageViewReference.get(playerDTO.getUsername()))){
-//
-//
-//
-//                userToPositionInStackPanes.get(0)
-//            }
-//
-//        }
-
-
-
     }
 
     /**
