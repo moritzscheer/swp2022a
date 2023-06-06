@@ -1,6 +1,7 @@
 package de.uol.swp.client.lobby;
 
 import com.google.common.eventbus.EventBus;
+import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.LobbyGameTuple;
 import de.uol.swp.client.AbstractPresenter;
@@ -407,5 +408,18 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void updateGameMap(int lobbyID, de.uol.swp.common.game.Map map)
     {
         lobbyGameMap.get(lobbyID).getLobbyPresenter().updateMapDisplay(map);
+    }
+
+    /**
+     * Handles GameOverMessage detected on the EventBus
+     *
+     * @param msg The GameOverMessage seen on the EventBus
+     * @see de.uol.swp.common.game.message.GameOverMessage
+     * @author Daniel Merzo & Maria Eduarda
+     * @since 2023-05-24
+     */
+    public void gameOver(GameOverMessage msg) {
+        // Todo Check if we need a lobbyGameMap
+        eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
     }
 }

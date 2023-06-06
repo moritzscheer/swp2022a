@@ -82,7 +82,7 @@ public class GameService extends AbstractService {
         System.out.println("New id :)");
         //TODO: fix docking positions
         Position[] checkpointsList = {
-                new Position(0, 11),
+                new Position(11,3),
                 new Position(9,3),
                 new Position(7,4),
                 new Position(1,9)}
@@ -353,7 +353,9 @@ public class GameService extends AbstractService {
             //game.calcGameRound();
             secondsToWait = moveCards(lobbyID, secondsToWait, game, previousPositions,previousDirections,cardDTOS);
             // get new previous positions
-
+            if(isGameOver(lobbyID, game, secondsToWait)){
+                break;
+            }
 
             previousPositions = logInformationPosition(game);
 
@@ -364,6 +366,9 @@ public class GameService extends AbstractService {
                     convertPlayerListToPlayerDTOList(game.getPlayers()),
                     secondsToWait
             );
+            if(isGameOver(lobbyID, game, secondsToWait)){
+                break;
+            }
 
             // go to next step
             game.increaseProgramStep();
@@ -494,6 +499,49 @@ public class GameService extends AbstractService {
                     public void run() {
                         lobbyService.sendToAllInLobby(lobbyID,
                                 new ShowBoardMovingMessage(lobbyID, players));
+                    }
+                },
+                secondsToWait, SECONDS);
+    }
+
+    /**
+     * Check if a Player achived the last checkpoint
+     *
+     * @param game reference to which game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-05
+     */
+    private boolean isGameOver(int lobbyID, Game game, int secondsToWait){
+        for(AbstractPlayer player: game.getPlayers()){
+            if(player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()){
+                // TODO: fix when AbstractPlayer has User
+                // playerWonTheGame(lobbyID, player.getUser());
+                playerWonTheGame(lobbyID, ((Player)player).getUser(), secondsToWait);
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+
+    /**
+     * Send Message when a Player achieved the last checkpoint
+     *
+     * @param userWon user that won the game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.message.GameOverMessage
+     * @since 2023-06-05
+     */
+    private void playerWonTheGame(int lobbyID, UserDTO userWon, int secondsToWait){
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new GameOverMessage(lobbyID, userWon));
                     }
                 },
                 secondsToWait, SECONDS);
