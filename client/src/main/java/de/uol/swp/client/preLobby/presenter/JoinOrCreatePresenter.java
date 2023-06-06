@@ -29,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,6 +51,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     private ObservableList<LobbyDTO> lobbiesList;
 
+    @FXML private GridPane tableViewWrapper;
     @FXML private TableView<LobbyDTO> lobbiesView;
     @FXML private TableColumn<LobbyDTO, Integer> column1;
     @FXML private TableColumn<LobbyDTO, String> column2;
@@ -271,6 +273,28 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                                 }
                             });
                 });
+
+
+        /** Methods to change the width of the columns
+         *
+         * @author: Tommy Dang
+         *
+         */
+        column1.minWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(1).subtract(10));
+        column2.minWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column3.minWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column4.minWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+
+        column1.prefWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(1).subtract(10));
+        column2.prefWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column3.prefWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column4.prefWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+
+        column1.maxWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(1).subtract(10));
+        column2.maxWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column3.maxWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+        column4.maxWidthProperty().bind(tableViewWrapper.widthProperty().divide(10).multiply(3).subtract(10));
+
     }
 
     // -----------------------------------------------------
