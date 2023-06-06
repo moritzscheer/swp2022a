@@ -7,6 +7,7 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -45,6 +46,8 @@ public class Game {
     private final List<AbstractPlayer> players = new ArrayList<>();
     private final Card[][] playedCards;
 
+    private final String mapName;
+
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     private static final Set<Integer> cardsIdsOnlyTurn =
@@ -63,11 +66,12 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, int numberBots) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName, int numberBots) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
+        this.mapName = mapName;
 
         assert users.size() + numberBots <= 8;
 
@@ -292,10 +296,11 @@ public class Game {
         this.roundNumber++;
     }
 
-    public void startGame() {
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/MapOne.map");
-        if (board == null) {
-            // TODO: Log error "Map couldn't be loaded"
+    public void startGame(){
+
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+".map");
+        if(board == null){
+            //TODO: Log error "Map couldn't be loaded"
             return;
         }
         setRobotsInfoInBehaviours(board, robots);

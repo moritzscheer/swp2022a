@@ -104,7 +104,7 @@ public class Map implements Serializable {
 
     // Due to the instantiations of MapDataTuple this can not be done with 'static'
     private static final String[][] mapList = {
-            {"Map 1", "map1.png"}
+            {"Map 1", "map1.png"},{"Map 2", "map2.png"}
     };
 
     /**
