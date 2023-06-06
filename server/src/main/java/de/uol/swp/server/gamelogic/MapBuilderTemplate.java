@@ -40,8 +40,7 @@ public final class MapBuilderTemplate {
         mapGenExtracted(map);
 
         ObjectOutputStream objOut =
-                new ObjectOutputStream(
-                        new FileOutputStream("server/src/main/resources/maps/templateMap.map"));
+                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/templateMap.map"));
         objOut.writeObject(map);
         objOut.flush();
         objOut.close();
@@ -49,7 +48,8 @@ public final class MapBuilderTemplate {
 
     private static void mapGenExtracted(Block[][] map) {
 
-        // Template
+
+    // Template
         int x = 0;
         int y = 0;
 

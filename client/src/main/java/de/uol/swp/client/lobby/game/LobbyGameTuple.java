@@ -42,6 +42,8 @@ public class LobbyGameTuple {
     public void setGameView(GamePresenter gamePresenter, Parent gameParent) {
         this.gamePresenter = gamePresenter;
         this.gameParent = gameParent;
+
+
     }
 
     // -----------------------------------------------------

@@ -5,6 +5,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.CloseClientEvent;
 import de.uol.swp.client.register.event.RegistrationCanceledEvent;
 import de.uol.swp.client.register.event.RegistrationErrorEvent;
 import de.uol.swp.client.tab.TabPresenter;

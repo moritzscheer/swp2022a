@@ -2,7 +2,6 @@ package de.uol.swp.common.lobby;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -287,20 +286,6 @@ class LobbyDTOTest {
 
         assertTrue(lobby.getUsers().contains(defaultUser));
         assertEquals(1, lobby.getUsers().size());
-    }
-
-    /** Tests if a map can be updated */
-    @Test
-    void updateMapTest() {
-        Map m = new Map(0);
-        LobbyDTO lobby = new LobbyDTO(1, "test", defaultUser, "1234", true, null);
-
-        Map before = lobby.getMap();
-        lobby.setMap(m);
-        Map after = lobby.getMap();
-
-        assertNotEquals(before, after);
-        assertEquals(m, after);
     }
 
     /**

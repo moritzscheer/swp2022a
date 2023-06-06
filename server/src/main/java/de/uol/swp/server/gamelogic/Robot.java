@@ -38,7 +38,8 @@ public class Robot implements Serializable {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 06-02-2023
      */
-    public Robot(int id, Position currentPosition, boolean alive, CardinalDirection direction) {
+    public Robot(
+            int id, Position currentPosition, boolean alive, CardinalDirection direction) {
         this.id = id;
         this.currentPosition = currentPosition;
         this.alive = alive;
@@ -48,7 +49,6 @@ public class Robot implements Serializable {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = 1;
-        this.lastCheckPointPosition = currentPosition;
     }
     /**
      * @author
@@ -124,8 +124,6 @@ public class Robot implements Serializable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
-        this.lifeToken--;
-        setCurrentPosition(this.lastCheckPointPosition);
     }
 
     public void setCurrentPosition(Position currentPosition) {

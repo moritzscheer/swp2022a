@@ -2,9 +2,9 @@ package de.uol.swp.client.lobby.lobby.event;
 
 import de.uol.swp.common.user.User;
 
-/**
- * This event class is used by the presenters to tell the LobbyService to set the player who send
- * this event to ready. This is important for the start of the lobby
+/** This event class is used by the presenters to tell
+ * the LobbyService to set the player who send this event to ready.
+ * This is important for the start of the lobby
  *
  * @author Moritz Scheer
  * @since 2023-05-28

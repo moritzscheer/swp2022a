@@ -20,7 +20,6 @@ public class TextChatMessage implements Serializable {
     public String getSenderString() {
         return senderString;
     }
-
     public String getTimeStamp() {
         return timeStamp;
     }

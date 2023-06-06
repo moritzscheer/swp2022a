@@ -1,6 +1,5 @@
 package de.uol.swp.common.lobby.response;
 
-import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
@@ -17,7 +16,6 @@ import java.util.Objects;
 public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
 
     private final LobbyDTO lobby;
-    private final Map map;
 
     /**
      * Constructor
@@ -29,9 +27,6 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
     public LobbyJoinedSuccessfulResponse(LobbyDTO lobby, UserDTO user) {
         super(lobby.getName(), user);
         this.lobby = lobby /*.createWithoutUserPassword(lobby)*/;
-
-        // Map has to be sent directly in the message, or the client doesn't receive it
-        this.map = lobby.getMap();
     }
 
     @Override
@@ -56,9 +51,5 @@ public class LobbyJoinedSuccessfulResponse extends AbstractLobbyResponse {
      */
     public LobbyDTO getLobby() {
         return lobby;
-    }
-
-    public Map getMap() {
-        return this.map;
     }
 }

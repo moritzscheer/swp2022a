@@ -16,7 +16,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      * @author Ole Zimmermann
      * @since 2023-04-25
      */
-    public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO> cardDTOS) {
+    public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO>  cardDTOS) {
         this.lobbyID = lobbyID;
         this.loggedInUser = userDTO;
         this.cardDTO = cardDTOS;
@@ -26,7 +26,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      * @author Ole Zimmermann
      * @since 2023-04-25
      */
-    public List<CardDTO> getCardDTOs() {
+    public List<CardDTO>  getCardDTOs() {
         return cardDTO;
     }
 

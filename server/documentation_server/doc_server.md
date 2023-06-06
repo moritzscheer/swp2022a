@@ -176,7 +176,7 @@ Der Konstruktor des ConveyorBeltBehaviour ist folgendermaßen aufgebaut:
     Position blockPos: ist eine Position des Zahnrads auf dem Spielbrett
     ArrowType arrowType: ist Pfeilausrichtung des Förderbandes
     CardinalDirection direction: ist die Bewegungsausrichtung des Roboters
-    bzw. Himmelsausrichtung
+    bzw. Himmelsausrichtung 
 
 Der Konstruktor ruft wie alle anderen Behaviours den Konstruktor der Oberklasse AbstractTileBehaviour auf.
 
@@ -189,7 +189,7 @@ mehrerer Roboter darstellen soll. Hierbei wird das Array ```robotStates``` durch
 Roboter sich auf dem Feld befindet. Falls das der Fall ist, wird ein Objekt vom Typ ```MoveIntent``` erstellt, welches
 wiederum die Bewegungsrichtung des Roboters, dem der Pfeilrichtung des Förderbandes anpasst / übergibt.
 
-Zusätzlich überprüft die Methode, ob ein weiteres Förderband-Feld nach der Ausrichtung vorkommt. Wenn ein
+Zusätzlich überprüft die Methode, ob ein weiteres Förderband-Feld nach der Ausrichtung vorkommt. Wenn ein 
 weiteres Förderband auftritt, wird die Methode wiederholt bzw. die Bewegungsausrichtung der Pfeilrichtung angepasst.
 
 Anschließend werden alle MoveIntent's als Rückgabetyp der Methode zurückgegeben.

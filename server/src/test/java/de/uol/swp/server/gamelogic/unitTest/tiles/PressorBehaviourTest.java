@@ -5,11 +5,11 @@ import static junit.framework.TestCase.assertNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import de.uol.swp.common.game.Position;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.PressorBehaviour;
+import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,14 +37,7 @@ public class PressorBehaviourTest {
         robotStates[0] = new Robot(1, new Position(0, 0), true, CardinalDirection.East);
         board = new Block[1][1];
         blockPos = new Position(0, 0);
-        pressorBehaviour =
-                new PressorBehaviour(
-                        List.of(robotStates),
-                        board,
-                        blockPos,
-                        activeInProgramSteps,
-                        CardinalDirection.West,
-                        true);
+        pressorBehaviour = new PressorBehaviour(List.of(robotStates), board,  blockPos, activeInProgramSteps, CardinalDirection.West, true);
     }
 
     /**

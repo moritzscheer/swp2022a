@@ -3,9 +3,8 @@ package de.uol.swp.client.lobby.game.events;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
-/**
- * This event class is used by the LobbyGameManagement to tell the GameService to create a new
- * request to the server
+/** This event class is used by the LobbyGameManagement to tell
+ * the GameService to create a new request to the server
  *
  * @author Maria Andrade
  * @since 2023-05-18

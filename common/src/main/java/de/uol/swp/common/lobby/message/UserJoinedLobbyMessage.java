@@ -1,6 +1,5 @@
 package de.uol.swp.common.lobby.message;
 
-import de.uol.swp.common.game.Map;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -14,7 +13,6 @@ import de.uol.swp.common.user.UserDTO;
 public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
 
     private Integer lobbyID;
-    private Map m;
 
     /**
      * Default constructor
@@ -45,16 +43,5 @@ public class UserJoinedLobbyMessage extends AbstractLobbyMessage {
      */
     public Integer getLobbyID() {
         return lobbyID;
-    }
-
-    /**
-     * Getter for the map variable
-     *
-     * @return Map containing the map's data
-     * @author Mathis Eilers
-     * @since 2023-05-12
-     */
-    public Map getMap() {
-        return this.m;
     }
 }

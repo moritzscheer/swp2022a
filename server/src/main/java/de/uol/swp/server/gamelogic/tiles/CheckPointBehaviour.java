@@ -1,7 +1,7 @@
 package de.uol.swp.server.gamelogic.tiles;
 
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     }
 
     @Override
-    public List<int[]> getImage() {
-        return new ArrayList<>(List.of(new int[] {2 + number, 0}));
+    public List<int[]> getImage(){
+        return new ArrayList<>(List.of(new int[]{2 + number, 0}));
     }
 }

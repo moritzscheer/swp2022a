@@ -1,5 +1,6 @@
 package de.uol.swp.common.game.request;
 
+
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**
@@ -12,19 +13,16 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class StartGameRequest extends AbstractGameRequest {
 
     private int lobbyID;
-    private int numberBots;
 
     /**
      * constructor
      *
-     * @param lobbyID    Integer containing the ID of the lobby
-     * @param numberBots
+     * @param lobbyID Integer containing the ID of the lobby
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public StartGameRequest(LobbyDTO lobby, int numberBots) {
+    public StartGameRequest(LobbyDTO lobby) {
         this.lobbyID = lobby.getLobbyID();
-        this.numberBots = numberBots;
         this.lobby = lobby;
     }
 
@@ -37,9 +35,5 @@ public class StartGameRequest extends AbstractGameRequest {
      */
     public int getLobbyID() {
         return lobbyID;
-    }
-
-    public int getNumberBots() {
-        return numberBots;
     }
 }

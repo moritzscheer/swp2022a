@@ -1,9 +1,9 @@
 package de.uol.swp.server.gamelogic.tiles;
 
-import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -23,17 +23,14 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     private boolean crossing;
 
     public PressorBehaviour(
-            List<Robot> robotStates,
-            Block[][] board,
-            Position blockPos,
-            int[] activeInProgramSteps,
-            CardinalDirection direction,
-            boolean crossing) {
+            List<Robot> robotStates, Block[][] board,  Position blockPos, int[] activeInProgramSteps, CardinalDirection direction, boolean crossing) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = direction;
         this.crossing = crossing;
     }
+
+
 
     /**
      * When the robot is under a pressor then it will die.
@@ -61,19 +58,21 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     @Override
     public List<int[]> getImage() {
         int type = 0;
-        if (!this.crossing) {
+        if(!this.crossing) {
             if (this.activeInProgramSteps[0] == 1) {
                 type = 35;
             } else {
                 type = 36;
             }
-        } else {
-            if (this.activeInProgramSteps[0] == 2) {
+        }
+        else{
+            if(this.activeInProgramSteps[0] == 2){
                 type = 37;
-            } else {
+            }
+            else{
                 type = 38;
             }
         }
-        return new ArrayList<>(List.of(new int[] {type, direction.ordinal()}));
+        return new ArrayList<>(List.of(new int[]{type, direction.ordinal()}));
     }
 }

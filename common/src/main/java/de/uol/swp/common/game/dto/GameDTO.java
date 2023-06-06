@@ -7,8 +7,8 @@ import java.util.List;
 /**
  * Object to transfer the information of a Game
  *
- * <p>This object is used to communicate the current state of game between the server and clients.
- * It contains information about the gameID, Board state and Players list
+ * This object is used to communicate the current state of game between the server and
+ * clients. It contains information about the gameID, Board state and Players list
  *
  * @author Maria Eduarda Costa Leite Andrade
  * @since 2023-05-02
@@ -19,7 +19,7 @@ public class GameDTO implements Game {
     /**
      * Constructor
      *
-     * @param players Players in the lobby
+     * @param players  Players in the lobby
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-02
      */
