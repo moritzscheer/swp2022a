@@ -15,7 +15,7 @@ public class BotPlayer extends AbstractPlayer {
 
     public BotPlayer(Position startPosition, int robotID) {
         super();
-        this.userDTO = new UserDTO("Bot"+ robotID, "password", "someEmail" );
+        this.userDTO = new UserDTO("Bot"+ robotID+1, "password", "someEmail" );
 
         this.robot = new Robot(robotID, startPosition, true, CardinalDirection.East);
     }
