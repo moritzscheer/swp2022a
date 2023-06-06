@@ -13,10 +13,7 @@ public abstract class AbstractPlayer {
     protected Card[] chosenCards;
     protected int numCardToPlay = 0;
 
-
-    /** Constructor
-     *
-     */
+    /** Constructor */
     public AbstractPlayer() {}
 
     /**

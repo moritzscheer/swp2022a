@@ -3,10 +3,10 @@ package de.uol.swp.server.gamelogic.unitTest.cards;
 import static junit.framework.TestCase.assertEquals;
 
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.cards.Turn;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import org.junit.Test;
 

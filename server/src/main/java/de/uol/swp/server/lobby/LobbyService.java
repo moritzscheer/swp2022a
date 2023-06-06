@@ -43,9 +43,9 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement       The management class for creating, storing and deleting lobbies
+     * @param lobbyManagement The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
-     * @param eventBus              the server-wide EventBus
+     * @param eventBus the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
@@ -275,12 +275,18 @@ public class LobbyService extends AbstractService {
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
-            if(request.isReady()) {
+            if (request.isReady()) {
                 lobby.get().makePlayerReady(request.getUser());
-                sendToAllInLobby(request.getLobbyID(), new PlayerReadyInLobbyMessage(request.getLobbyID(), request.getUser(), request.isReady()));
+                sendToAllInLobby(
+                        request.getLobbyID(),
+                        new PlayerReadyInLobbyMessage(
+                                request.getLobbyID(), request.getUser(), request.isReady()));
             } else {
                 lobby.get().makePlayerNotReady(request.getUser());
-                sendToAllInLobby(request.getLobbyID(), new PlayerReadyInLobbyMessage(request.getLobbyID(), request.getUser(), request.isReady()));
+                sendToAllInLobby(
+                        request.getLobbyID(),
+                        new PlayerReadyInLobbyMessage(
+                                request.getLobbyID(), request.getUser(), request.isReady()));
             }
         }
     }

@@ -1,6 +1,5 @@
 package de.uol.swp.common.game.request;
 
-
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 
 /**

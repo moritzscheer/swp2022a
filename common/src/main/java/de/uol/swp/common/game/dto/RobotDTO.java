@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Object to transfer the information of a Robot
  *
- * This object is used to communicate the current state of a robot between the server and
+ * <p>This object is used to communicate the current state of a robot between the server and
  * clients. It contains information about the
  *
  * @author Maria Eduarda Costa Leite Andrade
@@ -27,7 +27,7 @@ public class RobotDTO implements Serializable {
 
     private int lastCheckpoint;
 
-    public RobotDTO(int robotID, Position position, CardinalDirection direction){
+    public RobotDTO(int robotID, Position position, CardinalDirection direction) {
         this.robotID = robotID;
         this.position = position;
         this.direction = direction;

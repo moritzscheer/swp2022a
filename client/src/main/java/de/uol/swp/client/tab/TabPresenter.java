@@ -15,7 +15,6 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
-import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -295,9 +294,10 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     public void changeMainTabTitle(String title) {
-        Platform.runLater(() -> {
-            mainTab.setText(title);
-        });
+        Platform.runLater(
+                () -> {
+                    mainTab.setText(title);
+                });
     }
 
     // -----------------------------------------------------
@@ -383,38 +383,40 @@ public class TabPresenter extends AbstractPresenter {
 
         Platform.runLater(
                 () -> {
-                    if(loggedInUser != null) {
-                        System.out.println("1");
+                    if (loggedInUser != null) {
                         if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
                             if (tabPane.getTabs().size() > 1) {
                                 for (Tab tabs : tabPane.getTabs()) {
                                     if (!tabs.getId().equals("mainTab")) {
-                                        eventBus.post(new LeaveLobbyEvent(
-                                                (UserDTO) loggedInUser,
-                                                Integer.valueOf(tabs.getId()),
-                                                tabs.getText(),
-                                                !tab.getText().equals("Singleplayer")
-                                        ));
+                                        eventBus.post(
+                                                new LeaveLobbyEvent(
+                                                        (UserDTO) loggedInUser,
+                                                        Integer.valueOf(tabs.getId()),
+                                                        tabs.getText(),
+                                                        !tab.getText().equals("Singleplayer")));
                                     }
                                 }
+                                eventBus.post(new CloseClientEvent());
+                            } else {
+                                userService.logout(loggedInUser);
+                                eventBus.post(new CloseClientEvent());
                             }
 
                             userService.logout(loggedInUser);
-                        } else if (infoLabel3.isVisible()) {
-                            eventBus.post(new LeaveLobbyEvent(
-                                    (UserDTO) loggedInUser,
-                                    Integer.valueOf(tab.getId()),
-                                    tab.getText(),
-                                    true)
 
-                            );
+                        } else if (infoLabel3.isVisible()) {
+                            eventBus.post(
+                                    new LeaveLobbyEvent(
+                                            (UserDTO) loggedInUser,
+                                            Integer.valueOf(tab.getId()),
+                                            tab.getText(),
+                                            true));
                             updateInfoBox();
 
                             tabPane.getTabs().remove(tab);
                             tabPane.getSelectionModel().select(0);
                         }
                     } else {
-                        System.out.println("2");
                         eventBus.post(new CloseClientEvent());
                     }
                 });

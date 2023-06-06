@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class PlayerIsReadyMessage extends AbstractServerMessage {
     private static final long serialVersionUID = -6003337260190748189L;
-//    private final boolean isReady;
+    //    private final boolean isReady;
     private final UserDTO playerIsReady;
     private final int lobbyID;
 
@@ -18,7 +18,7 @@ public class PlayerIsReadyMessage extends AbstractServerMessage {
      * @since 2023-04-25
      */
     public PlayerIsReadyMessage(UserDTO playerIsReady, int lobbyID) {
-//        this.isReady = isReady;
+        //        this.isReady = isReady;
         this.playerIsReady = playerIsReady;
         this.lobbyID = lobbyID;
     }
@@ -27,10 +27,12 @@ public class PlayerIsReadyMessage extends AbstractServerMessage {
      * @author Ole Zimmermann
      * @since 2023-04-25
      */
-//    public boolean isReady() {
-//        return isReady;
-//    }
-    public UserDTO getPlayerIsReady(){return playerIsReady;}
+    //    public boolean isReady() {
+    //        return isReady;
+    //    }
+    public UserDTO getPlayerIsReady() {
+        return playerIsReady;
+    }
 
     @Override
     public void setReceiver(List<Session> receiver) {

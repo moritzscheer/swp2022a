@@ -37,7 +37,11 @@ public class Tile {
         ImageView laserStart =
                 new ImageView(
                         new Image(
-                                "images/tiles/laser/LaserStart.png", imageSize, imageSize, true, false));
+                                "images/tiles/laser/LaserStart.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserStart.setRotate(rotateTileImage(direction));
         return laserStart;
     }
@@ -52,7 +56,11 @@ public class Tile {
         ImageView laserStart2 =
                 new ImageView(
                         new Image(
-                                "images/tiles/laser/LaserStart2.png", imageSize, imageSize, true, false));
+                                "images/tiles/laser/LaserStart2.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserStart2.setRotate(rotateTileImage(direction));
         return laserStart2;
     }
@@ -67,7 +75,11 @@ public class Tile {
         ImageView laserStart3 =
                 new ImageView(
                         new Image(
-                                "images/tiles/laser/LaserStart3.png", imageSize, imageSize, true, false));
+                                "images/tiles/laser/LaserStart3.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserStart3.setRotate(rotateTileImage(direction));
         return laserStart3;
     }
@@ -81,7 +93,8 @@ public class Tile {
     public ImageView addTileLaser(int direction) {
         ImageView laser =
                 new ImageView(
-                        new Image("images/tiles/laser/laser.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/laser/laser.png", imageSize, imageSize, true, false));
         laser.setRotate(rotateTileImage(direction));
         return laser;
     }
@@ -95,7 +108,12 @@ public class Tile {
     public ImageView addTileLaser2(int direction) {
         ImageView laser2 =
                 new ImageView(
-                        new Image("images/tiles/laser/laser2.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/laser/laser2.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laser2.setRotate(rotateTileImage(direction));
         return laser2;
     }
@@ -109,7 +127,12 @@ public class Tile {
     public ImageView addTileLaser3(int direction) {
         ImageView laser3 =
                 new ImageView(
-                        new Image("images/tiles/laser/laser3.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/laser/laser3.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laser3.setRotate(rotateTileImage(direction));
         return laser3;
     }
@@ -123,7 +146,12 @@ public class Tile {
     public ImageView addTileLaserHalf(int direction) {
         ImageView laserHalf =
                 new ImageView(
-                        new Image("images/tiles/laser/laserHalf.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/laser/laserHalf.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserHalf.setRotate(rotateTileImage(direction));
         return laserHalf;
     }
@@ -138,7 +166,11 @@ public class Tile {
         ImageView laserHalf2 =
                 new ImageView(
                         new Image(
-                                "images/tiles/laser/laserHalf2.png", imageSize, imageSize, true, false));
+                                "images/tiles/laser/laserHalf2.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserHalf2.setRotate(rotateTileImage(direction));
         return laserHalf2;
     }
@@ -153,7 +185,11 @@ public class Tile {
         ImageView laserHalf3 =
                 new ImageView(
                         new Image(
-                                "images/tiles/laser/laserHalf3.png", imageSize, imageSize, true, false));
+                                "images/tiles/laser/laserHalf3.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         laserHalf3.setRotate(rotateTileImage(direction));
         return laserHalf3;
     }
@@ -167,7 +203,12 @@ public class Tile {
     public ImageView addTilePusher1(int direction) {
         ImageView pusher =
                 new ImageView(
-                        new Image("images/tiles/pusher/Pusher_1.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/pusher/Pusher_1.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -200,7 +241,12 @@ public class Tile {
     public ImageView addTilePusher2(int direction) {
         ImageView pusher =
                 new ImageView(
-                        new Image("images/tiles/pusher/Pusher_2.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/pusher/Pusher_2.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -215,7 +261,11 @@ public class Tile {
         ImageView pusher =
                 new ImageView(
                         new Image(
-                                "images/tiles/pusher/Pusher_2_4.png", imageSize, imageSize, true, false));
+                                "images/tiles/pusher/Pusher_2_4.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }
@@ -229,7 +279,12 @@ public class Tile {
     public ImageView addTilePusher3(int direction) {
         ImageView pusher =
                 new ImageView(
-                        new Image("images/tiles/pusher/Pusher_3.png", imageSize, imageSize, true, false));
+                        new Image(
+                                "images/tiles/pusher/Pusher_3.png",
+                                imageSize,
+                                imageSize,
+                                true,
+                                false));
         pusher.setRotate(rotateTileImage(direction));
         return pusher;
     }

@@ -5,7 +5,6 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
-
 /**
  * Message sent by the server when there is an update of the robot position
  *
@@ -19,10 +18,13 @@ public class ShowRobotMovingMessage extends AbstractLobbyMessage {
     private final Position newRobotPosition;
     private final CardinalDirection newDirection;
 
-
-    public ShowRobotMovingMessage(int lobbyID, UserDTO userDTO, Position newRobotPosition, CardinalDirection newDirection) {
+    public ShowRobotMovingMessage(
+            int lobbyID,
+            UserDTO userDTO,
+            Position newRobotPosition,
+            CardinalDirection newDirection) {
         this.lobbyID = lobbyID;
-        System.out.println("In ShowRobotMovingMessage, user: "+userDTO.getUsername());
+        System.out.println("In ShowRobotMovingMessage, user: " + userDTO.getUsername());
         this.userDTO = userDTO;
         this.newRobotPosition = newRobotPosition;
         this.newDirection = newDirection;
@@ -43,5 +45,4 @@ public class ShowRobotMovingMessage extends AbstractLobbyMessage {
     public CardinalDirection getNewDirection() {
         return newDirection;
     }
-
 }

@@ -39,7 +39,6 @@ import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.response.*;
-import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
@@ -91,15 +90,11 @@ public class SceneManager {
     private Parent changeAccountOptionsParent;
     private Parent settingParent;
 
-    @Inject
-    private TabPresenter tabPresenter;
+    @Inject private TabPresenter tabPresenter;
     private GameService gameService;
     private LobbyService lobbyService;
-    @Inject
-    private LobbyPresenterFactory lobbyPresenterFactory;
-    @Inject
-    private GamePresenterFactory gamePresenterFactory;
-
+    @Inject private LobbyPresenterFactory lobbyPresenterFactory;
+    @Inject private GamePresenterFactory gamePresenterFactory;
 
     private double screenSizeWidth;
     private double screenSizeHeight;
@@ -109,7 +104,12 @@ public class SceneManager {
     private final Injector injector;
 
     @Inject
-    public SceneManager(EventBus eventBus, Injector injected, @Assisted Stage primaryStage, GameService gameService, LobbyService lobbyService)
+    public SceneManager(
+            EventBus eventBus,
+            Injector injected,
+            @Assisted Stage primaryStage,
+            GameService gameService,
+            LobbyService lobbyService)
             throws IOException {
         this.gameService = gameService;
         this.lobbyService = lobbyService;
@@ -381,7 +381,8 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        LobbyGameManagement.getInstance().setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
+        LobbyGameManagement.getInstance()
+                .setThisLobbyPresenter(lobbyPresenter, lobbyParent, lobbyID);
         return lobbyParent;
     }
 
@@ -695,7 +696,7 @@ public class SceneManager {
      * Shows an error message inside an error alert
      *
      * @param message The type of error to be shown
-     * @param e       The error message
+     * @param e The error message
      * @since 2019-09-03
      */
     public void showError(String message, String e) {
@@ -786,7 +787,7 @@ public class SceneManager {
      * <p>The current scene and title are saved in the lastScene and lastTitle variables, before the
      * new scene and title are set and shown.
      *
-     * @param tab    Integer containing the lobbyID and also the tabID
+     * @param tab Integer containing the lobbyID and also the tabID
      * @param parent New Parent to show
      * @author Moritz Scheer
      * @since 2022-12-27
@@ -986,7 +987,7 @@ public class SceneManager {
      * createTab method to create a tab with the given content.
      *
      * @param lobby the LobbyDTO Object containing all the information of the lobby
-     * @param user  the UserDTO Object containing all the information of the User
+     * @param user the UserDTO Object containing all the information of the User
      * @author Moritz Scheer
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
      * @see de.uol.swp.common.user.UserDTO

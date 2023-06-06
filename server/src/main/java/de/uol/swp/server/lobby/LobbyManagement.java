@@ -2,6 +2,7 @@ package de.uol.swp.server.lobby;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
@@ -20,24 +21,22 @@ import java.util.*;
 public class LobbyManagement {
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
-//    private static LobbyManagement instance;
-//
-//    public static LobbyManagement getInstance(){
-//        return  instance;
-//    }
+    //    private static LobbyManagement instance;
+    //
+    //    public static LobbyManagement getInstance(){
+    //        return  instance;
+    //    }
 
     @Inject
-    public LobbyManagement(){
-
-    }
+    public LobbyManagement() {}
 
     /**
      * Creates a new lobby and adds it to the list, if isMultiplayer is true. Else the helper method
      * createSinglePlayerName is being called, which creates a unique Singleplayer Name containing:
      * (name of the owner)-Singleplayer-(counter)
      *
-     * @param name        the name of the lobby to create
-     * @param owner       the user who wants to create a lobby
+     * @param name the name of the lobby to create
+     * @param owner the user who wants to create a lobby
      * @param multiplayer true if multiplayer, false if singleplayer
      * @throws IllegalArgumentException name already taken
      * @implNote the primary key of the lobbies is the name therefore the name has to be unique
@@ -51,7 +50,7 @@ public class LobbyManagement {
             lobbyID++;
         }
 
-        //check if name already exists
+        // check if name already exists
         if (multiplayer) {
             for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
                 if (entry.getValue().getName() != null && entry.getValue().getName().equals(name)) {

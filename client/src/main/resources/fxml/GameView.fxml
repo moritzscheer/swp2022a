@@ -426,7 +426,7 @@
                </rowConstraints>
                <children>
                       <!-- ChosenCards -->
-      
+
                       <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
                               <RowConstraints vgrow="SOMETIMES" />

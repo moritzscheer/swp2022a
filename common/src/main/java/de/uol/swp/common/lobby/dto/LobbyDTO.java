@@ -192,7 +192,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles ready players.
      *
-     * If a user pressed ready in the lobby the user is removed from the notReadyUsers set
+     * <p>If a user pressed ready in the lobby the user is removed from the notReadyUsers set
      *
      * @param user containing the User that is ready
      * @author Moritz Scheer
@@ -206,7 +206,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles not ready players.
      *
-     * If a user pressed not ready in the lobby the user is added to the notReadyUsers set
+     * <p>If a user pressed not ready in the lobby the user is added to the notReadyUsers set
      *
      * @param user containing the User that is not ready
      * @author Moritz Scheer
@@ -318,9 +318,8 @@ public class LobbyDTO implements Lobby {
      * @since 2023-05-01
      */
     public int increaseCounterRequest() {
-        this.countRequestToStartGame +=1;
+        this.countRequestToStartGame += 1;
         return this.countRequestToStartGame;
-
     }
 
     /**
