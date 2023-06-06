@@ -1028,8 +1028,11 @@ public class GamePresenter extends AbstractPresenter {
             playerCards.get(position).setImage(
                     jsonUtils.getCardImage(userCurrentCard.getValue().getID())
             );
-            playerCards.get(position).setFitHeight(150);
-            playerCards.get(position).setFitWidth(100);
+            playerCards.get(position).setFitHeight(75);
+            playerCards.get(position).setFitWidth(50);
+
+//            playerCards.get(position).fitHeightProperty().bind(player2Grid.heightProperty());
+//            playerCards.get(position).fitWidthProperty().bind(player2Grid.heightProperty().divide(2));
         }
 
 
