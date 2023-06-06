@@ -173,6 +173,20 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane player6Grid;
     @FXML private GridPane player7Grid;
     @FXML private GridPane player8Grid;
+    @FXML private GridPane player2CardWrapper;
+    @FXML private GridPane player3CardWrapper;
+    @FXML private GridPane player4CardWrapper;
+    @FXML private GridPane player5CardWrapper;
+    @FXML private GridPane player6CardWrapper;
+    @FXML private GridPane player7CardWrapper;
+    @FXML private GridPane player8CardWrapper;
+    @FXML private GridPane player2CardImageHolder;
+    @FXML private GridPane player3CardImageHolder;
+    @FXML private GridPane player4CardImageHolder;
+    @FXML private GridPane player5CardImageHolder;
+    @FXML private GridPane player6CardImageHolder;
+    @FXML private GridPane player7CardImageHolder;
+    @FXML private GridPane player8CardImageHolder;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
     @FXML private TextArea historyOutput;
@@ -195,6 +209,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerCpTexts;
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
+    private ArrayList<GridPane> playerCardImageHolders;
+    private ArrayList<GridPane> playerCardWrappers;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
@@ -311,6 +327,24 @@ public class GamePresenter extends AbstractPresenter {
         playerCards.add(player6Card);
         playerCards.add(player7Card);
         playerCards.add(player8Card);
+
+        playerCardWrappers = new ArrayList<GridPane>();
+        playerCardWrappers.add(player2CardWrapper);
+        playerCardWrappers.add(player3CardWrapper);
+        playerCardWrappers.add(player4CardWrapper);
+        playerCardWrappers.add(player5CardWrapper);
+        playerCardWrappers.add(player6CardWrapper);
+        playerCardWrappers.add(player7CardWrapper);
+        playerCardWrappers.add(player8CardWrapper);
+
+        playerCardImageHolders = new ArrayList<GridPane>();
+        playerCardImageHolders.add(player2CardImageHolder);
+        playerCardImageHolders.add(player3CardImageHolder);
+        playerCardImageHolders.add(player4CardImageHolder);
+        playerCardImageHolders.add(player5CardImageHolder);
+        playerCardImageHolders.add(player6CardImageHolder);
+        playerCardImageHolders.add(player7CardImageHolder);
+        playerCardImageHolders.add(player8CardImageHolder);
 
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
@@ -821,7 +855,8 @@ public class GamePresenter extends AbstractPresenter {
             int position = userToPositionInStackPanes.get(playerIsReady);
             playerReadyStackPanes
                     .get(position)
-                    .setStyle("-fx-background-color: green;-fx-background-radius: 5");
+                    .setStyle("-fx-background-color: green;-fx-background-radius: 5;-fx-border-color: black;-fx-border-radius: 5;");
+
         }
 
         //        String style;
@@ -973,8 +1008,13 @@ public class GamePresenter extends AbstractPresenter {
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
-            playerCards.get(position).setFitHeight(75);
-            playerCards.get(position).setFitWidth(50);
+//            playerCards.get(position).setFitHeight(75);
+//            playerCards.get(position).setFitWidth(50);
+
+            playerCards.get(position).fitHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCards.get(position).fitWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
+
+
         }
 
         //        User user = users.get(0);
