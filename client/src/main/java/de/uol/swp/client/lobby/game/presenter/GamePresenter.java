@@ -700,6 +700,8 @@ public class GamePresenter extends AbstractPresenter {
      */
     public void setReceivedCards(List<CardDTO> receivedCards) {
 
+        Collections.sort(receivedCards, Comparator.comparingInt(CardDTO::getID));
+
         for (Map.Entry<Rectangle, CardDTO> chosenCard : chosenCardsMap.entrySet()) {
             chosenCard.getKey().setDisable(false);
         }
