@@ -24,7 +24,6 @@ public class GetProgramCardsRequest extends AbstractGameRequest {
         this.loggedInUser = loggedInUser;
     }
 
-
     public int getLobbyID() {
         return lobbyID;
     }

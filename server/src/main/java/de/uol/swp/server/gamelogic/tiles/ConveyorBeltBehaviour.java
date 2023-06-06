@@ -1,11 +1,11 @@
 package de.uol.swp.server.gamelogic.tiles;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.MoveIntent;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +69,9 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
                         if (conBehaviourOnNextBlock != null) {
                             int rotation =
                                     (conBehaviourOnNextBlock.direction.ordinal()
-                                            - direction.ordinal() + 4) % 4 ;
+                                                    - direction.ordinal()
+                                                    + 4)
+                                            % 4;
                             robotState.setDirection(
                                     CardinalDirection.values()[
                                             robotState.getDirection().ordinal() + rotation]);
@@ -87,62 +89,55 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
     @Override
     public List<int[]> getImage() {
-        int rotation = direction.ordinal() ;
+        int rotation = direction.ordinal();
         int arrowType;
         int secondArrowType = 0;
         boolean hasSecondArrow = false;
         int type = 9;
-        if(this instanceof ExpressConveyorBeltBehaviour){
+        if (this instanceof ExpressConveyorBeltBehaviour) {
             type = 26;
         }
-        switch (this.arrowType){
-
+        switch (this.arrowType) {
             case Straight:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 27;
-                }
-                else {
+                } else {
                     arrowType = 10;
                 }
                 break;
             case TurnRight:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 28;
-                }
-                else {
+                } else {
                     arrowType = 11;
                 }
                 break;
             case TurnLeft:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 29;
-                }
-                else {
+                } else {
                     arrowType = 12;
                 }
                 break;
             case StraightTurnRight:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 31;
-                }
-                else {
+                } else {
                     arrowType = 15;
                 }
                 break;
             case StraightTurnLeft:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 30;
-                }
-                else {
+                } else {
                     arrowType = 14;
                 }
                 break;
 
             case TTurn:
-                if(this instanceof ExpressConveyorBeltBehaviour){
+                if (this instanceof ExpressConveyorBeltBehaviour) {
                     arrowType = 53;
-                }
-                else {
+                } else {
                     arrowType = 52;
                 }
                 break;
@@ -151,6 +146,7 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
                 throw new IllegalStateException("Unexpected value: " + this.arrowType + " or ");
         }
 
-        return new ArrayList<>(Arrays.asList( new int[] {type, rotation}, new int[] {arrowType, rotation}));
+        return new ArrayList<>(
+                Arrays.asList(new int[] {type, rotation}, new int[] {arrowType, rotation}));
     }
 }

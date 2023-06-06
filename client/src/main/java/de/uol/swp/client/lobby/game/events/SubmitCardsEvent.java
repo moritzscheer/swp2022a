@@ -17,7 +17,7 @@ public class SubmitCardsEvent {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public SubmitCardsEvent(int lobbyID, UserDTO loggedInUser, List<CardDTO>  cardDTOS){
+    public SubmitCardsEvent(int lobbyID, UserDTO loggedInUser, List<CardDTO> cardDTOS) {
         this.lobbyID = lobbyID;
         this.loggedInUser = loggedInUser;
         this.cardDTOS = cardDTOS;
@@ -31,7 +31,7 @@ public class SubmitCardsEvent {
         return loggedInUser;
     }
 
-    public List<CardDTO>  getCardDTOS() {
+    public List<CardDTO> getCardDTOS() {
         return cardDTOS;
     }
 }

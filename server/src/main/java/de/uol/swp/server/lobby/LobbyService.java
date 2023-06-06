@@ -43,9 +43,9 @@ public class LobbyService extends AbstractService {
     /**
      * Constructor
      *
-     * @param lobbyManagement       The management class for creating, storing and deleting lobbies
+     * @param lobbyManagement The management class for creating, storing and deleting lobbies
      * @param authenticationService the user management
-     * @param eventBus              the server-wide EventBus
+     * @param eventBus the server-wide EventBus
      * @since 2019-10-08
      */
     @Inject
@@ -275,12 +275,49 @@ public class LobbyService extends AbstractService {
 
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
-            if(request.isReady()) {
+            if (request.isReady()) {
                 lobby.get().makePlayerReady(request.getUser());
-                sendToAllInLobby(request.getLobbyID(), new PlayerReadyInLobbyMessage(request.getLobbyID(), request.getUser(), request.isReady()));
+                sendToAllInLobby(
+                        request.getLobbyID(),
+                        new PlayerReadyInLobbyMessage(
+                                request.getLobbyID(), request.getUser(), request.isReady()));
             } else {
                 lobby.get().makePlayerNotReady(request.getUser());
-                sendToAllInLobby(request.getLobbyID(), new PlayerReadyInLobbyMessage(request.getLobbyID(), request.getUser(), request.isReady()));
+                sendToAllInLobby(
+                        request.getLobbyID(),
+                        new PlayerReadyInLobbyMessage(
+                                request.getLobbyID(), request.getUser(), request.isReady()));
+            }
+        }
+    }
+
+    /**
+     * Handles MapChangeRequests sent by clients
+     *
+     * <p>If the sender is the owner of the given lobby, the map of the lobby is set to the map
+     * specified by the request, and MapChangedMessages are sent to all users in the lobby to notify
+     * them of this change
+     *
+     * @param msg MapChangeRequest from the EventBus
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @author Mathis Eilers
+     * @since 2022-12-31
+     */
+    @Subscribe
+    public void onMapChangeRequest(MapChangeRequest msg) {
+        int lobbyID = msg.getID();
+        Optional<LobbyDTO> lobbyO = lobbyManagement.getLobby(lobbyID);
+
+        if (lobbyO.isPresent()) {
+            Optional<LobbyDTO> lDTO = lobbyManagement.getLobby(lobbyO.get().getLobbyID());
+            // Allow changing the map only if the user sending the request is also the owner
+            if (lDTO.isPresent() && lobbyO.get().getOwner().equals(msg.getUser())) {
+                lDTO.get().setMap(msg.getMap());
+
+                sendToAllInLobby(
+                        lobbyID,
+                        new MapChangedMessage(lobbyID, msg.getUser(), lDTO.get().getMap()));
             }
         }
     }
