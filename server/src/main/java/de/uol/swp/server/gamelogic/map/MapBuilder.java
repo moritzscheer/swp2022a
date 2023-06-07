@@ -193,7 +193,7 @@ public final class MapBuilder {
 
         AbstractTileBehaviour[] uniqueBehaviourList = new LinkedHashSet<>(Arrays.asList(behaviourList)).toArray(new AbstractTileBehaviour[0]);
 
-        return behaviourList;
+        return uniqueBehaviourList;
     }
 
 }
