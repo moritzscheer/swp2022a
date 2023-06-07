@@ -440,10 +440,7 @@ public class GamePresenter extends AbstractPresenter {
 
             // robot image
             ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
-            System.out.println("Player" + player.getKey().getUsername());
-            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
-            System.out.println(imageView);
-            System.out.println(playerRobot.size());
+
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
@@ -567,9 +564,9 @@ public class GamePresenter extends AbstractPresenter {
                          * @author Tommy Dang
                          * @since 2023-05-23
                          */
-                        double widthOfRightGrid = 5.5; // 5.5 gut
-                        double heightOfHandCardGridPane = 2.2; // 2.2 gut
-                        double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
+                        double widthOfRightGrid = 5.4; // 5.5 gut
+                        double heightOfHandCardGridPane = 2.1; // 2.2 gut
+                        double heightOfSelectedCardGridPane = 1.1; // 1.2 gut
 
                         for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
                             handCards
@@ -618,24 +615,24 @@ public class GamePresenter extends AbstractPresenter {
                                             selectedCardGridPane
                                                     .heightProperty()
                                                     .divide(8.1)
-                                                    .subtract(3.5)); // 8.1 / 3.5
+                                                    .subtract(5)); // 8.1 / 3.5
                         }
 
                         text_chosenCard1
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard2
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard3
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard4
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard5
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -770,8 +767,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Reset chosenCardsSlots
      *
-     * @author Moritz
-     * @since 2023-05-06
+     * @author Moritz and Tommy Dang
+     * @since 2023-06-07
      */
     public void resetCardsAndSlots() {
         // submittedCards.clear();
@@ -780,6 +777,7 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
+                slotz.getKey().setStyle("-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
             }
         }
 
@@ -897,7 +895,7 @@ public class GamePresenter extends AbstractPresenter {
         for (int i = 0; i < playerCount; i++) {
             playerReadyStackPanes
                     .get(i)
-                    .setStyle("-fx-background-color: red;-fx-background-radius: 5");
+                    .setStyle("-fx-background-color: red;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
         }
     }
 
@@ -916,7 +914,7 @@ public class GamePresenter extends AbstractPresenter {
             int position = userToPositionInStackPanes.get(playerIsReady);
             playerReadyStackPanes
                     .get(position)
-                    .setStyle("-fx-background-color: green;-fx-background-radius: 5");
+                    .setStyle("-fx-background-color: green;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
         }
 
         //        String style;
@@ -1024,8 +1022,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Block choosenCards and availableCards
      *
-     * @author Maria Andrade
-     * @since 2023-05-23
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-07
      */
     public void blockPlayerCardsAfterSubmit(UserDTO playerReady) {
         if (Objects.equals(playerReady, this.loggedInUser)) {
@@ -1035,6 +1033,7 @@ public class GamePresenter extends AbstractPresenter {
                 if (card.getKey() != null) {
                     cardsMap.replace(card.getKey(), null);
                     card.getKey().setFill(RED);
+                    card.getKey().setStyle("-fx-arc-width: 10; -fx-arc-height: 10; -fx-stroke: black; -fx-stroke-width: 1;");
 
                     // remove text
                     cardValues.get(card.getKey()).setText("");
@@ -1069,9 +1068,16 @@ public class GamePresenter extends AbstractPresenter {
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
 
+            /** Makes the card images responsiv to the size of the window and gives a border to the images
+             *
+             * @author Tommy Dang
+             * @since 2023-06-07
+             */
             playerCards.get(position).fitHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
             playerCards.get(position).fitWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
-
+            playerCardImageHolders.get(position).setStyle("-fx-border-color: blue; -fx-border-radius: 5; -fx-border-insets: -1; -fx-border-width: 2");
+            playerCardImageHolders.get(position).prefHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCardImageHolders.get(position).prefWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
 
         }
 
