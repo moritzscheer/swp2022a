@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
 /**
  * @author Maria Andrade & Finn Oldeboershuis
  * @see
@@ -48,6 +49,8 @@ public class Game {
 
     private final String mapName;
 
+    private final int checkpointCount;
+
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     private static final Set<Integer> cardsIdsOnlyTurn =
@@ -66,12 +69,13 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName, int numberBots) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName, int numberBots, int checkpointCount) {
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
         this.mapName = mapName;
+        this.checkpointCount = checkpointCount;
 
         assert users.size() + numberBots <= 8;
 
@@ -297,8 +301,11 @@ public class Game {
     }
 
     public void startGame(){
+        Random random = new Random();
+        int version = random.nextInt(3)+1;
+        System.out.println("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
 
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+".map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;

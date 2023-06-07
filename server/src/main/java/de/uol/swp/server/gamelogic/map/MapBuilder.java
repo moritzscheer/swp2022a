@@ -19,7 +19,7 @@ import java.util.*;
 public final class MapBuilder {
 
     public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
-    //public static List<Integer[]> checkpoints = new ArrayList<>();
+    public static List<int[][]> checkpointsMapOne = new ArrayList<>();
 
 
 
@@ -36,15 +36,30 @@ public final class MapBuilder {
         }
     }
 
-    public static void main(String[] args) throws IOException {
+    public  static void main(String[] args) throws IOException {
 
         maps.add(new MapOne());
-        maps.add(new MapTwo());
+        //maps.add(new MapTwo());
+        checkpointsMapOne.add(new int[][] {{3,9}, {10,3}});
+        checkpointsMapOne.add(new int[][] {{3,9,2}, {10,3,2}});
+        checkpointsMapOne.add(new int[][] {{3,9,2,4}, {10,3,2,5}});
+        checkpointsMapOne.add(new int[][] {{3,9,2,4,8}, {10,3,2,5,6}});
+        checkpointsMapOne.add(new int[][] {{3,9,2,4,8,9}, {10,3,2,5,6,9}});
+        checkpointsMapOne.add(new int[][] {{4,7}, {3,5}});
+        checkpointsMapOne.add(new int[][] {{4,7,3}, {3,5,10}});
+        checkpointsMapOne.add(new int[][] {{4,7,3,6}, {3,5,10,8}});
+        checkpointsMapOne.add(new int[][] {{4,7,3,6,0}, {3,5,10,8,5}});
+        checkpointsMapOne.add(new int[][] {{4,7,3,6,0,4}, {3,5,10,8,5,2}});
+        checkpointsMapOne.add(new int[][] {{3,6}, {5,8}});
+        checkpointsMapOne.add(new int[][] {{3,6,8}, {5,8,3}});
+        checkpointsMapOne.add(new int[][] {{3,6,8,9}, {5,8,3,8}});
+        checkpointsMapOne.add(new int[][] {{3,6,8,9,5}, {5,8,3,8,11}});
+        checkpointsMapOne.add(new int[][] {{3,6,8,9,5,4}, {5,8,3,8,11,9}});
 
 
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/MapOne.map");
+        Block[][] map = getMap("server/src/main/resources/maps/MapOneV1C2.map");
         if (map != null) {
             System.out.println(map.length);
         }
@@ -52,33 +67,56 @@ public final class MapBuilder {
 
     public static void mapGen() throws IOException {
         for (AbstractMap mapClass : maps) {
-            Block[][] map = mapGenExtracted(mapClass.getMap());
-
-
-            String path = "server/src/main/resources/maps/" + mapClass.getClass().getName().replace("de.uol.swp.server.gamelogic.map.", "") + ".map";
-
-            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
-            objOut.writeObject(map);
-            objOut.flush();
-            objOut.close();
+            for (int i = 0; i < 3; i++) { // Version
+                for (int j = 0; j < 5; j++) { // Checkpoints
+                    Block[][] originalMap = mapClass.getMap();
+                    Block[][] map = mapGenExtracted(copyMap(originalMap), i, j);
+                    String path = "server/src/main/resources/maps/" + mapClass.getClass().getName().replace("de.uol.swp.server.gamelogic.map.", "") + "V" + (i+1) + "C" + (j + 2) + ".map";
+                    ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
+                    objOut.writeObject(map);
+                    objOut.flush();
+                    objOut.close();
+                }
+            }
         }
     }
 
-    private static Block[][] mapGenExtracted(Block[][] mapFromClass) {
+    private static Block[][] copyMap(Block[][] originalMap) {
+        Block[][] copy = new Block[originalMap.length][originalMap[0].length];
+        for (int i = 0; i < originalMap.length; i++) {
+            for (int j = 0; j < originalMap[0].length; j++) {
+                copy[i][j] = (Block) originalMap[i][j].clone(); // Assuming Block class implements Cloneable
+            }
+        }
+        return copy;
+    }
+
+
+    private static Block[][] mapGenExtracted(Block[][] mapFromClass, int version, int checkpoints) {
         int x = 0;
         int y = 0;
 
+        int[][] checkpointLocations = checkpointsMapOne.get((version*5)+checkpoints);
 
         Block[][] map = mapFromClass;
 
-        for (y = 0; y < 12; y++) {
+        for(int i = 0; i<checkpoints+2; i++){
+            x = checkpointLocations[0][i];
+            y = checkpointLocations[1][i];
+            System.out.println(x + " " + y);
+            map[x][y] = new Block(new CheckPointBehaviour(null, map, new Position(x, y), (i+1)), null , new Position(x,y));
+        }
+        System.out.println("NEXT");
 
+        //Place Laser
+        int checkpointFound = 0;
+        for (y = 0; y < 12; y++) {
             for (x = 0; x < 12; x++) {
+
                 //boolean pitBehaviourFound = false;
                 //boolean conveyorBeltBehaviourFound = false;
                 //boolean repairBehaviourFound = false;
                 //boolean gearBehaviourFound = false;
-
                 for (int i = 0; i < map[x][y].getBehaviourList().length; i++) {
                     if (map[x][y].getBehaviourList()[i] instanceof LaserBehaviour) {
                         if (((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart() == true) {
@@ -89,6 +127,11 @@ public final class MapBuilder {
                     else if(map[x][y].getBehaviourList()[i] instanceof PitBehaviour){
                         pitBehaviourFound = true;
                     }
+                    */
+                    else if(map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour){
+                        checkpointFound++;
+                    }
+                    /*
                     else if(map[x][y].getBehaviourList()[i] instanceof ConveyorBeltBehaviour || map[x][y].getBehaviourList()[i] instanceof ExpressConveyorBeltBehaviour){
                         conveyorBeltBehaviourFound = true;
                     }
@@ -99,12 +142,12 @@ public final class MapBuilder {
                         gearBehaviourFound = true;
                      */
                 }
-
-
             }
+
         }
+        System.out.println("Checkpoints: " + checkpointFound);
 
-
+        // Sort Behaviours
         for (y = 0; y < 12; y++) {
 
             for (x = 0; x < 12; x++) {

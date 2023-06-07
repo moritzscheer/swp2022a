@@ -12,7 +12,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class StartGameRequest extends AbstractGameRequest {
 
     private int lobbyID;
-    private String mapName;
+
     private int numberBots;
 
     /**

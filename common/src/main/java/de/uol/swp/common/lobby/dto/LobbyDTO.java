@@ -32,6 +32,8 @@ public class LobbyDTO implements Lobby {
     private final Integer playerSlot = 8;
     private final UUID chatChannel;
 
+    private int checkpointCount;
+
     private int countRequestToStartGame = 0;
     private String mapName;
 
@@ -367,5 +369,12 @@ public class LobbyDTO implements Lobby {
     }
     public String getMapName(){
         return this.mapName;
+    }
+
+    public void setCheckpointCount(int checkpointCount){
+        this.checkpointCount = checkpointCount;
+    }
+    public int getCheckpointCount(){
+        return this.checkpointCount;
     }
 }

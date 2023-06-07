@@ -38,10 +38,7 @@ import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * Manages the Lobby window
@@ -70,6 +67,7 @@ public class LobbyPresenter extends AbstractPresenter {
     private Boolean multiplayer;
     private Integer slots = 1;
     private TextChatChannel textChat;
+    private int checkpointCount;
 
     @Inject private TabPresenter tabPresenter;
 
@@ -132,6 +130,10 @@ public class LobbyPresenter extends AbstractPresenter {
         multiplayer = lobby.isMultiplayer();
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
+
+        Random random = new Random();
+        checkpointCount = random.nextInt(5)+2;
+        lobby.setCheckpointCount(checkpointCount);
 
         boolean first = false;
         if(first == false){
