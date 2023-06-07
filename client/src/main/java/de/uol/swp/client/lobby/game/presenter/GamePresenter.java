@@ -136,14 +136,14 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Rectangle chosenCard3;
     @FXML private Rectangle chosenCard4;
     @FXML private Rectangle chosenCard5;
-    @FXML private GridPane player1Robot;
-    @FXML private GridPane player2Robot;
-    @FXML private GridPane player3Robot;
-    @FXML private GridPane player4Robot;
-    @FXML private GridPane player5Robot;
-    @FXML private GridPane player6Robot;
-    @FXML private GridPane player7Robot;
-    @FXML private GridPane player8Robot;
+    @FXML private HBox player1Robot;
+    @FXML private VBox player2Robot;
+    @FXML private VBox player3Robot;
+    @FXML private VBox player4Robot;
+    @FXML private VBox player5Robot;
+    @FXML private VBox player6Robot;
+    @FXML private VBox player7Robot;
+    @FXML private VBox player8Robot;
 
     @FXML private Text text_card1;
 
@@ -228,7 +228,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<ImageView> playerCards;
     private ArrayList<GridPane> playerCardImageHolders;
     private ArrayList<GridPane> playerCardWrappers;
-    private ArrayList<GridPane> playerRobot;
+    private ArrayList<VBox> playerRobot;
     private ArrayList<GridPane> playerGridWrapper;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
@@ -365,7 +365,7 @@ public class GamePresenter extends AbstractPresenter {
         playerCardImageHolders.add(player7CardImageHolder);
         playerCardImageHolders.add(player8CardImageHolder);
 
-        playerRobot = new ArrayList<GridPane>();
+        playerRobot = new ArrayList<VBox>();
         playerRobot.add(player2Robot);
         playerRobot.add(player3Robot);
         playerRobot.add(player4Robot);
@@ -458,16 +458,18 @@ public class GamePresenter extends AbstractPresenter {
                         .get(count)
                         .setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
-                playerRobot.get(count).add(imageView, 0,0);
+                //playerRobot.get(count).add(imageView, 0,0);
+                playerRobot.get(count).getChildren().add(imageView);
                 playerRobot.get(count).setVisible(true);
-                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
-                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
+                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
 
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
             else{
                 // for player is loggedInUser
-                player1Robot.add(imageView, 0, 0);
+                //player1Robot.add(imageView, 0, 0);
+                player1Robot.getChildren().add(imageView);
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
