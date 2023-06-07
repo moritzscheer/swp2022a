@@ -33,7 +33,25 @@ public class LaserBehaviour extends AbstractTileBehaviour {
             Position blockPos,
             CardinalDirection laserDir,
             int laserBeam,
-            boolean fullLaser, boolean b) {
+            boolean fullLaser,
+            boolean start) {
+        super(robotStates, board, blockPos);
+        this.activeInProgramSteps = activeInProgramSteps;
+        this.direction = laserDir;
+        this.laserBeam = laserBeam;
+        this.start = start;
+        this.fullLaser = fullLaser;
+
+    }
+
+    public LaserBehaviour(
+            List<Robot> robotStates,
+            Block[][] board,
+            int[] activeInProgramSteps,
+            Position blockPos,
+            CardinalDirection laserDir,
+            int laserBeam,
+            boolean fullLaser) {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps = activeInProgramSteps;
         this.direction = laserDir;
@@ -41,7 +59,6 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         this.fullLaser = fullLaser;
 
     }
-
 
 
     /**

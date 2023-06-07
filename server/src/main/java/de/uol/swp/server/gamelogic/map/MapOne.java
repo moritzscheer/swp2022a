@@ -499,9 +499,9 @@ public class MapOne extends AbstractMap{
         generateBlock(map, x, y,
                 new GearBehaviour(null, map, new Position(x, y), false));
         x = 2;
-        generateBlock(map, x, y,
+        generateBlock(map, x, y
 
-                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
+                ,new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
         );
         x = 3;
         generateBlock(map, x, y);
