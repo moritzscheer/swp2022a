@@ -7,10 +7,7 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -22,6 +19,8 @@ import java.util.List;
 public final class MapBuilder {
 
     public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
+    //public static List<Integer[]> checkpoints = new ArrayList<>();
+
 
 
 
@@ -41,6 +40,7 @@ public final class MapBuilder {
 
         maps.add(new MapOne());
         maps.add(new MapTwo());
+
 
         mapGen();
 
@@ -114,11 +114,6 @@ public final class MapBuilder {
         }
         return map;
     }
-    private static void generateBlock(
-            Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
-        map[x][y] = new Block(behaviours, null, new Position(x, y));
-    }
-
     private static void laserStart(Block[][] map,int x, int y, int beam, CardinalDirection direction){
         int x2 = x;
         int y2 = y;
