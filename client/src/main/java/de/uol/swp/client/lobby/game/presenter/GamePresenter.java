@@ -227,6 +227,8 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<GridPane> playerCardWrappers;
     private ArrayList<VBox> playerRobot;
     private ArrayList<GridPane> playerGridWrapper;
+    private ArrayList<GridPane> playerGrids;
+    private ArrayList<Text> playerNames;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
@@ -275,7 +277,7 @@ public class GamePresenter extends AbstractPresenter {
                 "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
         robotOffButton.setText("Turn Robot OFF");
 
-        ArrayList<GridPane> playerGrids = new ArrayList<GridPane>();
+        playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
         playerGrids.add(player3Grid);
         playerGrids.add(player4Grid);
@@ -284,7 +286,7 @@ public class GamePresenter extends AbstractPresenter {
         playerGrids.add(player7Grid);
         playerGrids.add(player8Grid);
 
-        ArrayList<Text> playerNames = new ArrayList<Text>();
+        playerNames = new ArrayList<Text>();
         playerNames.add(player2Name);
         playerNames.add(player3Name);
         playerNames.add(player4Name);
@@ -379,7 +381,7 @@ public class GamePresenter extends AbstractPresenter {
 
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
-        loadPlayers(playerGrids, playerNames);
+        loadPlayers();
 
         // TODO: load cards
 
@@ -425,7 +427,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Maria Andrade and Tommy Dang
      * @since 2023-06-06
      */
-    private void loadPlayers(ArrayList<GridPane> playerGrids, ArrayList<Text> playerNames) {
+    private void loadPlayers() {
         int count = 0;
         int robotImageID;
 
