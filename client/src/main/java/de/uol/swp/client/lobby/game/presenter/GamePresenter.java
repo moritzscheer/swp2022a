@@ -12,10 +12,7 @@ import de.uol.swp.client.lobby.game.Card;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.game.dto.BlockDTO;
-import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.game.dto.GameDTO;
-import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -418,6 +415,7 @@ public class GamePresenter extends AbstractPresenter {
         cardValues.put(chosenCard5, text_chosenCard5);
 
         resetCardsAndSlots();
+        resizeCardsRectangles();
     }
 
     /**
@@ -522,121 +520,153 @@ public class GamePresenter extends AbstractPresenter {
                                 }
                             }
                         }
-
-                        Position startPosition = msg.getCheckPoint1Position();
-                        LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
-
-                        // update robot position in board
-                        for (Map.Entry<UserDTO, PlayerDTO> player :
-                                this.userDTOPlayerDTOMap.entrySet()) {
-                            // show this player robot, since they all start in checkpoint 1
-                            int robotID = player.getValue().getRobotDTO().getRobotID();
-                            ImageView imageView = jsonUtils.getRobotImage(robotID);
-                            imageView.setRotate(
-                                    (player.getValue().getRobotDTO().getDirection().ordinal())
-                                            * 90);
-                            imageView
-                                    .fitWidthProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board.length + 1)
-                                                    .subtract(10));
-                            imageView
-                                    .fitHeightProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board[0].length + 1)
-                                                    .subtract(10));
-
-                            gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
-
-                            this.userRobotImageViewReference.put(player.getKey(), imageView);
-                        }
-
-                        /**
-                         * Helps to resize the rectangles of the cards and makes it more automatic
-                         *
-                         * @author Tommy Dang
-                         * @since 2023-05-23
-                         */
-                        double widthOfRightGrid = 5.4; // 5.5 gut
-                        double heightOfHandCardGridPane = 2.1; // 2.2 gut
-                        double heightOfSelectedCardGridPane = 1.1; // 1.2 gut
-
-                        for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
-                            handCards
-                                    .getKey()
-                                    .widthProperty()
-                                    .bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                            handCards
-                                    .getKey()
-                                    .heightProperty()
-                                    .bind(
-                                            handCardGridPane
-                                                    .heightProperty()
-                                                    .divide(heightOfHandCardGridPane));
-                        }
-                        for (Map.Entry<Rectangle, CardDTO> chosenCards :
-                                chosenCardsMap.entrySet()) {
-                            chosenCards
-                                    .getKey()
-                                    .widthProperty()
-                                    .bind(rightGrid.widthProperty().divide(widthOfRightGrid));
-                            chosenCards
-                                    .getKey()
-                                    .heightProperty()
-                                    .bind(
-                                            selectedCardGridPane
-                                                    .heightProperty()
-                                                    .divide(heightOfSelectedCardGridPane));
-                        }
-
-                        /**
-                         * Helps to align the Card priority text in the cards
-                         *
-                         * <p>In the programming cards is a white box, where the value of the
-                         * priority is. This helps to correctly align the text into the card Needs
-                         * to separate handcards and selected cards because of their different
-                         * sizes.
-                         *
-                         * @author Tommy Dang
-                         * @since 2023-05-23
-                         */
-                        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
-                            handCardsText
-                                    .getValue()
-                                    .translateYProperty()
-                                    .bind(
-                                            selectedCardGridPane
-                                                    .heightProperty()
-                                                    .divide(8.1)
-                                                    .subtract(5)); // 8.1 / 3.5
-                        }
-
-                        text_chosenCard1
-                                .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-                        text_chosenCard2
-                                .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-                        text_chosenCard3
-                                .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-                        text_chosenCard4
-                                .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-                        text_chosenCard5
-                                .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
     }
 
+    public void loadRobotsInBoard(){
+        Platform.runLater(
+                () -> {
+                    Position startPosition;
+
+                    // update robot position in board
+                    for (Map.Entry<UserDTO, PlayerDTO> player :
+                            this.userDTOPlayerDTOMap.entrySet()) {
+                        if(this.userRobotImageViewReference.containsKey(player.getKey())){
+                            // if exists and not null, go on, to not create twice the same image
+                            // if player is null in userDTOPlayerDTOMap, it means it died forever
+                            if(!Objects.equals(
+                                    this.userRobotImageViewReference.get(player.getKey()),
+                                    null)
+                            || Objects.equals(
+                                    this.userDTOPlayerDTOMap.get(player.getKey()),
+                                    null))
+                                continue;
+
+                        }
+                        startPosition = player.getValue().getRobotDTO().getPosition();
+                        LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
+
+                        // show this player robot, since they all start in checkpoint 1
+                        int robotID = player.getValue().getRobotDTO().getRobotID();
+                        ImageView imageView = jsonUtils.getRobotImage(robotID);
+                        imageView.setRotate(
+                                (player.getValue().getRobotDTO().getDirection().ordinal())
+                                        * 90);
+                        imageView
+                                .fitWidthProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board.length + 1)
+                                                .subtract(10));
+                        imageView
+                                .fitHeightProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board[0].length + 1)
+                                                .subtract(10));
+
+
+                        gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
+
+                        if(this.userRobotImageViewReference.containsKey(player.getKey()))
+                            this.userRobotImageViewReference.replace(player.getKey(), imageView);
+                        else
+                            this.userRobotImageViewReference.put(player.getKey(), imageView);
+
+                    }
+                });
+    }
+
+    /**
+     * Helps to resize the rectangles of the cards and makes it more automatic
+     *
+     * @author Tommy Dang
+     * @since 2023-05-23
+     */
+    public void resizeCardsRectangles(){
+        /**
+         * Helps to resize the rectangles of the cards and makes it more automatic
+         *
+         * @author Tommy Dang
+         * @since 2023-05-23
+         */
+
+        double widthOfRightGrid = 5.4; // 5.5 gut
+        double heightOfHandCardGridPane = 2.1; // 2.2 gut
+        double heightOfSelectedCardGridPane = 1.1; // 1.2 gut
+
+        for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
+            handCards
+                    .getKey()
+                    .widthProperty()
+                    .bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+            handCards
+                    .getKey()
+                    .heightProperty()
+                    .bind(
+                            handCardGridPane
+                                    .heightProperty()
+                                    .divide(heightOfHandCardGridPane));
+        }
+        for (Map.Entry<Rectangle, CardDTO> chosenCards :
+                chosenCardsMap.entrySet()) {
+            chosenCards
+                    .getKey()
+                    .widthProperty()
+                    .bind(rightGrid.widthProperty().divide(widthOfRightGrid));
+            chosenCards
+                    .getKey()
+                    .heightProperty()
+                    .bind(
+                            selectedCardGridPane
+                                    .heightProperty()
+                                    .divide(heightOfSelectedCardGridPane));
+        }
+
+        /**
+         * Helps to align the Card priority text in the cards
+         *
+         * <p>In the programming cards is a white box, where the value of the
+         * priority is. This helps to correctly align the text into the card Needs
+         * to separate handcards and selected cards because of their different
+         * sizes.
+         *
+         * @author Tommy Dang
+         * @since 2023-05-23
+         */
+        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
+            handCardsText
+                    .getValue()
+                    .translateYProperty()
+                    .bind(
+                            selectedCardGridPane
+                                    .heightProperty()
+                                    .divide(8.1)
+                                    .subtract(5)); // 8.1 / 3.5
+        }
+
+        text_chosenCard1
+                .translateYProperty()
+                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
+        text_chosenCard2
+                .translateYProperty()
+                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
+        text_chosenCard3
+                .translateYProperty()
+                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
+        text_chosenCard4
+                .translateYProperty()
+                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
+        text_chosenCard5
+                .translateYProperty()
+                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
+
+    }
     @FXML
     public void onCardClicked(MouseEvent click) {
         LOG.debug("CARD CLICKED");
