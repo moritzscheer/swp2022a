@@ -133,13 +133,13 @@ public class Game {
                                     Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
                     while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
-                        LOG.debug("Ups, all cards are turn type",((Player)player).getUser().getUsername());
+                        LOG.debug("Ups, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
                         cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
                         // prevent that it runs forever, then redistribute to all players again
                         if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
-                            LOG.debug("New Distribution of cards to all players",((Player)player).getUser().getUsername());
+                            LOG.debug("New Distribution of cards to all players ");
                             notDistributedCards = true;
                             distributeProgramCards();
                         }
@@ -159,6 +159,34 @@ public class Game {
                 }
                 // TODO: lock the registers
                 else {
+                    int[] cardsIDs =
+                            Arrays.copyOfRange(
+                                    Ints.toArray(cardsIDsList), count, count + 5);
+
+                    while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
+                        LOG.debug("Ups, all cards are turn type");
+                        Collections.shuffle(cardsIDsList);
+                        cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
+
+                        // prevent that it runs forever, then redistribute to all players again
+                        if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
+                            LOG.debug("New Distribution of cards to all players");
+                            notDistributedCards = true;
+                            distributeProgramCards();
+                        }
+                    }
+
+                    Card[] cards = new Card[5];
+                    int i = 0;
+                    for (int cardID : cardsIDs) {
+                        cards[i] = searchCardInJSON(cardID);
+                        // save references to these Card objetcs
+                        assert cards[i] != null;
+                        cardIdCardMap.put(cards[i].getId(), cards[i]);
+                        i++;
+                    }
+                    player.receiveCards(cards);
+                    count = count + 5;
                 }
             }
            return true;
