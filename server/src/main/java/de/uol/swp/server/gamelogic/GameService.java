@@ -76,7 +76,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public GameDTO createNewGame(int lobbyID, int numberBots) {
+    public GameDTO createNewGame(int lobbyID, int numberBots) throws Exception {
         System.out.println("I am creating your game :)");
 
         System.out.println("New id :)");
@@ -171,7 +171,7 @@ public class GameService extends AbstractService {
      * @since 2023-02-28
      */
     @Subscribe
-    public void onStartGameRequest(StartGameRequest msg) {
+    public void onStartGameRequest(StartGameRequest msg) throws Exception {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");

@@ -434,10 +434,16 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onStartButtonPressed(ActionEvent actionEvent) {
-        if (loggedInUser == owner) {
-            eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+    private void onStartButtonPressed(ActionEvent actionEvent) throws Exception {
+        if(numberBots.valueProperty().getValue() + users.size() >8) {
+            textChat.sendTextMessage("There are too many players or bots in the lobby!");
+            throw new Exception("There are too many players or bots in the lobby!");
+        }else {
+            if (loggedInUser == owner) {
+                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+            }
         }
+
     }
 
     public ObservableList<String> getUsers() {

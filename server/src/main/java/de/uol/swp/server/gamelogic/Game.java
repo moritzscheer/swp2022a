@@ -62,7 +62,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, int numberBots) {
+    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, int numberBots) throws Exception{
         this.lobbyID = lobbyID;
         this.checkpointsList = checkpointsList;
         this.programStep = 0;
