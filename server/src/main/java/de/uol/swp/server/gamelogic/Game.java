@@ -81,6 +81,7 @@ public class Game {
         // create board
         Random random = new Random();
         int version = random.nextInt(3)+1;
+        LOG.debug(version);
         LOG.debug("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
         this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
 
@@ -90,6 +91,7 @@ public class Game {
         }
 
         // save checkPoints
+        LOG.debug(version);
         Pair<Integer, Position> tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
                 mapName+ "V" + version + "C"+ checkpointCount);
         this.startCheckpoint = tmp.getValue1();
@@ -325,7 +327,7 @@ public class Game {
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
     }
-
+/*
     public void startGame(){
         Random random = new Random();
         int version = random.nextInt(3)+1;
@@ -338,6 +340,8 @@ public class Game {
         }
         setRobotsInfoInBehaviours(board, robots);
     }
+
+ */
 
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (int x = 0; x < board.length; x++) {

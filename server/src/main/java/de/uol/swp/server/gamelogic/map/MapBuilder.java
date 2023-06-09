@@ -28,12 +28,12 @@ public final class MapBuilder {
 
     static {
         // define all three positions for each version
-        Position[] versionPositions = {new Position(3,10), new Position(4,3), new Position(3, 5)};
-        for(int v = 0; v < 3; v++){
+        Position[] versionPositionsMap1 = {new Position(3,10), new Position(4,3), new Position(3, 5)};
+        for(int v = 1; v <= 3; v++){
             for(int c = 2; c <= 6; c++){
                 mapStringToCheckpointNumberAndFirstPosition.put(
-                        "MapOneV" + (v+1) + "C" + (c),
-                        new Pair<>(v, versionPositions[v])
+                        "MapOneV" + (v) + "C" + (c),
+                        new Pair<>(c, versionPositionsMap1[v-1])
                 );
             }
         }
@@ -55,6 +55,8 @@ public final class MapBuilder {
 
         maps.add(new MapOne());
         maps.add(new MapTwo());
+
+        // Checkpoints added as {x1,x2,x3 ... x6} , {y1,y2,y3 ... y6}
         checkpointsMapOne.add(new int[][] {{3,9}, {10,3}});
         checkpointsMapOne.add(new int[][] {{3,9,2}, {10,3,2}});
         checkpointsMapOne.add(new int[][] {{3,9,2,4}, {10,3,2,5}});
@@ -76,15 +78,16 @@ public final class MapBuilder {
 
         mapGen();
 
-        Block[][] map = getMap("server/src/main/resources/maps/MapOneV1C2.map");
-        if (map != null) {
-            System.out.println(map.length);
-        }
+        //Block[][] map = getMap("server/src/main/resources/maps/MapOneV1C2.map");
+       // if (map != null) {
+       //     System.out.println(map.length);
+       // }
     }
 
     public static Pair<Integer, Position> getMapStringToCheckpointNumberAndFirstPosition(String mapName){
         System.out.println("In getMapStringToCheckpointNumberAndFirstPosition");
         System.out.println("gettting info for " + mapName);
+        System.out.println("---------> " + mapStringToCheckpointNumberAndFirstPosition.get(mapName));
         return mapStringToCheckpointNumberAndFirstPosition.get(mapName);
     }
 

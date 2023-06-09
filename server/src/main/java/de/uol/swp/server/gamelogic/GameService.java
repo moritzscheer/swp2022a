@@ -94,7 +94,7 @@ public class GameService extends AbstractService {
                         checkpointCount
                 )
         );
-        games.get(lobbyID).startGame();
+        //games.get(lobbyID).startGame();
 
         // Create DTOs objects
         // TODO: create Player
