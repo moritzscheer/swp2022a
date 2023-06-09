@@ -1384,13 +1384,26 @@ public class GamePresenter extends AbstractPresenter {
 
     public void setRobotDied(UserDTO userDied) {
         if(Objects.equals(loggedInUser.getUsername(), userDied.getUsername())){
-            // TODO: BLOCK CARDS AND BUTTONS
+            selectedCardGridPane.setDisable(true);
+            selectedCardGridPane.setVisible(false);
 
+            handCardGridPane.setDisable(true);
+            handCardGridPane.setVisible(false);
+
+            playerGrid1Wrapper.setDisable(true);
+            playerGrid1Wrapper.setVisible(false);
+
+            readyButton.setDisable(true);
+            readyButton.setVisible(false);
+
+            robotOffButton.setDisable(true);
+            robotOffButton.setVisible(false);
         }
         else{
             // TODO: show robot in the list blocked/dead somehow
             int position = this.userToPositionInStackPanes.get(userDied);
-            playerRobot.get(position).setVisible(false);
+            playerGrids.get(position).setDisable(true);
+            playerGrids.get(position).setVisible(false);
             this.userDTOPlayerDTOMap.replace(userDied, null);
         }
         Platform.runLater(
