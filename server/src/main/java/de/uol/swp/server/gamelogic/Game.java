@@ -283,7 +283,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void roundIsOver() throws InterruptedException {
+    public UserDTO roundIsOver() throws InterruptedException {
 
         // round is over
         this.programStep = 0;
@@ -293,12 +293,21 @@ public class Game {
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
 
-        for(Robot robot: this.robots){
-            if(!robot.isDeadForever()){
-                robot.setAlive(true);
-                robot.setDeadForTheRound(false);
+        int countSurvivors = 0;
+        UserDTO survivor = null;
+        for(AbstractPlayer player: this.players){
+            if(!player.getRobot().isDeadForever()){
+                player.getRobot().setAlive(true);
+                player.getRobot().setDeadForTheRound(false);
+                countSurvivors++;
+                survivor = player.getUser();
             }
         }
+        if(countSurvivors <= 1){
+            // gameover
+            return survivor;
+        }
+        return null;
     }
 
     public void startGame(){

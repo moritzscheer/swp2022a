@@ -398,11 +398,16 @@ public class GameService extends AbstractService {
             game.increaseProgramStep();
         }
 
-        game.roundIsOver(); // reset variables
+        UserDTO winner = game.roundIsOver(); // reset variables
+        AbstractLobbyMessage msg;
+        if(Objects.equals(winner, null))
+            msg = new RoundIsOverMessage(lobbyID);
+        else
+            msg = new GameOverMessage(lobbyID, winner);
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID));
+                        lobbyService.sendToAllInLobby(lobbyID, msg);
                     }
                 },
                 secondsToWait,
