@@ -11,21 +11,22 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
  */
 public class StartGameRequest extends AbstractGameRequest {
 
-    private int lobbyID;
-
-    private int numberBots;
+    private final int lobbyID;
+    private final int numberBots;
+    private final int numberCheckpoints;
 
     /**
      * constructor
      *
-     * @param lobbyID    Integer containing the ID of the lobby
+     * @param lobby    Integer containing the ID of the lobby
      * @param numberBots
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
-    public StartGameRequest(LobbyDTO lobby, int numberBots) {
+    public StartGameRequest(LobbyDTO lobby, int numberBots, int numberCheckpoints) {
         this.lobbyID = lobby.getLobbyID();
         this.numberBots = numberBots;
+        this.numberCheckpoints = numberCheckpoints;
         this.lobby = lobby;
 
 
@@ -44,5 +45,9 @@ public class StartGameRequest extends AbstractGameRequest {
 
     public int getNumberBots() {
         return numberBots;
+    }
+
+    public int getNumberCheckpoints() {
+        return numberCheckpoints;
     }
 }

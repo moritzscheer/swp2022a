@@ -12,11 +12,13 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class RequestStartGameEvent {
 
     private final int numberBots;
+    private  final int numberCheckpoints;
 
     private final LobbyDTO lobbyDTO;
 
-    public RequestStartGameEvent(int numberBots, LobbyDTO lobbyDTO) {
+    public RequestStartGameEvent(int numberBots, int numberCheckpoints, LobbyDTO lobbyDTO) {
         this.numberBots = numberBots;
+        this.numberCheckpoints = numberCheckpoints;
         this.lobbyDTO = lobbyDTO;
     }
 
@@ -26,5 +28,9 @@ public class RequestStartGameEvent {
 
     public int getNumberBots() {
         return numberBots;
+    }
+
+    public int getNumberCheckpoints() {
+        return numberCheckpoints;
     }
 }

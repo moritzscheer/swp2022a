@@ -177,7 +177,7 @@ public class GameService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName(), msg.getNumberBots(), msg.getLobby().getCheckpointCount());
+            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName(), msg.getNumberBots(), msg.getNumberCheckpoints());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(),
