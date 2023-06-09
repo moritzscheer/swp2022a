@@ -333,7 +333,7 @@ public class SceneManager {
      * specified by the JoinOrCreate FXML file.
      *
      * @author Moritz Scheer
-     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @see de.uol.swp.client.preLobby.presenter.JoinOrCreatePresenter
      * @since 2022-12-27
      */
     private void initJoinOrCreateView() throws IOException {
@@ -349,7 +349,7 @@ public class SceneManager {
      * view as specified by the CreateLobby FXML file.
      *
      * @author Moritz Scheerini
-     * @see de.uol.swp.client.register.RegistrationPresenter
+     * @see de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter
      * @since 2022-12-27
      */
     private void initCreateLobbyView() throws IOException {

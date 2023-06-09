@@ -136,14 +136,14 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Rectangle chosenCard3;
     @FXML private Rectangle chosenCard4;
     @FXML private Rectangle chosenCard5;
-    @FXML private GridPane player1Robot;
-    @FXML private GridPane player2Robot;
-    @FXML private GridPane player3Robot;
-    @FXML private GridPane player4Robot;
-    @FXML private GridPane player5Robot;
-    @FXML private GridPane player6Robot;
-    @FXML private GridPane player7Robot;
-    @FXML private GridPane player8Robot;
+    @FXML private HBox player1Robot;
+    @FXML private VBox player2Robot;
+    @FXML private VBox player3Robot;
+    @FXML private VBox player4Robot;
+    @FXML private VBox player5Robot;
+    @FXML private VBox player6Robot;
+    @FXML private VBox player7Robot;
+    @FXML private VBox player8Robot;
 
     @FXML private Text text_card1;
 
@@ -181,6 +181,20 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane player6Grid;
     @FXML private GridPane player7Grid;
     @FXML private GridPane player8Grid;
+    @FXML private GridPane player2CardWrapper;
+    @FXML private GridPane player3CardWrapper;
+    @FXML private GridPane player4CardWrapper;
+    @FXML private GridPane player5CardWrapper;
+    @FXML private GridPane player6CardWrapper;
+    @FXML private GridPane player7CardWrapper;
+    @FXML private GridPane player8CardWrapper;
+    @FXML private GridPane player2CardImageHolder;
+    @FXML private GridPane player3CardImageHolder;
+    @FXML private GridPane player4CardImageHolder;
+    @FXML private GridPane player5CardImageHolder;
+    @FXML private GridPane player6CardImageHolder;
+    @FXML private GridPane player7CardImageHolder;
+    @FXML private GridPane player8CardImageHolder;
     @FXML private TextArea chatOutput;
     @FXML private TextField chatInput;
     @FXML private GridPane ButtonWrapper;
@@ -212,7 +226,9 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<Text> playerCpTexts;
     private ArrayList<Text> playerRlTexts;
     private ArrayList<ImageView> playerCards;
-    private ArrayList<GridPane> playerRobot;
+    private ArrayList<GridPane> playerCardImageHolders;
+    private ArrayList<GridPane> playerCardWrappers;
+    private ArrayList<VBox> playerRobot;
     private ArrayList<GridPane> playerGridWrapper;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
@@ -331,7 +347,25 @@ public class GamePresenter extends AbstractPresenter {
         playerCards.add(player7Card);
         playerCards.add(player8Card);
 
-        playerRobot = new ArrayList<GridPane>();
+        playerCardWrappers = new ArrayList<GridPane>();
+        playerCardWrappers.add(player2CardWrapper);
+        playerCardWrappers.add(player3CardWrapper);
+        playerCardWrappers.add(player4CardWrapper);
+        playerCardWrappers.add(player5CardWrapper);
+        playerCardWrappers.add(player6CardWrapper);
+        playerCardWrappers.add(player7CardWrapper);
+        playerCardWrappers.add(player8CardWrapper);
+
+        playerCardImageHolders = new ArrayList<GridPane>();
+        playerCardImageHolders.add(player2CardImageHolder);
+        playerCardImageHolders.add(player3CardImageHolder);
+        playerCardImageHolders.add(player4CardImageHolder);
+        playerCardImageHolders.add(player5CardImageHolder);
+        playerCardImageHolders.add(player6CardImageHolder);
+        playerCardImageHolders.add(player7CardImageHolder);
+        playerCardImageHolders.add(player8CardImageHolder);
+
+        playerRobot = new ArrayList<VBox>();
         playerRobot.add(player2Robot);
         playerRobot.add(player3Robot);
         playerRobot.add(player4Robot);
@@ -406,10 +440,7 @@ public class GamePresenter extends AbstractPresenter {
 
             // robot image
             ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
-            System.out.println("Player" + player.getKey().getUsername());
-            System.out.println("id: "+ player.getValue().getRobotDTO().getRobotID());
-            System.out.println(imageView);
-            System.out.println(playerRobot.size());
+
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
                 playerGrids.get(count).setVisible(true);
@@ -424,16 +455,18 @@ public class GamePresenter extends AbstractPresenter {
                         .get(count)
                         .setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
-                playerRobot.get(count).add(imageView, 0,0);
+                //playerRobot.get(count).add(imageView, 0,0);
+                playerRobot.get(count).getChildren().add(imageView);
                 playerRobot.get(count).setVisible(true);
-                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
-                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().subtract(4));
+                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
+                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
 
                 count++; // only counts when it is not the current user, to avoid empty grid
             }
             else{
                 // for player is loggedInUser
-                player1Robot.add(imageView, 0, 0);
+                //player1Robot.add(imageView, 0, 0);
+                player1Robot.getChildren().add(imageView);
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
             }
@@ -531,9 +564,9 @@ public class GamePresenter extends AbstractPresenter {
                          * @author Tommy Dang
                          * @since 2023-05-23
                          */
-                        double widthOfRightGrid = 5.5; // 5.5 gut
-                        double heightOfHandCardGridPane = 2.2; // 2.2 gut
-                        double heightOfSelectedCardGridPane = 1.2; // 1.2 gut
+                        double widthOfRightGrid = 5.4; // 5.5 gut
+                        double heightOfHandCardGridPane = 2.1; // 2.2 gut
+                        double heightOfSelectedCardGridPane = 1.1; // 1.2 gut
 
                         for (Map.Entry<Rectangle, CardDTO> handCards : cardsMap.entrySet()) {
                             handCards
@@ -582,24 +615,24 @@ public class GamePresenter extends AbstractPresenter {
                                             selectedCardGridPane
                                                     .heightProperty()
                                                     .divide(8.1)
-                                                    .subtract(3.5)); // 8.1 / 3.5
+                                                    .subtract(5)); // 8.1 / 3.5
                         }
 
                         text_chosenCard1
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard2
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard3
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard4
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
                         text_chosenCard5
                                 .translateYProperty()
-                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(6));
+                                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -734,8 +767,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Reset chosenCardsSlots
      *
-     * @author Moritz
-     * @since 2023-05-06
+     * @author Moritz and Tommy Dang
+     * @since 2023-06-07
      */
     public void resetCardsAndSlots() {
         // submittedCards.clear();
@@ -744,6 +777,7 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
+                slotz.getKey().setStyle("-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
             }
         }
 
@@ -861,7 +895,7 @@ public class GamePresenter extends AbstractPresenter {
         for (int i = 0; i < playerCount; i++) {
             playerReadyStackPanes
                     .get(i)
-                    .setStyle("-fx-background-color: red;-fx-background-radius: 5");
+                    .setStyle("-fx-background-color: red;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
         }
     }
 
@@ -880,7 +914,7 @@ public class GamePresenter extends AbstractPresenter {
             int position = userToPositionInStackPanes.get(playerIsReady);
             playerReadyStackPanes
                     .get(position)
-                    .setStyle("-fx-background-color: green;-fx-background-radius: 5");
+                    .setStyle("-fx-background-color: green;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
         }
 
         //        String style;
@@ -988,8 +1022,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Block choosenCards and availableCards
      *
-     * @author Maria Andrade
-     * @since 2023-05-23
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-07
      */
     public void blockPlayerCardsAfterSubmit(UserDTO playerReady) {
         if (Objects.equals(playerReady, this.loggedInUser)) {
@@ -999,6 +1033,7 @@ public class GamePresenter extends AbstractPresenter {
                 if (card.getKey() != null) {
                     cardsMap.replace(card.getKey(), null);
                     card.getKey().setFill(RED);
+                    card.getKey().setStyle("-fx-arc-width: 10; -fx-arc-height: 10; -fx-stroke: black; -fx-stroke-width: 1;");
 
                     // remove text
                     cardValues.get(card.getKey()).setText("");
@@ -1032,8 +1067,18 @@ public class GamePresenter extends AbstractPresenter {
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
-            playerCards.get(position).setFitHeight(75);
-            playerCards.get(position).setFitWidth(50);
+
+            /** Makes the card images responsiv to the size of the window and gives a border to the images
+             *
+             * @author Tommy Dang
+             * @since 2023-06-07
+             */
+            playerCards.get(position).fitHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCards.get(position).fitWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
+            playerCardImageHolders.get(position).setStyle("-fx-border-color: blue; -fx-border-radius: 5; -fx-border-insets: -1; -fx-border-width: 2");
+            playerCardImageHolders.get(position).prefHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCardImageHolders.get(position).prefWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
+
         }
 
         //        User user = users.get(0);
