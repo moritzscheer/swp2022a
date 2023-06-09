@@ -67,7 +67,6 @@ public class LobbyPresenter extends AbstractPresenter {
     private Boolean multiplayer;
     private Integer slots = 1;
     private TextChatChannel textChat;
-    private int checkpointCount;
 
     @Inject private TabPresenter tabPresenter;
 
@@ -94,8 +93,11 @@ public class LobbyPresenter extends AbstractPresenter {
 
     @FXML
     private Spinner<Integer> numberBots;
+    @FXML
+    private Spinner<Integer> spinnerCheckpoints;
 
     private SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,7,0);
+    private SpinnerValueFactory<Integer> valueFactoryCP = new SpinnerValueFactory.IntegerSpinnerValueFactory(2,6,0);
 
 
 
@@ -130,10 +132,6 @@ public class LobbyPresenter extends AbstractPresenter {
         multiplayer = lobby.isMultiplayer();
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
-
-        Random random = new Random();
-        checkpointCount = random.nextInt(5)+2;
-        lobby.setCheckpointCount(checkpointCount);
 
         boolean first = false;
         if(first == false){
@@ -191,8 +189,10 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldOwner.setText(owner.getUsername());
         if(Objects.equals(user.getUsername(), owner.getUsername())) {
             numberBots.setValueFactory(valueFactory);
+            spinnerCheckpoints.setValueFactory(valueFactoryCP);
         }else {
-            numberBots.setVisible(false);
+            numberBots.setDisable(true);
+            spinnerCheckpoints.setDisable(true);
         }
         if (!loggedInUser.equals(owner)) {
             startButton.setManaged(false);
@@ -465,7 +465,7 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML
     private void onStartButtonPressed(ActionEvent actionEvent) {
         if (loggedInUser == owner) {
-            eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+            eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), spinnerCheckpoints.getValue(), lobbyDTO));
         }
     }
 

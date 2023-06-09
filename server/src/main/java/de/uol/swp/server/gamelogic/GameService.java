@@ -79,12 +79,6 @@ public class GameService extends AbstractService {
     public GameDTO createNewGame(int lobbyID, String mapName, int numberBots, int checkpointCount) {
         System.out.println("I am creating your game :)");
 
-        System.out.println("New id :)");
-        // TODO: fix docking positions
-        Position[] checkpointsList = {
-            new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
-        };
-        System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
         if (!lobby.isPresent()) {
             System.out.println("GameService: lobby not found");
@@ -94,7 +88,6 @@ public class GameService extends AbstractService {
         games.put(
                 lobbyID,
                 new Game(lobbyID,
-                        checkpointsList,
                         lobby.get().getUsers(),
                         mapName,
                         numberBots,

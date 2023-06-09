@@ -13,10 +13,10 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.javatuples.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,7 +36,7 @@ public class Game {
     private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
-    private final Position[] checkpointsList;
+    private final Position startCheckpoint;
     private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
@@ -69,9 +69,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName, int numberBots, int checkpointCount) {
+    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
         this.lobbyID = lobbyID;
-        this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
         this.mapName = mapName;
@@ -79,10 +78,37 @@ public class Game {
 
         assert users.size() + numberBots <= 8;
 
+        // create board
+        Random random = new Random();
+        int version = random.nextInt(3)+1;
+        LOG.debug("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+
+        if(board == null){
+            //TODO: Log error "Map couldn't be loaded"
+            LOG.debug("Map couldn't be loaded. MapName = " + mapName);
+        }
+
+        // save checkPoints
+        Pair<Integer, Position> tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
+                mapName+ "V" + version + "C"+ checkpointCount);
+        this.startCheckpoint = tmp.getValue1();
+        assert tmp.getValue0() == checkpointCount;
+
+        if(tmp == null){
+            //TODO: Log error "Map couldn't be loaded"
+            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
+        }
+        LOG.debug("Checkpoints size: {}",this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}",this.startCheckpoint.x, this.startCheckpoint.y);
+
+        // set info
+        setRobotsInfoInBehaviours(board, robots);
+
         // there must be as many docking as users
         // assert dockingBays.length == users.size();
-        this.dockingStartPosition = checkpointsList[0];
-        this.lastCheckPoint = checkpointsList.length;
+        this.dockingStartPosition = startCheckpoint;
+        this.lastCheckPoint = this.checkpointCount;
 
         // create players and robots
         int i = 0; // start robots id in 0
@@ -823,8 +849,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @since 2023-05-19
      */
-    public Position[] getCheckpointsList() {
-        return this.checkpointsList;
+    public Position getStartCheckpoint() {
+        return this.startCheckpoint;
     }
 
     /**

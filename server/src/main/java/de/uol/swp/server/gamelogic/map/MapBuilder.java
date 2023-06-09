@@ -8,6 +8,8 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.*;
 import java.util.*;
+import org.javatuples.Pair;
+
 
 
 /**
@@ -19,12 +21,23 @@ import java.util.*;
 public final class MapBuilder {
 
     public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
+    private static final HashMap<String, Pair<Integer, Position>> mapStringToCheckpointNumberAndFirstPosition= new HashMap<>();
 
     public static List<ArrayList> checkpointLocations = new LinkedList<ArrayList>();
     public static ArrayList<int[][]> checkpointsMapOne = new ArrayList<>();
 
-
-
+    static {
+        // define all three positions for each version
+        Position[] versionPositions = {new Position(3,10), new Position(4,3), new Position(3, 5)};
+        for(int v = 0; v < 3; v++){
+            for(int c = 2; c <= 6; c++){
+                mapStringToCheckpointNumberAndFirstPosition.put(
+                        "MapOneV" + (v+1) + "C" + (c),
+                        new Pair<>(v, versionPositions[v])
+                );
+            }
+        }
+    }
 
     public static Block[][] getMap(String mapPath) {
         try {
@@ -69,6 +82,12 @@ public final class MapBuilder {
         }
     }
 
+    public static Pair<Integer, Position> getMapStringToCheckpointNumberAndFirstPosition(String mapName){
+        System.out.println("In getMapStringToCheckpointNumberAndFirstPosition");
+        System.out.println("gettting info for " + mapName);
+        return mapStringToCheckpointNumberAndFirstPosition.get(mapName);
+    }
+
     public static void mapGen() throws IOException {
         for (int mapCount = 0;mapCount<maps.size();mapCount++) {
             for (int version = 0; version < 3; version++) { // Version
@@ -111,7 +130,7 @@ public final class MapBuilder {
                System.out.println(x + " " + y);
                map[x][y] = new Block(new CheckPointBehaviour(null, map, new Position(x, y), (i+1)), null , new Position(x,y));
             }
-        System.out.println("NEXT");
+            System.out.println("NEXT");
 
         }
         catch(Exception b){
