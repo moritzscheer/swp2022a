@@ -307,7 +307,6 @@ public class GamePresenter extends AbstractPresenter {
 
         // damage tokens -> refers to how many cards a player receives
         playerHpTexts = new ArrayList<Text>();
-        playerHpTexts.add(player1HP);
         playerHpTexts.add(player2HP);
         playerHpTexts.add(player3HP);
         playerHpTexts.add(player4HP);
@@ -318,7 +317,6 @@ public class GamePresenter extends AbstractPresenter {
 
         // last checkpoint
         playerCpTexts = new ArrayList<Text>();
-        playerCpTexts.add(player1Checkpoint);
         playerCpTexts.add(player2Checkpoint);
         playerCpTexts.add(player3Checkpoint);
         playerCpTexts.add(player4Checkpoint);
@@ -329,7 +327,6 @@ public class GamePresenter extends AbstractPresenter {
 
         // life tokens
         playerRlTexts = new ArrayList<Text>();
-        playerRlTexts.add(player1RobotLives);
         playerRlTexts.add(player2RobotLives);
         playerRlTexts.add(player3RobotLives);
         playerRlTexts.add(player4RobotLives);
