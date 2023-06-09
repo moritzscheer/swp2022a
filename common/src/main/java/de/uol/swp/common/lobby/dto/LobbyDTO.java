@@ -33,6 +33,8 @@ public class LobbyDTO implements Lobby {
     private final UUID chatChannel;
 
     private int countRequestToStartGame = 0;
+    private String mapName;
+
     private Map currentMap;
 
     /**
@@ -52,7 +54,8 @@ public class LobbyDTO implements Lobby {
             User creator,
             String password,
             Boolean multiplayer,
-            UUID chatChannelUUID) {
+            UUID chatChannelUUID
+            ) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -61,6 +64,7 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
+
     }
 
     /**
@@ -356,5 +360,12 @@ public class LobbyDTO implements Lobby {
     public int resetCounterRequest() {
         this.countRequestToStartGame = 0;
         return this.countRequestToStartGame;
+    }
+
+    public void setMapName(String mapName){
+        this.mapName = mapName;
+    }
+    public String getMapName(){
+        return this.mapName;
     }
 }

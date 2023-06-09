@@ -23,7 +23,8 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public Map(int mapIndex) {
+    public Map(int mapIndex)
+    {
         this.mapIndex = mapIndex;
     }
 
@@ -96,21 +97,26 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public String toString() {
+    public String toString()
+    {
         return this.getName();
     }
 
     // Due to the instantiations of MapDataTuple this can not be done with 'static'
-    private static final String[][] mapList = {{"Map 1", "map1.png"}};
+    private static final String[][] mapList = {
+            {"Map 1", "map1.png"},{"Map 2", "map2.png"}
+    };
 
     /**
      * @return An immutable array of all available maps
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public static Map[] getMapList() {
+    public static Map[] getMapList()
+    {
         Map[] maps = new Map[mapList.length];
-        for (int i = 0; i < maps.length; i++) {
+        for(int i = 0; i < maps.length; i++)
+        {
             maps[i] = new Map(i);
         }
 
