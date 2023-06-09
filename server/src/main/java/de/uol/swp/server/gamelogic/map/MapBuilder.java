@@ -21,9 +21,6 @@ public final class MapBuilder {
     public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
     //public static List<Integer[]> checkpoints = new ArrayList<>();
 
-
-
-
     public static Block[][] getMap(String mapPath) {
         try {
             ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath));

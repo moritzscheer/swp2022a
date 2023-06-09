@@ -408,6 +408,19 @@ public class LobbyGameManagement extends AbstractPresenter {
     }
 
     /**
+     * Handles RobotIsFinallyDead detected on the EventBus
+     *
+     * @param msg The GameOverMessage seen on the EventBus
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @author Maria Eduarda
+     * @since 2023-06-09
+     */
+    public void setRobotDied(RobotIsFinallyDead msg) {
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.setRobotDied(msg.getUserDied());
+    }
+
+    /**
      * Handles GameOverMessage detected on the EventBus
      *
      * @param msg The GameOverMessage seen on the EventBus

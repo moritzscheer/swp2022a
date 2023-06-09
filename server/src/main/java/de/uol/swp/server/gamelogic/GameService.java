@@ -21,6 +21,7 @@ import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.game.request.SubmitCardsRequest;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -466,7 +467,7 @@ public class GameService extends AbstractService {
         int i = 0;
         // Move each player at a time
         for (AbstractPlayer player : game.getPlayers()) {
-            if (!player.getRobot().isAlive()) continue; // if robot is dead, do nothing
+            if (player.getRobot().isDeadForTheRound()) continue; // if robot is dead, do nothing
             UserDTO currentUser = player.getUser();
             Position currentPos = player.getRobot().getPosition();
             Position previousPos = previousPositions.get(i);
@@ -524,7 +525,24 @@ public class GameService extends AbstractService {
                                     + "} \n" // new direction
                             );
 
-            sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait, msg);
+            sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait);
+            sendAbstractLobbyMessage(lobbyID, secondsToWait, msg);
+
+            if (!player.getRobot().isAlive()){
+                // if robot is dead, send message
+                sendAbstractLobbyMessage(lobbyID, secondsToWait,
+                        new TextHistoryMessage(lobbyID,
+                                player.getUser().getUsername() + " is dead!\n"));
+                player.getRobot().setDeadForTheRound(true);
+                if(player.getRobot().getLifeToken() <= 0){
+                    player.getRobot().setDeadForever();
+                    sendAbstractLobbyMessage(
+                            lobbyID, secondsToWait, new RobotIsFinallyDead(
+                                    lobbyID, player.getUser()
+                            )
+                    );
+                }
+            }
 
             secondsToWait = secondsToWait + 2;
         }
@@ -532,13 +550,12 @@ public class GameService extends AbstractService {
     }
 
     public void sendCardMoveMessage(
-            int lobbyID, PlayerDTO playerDTO, int secondsToWait, TextHistoryMessage msg) {
+            int lobbyID, PlayerDTO playerDTO, int secondsToWait) {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
                         lobbyService.sendToAllInLobby(
                                 lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
                     }
                 },
                 secondsToWait,
@@ -551,6 +568,18 @@ public class GameService extends AbstractService {
                     public void run() {
                         lobbyService.sendToAllInLobby(
                                 lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                    }
+                },
+                secondsToWait,
+                SECONDS);
+    }
+
+    public void sendAbstractLobbyMessage(
+            int lobbyID, int secondsToWait, AbstractLobbyMessage msg) {
+        scheduler.schedule(
+                new Runnable() {
+                    public void run() {
+                        lobbyService.sendToAllInLobby(lobbyID, msg);
                     }
                 },
                 secondsToWait,

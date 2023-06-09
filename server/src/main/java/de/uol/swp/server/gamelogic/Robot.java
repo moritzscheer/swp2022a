@@ -31,6 +31,8 @@ public class Robot implements Serializable {
 
     private int optionCard;
     private int lockedRegisters;
+    private boolean deadForTheRound;
+    private boolean deadForever;
 
     /**
      * Constructor
@@ -49,6 +51,8 @@ public class Robot implements Serializable {
         this.optionCard = 0;
         this.lastCheckPoint = 1;
         this.lastCheckPointPosition = currentPosition;
+        this.deadForTheRound = false;
+        this.deadForever = false;
     }
     /**
      * @author
@@ -122,10 +126,19 @@ public class Robot implements Serializable {
         return this.direction;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-        this.lifeToken--;
-        setCurrentPosition(this.lastCheckPointPosition);
+    public void setAlive(boolean alivee) {
+        if(!alivee){
+            // robot is dead
+            this.lifeToken--;
+            setCurrentPosition(this.lastCheckPointPosition);
+            this.alive = alivee;
+        }
+        else{
+            if(this.lifeToken > 0){
+                this.alive = alivee;
+            }
+            // robot is dead forever
+        }
     }
 
     public void setCurrentPosition(Position currentPosition) {
@@ -173,6 +186,9 @@ public class Robot implements Serializable {
 
     public void setDamageToken(int damageToken) {
         this.damageToken = damageToken;
+        if(damageToken >= 10){
+            setAlive(false);
+        }
     }
 
     /**
@@ -247,5 +263,21 @@ public class Robot implements Serializable {
      */
     public void setPowerDown(boolean powerDown) {
         this.powerDown = powerDown;
+    }
+
+    public boolean isDeadForTheRound() {
+        return deadForTheRound;
+    }
+
+    public void setDeadForTheRound(boolean deadForTheRound) {
+        this.deadForTheRound = deadForTheRound;
+    }
+
+    public boolean isDeadForever() {
+        return deadForever;
+    }
+
+    public void setDeadForever() {
+        this.deadForever = true;
     }
 }

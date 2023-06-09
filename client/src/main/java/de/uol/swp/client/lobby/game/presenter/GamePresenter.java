@@ -1379,4 +1379,21 @@ public class GamePresenter extends AbstractPresenter {
                     historyOutput.setScrollTop(Double.MAX_VALUE);
                 });
     }
+
+    public void setRobotDied(UserDTO userDied) {
+        if(Objects.equals(loggedInUser.getUsername(), userDied.getUsername())){
+            // TODO: BLOCK CARDS AND BUTTONS
+
+        }
+        else{
+            // TODO: show robot in the list blocked/dead somehow
+            int position = this.userToPositionInStackPanes.get(userDied);
+            playerRobot.get(position).setVisible(false);
+            this.userDTOPlayerDTOMap.replace(userDied, null);
+        }
+        Platform.runLater(
+                () -> {
+                    historyOutput.setScrollTop(Double.MAX_VALUE);
+                });
+    }
 }

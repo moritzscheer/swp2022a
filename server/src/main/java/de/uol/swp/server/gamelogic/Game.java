@@ -7,13 +7,11 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -294,6 +292,13 @@ public class Game {
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
+
+        for(Robot robot: this.robots){
+            if(!robot.isDeadForever()){
+                robot.setAlive(true);
+                robot.setDeadForTheRound(false);
+            }
+        }
     }
 
     public void startGame(){
