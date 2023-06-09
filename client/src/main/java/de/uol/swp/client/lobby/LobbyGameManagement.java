@@ -320,6 +320,7 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void reloadMapData(GetMapDataResponse msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
+        a.initializeRobotsOnBoard();
     }
 
     /**

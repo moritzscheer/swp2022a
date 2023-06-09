@@ -232,6 +232,7 @@ public class GamePresenter extends AbstractPresenter {
     private BlockDTO[][] board;
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
+    private List<UserDTO> deadForeverUsers = new ArrayList<>();
 
     @FXML private Button robotOffButton;
     private int x = 2;
@@ -528,26 +529,13 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
-    public void loadRobotsInBoard(){
+    public void initializeRobotsOnBoard(){
         Platform.runLater(
                 () -> {
                     Position startPosition;
 
                     // update robot position in board
-                    for (Map.Entry<UserDTO, PlayerDTO> player :
-                            this.userDTOPlayerDTOMap.entrySet()) {
-                        if(this.userRobotImageViewReference.containsKey(player.getKey())){
-                            // if exists and not null, go on, to not create twice the same image
-                            // if player is null in userDTOPlayerDTOMap, it means it died forever
-                            if(!Objects.equals(
-                                    this.userRobotImageViewReference.get(player.getKey()),
-                                    null)
-                            || Objects.equals(
-                                    this.userDTOPlayerDTOMap.get(player.getKey()),
-                                    null))
-                                continue;
-
-                        }
+                    for (Map.Entry<UserDTO, PlayerDTO> player:this.userDTOPlayerDTOMap.entrySet()) {
                         startPosition = player.getValue().getRobotDTO().getPosition();
                         LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 
@@ -574,12 +562,55 @@ public class GamePresenter extends AbstractPresenter {
 
 
                         gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
+                        this.userRobotImageViewReference.put(player.getKey(), imageView);
+                    }
+                });
+    }
 
-                        if(this.userRobotImageViewReference.containsKey(player.getKey()))
-                            this.userRobotImageViewReference.replace(player.getKey(), imageView);
-                        else
-                            this.userRobotImageViewReference.put(player.getKey(), imageView);
+    public void loadRobotsInBoard(){
+        Platform.runLater(
+                () -> {
+                    Position startPosition;
 
+                    // update robot position in board
+                    for (Map.Entry<UserDTO, PlayerDTO> player :
+                            this.userDTOPlayerDTOMap.entrySet()) {
+
+                        // if exists and not null, go on, to not create twice the same image
+                        // if player is null in userDTOPlayerDTOMap, it means it died forever
+                        if(!Objects.equals(
+                                this.userRobotImageViewReference.get(player.getKey()),
+                                null)
+                        || deadForeverUsers.contains(player.getKey()))
+                            continue;
+
+                        startPosition = player.getValue().getRobotDTO().getPosition();
+                        LOG.debug("{} startPosition {} {}",player.getKey().getUsername(), startPosition.x, startPosition.y);
+
+                        // show this player robot, since they all start in checkpoint 1
+                        int robotID = player.getValue().getRobotDTO().getRobotID();
+                        ImageView imageView = jsonUtils.getRobotImage(robotID);
+                        imageView.setRotate(
+                                (player.getValue().getRobotDTO().getDirection().ordinal())
+                                        * 90);
+                        imageView
+                                .fitWidthProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board.length + 1)
+                                                .subtract(10));
+                        imageView
+                                .fitHeightProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board[0].length + 1)
+                                                .subtract(10));
+
+
+                        gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
+                        this.userRobotImageViewReference.replace(player.getKey(), imageView);
                     }
                 });
     }
@@ -1132,7 +1163,7 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-05-20
      */
     public void updateRobotState(PlayerDTO playerDTO) {
-
+        // print infos
         LOG.debug("in updateRobotState");
         LOG.debug("user {}", playerDTO.getUser().getUsername());
         LOG.debug("robotID {}", playerDTO.getRobotDTO().getRobotID());
@@ -1189,18 +1220,11 @@ public class GamePresenter extends AbstractPresenter {
                                                 .subtract(10));
                         gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
 
-                        // Update new position
-                        this.userDTOPlayerDTOMap
-                                .get(userToUpdate)
-                                .getRobotDTO()
-                                .setPosition(newPos);
-                        this.userDTOPlayerDTOMap
-                                .get(userToUpdate)
-                                .getRobotDTO()
-                                .setDirection(newDir);
                         this.userRobotImageViewReference.replace(userToUpdate, imageView);
                     });
-        else {
+        // if it was alive and now it's not anymore
+        else if(this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive() &&
+                ! playerDTO.getRobotDTO().isAlive()) {
             // try to remove last position where robot was
             Platform.runLater(
                     () -> {
@@ -1223,6 +1247,18 @@ public class GamePresenter extends AbstractPresenter {
                         this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                     });
         }
+        else{
+            ;; // it was and stays dead
+            Platform.runLater(
+                    () -> {
+                        if (!Objects.equals(
+                                this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                            gameBoard.getChildren().remove(this.userRobotImageViewReference.get(playerDTO.getUser()));
+                        this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                    });
+        }
+        // update playerDTO with new info in hashmap
+        this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
     }
 
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {
@@ -1292,20 +1328,10 @@ public class GamePresenter extends AbstractPresenter {
                                                     .divide(board[0].length + 1)
                                                     .subtract(10));
                             gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-
-                            // Update new position
-                            this.userDTOPlayerDTOMap
-                                    .get(userToUpdate)
-                                    .getRobotDTO()
-                                    .setPosition(newPos);
-                            this.userDTOPlayerDTOMap
-                                    .get(userToUpdate)
-                                    .getRobotDTO()
-                                    .setDirection(newDir);
                             this.userRobotImageViewReference.replace(userToUpdate, imageView);
                         });
-            } else {
-                // TODO: there is one step between not dead and dead misisng to be shown
+            } else if(this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive() &&
+                    !playerDTO.getRobotDTO().isAlive()) {
                 // try to remove last position where robot was
                 Platform.runLater(
                         () -> {
@@ -1329,8 +1355,19 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                         });
             }
+            else {
+                ;; // it was and stays dead
+                Platform.runLater(
+                        () -> {
+                            if (!Objects.equals(
+                                    this.userRobotImageViewReference.get(playerDTO.getUser()), null))
+                                gameBoard.getChildren().remove(this.userRobotImageViewReference.get(playerDTO.getUser()));
+                            this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                        });
+            }
 
-
+            // update playerDTO with new info in hashmap
+            this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
         }
     }
 
@@ -1383,6 +1420,7 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     public void setRobotDied(UserDTO userDied) {
+        deadForeverUsers.add(userDied);
         if(Objects.equals(loggedInUser.getUsername(), userDied.getUsername())){
             selectedCardGridPane.setDisable(true);
             selectedCardGridPane.setVisible(false);
@@ -1404,11 +1442,6 @@ public class GamePresenter extends AbstractPresenter {
             int position = this.userToPositionInStackPanes.get(userDied);
             playerGrids.get(position).setDisable(true);
             playerGrids.get(position).setVisible(false);
-            this.userDTOPlayerDTOMap.replace(userDied, null);
         }
-        Platform.runLater(
-                () -> {
-                    historyOutput.setScrollTop(Double.MAX_VALUE);
-                });
     }
 }
