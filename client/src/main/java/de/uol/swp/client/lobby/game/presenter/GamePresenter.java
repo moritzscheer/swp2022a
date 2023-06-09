@@ -937,7 +937,7 @@ public class GamePresenter extends AbstractPresenter {
     private void setPlayerHP(PlayerDTO playerDTO) { // To implement onPlayerHPChangedMessage
         LOG.debug("in setPlayerHP " + playerDTO.getUser().getUsername() + "   ");
         if (Objects.equals(playerDTO.getUser(), loggedInUser)) {
-            playerHpTexts.get(0).setText(String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
+            player1HP.setText(String.valueOf(playerDTO.getRobotDTO().getDamageToken()));
             return;
         }
         int position = userToPositionInStackPanes.get(playerDTO.getUser());
@@ -954,7 +954,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void setRoboterHP(PlayerDTO playerDTO) { // To implement onPlayerHPChangedMessage
         if (Objects.equals(playerDTO.getUser(), loggedInUser)) {
-            playerRlTexts.get(0).setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
+            player1RobotLives.setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
             return;
         }
         int position = userToPositionInStackPanes.get(playerDTO.getUser());
@@ -969,8 +969,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void setPlayerCheckpoint(PlayerDTO playerDTO) { // To implement onPlayerHPChangedMessage
         if (Objects.equals(playerDTO.getUser(), loggedInUser)) {
-            playerCpTexts
-                    .get(0)
+            player1Checkpoint
                     .setText(String.valueOf(playerDTO.getRobotDTO().getLastCheckpoint()));
             return;
         }
@@ -1202,6 +1201,11 @@ public class GamePresenter extends AbstractPresenter {
         LOG.debug("in animateBoardElements");
 
         for (PlayerDTO playerDTO : playerDTOList) {
+            // update
+            setPlayerHP(playerDTO);
+            setRoboterHP(playerDTO);
+            setPlayerCheckpoint(playerDTO);
+
             if (playerDTO.getRobotDTO().isAlive()) {
                 LOG.debug("user {}", playerDTO.getUser().getUsername());
                 LOG.debug(
@@ -1294,10 +1298,7 @@ public class GamePresenter extends AbstractPresenter {
                         });
             }
 
-            // update
-            setPlayerHP(playerDTO);
-            setRoboterHP(playerDTO);
-            setPlayerCheckpoint(playerDTO);
+
         }
     }
 
