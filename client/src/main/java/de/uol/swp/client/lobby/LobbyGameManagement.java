@@ -275,6 +275,7 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void restartRounds(RoundIsOverMessage msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.resetCardsAndSlots();
+        a.setAllPlayersNotReady();
 
         // create request to get the cards
         eventBus.post(

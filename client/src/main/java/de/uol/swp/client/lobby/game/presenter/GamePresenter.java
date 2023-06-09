@@ -951,8 +951,8 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    private void setAllPlayersNotReady() { // to implement onNextRoundMessage
-        for (int i = 0; i < playerCount; i++) {
+    public void setAllPlayersNotReady() { // to implement onNextRoundMessage
+        for (int i = 0; i < playerReadyStackPanes.size(); i++) {
             playerReadyStackPanes
                     .get(i)
                     .setStyle("-fx-background-color: red;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
