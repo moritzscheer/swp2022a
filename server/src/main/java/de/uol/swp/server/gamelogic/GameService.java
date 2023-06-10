@@ -1,18 +1,14 @@
 package de.uol.swp.server.gamelogic;
 
-import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
-import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
-
-import static java.lang.Math.abs;
-import static java.util.concurrent.TimeUnit.SECONDS;
-
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
-
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.Position;
-import de.uol.swp.common.game.dto.*;
+import de.uol.swp.common.game.dto.BlockDTO;
+import de.uol.swp.common.game.dto.CardDTO;
+import de.uol.swp.common.game.dto.GameDTO;
+import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.GetMapDataRequest;
@@ -20,19 +16,23 @@ import de.uol.swp.common.game.request.GetProgramCardsRequest;
 import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.game.request.SubmitCardsRequest;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.dto.*;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
+import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
+import static java.lang.Math.abs;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Handles the game requests send by the users

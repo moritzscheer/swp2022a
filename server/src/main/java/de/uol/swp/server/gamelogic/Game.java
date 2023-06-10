@@ -7,7 +7,6 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.user.User;
@@ -317,7 +316,7 @@ public class Game {
         }
     }
 
-    public List<List<PlayerDTO>> calcAllGameRounds(){
+    public List<List<PlayerDTO>> calcAllGameRounds() {
 
         List<List<PlayerDTO>> moves = new ArrayList<>();
 
@@ -344,27 +343,27 @@ public class Game {
         List<MoveIntent> currentMoves;
         List<List<PlayerDTO>> moves = new ArrayList<>();
 
-        currentMoves = OnExpressConveyorStage(programStep);
+        currentMoves = onExpressConveyorStage(programStep);
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         moves.add(getPlayerDTOSForAllPlayers());
 
-        currentMoves = OnConveyorStage(programStep);
+        currentMoves = onConveyorStage(programStep);
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         moves.add(getPlayerDTOSForAllPlayers());
 
-        currentMoves = OnPusherStage(programStep);
+        currentMoves = onPusherStage(programStep);
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         moves.add(getPlayerDTOSForAllPlayers());
 
-        currentMoves = OnRotatorStage(programStep);
+        currentMoves = onRotatorStage(programStep);
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         moves.add(getPlayerDTOSForAllPlayers());
 
-        currentMoves = OnPresserStage(programStep);
+        currentMoves = onPresserStage(programStep);
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         moves.add(getPlayerDTOSForAllPlayers());
@@ -396,7 +395,7 @@ public class Game {
             Card currentCard = cardsToPlay[indexOfCurrentCard];
 
             //Check if executing robot is alive
-            if(!robots.get(indexOfCurrentCard).isAlive()){
+            if (!robots.get(indexOfCurrentCard).isAlive()) {
                 continue;
             }
             //Get Move Intents and execute them
@@ -443,23 +442,23 @@ public class Game {
     public void calcGameRoundBoard() {
         List<MoveIntent> moves;
 
-        moves = OnExpressConveyorStage(programStep);
+        moves = onExpressConveyorStage(programStep);
         moves = resolveMoveIntentConflicts(moves);
         executeMoveIntents(moves);
 
-        moves = OnConveyorStage(programStep);
+        moves = onConveyorStage(programStep);
         moves = resolveMoveIntentConflicts(moves);
         executeMoveIntents(moves);
 
-        moves = OnPusherStage(programStep);
+        moves = onPusherStage(programStep);
         moves = resolveMoveIntentConflicts(moves);
         executeMoveIntents(moves);
 
-        moves = OnRotatorStage(programStep);
+        moves = onRotatorStage(programStep);
         moves = resolveMoveIntentConflicts(moves);
         executeMoveIntents(moves);
 
-        moves = OnPresserStage(programStep);
+        moves = onPresserStage(programStep);
         moves = resolveMoveIntentConflicts(moves);
         executeMoveIntents(moves);
 
@@ -472,39 +471,86 @@ public class Game {
         executeMoveIntents(moves);
     }
 
-    private List<MoveIntent> OnExpressConveyorStage(int programStep) {
+    private List<MoveIntent> onExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnExpressConveyorStage(programStep);
+                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep);
                 moves.addAll(blockMoves);
             }
         }
-        return  moves;
+        return moves;
     }
 
-    private List<MoveIntent> OnConveyorStage(int programStep) {
-        return null;
+    private List<MoveIntent> onConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
-    private List<MoveIntent> OnPusherStage(int programStep) {
-        return null;
+    private List<MoveIntent> onPusherStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnPusherStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
-    private List<MoveIntent> OnRotatorStage(int programStep) {
-        return null;
+    private List<MoveIntent> onRotatorStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
-    private List<MoveIntent> OnPresserStage(int programStep) {
-        return null;
+    private List<MoveIntent> onPresserStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnPresserStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
     private List<MoveIntent> OnLaserStage(int programStep) {
-        return null;
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnLaserStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
     private List<MoveIntent> OnCheckPointStage(int programStep) {
-        return null;
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
     }
 
 
