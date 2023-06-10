@@ -1,10 +1,10 @@
 package de.uol.swp.common.lobby.dto;
 
+import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
-import de.uol.swp.common.game.Map;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -33,6 +33,8 @@ public class LobbyDTO implements Lobby {
     private final UUID chatChannel;
 
     private int countRequestToStartGame = 0;
+    private String mapName;
+
     private Map currentMap;
 
     /**
@@ -52,7 +54,8 @@ public class LobbyDTO implements Lobby {
             User creator,
             String password,
             Boolean multiplayer,
-            UUID chatChannelUUID) {
+            UUID chatChannelUUID
+            ) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -61,6 +64,7 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
+
     }
 
     /**
@@ -194,7 +198,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles ready players.
      *
-     * If a user pressed ready in the lobby the user is removed from the notReadyUsers set
+     * <p>If a user pressed ready in the lobby the user is removed from the notReadyUsers set
      *
      * @param user containing the User that is ready
      * @author Moritz Scheer
@@ -208,7 +212,7 @@ public class LobbyDTO implements Lobby {
     /**
      * Handles not ready players.
      *
-     * If a user pressed not ready in the lobby the user is added to the notReadyUsers set
+     * <p>If a user pressed not ready in the lobby the user is added to the notReadyUsers set
      *
      * @param user containing the User that is not ready
      * @author Moritz Scheer
@@ -304,8 +308,7 @@ public class LobbyDTO implements Lobby {
      * @author Mathis Eilers
      * @since 2022-12-31
      */
-    public void setMap(Map m)
-    {
+    public void setMap(Map m) {
         this.currentMap = m;
     }
 
@@ -315,10 +318,8 @@ public class LobbyDTO implements Lobby {
      * @return A Map object representing the current map
      * @author Mathis Eilers
      * @since 2022-12-31
-     *
      */
-    public Map getMap()
-    {
+    public Map getMap() {
         return this.currentMap;
     }
 
@@ -345,9 +346,8 @@ public class LobbyDTO implements Lobby {
      * @since 2023-05-01
      */
     public int increaseCounterRequest() {
-        this.countRequestToStartGame +=1;
+        this.countRequestToStartGame += 1;
         return this.countRequestToStartGame;
-
     }
 
     /**
@@ -360,5 +360,12 @@ public class LobbyDTO implements Lobby {
     public int resetCounterRequest() {
         this.countRequestToStartGame = 0;
         return this.countRequestToStartGame;
+    }
+
+    public void setMapName(String mapName){
+        this.mapName = mapName;
+    }
+    public String getMapName(){
+        return this.mapName;
     }
 }

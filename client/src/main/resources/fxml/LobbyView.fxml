@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="CENTER" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" scaleShape="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane alignment="CENTER" minHeight="600.0" minWidth="1100.0" prefHeight="600.0" prefWidth="1100.0" scaleShape="false" stylesheets="@../css/BaseViewStyle.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" minWidth="25.0" percentWidth="2.0" />
         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="47.0" />
@@ -165,9 +165,14 @@
         <Separator style="-fx-background-color: black;" GridPane.rowIndex="1" />
         <Separator style="-fx-background-color: black;" GridPane.rowIndex="4" />
         <Separator style="-fx-background-color: black;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label text="Bots" GridPane.rowIndex="8" />
+      <Spinner fx:id="numberBots" GridPane.columnIndex="1" GridPane.rowIndex="8">
+         <GridPane.margin>
+            <Insets left="5.0" />
+         </GridPane.margin></Spinner>
     </GridPane>
     <HBox alignment="CENTER_LEFT" nodeOrientation="RIGHT_TO_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
         <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonPressed" prefWidth="150.0" text="GO!" />
-        <Button fx:id="readyButton" mnemonicParsing="false" onAction="#onReadyButtonPressed" prefHeight="16.0" prefWidth="150.0" text="Not Ready" />
+        <Button fx:id="readyButton" mnemonicParsing="false" onAction="#onReadyButtonPressed" prefHeight="16.0" prefWidth="150.0" text="Ready?" />
     </HBox>
 </GridPane>

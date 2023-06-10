@@ -12,7 +12,6 @@ import de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse;
 import de.uol.swp.common.lobby.response.LobbyLeftSuccessfulResponse;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.application.Platform;
@@ -128,11 +127,11 @@ public class TabPresenter extends AbstractPresenter {
                     if (infoBox.isVisible()) {
                         updateInfoBox();
                     }
-                    if(tabID == 0) {
+                    if (tabID == 0) {
                         tabPane.getTabs().get(tabID).setContent(parent);
                     } else {
-                        for(Tab tab : tabPane.getTabs()) {
-                            if(tab.getId().equals(String.valueOf(tabID))) {
+                        for (Tab tab : tabPane.getTabs()) {
+                            if (tab.getId().equals(String.valueOf(tabID))) {
                                 tab.setContent(parent);
                             }
                         }
@@ -254,9 +253,10 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     public void changeMainTabTitle(String title) {
-        Platform.runLater(() -> {
-            mainTab.setText(title);
-        });
+        Platform.runLater(
+                () -> {
+                    mainTab.setText(title);
+                });
     }
 
     // -----------------------------------------------------
@@ -340,7 +340,7 @@ public class TabPresenter extends AbstractPresenter {
     private void onYesButtonPressed(ActionEvent actionEvent) {
         Tab tab = tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex());
 
-        if(loggedInUser != null) {
+        if (loggedInUser != null) {
             // if user is logged In -> for exit buttons in register and login
             if (infoLabel1.isVisible() || infoLabel2.isVisible()) {
                 // if user wants to log out or exit
@@ -348,26 +348,30 @@ public class TabPresenter extends AbstractPresenter {
                     // if tabPane has more than one tab -> leave lobbies
                     for (Tab tabs : tabPane.getTabs()) {
                         if (!tabs.getId().equals("mainTab")) {
-                            eventBus.post(new LeaveLobbyEvent(
-                                    (UserDTO) loggedInUser,
-                                    Integer.valueOf(tabs.getId()),
-                                    tabs.getText(),
-                                    !tab.getText().equals("Singleplayer")
-                            ));
+                            eventBus.post(
+                                    new LeaveLobbyEvent(
+                                            (UserDTO) loggedInUser,
+                                            Integer.valueOf(tabs.getId()),
+                                            tabs.getText(),
+                                            !tab.getText().equals("Singleplayer")));
                         }
                     }
+                    eventBus.post(new CloseClientEvent());
+                } else {
+                    userService.logout(loggedInUser);
+                    eventBus.post(new CloseClientEvent());
                 }
 
                 userService.logout(loggedInUser);
+
             } else if (infoLabel3.isVisible()) {
                 // if user wants to leave the lobby currently in
-                eventBus.post(new LeaveLobbyEvent(
-                        (UserDTO) loggedInUser,
-                        Integer.valueOf(tab.getId()),
-                        tab.getText(),
-                        true)
-
-                );
+                eventBus.post(
+                        new LeaveLobbyEvent(
+                                (UserDTO) loggedInUser,
+                                Integer.valueOf(tab.getId()),
+                                tab.getText(),
+                                true));
                 updateInfoBox();
 
                 tabPane.getTabs().remove(tab);

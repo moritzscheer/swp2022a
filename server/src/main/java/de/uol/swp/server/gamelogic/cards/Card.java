@@ -36,7 +36,7 @@ public class Card {
         this.priority = priority;
         this.imgPath = imgPath;
 
-        switch (behaviourType){
+        switch (behaviourType) {
             case "1":
                 this.behaviour = new Turn(Direction.Left);
                 break;
@@ -61,7 +61,6 @@ public class Card {
             default:
                 throw new Exception("Behaviour not found.");
         }
-
     }
 
     /**

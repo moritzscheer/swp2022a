@@ -1,9 +1,8 @@
 package de.uol.swp.common.game;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
+import org.junit.jupiter.api.Test;
 
 public class MapTest {
 
@@ -13,11 +12,9 @@ public class MapTest {
      * @since 2023-01-07
      */
     @Test
-    void getMapListTest()
-    {
+    void getMapListTest() {
         Map[] maps = Map.getMapList();
         assertNotNull(maps);
         assertNotEquals(maps.length, 0);
     }
-
 }

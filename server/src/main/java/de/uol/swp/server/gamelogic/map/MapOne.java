@@ -1,56 +1,14 @@
-package de.uol.swp.server.gamelogic;
+package de.uol.swp.server.gamelogic.map;
 
 import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
-import de.uol.swp.common.game.enums.CardinalDirection;
 
-import java.io.*;
+public class MapOne extends AbstractMap{
 
-
-/**
- * Map Builder
- *
- * @author Finn Oldeboershuis
- * @since 2023-04-28
- */
-public final class MapBuilder {
-
-    public static Block[][] getMap(String mapPath) {
-        try {
-            ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath));
-            Block[][] map = (Block[][]) objIn.readObject();
-            objIn.close();
-            return map;
-        } catch (IOException | ClassNotFoundException IOExcept) {
-            System.out.println(IOExcept.getMessage());
-            return null;
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        mapGen();
-
-        Block[][] map = getMap("server/src/main/resources/maps/Map1.map");
-        if (map != null) {
-            System.out.println(map.length);
-        }
-    }
-
-    public static void mapGen() throws IOException {
-        Block[][] map = new Block[12][12];
-        mapGenExtracted(map);
-
-        ObjectOutputStream objOut =
-                new ObjectOutputStream(new FileOutputStream("server/src/main/resources/maps/Map1.map"));
-        objOut.writeObject(map);
-        objOut.flush();
-        objOut.close();
-    }
-
-    private static void mapGenExtracted(Block[][] map) {
-
-
+    public MapOne(){
         int x = 0;
         int y = 0;
 
@@ -324,7 +282,7 @@ public final class MapBuilder {
                         CardinalDirection.North));
 
         x = 11;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 1));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 2));
 
         y = 4;
 
@@ -346,15 +304,17 @@ public final class MapBuilder {
                         map,
                         new Position(x, y),
                         ArrowType.Straight,
-                        CardinalDirection.South),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+                        CardinalDirection.South));
+
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 3;
         generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, true, true),
+                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East));
+
         x = 4;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
@@ -363,7 +323,7 @@ public final class MapBuilder {
         x = 5;
         generateBlock(map, x, y);
         x = 6;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 2));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
         x = 7;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
@@ -371,16 +331,16 @@ public final class MapBuilder {
 
 
         x = 8;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 9;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 10;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
 
         x = 11;
         generateBlock(
@@ -411,6 +371,7 @@ public final class MapBuilder {
         generateBlock(map, x, y);
         x = 5;
         generateBlock(map, x, y,
+
                 new RepairBehaviour(null, map, new Position(x, y), 0));
 
         x = 6;
@@ -494,14 +455,14 @@ public final class MapBuilder {
                 new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, true, true));
         x = 1;
         generateBlock(map, x, y,
-                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South));
+
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 3;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.East, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 4;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West),
@@ -515,15 +476,15 @@ public final class MapBuilder {
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East),
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.South));
         x = 8;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 9;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+        generateBlock(map, x, y);
+
         x = 10;
         generateBlock(map, x, y,
-                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.North),
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.West, 1, false, true));
+                new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.North));
+
         x = 11;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.East),
@@ -538,9 +499,9 @@ public final class MapBuilder {
         generateBlock(map, x, y,
                 new GearBehaviour(null, map, new Position(x, y), false));
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true),
-                new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
+        generateBlock(map, x, y
+
+                ,new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North)
         );
         x = 3;
         generateBlock(map, x, y);
@@ -569,10 +530,11 @@ public final class MapBuilder {
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West));
 
         x = 1;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 4));
         x = 2;
-        generateBlock(map, x, y,
-                new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true));
+        generateBlock(map, x, y);
+
+
         x = 3;
         generateBlock(map, x, y,
                 new PitBehaviour(null, map, new Position(x, y)));
@@ -609,7 +571,7 @@ public final class MapBuilder {
         x = 1;
         generateBlock(map, x, y, new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.TurnRight, CardinalDirection.South));
         x = 2;
-        generateBlock(map, x, y, new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x, y), CardinalDirection.North, 1, false, true));
+        generateBlock(map, x, y);
         x = 3;
         generateBlock(map, x, y);
         x = 4;
@@ -632,7 +594,7 @@ public final class MapBuilder {
         y = 11;
 
         x = 0;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 0));
+        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 1));
         x = 1;
         generateBlock(map, x, y, new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South));
         x = 2;
@@ -657,14 +619,5 @@ public final class MapBuilder {
         generateBlock(map, x, y);
         x = 11;
         generateBlock(map, x, y, new RepairBehaviour(null, map, new Position(x, y), 1));
-    }
-
-
-
-
-
-    private static void generateBlock(
-            Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
-        map[x][y] = new Block(behaviours, null, new Position(x, y));
     }
 }

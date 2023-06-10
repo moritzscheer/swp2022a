@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A message containing the session (typically for a new logged in user)
  *
- * This response is sent to the Client whose LoginRequest was successful
+ * <p>This response is sent to the Client whose LoginRequest was successful
  *
  * @see de.uol.swp.common.user.request.LoginRequest
  * @see User

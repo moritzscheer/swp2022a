@@ -38,8 +38,7 @@ public class Robot implements Serializable {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 06-02-2023
      */
-    public Robot(
-            int id, Position currentPosition, boolean alive, CardinalDirection direction) {
+    public Robot(int id, Position currentPosition, boolean alive, CardinalDirection direction) {
         this.id = id;
         this.currentPosition = currentPosition;
         this.alive = alive;

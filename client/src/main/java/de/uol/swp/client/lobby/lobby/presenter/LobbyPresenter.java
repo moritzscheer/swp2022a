@@ -12,7 +12,6 @@ import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
-import de.uol.swp.common.lobby.message.MapChangedMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
 import de.uol.swp.common.lobby.message.UserLeftLobbyMessage;
 import de.uol.swp.common.lobby.request.MapChangeRequest;
@@ -21,7 +20,6 @@ import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,18 +30,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-
 import javafx.scene.layout.GridPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Manages the Lobby window
@@ -63,6 +61,8 @@ public class LobbyPresenter extends AbstractPresenter {
     private LobbyDTO lobbyDTO;
     private int lobbyID;
     private String lobbyName;
+
+    private String mapName;
     private User owner;
     private ObservableList<String> users;
     private ObservableList<User> usersNotReady;
@@ -93,6 +93,13 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML private Label textFieldMapName;
     @FXML private GridPane mapThumbWrapper;
     @FXML private ImageView mapThumb;
+
+    @FXML
+    private Spinner<Integer> numberBots;
+
+    private SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,7,0);
+
+
 
     /**
      * Default Constructor
@@ -126,23 +133,48 @@ public class LobbyPresenter extends AbstractPresenter {
         slots = lobby.getUsers().size();
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
 
-        if(!owner.equals(loggedInUser)) {
+        boolean first = false;
+        if(first == false){
+            Map m = new Map(0);
+            updateMapDisplay(m);
+            User u = this.loggedInUser;
+            UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+            eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+            lobby.setMapName("MapOne");
+            first = true;
+        }
+
+        if (!owner.equals(loggedInUser)) {
             mapList.setMouseTransparent(true);
             mapList.setFocusTraversable(false);
-        }
-        else
-        {
-            ChangeListener<? super Number> cl = (obsV, oldV, newV) -> {
-                int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
-                Map m = new Map(mapIndex);
+        } else {
+            ChangeListener<? super Number> cl =
+                    (obsV, oldV, newV) -> {
+                        int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
+                        Map m = new Map(mapIndex);
 
-                updateMapDisplay(m);
+                        updateMapDisplay(m);System.out.println(m.getName());
 
-                if (this.multiplayer) {
-                    User u = this.loggedInUser;
-                    UserDTO dto = new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
-                    eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+                        if (this.multiplayer) {
+                            User u = this.loggedInUser;
+                            UserDTO dto =
+                                    new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+                            eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+                        }
+        switch(m.getName()) {
+                    case "Map 1":
+                        mapName = "MapOne";
+                        break;
+                    case "Map 2":
+                        mapName = "MapTwo";
+                        break;
+                    case "Map 3":
+                        mapName = "MapThree";
+                        break;
+                    default:
                 }
+                lobby.setMapName(mapName);
+
             };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }
@@ -150,13 +182,17 @@ public class LobbyPresenter extends AbstractPresenter {
         this.mapList.setItems(FXCollections.observableList(Arrays.asList(Map.getMapList())));
         textFieldMapName.setText("None");
 
-
         // display data in GUI
         textFieldLobbyName.setText(lobbyName);
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
-        if(!loggedInUser.equals(owner)) {
+        if(Objects.equals(user.getUsername(), owner.getUsername())) {
+            numberBots.setValueFactory(valueFactory);
+        }else {
+            numberBots.setVisible(false);
+        }
+        if (!loggedInUser.equals(owner)) {
             startButton.setManaged(false);
             startButton.setVisible(false);
         } else if (lobby.getUsers().size() == 1) {
@@ -202,8 +238,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Updates the list of players that are not ready on the client side
      *
-     * <p>This method clears the entire userNotReady list and then adds each user in the list
-     * given to it. If there ist no userNotReady list this it creates one.
+     * <p>This method clears the entire userNotReady list and then adds each user in the list given
+     * to it. If there ist no userNotReady list this it creates one.
      *
      * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
      *     it is crucial not to remove the {@code Platform.runLater()}
@@ -266,11 +302,11 @@ public class LobbyPresenter extends AbstractPresenter {
                     owner = message.getNewOwner();
                     textFieldOwner.setText(owner.getUsername());
 
-                    if(loggedInUser.equals(owner)) {
+                    if (loggedInUser.equals(owner)) {
                         startButton.setManaged(true);
                         startButton.setVisible(true);
                     }
-                    if(users.size() == 1) {
+                    if (users.size() == 1) {
                         startButton.setDisable(false);
                         readyButton.setVisible(false);
                     }
@@ -304,7 +340,7 @@ public class LobbyPresenter extends AbstractPresenter {
                     }
                     slots++;
                     textFieldOnlineUsers.setText(String.valueOf(slots));
-                    if(users.size() >= 1) {
+                    if (users.size() >= 1) {
                         readyButton.setVisible(true);
                         startButton.setDisable(true);
                     }
@@ -322,9 +358,9 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2023-05-28
      */
     public void updatePlayerReadyStatus(PlayerReadyInLobbyMessage message) {
-        if(message.isReady()) {
+        if (message.isReady()) {
             usersNotReady.remove(message.getUser());
-            if(loggedInUser.equals(message.getUser())) {
+            if (loggedInUser.equals(message.getUser())) {
                 LOG.debug("you are now ready");
             } else {
                 LOG.debug("user {} is now ready", message.getUser().getUsername());
@@ -332,13 +368,13 @@ public class LobbyPresenter extends AbstractPresenter {
         } else {
             usersNotReady.add(message.getUser());
             startButton.setDisable(true);
-            if(loggedInUser.equals(message.getUser())) {
+            if (loggedInUser.equals(message.getUser())) {
                 LOG.debug("you are now not ready");
             } else {
                 LOG.debug("user {} is now not ready", message.getUser().getUsername());
             }
         }
-        if(usersNotReady.size() == 0 && loggedInUser.equals(owner)) {
+        if (usersNotReady.size() == 0 && loggedInUser.equals(owner)) {
             startButton.setDisable(false);
         }
     }
@@ -399,17 +435,19 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        if(readyButton.getText().equals("Not Ready")) {
-            Platform.runLater(() -> {
-                readyButton.setText("Ready");
-                readyButton.setStyle("-fx-background-color: GREEN");
-            });
+        if (readyButton.getText().equals("Ready?")) {
+            Platform.runLater(
+                    () -> {
+                        readyButton.setText("Ready!");
+                        readyButton.setStyle("-fx-background-color: GREEN");
+                    });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, true));
         } else {
-            Platform.runLater(() -> {
-                readyButton.setText("Not Ready");
-                readyButton.setStyle("-fx-background-color: RED");
-            });
+            Platform.runLater(
+                    () -> {
+                        readyButton.setText("Ready?");
+                        readyButton.setStyle("-fx-background-color: RED");
+                    });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, false));
         }
     }
@@ -417,16 +455,22 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * Method called when the start button is pressed
      *
-     * <p>This Method is called when the start button is pressed.
+     * <p>This Method is called when the start button is pressed and take / send the number of bots.
      *
      * @param actionEvent The ActionEvent generated by pressing the start button
      * @since 2022-11-30
      */
     @FXML
-    private void onStartButtonPressed(ActionEvent actionEvent) {
-        if (loggedInUser == owner) {
-            eventBus.post(new RequestStartGameEvent(lobbyDTO));
+    private void onStartButtonPressed(ActionEvent actionEvent) throws Exception {
+        if(numberBots.valueProperty().getValue() + users.size() >8) {
+            textChat.sendTextMessage("There are too many players or bots in the lobby!");
+            throw new Exception("There are too many players or bots in the lobby!");
+        }else {
+            if (loggedInUser == owner) {
+                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+            }
         }
+
     }
 
     public ObservableList<String> getUsers() {
@@ -441,16 +485,15 @@ public class LobbyPresenter extends AbstractPresenter {
      * @author Mathis Eilers
      * @since 2023-05-12
      */
-    public void updateMapDisplay(Map m)
-    {
-        if(m == null)
-            return;
+    public void updateMapDisplay(Map m) {
+        if (m == null) return;
 
-        Platform.runLater(() -> {
-            textFieldMapName.setText(m.getName());
-            mapThumb.setImage(new Image(m.getImageResource().toString()));
-            mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
-            mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
-        });
+        Platform.runLater(
+                () -> {
+                    textFieldMapName.setText(m.getName());
+                    mapThumb.setImage(new Image(m.getImageResource().toString()));
+                    mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+                    mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+                });
     }
 }

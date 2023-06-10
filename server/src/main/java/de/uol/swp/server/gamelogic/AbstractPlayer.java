@@ -12,14 +12,13 @@ public abstract class AbstractPlayer {
     protected Robot robot;
     protected Card[] receivedCards;
     protected Card[] chosenCards;
+
+    protected UserDTO userDTO;
     protected int numCardToPlay = 0;
     protected UserDTO userDTO;
 
 
-
-    /** Constructor
-     *
-     */
+    /** Constructor */
     public AbstractPlayer() {}
 
     /**

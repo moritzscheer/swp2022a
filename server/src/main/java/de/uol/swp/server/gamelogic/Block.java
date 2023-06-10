@@ -174,7 +174,7 @@ public class Block implements Serializable {
     }
 
     /**
-     * Getter behaviouList
+     * Getter behaviourList
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
@@ -182,6 +182,17 @@ public class Block implements Serializable {
      */
     public AbstractTileBehaviour[] getBehaviourList() {
         return this.behaviourList;
+    }
+
+    /**
+     * Setter behaviourList
+     *
+     * @author Maxim
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-05-31
+     */
+    public void setBehaviourList(AbstractTileBehaviour[] behaviourList) {
+        this.behaviourList = behaviourList;
     }
 
     /**
@@ -201,12 +212,14 @@ public class Block implements Serializable {
         }
     }
 
-    /** Get all imagesIDs as Array to send to client
+    /**
+     * Get all imagesIDs as Array to send to client
+     *
      * @author Finn & Maria
      * @return imagesIDs
      */
-    public int[][] getImages(){
-        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0,0})) ;
+    public int[][] getImages() {
+        ArrayList<int[]> images = new ArrayList<>(List.of(new int[] {0, 0}));
         for (int i = 0; i < behaviourList.length; i++) {
             images.addAll(behaviourList[i].getImage());
         }

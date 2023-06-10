@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 
@@ -11,9 +13,11 @@ import de.uol.swp.server.gamelogic.cards.Card;
  */
 public class BotPlayer extends AbstractPlayer {
 
-    public BotPlayer(Robot robot, Card[] cards) {
+    public BotPlayer(Position startPosition, int robotID) {
         super();
-        userDTO = new UserDTO("Bot", "passwort", "mail");
+        this.userDTO = new UserDTO("Bot"+ robotID+1, "password", "someEmail" );
+
+        this.robot = new Robot(robotID, startPosition, true, CardinalDirection.East);
     }
 
     // TODO
