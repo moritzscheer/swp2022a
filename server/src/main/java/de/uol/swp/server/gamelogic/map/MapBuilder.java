@@ -51,6 +51,22 @@ public final class MapBuilder {
         mapStringToCheckpointNumberAndFirstPosition.put(
                 "TestLaserMap",
                 new Pair<>(testCheckPoints, new Position(5,7)));
+        //TestPusherMap
+        mapStringToCheckpointNumberAndFirstPosition.put(
+                "TestPusherMap",
+                new Pair<>(testCheckPoints, new Position(6,6)));
+        //TestWallMap
+        mapStringToCheckpointNumberAndFirstPosition.put(
+                "TestWallMap",
+                new Pair<>(testCheckPoints, new Position(6,6)));
+        //TestConveyorMap
+        mapStringToCheckpointNumberAndFirstPosition.put(
+                "TestConveyorMap",
+                new Pair<>(testCheckPoints, new Position(6,7)));
+        //TestConveyorPressorAndPitMap
+        mapStringToCheckpointNumberAndFirstPosition.put(
+                "TestConveyorPressorAndPitMap",
+                new Pair<>(testCheckPoints, new Position(6,7)));
     }
 
     public static Block[][] getMap(String mapPath) {
@@ -70,6 +86,9 @@ public final class MapBuilder {
         maps.add(new MapOne());
         maps.add(new MapTwo());
         testMaps.add(new TestLaserMap());
+        testMaps.add(new TestPusherMap());
+        testMaps.add(new TestWallMap());
+        testMaps.add(new TestConveyorMap());
 
         // Checkpoints added as {x1,x2,x3 ... x6} , {y1,y2,y3 ... y6}
         checkpointsMapOne.add(new int[][] {{3,9}, {10,3}});

@@ -105,7 +105,6 @@ public class Game {
 
         //For Pictures
         //this.startCheckpoint = new Position(11,11);
-
         this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 
