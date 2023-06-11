@@ -21,6 +21,7 @@ import org.javatuples.Pair;
 public final class MapBuilder {
 
     public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
+    public static List<AbstractMap> testMaps = new LinkedList<AbstractMap>();
     private static final HashMap<String, Pair<Integer, Position>> mapStringToCheckpointNumberAndFirstPosition= new HashMap<>();
 
     public static List<ArrayList> checkpointLocations = new LinkedList<ArrayList>();
@@ -28,6 +29,7 @@ public final class MapBuilder {
 
     static {
         // define all three positions for each version
+        //Map1
         Position[] versionPositionsMap1 = {new Position(3,10), new Position(4,3), new Position(3, 5)};
         for(int v = 1; v <= 3; v++){
             for(int c = 2; c <= 6; c++){
@@ -37,6 +39,18 @@ public final class MapBuilder {
                 );
             }
         }
+
+        //Map2
+
+        //Map3
+
+        //Each TestMap 4 CHECKPOINTS
+        int testCheckPoints = 4;
+
+        //TestLaserMap
+        mapStringToCheckpointNumberAndFirstPosition.put(
+                "TestLaserMap",
+                new Pair<>(testCheckPoints, new Position(5,7)));
     }
 
     public static Block[][] getMap(String mapPath) {
@@ -55,6 +69,7 @@ public final class MapBuilder {
 
         maps.add(new MapOne());
         maps.add(new MapTwo());
+        testMaps.add(new TestLaserMap());
 
         // Checkpoints added as {x1,x2,x3 ... x6} , {y1,y2,y3 ... y6}
         checkpointsMapOne.add(new int[][] {{3,9}, {10,3}});
@@ -92,6 +107,8 @@ public final class MapBuilder {
     }
 
     public static void mapGen() throws IOException {
+
+        //Generate Normal Maps
         for (int mapCount = 0;mapCount<maps.size();mapCount++) {
             for (int version = 0; version < 3; version++) { // Version
                 for (int checkpoints = 0; checkpoints  < 5; checkpoints ++) { // Checkpoints
@@ -104,6 +121,16 @@ public final class MapBuilder {
                     objOut.close();
                 }
             }
+        }
+
+        //Generate Test Maps
+        for(AbstractMap maps : testMaps){
+            Block[][] map = mapGenExtracted(maps.getMap(), 0, 0 , 0);
+            String path = "server/src/main/resources/maps/" + maps.getClass().getName().replace("de.uol.swp.server.gamelogic.map.", "") + ".map";
+            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
+            objOut.writeObject(map);
+            objOut.flush();
+            objOut.close();
         }
 
     }
@@ -124,23 +151,25 @@ public final class MapBuilder {
         int y = 0;
         Block[][] map = mapFromClass;
 
-        try {
-            int[][] checkpointLocation = (int[][]) checkpointLocations.get(checkpointLoc).get((version * 5) + checkpoints);
+        //Place Checkpoints on normal maps (Version >0) and not on Testmaps with Version 0
+        if(version > 0) {
+            try {
+                int[][] checkpointLocation = (int[][]) checkpointLocations.get(checkpointLoc).get((version * 5) + checkpoints);
 
-            for(int i = 0; i<checkpoints+2; i++){
-               x = checkpointLocation[0][i];
-               y = checkpointLocation[1][i];
-               System.out.println(x + " " + y);
-               map[x][y] = new Block(new CheckPointBehaviour(null, map, new Position(x, y), (i+1)), null , new Position(x,y));
+                for (int i = 0; i < checkpoints + 2; i++) {
+                    x = checkpointLocation[0][i];
+                    y = checkpointLocation[1][i];
+                    System.out.println(x + " " + y);
+                    map[x][y] = new Block(new CheckPointBehaviour(null, map, new Position(x, y), (i + 1)), null, new Position(x, y));
+                }
+                System.out.println("NEXT");
+
+            } catch (Exception b) {
+                System.out.println("No Checkpoints Found!");
             }
-            System.out.println("NEXT");
-
-        }
-        catch(Exception b){
-        System.out.println("No Checkpoints Found!");
         }
 
-        //Place Laser
+        //Place Laser and clear Behaviours that have Checkpoints in it
         int checkpointFound = 0;
         for (y = 0; y < 12; y++) {
             for (x = 0; x < 12; x++) {
@@ -181,9 +210,15 @@ public final class MapBuilder {
 
         // Sort Behaviours
         for (y = 0; y < 12; y++) {
-
             for (x = 0; x < 12; x++) {
-
+                for (int i = 0; i < map[x][y].getBehaviourList().length; i++) {
+                    if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
+                        CheckPointBehaviour copy = (CheckPointBehaviour) map[x][y].getBehaviourList()[i];
+                        AbstractTileBehaviour[] emptyList = new AbstractTileBehaviour[1];
+                        emptyList[0] = copy;
+                        map[x][y] = new Block(emptyList, null, new Position(x, y));
+                    }
+                }
                 map[x][y].setBehaviourList(sortBehaviourList(map[x][y].getBehaviourList()));
             }
         }
@@ -200,6 +235,9 @@ public final class MapBuilder {
 
         while(loop) {
 
+            int pastX = x2;
+            int pastY = y2;
+            //Get next tile direction and sets opposite Cardinal Direction
             switch (direction) {
                 case West:
                     x2--;
@@ -220,10 +258,13 @@ public final class MapBuilder {
                 default:
                     break;
             }
-
+            // Check surrounding
             if(x2 >= 0 && y2 >= 0 && x2<= 11 && y2 <= 11 ) {
                 for (int i = 0; i < map[x2][y2].getBehaviourList().length; i++) {
-                    // Check surrounding
+
+
+                    //If the Block has a Wall it checks if the Wall blocks the Laser
+                    //It then checks whether its an inner wall or an outer wall
                     if (map[x2][y2].getBehaviourList()[i] instanceof WallBehaviour) {
                         if (map[x2][y2].getBehaviourList()[i].getObstruction(opposite)) {
                             loop = false;
@@ -232,37 +273,51 @@ public final class MapBuilder {
                             loop = false;
                         }
                     }
+                    //Checks if the Tile has a Pusher which has the same direction, so then a half laser needs to be placed
                     if (map[x2][y2].getBehaviourList()[i] instanceof PusherBehaviour && map[x2][y2].getBehaviourList()[i].getObstruction(direction)) {
                         fullLaser = false;
                         loop = false;
                     }
+                    //If the Laser shoots at another startlaser then the startlaser gets replaced
                     if (map[x2][y2].getBehaviourList()[i] instanceof LaserBehaviour ) {
-                        if (((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getStart() &&
-                                ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getLaserDirection() == direction ||
-                                ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getLaserDirection() == opposite) {
-                            ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setStart(false);
-                            ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setLaserBeam(beam);
+                        if((((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getLaserDirection() == direction) ||
+                                (((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getLaserDirection() == opposite)){
+                            if(((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).getStart()){
+                                ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setStart(false);
+                                ((LaserBehaviour) map[x2][y2].getBehaviourList()[i]).setLaserBeam(beam);
+                            }
                             innerWallorLaser = true;
                         }
-
                     }
+                    //If its a Checkpointbehavior a new Wall gets placed that blocks the Laser so the Laser doesn't touch the checkpoint
+
+                    if(map[x2][y2].getBehaviourList()[i] instanceof CheckPointBehaviour ){
+                        AbstractTileBehaviour[] copyForWall = new AbstractTileBehaviour[map[pastX][pastY].getBehaviourList().length + 1];
+                        System.arraycopy(map[pastX][pastY].getBehaviourList(), 0, copyForWall, 0, copyForWall.length - 1);
+                        copyForWall[copyForWall.length - 1] = new WallBehaviour(null, map, new Position(pastX, pastY), direction);
+                        innerWallorLaser = true;
+                        map[pastX][pastY] = new Block(copyForWall, null, new Position(pastX, pastY));
+                    }
+
+
                 }
 
-                //Place Laser
+                //Place Laser if its eligible
                 if (!innerWallorLaser) {
-                    AbstractTileBehaviour[] copy = new AbstractTileBehaviour[map[x2][y2].getBehaviourList().length + 1];
-                    System.arraycopy(map[x2][y2].getBehaviourList(), 0, copy, 0, copy.length - 1);
-                    copy[copy.length - 1] = new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x2, y2), direction, beam, fullLaser);
-                    map[x2][y2] = new Block(copy, null, new Position(x2, y2));
+                    AbstractTileBehaviour[] copyForLaser = new AbstractTileBehaviour[map[x2][y2].getBehaviourList().length + 1];
+                    System.arraycopy(map[x2][y2].getBehaviourList(), 0, copyForLaser, 0, copyForLaser.length - 1);
+                    copyForLaser[copyForLaser.length - 1] = new LaserBehaviour(null, map, new int[]{1, 2, 3, 4, 5}, new Position(x2, y2), direction, beam, fullLaser);
+                    map[x2][y2] = new Block(copyForLaser, null, new Position(x2, y2));
                 }
             }
+            //If it goes out of the Map it should stop the loop
             else{
                 loop = false;
             }
         }
     }
 
-
+    //Sorts the behaviours so the pictures get selected correctly
     private static AbstractTileBehaviour[] sortBehaviourList(AbstractTileBehaviour[] behaviourList){
         Arrays.sort(behaviourList, new BehaviourTypeComparator());
 

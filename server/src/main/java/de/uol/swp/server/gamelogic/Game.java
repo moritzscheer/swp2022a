@@ -83,17 +83,29 @@ public class Game {
         int version = random.nextInt(3)+1;
         LOG.debug(version);
         LOG.debug("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        Pair<Integer, Position> tmp;
 
-        if(board == null){
+        if(this.mapName.contains("Test")) {
+            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
+            tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(mapName);
+        }
+        else {
+            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + "V" + version + "C" + checkpointCount + ".map");
+
+            if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             LOG.debug("Map couldn't be loaded. MapName = " + mapName);
-        }
+            }
 
-        // save checkPoints
-        LOG.debug(version);
-        Pair<Integer, Position> tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
+            // save checkPoints
+            LOG.debug(version);
+            tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
                 mapName+ "V" + version + "C"+ checkpointCount);
+            }
+
+        //For Pictures
+        //this.startCheckpoint = new Position(11,11);
+
         this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 

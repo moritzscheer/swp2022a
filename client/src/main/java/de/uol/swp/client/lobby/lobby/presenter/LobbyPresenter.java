@@ -171,6 +171,9 @@ public class LobbyPresenter extends AbstractPresenter {
                     case "Map 3":
                         mapName = "MapThree";
                         break;
+                    case "TEST_LaserMap":
+                        mapName = "TestLaserMap";
+                        break;
                     default:
                 }
                 lobby.setMapName(mapName);
