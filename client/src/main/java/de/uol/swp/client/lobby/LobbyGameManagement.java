@@ -275,6 +275,7 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void restartRounds(RoundIsOverMessage msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.resetCardsAndSlots();
+        a.setAllPlayersNotReady();
 
         // create request to get the cards
         eventBus.post(
@@ -320,6 +321,7 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void reloadMapData(GetMapDataResponse msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
+        a.initializeRobotsOnBoard();
     }
 
     /**
@@ -333,6 +335,8 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void showCardsToUser(ProgramCardDataResponse msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.setReceivedCards(msg.getAssignedProgramCards());
+        // for each new round show robots, after some died and came back
+        a.loadRobotsInBoard();
     }
 
     /**
@@ -403,6 +407,19 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void updateGameMap(int lobbyID, de.uol.swp.common.game.Map map) {
         lobbyGameMap.get(lobbyID).getLobbyPresenter().updateMapDisplay(map);
+    }
+
+    /**
+     * Handles RobotIsFinallyDead detected on the EventBus
+     *
+     * @param msg The GameOverMessage seen on the EventBus
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @author Maria Eduarda
+     * @since 2023-06-09
+     */
+    public void setRobotDied(RobotIsFinallyDead msg) {
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.setRobotDied(msg.getUserDied());
     }
 
     /**

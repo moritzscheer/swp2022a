@@ -182,6 +182,22 @@ public class GameService {
     }
 
     /**
+     * Handles RobotIsFinallyDead detected on the EventBus
+     *
+     * <p>If a RobotIsFinallyDead is detected on the EventBus, this method gets called.
+     *
+     * @param msg The RobotIsFinallyDead detected on the EventBus
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @author Maria Eduarda
+     * @since 2023-06-09
+     */
+    @Subscribe
+    public void onRobotIsFinallyDead(RobotIsFinallyDead msg) {
+        LOG.debug(msg.getUserDied() + " died forever!!!");
+        LobbyGameManagement.getInstance().setRobotDied(msg);
+    }
+
+    /**
      * Handles GameOverMessage detected on the EventBus
      *
      * <p>If a GameOverMessage is detected on the EventBus, this method gets called.

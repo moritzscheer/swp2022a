@@ -7,13 +7,11 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -285,7 +283,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void roundIsOver() throws InterruptedException {
+    public UserDTO roundIsOver() throws InterruptedException {
 
         // round is over
         this.programStep = 0;
@@ -294,6 +292,22 @@ public class Game {
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
+
+        int countSurvivors = 0;
+        UserDTO survivor = null;
+        for(AbstractPlayer player: this.players){
+            if(!player.getRobot().isDeadForever()){
+                player.getRobot().setAlive(true);
+                player.getRobot().setDeadForTheRound(false);
+                countSurvivors++;
+                survivor = player.getUser();
+            }
+        }
+        if(countSurvivors <= 1){
+            // gameover
+            return survivor;
+        }
+        return null;
     }
 
     public void startGame(){

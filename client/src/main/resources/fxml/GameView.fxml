@@ -1114,14 +1114,6 @@
                      </rowConstraints>
                      <children>
                         <HBox fx:id="player1Robot" alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <GridPane alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
                      </children>
                   </GridPane>
                         <Button fx:id="readyButton" maxWidth="1.7976931348623157E308" onAction="#onReadyButtonPressed" GridPane.columnIndex="1">
