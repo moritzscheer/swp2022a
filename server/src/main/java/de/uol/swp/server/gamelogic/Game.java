@@ -824,7 +824,7 @@ public class Game {
         try {
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
-                            CardinalDirection.values()[moveDir.ordinal() + 2]);
+                            CardinalDirection.values()[(moveDir.ordinal() + 2) % 4]);
         } catch (ArrayIndexOutOfBoundsException e) {
             // testing for out of bounds
             return false;
