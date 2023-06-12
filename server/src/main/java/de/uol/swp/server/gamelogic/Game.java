@@ -7,7 +7,6 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -178,13 +177,13 @@ public class Game {
                                     Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
                     while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
-                        LOG.debug("Ups, all cards are turn type",((Player)player).getUser().getUsername());
+                        LOG.debug("Ups, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
                         cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
                         // prevent that it runs forever, then redistribute to all players again
                         if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
-                            LOG.debug("New Distribution of cards to all players",((Player)player).getUser().getUsername());
+                            LOG.debug("New Distribution of cards to all players ");
                             notDistributedCards = true;
                             distributeProgramCards();
                         }
@@ -204,6 +203,34 @@ public class Game {
                 }
                 // TODO: lock the registers
                 else {
+                    int[] cardsIDs =
+                            Arrays.copyOfRange(
+                                    Ints.toArray(cardsIDsList), count, count + 5);
+
+                    while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
+                        LOG.debug("Ups, all cards are turn type");
+                        Collections.shuffle(cardsIDsList);
+                        cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
+
+                        // prevent that it runs forever, then redistribute to all players again
+                        if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
+                            LOG.debug("New Distribution of cards to all players");
+                            notDistributedCards = true;
+                            distributeProgramCards();
+                        }
+                    }
+
+                    Card[] cards = new Card[5];
+                    int i = 0;
+                    for (int cardID : cardsIDs) {
+                        cards[i] = searchCardInJSON(cardID);
+                        // save references to these Card objetcs
+                        assert cards[i] != null;
+                        cardIdCardMap.put(cards[i].getId(), cards[i]);
+                        i++;
+                    }
+                    player.receiveCards(cards);
+                    count = count + 5;
                 }
             }
            return true;
@@ -328,7 +355,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void roundIsOver() throws InterruptedException {
+    public UserDTO roundIsOver() throws InterruptedException {
 
         // round is over
         this.programStep = 0;
@@ -337,6 +364,22 @@ public class Game {
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
+
+        int countSurvivors = 0;
+        UserDTO survivor = null;
+        for(AbstractPlayer player: this.players){
+            if(!player.getRobot().isDeadForever()){
+                player.getRobot().setAlive(true);
+                player.getRobot().setDeadForTheRound(false);
+                countSurvivors++;
+                survivor = player.getUser();
+            }
+        }
+        if(countSurvivors <= 1){
+            // gameover
+            return survivor;
+        }
+        return null;
     }
 /*
     public void startGame(){
@@ -363,7 +406,7 @@ public class Game {
     }
 
     public void calcGameRoundCards() {
-        LOG.debug("Calculating game cards for round " + this.programStep);
+        LOG.debug("Calculating game cards for round " + (this.programStep+1));
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -393,7 +436,7 @@ public class Game {
     }
 
     public void calcGameRoundBoard() {
-        LOG.debug("Calculating game board for round " + this.programStep);
+        LOG.debug("Calculating game board for round " + (this.programStep+1));
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -408,31 +451,31 @@ public class Game {
                 // Preferably altering the behaviour Methods to return (or get as parameters)
                 // the list of ActionReports and MoveIntents
 
-                moves = blockXY.OnExpressConveyorStage(this.programStep);
+                moves = blockXY.OnExpressConveyorStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnConveyorStage(this.programStep);
+                moves = blockXY.OnConveyorStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnPusherStage(this.programStep);
+                moves = blockXY.OnPusherStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnRotatorStage(this.programStep);
+                moves = blockXY.OnRotatorStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnPresserStage(this.programStep);
+                moves = blockXY.OnPresserStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnLaserStage(this.programStep);
+                moves = blockXY.OnLaserStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
 
-                moves = blockXY.OnCheckPointStage(this.programStep);
+                moves = blockXY.OnCheckPointStage(this.programStep+1);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
             }
