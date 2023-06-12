@@ -7,8 +7,10 @@ import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * If a robot steps on the pusher tile, then the robot gets pushed in the specific direction
@@ -18,8 +20,9 @@ import java.util.Objects;
  */
 public class PusherBehaviour extends AbstractTileBehaviour {
 
-    private int[] activeInProgramSteps;
-    private CardinalDirection direction;
+    private final List<Integer> activeInProgramSteps;
+    private final CardinalDirection direction;
+    private final CardinalDirection pushingDirection;
 
     public PusherBehaviour(
             List<Robot> robotStates,
@@ -28,8 +31,9 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             int[] activeInProgramSteps,
             CardinalDirection direction) {
         super(robotStates, board, blockPos);
-        this.activeInProgramSteps = activeInProgramSteps;
-        this.direction = direction;
+        this.activeInProgramSteps = Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());;
+        this.direction =  direction;
+        this.pushingDirection = CardinalDirection.values()[(direction.ordinal() + 2) % 4];
     }
 
     /**
@@ -44,32 +48,35 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
-        for (Robot robotState : this.robotStates) {
-            if (Objects.equals(robotState.getPosition(), this.blockPos)) {
-                moves.add(new MoveIntent(robotState.getID(), this.direction));
-                break;
+        if(this.activeInProgramSteps.contains(programStep)){
+            for (Robot robotState : this.robotStates) {
+                if (Objects.equals(robotState.getPosition(), this.blockPos)) {
+                    moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));
+                    break;
+                }
             }
+            return moves;
         }
-        return moves;
+        return null;
     }
 
     public CardinalDirection getDirection() {
         return this.direction;
     }
 
-    public int[] getActiveInProgramSteps() {
+    public List<Integer> getActiveInProgramSteps() {
         return this.activeInProgramSteps;
     }
 
     @Override
     public List<int[]> getImage() {
         int type;
-        if (this.activeInProgramSteps.length == 3) {
+        if (this.activeInProgramSteps.size() == 3) {
             type = 42;
-        } else if (this.activeInProgramSteps.length == 2) {
+        } else if (this.activeInProgramSteps.size() == 2) {
             type = 43;
         } else {
-            type = this.activeInProgramSteps[0] + 38;
+            type = this.activeInProgramSteps.get(0) + 38;
         }
         return new ArrayList<>(List.of(new int[] {type, direction.ordinal()}));
     }
