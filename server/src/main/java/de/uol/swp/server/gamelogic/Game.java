@@ -15,6 +15,7 @@ import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
+import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -634,12 +635,19 @@ public class Game {
     private void executeBehavioursBetweenDestination(int robotID) {
         // in new position where robot is, check all behaviours
         Position position = robots.get(robotID).getPosition();
-        for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
-            if(behaviour instanceof CheckPointBehaviour){
-                ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
-            } else if (behaviour instanceof RepairBehaviour) {
-                ((RepairBehaviour) behaviour).setBackupCopy(robotID);
+        try{
+            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                if(behaviour instanceof CheckPointBehaviour){
+                    ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
+                } else if (behaviour instanceof RepairBehaviour) {
+                    ((RepairBehaviour) behaviour).setBackupCopy(robotID);
+                }
+                else if (behaviour instanceof PitBehaviour) {
+                    behaviour.onRobotEntered(robotID);
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
         }
     }
 
