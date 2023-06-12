@@ -13,6 +13,8 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
+import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -401,6 +403,16 @@ public class Game {
                 moves = blockXY.OnCheckPointStage(this.programStep);
                 moves = resolveMoveIntentConflicts(moves);
                 executeMoveIntents(moves);
+            }
+        }
+
+        // execute board elements functions, other than moves
+        for(Robot robot: robots){
+            Position position = robot.getPosition();
+            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                if(behaviour instanceof CheckPointBehaviour){
+                    ((CheckPointBehaviour)behaviour).setCheckPoint(robot.getID());
+                }
             }
         }
 
