@@ -953,14 +953,14 @@
 
                             <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
-                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="100.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
                           </columnConstraints>
                           <children>
                               <Rectangle fx:id="chosenCard1" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -968,18 +968,43 @@
                               <Insets />
                            </GridPane.margin>
                         </Rectangle>
+                        <ImageView fx:id="blockedCardIcon1" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
                               <Text id="cardPriorityText" fx:id="text_chosenCard1" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
                                     <Rectangle fx:id="chosenCard2" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon2" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
                               <Text id="cardPriorityText" fx:id="text_chosenCard2" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
                                     <Rectangle fx:id="chosenCard3" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon3" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
                               <Text id="cardPriorityText" fx:id="text_chosenCard3" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
                                     <Rectangle fx:id="chosenCard4" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon4" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
                               <Text id="cardPriorityText" fx:id="text_chosenCard4" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
 
                                     <Rectangle fx:id="chosenCard5" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon5" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
                               <Text id="cardPriorityText" fx:id="text_chosenCard5" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                           </children>
                       </GridPane>
@@ -999,8 +1024,8 @@
                       <!-- AvailableCards -->
                       <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
-                              <RowConstraints vgrow="SOMETIMES" />
-                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />

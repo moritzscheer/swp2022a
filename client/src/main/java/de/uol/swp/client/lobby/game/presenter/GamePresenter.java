@@ -28,6 +28,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.input.ClipboardContent;
@@ -44,6 +45,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -204,6 +206,12 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane playerGrid7Wrapper;
     @FXML private GridPane playerGrid8Wrapper;
     @FXML private TextArea historyOutput;
+    @FXML private ImageView blockedCardIcon1;
+    @FXML private ImageView blockedCardIcon2;
+    @FXML private ImageView blockedCardIcon3;
+    @FXML private ImageView blockedCardIcon4;
+    @FXML private ImageView blockedCardIcon5;
+
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
@@ -228,6 +236,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<VBox> playerRobot;
     private ArrayList<GridPane> playerGridWrapper;
     private ArrayList<GridPane> playerGrids;
+    private ArrayList<ImageView> blockedCardIcons;
     private ArrayList<Text> playerNames;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
@@ -379,6 +388,14 @@ public class GamePresenter extends AbstractPresenter {
         playerGridWrapper.add(playerGrid6Wrapper);
         playerGridWrapper.add(playerGrid7Wrapper);
         playerGridWrapper.add(playerGrid8Wrapper);
+
+        blockedCardIcons = new ArrayList<ImageView>();
+        blockedCardIcons.add(blockedCardIcon1);
+        blockedCardIcons.add(blockedCardIcon2);
+        blockedCardIcons.add(blockedCardIcon3);
+        blockedCardIcons.add(blockedCardIcon4);
+        blockedCardIcons.add(blockedCardIcon5);
+
 
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
@@ -834,10 +851,13 @@ public class GamePresenter extends AbstractPresenter {
         // submittedCards.clear();
 
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
+            int counterForIcon = 0;
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
                 slotz.getKey().setStyle("-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+                blockedCardIcons.get(counterForIcon).setVisible(false);
+                counterForIcon++;
             }
         }
 
@@ -851,16 +871,26 @@ public class GamePresenter extends AbstractPresenter {
      *
      *  block cards when damageTokens > 4
      *
-     * @author Maria Andrade
-     * @since 2023-05-18
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-12
      */
     public void setReceivedCards(List<CardDTO> receivedCards, int freeCards) {
         Collections.sort(receivedCards, Comparator.comparingInt(CardDTO::getID));
         int tmp = freeCards;
+        int imageCounter = 0;
+        Image blockedCardIcon = new Image("images/cards/blockedCardIcon.PNG");
         for (Map.Entry<Rectangle, CardDTO> chosenCard : chosenCardsMap.entrySet()) {
             boolean blocked = tmp <= 0;  // this will block the last cards
             chosenCard.getKey().setDisable(blocked);
+            if (blocked){
+                chosenCard.getKey().setStyle("-fx-stroke: red; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+                this.blockedCardIcons.get(imageCounter).setImage(blockedCardIcon);
+                this.blockedCardIcons.get(imageCounter).setFitWidth(20);
+                this.blockedCardIcons.get(imageCounter).setFitHeight(20);
+                this.blockedCardIcons.get(imageCounter).setVisible(blocked);
+            }
             tmp--;
+            imageCounter++;
         }
         for (Map.Entry<Rectangle, CardDTO> handCard : cardsMap.entrySet()) {
             handCard.getKey().setDisable(false);
