@@ -152,7 +152,7 @@ public class Robot implements Serializable {
         return this.lastCheckPoint;
     }
 
-    public Position getLastCheckPointPosition() {
+    public Position getLastBackupCopyPosition() {
         return this.lastBackupCopyPosition;
     }
 
@@ -273,4 +273,5 @@ public class Robot implements Serializable {
     public void setDeadForever() {
         this.deadForever = true;
     }
+
 }
