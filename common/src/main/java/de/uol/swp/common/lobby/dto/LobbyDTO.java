@@ -368,4 +368,5 @@ public class LobbyDTO implements Lobby {
     public String getMapName(){
         return this.mapName;
     }
+
 }

@@ -96,8 +96,11 @@ public class LobbyPresenter extends AbstractPresenter {
 
     @FXML
     private Spinner<Integer> numberBots;
+    @FXML
+    private Spinner<Integer> spinnerCheckpoints;
 
     private SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,7,0);
+    private SpinnerValueFactory<Integer> valueFactoryCP = new SpinnerValueFactory.IntegerSpinnerValueFactory(2,6,0);
 
 
 
@@ -171,6 +174,18 @@ public class LobbyPresenter extends AbstractPresenter {
                     case "Map 3":
                         mapName = "MapThree";
                         break;
+                    case "TEST_LaserMap":
+                        mapName = "TestLaserMap";
+                        break;
+                    case "TEST_PusherMap":
+                        mapName = "TestPusherMap";
+                        break;
+                    case "TEST_ConveyorMap":
+                        mapName = "TestConveyorMap";
+                        break;
+                    case "TEST_WallMap":
+                        mapName = "TestWallMap";
+                        break;
                     default:
                 }
                 lobby.setMapName(mapName);
@@ -189,8 +204,10 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldOwner.setText(owner.getUsername());
         if(Objects.equals(user.getUsername(), owner.getUsername())) {
             numberBots.setValueFactory(valueFactory);
+            spinnerCheckpoints.setValueFactory(valueFactoryCP);
         }else {
-            numberBots.setVisible(false);
+            numberBots.setDisable(true);
+            spinnerCheckpoints.setDisable(true);
         }
         if (!loggedInUser.equals(owner)) {
             startButton.setManaged(false);
@@ -467,7 +484,7 @@ public class LobbyPresenter extends AbstractPresenter {
             throw new Exception("There are too many players or bots in the lobby!");
         }else {
             if (loggedInUser == owner) {
-                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), spinnerCheckpoints.getValue(), lobbyDTO));
             }
         }
 

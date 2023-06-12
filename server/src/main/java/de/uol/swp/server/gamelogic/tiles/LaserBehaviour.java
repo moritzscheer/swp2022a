@@ -21,7 +21,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private int[] activeInProgramSteps;
     private int laserBeam; // laserBeam is directed related to damage
 
-    private boolean start;
+    private boolean start = false;
 
     private boolean fullLaser;
 
