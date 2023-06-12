@@ -29,6 +29,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -50,6 +51,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
 
     private ObservableList<LobbyDTO> lobbiesList;
 
+    @FXML private GridPane tableViewWrapper;
     @FXML private TableView<LobbyDTO> lobbiesView;
     @FXML private TableColumn<LobbyDTO, Integer> column1;
     @FXML private TableColumn<LobbyDTO, String> column2;
@@ -237,11 +239,23 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      *     it is crucial not to remove the {@code Platform.runLater()}
      * @param list A list of LobbyDTO objects including all currently open lobbies
      * @see de.uol.swp.common.lobby.dto.LobbyDTO
-     * @author Moritz Scheer & Maxim Erden
+     * @author Moritz Scheer & Maxim Erden & Tommy Dang
      * @since 2022-11-30
      */
     private void updateLobbyList(List<LobbyDTO> list) {
         // Attention: This must be done on the FX Thread!
+
+        /**
+         * Updates columnWidth to the screensize
+         *
+         * @author Tommy Dang
+         * @since 2023-06-07
+         */
+        column1.prefWidthProperty().bind(lobbiesView.widthProperty().multiply(0.05));
+        column2.prefWidthProperty().bind(lobbiesView.widthProperty().multiply(0.35));
+        column3.prefWidthProperty().bind(lobbiesView.widthProperty().multiply(0.35));
+        column4.prefWidthProperty().bind(lobbiesView.widthProperty().multiply(0.10));
+
         Platform.runLater(
                 () -> {
                     if (lobbiesList == null) {
@@ -263,7 +277,6 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                                             cellData.getValue().getPassword().length() > 0
                                                     ? "*****"
                                                     : ""));
-
                     list.forEach(
                             u -> {
                                 if (!u.getUsers().contains(loggedInUser)) {

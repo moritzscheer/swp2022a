@@ -38,7 +38,10 @@ import javafx.scene.layout.GridPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Manages the Lobby window
@@ -449,17 +452,17 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        if (readyButton.getText().equals("Not Ready")) {
+        if (readyButton.getText().equals("Ready?")) {
             Platform.runLater(
                     () -> {
-                        readyButton.setText("Ready");
+                        readyButton.setText("Ready!");
                         readyButton.setStyle("-fx-background-color: GREEN");
                     });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, true));
         } else {
             Platform.runLater(
                     () -> {
-                        readyButton.setText("Not Ready");
+                        readyButton.setText("Ready?");
                         readyButton.setStyle("-fx-background-color: RED");
                     });
             eventBus.post(new SetPlayerReadyEvent(lobbyID, loggedInUser, false));
@@ -475,10 +478,16 @@ public class LobbyPresenter extends AbstractPresenter {
      * @since 2022-11-30
      */
     @FXML
-    private void onStartButtonPressed(ActionEvent actionEvent) {
-        if (loggedInUser == owner) {
-            eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), spinnerCheckpoints.getValue(), lobbyDTO));
+    private void onStartButtonPressed(ActionEvent actionEvent) throws Exception {
+        if(numberBots.valueProperty().getValue() + users.size() >8) {
+            textChat.sendTextMessage("There are too many players or bots in the lobby!");
+            throw new Exception("There are too many players or bots in the lobby!");
+        }else {
+            if (loggedInUser == owner) {
+                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+            }
         }
+
     }
 
     public ObservableList<String> getUsers() {
