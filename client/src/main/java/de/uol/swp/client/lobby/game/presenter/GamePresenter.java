@@ -859,6 +859,16 @@ public class GamePresenter extends AbstractPresenter {
                 blockedCardIcons.get(counterForIcon).setVisible(false);
                 counterForIcon++;
             }
+//            else if(slotz.getKey() == null){
+//                slotz.getKey().setDisable(true);
+//            }
+
+//            System.out.println(blockedCardIcons + ": ");
+//            System.out.println(slotz.getKey().getFill());
+//
+//            if(slotz.getKey().getFill() == RED){
+//                slotz.getKey().setDisable(true);
+//            }
         }
 
         for (Map.Entry<Rectangle, Text> cardText : cardValues.entrySet()) {
@@ -958,6 +968,13 @@ public class GamePresenter extends AbstractPresenter {
         if (!chosenCardsMap.containsValue(null)) {
             readyButton.setDisable(false);
         }
+
+        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
+            if(card.getKey().getFill() == RED) {
+                card.getKey().setDisable(true);
+            }
+        }
+
     }
 
     @FXML
@@ -972,6 +989,15 @@ public class GamePresenter extends AbstractPresenter {
 
         content.putString(mouseEvent.toString());
         dragboard.setContent(content);
+
+
+        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
+            if(card.getKey().getFill() == RED) {
+                card.getKey().setDisable(true);
+            }
+        }
+
+
     }
 
     @FXML
