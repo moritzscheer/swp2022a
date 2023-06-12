@@ -32,34 +32,34 @@
                <Image url="@../images/GameIdea.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite1.png" />
+               <Image url="@../images/instruction/Seite1.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite2.png" />
+               <Image url="@../images/instruction/Seite2.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite3.png" />
+               <Image url="@../images/instruction/Seite3.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite4.png" />
+               <Image url="@../images/instruction/Seite4.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite5.png" />
+               <Image url="@../images/instruction/Seite5.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite6.png" />
+               <Image url="@../images/instruction/Seite6.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite7.png" />
+               <Image url="@../images/instruction/Seite7.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite8.png" />
+               <Image url="@../images/instruction/Seite8.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite9.png" />
+               <Image url="@../images/instruction/Seite9.png" />
             </ImageView>
             <ImageView fitHeight="974.0" fitWidth="826.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../images/Seite10.png" />
+               <Image url="@../images/instruction/Seite10.png" />
             </ImageView>
          </FlowPane>
       </ScrollPane>
