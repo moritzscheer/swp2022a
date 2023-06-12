@@ -14,9 +14,8 @@ import java.util.List;
  */
 public class ProgramCardDataResponse extends AbstractGameResponse {
     private final List<CardDTO> cards;
-
+    private int freeCards;
     private final int lobbyID;
-    // private final Integer playerID;
 
     /**
      * Constructor
@@ -26,10 +25,10 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
-    public ProgramCardDataResponse(List<CardDTO> cards, int lobbyID) {
+    public ProgramCardDataResponse(List<CardDTO> cards, int freeCards, int lobbyID) {
         super();
         this.cards = cards;
-        // this.playerID = playerID;
+        this.freeCards = freeCards;
         this.lobbyID = lobbyID;
     }
 
@@ -49,13 +48,13 @@ public class ProgramCardDataResponse extends AbstractGameResponse {
     }
 
     /**
-     * Getter for the player variable
+     * Getter for the lockedCards variable
      *
-     * @return LobbyDTO object of the lobby
+     * @return lockedCards number of locked
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-05-01
+     * @since 2023-06-10
      */
-    // public Integer getPlayerID() {
-    //        return this.playerID;
-    //    }
+    public int getFreeCards() {
+        return freeCards;
+    }
 }

@@ -849,21 +849,28 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Implement cards based on response with given ids to each player
      *
+     *  block cards when damageTokens > 4
+     *
      * @author Maria Andrade
      * @since 2023-05-18
      */
-    public void setReceivedCards(List<CardDTO> receivedCards) {
-
+    public void setReceivedCards(List<CardDTO> receivedCards, int freeCards) {
         Collections.sort(receivedCards, Comparator.comparingInt(CardDTO::getID));
-
+        int tmp = freeCards;
         for (Map.Entry<Rectangle, CardDTO> chosenCard : chosenCardsMap.entrySet()) {
-            chosenCard.getKey().setDisable(false);
+            boolean blocked = tmp <= 0;  // this will block the last cards
+            chosenCard.getKey().setDisable(blocked);
+            tmp--;
         }
         for (Map.Entry<Rectangle, CardDTO> handCard : cardsMap.entrySet()) {
             handCard.getKey().setDisable(false);
         }
+        int countCards = 0;
         for (CardDTO receivedCard : receivedCards) {
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
+                if(countCards >= freeCards){
+                    break;
+                }
                 if (cardSlot.getValue() == null) {
                     cardSlot.getKey().setFill(jsonUtils.getCardImageById(receivedCard.getID()));
                     cardValues
@@ -873,26 +880,30 @@ public class GamePresenter extends AbstractPresenter {
                     break;
                 }
             }
+            countCards++;
         }
-    }
-
-    @FXML
-    public void onSubmit(MouseEvent mouseEvent) {
-        //        if (slots.containsValue(false) == false) {
-        //            submittedCards.add(getCardBySlot(chosenCard1));
-        //            submittedCards.add(getCardBySlot(chosenCard2));
-        //            submittedCards.add(getCardBySlot(chosenCard3));
-        //            submittedCards.add(getCardBySlot(chosenCard4));
-        //            submittedCards.add(getCardBySlot(chosenCard5));
-        //
-        //            for (int i = 0; i < submittedCards.size(); i++) {
-        //                System.out.println(submittedCards.get(i).getValue());
-        //            }
-        //
-        //
-        //            resetCardsAndSlots();
-        //        }
-
+        LOG.debug("countCards " + countCards);
+        LOG.debug("freeCards " + freeCards);
+        int i = 0;
+        if(freeCards < 5){
+            for (Map.Entry<Rectangle, CardDTO> cardLocked : chosenCardsMap.entrySet()) {
+                if(freeCards < i + 1){
+                    cardLocked.getKey().setFill(jsonUtils.getCardImageById(receivedCards.get(i).getID()));
+                    cardValues
+                            .get(cardLocked.getKey())
+                            .setText(String.valueOf(receivedCards.get(i).getPriority()));
+                    chosenCardsMap.replace(cardLocked.getKey(), receivedCards.get(i));
+                }
+                i++;
+            }
+        }
+        if(freeCards==0){
+            // submit chosen
+            // submit cards when ready is clicked
+            List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
+            eventBus.post(
+                    new SubmitCardsEvent(this.lobbyID, (UserDTO) this.loggedInUser, chosenCards));
+        }
     }
 
     public Card getCardBySlot(Rectangle slot) {
@@ -1044,7 +1055,6 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        // TODO: mabye change READY  to SUBMIT
         if (!playerReady) {
             LOG.debug("Submitting chosen cards");
             readyButton.setStyle(

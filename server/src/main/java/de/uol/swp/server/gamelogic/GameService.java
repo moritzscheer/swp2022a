@@ -215,6 +215,7 @@ public class GameService extends AbstractService {
                     new ProgramCardDataResponse(
                             convertCardsToCardsDTO(
                                     game.get().getPlayerByUserDTO(user).getReceivedCards()),
+                            9 - game.get().getPlayerByUserDTO(user).getRobot().getDamageToken(),
                             msg.getLobbyID());
             response.initWithMessage(msg);
             post(response);

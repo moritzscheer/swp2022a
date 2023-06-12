@@ -334,7 +334,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void showCardsToUser(ProgramCardDataResponse msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
-        a.setReceivedCards(msg.getAssignedProgramCards());
+        a.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
         // for each new round show robots, after some died and came back
         a.loadRobotsInBoard();
     }
