@@ -19,9 +19,8 @@ public class Robot implements Serializable {
     private boolean alive;
     private int damageToken;
     private CardinalDirection direction;
-    private boolean backupCopy;
     private int lastCheckPoint;
-    private Position lastCheckPointPosition;
+    private Position lastBackupCopyPosition;
     private int lifeToken;
     private boolean powerDown;
 
@@ -50,7 +49,7 @@ public class Robot implements Serializable {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = 1;
-        this.lastCheckPointPosition = currentPosition;
+        this.lastBackupCopyPosition = currentPosition;
         this.deadForTheRound = false;
         this.deadForever = false;
     }
@@ -130,7 +129,7 @@ public class Robot implements Serializable {
         if(!alivee){
             // robot is dead
             this.lifeToken--;
-            setCurrentPosition(this.lastCheckPointPosition);
+            setCurrentPosition(this.lastBackupCopyPosition);
             this.alive = alivee;
         }
         else{
@@ -153,20 +152,12 @@ public class Robot implements Serializable {
         return this.lastCheckPoint;
     }
 
-    public boolean getBackupCopy() {
-        return this.backupCopy;
-    }
-
-    public void setBackupCopy(boolean backupCopy) {
-        this.backupCopy = backupCopy;
-    }
-
     public Position getLastCheckPointPosition() {
-        return this.lastCheckPointPosition;
+        return this.lastBackupCopyPosition;
     }
 
-    public void setLastCheckPointPosition(Position pos) {
-        this.lastCheckPointPosition = pos;
+    public void setLastBackupCopyPosition(Position pos) {
+        this.lastBackupCopyPosition = pos;
     }
 
     /**

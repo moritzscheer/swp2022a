@@ -44,6 +44,14 @@ public class RepairBehaviour extends AbstractTileBehaviour {
         return this.blockPos;
     }
 
+    public void repairDamage(int robotID){
+        robotStates.get(robotID).setDamageToken(robotStates.get(robotID).getDamageToken() - repairSiteKey);
+    }
+
+    public void setBackupCopy(int robotID){
+        robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
+    }
+
     /**
      * When the robot arrive a repair station then it will lose one / two DamageTokens. Also, it
      * will update the new lastCheckPointPosition.
@@ -58,7 +66,7 @@ public class RepairBehaviour extends AbstractTileBehaviour {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (programmStep == 4) {
                     robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
-                    robotState.setLastCheckPointPosition(blockPos);
+                    robotState.setLastBackupCopyPosition(blockPos);
                 }
             }
         }

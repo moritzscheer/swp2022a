@@ -15,6 +15,7 @@ import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
+import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -434,16 +435,6 @@ public class Game {
             }
         }
 
-        // execute board elements functions, other than moves
-        for(Robot robot: robots){
-            Position position = robot.getPosition();
-            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
-                if(behaviour instanceof CheckPointBehaviour){
-                    ((CheckPointBehaviour)behaviour).setCheckPoint(robot.getID());
-                }
-            }
-        }
-
         checkRobotFellFromBoard();
     }
 
@@ -575,8 +566,45 @@ public class Game {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
+                // after robot moved to new block, check for behvaviours to be executed
+                executeBehavioursBetweenDestination(move.robotID);
             }
         }
+    }
+    
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: Checkpoint, save BackupPosition in repair block
+     *
+     * P.S.: does not repair damage tokens
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursBetweenDestination(int robotID) {
+        // in new position where robot is, check all behaviours
+        Position position = robots.get(robotID).getPosition();
+        for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+            if(behaviour instanceof CheckPointBehaviour){
+                ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
+            } else if (behaviour instanceof RepairBehaviour) {
+                ((RepairBehaviour) behaviour).setBackupCopy(robotID);
+            }
+        }
+    }
+
+    private void executeBehavioursInEndDestination(int robotID) {
+        // execute board elements functions, other than moves
+//        for(Robot robot: robots){
+//            Position position = robot.getPosition();
+//            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+//                if(behaviour instanceof CheckPointBehaviour){
+//                    ((CheckPointBehaviour)behaviour).setCheckPoint(robot.getID());
+//                }
+//            }
+//        }
     }
 
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {

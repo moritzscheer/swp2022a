@@ -83,7 +83,8 @@ public class GameService extends AbstractService {
         System.out.println("New id :)");
         // TODO: fix docking positions
         Position[] checkpointsList = {
-            new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
+                new Position(0, 11),
+            new Position(11, 3), new Position(6, 4), new Position(1, 9)
         };
         System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
