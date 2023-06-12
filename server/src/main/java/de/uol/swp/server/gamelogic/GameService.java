@@ -77,16 +77,9 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public GameDTO createNewGame(int lobbyID, String mapName, int numberBots) {
+    public GameDTO createNewGame(int lobbyID, String mapName, int numberBots, int checkpointCount) {
         System.out.println("I am creating your game :)");
 
-        System.out.println("New id :)");
-        // TODO: fix docking positions
-        Position[] checkpointsList = {
-                new Position(0, 11),
-            new Position(11, 3), new Position(6, 4), new Position(1, 9)
-        };
-        System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
         if (!lobby.isPresent()) {
             System.out.println("GameService: lobby not found");
@@ -96,13 +89,13 @@ public class GameService extends AbstractService {
         games.put(
                 lobbyID,
                 new Game(lobbyID,
-                        checkpointsList,
                         lobby.get().getUsers(),
                         mapName,
-                        numberBots
+                        numberBots,
+                        checkpointCount
                 )
         );
-        games.get(lobbyID).startGame();
+        //games.get(lobbyID).startGame();
 
         // Create DTOs objects
         // TODO: create Player
@@ -178,7 +171,7 @@ public class GameService extends AbstractService {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName(), msg.getNumberBots());
+            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName(), msg.getNumberBots(), msg.getNumberCheckpoints());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(),

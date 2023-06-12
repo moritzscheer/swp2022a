@@ -282,7 +282,7 @@ public class MapOne extends AbstractMap{
                         CardinalDirection.North));
 
         x = 11;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 2));
+        generateBlock(map, x, y);
 
         y = 4;
 
@@ -323,7 +323,7 @@ public class MapOne extends AbstractMap{
         x = 5;
         generateBlock(map, x, y);
         x = 6;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 3));
+        generateBlock(map, x, y);
         x = 7;
         generateBlock(map, x, y,
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.North),
@@ -530,7 +530,7 @@ public class MapOne extends AbstractMap{
                 new WallBehaviour(null, map, new Position(x, y), CardinalDirection.West));
 
         x = 1;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 4));
+        generateBlock(map, x, y);
         x = 2;
         generateBlock(map, x, y);
 
@@ -594,7 +594,7 @@ public class MapOne extends AbstractMap{
         y = 11;
 
         x = 0;
-        generateBlock(map, x, y, new CheckPointBehaviour(null, map, new Position(x, y), 1));
+        generateBlock(map, x, y);
         x = 1;
         generateBlock(map, x, y, new ConveyorBeltBehaviour(null, map, new Position(x, y), ArrowType.Straight, CardinalDirection.South));
         x = 2;
