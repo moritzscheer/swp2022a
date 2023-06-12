@@ -44,6 +44,16 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
         return 0;
     }
 
+    /**
+     * Robots discard 1 Damage token in a checkPoint or repair block.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
+    public void fixDamageToken(int indexOfMovedRobot) {
+        robotStates.get(indexOfMovedRobot).fixDamageToken();
+    }
+
     @Override
     public List<int[]> getImage() {
         return new ArrayList<>(List.of(new int[] {2 + number, 0}));

@@ -183,13 +183,15 @@ public class Robot implements Serializable {
     }
 
     /**
-     * Robots on a crossed wrench/hammer space discard 1 Damage token AND draw one Option card.
+     * Robots discard 1 Damage token in a checkPoint or repair block.
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-02-26
+     * @since 2023-06-12
      */
-    public void drawOptionCard() {
-        this.optionCard += 1;
+    public void fixDamageToken() {
+        if(this.damageToken > 0){
+            this.damageToken--;
+        }
     }
 
     public int getOptionCard() {

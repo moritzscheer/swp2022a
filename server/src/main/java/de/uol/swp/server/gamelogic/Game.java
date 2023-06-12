@@ -483,7 +483,7 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
-
+        executeBehavioursInEndDestination();
         checkRobotFellFromBoard();
     }
 
@@ -623,13 +623,15 @@ public class Game {
     
     /** Execute behaviour that may occur only by passing through the block
      * and does not require in the block to land
-     * i.e.: Checkpoint, save BackupPosition in repair block
+     * i.e.: Checkpoint, save BackupPosition in repair or checkpoint block,
+     * fell on a pit
      *
      * P.S.: does not repair damage tokens
      *
      * @author Maria Andrade
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     *  @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
      * @since 2023-06-12
      */
     private void executeBehavioursBetweenDestination(int robotID) {
@@ -651,16 +653,31 @@ public class Game {
         }
     }
 
-    private void executeBehavioursInEndDestination(int robotID) {
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: discard damageToken (checkpoint/repair), suffer Laser
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursInEndDestination() {
         // execute board elements functions, other than moves
-//        for(Robot robot: robots){
-//            Position position = robot.getPosition();
-//            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
-//                if(behaviour instanceof CheckPointBehaviour){
-//                    ((CheckPointBehaviour)behaviour).setCheckPoint(robot.getID());
-//                }
-//            }
-//        }
+        try{
+            for(Robot robot: robots){
+                Position position = robot.getPosition();
+                for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                    if(behaviour instanceof CheckPointBehaviour){
+                        ((CheckPointBehaviour)behaviour).fixDamageToken(robot.getID());
+                    } else if(behaviour instanceof RepairBehaviour){
+                        ((RepairBehaviour)behaviour).fixDamageToken(robot.getID());
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
+        }
     }
 
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {

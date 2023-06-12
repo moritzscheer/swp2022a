@@ -44,8 +44,17 @@ public class RepairBehaviour extends AbstractTileBehaviour {
         return this.blockPos;
     }
 
-    public void repairDamage(int robotID){
-        robotStates.get(robotID).setDamageToken(robotStates.get(robotID).getDamageToken() - repairSiteKey);
+    /**
+     * Robots discard 1 Damage token in a checkPoint or repair block.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
+    public void fixDamageToken(int indexOfMovedRobot) {
+        robotStates.get(indexOfMovedRobot).fixDamageToken();
+        if(repairSiteKey == 2){
+            robotStates.get(indexOfMovedRobot).fixDamageToken();
+        }
     }
 
     public void setBackupCopy(int robotID){
