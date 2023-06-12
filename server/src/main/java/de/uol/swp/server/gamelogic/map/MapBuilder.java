@@ -144,7 +144,7 @@ public final class MapBuilder {
 
         //Generate Test Maps
         for(AbstractMap maps : testMaps){
-            Block[][] map = mapGenExtracted(maps.getMap(), 0, 0 , 0);
+            Block[][] map = mapGenExtracted(maps.getMap(), -1, 0 , 0);
             String path = "server/src/main/resources/maps/" + maps.getClass().getName().replace("de.uol.swp.server.gamelogic.map.", "") + ".map";
             ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
             objOut.writeObject(map);
@@ -171,7 +171,7 @@ public final class MapBuilder {
         Block[][] map = mapFromClass;
 
         //Place Checkpoints on normal maps (Version >0) and not on Testmaps with Version 0
-        if(version > 0) {
+        if(version >= 0) {
             try {
                 int[][] checkpointLocation = (int[][]) checkpointLocations.get(checkpointLoc).get((version * 5) + checkpoints);
 

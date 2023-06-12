@@ -484,7 +484,7 @@ public class LobbyPresenter extends AbstractPresenter {
             throw new Exception("There are too many players or bots in the lobby!");
         }else {
             if (loggedInUser == owner) {
-                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), lobbyDTO));
+                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), spinnerCheckpoints.getValue(), lobbyDTO));
             }
         }
 
