@@ -171,6 +171,13 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Text text_chosenCard4;
 
     @FXML private Text text_chosenCard5;
+    @FXML private Text textPlayer2Card;
+    @FXML private Text textPlayer3Card;
+    @FXML private Text textPlayer4Card;
+    @FXML private Text textPlayer5Card;
+    @FXML private Text textPlayer6Card;
+    @FXML private Text textPlayer7Card;
+    @FXML private Text textPlayer8Card;
 
     @FXML private ImageView markField;
     @FXML private GridPane player2Grid;
@@ -216,6 +223,7 @@ public class GamePresenter extends AbstractPresenter {
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
     Map<Rectangle, Text> cardValues = new LinkedHashMap<>();
+    private ArrayList<Text> textPlayerXCard = new ArrayList<>();
     ArrayList<Card> cardHand = new ArrayList<>();
     ArrayList<Card> submittedCards = new ArrayList<>();
     private LobbyDTO lobby;
@@ -433,6 +441,14 @@ public class GamePresenter extends AbstractPresenter {
         cardValues.put(chosenCard3, text_chosenCard3);
         cardValues.put(chosenCard4, text_chosenCard4);
         cardValues.put(chosenCard5, text_chosenCard5);
+
+        textPlayerXCard.add(textPlayer2Card);
+        textPlayerXCard.add(textPlayer3Card);
+        textPlayerXCard.add(textPlayer4Card);
+        textPlayerXCard.add(textPlayer5Card);
+        textPlayerXCard.add(textPlayer6Card);
+        textPlayerXCard.add(textPlayer7Card);
+        textPlayerXCard.add(textPlayer8Card);
 
         resetCardsAndSlots();
         resizeCardsRectangles();
@@ -1175,8 +1191,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting playercard of the user
      *
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
+     * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
+     * @since 2023-06-12
      */
     public void setPlayerCard(
             Map<UserDTO, CardDTO> userDTOCardDTOMap) { // To implement onPlayerHPChangedMessage
@@ -1188,10 +1204,18 @@ public class GamePresenter extends AbstractPresenter {
                 continue;
             }
 
+            /**
+             * Setting all player cards of the opponent of the user
+             *
+             * @author Maria and Tommy Dang and Ole Zimmermann
+             * @since 2023-06-12
+             */
             int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
+            textPlayerXCard.get(position).setText(String.valueOf(userCurrentCard.getValue().getPriority()));
+            textPlayerXCard.get(position).setStyle("-fx-font-weight: bold");
 
             /** Makes the card images responsiv to the size of the window and gives a border to the images
              *

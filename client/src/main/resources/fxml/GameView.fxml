@@ -195,6 +195,7 @@
                                 </GridPane>
                             </children>
                         </GridPane>
+                  <Text fx:id="textPlayer2Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                       <!-- Player3 -->
@@ -304,6 +305,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer3Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player4 -->
@@ -413,6 +415,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer4Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player5 -->
@@ -525,6 +528,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer5Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player6 -->
@@ -634,6 +638,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer6Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player7 -->
@@ -743,6 +748,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer7Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player8 -->
@@ -853,6 +859,7 @@
                                  </GridPane>
                              </children>
                          </GridPane>
+                  <Text fx:id="textPlayer8Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   </children>
               </GridPane>
                     </children>
