@@ -171,6 +171,13 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Text text_chosenCard4;
 
     @FXML private Text text_chosenCard5;
+    @FXML private Text textPlayer2Card;
+    @FXML private Text textPlayer3Card;
+    @FXML private Text textPlayer4Card;
+    @FXML private Text textPlayer5Card;
+    @FXML private Text textPlayer6Card;
+    @FXML private Text textPlayer7Card;
+    @FXML private Text textPlayer8Card;
 
     @FXML private ImageView markField;
     @FXML private GridPane player2Grid;
@@ -216,6 +223,7 @@ public class GamePresenter extends AbstractPresenter {
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
     Map<Rectangle, Text> cardValues = new LinkedHashMap<>();
+    private ArrayList<Text> textPlayerXCard = new ArrayList<>();
     ArrayList<Card> cardHand = new ArrayList<>();
     ArrayList<Card> submittedCards = new ArrayList<>();
     private LobbyDTO lobby;
@@ -433,6 +441,14 @@ public class GamePresenter extends AbstractPresenter {
         cardValues.put(chosenCard3, text_chosenCard3);
         cardValues.put(chosenCard4, text_chosenCard4);
         cardValues.put(chosenCard5, text_chosenCard5);
+
+        textPlayerXCard.add(textPlayer2Card);
+        textPlayerXCard.add(textPlayer3Card);
+        textPlayerXCard.add(textPlayer4Card);
+        textPlayerXCard.add(textPlayer5Card);
+        textPlayerXCard.add(textPlayer6Card);
+        textPlayerXCard.add(textPlayer7Card);
+        textPlayerXCard.add(textPlayer8Card);
 
         resetCardsAndSlots();
         resizeCardsRectangles();
@@ -677,45 +693,6 @@ public class GamePresenter extends AbstractPresenter {
                                     .heightProperty()
                                     .divide(heightOfSelectedCardGridPane));
         }
-
-        /**
-         * Helps to align the Card priority text in the cards
-         *
-         * <p>In the programming cards is a white box, where the value of the
-         * priority is. This helps to correctly align the text into the card Needs
-         * to separate handcards and selected cards because of their different
-         * sizes.
-         *
-         * @author Tommy Dang
-         * @since 2023-05-23
-         */
-        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
-            handCardsText
-                    .getValue()
-                    .translateYProperty()
-                    .bind(
-                            selectedCardGridPane
-                                    .heightProperty()
-                                    .divide(8.1)
-                                    .subtract(5)); // 8.1 / 3.5
-        }
-
-        text_chosenCard1
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard2
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard3
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard4
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard5
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-
     }
     @FXML
     public void onCardClicked(MouseEvent click) {
@@ -1175,8 +1152,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting playercard of the user
      *
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
+     * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
+     * @since 2023-06-12
      */
     public void setPlayerCard(
             Map<UserDTO, CardDTO> userDTOCardDTOMap) { // To implement onPlayerHPChangedMessage
@@ -1188,10 +1165,18 @@ public class GamePresenter extends AbstractPresenter {
                 continue;
             }
 
+            /**
+             * Setting all player cards of the opponent of the user
+             *
+             * @author Maria and Tommy Dang and Ole Zimmermann
+             * @since 2023-06-12
+             */
             int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
+            textPlayerXCard.get(position).setText(String.valueOf(userCurrentCard.getValue().getPriority()));
+            textPlayerXCard.get(position).setStyle("-fx-font-weight: bold");
 
             /** Makes the card images responsiv to the size of the window and gives a border to the images
              *
