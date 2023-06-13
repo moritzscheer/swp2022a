@@ -1136,8 +1136,13 @@ public class GamePresenter extends AbstractPresenter {
         robotOffButton.setDisable(true);
     }
 
+    /**
+     * Turns the background color stackpanel of the turnedOffRobot user grey
+     *
+     * @author Maria Andrade
+     * @since 2023-06-13
+     */
     public void showRobotTurnedOff(UserDTO turnedOffRobot){
-        // TODO: Tommy
         // show robot as turned off in the list
         // for all players except the loggedInUser
         if(!Objects.equals(loggedInUser, turnedOffRobot)){
@@ -1146,8 +1151,13 @@ public class GamePresenter extends AbstractPresenter {
         }
     }
 
+    /**
+     * Enable Robot Button for the gameview
+     *
+     * @author Tommy Dang
+     * @since 2023-06-13
+     */
     public void enableRobotButton(){
-
         readyButton.setText("Get Cards");
         readyButton.setDisable(false);
         robotOffButton.setDisable(false);
@@ -1204,6 +1214,13 @@ public class GamePresenter extends AbstractPresenter {
     public void setPlayerCard(
             Map<UserDTO, CardDTO> userDTOCardDTOMap) { // To implement onPlayerHPChangedMessage
         for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
+            if(this.userDTOPlayerDTOMap.get(userCurrentCard.getKey()).getRobotDTO().isPowerDown()){
+                LOG.debug(
+                        "Current User robot is turned off, should skip "
+                                + userCurrentCard.getKey().getUsername());
+                continue;
+            }
+
             if (Objects.equals(userCurrentCard.getKey(), this.loggedInUser)) {
                 LOG.debug(
                         "Current User is logged In, should skip "

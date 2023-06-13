@@ -269,8 +269,8 @@ public class LobbyGameManagement extends AbstractPresenter {
      *
      * @param msg the RoundIsOverMessage object seen on the EventBus
      * @see RoundIsOverMessage
-     * @author Maria Andrade
-     * @since 2023-05-23
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-13
      */
     public void restartRounds(RoundIsOverMessage msg) {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
