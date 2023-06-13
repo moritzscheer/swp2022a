@@ -54,7 +54,7 @@ public class GameService extends AbstractService {
     /**
      * Constructor
      *
-     * @param bus the EvenBus used throughout the server
+     * @param bus          the EvenBus used throughout the server
      * @param lobbyService
      * @since 2019-10-08
      */
@@ -82,7 +82,7 @@ public class GameService extends AbstractService {
         System.out.println("New id :)");
         // TODO: fix docking positions
         Position[] checkpointsList = {
-            new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
+                new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
         };
         System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
@@ -105,7 +105,7 @@ public class GameService extends AbstractService {
         // Create DTOs objects
         // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
-        for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
+        for (AbstractPlayer player : games.get(lobbyID).getPlayers()) {
             // add in the list
             players.add(
                     convertPlayerToPlayerDTO(player)
@@ -119,7 +119,7 @@ public class GameService extends AbstractService {
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
-        LOG.debug("Number of players including Bots: "+ players.size() );
+        LOG.debug("Number of players including Bots: " + players.size());
         return gameDTO;
     }
 
@@ -181,7 +181,7 @@ public class GameService extends AbstractService {
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(),
                     new StartGameMessage(
-                            msg.getLobbyID(), msg.getLobby() , game));
+                            msg.getLobbyID(), msg.getLobby(), game));
             tmp.get().resetCounterRequest();
         }
     }
@@ -222,7 +222,7 @@ public class GameService extends AbstractService {
                 LOG.debug("   id={} priority={}", card.getId(), card.getPriority());
             }
             // todo verify we need to check if user is a bot
-            if(callBot) {
+            if (callBot) {
                 selectCardBot(game.get(), msg.getLobbyID());
             }
         }
@@ -301,26 +301,66 @@ public class GameService extends AbstractService {
         }
     }
 
-    private void selectCardBot(Game game,int lobbyID) throws InterruptedException {
+    private void selectCardBot(Game game, int lobbyID) throws InterruptedException {
         Boolean allChosen = game.registerCardsFromBot();
-        for(AbstractPlayer botPlayer : game.getPlayers()) {
-            if(botPlayer instanceof BotPlayer) {
+        for (AbstractPlayer botPlayer : game.getPlayers()) {
+            if (botPlayer instanceof BotPlayer) {
                 PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botPlayer.getUser(), lobbyID);
                 lobbyService.sendToAllInLobby(lobbyID, msg);
             }
         }
 
 
-        if(allChosen){
+        if (allChosen) {
             LOG.debug("All players have chosen cards");
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
+            for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet())
                 LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
                         " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
             lobbyService.sendToAllInLobby(lobbyID,
                     new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
             manageRoundsUpdates(game, lobbyID);
         }
+    }
+
+    /**
+     * Handles all rounds, call calcGame() for every round and send messages to update the view
+     * using help of a scheduler to give some delay to display
+     *
+     * TODO: Remove scheduler and pack everything into a single Method and time the animation on the client Side
+     *
+     * @param game    reference to which game
+     * @param lobbyID lobbyID to which the game belongs
+     * @author Finn Oldeboershuis
+     * @since 2023-06-13
+     */
+    public void manageGameUpdate(Game game, int lobbyID) {
+        List<List<PlayerDTO>> moveList = game.calcAllGameRounds();
+        int secondsToWait = 1;
+
+        lobbyService.sendToAllInLobby(
+                lobbyID,
+                new TextHistoryMessage(
+                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+
+        for (List<PlayerDTO> moves : moveList) {
+            Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
+            scheduler.schedule(() -> {
+                lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves));
+            }, secondsToWait, SECONDS);
+            secondsToWait += 2;
+
+            if (isGameOver(lobbyID, game, secondsToWait)) {
+                break;
+            }
+        }
+
+        game.roundIsOver();
+        scheduler.schedule(
+                () -> lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID)),
+                secondsToWait,
+                SECONDS);
     }
 
 
@@ -333,14 +373,14 @@ public class GameService extends AbstractService {
      * <p>TODO: maybe we could separate this into GameService and GameManagement so this class
      * contains no logic
      *
-     * @param game reference to which game
+     * @param game    reference to which game
      * @param lobbyID lobbyID to which the game belongs
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.common.game.request.SubmitCardsRequest
      * @since 2023-05-24
      */
     public void manageRoundsUpdates(Game game, int lobbyID) throws InterruptedException {
-        // TODO
+        // TODO: remove scheduler on server side
         int secondsToWait = 1;
 
         lobbyService.sendToAllInLobby(
@@ -399,11 +439,7 @@ public class GameService extends AbstractService {
 
         game.roundIsOver(); // reset variables
         scheduler.schedule(
-                new Runnable() {
-                    public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID));
-                    }
-                },
+                () -> lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID)),
                 secondsToWait,
                 SECONDS);
     }
@@ -416,7 +452,7 @@ public class GameService extends AbstractService {
             previousPositions.add(pos);
             LOG.debug(
                     "     Robot Position {} pos = x {} y {}",
-                     player.getUser().getUsername(),
+                    player.getUser().getUsername(),
                     pos.x,
                     pos.y);
         }
@@ -522,7 +558,7 @@ public class GameService extends AbstractService {
                                     + "{"
                                     + direction
                                     + "} \n" // new direction
-                            );
+                    );
 
             sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait, msg);
 
@@ -560,7 +596,7 @@ public class GameService extends AbstractService {
     /**
      * Check if a Player achived the last checkpoint
      *
-     * @param game reference to which game
+     * @param game    reference to which game
      * @param lobbyID lobbyID to which the game belongs
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.common.game.request.SubmitCardsRequest

@@ -55,7 +55,7 @@ public class LobbyDTO implements Lobby {
             String password,
             Boolean multiplayer,
             UUID chatChannelUUID
-            ) {
+    ) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;

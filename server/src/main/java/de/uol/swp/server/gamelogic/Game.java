@@ -287,7 +287,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public void roundIsOver() throws InterruptedException {
+    public void roundIsOver() {
 
         // round is over
         this.programStep = 0;
