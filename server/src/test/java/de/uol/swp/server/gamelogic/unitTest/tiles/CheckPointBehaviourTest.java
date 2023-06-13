@@ -1,8 +1,5 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
@@ -14,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test CheckPointBehaviour
@@ -69,8 +68,7 @@ public class CheckPointBehaviourTest {
 
         // robot dies
         robots[0].setAlive(false);
-        assertTrue(robots[0].getBackupCopy());
-        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastCheckPointPosition());
+        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastBackupCopyPosition());
     }
 
     /**
@@ -91,8 +89,7 @@ public class CheckPointBehaviourTest {
 
         // robot dies
         robots[0].setAlive(false);
-        assertTrue(robots[0].getBackupCopy());
-        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastCheckPointPosition());
+        assertEquals(behaviours1[0].getBlockPos(), robots[0].getLastBackupCopyPosition());
 
         // new round, robot comes back in last check point
         robots[0].setAlive(true);

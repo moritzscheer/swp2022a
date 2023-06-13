@@ -13,6 +13,10 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
+import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
+import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
+import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
@@ -479,7 +483,7 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
-
+        executeBehavioursInEndDestination();
         checkRobotFellFromBoard();
     }
 
@@ -611,7 +615,68 @@ public class Game {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
+                // after robot moved to new block, check for behvaviours to be executed
+                executeBehavioursBetweenDestination(move.robotID);
             }
+        }
+    }
+    
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: Checkpoint, save BackupPosition in repair or checkpoint block,
+     * fell on a pit
+     *
+     * P.S.: does not repair damage tokens
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     *  @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursBetweenDestination(int robotID) {
+        // in new position where robot is, check all behaviours
+        Position position = robots.get(robotID).getPosition();
+        try{
+            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                if(behaviour instanceof CheckPointBehaviour){
+                    ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
+                } else if (behaviour instanceof RepairBehaviour) {
+                    ((RepairBehaviour) behaviour).setBackupCopy(robotID);
+                }
+                else if (behaviour instanceof PitBehaviour) {
+                    behaviour.onRobotEntered(robotID);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
+        }
+    }
+
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: discard damageToken (checkpoint/repair), suffer Laser
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursInEndDestination() {
+        // execute board elements functions, other than moves
+        try{
+            for(Robot robot: robots){
+                Position position = robot.getPosition();
+                for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                    if(behaviour instanceof CheckPointBehaviour){
+                        ((CheckPointBehaviour)behaviour).fixDamageToken(robot.getID());
+                    } else if(behaviour instanceof RepairBehaviour){
+                        ((RepairBehaviour)behaviour).fixDamageToken(robot.getID());
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
         }
     }
 
@@ -759,7 +824,7 @@ public class Game {
         try {
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
-                            CardinalDirection.values()[moveDir.ordinal() + 2]);
+                            CardinalDirection.values()[(moveDir.ordinal() + 2) % 4]);
         } catch (ArrayIndexOutOfBoundsException e) {
             // testing for out of bounds
             return false;

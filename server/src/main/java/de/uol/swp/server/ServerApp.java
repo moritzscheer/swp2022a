@@ -43,7 +43,7 @@ class ServerApp {
      * @since 2017-03-17
      */
     public static void main(String[] args) throws Exception {
-        // Run Mapbuilder to avoid NullPointer Exception
+        // Run MapBuilder to avoid NullPointer Exception
         MapBuilder.main(args);
         int port = -1;
         if (args.length == 1) {
