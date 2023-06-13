@@ -6,6 +6,13 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.util.Map;
 
+/**
+ * Message sent by the server to show all cards of all players of the current program step
+ *
+ * @see AbstractLobbyMessage
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-05-20
+ */
 public class ShowAllPlayersCardsMessage extends AbstractLobbyMessage {
     private final Map<UserDTO, CardDTO> userDTOCardDTOMap;
     private final int lobbyID;

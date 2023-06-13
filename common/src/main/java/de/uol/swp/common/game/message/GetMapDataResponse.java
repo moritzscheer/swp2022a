@@ -3,8 +3,16 @@ package de.uol.swp.common.game.message;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
+import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.lobby.response.AbstractLobbyResponse;
 
+/**
+ * Message sent by the server when the map is loaded
+ *
+ * @see AbstractLobbyMessage
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-05-06
+ */
 public class GetMapDataResponse extends AbstractLobbyResponse {
     private final BlockDTO[][] boardDTOs;
     private final LobbyDTO lobby;
