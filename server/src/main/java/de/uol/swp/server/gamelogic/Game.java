@@ -595,6 +595,12 @@ public class Game {
         if (card.getUTurn()) {
             uTurn(robots.get(robotID));
         }
+        if(card.getMoves() == -1){
+            List<MoveIntent> subMoveList = new ArrayList<>();
+            CardinalDirection dir = robots.get(robotID).getDirection();
+            subMoveList.add(new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
+            moves.add(subMoveList);
+        }
         for (int i = 0;
                 i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
                 i++) {
