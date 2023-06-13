@@ -122,8 +122,8 @@ public class LobbyPresenter extends AbstractPresenter {
      *
      * @param lobby The lobby file containing all the information of the lobby
      * @param user The lobby file containing all the information of the user
-     * @author Moritz Scheer
-     * @since 2022-12-13
+     * @author Moritz Scheer and Tommy Dang and Maxim Erden and Mathis Eilers
+     * @since 2023-06-12
      */
     public void setInformation(LobbyDTO lobby, UserDTO user) {
         loggedInUser = user;
@@ -195,6 +195,7 @@ public class LobbyPresenter extends AbstractPresenter {
         }
 
         this.mapList.setItems(FXCollections.observableList(Arrays.asList(Map.getMapList())));
+        this.mapList.getSelectionModel().selectFirst();
         textFieldMapName.setText("None");
 
         // display data in GUI

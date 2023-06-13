@@ -30,6 +30,7 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.input.ClipboardContent;
@@ -47,6 +48,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -172,6 +174,13 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private Text text_chosenCard4;
 
     @FXML private Text text_chosenCard5;
+    @FXML private Text textPlayer2Card;
+    @FXML private Text textPlayer3Card;
+    @FXML private Text textPlayer4Card;
+    @FXML private Text textPlayer5Card;
+    @FXML private Text textPlayer6Card;
+    @FXML private Text textPlayer7Card;
+    @FXML private Text textPlayer8Card;
 
     @FXML private ImageView markField;
     @FXML private GridPane player2Grid;
@@ -207,10 +216,17 @@ public class GamePresenter extends AbstractPresenter {
     @FXML private GridPane playerGrid7Wrapper;
     @FXML private GridPane playerGrid8Wrapper;
     @FXML private TextArea historyOutput;
+    @FXML private ImageView blockedCardIcon1;
+    @FXML private ImageView blockedCardIcon2;
+    @FXML private ImageView blockedCardIcon3;
+    @FXML private ImageView blockedCardIcon4;
+    @FXML private ImageView blockedCardIcon5;
+
     Map<Rectangle, CardDTO> cardsMap = new LinkedHashMap<>();
     Map<Rectangle, CardDTO> chosenCardsMap = new LinkedHashMap<>();
 
     Map<Rectangle, Text> cardValues = new LinkedHashMap<>();
+    private ArrayList<Text> textPlayerXCard = new ArrayList<>();
     ArrayList<Card> cardHand = new ArrayList<>();
     ArrayList<Card> submittedCards = new ArrayList<>();
     private LobbyDTO lobby;
@@ -231,6 +247,7 @@ public class GamePresenter extends AbstractPresenter {
     private ArrayList<VBox> playerRobot;
     private ArrayList<GridPane> playerGridWrapper;
     private ArrayList<GridPane> playerGrids;
+    private ArrayList<ImageView> blockedCardIcons;
     private ArrayList<Text> playerNames;
     private BlockDTO[][] board;
     private TextChatChannel textChat;
@@ -383,6 +400,14 @@ public class GamePresenter extends AbstractPresenter {
         playerGridWrapper.add(playerGrid7Wrapper);
         playerGridWrapper.add(playerGrid8Wrapper);
 
+        blockedCardIcons = new ArrayList<ImageView>();
+        blockedCardIcons.add(blockedCardIcon1);
+        blockedCardIcons.add(blockedCardIcon2);
+        blockedCardIcons.add(blockedCardIcon3);
+        blockedCardIcons.add(blockedCardIcon4);
+        blockedCardIcons.add(blockedCardIcon5);
+
+
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
         loadPlayers();
@@ -419,6 +444,14 @@ public class GamePresenter extends AbstractPresenter {
         cardValues.put(chosenCard3, text_chosenCard3);
         cardValues.put(chosenCard4, text_chosenCard4);
         cardValues.put(chosenCard5, text_chosenCard5);
+
+        textPlayerXCard.add(textPlayer2Card);
+        textPlayerXCard.add(textPlayer3Card);
+        textPlayerXCard.add(textPlayer4Card);
+        textPlayerXCard.add(textPlayer5Card);
+        textPlayerXCard.add(textPlayer6Card);
+        textPlayerXCard.add(textPlayer7Card);
+        textPlayerXCard.add(textPlayer8Card);
 
         resetCardsAndSlots();
         resizeCardsRectangles();
@@ -663,45 +696,6 @@ public class GamePresenter extends AbstractPresenter {
                                     .heightProperty()
                                     .divide(heightOfSelectedCardGridPane));
         }
-
-        /**
-         * Helps to align the Card priority text in the cards
-         *
-         * <p>In the programming cards is a white box, where the value of the
-         * priority is. This helps to correctly align the text into the card Needs
-         * to separate handcards and selected cards because of their different
-         * sizes.
-         *
-         * @author Tommy Dang
-         * @since 2023-05-23
-         */
-        for (Map.Entry<Rectangle, Text> handCardsText : cardValues.entrySet()) {
-            handCardsText
-                    .getValue()
-                    .translateYProperty()
-                    .bind(
-                            selectedCardGridPane
-                                    .heightProperty()
-                                    .divide(8.1)
-                                    .subtract(5)); // 8.1 / 3.5
-        }
-
-        text_chosenCard1
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard2
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard3
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard4
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-        text_chosenCard5
-                .translateYProperty()
-                .bind(handCardGridPane.heightProperty().divide(11.4).subtract(8.5)); // 11.4 / 6
-
     }
     @FXML
     public void onCardClicked(MouseEvent click) {
@@ -835,13 +829,27 @@ public class GamePresenter extends AbstractPresenter {
      */
     public void resetCardsAndSlots() {
         // submittedCards.clear();
-
+        int counterForIcon = 0;
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
                 slotz.getKey().setStyle("-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+                blockedCardIcons.get(counterForIcon).setVisible(false);
+                counterForIcon++;
             }
+
+
+//            else if(slotz.getKey() == null){
+//                slotz.getKey().setDisable(true);
+//            }
+
+//            System.out.println(blockedCardIcons + ": ");
+//            System.out.println(slotz.getKey().getFill());
+//
+//            if(slotz.getKey().getFill() == RED){
+//                slotz.getKey().setDisable(true);
+//            }
         }
 
         for (Map.Entry<Rectangle, Text> cardText : cardValues.entrySet()) {
@@ -854,16 +862,26 @@ public class GamePresenter extends AbstractPresenter {
      *
      *  block cards when damageTokens > 4
      *
-     * @author Maria Andrade
-     * @since 2023-05-18
+     * @author Maria Andrade and Tommy Dang
+     * @since 2023-06-12
      */
     public void setReceivedCards(List<CardDTO> receivedCards, int freeCards) {
         Collections.sort(receivedCards, Comparator.comparingInt(CardDTO::getID));
         int tmp = freeCards;
+        int imageCounter = 0;
+        Image blockedCardIcon = new Image("images/cards/blockedCardIcon.PNG");
         for (Map.Entry<Rectangle, CardDTO> chosenCard : chosenCardsMap.entrySet()) {
             boolean blocked = tmp <= 0;  // this will block the last cards
             chosenCard.getKey().setDisable(blocked);
+            if (blocked){
+                chosenCard.getKey().setStyle("-fx-stroke: red; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+                this.blockedCardIcons.get(imageCounter).setImage(blockedCardIcon);
+                this.blockedCardIcons.get(imageCounter).setFitWidth(20);
+                this.blockedCardIcons.get(imageCounter).setFitHeight(20);
+                this.blockedCardIcons.get(imageCounter).setVisible(blocked);
+            }
             tmp--;
+            imageCounter++;
         }
         for (Map.Entry<Rectangle, CardDTO> handCard : cardsMap.entrySet()) {
             handCard.getKey().setDisable(false);
@@ -931,6 +949,13 @@ public class GamePresenter extends AbstractPresenter {
         if (!chosenCardsMap.containsValue(null)) {
             readyButton.setDisable(false);
         }
+
+        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
+            if(card.getKey().getFill() == RED) {
+                card.getKey().setDisable(true);
+            }
+        }
+
     }
 
     @FXML
@@ -945,6 +970,15 @@ public class GamePresenter extends AbstractPresenter {
 
         content.putString(mouseEvent.toString());
         dragboard.setContent(content);
+
+
+        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
+            if(card.getKey().getFill() == RED) {
+                card.getKey().setDisable(true);
+            }
+        }
+
+
     }
 
     @FXML
@@ -1122,8 +1156,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting playercard of the user
      *
-     * @author Jann Erik Bruns
-     * @since 2023-05-05
+     * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
+     * @since 2023-06-12
      */
     public void setPlayerCard(
             Map<UserDTO, CardDTO> userDTOCardDTOMap) { // To implement onPlayerHPChangedMessage
@@ -1135,10 +1169,18 @@ public class GamePresenter extends AbstractPresenter {
                 continue;
             }
 
+            /**
+             * Setting all player cards of the opponent of the user
+             *
+             * @author Maria and Tommy Dang and Ole Zimmermann
+             * @since 2023-06-12
+             */
             int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
+            textPlayerXCard.get(position).setText(String.valueOf(userCurrentCard.getValue().getPriority()));
+            textPlayerXCard.get(position).setStyle("-fx-font-weight: bold");
 
             /** Makes the card images responsiv to the size of the window and gives a border to the images
              *
