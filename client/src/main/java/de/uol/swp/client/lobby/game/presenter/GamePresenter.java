@@ -19,6 +19,8 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
+import javafx.animation.RotateTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +42,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1164,7 +1167,99 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {}
+    /**
+     * Animate Robot states
+     *
+     * @author Jann Erik Bruns
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-06-13
+     */
+    public void animateRobotState(PlayerDTO playerDTO){
+        LOG.debug("in animateRobotState");
+        UserDTO userToUpdate = playerDTO.getUser();
+        Position newPos = playerDTO.getRobotDTO().getPosition();
+        Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+        int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
+        int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+        int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
+        ImageView imageView = jsonUtils.getRobotImage(robotID);
 
+        Node node = this.userRobotImageViewReference.get(userToUpdate);
+        Platform.runLater(() -> {
+            if(newDir != prevDir){
+                RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
+                int degrees = (prevDir - newDir) * -90;
+                if(degrees > 180)
+                    degrees = (degrees - 360);
+                else if(degrees < -180)
+                    degrees = (degrees + 360);
+                rotateTransition.setByAngle(degrees);
+                rotateTransition.setNode(node);
+                rotateTransition.setOnFinished(e -> updateRobotState(playerDTO));
+                rotateTransition.play();
+            }else if(prevPos.x != newPos.x || newPos.y != prevPos.y){
+                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
+                imageView.setVisible(false);
+
+                imageView
+                        .fitWidthProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board.length + 1)
+                                        .subtract(10));
+                imageView
+                        .fitHeightProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board[0].length + 1)
+                                        .subtract(10));
+                gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                gameBoard.layout();
+
+                double toX = imageView.getLayoutX();
+                double toY = imageView.getLayoutY();
+
+                double fromX = node.getLayoutX();
+                double fromY = node.getLayoutY();
+
+                double moveX = 0;
+                double moveY = 0;
+
+                moveX = fromX - toX;
+                moveY = fromY - toY;
+
+                if(fromY <= 0 && toY >= 0)
+                    moveY = toY + fromY * -1;
+                else if (fromY >= 0 && toY <= 0)
+                    moveY = toY - fromY * -1;
+                else if (fromY <= 0 && toY <= 0)
+                    moveY = toY + fromY * -1;
+                else if (fromY >= 0 && toY >= 0)
+                    moveY = toY - fromY;
+
+                if(fromX <= 0 && toX >= 0)
+                    moveX = toX + fromX * -1;
+                else if (fromX >= 0 && toX <= 0)
+                    moveX = toX - fromX * -1;
+                else if (fromX <= 0 && toX <= 0)
+                    moveX = toX + fromX * -1;
+                else if (fromX >= 0 && toX >= 0)
+                    moveX = toX - fromX;
+
+
+                gameBoard.getChildren().remove(imageView);
+                imageView.setVisible(true);
+
+                translateTransition.setToX(moveX);
+                translateTransition.setToY(moveY);
+                translateTransition.setOnFinished(e -> updateRobotState(playerDTO));
+                translateTransition.play();
+            }else{
+                updateRobotState(playerDTO);
+        }});
+    }
     /**
      * Update robot states every time server sends a message
      *
@@ -1270,7 +1365,13 @@ public class GamePresenter extends AbstractPresenter {
         // update playerDTO with new info in hashmap
         this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
     }
-
+    /**
+     * animate multiple board elements
+     *
+     * @author Jann Erik Bruns
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-13
+     */
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {
         // TODO ANIMATION
         // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
@@ -1278,6 +1379,107 @@ public class GamePresenter extends AbstractPresenter {
 
         LOG.debug("in animateBoardElements");
 
+        ArrayList<RotateTransition> rotateAnimations = new ArrayList<>();
+        ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
+
+        for (PlayerDTO playerDTO : playerDTOList) {
+            UserDTO userToUpdate = playerDTO.getUser();
+            Position newPos = playerDTO.getRobotDTO().getPosition();
+            Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+            int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
+            int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+            int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
+            ImageView imageView = jsonUtils.getRobotImage(robotID);
+
+            Node node = this.userRobotImageViewReference.get(userToUpdate);
+            RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
+            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
+            if(newDir != prevDir){
+                int degrees = (prevDir - newDir) * -90;
+                if(degrees > 180)
+                    degrees = (degrees - 360);
+                else if(degrees < -180)
+                    degrees = (degrees + 360);
+                rotateTransition.setByAngle(degrees);
+                rotateTransition.setNode(node);
+                rotateAnimations.add(rotateTransition);
+            } else if(prevPos.x != newPos.x || newPos.y != prevPos.y) {
+                imageView.setVisible(false);
+
+                imageView
+                        .fitWidthProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board.length + 1)
+                                        .subtract(10));
+                imageView
+                        .fitHeightProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board[0].length + 1)
+                                        .subtract(10));
+                gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                gameBoard.layout();
+
+                double toX = imageView.getLayoutX();
+                double toY = imageView.getLayoutY();
+
+                double fromX = node.getLayoutX();
+                double fromY = node.getLayoutY();
+
+                double moveX = 0;
+                double moveY = 0;
+
+                moveX = fromX - toX;
+                moveY = fromY - toY;
+
+                if(fromY <= 0 && toY >= 0)
+                    moveY = toY + fromY * -1;
+                else if (fromY >= 0 && toY <= 0)
+                    moveY = toY - fromY * -1;
+                else if (fromY <= 0 && toY <= 0)
+                    moveY = toY + fromY * -1;
+                else if (fromY >= 0 && toY >= 0)
+                    moveY = toY - fromY;
+
+                if(fromX <= 0 && toX >= 0)
+                    moveX = toX + fromX * -1;
+                else if (fromX >= 0 && toX <= 0)
+                    moveX = toX - fromX * -1;
+                else if (fromX <= 0 && toX <= 0)
+                    moveX = toX + fromX * -1;
+                else if (fromX >= 0 && toX >= 0)
+                    moveX = toX - fromX;
+
+                gameBoard.getChildren().remove(imageView);
+                imageView.setVisible(true);
+
+                translateTransition.setToX(moveX);
+                translateTransition.setToY(moveY);
+                moveAnimations.add(translateTransition);
+            }
+        }
+        int i = 0;
+        int z = 0;
+        for (RotateTransition rotateTransition : rotateAnimations){
+            i++;
+            if(rotateAnimations.size() == i)
+                rotateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
+            rotateTransition.play();
+        }
+        for (TranslateTransition translateTransition : moveAnimations){
+            z++;
+            if(moveAnimations.size() == z && i == 0)
+                translateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
+            translateTransition.play();
+        }
+        if(i == 0 && z == 0)
+            updateBoardElements(playerDTOList);
+    }
+    public void updateBoardElements(List<PlayerDTO> playerDTOList) {
+        LOG.debug("in updateBoardElements");
         for (PlayerDTO playerDTO : playerDTOList) {
             // update
             setPlayerHP(playerDTO);
@@ -1316,6 +1518,9 @@ public class GamePresenter extends AbstractPresenter {
                                     "old Position to delete x = {} y = {}",
                                     prevPosition.x,
                                     prevPosition.y);
+
+
+
                             removeNodeByRowColumnIndex(
                                     prevPosition.x + 1,
                                     prevPosition.y + 1,
@@ -1380,7 +1585,6 @@ public class GamePresenter extends AbstractPresenter {
             this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
         }
     }
-
     /**
      * Remove last ImageView from the board when robot moves
      *
