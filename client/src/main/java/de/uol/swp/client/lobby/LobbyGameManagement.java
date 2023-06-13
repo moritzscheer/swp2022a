@@ -276,6 +276,7 @@ public class LobbyGameManagement extends AbstractPresenter {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.resetCardsAndSlots();
         a.setAllPlayersNotReady();
+        a.enableRobotButton();
     }
 
     //////////////////////

@@ -1101,6 +1101,7 @@ public class GamePresenter extends AbstractPresenter {
                             this.lobby, (UserDTO) this.loggedInUser));
             // TODO: Tommy
             readyButton.setText("Submit Cards");
+            readyButton.setDisable(true);
         } else {
             if (!playerReady) {
                 LOG.debug("Submitting chosen cards");
@@ -1139,12 +1140,17 @@ public class GamePresenter extends AbstractPresenter {
         // TODO: Tommy
         // show robot as turned off in the list
         // for all players except the loggedInUser
-        for(Map.Entry<UserDTO, PlayerDTO> player :
-                this.userDTOPlayerDTOMap.entrySet()){
-            if(!Objects.equals(player.getKey(), turnedOffRobot)){
-                // show in list as gray
-            }
+        if(!Objects.equals(loggedInUser, turnedOffRobot)){
+            playerReadyStackPanes.get(userToPositionInStackPanes.get(turnedOffRobot))
+                    .setStyle("-fx-background-color: #adadad");
         }
+    }
+
+    public void enableRobotButton(){
+
+        readyButton.setText("Get Cards");
+        readyButton.setDisable(false);
+        robotOffButton.setDisable(false);
     }
 
     /**
