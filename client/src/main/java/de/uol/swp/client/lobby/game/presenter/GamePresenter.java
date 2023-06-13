@@ -1392,9 +1392,9 @@ public class GamePresenter extends AbstractPresenter {
             ImageView imageView = jsonUtils.getRobotImage(robotID);
 
             Node node = this.userRobotImageViewReference.get(userToUpdate);
-            RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
-            TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
+
             if(newDir != prevDir){
+                RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
                 int degrees = (prevDir - newDir) * -90;
                 if(degrees > 180)
                     degrees = (degrees - 360);
@@ -1404,61 +1404,65 @@ public class GamePresenter extends AbstractPresenter {
                 rotateTransition.setNode(node);
                 rotateAnimations.add(rotateTransition);
             } else if(prevPos.x != newPos.x || newPos.y != prevPos.y) {
-                imageView.setVisible(false);
+                Platform.runLater(
+                        () -> {
+                    TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
+                    imageView.setVisible(false);
 
-                imageView
-                        .fitWidthProperty()
-                        .bind(
-                                gameBoardWrapper
-                                        .heightProperty()
-                                        .divide(board.length + 1)
-                                        .subtract(10));
-                imageView
-                        .fitHeightProperty()
-                        .bind(
-                                gameBoardWrapper
-                                        .heightProperty()
-                                        .divide(board[0].length + 1)
-                                        .subtract(10));
-                gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                gameBoard.layout();
+                    imageView
+                            .fitWidthProperty()
+                            .bind(
+                                    gameBoardWrapper
+                                            .heightProperty()
+                                            .divide(board.length + 1)
+                                            .subtract(10));
+                    imageView
+                            .fitHeightProperty()
+                            .bind(
+                                    gameBoardWrapper
+                                            .heightProperty()
+                                            .divide(board[0].length + 1)
+                                            .subtract(10));
+                    gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                    gameBoard.layout();
 
-                double toX = imageView.getLayoutX();
-                double toY = imageView.getLayoutY();
+                    double toX = imageView.getLayoutX();
+                    double toY = imageView.getLayoutY();
 
-                double fromX = node.getLayoutX();
-                double fromY = node.getLayoutY();
+                    double fromX = node.getLayoutX();
+                    double fromY = node.getLayoutY();
 
-                double moveX = 0;
-                double moveY = 0;
+                    double moveX = 0;
+                    double moveY = 0;
 
-                moveX = fromX - toX;
-                moveY = fromY - toY;
+                    moveX = fromX - toX;
+                    moveY = fromY - toY;
 
-                if(fromY <= 0 && toY >= 0)
-                    moveY = toY + fromY * -1;
-                else if (fromY >= 0 && toY <= 0)
-                    moveY = toY - fromY * -1;
-                else if (fromY <= 0 && toY <= 0)
-                    moveY = toY + fromY * -1;
-                else if (fromY >= 0 && toY >= 0)
-                    moveY = toY - fromY;
+                    if(fromY <= 0 && toY >= 0)
+                        moveY = toY + fromY * -1;
+                    else if (fromY >= 0 && toY <= 0)
+                        moveY = toY - fromY * -1;
+                    else if (fromY <= 0 && toY <= 0)
+                        moveY = toY + fromY * -1;
+                    else if (fromY >= 0 && toY >= 0)
+                        moveY = toY - fromY;
 
-                if(fromX <= 0 && toX >= 0)
-                    moveX = toX + fromX * -1;
-                else if (fromX >= 0 && toX <= 0)
-                    moveX = toX - fromX * -1;
-                else if (fromX <= 0 && toX <= 0)
-                    moveX = toX + fromX * -1;
-                else if (fromX >= 0 && toX >= 0)
-                    moveX = toX - fromX;
+                    if(fromX <= 0 && toX >= 0)
+                        moveX = toX + fromX * -1;
+                    else if (fromX >= 0 && toX <= 0)
+                        moveX = toX - fromX * -1;
+                    else if (fromX <= 0 && toX <= 0)
+                        moveX = toX + fromX * -1;
+                    else if (fromX >= 0 && toX >= 0)
+                        moveX = toX - fromX;
 
-                gameBoard.getChildren().remove(imageView);
-                imageView.setVisible(true);
+                    gameBoard.getChildren().remove(imageView);
+                    imageView.setVisible(true);
 
-                translateTransition.setToX(moveX);
-                translateTransition.setToY(moveY);
-                moveAnimations.add(translateTransition);
+                    translateTransition.setToX(moveX);
+                    translateTransition.setToY(moveY);
+                    moveAnimations.add(translateTransition);
+                });
             }
         }
         int i = 0;
