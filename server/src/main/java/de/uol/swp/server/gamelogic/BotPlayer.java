@@ -3,7 +3,6 @@ package de.uol.swp.server.gamelogic;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.server.gamelogic.cards.Card;
 
 /**
  * @author Maria Eduarda Costa Leite Andrade
@@ -18,9 +17,7 @@ public class BotPlayer extends AbstractPlayer {
         int botNumber = robotID+1;
         this.userDTO = new UserDTO("Bot"+ botNumber, "password", "someEmail" );
 
-        this.robot = new Robot(robotID, startPosition, true, CardinalDirection.East);
+        this.robot = new Robot(robotID, startPosition, true, CardinalDirection.North);
     }
-
-    // TODO
 
 }
