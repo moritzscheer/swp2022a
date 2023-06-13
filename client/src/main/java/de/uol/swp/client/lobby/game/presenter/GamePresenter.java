@@ -826,9 +826,8 @@ public class GamePresenter extends AbstractPresenter {
      */
     public void resetCardsAndSlots() {
         // submittedCards.clear();
-
+        int counterForIcon = 0;
         for (Map.Entry<Rectangle, CardDTO> slotz : chosenCardsMap.entrySet()) {
-            int counterForIcon = 0;
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
@@ -836,6 +835,8 @@ public class GamePresenter extends AbstractPresenter {
                 blockedCardIcons.get(counterForIcon).setVisible(false);
                 counterForIcon++;
             }
+
+
 //            else if(slotz.getKey() == null){
 //                slotz.getKey().setDisable(true);
 //            }
