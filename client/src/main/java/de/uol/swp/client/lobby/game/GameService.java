@@ -13,10 +13,7 @@ import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.*;
-import de.uol.swp.common.game.request.GetMapDataRequest;
-import de.uol.swp.common.game.request.GetProgramCardsRequest;
-import de.uol.swp.common.game.request.StartGameRequest;
-import de.uol.swp.common.game.request.SubmitCardsRequest;
+import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 
 import org.apache.logging.log4j.LogManager;
@@ -143,6 +140,12 @@ public class GameService {
             LOG.debug("   id={} priority={}", cardDTO.getID(), cardDTO.getPriority());
         }
         LobbyGameManagement.getInstance().showCardsToUser(msg);
+    }
+
+    @Subscribe
+    public void onRobotTurnedOffMessage(RobotTurnedOffMessage msg) {
+        LOG.debug("Player {} is turned off for the round", msg.getTurnedOffUser().getUsername());
+        LobbyGameManagement.getInstance().sendMessageTurnedOffRobot(msg);
     }
 
     @Subscribe

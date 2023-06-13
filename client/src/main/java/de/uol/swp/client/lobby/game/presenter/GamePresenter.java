@@ -9,12 +9,14 @@ import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobby.game.Card;
+import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.GetMapDataResponse;
+import de.uol.swp.common.game.request.TurnRobotOffRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
@@ -1092,22 +1094,56 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        if (!playerReady) {
-            LOG.debug("Submitting chosen cards");
-            readyButton.setStyle(
-                    "-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
-            readyButton.setText("Submitted");
-            playerReady = true;
-
-            // submit cards when ready is clicked
-            List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
+        if(Objects.equals(readyButton.getText(), "Get Cards")){
+            // create request to get the cards
             eventBus.post(
-                    new SubmitCardsEvent(this.lobbyID, (UserDTO) this.loggedInUser, chosenCards));
-        } else {
-            readyButton.setStyle(
-                    "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                    new RequestDistributeCardsEvent(
+                            this.lobby, (UserDTO) this.loggedInUser));
+            // TODO: Tommy
             readyButton.setText("Submit Cards");
-            playerReady = false;
+        } else {
+            if (!playerReady) {
+                LOG.debug("Submitting chosen cards");
+                readyButton.setStyle(
+                        "-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                readyButton.setText("Submitted");
+                playerReady = true;
+
+                // submit cards when ready is clicked
+                List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
+                eventBus.post(
+                        new SubmitCardsEvent(this.lobbyID, (UserDTO) this.loggedInUser, chosenCards));
+            } else {
+                readyButton.setStyle(
+                        "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                readyButton.setText("Submit Cards");
+                playerReady = false;
+            }
+        }
+    }
+
+    /**
+     * Turning the robot off for the next round
+     *
+     * @author Maria Andrade
+     * @since 2023-06-13
+     */
+    @FXML
+    private void onRobotOffButtonPressed(ActionEvent actionEvent) {
+        eventBus.post(
+                new TurnRobotOffRequest(this.lobbyID, (UserDTO) this.loggedInUser));
+        robotOffButton.setDisable(true);
+    }
+
+    public void showRobotTurnedOff(UserDTO turnedOffRobot){
+        // TODO: Tommy
+        // show robot as turned off in the list
+        // for all players except the loggedInUser
+        for(Map.Entry<UserDTO, PlayerDTO> player :
+                this.userDTOPlayerDTOMap.entrySet()){
+            if(!Objects.equals(player.getKey(), turnedOffRobot)){
+                // show in list as gray
+            }
         }
     }
 
@@ -1206,9 +1242,6 @@ public class GamePresenter extends AbstractPresenter {
         //            }
         //        }
     }
-
-    @FXML
-    private void onRobotOffButtonPressed(ActionEvent actionEvent) {}
     /**
      * Animate Robot states
      *

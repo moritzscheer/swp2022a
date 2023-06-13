@@ -276,11 +276,6 @@ public class LobbyGameManagement extends AbstractPresenter {
         GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
         a.resetCardsAndSlots();
         a.setAllPlayersNotReady();
-
-        // create request to get the cards
-        eventBus.post(
-                new RequestDistributeCardsEvent(
-                        lobbyIdToLobbyDTOMap.get(msg.getLobbyID()), this.loggedInUser));
     }
 
     //////////////////////
@@ -337,6 +332,19 @@ public class LobbyGameManagement extends AbstractPresenter {
         a.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
         // for each new round show robots, after some died and came back
         a.loadRobotsInBoard();
+    }
+
+    /**
+     * Handles RobotTurnedOffMessage
+     *
+     * @param msg the RobotTurnedOffMessage object seen on the EventBus
+     * @see RobotTurnedOffMessage
+     * @author Maria Andrade
+     * @since 2023-06-13
+     */
+    public void sendMessageTurnedOffRobot(RobotTurnedOffMessage msg) {
+        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        a.showRobotTurnedOff(msg.getTurnedOffUser());
     }
 
     /**

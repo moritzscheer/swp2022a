@@ -15,10 +15,7 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
-import de.uol.swp.common.game.request.GetMapDataRequest;
-import de.uol.swp.common.game.request.GetProgramCardsRequest;
-import de.uol.swp.common.game.request.StartGameRequest;
-import de.uol.swp.common.game.request.SubmitCardsRequest;
+import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
@@ -262,6 +259,27 @@ public class GameService extends AbstractService {
             post(getMapDataResponse);
         } else {
             // TODO: send ErrorResponse
+        }
+    }
+
+    /**
+     * Handles TurnRobotOffRequest found on the EventBus
+     *
+     * <p>If a TurnRobotOffRequest is detected on the EventBus, this method is called. It posts a
+     * RobotTurnedOffMessage to all the users in the lobby, saying that this player is ready
+     *
+     * @param request SubmitCardsRequest found on the EventBus
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.request.TurnRobotOffRequest
+     * @since 2023-06-13
+     */
+    @Subscribe
+    public void onTurnRobotOffRequest(TurnRobotOffRequest request){
+        Optional<Game> game = getGame(request.getLobbyID());
+        if (game.isPresent()) {
+            game.get().getPlayerByUserDTO(request.getLoggedInUser()).getRobot().setPowerDown(true);
+            lobbyService.sendToAllInLobby(request.getLobbyID(),
+                    new RobotTurnedOffMessage(request.getLobbyID(), request.getLoggedInUser()));
         }
     }
 
