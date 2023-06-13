@@ -1168,7 +1168,7 @@ public class GamePresenter extends AbstractPresenter {
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {}
     /**
-     * Update robot states every time server sends a message
+     * Animate Robot states
      *
      * @author Jann Erik Bruns
      * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
