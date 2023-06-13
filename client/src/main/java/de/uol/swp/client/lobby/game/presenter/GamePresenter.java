@@ -19,6 +19,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 
+import javafx.animation.RotateTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +41,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import javafx.util.Duration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1164,7 +1166,39 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {}
+    /**
+     * Update robot states every time server sends a message
+     *
+     * @author Jann Erik Bruns
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-06-13
+     */
+    public void animateRobotState(PlayerDTO playerDTO){
+        LOG.debug("in animateRobotState");
+        UserDTO userToUpdate = playerDTO.getUser();
+        Position newPos = playerDTO.getRobotDTO().getPosition();
+        Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+        int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
+        int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+        int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
+        ImageView imageView = jsonUtils.getRobotImage(robotID);
 
+        Node node = this.userRobotImageViewReference.get(userToUpdate);
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
+        if(newDir != prevDir){
+            int degrees = (prevDir - newDir) * -90;
+            if(degrees > 180)
+                degrees = (degrees - 360);
+            else if(degrees < -180)
+                degrees = (degrees + 360);
+            rotateTransition.setByAngle(degrees);
+            rotateTransition.setNode(node);
+            rotateTransition.setOnFinished(e -> updateRobotState(playerDTO));
+            rotateTransition.play();
+        }else {
+            updateRobotState(playerDTO);
+        }
+    }
     /**
      * Update robot states every time server sends a message
      *
@@ -1270,7 +1304,13 @@ public class GamePresenter extends AbstractPresenter {
         // update playerDTO with new info in hashmap
         this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
     }
-
+    /**
+     * animate multiple board elements
+     *
+     * @author Jann Erik Bruns
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-13
+     */
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {
         // TODO ANIMATION
         // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
@@ -1278,6 +1318,42 @@ public class GamePresenter extends AbstractPresenter {
 
         LOG.debug("in animateBoardElements");
 
+        ArrayList<RotateTransition> animations = new ArrayList<>();
+
+        for (PlayerDTO playerDTO : playerDTOList) {
+            UserDTO userToUpdate = playerDTO.getUser();
+            Position newPos = playerDTO.getRobotDTO().getPosition();
+            Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+            int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
+            int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+            int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
+            ImageView imageView = jsonUtils.getRobotImage(robotID);
+
+            Node node = this.userRobotImageViewReference.get(userToUpdate);
+            RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
+            if(newDir != prevDir){
+                int degrees = (prevDir - newDir) * -90;
+                if(degrees > 180)
+                    degrees = (degrees - 360);
+                else if(degrees < -180)
+                    degrees = (degrees + 360);
+                rotateTransition.setByAngle(degrees);
+                rotateTransition.setNode(node);
+                animations.add(rotateTransition);
+            }
+        }
+        int i = 0;
+        for (RotateTransition rotateTransition : animations){
+            i++;
+            if(animations.size() == i)
+                rotateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
+            rotateTransition.play();
+        }
+        if(i == 0)
+            updateBoardElements(playerDTOList);
+    }
+    public void updateBoardElements(List<PlayerDTO> playerDTOList) {
+        LOG.debug("in updateBoardElements");
         for (PlayerDTO playerDTO : playerDTOList) {
             // update
             setPlayerHP(playerDTO);
@@ -1316,6 +1392,9 @@ public class GamePresenter extends AbstractPresenter {
                                     "old Position to delete x = {} y = {}",
                                     prevPosition.x,
                                     prevPosition.y);
+
+
+
                             removeNodeByRowColumnIndex(
                                     prevPosition.x + 1,
                                     prevPosition.y + 1,
@@ -1380,7 +1459,6 @@ public class GamePresenter extends AbstractPresenter {
             this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
         }
     }
-
     /**
      * Remove last ImageView from the board when robot moves
      *
