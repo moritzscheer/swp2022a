@@ -34,6 +34,9 @@ public class GameOverMessage extends AbstractLobbyMessage {
      * @since 2023-05-23
      */
     public int getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
     /**
