@@ -1,4 +1,4 @@
-package de.uol.swp.common.request;
+package de.uol.swp.common.game.request;
 
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.request.SubmitCardsRequest;

@@ -1,4 +1,4 @@
-package de.uol.swp.common.message;
+package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.GameDTO;

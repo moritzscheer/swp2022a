@@ -1,4 +1,4 @@
-package de.uol.swp.common.message;
+package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.game.message.GameOverMessage;
 import de.uol.swp.common.game.message.RoundIsOverMessage;

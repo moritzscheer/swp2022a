@@ -1,4 +1,4 @@
-package de.uol.swp.common.request;
+package de.uol.swp.common.game.request;
 
 import de.uol.swp.common.game.request.AbstractGameRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
