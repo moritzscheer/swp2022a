@@ -18,6 +18,9 @@ public class GetMapDataRequest extends AbstractGameRequest {
      * @since 2023-05-06
      */
     public GetMapDataRequest(LobbyDTO lobby) {
+        if(lobby == null) {
+            throw new NullPointerException("Lobby can not be null");
+        }
         this.lobby = lobby;
     }
 }

@@ -287,14 +287,14 @@ public class GameService extends AbstractService {
         Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
             // TODO
-            LOG.debug("IN SERVER: RECEIVED CARDS from " + request.getloggedInUser().getUsername());
+            LOG.debug("IN SERVER: RECEIVED CARDS from " + request.getLoggedInUser().getUsername());
             for (CardDTO card : request.getCardDTOs())
                 LOG.debug(card.getID() + " -  " + card.getPriority());
 
             Boolean allChosen =
-                    game.get().registerCardsFromUser(request.getloggedInUser(), request.getCardDTOs());
+                    game.get().registerCardsFromUser(request.getLoggedInUser(), request.getCardDTOs());
             PlayerIsReadyMessage msg =
-                    new PlayerIsReadyMessage(request.getloggedInUser(), request.getLobbyID());
+                    new PlayerIsReadyMessage(request.getLoggedInUser(), request.getLobbyID());
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
 
             if (allChosen) {

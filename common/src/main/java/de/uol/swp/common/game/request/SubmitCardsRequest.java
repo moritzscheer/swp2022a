@@ -17,6 +17,15 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      * @since 2023-04-25
      */
     public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO> cardDTOS) {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Lobby can not be null");
+        }
+        if(userDTO == null) {
+            throw new NullPointerException("User can not be null");
+        }
+        if(cardDTOS == null) {
+            throw new NullPointerException("CardDTO can not be null");
+        }
         this.lobbyID = lobbyID;
         this.loggedInUser = userDTO;
         this.cardDTO = cardDTOS;
@@ -47,7 +56,7 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
      * @author Maria Andrade
      * @since 2023-05-18
      */
-    public UserDTO getloggedInUser() {
+    public UserDTO getLoggedInUser() {
         return loggedInUser;
     }
 }

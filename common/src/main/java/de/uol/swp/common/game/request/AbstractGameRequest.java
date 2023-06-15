@@ -33,8 +33,13 @@ public class AbstractGameRequest extends AbstractRequestMessage {
      * @since 2023-05-01
      */
     public AbstractGameRequest(String name, LobbyDTO lobby) {
+        if (name == null) {
+            throw new NullPointerException("name can not be null");
+        }
+        if (lobby == null) {
+            throw new NullPointerException("lobby can not be null");
+        }
         this.name = name;
-        // TODO: check if it is lobbyID, or gameID
         this.lobby = lobby;
     }
 
@@ -55,6 +60,9 @@ public class AbstractGameRequest extends AbstractRequestMessage {
      * @since 2023-05-01
      */
     public void setName(String name) {
+        if (name == null) {
+            throw new NullPointerException("name can not be null");
+        }
         this.name = name;
     }
 
@@ -75,6 +83,9 @@ public class AbstractGameRequest extends AbstractRequestMessage {
      * @since 2023-05-01
      */
     public void setLobby(LobbyDTO lobby) {
+        if (lobby == null) {
+            throw new NullPointerException("lobby can not be null");
+        }
         this.lobby = lobby;
     }
 
