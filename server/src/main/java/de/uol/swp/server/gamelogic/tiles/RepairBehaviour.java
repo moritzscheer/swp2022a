@@ -45,6 +45,23 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
+     * Robots discard 1 Damage token in a checkPoint or repair block.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
+    public void fixDamageToken(int indexOfMovedRobot) {
+        robotStates.get(indexOfMovedRobot).fixDamageToken();
+        if(repairSiteKey == 2){
+            robotStates.get(indexOfMovedRobot).fixDamageToken();
+        }
+    }
+
+    public void setBackupCopy(int robotID){
+        robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
+    }
+
+    /**
      * When the robot arrive a repair station then it will lose one / two DamageTokens. Also, it
      * will update the new lastCheckPointPosition.
      *
@@ -58,7 +75,7 @@ public class RepairBehaviour extends AbstractTileBehaviour {
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (programmStep == 4) {
                     robotState.setDamageToken(robotState.getDamageToken() - repairSiteKey);
-                    robotState.setLastCheckPointPosition(blockPos);
+                    robotState.setLastBackupCopyPosition(blockPos);
                 }
             }
         }

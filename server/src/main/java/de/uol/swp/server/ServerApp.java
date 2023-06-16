@@ -10,6 +10,7 @@ import de.uol.swp.server.communication.netty.NettyServerHandler;
 import de.uol.swp.server.communication.netty.Server;
 import de.uol.swp.server.di.ServerModule;
 import de.uol.swp.server.gamelogic.GameService;
+import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
@@ -42,6 +43,8 @@ class ServerApp {
      * @since 2017-03-17
      */
     public static void main(String[] args) throws Exception {
+        // Run MapBuilder to avoid NullPointer Exception
+        MapBuilder.main(args);
         int port = -1;
         if (args.length == 1) {
             try {

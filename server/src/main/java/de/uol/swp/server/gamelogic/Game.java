@@ -13,12 +13,18 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
+import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
+import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
+import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.javatuples.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
@@ -33,7 +39,7 @@ public class Game {
     private int roundNumber = 1;
 
     // TODO: Remove dockingBays field
-    private final Position[] checkpointsList;
+    private final Position startCheckpoint;
     private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
@@ -45,6 +51,8 @@ public class Game {
     private final Card[][] playedCards;
 
     private final String mapName;
+
+    private final int checkpointCount;
 
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
@@ -64,19 +72,58 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Position[] checkpointsList, Set<User> users, String mapName, int numberBots) {
+    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
         this.lobbyID = lobbyID;
-        this.checkpointsList = checkpointsList;
         this.programStep = 0;
         this.readyRegister = 0;
         this.mapName = mapName;
+        this.checkpointCount = checkpointCount;
 
         assert users.size() + numberBots <= 8;
 
+        // create board
+        Random random = new Random();
+        int version = random.nextInt(3)+1;
+        LOG.debug(version);
+        LOG.debug("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        Pair<Integer, Position> tmp;
+
+        if(this.mapName.contains("Test")) {
+            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
+            tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(mapName);
+        }
+        else {
+            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + "V" + version + "C" + checkpointCount + ".map");
+
+            if(board == null){
+            //TODO: Log error "Map couldn't be loaded"
+            LOG.debug("Map couldn't be loaded. MapName = " + mapName);
+            }
+
+            // save checkPoints
+            LOG.debug(version);
+            tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
+                mapName+ "V" + version + "C"+ checkpointCount);
+            }
+
+
+        this.startCheckpoint = tmp.getValue1();
+        assert tmp.getValue0() == checkpointCount;
+
+        if(tmp == null){
+            //TODO: Log error "Map couldn't be loaded"
+            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
+        }
+        LOG.debug("Checkpoints size: {}",this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}",this.startCheckpoint.x, this.startCheckpoint.y);
+
+        // set info
+        setRobotsInfoInBehaviours(board, robots);
+
         // there must be as many docking as users
         // assert dockingBays.length == users.size();
-        this.dockingStartPosition = checkpointsList[0];
-        this.lastCheckPoint = checkpointsList.length;
+        this.dockingStartPosition = startCheckpoint;
+        this.lastCheckPoint = this.checkpointCount;
 
         // create players and robots
         int i = 0; // start robots id in 0
@@ -337,16 +384,21 @@ public class Game {
         }
         return null;
     }
-
+/*
     public void startGame(){
+        Random random = new Random();
+        int version = random.nextInt(3)+1;
+        System.out.println("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
 
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+".map");
         if(board == null){
             //TODO: Log error "Map couldn't be loaded"
             return;
         }
         setRobotsInfoInBehaviours(board, robots);
     }
+
+ */
 
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (int x = 0; x < board.length; x++) {
@@ -431,7 +483,7 @@ public class Game {
                 executeMoveIntents(moves);
             }
         }
-
+        executeBehavioursInEndDestination();
         checkRobotFellFromBoard();
     }
 
@@ -543,6 +595,12 @@ public class Game {
         if (card.getUTurn()) {
             uTurn(robots.get(robotID));
         }
+        if(card.getMoves() == -1){
+            List<MoveIntent> subMoveList = new ArrayList<>();
+            CardinalDirection dir = robots.get(robotID).getDirection();
+            subMoveList.add(new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
+            moves.add(subMoveList);
+        }
         for (int i = 0;
                 i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
                 i++) {
@@ -563,7 +621,68 @@ public class Game {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
+                // after robot moved to new block, check for behvaviours to be executed
+                executeBehavioursBetweenDestination(move.robotID);
             }
+        }
+    }
+    
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: Checkpoint, save BackupPosition in repair or checkpoint block,
+     * fell on a pit
+     *
+     * P.S.: does not repair damage tokens
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     *  @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursBetweenDestination(int robotID) {
+        // in new position where robot is, check all behaviours
+        Position position = robots.get(robotID).getPosition();
+        try{
+            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                if(behaviour instanceof CheckPointBehaviour){
+                    ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
+                } else if (behaviour instanceof RepairBehaviour) {
+                    ((RepairBehaviour) behaviour).setBackupCopy(robotID);
+                }
+                else if (behaviour instanceof PitBehaviour) {
+                    behaviour.onRobotEntered(robotID);
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
+        }
+    }
+
+    /** Execute behaviour that may occur only by passing through the block
+     * and does not require in the block to land
+     * i.e.: discard damageToken (checkpoint/repair), suffer Laser
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @since 2023-06-12
+     */
+    private void executeBehavioursInEndDestination() {
+        // execute board elements functions, other than moves
+        try{
+            for(Robot robot: robots){
+                Position position = robot.getPosition();
+                for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
+                    if(behaviour instanceof CheckPointBehaviour){
+                        ((CheckPointBehaviour)behaviour).fixDamageToken(robot.getID());
+                    } else if(behaviour instanceof RepairBehaviour){
+                        ((RepairBehaviour)behaviour).fixDamageToken(robot.getID());
+                    }
+                }
+            }
+        } catch (ArrayIndexOutOfBoundsException e){
+            LOG.debug("Robot fell from the board!");
         }
     }
 
@@ -711,7 +830,7 @@ public class Game {
         try {
             return board[currentTile.x][currentTile.y].getObstruction(moveDir)
                     || board[destinationTile.x][destinationTile.y].getObstruction(
-                            CardinalDirection.values()[moveDir.ordinal() + 2]);
+                            CardinalDirection.values()[(moveDir.ordinal() + 2) % 4]);
         } catch (ArrayIndexOutOfBoundsException e) {
             // testing for out of bounds
             return false;
@@ -858,8 +977,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @since 2023-05-19
      */
-    public Position[] getCheckpointsList() {
-        return this.checkpointsList;
+    public Position getStartCheckpoint() {
+        return this.startCheckpoint;
     }
 
     /**
