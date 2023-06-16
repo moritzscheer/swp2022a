@@ -3,7 +3,7 @@ package de.uol.swp.client.lobby;
 import com.google.common.eventbus.EventBus;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.game.LobbyGameTuple;
+import de.uol.swp.client.lobby.game.LobbyGamePresenterTuple;
 import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
@@ -45,8 +45,8 @@ public class LobbyGameManagement extends AbstractPresenter {
     private UserDTO loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
-    // Map<lobbyID, LobbyGameTuple>
-    private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
+    // Map<lobbyID, LobbyGamePresenterTuple>
+    private final Map<Integer, LobbyGamePresenterTuple> lobbyGameMap = new HashMap<>();
 
     // Map<lobbyID, GameDTO>
     private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
@@ -212,7 +212,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void setThisLobbyPresenter(
             LobbyPresenter lobbyPresenter, Parent lobbyParent, int lobbyID) {
-        lobbyGameMap.put(lobbyID, new LobbyGameTuple(lobbyPresenter, lobbyParent));
+        lobbyGameMap.put(lobbyID, new LobbyGamePresenterTuple(lobbyPresenter, lobbyParent));
     }
 
     // -----------------------------------------------------
@@ -230,7 +230,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public LobbyGameTuple setupLobbyGame(
+    public LobbyGamePresenterTuple setupLobbyGame(
             Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
         lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
 
