@@ -36,6 +36,13 @@ public class AbstractGameRequest extends AbstractRequestMessage {
         if (name == null) {
             throw new NullPointerException("name can not be null");
         }
+        if(
+                name.length() < 3 ||
+                        name.length() > 20 ||
+                        !name.matches("^[a-zA-Z0-9]*$")
+        ) {
+            throw new IllegalArgumentException("Name must be between 3 and 20 characters long and can only contain letters and numbers");
+        }
         if (lobby == null) {
             throw new NullPointerException("lobby can not be null");
         }
