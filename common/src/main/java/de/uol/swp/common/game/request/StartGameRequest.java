@@ -30,6 +30,9 @@ public class StartGameRequest extends AbstractGameRequest {
         if(numberBots < 0) {
             throw new IllegalArgumentException("Number of bots can not be null");
         }
+        if(numberCheckpoints < 0) {
+            throw new IllegalArgumentException("Number of checkpoints can not be null");
+        }
         this.lobbyID = lobby.getLobbyID();
         this.numberBots = numberBots;
         this.numberCheckpoints = numberCheckpoints;

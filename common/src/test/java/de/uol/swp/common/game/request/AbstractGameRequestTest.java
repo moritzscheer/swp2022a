@@ -51,7 +51,7 @@ public class AbstractGameRequestTest {
         String name = "Test Game";
         lobbyDTO = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new AbstractGameRequest(name, lobbyDTO);
         });
     }

@@ -18,25 +18,28 @@ public class StartGameRequestTest {
     public void testConstructorWithNullLobby() {
         lobbyDTO= null;
         int numberBots = 2;
+        int checkpoints = 4;
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            new StartGameRequest(lobbyDTO, numberBots);
+            new StartGameRequest(lobbyDTO, numberBots, checkpoints);
         });
     }
 
     @Test
     public void testConstructorWithNegativeNumberBots() {
         int numberBots = -1;
+        int checkpoints = -1;
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new StartGameRequest(lobbyDTO, numberBots);
+            new StartGameRequest(lobbyDTO, numberBots, checkpoints);
         });
     }
 
     @Test
     public void testGetLobbyID() {
         int numberBots = 2;
-        StartGameRequest request = new StartGameRequest(lobbyDTO, numberBots);
+        int checkpoints = 4;
+        StartGameRequest request = new StartGameRequest(lobbyDTO, numberBots, checkpoints);
 
         int result = request.getLobbyID();
 
@@ -46,7 +49,8 @@ public class StartGameRequestTest {
     @Test
     public void testGetNumberBots() {
         int numberBots = 2;
-        StartGameRequest request = new StartGameRequest(lobbyDTO, numberBots);
+        int checkpoints = 4;
+        StartGameRequest request = new StartGameRequest(lobbyDTO, numberBots, checkpoints);
 
         int result = request.getNumberBots();
 

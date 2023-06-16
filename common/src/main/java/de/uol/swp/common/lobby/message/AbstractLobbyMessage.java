@@ -41,7 +41,7 @@ public class AbstractLobbyMessage extends AbstractServerMessage {
         if(
                 name.length() < 3 ||
                         name.length() > 20 ||
-                        !name.matches("^[a-zA-Z0-9]*$")
+                        !name.matches("^[a-zA-Z0-9]+(?:\\s*[a-zA-Z0-9]+)*$")
         ) {
             throw new IllegalArgumentException("Name must be between 3 and 20 characters long and can only contain letters and numbers");
         }
