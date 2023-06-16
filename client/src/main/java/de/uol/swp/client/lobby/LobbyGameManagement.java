@@ -46,7 +46,7 @@ public class LobbyGameManagement extends AbstractPresenter {
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
     // Map<lobbyID, LobbyGamePresenterTuple>
-    private final Map<Integer, LobbyGamePresenterTuple> lobbyGameMap = new HashMap<>();
+    private final Map<Integer, LobbyGamePresenterTuple> lobbyIdToLobbyGamePresenterMap = new HashMap<>();
 
     // Map<lobbyID, GameDTO>
     private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
@@ -96,7 +96,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-03-09
      */
     public void setupLobby(LobbyDTO lobby, UserDTO user) {
-        lobbyGameMap.get(lobby.getLobbyID()).getLobbyPresenter().setInformation(lobby, user);
+        lobbyIdToLobbyGamePresenterMap.get(lobby.getLobbyID()).getLobbyPresenter().setInformation(lobby, user);
     }
 
     /**
@@ -111,7 +111,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-01-05
      */
     public void removeLobby(LobbyDroppedSuccessfulResponse message) {
-        lobbyGameMap.remove(message.getLobbyID());
+        lobbyIdToLobbyGamePresenterMap.remove(message.getLobbyID());
     }
 
     /**
@@ -127,7 +127,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void newUserJoined(UserJoinedLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
+            LobbyPresenter a = lobbyIdToLobbyGamePresenterMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userJoinedLobby(message);
         }
     }
@@ -145,7 +145,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void userLeftLobby(UserLeftLobbyMessage message) {
         if (!loggedInUser.equals(message.getUser())) {
-            LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
+            LobbyPresenter a = lobbyIdToLobbyGamePresenterMap.get(message.getLobbyID()).getLobbyPresenter();
             a.userLeftLobby(message);
         }
     }
@@ -161,7 +161,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-01-05
      */
     public void changeElement(ChangeElementEvent event) {
-        LobbyPresenter a = lobbyGameMap.get(event.getLobbyID()).getLobbyPresenter();
+        LobbyPresenter a = lobbyIdToLobbyGamePresenterMap.get(event.getLobbyID()).getLobbyPresenter();
         a.switchButtonDisableEffect();
     }
 
@@ -176,7 +176,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-28
      */
     public void playerReadyInLobby(PlayerReadyInLobbyMessage message) {
-        LobbyPresenter a = lobbyGameMap.get(message.getLobbyID()).getLobbyPresenter();
+        LobbyPresenter a = lobbyIdToLobbyGamePresenterMap.get(message.getLobbyID()).getLobbyPresenter();
         a.updatePlayerReadyStatus(message);
     }
 
@@ -191,7 +191,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-03-09
      */
     public Parent getLobbyParent(Integer lobbyID) {
-        return lobbyGameMap.get(lobbyID).getLobbyParent();
+        return lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyParent();
     }
 
     /**
@@ -201,7 +201,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-03-09
      */
     public Parent getGameParent(Integer lobbyID) {
-        return lobbyGameMap.get(lobbyID).getGameParent();
+        return lobbyIdToLobbyGamePresenterMap.get(lobbyID).getGameParent();
     }
 
     /**
@@ -212,7 +212,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void setThisLobbyPresenter(
             LobbyPresenter lobbyPresenter, Parent lobbyParent, int lobbyID) {
-        lobbyGameMap.put(lobbyID, new LobbyGamePresenterTuple(lobbyPresenter, lobbyParent));
+        lobbyIdToLobbyGamePresenterMap.put(lobbyID, new LobbyGamePresenterTuple(lobbyPresenter, lobbyParent));
     }
 
     // -----------------------------------------------------
@@ -232,12 +232,12 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public LobbyGamePresenterTuple setupLobbyGame(
             Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
-        lobbyGameMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
+        lobbyIdToLobbyGamePresenterMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
 
         // init presenter after it was created and then call requests
         initPresenterAndStartRequests(lobbyID);
 
-        return lobbyGameMap.get(lobbyID);
+        return lobbyIdToLobbyGamePresenterMap.get(lobbyID);
     }
 
     /**
@@ -250,7 +250,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void initPresenterAndStartRequests(Integer lobbyID) {
         // after presenter is created, we must call init() with the data
-        lobbyGameMap
+        lobbyIdToLobbyGamePresenterMap
                 .get(lobbyID)
                 .getGamePresenter()
                 .init(
@@ -277,7 +277,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-06-13
      */
     public void restartRounds(RoundIsOverMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.resetCardsAndSlots();
         a.setAllPlayersNotReady();
         a.enableRobotButton();
@@ -305,7 +305,7 @@ public class LobbyGameManagement extends AbstractPresenter {
         /**
          * this post is to create the gamePresenter and save the reference of it inside the
          * LobbyGame class LobbyManagement and GameManagement both need access to same reference For
-         * this reason, both instantiate a hashmap lobbyGameMap
+         * this reason, both instantiate a hashmap lobbyIdToLobbyGamePresenterMap
          */
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
     }
@@ -319,7 +319,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-06
      */
     public void reloadMapData(GetMapDataResponse msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.reloadMap(msg);
         a.initializeRobotsOnBoard();
     }
@@ -333,7 +333,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-18
      */
     public void showCardsToUser(ProgramCardDataResponse msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
         // for each new round show robots, after some died and came back
         a.loadRobotsInBoard();
@@ -348,7 +348,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-06-13
      */
     public void sendMessageTurnedOffRobot(RobotTurnedOffMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.showRobotTurnedOff(msg.getTurnedOffUser());
     }
 
@@ -361,7 +361,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-18
      */
     public void sendMessagePlayerIsReady(PlayerIsReadyMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerReadyStatus(msg.getPlayerIsReady());
         a.blockPlayerCardsAfterSubmit(msg.getPlayerIsReady()); // block cards
     }
@@ -375,7 +375,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-18
      */
     public void sendMessageAllPlayersAreReady(ShowAllPlayersCardsMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.setPlayerCard(msg.getUserDTOCardDTOMap());
     }
 
@@ -388,12 +388,12 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-20
      */
     public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.animateRobotState(msg.getPlayerDTO());
     }
 
     public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.animateBoardElements(msg.getPlayersDTO());
     }
 
@@ -406,7 +406,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-06-02
      */
     public void updateHistory(TextHistoryMessage msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.updateHistoryMessage(msg.getMessage());
     }
 
@@ -419,7 +419,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-27
      */
     public void updateGameMap(int lobbyID, de.uol.swp.common.game.Map map) {
-        lobbyGameMap.get(lobbyID).getLobbyPresenter().updateMapDisplay(map);
+        lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyPresenter().updateMapDisplay(map);
     }
 
     /**
@@ -431,7 +431,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-06-09
      */
     public void setRobotDied(RobotIsFinallyDead msg) {
-        GamePresenter a = lobbyGameMap.get(msg.getLobbyID()).getGamePresenter();
+        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
         a.setRobotDied(msg.getUserDied());
     }
 
@@ -444,7 +444,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-24
      */
     public void gameOver(GameOverMessage msg) {
-        // Todo Check if we need a lobbyGameMap
+        // Todo Check if we need a lobbyIdToLobbyGamePresenterMap
         eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
     }
 }
