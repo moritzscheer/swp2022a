@@ -11,7 +11,7 @@ import java.util.List;
 /** @author Ole Zimemrmann */
 public class WallBehaviour extends AbstractTileBehaviour {
 
-    private CardinalDirection wallDirection;
+    private final CardinalDirection wallDirection;
 
     /**
      * Constructor

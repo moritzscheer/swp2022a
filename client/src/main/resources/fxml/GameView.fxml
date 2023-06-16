@@ -195,6 +195,7 @@
                                 </GridPane>
                             </children>
                         </GridPane>
+                  <Text fx:id="textPlayer2Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                       <!-- Player3 -->
@@ -304,6 +305,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer3Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player4 -->
@@ -413,6 +415,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer4Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player5 -->
@@ -525,6 +528,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer5Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player6 -->
@@ -634,6 +638,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer6Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player7 -->
@@ -743,6 +748,7 @@
                                       </GridPane>
                                   </children>
                               </GridPane>
+                  <Text fx:id="textPlayer7Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
                       </GridPane>
                       <!-- Player8 -->
@@ -853,6 +859,7 @@
                                  </GridPane>
                              </children>
                          </GridPane>
+                  <Text fx:id="textPlayer8Card" strokeType="OUTSIDE" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   </children>
               </GridPane>
                     </children>
@@ -953,34 +960,60 @@
 
                             <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
-                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="68.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
-                              <ColumnConstraints hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
                           </columnConstraints>
                           <children>
-                              <Rectangle fx:id="chosenCard1" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                              <Rectangle fx:id="chosenCard1" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
                         </Rectangle>
-                              <Text id="cardPriorityText" fx:id="text_chosenCard1" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                        <ImageView fx:id="blockedCardIcon1" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
+                              <Text id="cardPriorityText" fx:id="text_chosenCard1" fill="BLACK" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="chosenCard2" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_chosenCard2" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="chosenCard2" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon2" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
+                              <Text id="cardPriorityText" fx:id="text_chosenCard2" fill="BLACK" text="" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="chosenCard3" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_chosenCard3" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="chosenCard3" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon3" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
+                              <Text id="cardPriorityText" fx:id="text_chosenCard3" fill="BLACK" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="chosenCard4" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_chosenCard4" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="chosenCard4" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon4" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
+                              <Text id="cardPriorityText" fx:id="text_chosenCard4" fill="BLACK" text="" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="chosenCard5" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_chosenCard5" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="chosenCard5" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onSlotClicked" styleClass="chosenCards" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                        <ImageView fx:id="blockedCardIcon5" pickOnBounds="true" preserveRatio="true" translateY="-5.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </ImageView>
+                              <Text id="cardPriorityText" fx:id="text_chosenCard5" fill="BLACK" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                           </children>
                       </GridPane>
                </children>
@@ -999,8 +1032,10 @@
                       <!-- AvailableCards -->
                       <GridPane style="-fx-border-color: black; -fx-border-radius: 5;">
                           <rowConstraints>
-                              <RowConstraints vgrow="SOMETIMES" />
-                              <RowConstraints vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="35.0" vgrow="SOMETIMES" />
+                        <RowConstraints percentHeight="15.0" vgrow="SOMETIMES" />
+                              <RowConstraints percentHeight="35.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
@@ -1010,38 +1045,38 @@
                               <ColumnConstraints hgrow="SOMETIMES" percentWidth="20.0" />
                           </columnConstraints>
                           <children>
-                              <Rectangle fx:id="card1" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card1" fill="BLACK" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Rectangle fx:id="card1" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card1" fill="BLACK" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card2" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card2" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card2" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card2" fill="BLACK" text="" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card3" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card3" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card3" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card3" fill="BLACK" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card4" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card4" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card4" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card4" fill="BLACK" text="" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card5" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card5" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card5" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card5" fill="BLACK" text="" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card6" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card6" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card6" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card6" fill="BLACK" text="" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
-                                    <Rectangle fx:id="card7" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card7" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-
-      
-                                    <Rectangle fx:id="card8" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card8" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card7" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card7" fill="BLACK" text="" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
       
-                                    <Rectangle fx:id="card9" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                              <Text id="cardPriorityText" fx:id="text_card9" fill="BLACK" text="" translateY="10.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+                                    <Rectangle fx:id="card8" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card8" fill="BLACK" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
       
-                                    <ImageView fx:id="markField" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                        <GridPane GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <Rectangle fx:id="card9" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
+                              <Text id="cardPriorityText" fx:id="text_card9" fill="BLACK" text="" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+
+      
+                                    <ImageView fx:id="markField" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                        <GridPane GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="70.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
@@ -1114,14 +1149,6 @@
                      </rowConstraints>
                      <children>
                         <HBox fx:id="player1Robot" alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                        <GridPane alignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                           <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                        </GridPane>
                      </children>
                   </GridPane>
                         <Button fx:id="readyButton" maxWidth="1.7976931348623157E308" onAction="#onReadyButtonPressed" GridPane.columnIndex="1">

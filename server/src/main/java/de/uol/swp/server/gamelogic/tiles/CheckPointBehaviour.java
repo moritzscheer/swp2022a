@@ -36,13 +36,22 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     public int setCheckPoint(int indexOfMovedRobot) {
-        if (robotStates.get(indexOfMovedRobot).getLastCheckPoint() < this.number) {
+        if (robotStates.get(indexOfMovedRobot).getLastCheckPoint()+1 == this.number) {
             robotStates.get(indexOfMovedRobot).setLastCheckPoint(this.number);
-            robotStates.get(indexOfMovedRobot).setLastCheckPointPosition(blockPos);
-            robotStates.get(indexOfMovedRobot).setBackupCopy(true);
+            robotStates.get(indexOfMovedRobot).setLastBackupCopyPosition(blockPos);
             return this.number;
         }
         return 0;
+    }
+
+    /**
+     * Robots discard 1 Damage token in a checkPoint or repair block.
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
+    public void fixDamageToken(int indexOfMovedRobot) {
+        robotStates.get(indexOfMovedRobot).fixDamageToken();
     }
 
     @Override

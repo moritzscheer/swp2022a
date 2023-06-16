@@ -62,7 +62,7 @@ public class GameService {
     @Subscribe
     public void startGameRequest(RequestStartGameEvent event) {
         LOG.debug("Starting Game");
-        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO(), event.getNumberBots());
+        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO(), event.getNumberBots(), event.getNumberCheckpoints());
         eventBus.post(startGameRequest);
     }
 
@@ -179,6 +179,22 @@ public class GameService {
     public void onRoundIsOverMessage(RoundIsOverMessage msg) {
         LOG.debug("Restarting rounds");
         LobbyGameManagement.getInstance().restartRounds(msg);
+    }
+
+    /**
+     * Handles RobotIsFinallyDead detected on the EventBus
+     *
+     * <p>If a RobotIsFinallyDead is detected on the EventBus, this method gets called.
+     *
+     * @param msg The RobotIsFinallyDead detected on the EventBus
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @author Maria Eduarda
+     * @since 2023-06-09
+     */
+    @Subscribe
+    public void onRobotIsFinallyDead(RobotIsFinallyDead msg) {
+        LOG.debug(msg.getUserDied() + " died forever!!!");
+        LobbyGameManagement.getInstance().setRobotDied(msg);
     }
 
     /**

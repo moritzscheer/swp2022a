@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** @author Ole Zimmermann */
-public class Block implements Serializable {
+public class Block implements Serializable, Cloneable {
 
     private AbstractTileBehaviour[] behaviourList;
     private String imgPath;
@@ -230,5 +230,18 @@ public class Block implements Serializable {
         }
 
         return imagesArr;
+    }
+
+    @Override
+    public Block clone() {
+        try {
+            return (Block) super.clone();
+        } catch (CloneNotSupportedException e) {
+            // Diese Exception sollte normalerweise nicht auftreten,
+            // da Block das Cloneable-Interface implementiert.
+            // Handle sie entsprechend deinen Anforderungen.
+            e.printStackTrace();
+            return null;
+        }
     }
 }

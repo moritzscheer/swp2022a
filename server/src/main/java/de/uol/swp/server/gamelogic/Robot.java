@@ -19,9 +19,8 @@ public class Robot implements Serializable {
     private boolean alive;
     private int damageToken;
     private CardinalDirection direction;
-    private boolean backupCopy;
     private int lastCheckPoint;
-    private Position lastCheckPointPosition;
+    private Position lastBackupCopyPosition;
     private int lifeToken;
     private boolean powerDown;
 
@@ -31,6 +30,8 @@ public class Robot implements Serializable {
 
     private int optionCard;
     private int lockedRegisters;
+    private boolean deadForTheRound;
+    private boolean deadForever;
 
     /**
      * Constructor
@@ -48,7 +49,9 @@ public class Robot implements Serializable {
         this.powerDown = false;
         this.optionCard = 0;
         this.lastCheckPoint = 1;
-        this.lastCheckPointPosition = currentPosition;
+        this.lastBackupCopyPosition = currentPosition;
+        this.deadForTheRound = false;
+        this.deadForever = false;
     }
     /**
      * @author
@@ -122,10 +125,19 @@ public class Robot implements Serializable {
         return this.direction;
     }
 
-    public void setAlive(boolean alive) {
-        this.alive = alive;
-        this.lifeToken--;
-        setCurrentPosition(this.lastCheckPointPosition);
+    public void setAlive(boolean alivee) {
+        if(!alivee){
+            // robot is dead
+            this.lifeToken--;
+            setCurrentPosition(this.lastBackupCopyPosition);
+            this.alive = alivee;
+        }
+        else{
+            if(this.lifeToken > 0){
+                this.alive = alivee;
+            }
+            // robot is dead forever
+        }
     }
 
     public void setCurrentPosition(Position currentPosition) {
@@ -140,20 +152,12 @@ public class Robot implements Serializable {
         return this.lastCheckPoint;
     }
 
-    public boolean getBackupCopy() {
-        return this.backupCopy;
+    public Position getLastBackupCopyPosition() {
+        return this.lastBackupCopyPosition;
     }
 
-    public void setBackupCopy(boolean backupCopy) {
-        this.backupCopy = backupCopy;
-    }
-
-    public Position getLastCheckPointPosition() {
-        return this.lastCheckPointPosition;
-    }
-
-    public void setLastCheckPointPosition(Position pos) {
-        this.lastCheckPointPosition = pos;
+    public void setLastBackupCopyPosition(Position pos) {
+        this.lastBackupCopyPosition = pos;
     }
 
     /**
@@ -173,16 +177,21 @@ public class Robot implements Serializable {
 
     public void setDamageToken(int damageToken) {
         this.damageToken = damageToken;
+        if(damageToken >= 10){
+            setAlive(false);
+        }
     }
 
     /**
-     * Robots on a crossed wrench/hammer space discard 1 Damage token AND draw one Option card.
+     * Robots discard 1 Damage token in a checkPoint or repair block.
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-02-26
+     * @since 2023-06-12
      */
-    public void drawOptionCard() {
-        this.optionCard += 1;
+    public void fixDamageToken() {
+        if(this.damageToken > 0){
+            this.damageToken--;
+        }
     }
 
     public int getOptionCard() {
@@ -248,4 +257,21 @@ public class Robot implements Serializable {
     public void setPowerDown(boolean powerDown) {
         this.powerDown = powerDown;
     }
+
+    public boolean isDeadForTheRound() {
+        return deadForTheRound;
+    }
+
+    public void setDeadForTheRound(boolean deadForTheRound) {
+        this.deadForTheRound = deadForTheRound;
+    }
+
+    public boolean isDeadForever() {
+        return deadForever;
+    }
+
+    public void setDeadForever() {
+        this.deadForever = true;
+    }
+
 }
