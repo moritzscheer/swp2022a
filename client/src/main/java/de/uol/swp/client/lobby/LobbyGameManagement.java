@@ -45,9 +45,13 @@ public class LobbyGameManagement extends AbstractPresenter {
     private UserDTO loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
+    // Map<lobbyID, LobbyGameTuple>
     private final Map<Integer, LobbyGameTuple> lobbyGameMap = new HashMap<>();
 
+    // Map<lobbyID, GameDTO>
     private final Map<Integer, GameDTO> lobbyIdToGameDTOMap = new HashMap<>();
+
+    // Map<lobbyID, LobbyDTO>
     private final Map<Integer, LobbyDTO> lobbyIdToLobbyDTOMap = new HashMap<>();
 
     private static LobbyGameManagement instance;

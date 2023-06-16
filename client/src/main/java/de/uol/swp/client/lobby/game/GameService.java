@@ -57,7 +57,7 @@ public class GameService {
      * @since 2023-03-09
      */
     @Subscribe
-    public void startGameRequest(RequestStartGameEvent event) {
+    public void onRequestStartGameEvent(RequestStartGameEvent event) {
         LOG.debug("Starting Game");
         StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO(), event.getNumberBots(), event.getNumberCheckpoints());
         eventBus.post(startGameRequest);
