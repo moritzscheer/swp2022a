@@ -38,11 +38,9 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
             throw new IllegalArgumentException("Name can not be null");
         }
         if(
-                name.length() < 3 ||
-                name.length() > 20 ||
-                !name.matches("^[a-zA-Z0-9]*$")
+                name.length() > 20 || !name.matches("^\\s*[a-zA-Z0-9]*\\s*$")
         ) {
-            throw new IllegalArgumentException("Name must be between 3 and 20 characters long and can only contain letters and numbers");
+            throw new IllegalArgumentException("Name must be between 0 and 20 characters long and can only contain letters and numbers");
         }
         if(user == null) {
             throw new IllegalArgumentException("User can not be null");
