@@ -654,10 +654,10 @@ public class SceneManager {
      * @since 2023-03-09
      */
     @Subscribe
-    public void onShowGameViewEvent(ShowGameViewEvent event) {
+    public void onShowGameViewEvent(ShowGameViewEvent event) throws IOException {
         System.out.println("SceneManager.onShowGameViewEvent");
-        createGameView(event.getLobby());
-        showGameScreen(event.getLobbyID());
+        Parent thisGameParent = initGameView(event.getLobbyID());
+        showGameScreen(event.getLobbyID(), thisGameParent);
     }
 
     /**
@@ -987,8 +987,8 @@ public class SceneManager {
      *
      * @since 2023-03-09
      */
-    public void showGameScreen(Integer lobbyID) {
-        showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
+    public void showGameScreen(Integer lobbyID, Parent thisGameParent) {
+        showNode(lobbyID, thisGameParent);
     }
 
     /**
@@ -1033,23 +1033,6 @@ public class SceneManager {
             LobbyGameManagement.getInstance().setupLobby(lobby, user);
             tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Handles StartGameMessage detected on the EventBus
-     *
-     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
-     *
-     * @author Moritz Scheer & Maxim Erden
-     * @see de.uol.swp.common.game.message.StartGameMessage
-     * @since 2023-02-28
-     */
-    public void createGameView(LobbyDTO lobby) {
-        try {
-            Parent gameParent = initGameView(lobby.getLobbyID());
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
