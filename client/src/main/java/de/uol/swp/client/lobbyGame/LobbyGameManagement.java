@@ -229,7 +229,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-03-23
      */
-    public LobbyGamePresenterTuple setupLobbyGame(
+    public LobbyGamePresenterTuple setLobbyGamePresenter(
             Integer lobbyID, Parent gameParent, GamePresenter thisLobbyGamePresenter) {
         lobbyIdToLobbyGamePresenterMap.get(lobbyID).setGameView(thisLobbyGamePresenter, gameParent);
 

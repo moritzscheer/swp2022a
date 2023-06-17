@@ -410,7 +410,7 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        LobbyGameManagement.getInstance().setupLobbyGame(lobbyID, gameParent, gamePresenter);
+        LobbyGameManagement.getInstance().setLobbyGamePresenter(lobbyID, gameParent, gamePresenter);
         return gameParent;
     }
 
