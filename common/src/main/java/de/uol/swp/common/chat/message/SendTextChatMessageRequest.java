@@ -22,6 +22,10 @@ public class SendTextChatMessageRequest extends AbstractRequestMessage {
         return message;
     }
 
+    public UUID getChannelID() {
+        return channel.getUUID();
+    }
+
     @Override
     public boolean authorizationNeeded() {
         return true;
