@@ -3,7 +3,6 @@ package de.uol.swp.client.lobbyGame;
 import com.google.common.eventbus.EventBus;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobbyGame.game.LobbyGamePresenterTuple;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobbyGame.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
