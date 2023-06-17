@@ -1,11 +1,12 @@
-package de.uol.swp.client.lobby;
+package de.uol.swp.client.lobbyGame.lobby;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.uol.swp.client.lobby.lobby.event.*;
+import de.uol.swp.client.lobbyGame.LobbyGameManagement;
+import de.uol.swp.client.lobbyGame.lobby.event.*;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.game.request.StartGameRequest;
 import de.uol.swp.common.lobby.message.MapChangedMessage;

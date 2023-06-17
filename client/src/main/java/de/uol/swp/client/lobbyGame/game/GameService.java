@@ -1,15 +1,15 @@
-package de.uol.swp.client.lobby.game;
+package de.uol.swp.client.lobbyGame.game;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
-import de.uol.swp.client.lobby.LobbyGameManagement;
-import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
-import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
-import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
-import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
+import de.uol.swp.client.lobbyGame.LobbyGameManagement;
+import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
+import de.uol.swp.client.lobbyGame.game.events.RequestMapDataEvent;
+import de.uol.swp.client.lobbyGame.game.events.RequestStartGameEvent;
+import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.*;

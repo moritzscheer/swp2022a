@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.lobby.event;
+package de.uol.swp.client.lobbyGame.lobby.event;
 
 /**
  * Show Lobby Event

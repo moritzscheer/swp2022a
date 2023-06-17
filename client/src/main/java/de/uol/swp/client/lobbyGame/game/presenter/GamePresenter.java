@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.game.presenter;
+package de.uol.swp.client.lobbyGame.game.presenter;
 
 import static javafx.scene.paint.Color.*;
 import static javafx.scene.paint.Color.LIGHTGREY;
@@ -8,9 +8,9 @@ import com.google.common.eventbus.Subscribe;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
-import de.uol.swp.client.lobby.game.Card;
-import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
-import de.uol.swp.client.lobby.game.events.SubmitCardsEvent;
+import de.uol.swp.client.lobbyGame.game.Card;
+import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
+import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
@@ -50,7 +50,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.FileNotFoundException;
-import java.sql.Array;
 import java.util.*;
 
 /**

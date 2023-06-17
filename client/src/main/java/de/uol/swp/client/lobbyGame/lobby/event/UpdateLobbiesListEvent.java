@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.lobby.event;
+package de.uol.swp.client.lobbyGame.lobby.event;
 
 /**
  * This event class is used by the presenters to tell the LobbyService to create a new request to

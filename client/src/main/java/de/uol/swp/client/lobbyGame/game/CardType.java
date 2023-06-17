@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.game;
+package de.uol.swp.client.lobbyGame.game;
 
 public enum CardType {
     MOVE1,

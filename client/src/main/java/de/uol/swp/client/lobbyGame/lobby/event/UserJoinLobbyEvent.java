@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.lobby.event;
+package de.uol.swp.client.lobbyGame.lobby.event;
 
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;

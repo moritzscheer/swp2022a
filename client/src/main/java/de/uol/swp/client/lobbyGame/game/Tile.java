@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.game;
+package de.uol.swp.client.lobbyGame.game;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

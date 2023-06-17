@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobby.lobby.presenter;
+package de.uol.swp.client.lobbyGame.lobby.presenter;
 
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
@@ -6,8 +6,8 @@ import com.google.inject.Inject;
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
-import de.uol.swp.client.lobby.game.events.RequestStartGameEvent;
-import de.uol.swp.client.lobby.lobby.event.SetPlayerReadyEvent;
+import de.uol.swp.client.lobbyGame.game.events.RequestStartGameEvent;
+import de.uol.swp.client.lobbyGame.lobby.event.SetPlayerReadyEvent;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.dto.LobbyDTO;

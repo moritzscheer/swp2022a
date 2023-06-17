@@ -1,15 +1,15 @@
-package de.uol.swp.client.lobby;
+package de.uol.swp.client.lobbyGame;
 
 import com.google.common.eventbus.EventBus;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.game.LobbyGamePresenterTuple;
-import de.uol.swp.client.lobby.game.events.RequestDistributeCardsEvent;
-import de.uol.swp.client.lobby.game.events.RequestMapDataEvent;
-import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
-import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobbyGame.game.LobbyGamePresenterTuple;
+import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
+import de.uol.swp.client.lobbyGame.game.events.RequestMapDataEvent;
+import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
+import de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent;
+import de.uol.swp.client.lobbyGame.game.presenter.GamePresenter;
+import de.uol.swp.client.lobbyGame.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.tab.event.ChangeElementEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.GameDTO;
