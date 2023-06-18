@@ -171,7 +171,6 @@ public class GameService extends AbstractService {
                     msg.getLobbyID(),
                     new StartGameMessage(
                             msg.getLobbyID(), msg.getLobby() , game));
-            tmp.get().resetCounterRequest();
         }
     }
 

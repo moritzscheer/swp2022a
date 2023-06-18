@@ -350,18 +350,6 @@ public class LobbyDTO implements Lobby {
         return this.countRequestToStartGame;
     }
 
-    /**
-     * Method to reset the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int resetCounterRequest() {
-        this.countRequestToStartGame = 0;
-        return this.countRequestToStartGame;
-    }
-
     public void setMapName(String mapName){
         this.mapName = mapName;
     }
