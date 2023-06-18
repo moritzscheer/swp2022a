@@ -92,4 +92,15 @@ public class RobotIsFinallyDeadTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        int lobbyID = 123;
+
+        RobotIsFinallyDead message1 = new RobotIsFinallyDead(lobbyID, userDied);
+        RobotIsFinallyDead message2 = new RobotIsFinallyDead(lobbyID, userDied);
+
+        Assertions.assertEquals(message1, message2);
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
 }

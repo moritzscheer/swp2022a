@@ -45,4 +45,15 @@ public class UserCreatedLobbyMessageTest {
 
         Assertions.assertEquals(userDTO, message.getUser());
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        UserCreatedLobbyMessage message1 = new UserCreatedLobbyMessage(lobbyDTO, userDTO);
+
+        UserCreatedLobbyMessage message2 = new UserCreatedLobbyMessage(lobbyDTO, userDTO);
+
+        Assertions.assertEquals(message1, message2);
+
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
 }

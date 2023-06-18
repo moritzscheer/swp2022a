@@ -31,4 +31,15 @@ public class LobbyLeftExceptionResponseTest {
         String expectedString = "LobbyExceptionResponse " + message;
         Assertions.assertEquals(expectedString, response.toString());
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        String lobbyName1 = "Test Lobby 1";
+        String message1 = "Lobby left failed";
+        LobbyLeftExceptionResponse response1 = new LobbyLeftExceptionResponse(lobbyName1, userDTO, message1);
+
+        Assertions.assertEquals(response1, response1);
+
+        Assertions.assertEquals(response1.hashCode(), response1.hashCode());
+    }
 }
