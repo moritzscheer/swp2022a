@@ -104,9 +104,6 @@ public class GameService extends AbstractService {
             );
         }
 
-        // TODO: create Board, instead of using 4d array
-        // BlockDTO blockDTO = new BlockDTO();
-
         GameDTO gameDTO = new GameDTO(players);
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
