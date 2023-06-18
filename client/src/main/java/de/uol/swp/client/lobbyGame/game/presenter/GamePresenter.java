@@ -856,6 +856,13 @@ public class GamePresenter extends AbstractPresenter {
         for (Map.Entry<Rectangle, Text> cardText : cardValues.entrySet()) {
             cardText.getValue().setText("");
         }
+
+        // clean the list of players
+        for (int i = 0; i < playerCards.size(); i++) {
+            playerCards.get(i).setImage(null);
+            textPlayerXCard.get(i).setText("");
+            playerCardImageHolders.get(i).setVisible(false);
+        }
     }
 
     /**
@@ -1251,6 +1258,7 @@ public class GamePresenter extends AbstractPresenter {
              */
             playerCards.get(position).fitHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
             playerCards.get(position).fitWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
+            playerCardImageHolders.get(position).setVisible(true);
             playerCardImageHolders.get(position).setStyle("-fx-border-color: blue; -fx-border-radius: 5; -fx-border-insets: -1; -fx-border-width: 2");
             playerCardImageHolders.get(position).prefHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
             playerCardImageHolders.get(position).prefWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
