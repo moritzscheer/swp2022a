@@ -287,8 +287,6 @@ public class GamePresenter extends AbstractPresenter {
             this.userDTOPlayerDTOMap.put(playerDTO.getUser(), playerDTO);
         }
         this.playerCount = this.userDTOPlayerDTOMap.size();
-
-        // TODO: ADD LOGGEDINUSER
         this.loggedInUser = loggedInUser;
 
         LOG.debug("LoggedInUser", this.loggedInUser);
