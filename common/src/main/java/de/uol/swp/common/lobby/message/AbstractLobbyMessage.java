@@ -35,6 +35,19 @@ public class AbstractLobbyMessage extends AbstractServerMessage {
      * @since 2019-10-08
      */
     public AbstractLobbyMessage(String name, UserDTO user) {
+        if(name == null) {
+            throw new IllegalArgumentException("Name can not be null");
+        }
+        if(
+                name.length() < 3 ||
+                        name.length() > 20 ||
+                        !name.matches("^[a-zA-Z0-9]+(?:\\s*[a-zA-Z0-9]+)*$")
+        ) {
+            throw new IllegalArgumentException("Name must be between 3 and 20 characters long and can only contain letters and numbers");
+        }
+        if(user == null) {
+            throw new IllegalArgumentException("User can not be null");
+        }
         this.name = name;
         this.user = user;
     }

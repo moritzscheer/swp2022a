@@ -35,4 +35,8 @@ public class LobbyJoinedExceptionResponse extends AbstractLobbyResponse {
     public int hashCode() {
         return Objects.hash(message);
     }
+
+    public String getMessage() {
+        return message;
+    }
 }

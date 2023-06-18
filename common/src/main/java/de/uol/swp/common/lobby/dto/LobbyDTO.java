@@ -66,6 +66,14 @@ public class LobbyDTO implements Lobby {
         this.chatChannel = chatChannelUUID;
 
     }
+    public LobbyDTO() {
+        this.lobbyID = 0;
+        this.name = "";
+        this.owner = null;
+        this.password = "";
+        this.multiplayer = false;
+        this.chatChannel = null;
+    }
 
     /**
      * Copy constructor leaving password variable empty

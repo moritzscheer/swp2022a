@@ -26,6 +26,12 @@ public class PlayerReadyInLobbyMessage extends AbstractServerMessage {
      * @since 2023-05-28
      */
     public PlayerReadyInLobbyMessage(Integer lobbyID, UserDTO user, Boolean ready) {
+        if(lobbyID == null) {
+            throw new NullPointerException("LobbyID can not be null");
+        }
+        if(user == null) {
+            throw new NullPointerException("User can not be null");
+        }
         this.lobbyID = lobbyID;
         this.user = user;
         this.ready = ready;
