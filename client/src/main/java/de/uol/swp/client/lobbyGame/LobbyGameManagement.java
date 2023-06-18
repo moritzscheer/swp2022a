@@ -249,6 +249,7 @@ public class LobbyGameManagement extends AbstractPresenter {
      */
     public void initPresenterAndStartRequests(Integer lobbyID) {
         // after presenter is created, we must call init() with the data
+        // initialize the board and the robots on board inside init method
         lobbyIdToLobbyGamePresenterMap
                 .get(lobbyID)
                 .getGamePresenter()
@@ -257,9 +258,6 @@ public class LobbyGameManagement extends AbstractPresenter {
                         lobbyIdToLobbyDTOMap.get(lobbyID),
                         lobbyIdToGameDTOMap.get(lobbyID),
                         this.loggedInUser);
-
-        // create request to get the map
-        eventBus.post(new RequestMapDataEvent(lobbyIdToLobbyDTOMap.get(lobbyID)));
 
         // create request to get the cards
         eventBus.post(
@@ -309,24 +307,11 @@ public class LobbyGameManagement extends AbstractPresenter {
         eventBus.post(new ShowGameViewEvent(msg.getLobby()));
     }
 
-    /**
-     * Handles GetMapDataMessage
-     *
-     * @param msg the GetMapDataMessage object seen on the EventBus
-     * @see GetMapDataResponse
-     * @author Maria Andrade
-     * @since 2023-05-06
-     */
-    public void reloadMapData(GetMapDataResponse msg) {
-        GamePresenter a = lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        a.reloadMap(msg);
-        a.initializeRobotsOnBoard();
-    }
 
     /**
      * Handles ProgramCardDataResponse
      *
-     * @param msg the GetMapDataMessage object seen on the EventBus
+     * @param msg the ProgramCardDataResponse object seen on the EventBus
      * @see ProgramCardDataResponse
      * @author Maria Andrade
      * @since 2023-05-18

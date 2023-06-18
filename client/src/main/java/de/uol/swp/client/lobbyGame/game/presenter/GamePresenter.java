@@ -15,7 +15,6 @@ import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
-import de.uol.swp.common.game.message.GetMapDataResponse;
 import de.uol.swp.common.game.request.TurnRobotOffRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
@@ -455,6 +454,11 @@ public class GamePresenter extends AbstractPresenter {
 
         resetCardsAndSlots();
         resizeCardsRectangles();
+
+        // load board
+        this.board = game.getBoardDTO();
+        reloadMap();
+        initializeRobotsOnBoard();
     }
 
     /**
@@ -508,17 +512,14 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles GetMapDataMessage
+     * reload map based on blockDTO matrix from  gameDTO
      *
-     * @param msg the GetMapDataMessage object seen on the EventBus
      * @author Maria Andrade and Tommy Dang
-     * @see GetMapDataResponse
      * @since 2023-05-06
      */
-    public void reloadMap(GetMapDataResponse msg) {
+    public void reloadMap() {
         Platform.runLater(
                 () -> {
-                    this.board = msg.getBoardImageIds();
                     try {
                         for (int i = 0; i < board.length; i++) {
                             // gameBoard.addColumn(i);

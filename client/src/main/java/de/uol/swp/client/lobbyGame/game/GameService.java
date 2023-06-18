@@ -63,11 +63,6 @@ public class GameService {
         eventBus.post(startGameRequest);
     }
 
-    @Subscribe
-    public void onRequestMapDataEvent(RequestMapDataEvent event) {
-        LOG.debug("Getting Map");
-        eventBus.post(new GetMapDataRequest(event.getLobbyDTO()));
-    }
 
     /**
      * Get cards 9-5 Cards for each player
@@ -116,20 +111,6 @@ public class GameService {
     public void onStartGameMessage(StartGameMessage msg) {
         LOG.debug("onStartGameMessage");
         LobbyGameManagement.getInstance().startGame(msg);
-    }
-
-    /**
-     * Handles GetMapDataMessage
-     *
-     * @param msg the GetMapDataMessage object seen on the EventBus
-     * @see GetMapDataResponse
-     * @author Maria Andrade
-     * @since 2023-05-06
-     */
-    @Subscribe
-    public void onGetMapDataResponse(GetMapDataResponse msg) {
-        LOG.debug("onGetMapDataResponse");
-        LobbyGameManagement.getInstance().reloadMapData(msg);
     }
 
     @Subscribe

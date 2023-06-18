@@ -92,10 +92,8 @@ public class GameService extends AbstractService {
                         checkpointCount
                 )
         );
-        //games.get(lobbyID).startGame();
 
         // Create DTOs objects
-        // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
             // add in the list
@@ -103,8 +101,8 @@ public class GameService extends AbstractService {
                     convertPlayerToPlayerDTO(player)
             );
         }
-
-        GameDTO gameDTO = new GameDTO(players);
+        BlockDTO[][] boardDTO = convertBoardToBoardDTO(games.get(lobbyID).getBoard());
+        GameDTO gameDTO = new GameDTO(players, boardDTO);
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
@@ -154,8 +152,12 @@ public class GameService extends AbstractService {
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
      * StartGameMessage to all the users in the lobby, containing the
      *
+     * PS.: GetMapDataRequest/Response was removed, and now the
+     * board is sent together with startGameMessage
+     * inside the gameDTO object (2023-06-18)
+     *
      * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel, Jann
      * @see de.uol.swp.common.game.request.StartGameRequest
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
@@ -171,6 +173,8 @@ public class GameService extends AbstractService {
                     msg.getLobbyID(),
                     new StartGameMessage(
                             msg.getLobbyID(), msg.getLobby() , game));
+        } else {
+            // TODO: send ErrorResponse
         }
     }
 
@@ -217,46 +221,6 @@ public class GameService extends AbstractService {
         }
     }
 
-    /**
-     * Handles GetMapDataRequest found on the EventBus
-     *
-     * <p>If a GetMapDataRequest is detected on the EventBus, this method is called. It posts a
-     * GetMapDataMessage to all the users in the lobby, containing the game board
-     *
-     * @param msg GetMapDataRequest found on the EventBus
-     * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.common.game.request.GetMapDataRequest
-     * @see GetMapDataResponse
-     * @since 2023-02-28
-     */
-    @Subscribe
-    public void onGetMapDataRequest(GetMapDataRequest msg) {
-
-        System.out.println("Get Map Data server");
-        Optional<Game> game = getGame(msg.getLobby().getLobbyID());
-        if (game.isPresent()) {
-            Block[][] board = game.get().getBoard();
-
-            if (board == null) {
-                throw new IllegalStateException("Board is nicht initialisiert");
-            }
-
-            BlockDTO[][] boardDTOs = new BlockDTO[board.length][board[0].length];
-
-            for (int row = 0; row < board.length; row++) {
-                for (int col = 0; col < board[0].length; col++) {
-                    boardDTOs[row][col] = new BlockDTO(board[row][col].getImages());
-                }
-            }
-            GetMapDataResponse getMapDataResponse =
-                    new GetMapDataResponse(
-                            boardDTOs, msg.getLobby(), game.get().getDockingStartPosition());
-            getMapDataResponse.initWithMessage(msg);
-            post(getMapDataResponse);
-        } else {
-            // TODO: send ErrorResponse
-        }
-    }
 
     /**
      * Handles TurnRobotOffRequest found on the EventBus
