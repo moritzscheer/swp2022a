@@ -34,6 +34,9 @@ public class RobotIsFinallyDead extends AbstractLobbyMessage {
      * @since 2023-06-09
      */
     public int getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
     /**

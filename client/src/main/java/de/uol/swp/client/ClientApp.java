@@ -5,7 +5,6 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
 import de.uol.swp.client.lobbyGame.lobby.LobbyService;
@@ -23,13 +22,10 @@ import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
 import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
-
 import io.netty.channel.Channel;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

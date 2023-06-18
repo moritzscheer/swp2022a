@@ -66,6 +66,9 @@ public class RobotDTO implements Serializable {
     }
 
     public void setLifeToken(int lifeToken) {
+        if (lifeToken < 0) {
+            throw new IllegalArgumentException("Life token cannot be negative");
+        }
         this.lifeToken = lifeToken;
     }
 
@@ -74,8 +77,12 @@ public class RobotDTO implements Serializable {
     }
 
     public void setDamageToken(int damageToken) {
+        if (damageToken < 0) {
+            throw new IllegalArgumentException("Damage token cannot be negative");
+        }
         this.damageToken = damageToken;
     }
+
 
     public int getLastCheckpoint() {
         return lastCheckpoint;
