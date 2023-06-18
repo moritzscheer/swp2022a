@@ -296,6 +296,7 @@ public class GamePresenter extends AbstractPresenter {
         readyButton.setStyle(
                 "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
         robotOffButton.setText("Turn Robot OFF");
+        robotOffButton.setDisable(true);
 
         playerGrids = new ArrayList<GridPane>();
         playerGrids.add(player2Grid);
@@ -1096,9 +1097,9 @@ public class GamePresenter extends AbstractPresenter {
             eventBus.post(
                     new RequestDistributeCardsEvent(
                             this.lobby, (UserDTO) this.loggedInUser));
-            // TODO: Tommy
             readyButton.setText("Submit Cards");
             readyButton.setDisable(true);
+            robotOffButton.setDisable(true);
         } else {
             if (!playerReady) {
                 LOG.debug("Submitting chosen cards");
@@ -1155,9 +1156,13 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-06-13
      */
     public void enableRobotButton(){
-        readyButton.setText("Get Cards");
-        readyButton.setDisable(false);
-        robotOffButton.setDisable(false);
+        Platform.runLater(
+                () -> {
+                    readyButton.setText("Get Cards");
+                    readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                    readyButton.setDisable(false);
+                    robotOffButton.setDisable(false);
+                });
     }
 
     /**
