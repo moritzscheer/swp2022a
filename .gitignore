@@ -4,4 +4,4 @@ target/
 .idea
 *.iml
 /.run/*
-*.map
+resources/maps/
