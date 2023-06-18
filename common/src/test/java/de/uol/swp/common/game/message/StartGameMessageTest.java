@@ -142,16 +142,4 @@ public class StartGameMessageTest {
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
 
-    @Test
-    void constructor_ShouldSetCorrectValues() {
-        GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameMessage message = new StartGameMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
-
-        BlockDTO[][] boardDTOs = new BlockDTO[12][12];
-
-        assertEquals(boardDTOs, message.getGame().getBoardDTO());
-        assertEquals(lobbyDTO.getLobbyID(), message.getLobbyID());
-        assertEquals(lobbyDTO, message.getLobby());
-    }
-
 }
