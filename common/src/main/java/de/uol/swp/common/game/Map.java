@@ -23,8 +23,7 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public Map(int mapIndex)
-    {
+    public Map(int mapIndex) {
         this.mapIndex = mapIndex;
     }
 
@@ -97,22 +96,21 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public String toString()
-    {
+    public String toString() {
         return this.getName();
     }
 
     // Due to the instantiations of MapDataTuple this can not be done with 'static'
     private static final String[][] mapList = {
-            {"Map 1", "MapOne.png"},
-//            {"Map 2", "MapTwo.png"},
-//            {"Map 3", "MapThree.png"},
-//            {"Map 4", "MapFour.png"},
-//            {"Map 5", "MapFive.png"},
-            {"TEST_LaserMap", "TestLaserMap.png"},
-            {"TEST_PusherMap", "TestPusherMap.png"},
-            {"TEST_WallMap", "TestWallMap.png"},
-            {"TEST_ConveyorMap", "TestConveyorMap.png"}
+        {"Map 1", "MapOne.PNG"},
+        //            {"Map 2", "MapTwo.png"},
+        //            {"Map 3", "MapThree.png"},
+        //            {"Map 4", "MapFour.png"},
+        //            {"Map 5", "MapFive.png"},
+        {"TEST_LaserMap", "TestLaserMap.PNG"},
+        {"TEST_PusherMap", "TestPusherMap.PNG"},
+        {"TEST_WallMap", "TestWallMap.PNG"},
+        {"TEST_ConveyorMap", "TestConveyorMap.PNG"}
     };
 
     /**
@@ -120,11 +118,9 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    public static Map[] getMapList()
-    {
+    public static Map[] getMapList() {
         Map[] maps = new Map[mapList.length];
-        for(int i = 0; i < maps.length; i++)
-        {
+        for (int i = 0; i < maps.length; i++) {
             maps[i] = new Map(i);
         }
 

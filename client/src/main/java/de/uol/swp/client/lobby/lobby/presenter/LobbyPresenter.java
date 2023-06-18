@@ -94,15 +94,13 @@ public class LobbyPresenter extends AbstractPresenter {
     @FXML private GridPane mapThumbWrapper;
     @FXML private ImageView mapThumb;
 
-    @FXML
-    private Spinner<Integer> numberBots;
-    @FXML
-    private Spinner<Integer> spinnerCheckpoints;
+    @FXML private Spinner<Integer> numberBots;
+    @FXML private Spinner<Integer> spinnerCheckpoints;
 
-    private SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0,7,0);
-    private SpinnerValueFactory<Integer> valueFactoryCP = new SpinnerValueFactory.IntegerSpinnerValueFactory(2,6,0);
-
-
+    private SpinnerValueFactory<Integer> valueFactory =
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 7, 0);
+    private SpinnerValueFactory<Integer> valueFactoryCP =
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(2, 6, 0);
 
     /**
      * Default Constructor
@@ -137,7 +135,7 @@ public class LobbyPresenter extends AbstractPresenter {
         textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
 
         boolean first = false;
-        if(first == false){
+        if (first == false) {
             Map m = new Map(0);
             updateMapDisplay(m);
             User u = this.loggedInUser;
@@ -156,7 +154,8 @@ public class LobbyPresenter extends AbstractPresenter {
                         int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
                         Map m = new Map(mapIndex);
 
-                        updateMapDisplay(m);System.out.println(m.getName());
+                        updateMapDisplay(m);
+                        System.out.println(m.getName());
 
                         if (this.multiplayer) {
                             User u = this.loggedInUser;
@@ -164,33 +163,32 @@ public class LobbyPresenter extends AbstractPresenter {
                                     new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
                             eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
                         }
-        switch(m.getName()) {
-                    case "Map 1":
-                        mapName = "MapOne";
-                        break;
-                    case "Map 2":
-                        mapName = "MapTwo";
-                        break;
-                    case "Map 3":
-                        mapName = "MapThree";
-                        break;
-                    case "TEST_LaserMap":
-                        mapName = "TestLaserMap";
-                        break;
-                    case "TEST_PusherMap":
-                        mapName = "TestPusherMap";
-                        break;
-                    case "TEST_ConveyorMap":
-                        mapName = "TestConveyorMap";
-                        break;
-                    case "TEST_WallMap":
-                        mapName = "TestWallMap";
-                        break;
-                    default:
-                }
-                lobby.setMapName(mapName);
-
-            };
+                        switch (m.getName()) {
+                            case "Map 1":
+                                mapName = "MapOne";
+                                break;
+                            case "Map 2":
+                                mapName = "MapTwo";
+                                break;
+                            case "Map 3":
+                                mapName = "MapThree";
+                                break;
+                            case "TEST_LaserMap":
+                                mapName = "TestLaserMap";
+                                break;
+                            case "TEST_PusherMap":
+                                mapName = "TestPusherMap";
+                                break;
+                            case "TEST_ConveyorMap":
+                                mapName = "TestConveyorMap";
+                                break;
+                            case "TEST_WallMap":
+                                mapName = "TestWallMap";
+                                break;
+                            default:
+                        }
+                        lobby.setMapName(mapName);
+                    };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }
 
@@ -203,10 +201,10 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldOnlineUsers.setText(String.valueOf(slots));
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
-        if(Objects.equals(user.getUsername(), owner.getUsername())) {
+        if (Objects.equals(user.getUsername(), owner.getUsername())) {
             numberBots.setValueFactory(valueFactory);
             spinnerCheckpoints.setValueFactory(valueFactoryCP);
-        }else {
+        } else {
             numberBots.setDisable(true);
             spinnerCheckpoints.setDisable(true);
         }
@@ -480,15 +478,18 @@ public class LobbyPresenter extends AbstractPresenter {
      */
     @FXML
     private void onStartButtonPressed(ActionEvent actionEvent) throws Exception {
-        if(numberBots.valueProperty().getValue() + users.size() >8) {
+        if (numberBots.valueProperty().getValue() + users.size() > 8) {
             textChat.sendTextMessage("There are too many players or bots in the lobby!");
             throw new Exception("There are too many players or bots in the lobby!");
-        }else {
+        } else {
             if (loggedInUser == owner) {
-                eventBus.post(new RequestStartGameEvent((Integer) numberBots.getValue(), spinnerCheckpoints.getValue(), lobbyDTO));
+                eventBus.post(
+                        new RequestStartGameEvent(
+                                (Integer) numberBots.getValue(),
+                                spinnerCheckpoints.getValue(),
+                                lobbyDTO));
             }
         }
-
     }
 
     public ObservableList<String> getUsers() {

@@ -54,8 +54,7 @@ public class LobbyDTO implements Lobby {
             User creator,
             String password,
             Boolean multiplayer,
-            UUID chatChannelUUID
-            ) {
+            UUID chatChannelUUID) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -64,7 +63,6 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
-
     }
 
     /**
@@ -362,11 +360,11 @@ public class LobbyDTO implements Lobby {
         return this.countRequestToStartGame;
     }
 
-    public void setMapName(String mapName){
+    public void setMapName(String mapName) {
         this.mapName = mapName;
     }
-    public String getMapName(){
+
+    public String getMapName() {
         return this.mapName;
     }
-
 }

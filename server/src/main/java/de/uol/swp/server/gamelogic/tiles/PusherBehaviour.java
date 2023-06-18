@@ -31,8 +31,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             int[] activeInProgramSteps,
             CardinalDirection direction) {
         super(robotStates, board, blockPos);
-        this.activeInProgramSteps = Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());;
-        this.direction =  direction;
+        this.activeInProgramSteps =
+                Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());
+        ;
+        this.direction = direction;
         this.pushingDirection = CardinalDirection.values()[(direction.ordinal() + 2) % 4];
     }
 
@@ -48,7 +50,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
-        if(this.activeInProgramSteps.contains(programStep)){
+        if (this.activeInProgramSteps.contains(programStep)) {
             for (Robot robotState : this.robotStates) {
                 if (Objects.equals(robotState.getPosition(), this.blockPos)) {
                     moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));

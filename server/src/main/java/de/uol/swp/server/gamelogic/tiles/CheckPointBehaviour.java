@@ -36,7 +36,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
      * @since 28.02.2023
      */
     public int setCheckPoint(int indexOfMovedRobot) {
-        if (robotStates.get(indexOfMovedRobot).getLastCheckPoint()+1 == this.number) {
+        if (robotStates.get(indexOfMovedRobot).getLastCheckPoint() + 1 == this.number) {
             robotStates.get(indexOfMovedRobot).setLastCheckPoint(this.number);
             robotStates.get(indexOfMovedRobot).setLastBackupCopyPosition(blockPos);
             return this.number;

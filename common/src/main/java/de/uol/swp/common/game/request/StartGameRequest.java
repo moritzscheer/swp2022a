@@ -18,7 +18,7 @@ public class StartGameRequest extends AbstractGameRequest {
     /**
      * constructor
      *
-     * @param lobby    Integer containing the ID of the lobby
+     * @param lobby Integer containing the ID of the lobby
      * @param numberBots
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
@@ -28,8 +28,6 @@ public class StartGameRequest extends AbstractGameRequest {
         this.numberBots = numberBots;
         this.numberCheckpoints = numberCheckpoints;
         this.lobby = lobby;
-
-
     }
 
     /**

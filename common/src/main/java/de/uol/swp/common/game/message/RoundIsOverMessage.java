@@ -18,5 +18,4 @@ public class RoundIsOverMessage extends AbstractLobbyMessage {
     public int getLobbyID() {
         return lobbyID;
     }
-
 }

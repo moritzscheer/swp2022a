@@ -12,7 +12,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class RequestStartGameEvent {
 
     private final int numberBots;
-    private  final int numberCheckpoints;
+    private final int numberCheckpoints;
 
     private final LobbyDTO lobbyDTO;
 
