@@ -474,7 +474,11 @@ public class Game {
 
     private List<List<PlayerDTO>> calcGameRoundCardsNew(int programStep) {
         List<List<PlayerDTO>> moves = new ArrayList<>();
-        Card[] cardsToPlay = playedCards[programStep];
+        Card[] cardsToPlay = new Card[playedCards.length];
+
+        for (int i = 0; i < cardsToPlay.length; i++) {
+            cardsToPlay[i] = playedCards[i][programStep];
+        }
 
         //Get lists of the Priorities to execute cards in the right order
         Integer[] sortedPriorities = Arrays.stream(cardsToPlay).map(Card::getPriority).sorted().toArray(Integer[]::new);
@@ -489,6 +493,7 @@ public class Game {
             if (!robots.get(indexOfCurrentCard).isAlive()) {
                 continue;
             }
+
             //Get Move Intents and execute them
             List<List<MoveIntent>> moveIntents = resolveCard(currentCard, indexOfCurrentCard);
             for (List<MoveIntent> move : moveIntents) {

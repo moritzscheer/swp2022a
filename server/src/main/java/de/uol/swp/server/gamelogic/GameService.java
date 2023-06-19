@@ -298,7 +298,7 @@ public class GameService extends AbstractService {
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
 
             if (allChosen) {
-                manageRoundsUpdates(game.get(), request.getLobbyID());
+                manageGameUpdate(game.get(), request.getLobbyID());
             }
         }
     }
@@ -321,7 +321,7 @@ public class GameService extends AbstractService {
                         " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
             lobbyService.sendToAllInLobby(lobbyID,
                     new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
-            manageRoundsUpdates(game, lobbyID);
+            manageGameUpdate(game, lobbyID);
         }
     }
 
@@ -340,17 +340,19 @@ public class GameService extends AbstractService {
 
         int secondsToWait = 1;
 
+        lobbyService.sendToAllInLobby(
+                lobbyID,
+                new TextHistoryMessage(
+                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+
         for (int i = 0; i < 5; i++) {
             List<List<PlayerDTO>> moveList = game.calcAllGameRound();
 
-            lobbyService.sendToAllInLobby(
-                    lobbyID,
-                    new TextHistoryMessage(
-                            lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
             scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID)), secondsToWait, SECONDS);
+            secondsToWait += 2;
 
             for (List<PlayerDTO> moves : moveList) {
                 scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves)), secondsToWait, SECONDS);
