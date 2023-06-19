@@ -5,6 +5,13 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.util.List;
 
+/**
+ * Event used to submit the cards of a players
+ *
+ *
+ * @author Maria Andrade
+ * @since 2023-05-19
+ */
 public class SubmitCardsEvent {
 
     private final int lobbyID;
