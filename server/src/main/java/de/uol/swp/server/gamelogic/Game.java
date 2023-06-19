@@ -44,6 +44,7 @@ public class Game {
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
+    private final int nRealPlayers;
     private int programStep; // program steps from 0 to 4
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
@@ -153,6 +154,8 @@ public class Game {
             i++;
         }
 
+        nRealPlayers = users.size();
+
         // create bots and robots
         for (int j = 0; j < numberBots; j++) {
             BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
@@ -189,12 +192,6 @@ public class Game {
             for (AbstractPlayer player : this.players) {
                 // when robot is powered off, just set empty cards
                 if(player.getRobot().isPowerDown()){
-                    Card[] cards = new Card[5];
-                    for (int i = 0; i < 5; i++) {
-                        cards[i] = new Card(-1);
-                    }
-                    player.chooseCardsOrder(cards);
-                    this.readyRegister += 1; // ignore this player
                     continue;
                 }
                 LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
@@ -318,6 +315,32 @@ public class Game {
         return register();
     }
 
+    public boolean setPowerDown(UserDTO userDTO) throws InterruptedException {
+        Player player = getPlayerByUserDTO(userDTO);
+        player.getRobot().setPowerDown(true);
+        LOG.debug("setPowerDown {}", player.getUser().getUsername());
+
+
+        // set empty cards
+        Card[] cards = new Card[5];
+        for (int i = 0; i < 5; i++) {
+            cards[i] = new Card(-1);
+        }
+        player.chooseCardsOrder(cards);
+
+        // this player lose all damage
+        player.getRobot().setDamageToken(0);
+
+        boolean allChosen = register();
+        if(nRealPlayers == readyRegister){
+            // if all real players decided to turn off, we have to
+            // start the bots manually, so the game can happen
+            distributeProgramCards();
+            return registerCardsFromBot();
+        }
+        return allChosen;
+    }
+
     /**
      * When a player has chosen its cards, he will press "register" button this function will call
      * the player function that will register his cards Once all players have chosen, the calcGame
@@ -400,6 +423,7 @@ public class Game {
             if (!player.getRobot().isDeadForever()) {
                 player.getRobot().setAlive(true);
                 player.getRobot().setDeadForTheRound(false);
+                player.getRobot().setPowerDown(false);
                 countSurvivors++;
                 survivor = player.getUser();
             }

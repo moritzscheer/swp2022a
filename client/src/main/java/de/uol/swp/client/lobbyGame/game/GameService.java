@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import de.uol.swp.client.lobbyGame.LobbyGameManagement;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobbyGame.game.events.RequestStartGameEvent;
+import de.uol.swp.client.lobbyGame.game.events.RobotTurnOffEvent;
 import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
@@ -91,6 +92,21 @@ public class GameService {
         eventBus.post(
                 new SubmitCardsRequest(
                         event.getLobbyID(), event.getLoggedInUser(), event.getCardDTOS()));
+    }
+
+    /**
+     * Turn robot off
+     *
+     * @param event RobotTurnOffEvent
+     * @author Maria Andrade
+     * @since 2023-06-19
+     */
+    @Subscribe
+    public void onRobotTurnOffEvent(RobotTurnOffEvent event) {
+        LOG.debug("Turn Robot off from" + event.getLoggedInUser().getUsername());
+        eventBus.post(
+                new TurnRobotOffRequest(
+                        event.getLobbyID(), event.getLoggedInUser()));
     }
 
     /////////////////////

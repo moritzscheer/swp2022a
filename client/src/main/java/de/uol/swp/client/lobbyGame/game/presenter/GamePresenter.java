@@ -10,6 +10,7 @@ import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.lobbyGame.game.Card;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
+import de.uol.swp.client.lobbyGame.game.events.RobotTurnOffEvent;
 import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.client.utils.JsonUtils;
 import de.uol.swp.common.game.Position;
@@ -1143,7 +1144,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {
-        eventBus.post(new TurnRobotOffRequest(this.lobbyID, (UserDTO) this.loggedInUser));
+        eventBus.post(new RobotTurnOffEvent(this.lobbyID, (UserDTO) this.loggedInUser));
         robotOffButton.setDisable(true);
         readyButton.setDisable(true);
     }
