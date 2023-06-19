@@ -32,10 +32,18 @@ public final class JsonUtils {
         JSONArray jsonArray;
 
         try {
-            json =
-                    new JSONObject(
-                            new JSONTokener(
-                                    new FileReader("server/src/main/resources/json/cards.json")));
+            try{
+                json =
+                        new JSONObject(
+                                new JSONTokener(
+                                        new FileReader("server/src/main/resources/json/cards.json")));
+            }catch (Exception ex){
+                json =
+                        new JSONObject(
+                                new JSONTokener(
+                                        new FileReader("src/main/resources/json/cards.json")));
+            }
+
             jsonArray = json.getJSONArray("cards");
 
             for (int i = 0; i < jsonArray.length(); i++) {

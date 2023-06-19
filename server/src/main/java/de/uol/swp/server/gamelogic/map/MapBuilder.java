@@ -76,8 +76,15 @@ public final class MapBuilder {
             objIn.close();
             return map;
         } catch (IOException | ClassNotFoundException IOExcept) {
-            System.out.println(IOExcept.getMessage());
-            return null;
+            try {
+                ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath.replace("server/", "")));
+                Block[][] map = (Block[][]) objIn.readObject();
+                objIn.close();
+                return map;
+            }catch (IOException | ClassNotFoundException IOExcept2){
+                System.out.println(IOExcept2.getMessage());
+                return null;
+            }
         }
     }
 
