@@ -342,19 +342,19 @@ public class GameService extends AbstractService {
 
         lobbyService.sendToAllInLobby(
                 lobbyID,
-                new TextHistoryMessage(
-                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+                new TextHistoryMessage(lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
 
         for (int i = 0; i < 5; i++) {
             List<List<PlayerDTO>> moveList = game.calcAllGameRound();
 
+            //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
             scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID)), secondsToWait, SECONDS);
-            secondsToWait += 2;
 
             for (List<PlayerDTO> moves : moveList) {
+
                 scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves)), secondsToWait, SECONDS);
                 secondsToWait += 2;
 
@@ -372,6 +372,28 @@ public class GameService extends AbstractService {
                 () -> lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID)),
                 secondsToWait,
                 SECONDS);
+    }
+
+    private List<List<PlayerDTO>> filterMoveList(List<List<PlayerDTO>> moveList) {
+
+        LOG.debug("Moves Before: " + moveList.stream().count());
+
+        for (int i = 0; i < moveList.stream().count() - 1; i++) {
+            boolean isTheSame = true;
+            for (int j = 0; j < moveList.get(i).stream().count(); j++) {
+                if (!moveList.get(i).get(j).getRobotDTO().equals(moveList.get(i + 1).get(j).getRobotDTO())) {
+                    isTheSame = false;
+                    break;
+                }
+            }
+            if (isTheSame) {
+                moveList.remove(i + 1);
+            }
+        }
+
+        LOG.debug("Moves After: " + moveList.stream().count());
+
+        return moveList;
     }
 
 

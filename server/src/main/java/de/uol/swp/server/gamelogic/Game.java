@@ -415,6 +415,8 @@ public class Game {
 
         List<List<PlayerDTO>> moves = new ArrayList<>();
 
+        moves.add(getPlayerDTOSForAllPlayers());
+
         moves.addAll(calcGameRoundCardsNew(programStep));
         moves.addAll(calcGameRoundBoardNew(programStep));
 
