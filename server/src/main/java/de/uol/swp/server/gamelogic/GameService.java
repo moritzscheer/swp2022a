@@ -328,7 +328,7 @@ public class GameService extends AbstractService {
     /**
      * Handles all rounds, call calcGame() for every round and send messages to update the view
      * using help of a scheduler to give some delay to display
-     *
+     * <p>
      * TODO: Remove scheduler and pack everything into a single Method and time the animation on the client Side
      *
      * @param game    reference to which game
@@ -337,26 +337,33 @@ public class GameService extends AbstractService {
      * @since 2023-06-13
      */
     public void manageGameUpdate(Game game, int lobbyID) {
-        List<List<PlayerDTO>> moveList = game.calcAllGameRounds();
+
         int secondsToWait = 1;
 
-        lobbyService.sendToAllInLobby(
-                lobbyID,
-                new TextHistoryMessage(
-                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+        for (int i = 0; i < 5; i++) {
+            List<List<PlayerDTO>> moveList = game.calcAllGameRound();
 
-        for (List<PlayerDTO> moves : moveList) {
+            lobbyService.sendToAllInLobby(
+                    lobbyID,
+                    new TextHistoryMessage(
+                            lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            scheduler.schedule(() -> {
-                lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
-                lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves));
-            }, secondsToWait, SECONDS);
-            secondsToWait += 2;
 
-            if (isGameOver(lobbyID, game, secondsToWait)) {
-                break;
+            scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID)), secondsToWait, SECONDS);
+
+            for (List<PlayerDTO> moves : moveList) {
+                scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves)), secondsToWait, SECONDS);
+                secondsToWait += 2;
+
+                if (isGameOver(lobbyID, game, secondsToWait)) {
+                    break;
+                }
             }
+
+            game.increaseProgramStep();
         }
+
 
         game.roundIsOver();
         scheduler.schedule(
@@ -441,7 +448,7 @@ public class GameService extends AbstractService {
 
         UserDTO winner = game.roundIsOver(); // reset variables
         AbstractLobbyMessage msg;
-        if(Objects.equals(winner, null))
+        if (Objects.equals(winner, null))
             msg = new RoundIsOverMessage(lobbyID);
         else
             msg = new GameOverMessage(lobbyID, winner);
@@ -570,13 +577,13 @@ public class GameService extends AbstractService {
             sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait);
             sendAbstractLobbyMessage(lobbyID, secondsToWait, msg);
 
-            if (!player.getRobot().isAlive()){
+            if (!player.getRobot().isAlive()) {
                 // if robot is dead, send message
                 sendAbstractLobbyMessage(lobbyID, secondsToWait,
                         new TextHistoryMessage(lobbyID,
                                 player.getUser().getUsername() + " is dead!\n"));
                 player.getRobot().setDeadForTheRound(true);
-                if(player.getRobot().getLifeToken() <= 0){
+                if (player.getRobot().getLifeToken() <= 0) {
                     player.getRobot().setDeadForever();
                     sendAbstractLobbyMessage(
                             lobbyID, secondsToWait, new RobotIsFinallyDead(

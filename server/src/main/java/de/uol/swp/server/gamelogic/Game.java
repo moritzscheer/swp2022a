@@ -411,16 +411,12 @@ public class Game {
         }
     }
 
-    public List<List<PlayerDTO>> calcAllGameRounds() {
+    public List<List<PlayerDTO>> calcAllGameRound() {
 
         List<List<PlayerDTO>> moves = new ArrayList<>();
 
-        moves.add(getPlayerDTOSForAllPlayers());
-
-        for (int i = 0; i < 5; i++) {
-            moves.addAll(calcGameRoundCardsNew(programStep));
-            moves.addAll(calcGameRoundBoardNew(programStep));
-        }
+        moves.addAll(calcGameRoundCardsNew(programStep));
+        moves.addAll(calcGameRoundBoardNew(programStep));
 
         return moves;
     }
