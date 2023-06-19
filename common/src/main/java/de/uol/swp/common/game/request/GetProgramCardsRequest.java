@@ -19,6 +19,12 @@ public class GetProgramCardsRequest extends AbstractGameRequest {
      * @since 2023-05-01
      */
     public GetProgramCardsRequest(int lobbyID, UserDTO loggedInUser) {
+        if (lobbyID < 0) {
+            throw new NullPointerException("Lobby can not be null");
+        }
+        if (loggedInUser == null) {
+            throw new NullPointerException("User can not be null");
+        }
 
         this.lobbyID = lobbyID;
         this.loggedInUser = loggedInUser;

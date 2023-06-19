@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class GameDTO implements Game {
     private List<PlayerDTO> players;
+    private final BlockDTO[][] boardDTO;
 
     /**
      * Constructor
@@ -23,8 +24,9 @@ public class GameDTO implements Game {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-02
      */
-    public GameDTO(List<PlayerDTO> players) {
+    public GameDTO(List<PlayerDTO> players, BlockDTO[][] boardDTO) {
         this.players = players;
+        this.boardDTO = boardDTO;
     }
 
     /**
@@ -47,5 +49,16 @@ public class GameDTO implements Game {
      */
     public void setPlayers(List<PlayerDTO> players) {
         this.players = players;
+    }
+
+    /**
+     * Getter for the board
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @see de.uol.swp.common.game.dto.BlockDTO
+     * @since 2023-06-18
+     */
+    public BlockDTO[][] getBoardDTO() {
+        return boardDTO;
     }
 }

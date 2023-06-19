@@ -7,6 +7,13 @@ import de.uol.swp.common.user.UserDTO;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Message sent by the server when a player has chosen cards
+ *
+ * @see AbstractLobbyMessage
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-04-25
+ */
 public class PlayerIsReadyMessage extends AbstractLobbyMessage {
     private static final long serialVersionUID = -6003337260190748189L;
     //    private final boolean isReady;
@@ -62,6 +69,9 @@ public class PlayerIsReadyMessage extends AbstractLobbyMessage {
      * @since 2023-05-18
      */
     public int getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
 }

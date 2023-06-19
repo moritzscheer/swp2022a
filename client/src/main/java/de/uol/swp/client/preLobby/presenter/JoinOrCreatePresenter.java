@@ -3,8 +3,8 @@ package de.uol.swp.client.preLobby.presenter;
 import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
-import de.uol.swp.client.lobby.LobbyGameManagement;
-import de.uol.swp.client.lobby.lobby.event.UserJoinLobbyEvent;
+import de.uol.swp.client.lobbyGame.LobbyGameManagement;
+import de.uol.swp.client.lobbyGame.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;

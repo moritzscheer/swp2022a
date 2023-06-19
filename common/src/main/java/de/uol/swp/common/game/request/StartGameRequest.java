@@ -24,6 +24,15 @@ public class StartGameRequest extends AbstractGameRequest {
      * @since 2022-02-28
      */
     public StartGameRequest(LobbyDTO lobby, int numberBots, int numberCheckpoints) {
+        if (lobby == null) {
+            throw new NullPointerException("Lobby can not be null");
+        }
+        if (numberBots < 0) {
+            throw new IllegalArgumentException("Number of bots can not be null");
+        }
+        if (numberCheckpoints < 0) {
+            throw new IllegalArgumentException("Number of checkpoints can not be null");
+        }
         this.lobbyID = lobby.getLobbyID();
         this.numberBots = numberBots;
         this.numberCheckpoints = numberCheckpoints;

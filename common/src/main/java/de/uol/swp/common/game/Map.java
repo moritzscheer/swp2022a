@@ -85,7 +85,7 @@ public class Map implements Serializable {
      * @author Mathis Eilers
      * @since 2022-12-23
      */
-    private void setIndex(int index) {
+    public void setIndex(int index) {
         this.mapIndex = index;
     }
 

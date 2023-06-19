@@ -27,6 +27,12 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * @since 2022-03-23
      */
     public StartGameMessage(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
+        if (lobby == null) {
+            throw new NullPointerException("Lobby can not be null");
+        }
+        if (game == null) {
+            throw new NullPointerException("Game can not be null");
+        }
         this.lobbyID = lobbyID;
         this.lobby = lobby;
         this.game = game;
@@ -40,6 +46,9 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * @since 2022-02-28
      */
     public Integer getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
 

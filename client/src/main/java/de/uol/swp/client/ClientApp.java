@@ -8,8 +8,8 @@ import com.google.inject.Injector;
 
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.game.GameService;
+import de.uol.swp.client.lobbyGame.game.GameService;
+import de.uol.swp.client.lobbyGame.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;

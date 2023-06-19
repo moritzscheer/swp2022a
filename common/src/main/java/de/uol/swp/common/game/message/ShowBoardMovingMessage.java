@@ -17,6 +17,9 @@ public class ShowBoardMovingMessage extends AbstractLobbyMessage {
     }
 
     public int getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
 

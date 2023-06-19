@@ -66,6 +66,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         return this.direction;
     }
 
+    public CardinalDirection getPushingDirection() {
+        return this.pushingDirection;
+    }
+
     public List<Integer> getActiveInProgramSteps() {
         return this.activeInProgramSteps;
     }

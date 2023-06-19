@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
@@ -147,7 +148,7 @@ public class LobbyService extends AbstractService {
                 returnMessage =
                         new LobbyJoinedSuccessfulResponse(lobby.get(), joinLobbyRequest.getUser());
                 LOG.info("lobby {} joined successfully", lobby.get().getName());
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | LobbyDoesNotExistException e) {
                 LOG.error(e);
                 returnMessage =
                         new LobbyJoinedExceptionResponse("Cannot join Lobby. " + e.getMessage());
@@ -197,7 +198,7 @@ public class LobbyService extends AbstractService {
                 }
                 returnMessage =
                         new LobbyLeftSuccessfulResponse(lobby.get(), leaveLobbyRequest.getUser());
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | LobbyDoesNotExistException e) {
                 lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
 
                 // sends a message to all clients in the lobby (for the player list) and sends a
@@ -235,12 +236,16 @@ public class LobbyService extends AbstractService {
      * @see de.uol.swp.common.message.ServerMessage
      * @since 2019-10-08
      */
-    public void sendToAllInLobby(Integer lobbyID, ServerMessage message) {
+    public void sendToAllInLobby(Integer lobbyID, ServerMessage message)
+            throws LobbyDoesNotExistException {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
 
         if (lobby.isPresent()) {
             message.setReceiver(authenticationService.getSessions(lobby.get().getUsers()));
             post(message);
+        } else {
+            throw new LobbyDoesNotExistException(
+                    "Lobby does not exist! LobbyID:" + lobbyID, lobbyID);
         }
 
         // TODO: error handling not existing lobby
@@ -268,7 +273,8 @@ public class LobbyService extends AbstractService {
     }
 
     @Subscribe
-    public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request) {
+    public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request)
+            throws LobbyDoesNotExistException {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(request.getLobbyID());
 
         ResponseMessage returnMessage;
@@ -303,7 +309,7 @@ public class LobbyService extends AbstractService {
      * @since 2022-12-31
      */
     @Subscribe
-    public void onMapChangeRequest(MapChangeRequest msg) {
+    public void onMapChangeRequest(MapChangeRequest msg) throws LobbyDoesNotExistException {
         int lobbyID = msg.getID();
         Optional<LobbyDTO> lobbyO = lobbyManagement.getLobby(lobbyID);
 
