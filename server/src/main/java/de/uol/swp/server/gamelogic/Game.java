@@ -169,6 +169,16 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
+                // when robot is powered off, just set empty cards
+                if(player.getRobot().isPowerDown()){
+                    Card[] cards = new Card[5];
+                    for (int i = 0; i < 5; i++) {
+                        cards[i] = new Card(-1);
+                    }
+                    player.chooseCardsOrder(cards);
+                    this.readyRegister += 1; // ignore this player
+                    continue;
+                }
                 LOG.debug(
                         "Distributing cards for player {}",
                          player.getUser().getUsername());
@@ -427,7 +437,8 @@ public class Game {
                 this.robots.get(0).getPosition().x,
                 this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
-            if (!this.robots.get(playerIterator).isAlive()) continue; // if not alive, go on
+            if (!this.robots.get(playerIterator).isAlive()
+                || this.robots.get(playerIterator).isPowerDown()) continue; // if not alive or powered down, go on
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][programStep], playerIterator);
             for (List<MoveIntent> move : moves) {

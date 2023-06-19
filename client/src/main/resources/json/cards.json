@@ -1,6 +1,13 @@
 {
   "cards": [
     {
+      "type-id": "-1",
+      "card-id": -1,
+      "name": "RobotPowerDown",
+      "priority": "",
+      "source": "images/cards/prgcard002.png"
+    },
+    {
       "type-id": "1",
       "card-id": 1,
       "name": "RotateLeft",

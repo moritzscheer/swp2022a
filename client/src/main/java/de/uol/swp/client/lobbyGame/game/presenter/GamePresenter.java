@@ -1133,6 +1133,7 @@ public class GamePresenter extends AbstractPresenter {
         eventBus.post(
                 new TurnRobotOffRequest(this.lobbyID, (UserDTO) this.loggedInUser));
         robotOffButton.setDisable(true);
+        readyButton.setDisable(true);
     }
 
     /**
