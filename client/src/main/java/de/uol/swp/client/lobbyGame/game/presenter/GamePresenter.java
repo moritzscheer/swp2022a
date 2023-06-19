@@ -43,8 +43,8 @@ import javafx.scene.layout.*;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-
 import javafx.util.Duration;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -406,7 +406,6 @@ public class GamePresenter extends AbstractPresenter {
         blockedCardIcons.add(blockedCardIcon4);
         blockedCardIcons.add(blockedCardIcon5);
 
-
         // create users list, minus the loggedInUser
         LOG.debug("Loading players");
         loadPlayers();
@@ -462,8 +461,7 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles the player list and add images next to username
-     * Simplify it from init
+     * Handles the player list and add images next to username Simplify it from init
      *
      * @author Maria Andrade and Tommy Dang
      * @since 2023-06-06
@@ -477,7 +475,9 @@ public class GamePresenter extends AbstractPresenter {
             robotImageID = playerDTO.getRobotDTO().getRobotID();
 
             // robot image
-            ImageView imageView = jsonUtils.getRobotImage(robotImageID); // this is only to be displayed in the list
+            ImageView imageView =
+                    jsonUtils.getRobotImage(
+                            robotImageID); // this is only to be displayed in the list
 
             // list
             if (!Objects.equals(loggedInUser.getUsername(), playerDTO.getUser().getUsername())) {
@@ -493,17 +493,20 @@ public class GamePresenter extends AbstractPresenter {
                         .get(count)
                         .setText(String.valueOf(playerDTO.getRobotDTO().getLifeToken()));
                 userToPositionInStackPanes.put(playerDTO.getUser(), count);
-                //playerRobot.get(count).add(imageView, 0,0);
+                // playerRobot.get(count).add(imageView, 0,0);
                 playerRobot.get(count).getChildren().add(imageView);
                 playerRobot.get(count).setVisible(true);
-                imageView.fitHeightProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
-                imageView.fitWidthProperty().bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
+                imageView
+                        .fitHeightProperty()
+                        .bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
+                imageView
+                        .fitWidthProperty()
+                        .bind(playerGridWrapper.get(count).heightProperty().multiply(0.8));
 
                 count++; // only counts when it is not the current user, to avoid empty grid
-            }
-            else{
+            } else {
                 // for player is loggedInUser
-                //player1Robot.add(imageView, 0, 0);
+                // player1Robot.add(imageView, 0, 0);
                 player1Robot.getChildren().add(imageView);
                 imageView.fitHeightProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
                 imageView.fitWidthProperty().bind(playerGrid1Wrapper.heightProperty().subtract(4));
@@ -512,7 +515,7 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * reload map based on blockDTO matrix from  gameDTO
+     * reload map based on blockDTO matrix from gameDTO
      *
      * @author Maria Andrade and Tommy Dang
      * @since 2023-05-06
@@ -566,13 +569,14 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
-    public void initializeRobotsOnBoard(){
+    public void initializeRobotsOnBoard() {
         Platform.runLater(
                 () -> {
                     Position startPosition;
 
                     // update robot position in board
-                    for (Map.Entry<UserDTO, PlayerDTO> player:this.userDTOPlayerDTOMap.entrySet()) {
+                    for (Map.Entry<UserDTO, PlayerDTO> player :
+                            this.userDTOPlayerDTOMap.entrySet()) {
                         startPosition = player.getValue().getRobotDTO().getPosition();
                         LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 
@@ -580,8 +584,7 @@ public class GamePresenter extends AbstractPresenter {
                         int robotID = player.getValue().getRobotDTO().getRobotID();
                         ImageView imageView = jsonUtils.getRobotImage(robotID);
                         imageView.setRotate(
-                                (player.getValue().getRobotDTO().getDirection().ordinal())
-                                        * 90);
+                                (player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
                         imageView
                                 .fitWidthProperty()
                                 .bind(
@@ -597,14 +600,13 @@ public class GamePresenter extends AbstractPresenter {
                                                 .divide(board[0].length + 1)
                                                 .subtract(10));
 
-
                         gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
                         this.userRobotImageViewReference.put(player.getKey(), imageView);
                     }
                 });
     }
 
-    public void loadRobotsInBoard(){
+    public void loadRobotsInBoard() {
         Platform.runLater(
                 () -> {
                     Position startPosition;
@@ -615,21 +617,22 @@ public class GamePresenter extends AbstractPresenter {
 
                         // if exists and not null, go on, to not create twice the same image
                         // if player is null in userDTOPlayerDTOMap, it means it died forever
-                        if(!Objects.equals(
-                                this.userRobotImageViewReference.get(player.getKey()),
-                                null)
-                        || deadForeverUsers.contains(player.getKey()))
-                            continue;
+                        if (!Objects.equals(
+                                        this.userRobotImageViewReference.get(player.getKey()), null)
+                                || deadForeverUsers.contains(player.getKey())) continue;
 
                         startPosition = player.getValue().getRobotDTO().getPosition();
-                        LOG.debug("{} startPosition {} {}",player.getKey().getUsername(), startPosition.x, startPosition.y);
+                        LOG.debug(
+                                "{} startPosition {} {}",
+                                player.getKey().getUsername(),
+                                startPosition.x,
+                                startPosition.y);
 
                         // show this player robot, since they all start in checkpoint 1
                         int robotID = player.getValue().getRobotDTO().getRobotID();
                         ImageView imageView = jsonUtils.getRobotImage(robotID);
                         imageView.setRotate(
-                                (player.getValue().getRobotDTO().getDirection().ordinal())
-                                        * 90);
+                                (player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
                         imageView
                                 .fitWidthProperty()
                                 .bind(
@@ -644,7 +647,6 @@ public class GamePresenter extends AbstractPresenter {
                                                 .heightProperty()
                                                 .divide(board[0].length + 1)
                                                 .subtract(10));
-
 
                         gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
                         this.userRobotImageViewReference.replace(player.getKey(), imageView);
@@ -658,14 +660,13 @@ public class GamePresenter extends AbstractPresenter {
      * @author Tommy Dang
      * @since 2023-05-23
      */
-    public void resizeCardsRectangles(){
+    public void resizeCardsRectangles() {
         /**
          * Helps to resize the rectangles of the cards and makes it more automatic
          *
          * @author Tommy Dang
          * @since 2023-05-23
          */
-
         double widthOfRightGrid = 5.4; // 5.5 gut
         double heightOfHandCardGridPane = 2.1; // 2.2 gut
         double heightOfSelectedCardGridPane = 1.1; // 1.2 gut
@@ -678,13 +679,9 @@ public class GamePresenter extends AbstractPresenter {
             handCards
                     .getKey()
                     .heightProperty()
-                    .bind(
-                            handCardGridPane
-                                    .heightProperty()
-                                    .divide(heightOfHandCardGridPane));
+                    .bind(handCardGridPane.heightProperty().divide(heightOfHandCardGridPane));
         }
-        for (Map.Entry<Rectangle, CardDTO> chosenCards :
-                chosenCardsMap.entrySet()) {
+        for (Map.Entry<Rectangle, CardDTO> chosenCards : chosenCardsMap.entrySet()) {
             chosenCards
                     .getKey()
                     .widthProperty()
@@ -698,6 +695,7 @@ public class GamePresenter extends AbstractPresenter {
                                     .divide(heightOfSelectedCardGridPane));
         }
     }
+
     @FXML
     public void onCardClicked(MouseEvent click) {
         LOG.debug("CARD CLICKED");
@@ -835,22 +833,24 @@ public class GamePresenter extends AbstractPresenter {
             if (slotz.getKey() != null) {
                 chosenCardsMap.replace(slotz.getKey(), null);
                 slotz.getKey().setFill(LIGHTGREY);
-                slotz.getKey().setStyle("-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+                slotz.getKey()
+                        .setStyle(
+                                "-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7;"
+                                        + " -fx-arc-width: 7;");
                 blockedCardIcons.get(counterForIcon).setVisible(false);
                 counterForIcon++;
             }
 
+            //            else if(slotz.getKey() == null){
+            //                slotz.getKey().setDisable(true);
+            //            }
 
-//            else if(slotz.getKey() == null){
-//                slotz.getKey().setDisable(true);
-//            }
-
-//            System.out.println(blockedCardIcons + ": ");
-//            System.out.println(slotz.getKey().getFill());
-//
-//            if(slotz.getKey().getFill() == RED){
-//                slotz.getKey().setDisable(true);
-//            }
+            //            System.out.println(blockedCardIcons + ": ");
+            //            System.out.println(slotz.getKey().getFill());
+            //
+            //            if(slotz.getKey().getFill() == RED){
+            //                slotz.getKey().setDisable(true);
+            //            }
         }
 
         for (Map.Entry<Rectangle, Text> cardText : cardValues.entrySet()) {
@@ -868,7 +868,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Implement cards based on response with given ids to each player
      *
-     *  block cards when damageTokens > 4
+     * <p>block cards when damageTokens > 4
      *
      * @author Maria Andrade and Tommy Dang
      * @since 2023-06-12
@@ -879,10 +879,14 @@ public class GamePresenter extends AbstractPresenter {
         int imageCounter = 0;
         Image blockedCardIcon = new Image("images/cards/blockedCardIcon.PNG");
         for (Map.Entry<Rectangle, CardDTO> chosenCard : chosenCardsMap.entrySet()) {
-            boolean blocked = tmp <= 0;  // this will block the last cards
+            boolean blocked = tmp <= 0; // this will block the last cards
             chosenCard.getKey().setDisable(blocked);
-            if (blocked){
-                chosenCard.getKey().setStyle("-fx-stroke: red; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;");
+            if (blocked) {
+                chosenCard
+                        .getKey()
+                        .setStyle(
+                                "-fx-stroke: red; -fx-stroke-width: 1; -fx-arc-height: 7;"
+                                        + " -fx-arc-width: 7;");
                 this.blockedCardIcons.get(imageCounter).setImage(blockedCardIcon);
                 this.blockedCardIcons.get(imageCounter).setFitWidth(20);
                 this.blockedCardIcons.get(imageCounter).setFitHeight(20);
@@ -897,7 +901,7 @@ public class GamePresenter extends AbstractPresenter {
         int countCards = 0;
         for (CardDTO receivedCard : receivedCards) {
             for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
-                if(countCards >= freeCards){
+                if (countCards >= freeCards) {
                     break;
                 }
                 if (cardSlot.getValue() == null) {
@@ -914,10 +918,12 @@ public class GamePresenter extends AbstractPresenter {
         LOG.debug("countCards " + countCards);
         LOG.debug("freeCards " + freeCards);
         int i = 0;
-        if(freeCards < 5){
+        if (freeCards < 5) {
             for (Map.Entry<Rectangle, CardDTO> cardLocked : chosenCardsMap.entrySet()) {
-                if(freeCards < i + 1){
-                    cardLocked.getKey().setFill(jsonUtils.getCardImageById(receivedCards.get(i).getID()));
+                if (freeCards < i + 1) {
+                    cardLocked
+                            .getKey()
+                            .setFill(jsonUtils.getCardImageById(receivedCards.get(i).getID()));
                     cardValues
                             .get(cardLocked.getKey())
                             .setText(String.valueOf(receivedCards.get(i).getPriority()));
@@ -926,7 +932,7 @@ public class GamePresenter extends AbstractPresenter {
                 i++;
             }
         }
-        if(freeCards==0){
+        if (freeCards == 0) {
             // submit chosen
             // submit cards when ready is clicked
             List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
@@ -958,12 +964,11 @@ public class GamePresenter extends AbstractPresenter {
             readyButton.setDisable(false);
         }
 
-        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
-            if(card.getKey().getFill() == RED) {
+        for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+            if (card.getKey().getFill() == RED) {
                 card.getKey().setDisable(true);
             }
         }
-
     }
 
     @FXML
@@ -979,14 +984,11 @@ public class GamePresenter extends AbstractPresenter {
         content.putString(mouseEvent.toString());
         dragboard.setContent(content);
 
-
-        for(Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()){
-            if(card.getKey().getFill() == RED) {
+        for (Map.Entry<Rectangle, CardDTO> card : cardsMap.entrySet()) {
+            if (card.getKey().getFill() == RED) {
                 card.getKey().setDisable(true);
             }
         }
-
-
     }
 
     @FXML
@@ -1011,7 +1013,9 @@ public class GamePresenter extends AbstractPresenter {
         for (int i = 0; i < playerReadyStackPanes.size(); i++) {
             playerReadyStackPanes
                     .get(i)
-                    .setStyle("-fx-background-color: red;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
+                    .setStyle(
+                            "-fx-background-color: red;-fx-background-radius: 5;-fx-border-radius:"
+                                    + " 5;-fx-border-color: black;");
         }
     }
 
@@ -1030,7 +1034,9 @@ public class GamePresenter extends AbstractPresenter {
             int position = userToPositionInStackPanes.get(playerIsReady);
             playerReadyStackPanes
                     .get(position)
-                    .setStyle("-fx-background-color: green;-fx-background-radius: 5;-fx-border-radius: 5;-fx-border-color: black;");
+                    .setStyle(
+                            "-fx-background-color: green;-fx-background-radius:"
+                                    + " 5;-fx-border-radius: 5;-fx-border-color: black;");
         }
 
         //        String style;
@@ -1088,8 +1094,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     private void setPlayerCheckpoint(PlayerDTO playerDTO) { // To implement onPlayerHPChangedMessage
         if (Objects.equals(playerDTO.getUser(), loggedInUser)) {
-            player1Checkpoint
-                    .setText(String.valueOf(playerDTO.getRobotDTO().getLastCheckpoint()));
+            player1Checkpoint.setText(String.valueOf(playerDTO.getRobotDTO().getLastCheckpoint()));
             return;
         }
         int position = userToPositionInStackPanes.get(playerDTO.getUser());
@@ -1100,11 +1105,9 @@ public class GamePresenter extends AbstractPresenter {
 
     @FXML
     private void onReadyButtonPressed(ActionEvent actionEvent) {
-        if(Objects.equals(readyButton.getText(), "Get Cards")){
+        if (Objects.equals(readyButton.getText(), "Get Cards")) {
             // create request to get the cards
-            eventBus.post(
-                    new RequestDistributeCardsEvent(
-                            this.lobby, (UserDTO) this.loggedInUser));
+            eventBus.post(new RequestDistributeCardsEvent(this.lobby, (UserDTO) this.loggedInUser));
             readyButton.setText("Submit Cards");
             readyButton.setDisable(true);
             robotOffButton.setDisable(true);
@@ -1112,17 +1115,20 @@ public class GamePresenter extends AbstractPresenter {
             if (!playerReady) {
                 LOG.debug("Submitting chosen cards");
                 readyButton.setStyle(
-                        "-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                        "-fx-background-color: gray;-fx-text-fill: #C0C0C0;-fx-background-radius:"
+                                + " 5;");
                 readyButton.setText("Submitted");
                 playerReady = true;
 
                 // submit cards when ready is clicked
                 List<CardDTO> chosenCards = new ArrayList<>(chosenCardsMap.values());
                 eventBus.post(
-                        new SubmitCardsEvent(this.lobbyID, (UserDTO) this.loggedInUser, chosenCards));
+                        new SubmitCardsEvent(
+                                this.lobbyID, (UserDTO) this.loggedInUser, chosenCards));
             } else {
                 readyButton.setStyle(
-                        "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                        "-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius:"
+                                + " 5;");
                 readyButton.setText("Submit Cards");
                 playerReady = false;
             }
@@ -1137,8 +1143,7 @@ public class GamePresenter extends AbstractPresenter {
      */
     @FXML
     private void onRobotOffButtonPressed(ActionEvent actionEvent) {
-        eventBus.post(
-                new TurnRobotOffRequest(this.lobbyID, (UserDTO) this.loggedInUser));
+        eventBus.post(new TurnRobotOffRequest(this.lobbyID, (UserDTO) this.loggedInUser));
         robotOffButton.setDisable(true);
     }
 
@@ -1148,11 +1153,12 @@ public class GamePresenter extends AbstractPresenter {
      * @author Maria Andrade
      * @since 2023-06-13
      */
-    public void showRobotTurnedOff(UserDTO turnedOffRobot){
+    public void showRobotTurnedOff(UserDTO turnedOffRobot) {
         // show robot as turned off in the list
         // for all players except the loggedInUser
-        if(!Objects.equals(loggedInUser, turnedOffRobot)){
-            playerReadyStackPanes.get(userToPositionInStackPanes.get(turnedOffRobot))
+        if (!Objects.equals(loggedInUser, turnedOffRobot)) {
+            playerReadyStackPanes
+                    .get(userToPositionInStackPanes.get(turnedOffRobot))
                     .setStyle("-fx-background-color: #adadad");
         }
     }
@@ -1163,11 +1169,13 @@ public class GamePresenter extends AbstractPresenter {
      * @author Tommy Dang
      * @since 2023-06-13
      */
-    public void enableRobotButton(){
+    public void enableRobotButton() {
         Platform.runLater(
                 () -> {
                     readyButton.setText("Get Cards");
-                    readyButton.setStyle("-fx-background-color: green;-fx-text-fill: #C0C0C0;-fx-background-radius: 5;");
+                    readyButton.setStyle(
+                            "-fx-background-color: green;-fx-text-fill:"
+                                    + " #C0C0C0;-fx-background-radius: 5;");
                     readyButton.setDisable(false);
                     robotOffButton.setDisable(false);
                 });
@@ -1201,7 +1209,10 @@ public class GamePresenter extends AbstractPresenter {
                 if (card.getKey() != null) {
                     cardsMap.replace(card.getKey(), null);
                     card.getKey().setFill(RED);
-                    card.getKey().setStyle("-fx-arc-width: 10; -fx-arc-height: 10; -fx-stroke: black; -fx-stroke-width: 1;");
+                    card.getKey()
+                            .setStyle(
+                                    "-fx-arc-width: 10; -fx-arc-height: 10; -fx-stroke: black;"
+                                            + " -fx-stroke-width: 1;");
 
                     // remove text
                     cardValues.get(card.getKey()).setText("");
@@ -1224,7 +1235,10 @@ public class GamePresenter extends AbstractPresenter {
     public void setPlayerCard(
             Map<UserDTO, CardDTO> userDTOCardDTOMap) { // To implement onPlayerHPChangedMessage
         for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
-            if(this.userDTOPlayerDTOMap.get(userCurrentCard.getKey()).getRobotDTO().isPowerDown()){
+            if (this.userDTOPlayerDTOMap
+                    .get(userCurrentCard.getKey())
+                    .getRobotDTO()
+                    .isPowerDown()) {
                 LOG.debug(
                         "Current User robot is turned off, should skip "
                                 + userCurrentCard.getKey().getUsername());
@@ -1248,21 +1262,40 @@ public class GamePresenter extends AbstractPresenter {
             playerCards
                     .get(position)
                     .setImage(jsonUtils.getCardImage(userCurrentCard.getValue().getID()));
-            textPlayerXCard.get(position).setText(String.valueOf(userCurrentCard.getValue().getPriority()));
+            textPlayerXCard
+                    .get(position)
+                    .setText(String.valueOf(userCurrentCard.getValue().getPriority()));
             textPlayerXCard.get(position).setStyle("-fx-font-weight: bold");
 
-            /** Makes the card images responsiv to the size of the window and gives a border to the images
+            /**
+             * Makes the card images responsiv to the size of the window and gives a border to the
+             * images
              *
              * @author Tommy Dang
              * @since 2023-06-07
              */
-            playerCards.get(position).fitHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
-            playerCards.get(position).fitWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
+            playerCards
+                    .get(position)
+                    .fitHeightProperty()
+                    .bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCards
+                    .get(position)
+                    .fitWidthProperty()
+                    .bind(playerCardWrappers.get(position).widthProperty().divide(2));
             playerCardImageHolders.get(position).setVisible(true);
-            playerCardImageHolders.get(position).setStyle("-fx-border-color: blue; -fx-border-radius: 5; -fx-border-insets: -1; -fx-border-width: 2");
-            playerCardImageHolders.get(position).prefHeightProperty().bind(playerCardWrappers.get(position).heightProperty().subtract(5));
-            playerCardImageHolders.get(position).prefWidthProperty().bind(playerCardWrappers.get(position).widthProperty().divide(2));
-
+            playerCardImageHolders
+                    .get(position)
+                    .setStyle(
+                            "-fx-border-color: blue; -fx-border-radius: 5; -fx-border-insets: -1;"
+                                    + " -fx-border-width: 2");
+            playerCardImageHolders
+                    .get(position)
+                    .prefHeightProperty()
+                    .bind(playerCardWrappers.get(position).heightProperty().subtract(5));
+            playerCardImageHolders
+                    .get(position)
+                    .prefWidthProperty()
+                    .bind(playerCardWrappers.get(position).widthProperty().divide(2));
         }
 
         //        User user = users.get(0);
@@ -1283,91 +1316,85 @@ public class GamePresenter extends AbstractPresenter {
      * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
      * @since 2023-06-13
      */
-    public void animateRobotState(PlayerDTO playerDTO){
+    public void animateRobotState(PlayerDTO playerDTO) {
         LOG.debug("in animateRobotState");
         UserDTO userToUpdate = playerDTO.getUser();
         Position newPos = playerDTO.getRobotDTO().getPosition();
         Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
         int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
-        int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+        int prevDir =
+                this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
         int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
         ImageView imageView = jsonUtils.getRobotImage(robotID);
 
         Node node = this.userRobotImageViewReference.get(userToUpdate);
-        Platform.runLater(() -> {
-            if(newDir != prevDir){
-                RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
-                int degrees = (prevDir - newDir) * -90;
-                if(degrees > 180)
-                    degrees = (degrees - 360);
-                else if(degrees < -180)
-                    degrees = (degrees + 360);
-                rotateTransition.setByAngle(degrees);
-                rotateTransition.setNode(node);
-                rotateTransition.setOnFinished(e -> updateRobotState(playerDTO));
-                rotateTransition.play();
-            }else if(prevPos.x != newPos.x || newPos.y != prevPos.y){
-                TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
-                imageView.setVisible(false);
+        Platform.runLater(
+                () -> {
+                    if (newDir != prevDir) {
+                        RotateTransition rotateTransition =
+                                new RotateTransition(Duration.millis(500), node);
+                        int degrees = (prevDir - newDir) * -90;
+                        if (degrees > 180) degrees = (degrees - 360);
+                        else if (degrees < -180) degrees = (degrees + 360);
+                        rotateTransition.setByAngle(degrees);
+                        rotateTransition.setNode(node);
+                        rotateTransition.setOnFinished(e -> updateRobotState(playerDTO));
+                        rotateTransition.play();
+                    } else if (prevPos.x != newPos.x || newPos.y != prevPos.y) {
+                        TranslateTransition translateTransition =
+                                new TranslateTransition(Duration.millis(500), node);
+                        imageView.setVisible(false);
 
-                imageView
-                        .fitWidthProperty()
-                        .bind(
-                                gameBoardWrapper
-                                        .heightProperty()
-                                        .divide(board.length + 1)
-                                        .subtract(10));
-                imageView
-                        .fitHeightProperty()
-                        .bind(
-                                gameBoardWrapper
-                                        .heightProperty()
-                                        .divide(board[0].length + 1)
-                                        .subtract(10));
-                gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                gameBoard.layout();
+                        imageView
+                                .fitWidthProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board.length + 1)
+                                                .subtract(10));
+                        imageView
+                                .fitHeightProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board[0].length + 1)
+                                                .subtract(10));
+                        gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                        gameBoard.layout();
 
-                double toX = imageView.getLayoutX();
-                double toY = imageView.getLayoutY();
+                        double toX = imageView.getLayoutX();
+                        double toY = imageView.getLayoutY();
 
-                double fromX = node.getLayoutX();
-                double fromY = node.getLayoutY();
+                        double fromX = node.getLayoutX();
+                        double fromY = node.getLayoutY();
 
-                double moveX = 0;
-                double moveY = 0;
+                        double moveX = 0;
+                        double moveY = 0;
 
-                moveX = fromX - toX;
-                moveY = fromY - toY;
+                        moveX = fromX - toX;
+                        moveY = fromY - toY;
 
-                if(fromY <= 0 && toY >= 0)
-                    moveY = toY + fromY * -1;
-                else if (fromY >= 0 && toY <= 0)
-                    moveY = toY - fromY * -1;
-                else if (fromY <= 0 && toY <= 0)
-                    moveY = toY + fromY * -1;
-                else if (fromY >= 0 && toY >= 0)
-                    moveY = toY - fromY;
+                        if (fromY <= 0 && toY >= 0) moveY = toY + fromY * -1;
+                        else if (fromY >= 0 && toY <= 0) moveY = toY - fromY * -1;
+                        else if (fromY <= 0 && toY <= 0) moveY = toY + fromY * -1;
+                        else if (fromY >= 0 && toY >= 0) moveY = toY - fromY;
 
-                if(fromX <= 0 && toX >= 0)
-                    moveX = toX + fromX * -1;
-                else if (fromX >= 0 && toX <= 0)
-                    moveX = toX - fromX * -1;
-                else if (fromX <= 0 && toX <= 0)
-                    moveX = toX + fromX * -1;
-                else if (fromX >= 0 && toX >= 0)
-                    moveX = toX - fromX;
+                        if (fromX <= 0 && toX >= 0) moveX = toX + fromX * -1;
+                        else if (fromX >= 0 && toX <= 0) moveX = toX - fromX * -1;
+                        else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
+                        else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
+                        gameBoard.getChildren().remove(imageView);
+                        imageView.setVisible(true);
 
-                gameBoard.getChildren().remove(imageView);
-                imageView.setVisible(true);
-
-                translateTransition.setToX(moveX);
-                translateTransition.setToY(moveY);
-                translateTransition.setOnFinished(e -> updateRobotState(playerDTO));
-                translateTransition.play();
-            }else{
-                updateRobotState(playerDTO);
-        }});
+                        translateTransition.setToX(moveX);
+                        translateTransition.setToY(moveY);
+                        translateTransition.setOnFinished(e -> updateRobotState(playerDTO));
+                        translateTransition.play();
+                    } else {
+                        updateRobotState(playerDTO);
+                    }
+                });
     }
     /**
      * Update robot states every time server sends a message
@@ -1437,8 +1464,8 @@ public class GamePresenter extends AbstractPresenter {
                         this.userRobotImageViewReference.replace(userToUpdate, imageView);
                     });
         // if it was alive and now it's not anymore
-        else if(this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive() &&
-                ! playerDTO.getRobotDTO().isAlive()) {
+        else if (this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive()
+                && !playerDTO.getRobotDTO().isAlive()) {
             // try to remove last position where robot was
             Platform.runLater(
                     () -> {
@@ -1460,14 +1487,18 @@ public class GamePresenter extends AbstractPresenter {
                                     this.userRobotImageViewReference.get(playerDTO.getUser()));
                         this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                     });
-        }
-        else{
-            ;; // it was and stays dead
+        } else {
+            ;
+            ; // it was and stays dead
             Platform.runLater(
                     () -> {
                         if (!Objects.equals(
                                 this.userRobotImageViewReference.get(playerDTO.getUser()), null))
-                            gameBoard.getChildren().remove(this.userRobotImageViewReference.get(playerDTO.getUser()));
+                            gameBoard
+                                    .getChildren()
+                                    .remove(
+                                            this.userRobotImageViewReference.get(
+                                                    playerDTO.getUser()));
                         this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                     });
         }
@@ -1494,103 +1525,101 @@ public class GamePresenter extends AbstractPresenter {
         for (PlayerDTO playerDTO : playerDTOList) {
             UserDTO userToUpdate = playerDTO.getUser();
             Position newPos = playerDTO.getRobotDTO().getPosition();
-            Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+            Position prevPos =
+                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
             int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
-            int prevDir = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
+            int prevDir =
+                    this.userDTOPlayerDTOMap
+                            .get(userToUpdate)
+                            .getRobotDTO()
+                            .getDirection()
+                            .ordinal();
             int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
             ImageView imageView = jsonUtils.getRobotImage(robotID);
 
             Node node = this.userRobotImageViewReference.get(userToUpdate);
 
-            if(newDir != prevDir){
-                RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), node);
+            if (newDir != prevDir) {
+                RotateTransition rotateTransition =
+                        new RotateTransition(Duration.millis(500), node);
                 int degrees = (prevDir - newDir) * -90;
-                if(degrees > 180)
-                    degrees = (degrees - 360);
-                else if(degrees < -180)
-                    degrees = (degrees + 360);
+                if (degrees > 180) degrees = (degrees - 360);
+                else if (degrees < -180) degrees = (degrees + 360);
                 rotateTransition.setByAngle(degrees);
                 rotateTransition.setNode(node);
                 rotateAnimations.add(rotateTransition);
-            } else if(prevPos.x != newPos.x || newPos.y != prevPos.y) {
+            } else if (prevPos.x != newPos.x || newPos.y != prevPos.y) {
                 Platform.runLater(
                         () -> {
-                    TranslateTransition translateTransition = new TranslateTransition(Duration.millis(500), node);
-                    imageView.setVisible(false);
+                            TranslateTransition translateTransition =
+                                    new TranslateTransition(Duration.millis(500), node);
+                            imageView.setVisible(false);
 
-                    imageView
-                            .fitWidthProperty()
-                            .bind(
-                                    gameBoardWrapper
-                                            .heightProperty()
-                                            .divide(board.length + 1)
-                                            .subtract(10));
-                    imageView
-                            .fitHeightProperty()
-                            .bind(
-                                    gameBoardWrapper
-                                            .heightProperty()
-                                            .divide(board[0].length + 1)
-                                            .subtract(10));
-                    gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                    gameBoard.layout();
+                            imageView
+                                    .fitWidthProperty()
+                                    .bind(
+                                            gameBoardWrapper
+                                                    .heightProperty()
+                                                    .divide(board.length + 1)
+                                                    .subtract(10));
+                            imageView
+                                    .fitHeightProperty()
+                                    .bind(
+                                            gameBoardWrapper
+                                                    .heightProperty()
+                                                    .divide(board[0].length + 1)
+                                                    .subtract(10));
+                            gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                            gameBoard.layout();
 
-                    double toX = imageView.getLayoutX();
-                    double toY = imageView.getLayoutY();
+                            double toX = imageView.getLayoutX();
+                            double toY = imageView.getLayoutY();
 
-                    double fromX = node.getLayoutX();
-                    double fromY = node.getLayoutY();
+                            double fromX = node.getLayoutX();
+                            double fromY = node.getLayoutY();
 
-                    double moveX = 0;
-                    double moveY = 0;
+                            double moveX = 0;
+                            double moveY = 0;
 
-                    moveX = fromX - toX;
-                    moveY = fromY - toY;
+                            moveX = fromX - toX;
+                            moveY = fromY - toY;
 
-                    if(fromY <= 0 && toY >= 0)
-                        moveY = toY + fromY * -1;
-                    else if (fromY >= 0 && toY <= 0)
-                        moveY = toY - fromY * -1;
-                    else if (fromY <= 0 && toY <= 0)
-                        moveY = toY + fromY * -1;
-                    else if (fromY >= 0 && toY >= 0)
-                        moveY = toY - fromY;
+                            if (fromY <= 0 && toY >= 0) moveY = toY + fromY * -1;
+                            else if (fromY >= 0 && toY <= 0) moveY = toY - fromY * -1;
+                            else if (fromY <= 0 && toY <= 0) moveY = toY + fromY * -1;
+                            else if (fromY >= 0 && toY >= 0) moveY = toY - fromY;
 
-                    if(fromX <= 0 && toX >= 0)
-                        moveX = toX + fromX * -1;
-                    else if (fromX >= 0 && toX <= 0)
-                        moveX = toX - fromX * -1;
-                    else if (fromX <= 0 && toX <= 0)
-                        moveX = toX + fromX * -1;
-                    else if (fromX >= 0 && toX >= 0)
-                        moveX = toX - fromX;
+                            if (fromX <= 0 && toX >= 0) moveX = toX + fromX * -1;
+                            else if (fromX >= 0 && toX <= 0) moveX = toX - fromX * -1;
+                            else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
+                            else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
-                    gameBoard.getChildren().remove(imageView);
-                    imageView.setVisible(true);
+                            gameBoard.getChildren().remove(imageView);
+                            imageView.setVisible(true);
 
-                    translateTransition.setToX(moveX);
-                    translateTransition.setToY(moveY);
-                    moveAnimations.add(translateTransition);
-                });
+                            translateTransition.setToX(moveX);
+                            translateTransition.setToY(moveY);
+                            moveAnimations.add(translateTransition);
+                        });
             }
         }
         int i = 0;
         int z = 0;
-        for (RotateTransition rotateTransition : rotateAnimations){
+        for (RotateTransition rotateTransition : rotateAnimations) {
             i++;
-            if(rotateAnimations.size() == i)
+            if (rotateAnimations.size() == i)
                 rotateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
             rotateTransition.play();
         }
-        for (TranslateTransition translateTransition : moveAnimations){
+        for (TranslateTransition translateTransition : moveAnimations) {
             z++;
-            if(moveAnimations.size() == z && i == 0)
+            if (moveAnimations.size() == z && i == 0)
                 translateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
             translateTransition.play();
         }
-        if(i == 0 && z == 0)
-            updateBoardElements(playerDTOList);
+        if (i == 0 && z == 0) updateBoardElements(playerDTOList);
     }
+
     public void updateBoardElements(List<PlayerDTO> playerDTOList) {
         LOG.debug("in updateBoardElements");
         for (PlayerDTO playerDTO : playerDTOList) {
@@ -1632,8 +1661,6 @@ public class GamePresenter extends AbstractPresenter {
                                     prevPosition.x,
                                     prevPosition.y);
 
-
-
                             removeNodeByRowColumnIndex(
                                     prevPosition.x + 1,
                                     prevPosition.y + 1,
@@ -1658,8 +1685,8 @@ public class GamePresenter extends AbstractPresenter {
                             gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
                             this.userRobotImageViewReference.replace(userToUpdate, imageView);
                         });
-            } else if(this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive() &&
-                    !playerDTO.getRobotDTO().isAlive()) {
+            } else if (this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive()
+                    && !playerDTO.getRobotDTO().isAlive()) {
                 // try to remove last position where robot was
                 Platform.runLater(
                         () -> {
@@ -1682,14 +1709,19 @@ public class GamePresenter extends AbstractPresenter {
                                         this.userRobotImageViewReference.get(playerDTO.getUser()));
                             this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                         });
-            }
-            else {
-                ;; // it was and stays dead
+            } else {
+                ;
+                ; // it was and stays dead
                 Platform.runLater(
                         () -> {
                             if (!Objects.equals(
-                                    this.userRobotImageViewReference.get(playerDTO.getUser()), null))
-                                gameBoard.getChildren().remove(this.userRobotImageViewReference.get(playerDTO.getUser()));
+                                    this.userRobotImageViewReference.get(playerDTO.getUser()),
+                                    null))
+                                gameBoard
+                                        .getChildren()
+                                        .remove(
+                                                this.userRobotImageViewReference.get(
+                                                        playerDTO.getUser()));
                             this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                         });
             }
@@ -1748,7 +1780,7 @@ public class GamePresenter extends AbstractPresenter {
 
     public void setRobotDied(UserDTO userDied) {
         deadForeverUsers.add(userDied);
-        if(Objects.equals(loggedInUser.getUsername(), userDied.getUsername())){
+        if (Objects.equals(loggedInUser.getUsername(), userDied.getUsername())) {
             selectedCardGridPane.setDisable(true);
             selectedCardGridPane.setVisible(false);
 
@@ -1763,8 +1795,7 @@ public class GamePresenter extends AbstractPresenter {
 
             robotOffButton.setDisable(true);
             robotOffButton.setVisible(false);
-        }
-        else{
+        } else {
             // TODO: show robot in the list blocked/dead somehow
             int position = this.userToPositionInStackPanes.get(userDied);
             playerGrids.get(position).setDisable(true);

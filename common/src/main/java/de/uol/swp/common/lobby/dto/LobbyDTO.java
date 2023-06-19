@@ -52,8 +52,7 @@ public class LobbyDTO implements Lobby {
             User creator,
             String password,
             Boolean multiplayer,
-            UUID chatChannelUUID
-            ) {
+            UUID chatChannelUUID) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -62,8 +61,8 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
-
     }
+
     public LobbyDTO() {
         this.lobbyID = 0;
         this.name = "";
@@ -86,11 +85,11 @@ public class LobbyDTO implements Lobby {
      */
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
-        if (tmp.getPassword().equals("")) {
+        if (tmp.getPassword() == null || tmp.getPassword().equals("")) {
             return new LobbyDTO(
                     lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
         } else {
-            String passwordBlurred = "*".repeat(lobby.getPassword().length());
+            String passwordBlurred = "*".repeat(4);
             return new LobbyDTO(
                     lobby.getLobbyID(),
                     lobby.getName(),
@@ -171,12 +170,12 @@ public class LobbyDTO implements Lobby {
     @Override
     public void leaveUser(User user) {
         if (users.contains(user)) {
-            if (users.size() == 1) {
+            if (users.size() == 1 && this.multiplayer == true) {
                 throw new IllegalArgumentException("Lobby must contain at least one user!");
             } else {
                 this.users.remove(user);
                 this.notReadyUsers.remove(user);
-                if (this.owner.equals(user)) {
+                if (this.owner.equals(user) && this.multiplayer == true) {
                     updateOwner(users.iterator().next());
                 }
             }
@@ -333,11 +332,11 @@ public class LobbyDTO implements Lobby {
         return chatChannel;
     }
 
-    public void setMapName(String mapName){
+    public void setMapName(String mapName) {
         this.mapName = mapName;
     }
-    public String getMapName(){
+
+    public String getMapName() {
         return this.mapName;
     }
-
 }

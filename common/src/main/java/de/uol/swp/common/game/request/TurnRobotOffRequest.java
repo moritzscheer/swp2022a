@@ -3,7 +3,6 @@ package de.uol.swp.common.game.request;
 import de.uol.swp.common.lobby.request.AbstractLobbyRequest;
 import de.uol.swp.common.user.UserDTO;
 
-
 /**
  * Request sent to the server when the user requests to turn off the robot
  *
@@ -14,6 +13,7 @@ import de.uol.swp.common.user.UserDTO;
 public class TurnRobotOffRequest extends AbstractLobbyRequest {
     private final int lobbyID;
     private final UserDTO loggedInUser;
+
     public TurnRobotOffRequest(Integer lobbyID, UserDTO loggedInUser) {
         this.lobbyID = lobbyID;
         this.loggedInUser = loggedInUser;

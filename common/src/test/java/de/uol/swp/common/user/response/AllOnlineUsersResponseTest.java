@@ -1,15 +1,15 @@
 package de.uol.swp.common.user.response;
 
+import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class AllOnlineUsersResponseTest {
 
@@ -22,11 +22,11 @@ public class AllOnlineUsersResponseTest {
         UserDTO user2 = new UserDTO("user2", "password2", "email2");
         UserDTO user3 = new UserDTO("user3", "password3", "email3");
 
-        users = Arrays.asList(
-                UserDTO.createWithoutPassword(user1),
-                UserDTO.createWithoutPassword(user2),
-                UserDTO.createWithoutPassword(user3)
-        );
+        users =
+                Arrays.asList(
+                        UserDTO.createWithoutPassword(user1),
+                        UserDTO.createWithoutPassword(user2),
+                        UserDTO.createWithoutPassword(user3));
 
         response = new AllOnlineUsersResponse(new ArrayList<>(users));
     }

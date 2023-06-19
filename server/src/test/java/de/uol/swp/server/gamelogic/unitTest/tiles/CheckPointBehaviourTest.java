@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
@@ -11,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test CheckPointBehaviour

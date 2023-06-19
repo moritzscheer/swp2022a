@@ -83,7 +83,6 @@ public class RobotDTO implements Serializable {
         this.damageToken = damageToken;
     }
 
-
     public int getLastCheckpoint() {
         return lastCheckpoint;
     }

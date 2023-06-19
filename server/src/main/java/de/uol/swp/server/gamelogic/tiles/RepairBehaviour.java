@@ -52,12 +52,12 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      */
     public void fixDamageToken(int indexOfMovedRobot) {
         robotStates.get(indexOfMovedRobot).fixDamageToken();
-        if(repairSiteKey == 2){
+        if (repairSiteKey == 2) {
             robotStates.get(indexOfMovedRobot).fixDamageToken();
         }
     }
 
-    public void setBackupCopy(int robotID){
+    public void setBackupCopy(int robotID) {
         robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
     }
 

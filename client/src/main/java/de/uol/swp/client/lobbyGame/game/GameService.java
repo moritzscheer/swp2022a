@@ -7,7 +7,6 @@ import com.google.inject.Singleton;
 
 import de.uol.swp.client.lobbyGame.LobbyGameManagement;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
-import de.uol.swp.client.lobbyGame.game.events.RequestMapDataEvent;
 import de.uol.swp.client.lobbyGame.game.events.RequestStartGameEvent;
 import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
@@ -59,10 +58,11 @@ public class GameService {
     @Subscribe
     public void onRequestStartGameEvent(RequestStartGameEvent event) {
         LOG.debug("Starting Game");
-        StartGameRequest startGameRequest = new StartGameRequest(event.getLobbyDTO(), event.getNumberBots(), event.getNumberCheckpoints());
+        StartGameRequest startGameRequest =
+                new StartGameRequest(
+                        event.getLobbyDTO(), event.getNumberBots(), event.getNumberCheckpoints());
         eventBus.post(startGameRequest);
     }
-
 
     /**
      * Get cards 9-5 Cards for each player
