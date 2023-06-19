@@ -29,7 +29,7 @@ public class GameDTOTest {
         List<PlayerDTO> expectedPlayers = new ArrayList<>();
         expectedPlayers.add(new PlayerDTO(robotDTO,userDTO));
         expectedPlayers.add(new PlayerDTO(robotDTO2,userDTO2));
-        GameDTO gameDTO = new GameDTO(expectedPlayers);
+        GameDTO gameDTO = new GameDTO(expectedPlayers, null);
 
         List<PlayerDTO> actualPlayers = gameDTO.getPlayers();
 
@@ -41,7 +41,7 @@ public class GameDTOTest {
         List<PlayerDTO> players = new ArrayList<>();
         players.add(new PlayerDTO(robotDTO,userDTO));
         players.add(new PlayerDTO(robotDTO2,userDTO2));
-        GameDTO gameDTO = new GameDTO(players);
+        GameDTO gameDTO = new GameDTO(players, null);
 
         List<PlayerDTO> newPlayers = new ArrayList<>();
         newPlayers.add(new PlayerDTO(robotDTO3,userDTO3));
@@ -59,7 +59,7 @@ public class GameDTOTest {
         players.add(new PlayerDTO(robotDTO,userDTO));
         players.add(new PlayerDTO(robotDTO2,userDTO2));
 
-        GameDTO gameDTO = new GameDTO(players);
+        GameDTO gameDTO = new GameDTO(players, null);
 
         assertNotNull(gameDTO);
         assertEquals(players, gameDTO.getPlayers());
@@ -71,7 +71,7 @@ public class GameDTOTest {
         players.add(new PlayerDTO(robotDTO,userDTO));
         players.add(new PlayerDTO(robotDTO2,userDTO2));
 
-        GameDTO gameDTO = new GameDTO(players);
+        GameDTO gameDTO = new GameDTO(players, null);
 
         gameDTO.setPlayers(null);
 

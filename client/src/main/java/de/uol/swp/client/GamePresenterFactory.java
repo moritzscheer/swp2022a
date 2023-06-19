@@ -1,6 +1,6 @@
 package de.uol.swp.client;
 
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
+import de.uol.swp.client.lobbyGame.game.presenter.GamePresenter;
 
 public interface GamePresenterFactory {
 

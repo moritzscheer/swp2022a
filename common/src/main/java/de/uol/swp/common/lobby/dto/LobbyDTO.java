@@ -31,8 +31,6 @@ public class LobbyDTO implements Lobby {
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
     private final UUID chatChannel;
-
-    private int countRequestToStartGame = 0;
     private String mapName;
 
     private Map currentMap;
@@ -333,41 +331,6 @@ public class LobbyDTO implements Lobby {
 
     public UUID getTextChatID() {
         return chatChannel;
-    }
-
-    /**
-     * Getter for the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int getCountRequestToStartGame() {
-        return this.countRequestToStartGame;
-    }
-
-    /**
-     * Method to increase the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int increaseCounterRequest() {
-        this.countRequestToStartGame += 1;
-        return this.countRequestToStartGame;
-    }
-
-    /**
-     * Method to reset the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int resetCounterRequest() {
-        this.countRequestToStartGame = 0;
-        return this.countRequestToStartGame;
     }
 
     public void setMapName(String mapName){

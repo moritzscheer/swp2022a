@@ -11,14 +11,12 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.common.chat.message.TextHistoryMessage;
+import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
-import de.uol.swp.common.game.request.GetMapDataRequest;
-import de.uol.swp.common.game.request.GetProgramCardsRequest;
-import de.uol.swp.common.game.request.StartGameRequest;
-import de.uol.swp.common.game.request.SubmitCardsRequest;
+import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
@@ -95,10 +93,8 @@ public class GameService extends AbstractService {
                         checkpointCount
                 )
         );
-        //games.get(lobbyID).startGame();
 
         // Create DTOs objects
-        // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
         for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
             // add in the list
@@ -106,11 +102,8 @@ public class GameService extends AbstractService {
                     convertPlayerToPlayerDTO(player)
             );
         }
-
-        // TODO: create Board, instead of using 4d array
-        // BlockDTO blockDTO = new BlockDTO();
-
-        GameDTO gameDTO = new GameDTO(players);
+        BlockDTO[][] boardDTO = convertBoardToBoardDTO(games.get(lobbyID).getBoard());
+        GameDTO gameDTO = new GameDTO(players, boardDTO);
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
@@ -160,14 +153,18 @@ public class GameService extends AbstractService {
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
      * StartGameMessage to all the users in the lobby, containing the
      *
+     * PS.: GetMapDataRequest/Response was removed, and now the
+     * board is sent together with startGameMessage
+     * inside the gameDTO object (2023-06-18)
+     *
      * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel, Jann
      * @see de.uol.swp.common.game.request.StartGameRequest
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
     @Subscribe
-    public void onStartGameRequest(StartGameRequest msg) {
+    public void onStartGameRequest(StartGameRequest msg) throws LobbyDoesNotExistException {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
@@ -177,7 +174,8 @@ public class GameService extends AbstractService {
                     msg.getLobbyID(),
                     new StartGameMessage(
                             msg.getLobbyID(), msg.getLobby() , game));
-            tmp.get().resetCounterRequest();
+        } else {
+            // TODO: send ErrorResponse
         }
     }
 
@@ -194,7 +192,7 @@ public class GameService extends AbstractService {
      * @since 2023-02-28
      */
     @Subscribe
-    public void onGetProgramCardsRequest(GetProgramCardsRequest msg) throws InterruptedException {
+    public void onGetProgramCardsRequest(GetProgramCardsRequest msg) throws InterruptedException, LobbyDoesNotExistException {
         LOG.debug("onGetProgramCardsRequest");
         Optional<Game> game = getGame(msg.getLobbyID());
         boolean callBot = false;
@@ -224,44 +222,25 @@ public class GameService extends AbstractService {
         }
     }
 
+
     /**
-     * Handles GetMapDataRequest found on the EventBus
+     * Handles TurnRobotOffRequest found on the EventBus
      *
-     * <p>If a GetMapDataRequest is detected on the EventBus, this method is called. It posts a
-     * GetMapDataMessage to all the users in the lobby, containing the game board
+     * <p>If a TurnRobotOffRequest is detected on the EventBus, this method is called. It posts a
+     * RobotTurnedOffMessage to all the users in the lobby, saying that this player is ready
      *
-     * @param msg GetMapDataRequest found on the EventBus
+     * @param request SubmitCardsRequest found on the EventBus
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.common.game.request.GetMapDataRequest
-     * @see GetMapDataResponse
-     * @since 2023-02-28
+     * @see de.uol.swp.common.game.request.TurnRobotOffRequest
+     * @since 2023-06-13
      */
     @Subscribe
-    public void onGetMapDataRequest(GetMapDataRequest msg) {
-
-        System.out.println("Get Map Data server");
-        Optional<Game> game = getGame(msg.getLobby().getLobbyID());
+    public void onTurnRobotOffRequest(TurnRobotOffRequest request) throws LobbyDoesNotExistException {
+        Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
-            Block[][] board = game.get().getBoard();
-
-            if (board == null) {
-                throw new IllegalStateException("Board is nicht initialisiert");
-            }
-
-            BlockDTO[][] boardDTOs = new BlockDTO[board.length][board[0].length];
-
-            for (int row = 0; row < board.length; row++) {
-                for (int col = 0; col < board[0].length; col++) {
-                    boardDTOs[row][col] = new BlockDTO(board[row][col].getImages());
-                }
-            }
-            GetMapDataResponse getMapDataResponse =
-                    new GetMapDataResponse(
-                            boardDTOs, msg.getLobby(), game.get().getDockingStartPosition());
-            getMapDataResponse.initWithMessage(msg);
-            post(getMapDataResponse);
-        } else {
-            // TODO: send ErrorResponse
+            game.get().getPlayerByUserDTO(request.getLoggedInUser()).getRobot().setPowerDown(true);
+            lobbyService.sendToAllInLobby(request.getLobbyID(),
+                    new RobotTurnedOffMessage(request.getLobbyID(), request.getLoggedInUser()));
         }
     }
 
@@ -277,7 +256,7 @@ public class GameService extends AbstractService {
      * @since 2023-05-18
      */
     @Subscribe
-    public void onSubmitCardsRequest(SubmitCardsRequest request) throws InterruptedException {
+    public void onSubmitCardsRequest(SubmitCardsRequest request) throws InterruptedException, LobbyDoesNotExistException {
         Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
             // TODO
@@ -297,7 +276,7 @@ public class GameService extends AbstractService {
         }
     }
 
-    private void selectCardBot(Game game,int lobbyID) throws InterruptedException {
+    private void selectCardBot(Game game,int lobbyID) throws InterruptedException, LobbyDoesNotExistException {
         Boolean allChosen = game.registerCardsFromBot();
         for(AbstractPlayer botPlayer : game.getPlayers()) {
             if(botPlayer instanceof BotPlayer) {
@@ -335,7 +314,7 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.request.SubmitCardsRequest
      * @since 2023-05-24
      */
-    public void manageRoundsUpdates(Game game, int lobbyID) throws InterruptedException {
+    public void manageRoundsUpdates(Game game, int lobbyID) throws InterruptedException, LobbyDoesNotExistException {
         // TODO
         int secondsToWait = 1;
 
@@ -354,9 +333,13 @@ public class GameService extends AbstractService {
             scheduler.schedule(
                     new Runnable() {
                         public void run() {
-                            lobbyService.sendToAllInLobby(
-                                    lobbyID,
-                                    new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                            try {
+                                lobbyService.sendToAllInLobby(
+                                        lobbyID,
+                                        new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                            } catch (LobbyDoesNotExistException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     },
                     secondsToWait,
@@ -402,7 +385,11 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -554,8 +541,12 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -566,8 +557,12 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -579,7 +574,11 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -620,8 +619,12 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new GameOverMessage(lobbyID, userWon));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new GameOverMessage(lobbyID, userWon));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
