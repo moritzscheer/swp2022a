@@ -63,6 +63,7 @@ public class Game {
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
+
     /**
      * Constructor
      *
@@ -401,15 +402,15 @@ public class Game {
  */
 
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < board[x].length; y++) {
-                board[x][y].setRobotsInfo(robots);
+        for (Block[] blocks : board) {
+            for (Block block : blocks) {
+                block.setRobotsInfo(robots);
             }
         }
     }
 
     public void calcGameRoundCards() {
-        LOG.debug("Calculating game cards for round " + (this.programStep+1));
+        LOG.debug("Calculating game cards for round " + (this.programStep + 1));
         // Iterate through the 5 cards
         if (this.playedCards[0].length != 5) {
             // TODO: Log Error regarding card count
@@ -420,7 +421,7 @@ public class Game {
         // programStep changes in goToNextRound(cards)
 
         // Iterate through the X card of all Players and resolve them
-        LOG.debug("1Current Position of "+  this.players.get(0).getUser().getUsername());
+        LOG.debug("1Current Position of " + this.players.get(0).getUser().getUsername());
         LOG.debug(
                 "     Position x = {} y = {}",
                 this.robots.get(0).getPosition().x,
@@ -428,64 +429,133 @@ public class Game {
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
             if (!this.robots.get(playerIterator).isAlive()) continue; // if not alive, go on
             List<List<MoveIntent>> moves;
-            moves = resolveCard(this.playedCards[playerIterator][this.programStep], playerIterator);
+            moves = resolveCard(this.playedCards[playerIterator][programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
                 List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
                 executeMoveIntents(resolvedMoves);
             }
         }
 
-        checkRobotFellFromBoard();
     }
 
     public void calcGameRoundBoard() {
-        LOG.debug("Calculating game board for round " + (this.programStep+1));
-        // Iterate through the 5 cards
-        if (this.playedCards[0].length != 5) {
-            // TODO: Log Error regarding card count
-        }
+        List<MoveIntent> moves;
 
-        // Iterate through all the traps
-        for (Block[] blocksX : board) {
-            for (Block blockXY : blocksX) {
-                List<MoveIntent> moves;
+        moves = onExpressConveyorStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                // TODO: implementation of ActionReports for use in a GameMoveHistory
-                // Preferably altering the behaviour Methods to return (or get as parameters)
-                // the list of ActionReports and MoveIntents
+        moves = onConveyorStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnExpressConveyorStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = onPusherStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnConveyorStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = onRotatorStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnPusherStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = onPresserStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnRotatorStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnLaserStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnPresserStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
+        moves = OnCheckPointStage(programStep+1);
+        moves = resolveMoveIntentConflicts(moves);
+        executeMoveIntents(moves);
 
-                moves = blockXY.OnLaserStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
 
-                moves = blockXY.OnCheckPointStage(this.programStep+1);
-                moves = resolveMoveIntentConflicts(moves);
-                executeMoveIntents(moves);
-            }
-        }
         executeBehavioursInEndDestination();
         checkRobotFellFromBoard();
     }
+
+    private List<MoveIntent> onExpressConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> onConveyorStage(int programStep) {
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> onPusherStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnPusherStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> onRotatorStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> onPresserStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnPresserStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> OnLaserStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnLaserStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
+    private List<MoveIntent> OnCheckPointStage(int programStep) {
+
+        List<MoveIntent> moves = new ArrayList<>();
+        for (Block[] boardCol : board) {
+            for (Block block : boardCol) {
+                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep);
+                moves.addAll(blockMoves);
+            }
+        }
+        return moves;
+    }
+
 
     public void calcGameRound() {
         //        LOG.debug("Calculating game for round " + this.programStep);
@@ -565,9 +635,10 @@ public class Game {
         // Send back a collective result of the whole GameRound
     }
 
-    //////////////////////////////
-    // SOLVING MOVE INTENTS
-    /////////////////////////////
+
+//////////////////////////////
+// SOLVING MOVE INTENTS
+/////////////////////////////
 
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
@@ -602,8 +673,8 @@ public class Game {
             moves.add(subMoveList);
         }
         for (int i = 0;
-                i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
-                i++) {
+             i < card.getMoves() /*TODO: modify card.move() to return the number of moves*/;
+             i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
             moves.add(subMoveList);
@@ -625,8 +696,10 @@ public class Game {
                 executeBehavioursBetweenDestination(move.robotID);
             }
         }
+
+        checkRobotFellFromBoard();
     }
-    
+
     /** Execute behaviour that may occur only by passing through the block
      * and does not require in the block to land
      * i.e.: Checkpoint, save BackupPosition in repair or checkpoint block,
@@ -746,7 +819,6 @@ public class Game {
                         }
                         if (!alreadyHasMoveIntent) {
                             moveList.add(new MoveResult(move, j));
-                            i = -1;
                             somethingChanged = true;
                         }
                     }
@@ -807,8 +879,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                                    == CardinalDirection.values()[
-                                            moveList.get(j).getDirection().ordinal() + 2]
+                            == CardinalDirection.values()[
+                            (moveList.get(j).getDirection().ordinal() + 2)%4]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -855,7 +927,9 @@ public class Game {
         return lastCheckPoint;
     }
 
-    /** @author Finn */
+    /**
+     * @author Finn
+     */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
@@ -888,6 +962,7 @@ public class Game {
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
+
     }
 
     /**
@@ -912,6 +987,7 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
+
     /**
      * Getter for lobbyID
      *
@@ -922,6 +998,7 @@ public class Game {
     public Integer getLobbyID() {
         return lobbyID;
     }
+
     /**
      * Getter for Board Array
      *

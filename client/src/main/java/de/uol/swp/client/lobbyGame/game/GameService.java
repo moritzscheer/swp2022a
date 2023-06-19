@@ -145,7 +145,7 @@ public class GameService {
     public void onShowRobotMovingMessage(ShowRobotMovingMessage msg) {
         LOG.debug("Updating view, robot moving - " + msg.getPlayerDTO().getUser().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
-    }
+}
 
     @Subscribe
     public void onHistoryMessage(TextHistoryMessage msg) {
