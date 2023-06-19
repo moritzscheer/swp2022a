@@ -27,10 +27,10 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
         if (lobbyID < 0) {
             throw new IllegalArgumentException("Lobby can not be null");
         }
-        if(userDTO == null) {
+        if (userDTO == null) {
             throw new NullPointerException("User can not be null");
         }
-        if(cardDTOS == null) {
+        if (cardDTOS == null) {
             throw new NullPointerException("CardDTO can not be null");
         }
         this.lobbyID = lobbyID;

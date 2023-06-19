@@ -56,14 +56,17 @@ public class PusherBehaviourTest {
         // robot in block 0,0 to be pushed
         // program step is 1
         assertEquals(CardinalDirection.West, ((PusherBehaviour) behaviours1[0]).getDirection());
-        assertEquals(CardinalDirection.East, ((PusherBehaviour) behaviours1[0]).getPushingDirection());
+        assertEquals(
+                CardinalDirection.East, ((PusherBehaviour) behaviours1[0]).getPushingDirection());
         // Pushes robot to west
         ((PusherBehaviour) behaviours1[0]).onPusherStage(1);
 
         // solve move intentions
         List<MoveIntent> moves;
         moves = board[0][0].OnPusherStage(1);
-        assertEquals(moves.get(0).getDirection(), ((PusherBehaviour) behaviours1[0]).getPushingDirection());
+        assertEquals(
+                moves.get(0).getDirection(),
+                ((PusherBehaviour) behaviours1[0]).getPushingDirection());
     }
 
     /**

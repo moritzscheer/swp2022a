@@ -2,6 +2,7 @@ package de.uol.swp.common.lobby.message;
 
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +10,10 @@ import java.util.UUID;
 
 public class UserCreatedLobbyMessageTest {
 
-    private final UserDTO userDTO = new UserDTO("Player1","pw","ml");
+    private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
     private final UUID randomUUID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123,"testLobby",userDTO,"pw",true,randomUUID);
-
+    private final LobbyDTO lobbyDTO =
+            new LobbyDTO(123, "testLobby", userDTO, "pw", true, randomUUID);
 
     @Test
     public void testConstructorAndGetters() {

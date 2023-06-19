@@ -103,10 +103,8 @@ public final class ConvertToDTOUtils {
      */
     public static PlayerDTO convertPlayerToPlayerDTO(AbstractPlayer player) {
 
-        PlayerDTO playerDTO = new PlayerDTO(
-                convertRobotToRobotDTO(player.getRobot()),
-                player.getUser()
-        );
+        PlayerDTO playerDTO =
+                new PlayerDTO(convertRobotToRobotDTO(player.getRobot()), player.getUser());
 
         return playerDTO;
     }
@@ -121,14 +119,12 @@ public final class ConvertToDTOUtils {
         return playersDTO;
     }
 
-
     /**
      * This function converts Board to BoardDTO
      *
-     * <p>This is necessary to send a response
-     * when game starts, and the board needs to be loaded
+     * <p>This is necessary to send a response when game starts, and the board needs to be loaded
      *
-     * This method was based on Jann's implementation
+     * <p>This method was based on Jann's implementation
      *
      * @param board board to be converted to DTO
      * @return BlockDTO[][]

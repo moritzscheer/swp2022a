@@ -3,7 +3,6 @@ package de.uol.swp.common.game.message;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
-
 /**
  * Message sent by the server when a robot is turned off for the round
  *

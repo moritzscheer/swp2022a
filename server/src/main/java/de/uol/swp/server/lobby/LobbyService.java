@@ -5,6 +5,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
@@ -12,7 +13,6 @@ import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
 import de.uol.swp.common.lobby.message.*;
 import de.uol.swp.common.lobby.request.*;
 import de.uol.swp.common.lobby.response.*;
-import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.message.ServerMessage;
 import de.uol.swp.common.user.User;
@@ -176,12 +176,10 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onLobbyLeaveUserRequest(LeaveLobbyRequest leaveLobbyRequest) {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getLobbyID());
-
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
             try {
                 lobby.get().leaveUser(leaveLobbyRequest.getUser());
-
                 // remove User from textChat
                 UUID textChatID = lobby.get().getTextChatID();
                 User leavingUser = leaveLobbyRequest.getUser();
@@ -197,6 +195,8 @@ public class LobbyService extends AbstractService {
                                     leaveLobbyRequest.getName(),
                                     leaveLobbyRequest.getUser(),
                                     (UserDTO) lobby.get().getOwner()));
+                } else {
+                    lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
                 }
                 returnMessage =
                         new LobbyLeftSuccessfulResponse(lobby.get(), leaveLobbyRequest.getUser());
@@ -238,14 +238,16 @@ public class LobbyService extends AbstractService {
      * @see de.uol.swp.common.message.ServerMessage
      * @since 2019-10-08
      */
-    public void sendToAllInLobby(Integer lobbyID, ServerMessage message) throws LobbyDoesNotExistException {
+    public void sendToAllInLobby(Integer lobbyID, ServerMessage message)
+            throws LobbyDoesNotExistException {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
 
         if (lobby.isPresent()) {
             message.setReceiver(authenticationService.getSessions(lobby.get().getUsers()));
             post(message);
         } else {
-            throw new LobbyDoesNotExistException("Lobby does not exist! LobbyID:" + lobbyID, lobbyID);
+            throw new LobbyDoesNotExistException(
+                    "Lobby does not exist! LobbyID:" + lobbyID, lobbyID);
         }
 
         // TODO: error handling not existing lobby
@@ -273,7 +275,8 @@ public class LobbyService extends AbstractService {
     }
 
     @Subscribe
-    public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request) throws LobbyDoesNotExistException {
+    public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request)
+            throws LobbyDoesNotExistException {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(request.getLobbyID());
 
         ResponseMessage returnMessage;

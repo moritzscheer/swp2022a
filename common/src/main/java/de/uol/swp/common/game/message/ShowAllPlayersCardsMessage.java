@@ -32,5 +32,4 @@ public class ShowAllPlayersCardsMessage extends AbstractLobbyMessage {
         }
         return lobbyID;
     }
-
 }

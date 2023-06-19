@@ -1,10 +1,10 @@
 package de.uol.swp.common.user.exception;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class RegistrationExceptionMessageTest {
 
@@ -23,7 +23,8 @@ public class RegistrationExceptionMessageTest {
     @Test
     void testEquals() {
         RegistrationExceptionMessage message1 = new RegistrationExceptionMessage("Test Exception");
-        RegistrationExceptionMessage message2 = new RegistrationExceptionMessage("Different Exception");
+        RegistrationExceptionMessage message2 =
+                new RegistrationExceptionMessage("Different Exception");
 
         // Same object
         assertEquals(message1, message1);

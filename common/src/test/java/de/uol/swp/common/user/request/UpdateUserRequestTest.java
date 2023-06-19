@@ -1,10 +1,11 @@
 package de.uol.swp.common.user.request;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdateUserRequestTest {
 

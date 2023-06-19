@@ -1,8 +1,7 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.message.RobotIsFinallyDead;
-import de.uol.swp.common.game.message.RoundIsOverMessage;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +10,10 @@ import java.util.List;
 
 public class RobotIsFinallyDeadTest {
 
-    UserDTO userDied = new UserDTO("Test","pw","mail");
-    UserDTO userDied2 = new UserDTO("Test2","pw","mail");
-    UserDTO userDied3 = new UserDTO("Test3","pw","mail");
-    UserDTO userDied4 = new UserDTO("Test4","pw","mail");
+    UserDTO userDied = new UserDTO("Test", "pw", "mail");
+    UserDTO userDied2 = new UserDTO("Test2", "pw", "mail");
+    UserDTO userDied3 = new UserDTO("Test3", "pw", "mail");
+    UserDTO userDied4 = new UserDTO("Test4", "pw", "mail");
 
     @Test
     public void testGetLobbyID() {
@@ -35,6 +34,7 @@ public class RobotIsFinallyDeadTest {
 
         Assertions.assertEquals(userDied, result);
     }
+
     @Test
     public void testGetUserListDied() {
         int lobbyID = 123;
@@ -54,14 +54,14 @@ public class RobotIsFinallyDeadTest {
         }
 
         for (int i = 0; i < result.size(); i++) {
-             Assertions.assertEquals(listMessage.get(i).getUserDied(), result.get(i));
+            Assertions.assertEquals(listMessage.get(i).getUserDied(), result.get(i));
         }
     }
 
     @Test
     public void testGetUserListNotDied() {
         int lobbyID = 123;
-        UserDTO userAlive = new UserDTO("Alive","pw","mail");
+        UserDTO userAlive = new UserDTO("Alive", "pw", "mail");
         List<RobotIsFinallyDead> listMessage = new ArrayList<>();
         RobotIsFinallyDead message2 = new RobotIsFinallyDead(lobbyID, userDied2);
         RobotIsFinallyDead message3 = new RobotIsFinallyDead(lobbyID, userDied3);
@@ -76,12 +76,11 @@ public class RobotIsFinallyDeadTest {
         }
 
         for (int i = 0; i < result.size(); i++) {
-            if(result.get(i).getUsername().equals(userAlive.getUsername())){
+            if (result.get(i).getUsername().equals(userAlive.getUsername())) {
                 Assertions.fail();
-            }else {
+            } else {
                 Assertions.assertEquals(listMessage.get(i).getUserDied(), result.get(i));
             }
-
         }
     }
 

@@ -1,11 +1,12 @@
 package de.uol.swp.common.user.response;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class UpdatedUserSuccessfulResponseTest {
 

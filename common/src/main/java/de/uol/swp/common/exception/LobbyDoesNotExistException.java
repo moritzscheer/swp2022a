@@ -1,6 +1,6 @@
 package de.uol.swp.common.exception;
 
-public class LobbyDoesNotExistException extends Exception  {
+public class LobbyDoesNotExistException extends Exception {
 
     protected int lobbyID;
 
