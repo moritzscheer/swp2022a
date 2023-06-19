@@ -12,6 +12,7 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 
