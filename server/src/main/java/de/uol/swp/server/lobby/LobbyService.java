@@ -175,12 +175,10 @@ public class LobbyService extends AbstractService {
     @Subscribe
     public void onLobbyLeaveUserRequest(LeaveLobbyRequest leaveLobbyRequest) {
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(leaveLobbyRequest.getLobbyID());
-
         ResponseMessage returnMessage;
         if (lobby.isPresent()) {
             try {
                 lobby.get().leaveUser(leaveLobbyRequest.getUser());
-
                 // remove User from textChat
                 UUID textChatID = lobby.get().getTextChatID();
                 User leavingUser = leaveLobbyRequest.getUser();

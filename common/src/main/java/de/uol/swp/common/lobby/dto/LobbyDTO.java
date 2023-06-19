@@ -78,11 +78,11 @@ public class LobbyDTO implements Lobby {
      */
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
-        if (tmp.getPassword().equals("")) {
+        if (tmp.getPassword() == null || tmp.getPassword().equals("")) {
             return new LobbyDTO(
                     lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
         } else {
-            String passwordBlurred = "*".repeat(lobby.getPassword().length());
+            String passwordBlurred = "*".repeat(4);
             return new LobbyDTO(
                     lobby.getLobbyID(),
                     lobby.getName(),
@@ -163,12 +163,12 @@ public class LobbyDTO implements Lobby {
     @Override
     public void leaveUser(User user) {
         if (users.contains(user)) {
-            if (users.size() == 1) {
+            if (users.size() == 1 && this.multiplayer == true) {
                 throw new IllegalArgumentException("Lobby must contain at least one user!");
             } else {
                 this.users.remove(user);
                 this.notReadyUsers.remove(user);
-                if (this.owner.equals(user)) {
+                if (this.owner.equals(user) && this.multiplayer == true) {
                     updateOwner(users.iterator().next());
                 }
             }

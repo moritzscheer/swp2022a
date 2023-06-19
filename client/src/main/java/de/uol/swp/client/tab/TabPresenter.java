@@ -371,7 +371,7 @@ public class TabPresenter extends AbstractPresenter {
                                 (UserDTO) loggedInUser,
                                 Integer.valueOf(tab.getId()),
                                 tab.getText(),
-                                true));
+                                !tab.getText().equals("Singleplayer")));
                 updateInfoBox();
 
                 tabPane.getTabs().remove(tab);
