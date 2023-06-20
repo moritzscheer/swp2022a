@@ -1,14 +1,16 @@
 package de.uol.swp.common.game.message;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
-import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,26 +18,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 public class StartGameMessageTest {
 
     private final Position position = new Position(1, 1);
-    private final RobotDTO robotDTO = new RobotDTO(1,position, CardinalDirection.North);
-    private final RobotDTO robotDTO2 = new RobotDTO(2,position, CardinalDirection.North);
+    private final RobotDTO robotDTO = new RobotDTO(1, position, CardinalDirection.North);
+    private final RobotDTO robotDTO2 = new RobotDTO(2, position, CardinalDirection.North);
 
-    private final UserDTO userDTO = new UserDTO("Player1","pw","ml");
-    private final UserDTO userDTO2 = new UserDTO("Player2","pw","ml");
+    private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
+    private final UserDTO userDTO2 = new UserDTO("Player2", "pw", "ml");
 
-    private final PlayerDTO playerDTO = new PlayerDTO(robotDTO,userDTO);
-    private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,userDTO2);
+    private final PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
+    private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2, userDTO2);
     private final List<PlayerDTO> playerDTOList = new ArrayList<>();
     private final List<PlayerDTO> playerDTOList2 = new ArrayList<>();
 
     private final BlockDTO[][] blockDTOS = new BlockDTO[12][12];
     private final UUID chatID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123,"testLobby",userDTO,"pw",false,chatID);
+    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID);
 
     @Test
     public void testGetLobbyID() {
@@ -81,18 +80,22 @@ public class StartGameMessageTest {
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new StartGameMessage(lobby.getLobbyID(), lobby, game);
-        });
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {
+                    new StartGameMessage(lobby.getLobbyID(), lobby, game);
+                });
     }
 
     @Test
     public void testConstructorWithNullGame() {
         GameDTO game = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new StartGameMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
-        });
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {
+                    new StartGameMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+                });
     }
 
     @Test
@@ -133,7 +136,7 @@ public class StartGameMessageTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        LobbyDTO lobby = new LobbyDTO(lobbyID,"testLobby",userDTO,"pw",false,chatID);
+        LobbyDTO lobby = new LobbyDTO(lobbyID, "testLobby", userDTO, "pw", false, chatID);
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
@@ -141,5 +144,4 @@ public class StartGameMessageTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
-
 }

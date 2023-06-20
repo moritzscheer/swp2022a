@@ -47,7 +47,7 @@ public class AllOnlineLobbiesResponse extends AbstractResponseMessage {
      * @since 2022-11-29
      */
     public AllOnlineLobbiesResponse(Collection<LobbyDTO> lobbyCollection) {
-        if(lobbyCollection == null)
+        if (lobbyCollection == null)
             throw new NullPointerException("LobbyCollection can not be null");
         for (LobbyDTO lobby : lobbyCollection) {
             this.lobbies.add(lobby.createWithoutPassword(lobby));

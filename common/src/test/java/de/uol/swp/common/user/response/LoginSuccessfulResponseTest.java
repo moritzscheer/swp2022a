@@ -1,13 +1,14 @@
 package de.uol.swp.common.user.response;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginSuccessfulResponseTest {
 
@@ -17,7 +18,7 @@ public class LoginSuccessfulResponseTest {
 
     @BeforeEach
     void setUp() {
-         user = new UserDTO("user1", "password1", "email1");
+        user = new UserDTO("user1", "password1", "email1");
         chatID = UUID.randomUUID();
         response = new LoginSuccessfulResponse(user, chatID);
     }

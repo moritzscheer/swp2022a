@@ -1,11 +1,9 @@
 package de.uol.swp.common.user.request;
 
-import de.uol.swp.common.user.User;
-import de.uol.swp.common.user.UserDTO;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginRequestTest {
 
@@ -50,8 +48,10 @@ public class LoginRequestTest {
     @Test
     void testEquals() {
 
-        LoginRequest request1 = new LoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
-        LoginRequest request2 = new LoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
+        LoginRequest request1 =
+                new LoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
+        LoginRequest request2 =
+                new LoginRequest(loginRequest.getUsername(), loginRequest.getPassword());
         LoginRequest request3 = new LoginRequest("user3", "password");
 
         // Same object
@@ -61,5 +61,4 @@ public class LoginRequestTest {
         // Different objects
         assertNotEquals(request1, request3);
     }
-
 }

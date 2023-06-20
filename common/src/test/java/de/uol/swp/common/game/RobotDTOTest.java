@@ -1,125 +1,126 @@
 package de.uol.swp.common.game;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class RobotDTOTest {
 
-        @Test
-        void constructorTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
+    @Test
+    void constructorTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
 
-            assertNotNull(robotDTO);
-            assertEquals(robotID, robotDTO.getRobotID());
-            assertEquals(position, robotDTO.getPosition());
-            assertEquals(direction, robotDTO.getDirection());
-        }
+        assertNotNull(robotDTO);
+        assertEquals(robotID, robotDTO.getRobotID());
+        assertEquals(position, robotDTO.getPosition());
+        assertEquals(direction, robotDTO.getDirection());
+    }
 
-        @Test
-        void setRobotIDTest() {
-            int robotID1 = 1;
-            int robotID2 = 2;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
+    @Test
+    void setRobotIDTest() {
+        int robotID1 = 1;
+        int robotID2 = 2;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
 
-            RobotDTO robotDTO = new RobotDTO(robotID1, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID1, position, direction);
 
-            robotDTO.setRobotID(robotID2);
+        robotDTO.setRobotID(robotID2);
 
-            assertEquals(robotID2, robotDTO.getRobotID());
-        }
+        assertEquals(robotID2, robotDTO.getRobotID());
+    }
 
-        @Test
-        void setPositionTest() {
-            int robotID = 1;
-            Position position1 = new Position(0, 0);
-            Position position2 = new Position(1, 1);
-            CardinalDirection direction = CardinalDirection.North;
+    @Test
+    void setPositionTest() {
+        int robotID = 1;
+        Position position1 = new Position(0, 0);
+        Position position2 = new Position(1, 1);
+        CardinalDirection direction = CardinalDirection.North;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position1, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position1, direction);
 
-            robotDTO.setPosition(position2);
+        robotDTO.setPosition(position2);
 
-            assertEquals(position2, robotDTO.getPosition());
-        }
+        assertEquals(position2, robotDTO.getPosition());
+    }
 
-        @Test
-        void setDirectionTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction1 = CardinalDirection.North;
-            CardinalDirection direction2 = CardinalDirection.East;
+    @Test
+    void setDirectionTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction1 = CardinalDirection.North;
+        CardinalDirection direction2 = CardinalDirection.East;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction1);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction1);
 
-            robotDTO.setDirection(direction2);
+        robotDTO.setDirection(direction2);
 
-            assertEquals(direction2, robotDTO.getDirection());
-        }
+        assertEquals(direction2, robotDTO.getDirection());
+    }
 
-        @Test
-        void setLifeTokenTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
-            int lifeToken = 3;
+    @Test
+    void setLifeTokenTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
+        int lifeToken = 3;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
 
-            robotDTO.setLifeToken(lifeToken);
+        robotDTO.setLifeToken(lifeToken);
 
-            assertEquals(lifeToken, robotDTO.getLifeToken());
-        }
+        assertEquals(lifeToken, robotDTO.getLifeToken());
+    }
 
-        @Test
-        void setDamageTokenTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
-            int damageToken = 2;
+    @Test
+    void setDamageTokenTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
+        int damageToken = 2;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
 
-            robotDTO.setDamageToken(damageToken);
+        robotDTO.setDamageToken(damageToken);
 
-            assertEquals(damageToken, robotDTO.getDamageToken());
-        }
+        assertEquals(damageToken, robotDTO.getDamageToken());
+    }
 
-        @Test
-        void setLastCheckpointTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
-            int lastCheckpoint = 5;
+    @Test
+    void setLastCheckpointTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
+        int lastCheckpoint = 5;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
 
-            robotDTO.setLastCheckpoint(lastCheckpoint);
+        robotDTO.setLastCheckpoint(lastCheckpoint);
 
-            assertEquals(lastCheckpoint, robotDTO.getLastCheckpoint());
-        }
+        assertEquals(lastCheckpoint, robotDTO.getLastCheckpoint());
+    }
 
-        @Test
-        void setAliveTest() {
-            int robotID = 1;
-            Position position = new Position(0, 0);
-            CardinalDirection direction = CardinalDirection.North;
-            boolean alive = false;
+    @Test
+    void setAliveTest() {
+        int robotID = 1;
+        Position position = new Position(0, 0);
+        CardinalDirection direction = CardinalDirection.North;
+        boolean alive = false;
 
-            RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
+        RobotDTO robotDTO = new RobotDTO(robotID, position, direction);
 
-            robotDTO.setAlive(alive);
+        robotDTO.setAlive(alive);
 
-            assertFalse(robotDTO.isAlive());
-        }
+        assertFalse(robotDTO.isAlive());
+    }
 
     @Test
     public void setAlive_ValidValue_UpdateAliveStatus() {
@@ -143,9 +144,11 @@ public class RobotDTOTest {
     public void setLifeToken_NegativeValue_ThrowException() {
         RobotDTO robotDTO = new RobotDTO(1, new Position(0, 0), CardinalDirection.North);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            robotDTO.setLifeToken(-1);
-        });
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    robotDTO.setLifeToken(-1);
+                });
     }
 
     @Test
@@ -161,8 +164,10 @@ public class RobotDTOTest {
     public void setDamageToken_NegativeValue_ThrowException() {
         RobotDTO robotDTO = new RobotDTO(1, new Position(0, 0), CardinalDirection.North);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            robotDTO.setDamageToken(-1);
-        });
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    robotDTO.setDamageToken(-1);
+                });
     }
 }

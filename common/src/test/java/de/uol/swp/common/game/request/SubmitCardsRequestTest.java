@@ -1,9 +1,9 @@
 package de.uol.swp.common.game.request;
 
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.game.request.SubmitCardsRequest;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,55 +13,66 @@ import java.util.UUID;
 
 public class SubmitCardsRequestTest {
 
-    private final UserDTO loggedInUser = new UserDTO("Player1","pw","ml");
-    private final UserDTO notLoggedInUser = new UserDTO("Player2","pw2","ml2");
+    private final UserDTO loggedInUser = new UserDTO("Player1", "pw", "ml");
+    private final UserDTO notLoggedInUser = new UserDTO("Player2", "pw2", "ml2");
     private final UUID chatID = UUID.randomUUID();
-    private LobbyDTO lobbyDTO = new LobbyDTO(123,"testLobby", loggedInUser,"pw",false,chatID);
+    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID);
 
     @Test
     public void testConstructorWithNegativeLobbyID() {
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
-        });
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {
+                    new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
+                });
     }
+
     @Test
     public void testConstructorWithNullUserDTO() {
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
-        });
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {
+                    new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
+                });
     }
+
     @Test
     public void testConstructorWithNullCardDTOs() {
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
-        });
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {
+                    new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, null);
+                });
     }
 
     @Test
     public void testGetSameCardDTOs() {
         List<CardDTO> cardDTOs = new ArrayList<>();
-        cardDTOs.add(new CardDTO(1,10));
-        cardDTOs.add(new CardDTO(2,20));
+        cardDTOs.add(new CardDTO(1, 10));
+        cardDTOs.add(new CardDTO(2, 20));
 
-        SubmitCardsRequest request = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
+        SubmitCardsRequest request =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
 
         List<CardDTO> result = request.getCardDTOs();
 
         Assertions.assertEquals(cardDTOs, result);
     }
+
     @Test
     public void testGetNotSameCardDTOs() {
         List<CardDTO> cardDTOs = new ArrayList<>();
-        cardDTOs.add(new CardDTO(1,10));
+        cardDTOs.add(new CardDTO(1, 10));
         List<CardDTO> cardDTOs2 = new ArrayList<>();
-        cardDTOs2.add(new CardDTO(2,20));
+        cardDTOs2.add(new CardDTO(2, 20));
 
-        SubmitCardsRequest request = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
-        SubmitCardsRequest request2 = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs2);
-
+        SubmitCardsRequest request =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
+        SubmitCardsRequest request2 =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs2);
 
         Assertions.assertNotSame(request.getCardDTOs(), request2.getCardDTOs());
     }
@@ -71,7 +82,8 @@ public class SubmitCardsRequestTest {
 
         List<CardDTO> cardDTOs = new ArrayList<>();
 
-        SubmitCardsRequest request = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
+        SubmitCardsRequest request =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
 
         int result = request.getLobbyID();
 
@@ -83,8 +95,10 @@ public class SubmitCardsRequestTest {
 
         List<CardDTO> cardDTOs = new ArrayList<>();
 
-        SubmitCardsRequest request = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
-        SubmitCardsRequest request2 = new SubmitCardsRequest(lobbyDTO.getLobbyID(), notLoggedInUser, cardDTOs);
+        SubmitCardsRequest request =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
+        SubmitCardsRequest request2 =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), notLoggedInUser, cardDTOs);
 
         UserDTO result = request.getLoggedInUser();
 
@@ -96,7 +110,8 @@ public class SubmitCardsRequestTest {
     public void testAuthorizationNeeded() {
         List<CardDTO> cardDTOs = new ArrayList<>();
 
-        SubmitCardsRequest request = new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
+        SubmitCardsRequest request =
+                new SubmitCardsRequest(lobbyDTO.getLobbyID(), loggedInUser, cardDTOs);
         boolean result = request.authorizationNeeded();
 
         Assertions.assertTrue(result);

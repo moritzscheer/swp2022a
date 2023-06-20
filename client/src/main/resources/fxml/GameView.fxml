@@ -246,7 +246,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-      
+
                                     <StackPane fx:id="player3Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2">
                                         <Text fx:id="player3Name" text="Player 3" StackPane.alignment="CENTER_LEFT">
                                     <StackPane.margin>
@@ -356,7 +356,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-      
+
                                     <StackPane fx:id="player4Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                         <Text fx:id="player4Name" text="Player 4" StackPane.alignment="CENTER_LEFT">
                                     <StackPane.margin>
@@ -466,7 +466,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-      
+
                                                 <StackPane fx:id="player5Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2">
                                         <Text fx:id="player5Name" text="Player 5" StackPane.alignment="CENTER_LEFT">
                                     <StackPane.margin>
@@ -579,7 +579,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-      
+
                                     <StackPane fx:id="player6Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                         <Text fx:id="player6Name" text="Player 6" StackPane.alignment="CENTER_LEFT">
                                     <StackPane.margin>
@@ -689,7 +689,7 @@
                               <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-      
+
                                     <StackPane fx:id="player7Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                         <Text fx:id="player7Name" text="Player 7" StackPane.alignment="CENTER_LEFT">
                                     <StackPane.margin>
@@ -800,7 +800,7 @@
                         <RowConstraints />
                            </rowConstraints>
                            <children>
-      
+
                                <StackPane fx:id="player8Ready" style="-fx-background-color: red; -fx-background-radius: 5; -fx-border-color: black; -fx-border-radius: 5;" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                    <Text fx:id="player8Name" text="Player 8" StackPane.alignment="CENTER_LEFT">
                                        <StackPane.margin>
@@ -1066,15 +1066,15 @@
                                     <Rectangle fx:id="card7" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                               <Text id="cardPriorityText" fx:id="text_card7" fill="BLACK" text="" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
-      
+
                                     <Rectangle fx:id="card8" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                               <Text id="cardPriorityText" fx:id="text_card8" fill="BLACK" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
-      
+
                                     <Rectangle fx:id="card9" fill="dodgerblue" height="70.0" onDragDetected="#dragEntered" onDragDropped="#dragDropped" onDragOver="#dragOver" onMouseClicked="#onCardClicked" style="-fx-stroke: black; -fx-stroke-width: 1; -fx-arc-height: 7; -fx-arc-width: 7;" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
                               <Text id="cardPriorityText" fx:id="text_card9" fill="BLACK" text="" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 
-      
+
                                     <ImageView fx:id="markField" GridPane.columnIndex="4" GridPane.rowIndex="3" />
                         <GridPane GridPane.columnIndex="4" GridPane.rowIndex="2" GridPane.rowSpan="2">
                           <columnConstraints>

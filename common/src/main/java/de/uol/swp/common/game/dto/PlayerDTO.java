@@ -86,5 +86,4 @@ public class PlayerDTO implements Serializable {
     public UserDTO getUser() {
         return user;
     }
-
 }

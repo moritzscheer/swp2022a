@@ -34,15 +34,15 @@ public class AbstractLobbyRequest extends AbstractRequestMessage {
      * @since 2019-10-08
      */
     public AbstractLobbyRequest(String name, UserDTO user) {
-        if(name == null) {
+        if (name == null) {
             throw new IllegalArgumentException("Name can not be null");
         }
-        if(
-                name.length() > 20 || !name.matches("^\\s*[a-zA-Z0-9]*\\s*$")
-        ) {
-            throw new IllegalArgumentException("Name must be between 0 and 20 characters long and can only contain letters and numbers");
+        if (name.length() > 20 || !name.matches("^\\s*[a-zA-Z0-9]*\\s*$")) {
+            throw new IllegalArgumentException(
+                    "Name must be between 0 and 20 characters long and can only contain letters"
+                            + " and numbers");
         }
-        if(user == null) {
+        if (user == null) {
             throw new IllegalArgumentException("User can not be null");
         }
         this.name = name;

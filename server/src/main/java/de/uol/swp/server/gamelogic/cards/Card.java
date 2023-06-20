@@ -26,6 +26,15 @@ public class Card {
         this.imgPath = imgPath;
     }
 
+    /** Constructor for when Player is powered down
+     * @author Maria
+     * @see
+     * @since 2023-06-19
+     */
+    public Card(int id) {
+        this.id = id;
+    }
+
     /**
      * @author Maria
      * @see

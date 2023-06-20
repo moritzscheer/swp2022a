@@ -1,9 +1,8 @@
 package de.uol.swp.server.gamelogic;
+
 import java.util.Comparator;
 
-public class BehaviourTypeComparator implements Comparator<Object>{
-
-
+public class BehaviourTypeComparator implements Comparator<Object> {
 
     @Override
     public int compare(Object obj1, Object obj2) {
@@ -54,14 +53,6 @@ public class BehaviourTypeComparator implements Comparator<Object>{
             return 1;
         }
 
-
         return 0; // obj1 und obj2 haben denselben Klassentyp
     }
-
-
-
-
-
-
-
 }
