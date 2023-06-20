@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic;
+package de.uol.swp.server.gamelogic.moves;
 
 import de.uol.swp.common.game.enums.CardinalDirection;
 

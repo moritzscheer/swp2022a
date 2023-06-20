@@ -19,6 +19,7 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.server.gamelogic.moves.GameMovement;
 import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
 import org.apache.logging.log4j.LogManager;
@@ -245,7 +246,13 @@ public class GameService extends AbstractService {
                     new RobotTurnedOffMessage(request.getLobbyID(), request.getLoggedInUser()));
 
             if (allChosen) {
-                manageRoundsUpdates(game.get(), request.getLobbyID());
+                for (AbstractPlayer botPlayer : game.get().getPlayers()) {
+                    if (botPlayer instanceof BotPlayer) {
+                        PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botPlayer.getUser(), request.getLobbyID());
+                        lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
+                    }
+                }
+                manageGameUpdate(game.get(), request.getLobbyID());
             }
         }
     }
@@ -320,30 +327,53 @@ public class GameService extends AbstractService {
      *
      * @param game    reference to which game
      * @param lobbyID lobbyID to which the game belongs
-     * @author Finn Oldeboershuis
+     * @author Finn Oldeboershuis, Maria Andrade
      * @since 2023-06-13
      */
     public void manageGameUpdate(Game game, int lobbyID) {
 
         int secondsToWait = 1;
 
-        lobbyService.sendToAllInLobby(
-                lobbyID,
-                new TextHistoryMessage(lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+        try {
+            lobbyService.sendToAllInLobby(
+                    lobbyID,
+                    new TextHistoryMessage(lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+        } catch (LobbyDoesNotExistException e) {
+            throw new RuntimeException(e);
+        }
 
         for (int i = 0; i < 5; i++) {
             List<List<PlayerDTO>> moveList = game.calcAllGameRound();
+            List<GameMovement> gameMovements = game.getGameMovements();
 
             //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
-            scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID)), secondsToWait, SECONDS);
+            scheduler.schedule(() -> {
+                try {
+                    lobbyService.sendToAllInLobby(lobbyID,
+                            new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                } catch (LobbyDoesNotExistException e) {
+                    throw new RuntimeException(e);
+                }
+            }, secondsToWait, SECONDS);
 
-            for (List<PlayerDTO> moves : moveList) {
+            for (GameMovement gameMovement: gameMovements) {
+                List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
-                scheduler.schedule(() -> lobbyService.sendToAllInLobby(lobbyID, new ShowBoardMovingMessage(lobbyID, moves)), secondsToWait, SECONDS);
-                secondsToWait += 2;
+                scheduler.schedule(() -> {
+                    try {
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new ShowBoardMovingMessage(lobbyID, moves));
+                        lobbyService.sendToAllInLobby(lobbyID,
+                                new TextHistoryMessage(lobbyID, gameMovement.getMoveMessage()));
+                    } catch (LobbyDoesNotExistException e) {
+                        throw new RuntimeException(e);
+                    }
+                }, secondsToWait, SECONDS);
+
+                secondsToWait += 1;
 
                 if (isGameOver(lobbyID, game, secondsToWait)) {
                     break;
@@ -353,307 +383,18 @@ public class GameService extends AbstractService {
             game.increaseProgramStep();
         }
 
-
-        game.roundIsOver();
-        scheduler.schedule(
-                () -> lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID)),
-                secondsToWait,
-                SECONDS);
-    }
-
-    private List<List<PlayerDTO>> filterMoveList(List<List<PlayerDTO>> moveList) {
-
-        LOG.debug("Moves Before: " + moveList.stream().count());
-
-        for (int i = 0; i < moveList.stream().count() - 1; i++) {
-            boolean isTheSame = true;
-            for (int j = 0; j < moveList.get(i).stream().count(); j++) {
-                if (!moveList.get(i).get(j).getRobotDTO().equals(moveList.get(i + 1).get(j).getRobotDTO())) {
-                    isTheSame = false;
-                    break;
-                }
-            }
-            if (isTheSame) {
-                moveList.remove(i + 1);
-            }
-        }
-
-        LOG.debug("Moves After: " + moveList.stream().count());
-
-        return moveList;
-    }
-
-
-    /**
-     * Handles all rounds, call calcGame() for every round and send messages to update the view
-     * using help of a scheduler to give some delay to display
-     *
-     * <p>This method is called after all players are ready
-     *
-     * <p>TODO: maybe we could separate this into GameService and GameManagement so this class
-     * contains no logic
-     *
-     * @param game    reference to which game
-     * @param lobbyID lobbyID to which the game belongs
-     * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.common.game.request.SubmitCardsRequest
-     * @since 2023-05-24
-     */
-    public void manageRoundsUpdates(Game game, int lobbyID)
-            throws InterruptedException, LobbyDoesNotExistException {
-        // TODO: remove scheduler on server side
-        int secondsToWait = 1;
-
-        lobbyService.sendToAllInLobby(
-                lobbyID,
-                new TextHistoryMessage(
-                        lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
-
-        while (game.getProgramStep() < 5) {
-            Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            List<Position> previousPositions = logInformationPosition(game);
-            List<CardinalDirection> previousDirections = logInformationDirection(game);
-            List<CardDTO> cardDTOS = logInformationCards(game);
-
-            // show cards and wait 1 second before moving
-            scheduler.schedule(
-                    new Runnable() {
-                        public void run() {
-                            try {
-                                lobbyService.sendToAllInLobby(
-                                        lobbyID,
-                                        new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
-                            } catch (LobbyDoesNotExistException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    },
-                    secondsToWait,
-                    SECONDS);
-            secondsToWait++;
-
-            // TODO: FIX calcGame calculates wrong
-            game.calcGameRoundCards();
-            // game.calcGameRound();
-            secondsToWait =
-                    moveCards(
-                            lobbyID,
-                            secondsToWait,
-                            game,
-                            previousPositions,
-                            previousDirections,
-                            cardDTOS);
-            // get new previous positions
-            if (isGameOver(lobbyID, game, secondsToWait)) {
-                break;
-            }
-
-            previousPositions = logInformationPosition(game);
-
-            game.calcGameRoundBoard();
-            // show board animation
-            sendBoardMoveMessage(
-                    lobbyID, convertPlayerListToPlayerDTOList(game.getPlayers()), secondsToWait);
-            if (isGameOver(lobbyID, game, secondsToWait)) {
-                break;
-            }
-
-            // go to next step
-            game.increaseProgramStep();
-        }
-
         UserDTO winner = game.roundIsOver(); // reset variables
         AbstractLobbyMessage msg;
-        if (Objects.equals(winner, null)) msg = new RoundIsOverMessage(lobbyID);
-        else msg = new GameOverMessage(lobbyID, winner);
+        if (Objects.equals(winner, null))
+            msg = new RoundIsOverMessage(lobbyID);
+        else
+            msg = new GameOverMessage(lobbyID, winner);
         scheduler.schedule(
-                () -> lobbyService.sendToAllInLobby(lobbyID, new RoundIsOverMessage(lobbyID)),
-                secondsToWait,
-                SECONDS);
-    }
-
-    public List<Position> logInformationPosition(Game game) {
-        List<Position> previousPositions = new ArrayList<>();
-        LOG.debug("Status of game BEFORE calcGameRound");
-        for (AbstractPlayer player : game.getPlayers()) {
-            Position pos = player.getRobot().getPosition();
-            previousPositions.add(pos);
-            LOG.debug(
-                    "     Robot Position {} pos = x {} y {}",
-                    player.getUser().getUsername(),
-                    pos.x,
-                    pos.y);
-        }
-        LOG.debug("Showing chosen cards for round " + game.getProgramStep());
-        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-        for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet())
-            LOG.debug(
-                    "Player "
-                            + userCurrentCard.getKey().getUsername()
-                            + " card "
-                            + userCurrentCard.getValue().getID()
-                            + " - "
-                            + userCurrentCard.getValue().getPriority());
-
-        return previousPositions;
-    }
-
-    public List<CardinalDirection> logInformationDirection(Game game) {
-        List<CardinalDirection> previousDirections = new ArrayList<>();
-        LOG.debug("Status of game BEFORE calcGameRound");
-        for (AbstractPlayer player : game.getPlayers()) {
-            CardinalDirection dir = player.getRobot().getDirection();
-            previousDirections.add(dir);
-        }
-        return previousDirections;
-    }
-
-    public List<CardDTO> logInformationCards(Game game) {
-        List<CardDTO> cards = new ArrayList<>();
-        LOG.debug("Showing chosen cards for round " + game.getProgramStep());
-        Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-        for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
-            cards.add(userCurrentCard.getValue());
-        }
-
-        return cards;
-    }
-
-    public int moveCards(
-            int lobbyID,
-            int secondsToWait,
-            Game game,
-            List<Position> previousPositions,
-            List<CardinalDirection> previousDirections,
-            List<CardDTO> cardDTOS) {
-        LOG.debug("Status of game AFTER calcGameRoundCards");
-        int i = 0;
-        // Move each player at a time
-        for (AbstractPlayer player : game.getPlayers()) {
-            if (player.getRobot().isDeadForTheRound()) continue; // if robot is dead, do nothing
-            UserDTO currentUser = player.getUser();
-            Position currentPos = player.getRobot().getPosition();
-            Position previousPos = previousPositions.get(i);
-            CardinalDirection previousDirection = previousDirections.get(i);
-            CardinalDirection direction = player.getRobot().getDirection();
-            CardDTO cardDTO = cardDTOS.get(i);
-            LOG.debug(
-                    "     Robot Position {} pos = x {} y {}",
-                    currentUser.getUsername(),
-                    currentPos.x,
-                    currentPos.y);
-
-            // ONLY DIRECTION CHANGED
-            if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) == 0) {
-                LOG.debug("ROTATING");
-            }
-            // DISPLAY IN SINGLE STEP
-            else if (abs(currentPos.x - previousPos.x) + abs(currentPos.y - previousPos.y) >= 1) {
-                LOG.debug(
-                        "MOVING FROM x={} y={} to x={} y={}",
-                        previousPos.x,
-                        previousPos.y,
-                        currentPos.x,
-                        currentPos.y);
-            }
-
-            //        [Type] [Username] [oldPosition] [oldDirection] [CardName/BoardElement] to
-            // [newPosition] [newDirection]
-            //        ======Round 1=======
-            //        [Card] Test1 (x1,y1){East} Move3 to (x2,y2){East}
-
-            TextHistoryMessage msg =
-                    new TextHistoryMessage(
-                            lobbyID,
-                            "[Card] "
-                                    + player.getUser().getUsername() // User
-                                    + " ("
-                                    + previousPos.x
-                                    + ", "
-                                    + previousPos.y
-                                    + ")" // old x and y position
-                                    + "{"
-                                    + previousDirection
-                                    + "} " // old direction
-                                    + searchCardTypeInJSON(cardDTO.getID())
-                                    + // CardType
-                                    " to" //
-                                    + " ("
-                                    + currentPos.x
-                                    + ", "
-                                    + currentPos.y
-                                    + ")" // new x and y position
-                                    + "{"
-                                    + direction
-                                    + "} \n" // new direction
-                    );
-
-            sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait);
-            sendAbstractLobbyMessage(lobbyID, secondsToWait, msg);
-
-            if (!player.getRobot().isAlive()) {
-                // if robot is dead, send message
-                sendAbstractLobbyMessage(
-                        lobbyID,
-                        secondsToWait,
-                        new TextHistoryMessage(
-                                lobbyID, player.getUser().getUsername() + " is dead!\n"));
-                player.getRobot().setDeadForTheRound(true);
-                if (player.getRobot().getLifeToken() <= 0) {
-                    player.getRobot().setDeadForever();
-                    sendAbstractLobbyMessage(
-                            lobbyID,
-                            secondsToWait,
-                            new RobotIsFinallyDead(lobbyID, player.getUser()));
-                }
-            }
-
-            secondsToWait = secondsToWait + 2;
-        }
-        return secondsToWait;
-    }
-
-    public void sendCardMoveMessage(int lobbyID, PlayerDTO playerDTO, int secondsToWait) {
-        scheduler.schedule(
-                new Runnable() {
-                    public void run() {
-                        try {
-                            lobbyService.sendToAllInLobby(
-                                    lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
-                        } catch (LobbyDoesNotExistException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                },
-                secondsToWait,
-                SECONDS);
-    }
-
-    public void sendBoardMoveMessage(int lobbyID, List<PlayerDTO> players, int secondsToWait) {
-        scheduler.schedule(
-                new Runnable() {
-                    public void run() {
-                        try {
-                            lobbyService.sendToAllInLobby(
-                                    lobbyID, new ShowBoardMovingMessage(lobbyID, players));
-                        } catch (LobbyDoesNotExistException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                },
-                secondsToWait,
-                SECONDS);
-    }
-
-    public void sendAbstractLobbyMessage(int lobbyID, int secondsToWait, AbstractLobbyMessage msg) {
-        scheduler.schedule(
-                new Runnable() {
-                    public void run() {
-                        try {
-                            lobbyService.sendToAllInLobby(lobbyID, msg);
-                        } catch (LobbyDoesNotExistException e) {
-                            throw new RuntimeException(e);
-                        }
+                () -> {
+                    try {
+                        lobbyService.sendToAllInLobby(lobbyID, msg);
+                    } catch (LobbyDoesNotExistException e) {
+                        throw new RuntimeException(e);
                     }
                 },
                 secondsToWait,
@@ -672,9 +413,7 @@ public class GameService extends AbstractService {
     private boolean isGameOver(int lobbyID, Game game, int secondsToWait) {
         for (AbstractPlayer player : game.getPlayers()) {
             if (player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()) {
-                // TODO: fix when AbstractPlayer has User
-                // playerWonTheGame(lobbyID, player.getUser());
-                playerWonTheGame(lobbyID, ((Player) player).getUser(), secondsToWait);
+                playerWonTheGame(lobbyID, player.getUser(), secondsToWait);
                 return true;
             }
         }

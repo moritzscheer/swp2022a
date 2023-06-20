@@ -1,6 +1,6 @@
 package de.uol.swp.server.utils;
 
-import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.server.gamelogic.cards.*;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -98,5 +98,34 @@ public final class JsonUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    /**
+     * Helper method to search for a card Type
+     *
+     *
+     * @param cardId the cardID that wants to be searched for
+     * @author Maria Andrade
+     * @since 2023-06-20
+     */
+    public static String searchCardType(int cardId) {
+        String type = "";
+        if (cardId > 0 & cardId <= 18) {
+            type = "TurnLeft";
+        } else if (cardId > 18 & cardId <= 36) {
+            type = "TurnRight";
+        } else if (cardId > 36 & cardId <= 42) {
+            type = "U-Turn";
+        } else if (cardId > 42 & cardId <= 48) {
+            type = "Back-Up";
+        } else if (cardId > 48 & cardId <= 66) {
+            type = "Move1";
+        } else if (cardId > 66 & cardId <= 78) {
+            type = "Move2";
+        } else if (cardId > 78 & cardId <= 84) {
+            type = "Move3";
+        }
+        return type;
     }
 }

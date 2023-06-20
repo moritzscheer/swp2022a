@@ -129,7 +129,7 @@ public class Robot implements Serializable {
         if (!alivee) {
             // robot is dead
             this.lifeToken--;
-            setCurrentPosition(this.lastBackupCopyPosition);
+            //setCurrentPosition(this.lastBackupCopyPosition);
             this.alive = alivee;
         } else {
             if (this.lifeToken > 0) {

@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.*;
 
 import java.io.Serializable;
