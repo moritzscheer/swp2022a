@@ -27,28 +27,13 @@ public class gameTest {
     private Game game;
     private Game gameSaveOnePlayer;
     private Game gameSaveTwoPlayers;
-    private Game gameOnMapTwo;
+    private Game gameOnMapOneWithFourCP;
     private Card[] cards= new Card[5];
     private AbstractPlayer playerOne;
     private Robot robotOne;
     private AbstractPlayer playerTwo;
     private Robot robotTwo;
-    /** Setup for gamelogic integration tests
-     *
-     * @author Jann Erik Bruns, Tommy Dang
-     * @since 2023-06-19
-     */
 
-    public void setup(){
-
-
-
-        //First Checkpoint is x = 4 and y = 11
-
-
-
-
-    }
     /** Cloning gameSaveOnePlayer object in game to reset the game
      *
      * @author Jann Erik Bruns, Tommy Dang
@@ -93,9 +78,9 @@ public class gameTest {
         users.add(new UserDTO("test1", "test1", ""));
         Set<User> usersSet = new HashSet<>(users);
 
-        gameOnMapTwo = new Game(1, usersSet, "MapOne", 0, 4, 1);
+        gameOnMapOneWithFourCP = new Game(1, usersSet, "MapOne", 0, 4, 1);
 
-        game = gameOnMapTwo;
+        game = gameOnMapOneWithFourCP;
         playerOne = game.getPlayers().get(0);
         robotOne = playerOne.getRobot();
     }
@@ -113,6 +98,7 @@ public class gameTest {
             }
             for(int i = 0; i < 5; i++){
                 game.calcGameRoundCards();
+                //game.calcAll();
                 game.calcGameRoundBoard();
                 game.increaseProgramStep();
                 for (AbstractPlayer player : game.getPlayers()) {
@@ -580,7 +566,7 @@ public class gameTest {
         }
     }
 
-    /** Test for on the next checkpoint
+    /** Test for on multiple checkpoints
      *
      * @author Tommy Dang
      * @since 2023-06-20
@@ -589,7 +575,8 @@ public class gameTest {
     public void movingOnMultipleRightCheckPoint(){
         try {
             SetGameOnMapOneWithMoreCP();
-            //robotOne.setCurrentPosition(new Position(0, 11));
+
+            robotOne.setCurrentPosition(new Position(9, 4));
             cards[0] = new Card(51, "6", 510, "");      // Forward 1
             cards[1] = new Card(51, "6", 510, "");      // Forward 1
             cards[2] = new Card(51, "6", 510, "");      // Forward 1
@@ -597,11 +584,51 @@ public class gameTest {
             cards[4] = new Card(36, "3", 420, "");      // Right Turn
 
             playerOne.chooseCardsOrder(cards);
-            calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(7, 5));
+            try{
+
+                for(int i = 0; i < game.getPlayers().size(); i++){
+                    game.register();
+                }
+
+                robotOne.setCurrentPosition(new Position(9, 4));
+                game.calcGameRoundCards();
+                //game.calcAll();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+
+
+                robotOne.setCurrentPosition(new Position(2, 4));
+                game.calcGameRoundCards();
+                //game.calcAll();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+
+                robotOne.setCurrentPosition(new Position(5, 5));
+                game.calcGameRoundCards();
+                //game.calcAll();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+
+                game.calcGameRoundCards();
+                //game.calcAll();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+
+                game.calcGameRoundCards();
+                //game.calcAll();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+
+
+            }catch (Exception ex){
+                System.out.println(ex);
+            }
+
+            assertEquals(robotOne.getPosition(), new Position(4, 5));
             assertEquals(robotOne.getDirection().ordinal(), 2);
-            assertEquals(robotOne.getLastCheckPoint(), 4);
+            assertEquals(robotOne.getLastCheckPoint(), 3);
+
 
         } catch (Exception ex){
             System.out.println(ex);
@@ -629,7 +656,7 @@ public class gameTest {
 
             assertEquals(robotOne.getPosition(), new Position(7, 4));
             assertEquals(robotOne.getDirection().ordinal(), 0);
-            assertEquals(robotOne.getLastCheckPoint(), 1);
+            assertEquals(robotOne.getLastCheckPoint(), 2);
 
         } catch (Exception ex){
             System.out.println(ex);
@@ -710,6 +737,35 @@ public class gameTest {
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLifeToken(), 3);
             assertEquals(robotOne.isAlive(), true);
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for checking player has Lost
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void checkingPlayerHasLost(){
+        try {
+            SetGameOnePlayer();
+
+            for(int i = 1; i < 5; i++) {
+                cards[0] = new Card(43, "8", 430, "");      // Back-Up
+                cards[1] = new Card(43, "8", 430, "");      // Back-Up
+                cards[2] = new Card(43, "8", 430, "");      // Back-Up
+                cards[3] = new Card(43, "8", 430, "");      // Back-Up
+                cards[4] = new Card(43, "8", 430, "");      // Back-Up
+
+                playerOne.chooseCardsOrder(cards);
+                calcGameRound();
+                game.roundIsOver();
+            }
+
+            assertEquals(robotOne.getLifeToken(), 0);
+
         } catch (Exception ex){
             System.out.println(ex);
         }
