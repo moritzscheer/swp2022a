@@ -8,14 +8,15 @@ import com.google.inject.Injector;
 
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.di.ClientModule;
-import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.game.GameService;
+import de.uol.swp.client.lobbyGame.game.GameService;
+import de.uol.swp.client.lobbyGame.lobby.LobbyService;
 import de.uol.swp.client.tab.TabPresenter;
 import de.uol.swp.client.user.ClientUserService;
 import de.uol.swp.common.Configuration;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
+import de.uol.swp.common.user.exception.ServerNotRespondingExceptionMessage;
 import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
@@ -159,6 +160,7 @@ public class ClientApp extends Application implements ConnectionListener {
         // else client application will not stop
         LOG.trace("Trying to shutting down client ...");
         if (clientConnection != null) {
+            clientConnection.stopTimer();
             clientConnection.close();
         }
         LOG.info("ClientConnection shutdown");
@@ -264,6 +266,27 @@ public class ClientApp extends Application implements ConnectionListener {
     public void onDropUserExceptionMessage(DropUserExceptionMessage message) {
         sceneManager.showServerError(String.format("Drop user error %s", message));
         LOG.error("Drop user error {}", message);
+    }
+
+    /**
+     * Handles Server not responding
+     *
+     * <p>If an ServerNotRespondingExceptionMessage object is detected on the EventBus this method
+     * is called. It tells the SceneManager to show the sever error alert. If the loglevel is set to
+     * Error or higher "Server not responding " and the error message are written to the log.
+     *
+     * @param message The ServerNotRespondingExceptionMessage object detected on the EventBus
+     * @author Ole Zimmermann
+     * @see de.uol.swp.client.SceneManager
+     * @see de.uol.swp.common.user.exception.ServerNotRespondingExceptionMessage
+     * @since 2022-12-08
+     */
+    @Subscribe
+    public void onServerNotRespondingExceptionMessage(ServerNotRespondingExceptionMessage message) {
+        sceneManager.showServerError(
+                String.format(
+                        "Server seems to have stopped responding: \n %s", message.toString()));
+        LOG.error("Server not responding {}", message);
     }
 
     /**

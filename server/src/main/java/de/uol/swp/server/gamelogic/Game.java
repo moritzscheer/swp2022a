@@ -18,6 +18,7 @@ import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
+
 import de.uol.swp.server.utils.ConvertToDTOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +27,6 @@ import org.javatuples.Pair;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
@@ -46,6 +46,7 @@ public class Game {
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
     private final int nRobots;
+    private final int nRealPlayers;
     private int programStep; // program steps from 0 to 4
     private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
@@ -59,9 +60,11 @@ public class Game {
     private int[] cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
     List<Integer> cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
     private static final Set<Integer> cardsIdsOnlyTurn =
-            new HashSet<>
-            (Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
-                    21,22,23,24,2,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42));
+            new HashSet<>(
+                    Arrays.asList(
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                            21, 22, 23, 24, 2, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+                            39, 40, 41, 42));
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
@@ -75,7 +78,8 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
+    public Game(
+            Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
         this.lobbyID = lobbyID;
         this.programStep = 0;
         this.readyRegister = 0;
@@ -86,39 +90,54 @@ public class Game {
 
         // create board
         Random random = new Random();
-        int version = random.nextInt(3)+1;
+        int version = random.nextInt(3) + 1;
         LOG.debug(version);
-        LOG.debug("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+        LOG.debug(
+                "server/src/main/resources/maps/"
+                        + this.mapName
+                        + "V"
+                        + version
+                        + "C"
+                        + checkpointCount
+                        + ".map");
         Pair<Integer, Position> tmp;
 
-        if(this.mapName.contains("Test")) {
-            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
+        if (this.mapName.contains("Test")) {
+            this.board =
+                    MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
             tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(mapName);
-        }
-        else {
-            this.board = MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + "V" + version + "C" + checkpointCount + ".map");
+        } else {
+            this.board =
+                    MapBuilder.getMap(
+                            "server/src/main/resources/maps/"
+                                    + this.mapName
+                                    + "V"
+                                    + version
+                                    + "C"
+                                    + checkpointCount
+                                    + ".map");
 
-            if(board == null){
-            //TODO: Log error "Map couldn't be loaded"
-            LOG.debug("Map couldn't be loaded. MapName = " + mapName);
+            if (board == null) {
+                // TODO: Log error "Map couldn't be loaded"
+                LOG.debug("Map couldn't be loaded. MapName = " + mapName);
             }
 
             // save checkPoints
             LOG.debug(version);
-            tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
-                mapName+ "V" + version + "C"+ checkpointCount);
-            }
-
+            tmp =
+                    MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
+                            mapName + "V" + version + "C" + checkpointCount);
+        }
 
         this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 
-        if(tmp == null){
-            //TODO: Log error "Map couldn't be loaded"
+        if (tmp == null) {
+            // TODO: Log error "Map couldn't be loaded"
             LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
         }
-        LOG.debug("Checkpoints size: {}",this.checkpointCount);
-        LOG.debug("StartPosition x={}, y={}",this.startCheckpoint.x, this.startCheckpoint.y);
+        LOG.debug("Checkpoints size: {}", this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
 
         // set info
         setRobotsInfoInBehaviours(board, robots);
@@ -137,8 +156,10 @@ public class Game {
             i++;
         }
 
+        nRealPlayers = users.size();
+
         // create bots and robots
-        for(int j = 0; j < numberBots; j++) {
+        for (int j = 0; j < numberBots; j++) {
             BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
             this.players.add(newPlayer);
             this.robots.add(newPlayer.getRobot());
@@ -171,9 +192,11 @@ public class Game {
             int count = 0;
 
             for (AbstractPlayer player : this.players) {
-                LOG.debug(
-                        "Distributing cards for player {}",
-                         player.getUser().getUsername());
+                // when robot is powered off, just set empty cards
+                if(player.getRobot().isPowerDown()){
+                    continue;
+                }
+                LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
 
                 int damage = player.getRobot().getDamageToken();
 
@@ -182,13 +205,16 @@ public class Game {
                             Arrays.copyOfRange(
                                     Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
-                    while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
+                    while (cardsIdsOnlyTurn.containsAll(
+                            Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))) {
                         LOG.debug("Ups, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
-                        cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 9 - damage);
+                        cardsIDs =
+                                Arrays.copyOfRange(
+                                        Ints.toArray(cardsIDsList), count, count + 9 - damage);
 
                         // prevent that it runs forever, then redistribute to all players again
-                        if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
+                        if (cardsIdsOnlyTurn.containsAll(cardsIDsList)) {
                             LOG.debug("New Distribution of cards to all players ");
                             notDistributedCards = true;
                             distributeProgramCards();
@@ -210,16 +236,16 @@ public class Game {
                 // TODO: lock the registers
                 else {
                     int[] cardsIDs =
-                            Arrays.copyOfRange(
-                                    Ints.toArray(cardsIDsList), count, count + 5);
+                            Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
-                    while(cardsIdsOnlyTurn.containsAll(Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))){
+                    while (cardsIdsOnlyTurn.containsAll(
+                            Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))) {
                         LOG.debug("Ups, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
                         cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
                         // prevent that it runs forever, then redistribute to all players again
-                        if(cardsIdsOnlyTurn.containsAll(cardsIDsList)){
+                        if (cardsIdsOnlyTurn.containsAll(cardsIDsList)) {
                             LOG.debug("New Distribution of cards to all players");
                             notDistributedCards = true;
                             distributeProgramCards();
@@ -239,27 +265,26 @@ public class Game {
                     count = count + 5;
                 }
             }
-           return true;
+            return true;
         }
         return false;
     }
 
     /**
      * The method iterate over all AbstractPlayer if there are any players who are a BotPlayer we're
-     * saving the first five cards from the botPlayer received cards in chosenCards.
-     * Also, we set botPlayers of ready with the method register.
+     * saving the first five cards from the botPlayer received cards in chosenCards. Also, we set
+     * botPlayers of ready with the method register. @Author WKempel & Maria
      *
-     * @Author WKempel & Maria
      * @return allReady
      * @throws InterruptedException
      */
     public boolean registerCardsFromBot() throws InterruptedException {
         boolean allReady = false;
-        for(AbstractPlayer botPlayer : this.players) {
-            if(botPlayer instanceof BotPlayer) {
+        for (AbstractPlayer botPlayer : this.players) {
+            if (botPlayer instanceof BotPlayer) {
                 Card[] chosenCards = botPlayer.getReceivedCards();
 
-                botPlayer.chooseCardsOrder(Arrays.copyOfRange(chosenCards,0,5));
+                botPlayer.chooseCardsOrder(Arrays.copyOfRange(chosenCards, 0, 5));
                 System.out.println(chosenCards.length); // set cards of this bot
                 allReady = register();
             }
@@ -268,29 +293,54 @@ public class Game {
     }
 
     /**
-     *
      * When a player has chosen its cards, he will press "register" button this function will call
      * the player function that will register his cards Once all players have chosen, the calcGame
-     * will be called
+     * will be called @ Author WKempel & Maria
      *
-     * @ Author WKempel & Maria
      * @param loggedInUser
      * @param playerCards
      * @return register
      * @throws InterruptedException
      */
-    public boolean registerCardsFromUser(UserDTO loggedInUser, List<CardDTO> playerCards) throws InterruptedException {
+    public boolean registerCardsFromUser(UserDTO loggedInUser, List<CardDTO> playerCards)
+            throws InterruptedException {
         AbstractPlayer playerIsReady = getPlayerByUserDTO(loggedInUser);
         Card[] chosenCards = new Card[5];
         int i = 0;
-        for(CardDTO cardDTO: playerCards){
+        for (CardDTO cardDTO : playerCards) {
             chosenCards[i] = cardIdCardMap.get(cardDTO.getID());
             i++;
         }
 
         playerIsReady.chooseCardsOrder(chosenCards); // set cards of this player
 
-       return register();
+        return register();
+    }
+
+    public boolean setPowerDown(UserDTO userDTO) throws InterruptedException {
+        Player player = getPlayerByUserDTO(userDTO);
+        player.getRobot().setPowerDown(true);
+        LOG.debug("setPowerDown {}", player.getUser().getUsername());
+
+
+        // set empty cards
+        Card[] cards = new Card[5];
+        for (int i = 0; i < 5; i++) {
+            cards[i] = new Card(-1);
+        }
+        player.chooseCardsOrder(cards);
+
+        // this player lose all damage
+        player.getRobot().setDamageToken(0);
+
+        boolean allChosen = register();
+        if(nRealPlayers == readyRegister){
+            // if all real players decided to turn off, we have to
+            // start the bots manually, so the game can happen
+            distributeProgramCards();
+            return registerCardsFromBot();
+        }
+        return allChosen;
     }
 
     /**
@@ -303,12 +353,10 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @since 2023-04-25
      */
-    public boolean register()
-            throws InterruptedException {
+    public boolean register() throws InterruptedException {
         // TODO
         // check when all players are ready to register the next cards
         this.readyRegister += 1;
-
 
         if (this.readyRegister == this.nRobots - 1) {
             startTimer();
@@ -336,7 +384,7 @@ public class Game {
         LOG.debug("REVEALING PROGRAM CARDS STEP: " + this.programStep);
         for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
             userDTOCardDTOMap.put(
-                     this.players.get(playerIterator).getUser(),
+                    this.players.get(playerIterator).getUser(),
                     // program steps starts in 1 and this array in 0
                     convertCardToCardDTO(this.playedCards[playerIterator][this.programStep]));
         }
@@ -373,35 +421,36 @@ public class Game {
 
         int countSurvivors = 0;
         UserDTO survivor = null;
-        for(AbstractPlayer player: this.players){
-            if(!player.getRobot().isDeadForever()){
+        for (AbstractPlayer player : this.players) {
+            if (!player.getRobot().isDeadForever()) {
                 player.getRobot().setAlive(true);
                 player.getRobot().setDeadForTheRound(false);
+                player.getRobot().setPowerDown(false);
                 countSurvivors++;
                 survivor = player.getUser();
             }
         }
-        if(countSurvivors <= 1){
+        if (countSurvivors <= 1) {
             // gameover
             return survivor;
         }
         return null;
     }
-/*
-    public void startGame() {
-        Random random = new Random();
-        int version = random.nextInt(3)+1;
-        System.out.println("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
-        this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+    /*
+       public void startGame() {
+           Random random = new Random();
+           int version = random.nextInt(3)+1;
+           System.out.println("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
+           this.board = MapBuilder.getMap("server/src/main/resources/maps/"+this.mapName+ "V" + version + "C"+ checkpointCount +".map");
 
-        if (board == null) {
-            //TODO: Log error "Map couldn't be loaded"
-            return;
-        }
-        setRobotsInfoInBehaviours(board, robots);
-    }
+           if (board == null) {
+               //TODO: Log error "Map couldn't be loaded"
+               return;
+           }
+           setRobotsInfoInBehaviours(board, robots);
+       }
 
- */
+    */
 
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (Block[] blocks : board) {
@@ -526,7 +575,8 @@ public class Game {
                 this.robots.get(0).getPosition().x,
                 this.robots.get(0).getPosition().y);
         for (int playerIterator = 0; playerIterator < this.playedCards.length; playerIterator++) {
-            if (!this.robots.get(playerIterator).isAlive()) continue; // if not alive, go on
+            if (!this.robots.get(playerIterator).isAlive()
+                || this.robots.get(playerIterator).isPowerDown()) continue; // if not alive or powered down, go on
             List<List<MoveIntent>> moves;
             moves = resolveCard(this.playedCards[playerIterator][programStep], playerIterator);
             for (List<MoveIntent> move : moves) {
@@ -765,10 +815,11 @@ public class Game {
         if (card.getUTurn()) {
             uTurn(robots.get(robotID));
         }
-        if(card.getMoves() == -1){
+        if (card.getMoves() == -1) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             CardinalDirection dir = robots.get(robotID).getDirection();
-            subMoveList.add(new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
+            subMoveList.add(
+                    new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
             moves.add(subMoveList);
         }
         for (int i = 0;
@@ -798,42 +849,41 @@ public class Game {
 
         checkRobotFellFromBoard();
     }
-
-    /** Execute behaviour that may occur only by passing through the block
-     * and does not require in the block to land
-     * i.e.: Checkpoint, save BackupPosition in repair or checkpoint block,
-     * fell on a pit
+/**
+     * Execute behaviour that may occur only by passing through the block and does not require in
+     * the block to land i.e.: Checkpoint, save BackupPosition in repair or checkpoint block, fell
+     * on a pit
      *
-     * P.S.: does not repair damage tokens
+     * <p>P.S.: does not repair damage tokens
      *
      * @author Maria Andrade
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
      * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
-     *  @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
      * @since 2023-06-12
      */
     private void executeBehavioursBetweenDestination(int robotID) {
         // in new position where robot is, check all behaviours
         Position position = robots.get(robotID).getPosition();
-        try{
-            for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
-                if(behaviour instanceof CheckPointBehaviour){
-                    ((CheckPointBehaviour)behaviour).setCheckPoint(robotID);
+        try {
+            for (AbstractTileBehaviour behaviour :
+                    board[position.x][position.y].getBehaviourList()) {
+                if (behaviour instanceof CheckPointBehaviour) {
+                    ((CheckPointBehaviour) behaviour).setCheckPoint(robotID);
                 } else if (behaviour instanceof RepairBehaviour) {
                     ((RepairBehaviour) behaviour).setBackupCopy(robotID);
-                }
-                else if (behaviour instanceof PitBehaviour) {
+                } else if (behaviour instanceof PitBehaviour) {
                     behaviour.onRobotEntered(robotID);
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             LOG.debug("Robot fell from the board!");
         }
     }
 
-    /** Execute behaviour that may occur only by passing through the block
-     * and does not require in the block to land
-     * i.e.: discard damageToken (checkpoint/repair), suffer Laser
+    /**
+     * Execute behaviour that may occur only by passing through the block and does not require in
+     * the block to land i.e.: discard damageToken (checkpoint/repair), suffer Laser
      *
      * @author Maria Andrade
      * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
@@ -842,18 +892,19 @@ public class Game {
      */
     private void executeBehavioursInEndDestination() {
         // execute board elements functions, other than moves
-        try{
-            for(Robot robot: robots){
+        try {
+            for (Robot robot : robots) {
                 Position position = robot.getPosition();
-                for(AbstractTileBehaviour behaviour: board[position.x][position.y].getBehaviourList()){
-                    if(behaviour instanceof CheckPointBehaviour){
-                        ((CheckPointBehaviour)behaviour).fixDamageToken(robot.getID());
-                    } else if(behaviour instanceof RepairBehaviour){
-                        ((RepairBehaviour)behaviour).fixDamageToken(robot.getID());
+                for (AbstractTileBehaviour behaviour :
+                        board[position.x][position.y].getBehaviourList()) {
+                    if (behaviour instanceof CheckPointBehaviour) {
+                        ((CheckPointBehaviour) behaviour).fixDamageToken(robot.getID());
+                    } else if (behaviour instanceof RepairBehaviour) {
+                        ((RepairBehaviour) behaviour).fixDamageToken(robot.getID());
                     }
                 }
             }
-        } catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             LOG.debug("Robot fell from the board!");
         }
     }
@@ -908,7 +959,7 @@ public class Game {
             for (int j = 0; j < robots.size(); j++) {
                 Robot robot = robots.get(j);
                 if (!robot.equals(robots.get(move.robotID))) {
-                    if (robot.getPosition() == destinationTile) {
+                    if (robot.getPosition().equals(destinationTile)) {
                         boolean alreadyHasMoveIntent = false;
                         for (MoveResult moveResult : moveList) {
                             if (robot.equals(robots.get(moveResult.robotID))) {
@@ -918,7 +969,6 @@ public class Game {
                         }
                         if (!alreadyHasMoveIntent) {
                             moveList.add(new MoveResult(move, j));
-                            i = -1;
                             somethingChanged = true;
                         }
                     }
@@ -980,7 +1030,7 @@ public class Game {
                 if (i != j) {
                     if (moveDir
                             == CardinalDirection.values()[
-                            moveList.get(j).getDirection().ordinal() + 2]
+                            (moveList.get(j).getDirection().ordinal() + 2) % 4]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -1139,8 +1189,7 @@ public class Game {
      */
     public Player getPlayerByUserDTO(UserDTO user) {
         for (AbstractPlayer player : players) {
-            if (player.getClass() == Player.class
-                    && Objects.equals(player.getUser(), user)) {
+            if (player.getClass() == Player.class && Objects.equals(player.getUser(), user)) {
                 return ((Player) player);
             }
         }

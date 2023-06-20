@@ -31,8 +31,6 @@ public class LobbyDTO implements Lobby {
     private final Boolean multiplayer;
     private final Integer playerSlot = 8;
     private final UUID chatChannel;
-
-    private int countRequestToStartGame = 0;
     private String mapName;
 
     private Map currentMap;
@@ -64,7 +62,15 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
+    }
 
+    public LobbyDTO() {
+        this.lobbyID = 0;
+        this.name = "";
+        this.owner = null;
+        this.password = "";
+        this.multiplayer = false;
+        this.chatChannel = null;
     }
 
     /**
@@ -80,11 +86,11 @@ public class LobbyDTO implements Lobby {
      */
     public LobbyDTO createWithoutPassword(Lobby lobby) {
         Lobby tmp = createWithoutUserPassword(lobby);
-        if (tmp.getPassword().equals("")) {
+        if (tmp.getPassword() == null || tmp.getPassword().equals("")) {
             return new LobbyDTO(
                     lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
         } else {
-            String passwordBlurred = "*".repeat(lobby.getPassword().length());
+            String passwordBlurred = "*".repeat(4);
             return new LobbyDTO(
                     lobby.getLobbyID(),
                     lobby.getName(),
@@ -165,12 +171,12 @@ public class LobbyDTO implements Lobby {
     @Override
     public void leaveUser(User user) {
         if (users.contains(user)) {
-            if (users.size() == 1) {
+            if (users.size() == 1 && this.multiplayer == true) {
                 throw new IllegalArgumentException("Lobby must contain at least one user!");
             } else {
                 this.users.remove(user);
                 this.notReadyUsers.remove(user);
-                if (this.owner.equals(user)) {
+                if (this.owner.equals(user) && this.multiplayer == true) {
                     updateOwner(users.iterator().next());
                 }
             }
@@ -327,46 +333,11 @@ public class LobbyDTO implements Lobby {
         return chatChannel;
     }
 
-    /**
-     * Getter for the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int getCountRequestToStartGame() {
-        return this.countRequestToStartGame;
-    }
-
-    /**
-     * Method to increase the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int increaseCounterRequest() {
-        this.countRequestToStartGame += 1;
-        return this.countRequestToStartGame;
-    }
-
-    /**
-     * Method to reset the countRequestToStartGame
-     *
-     * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @return Integer containing the countRequestToStartGame
-     * @since 2023-05-01
-     */
-    public int resetCounterRequest() {
-        this.countRequestToStartGame = 0;
-        return this.countRequestToStartGame;
-    }
-
-    public void setMapName(String mapName){
+    public void setMapName(String mapName) {
         this.mapName = mapName;
     }
-    public String getMapName(){
+
+    public String getMapName() {
         return this.mapName;
     }
-
 }

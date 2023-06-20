@@ -3,6 +3,13 @@ package de.uol.swp.common.game.message;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
 
+/**
+ * Message sent by the server when a robot is dead forever
+ *
+ * @see AbstractLobbyMessage
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-06-09
+ */
 public class RobotIsFinallyDead extends AbstractLobbyMessage {
     private final int lobbyID;
     private final UserDTO userDied;
@@ -27,6 +34,9 @@ public class RobotIsFinallyDead extends AbstractLobbyMessage {
      * @since 2023-06-09
      */
     public int getLobbyID() {
+        if (lobbyID < 0) {
+            throw new IllegalArgumentException("Invalid lobbyID: " + lobbyID);
+        }
         return lobbyID;
     }
     /**
