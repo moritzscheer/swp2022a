@@ -27,12 +27,17 @@ import java.util.Set;
 import static org.junit.Assert.assertEquals;
 
 public class gameTest {
-
-    private User user = new UserDTO("test1", "test1", "");
     private Game game;
-
+    private AbstractPlayer player;
+    private Robot robot;
+    /** Setup for gamelogic integration tests
+     *
+     * @author Jann Erik Bruns, Tommy Dang
+     * @since 2023-06-19
+     */
     @Before
     public void setup(){
+        User user = new UserDTO("test1", "test1", "");
         List<User> users = new ArrayList<User>();
 
         users.add(user);
@@ -44,8 +49,14 @@ public class gameTest {
             game = new Game(1,  usersSet, "MapOne", 0, 3);
             firstCP = game.getStartCheckpoint();
         }
+        player = game.getPlayers().get(0);
+        robot = player.getRobot();
     }
-
+    /** execute the 5 chosen cards of the players
+     *
+     * @author Jann Erik Bruns, Tommy Dang
+     * @since 2023-06-19
+     */
     public void executeCards(){
         try{
             game.register();
@@ -61,26 +72,46 @@ public class gameTest {
     /** Test for move1ForwardCard
      *
      * @author Jann Erik Bruns, Tommy Dang
-     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
-     * @see de.uol.swp.server.gamelogic.Robot;
      * @since 2023-06-19
      */
     @Test
-    public void moveFwd1Test() throws InterruptedException {
+    public void moveForward1Test() throws InterruptedException {
         try {
             // Create 5 Move1ForwardCards
-            AbstractPlayer player = game.getPlayers().get(0);
             Card[] cards= new Card[5];
             for(int i = 0; i < 5; i++)
                 cards[i] = new Card(52, "6", 520, "");
 
             player.chooseCardsOrder(cards);
             executeCards();
-            Position pos = player.getRobot().getPosition();
-            assertEquals(player.getRobot().getPosition(), new Position(4, 0));
+            assertEquals(robot.getPosition(), new Position(4, 0));
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+    /** Test for moving and turning in one round
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void moveForwardAndTurnTest() throws InterruptedException {
+        try {
+            Card[] cards= new Card[5];
+            for(int i = 0; i < 3; i++)
+                cards[i] = new Card(52, "6", 520, "");
+            cards[3] = new Card(20, "3", 100, "");
+            cards[4] = new Card(52, "6", 520, "");
+
+            player.chooseCardsOrder(cards);
+            executeCards();
+            assertEquals(robot.getPosition(), new Position(5, 0));
+            assertEquals(robot.getDirection().ordinal(), 1);
 
         } catch (Exception ex){
             System.out.println(ex);
         }
     }
 }
+
