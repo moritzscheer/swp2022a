@@ -34,10 +34,8 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * @since 2022-11-16
      */
     public AbstractLobbyResponse(String name, UserDTO user) {
-        if(name== null)
-            throw new NullPointerException("Name can not be null");
-        if(user== null)
-            throw new NullPointerException("User can not be null");
+        if (name == null) throw new NullPointerException("Name can not be null");
+        if (user == null) throw new NullPointerException("User can not be null");
         this.name = name;
         this.user = user;
     }
@@ -59,8 +57,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * @since 2022-11-16
      */
     public void setName(String name) {
-        if(name== null)
-            throw new NullPointerException("Name can not be null");
+        if (name == null) throw new NullPointerException("Name can not be null");
         this.name = name;
     }
 
@@ -81,8 +78,7 @@ public class AbstractLobbyResponse extends AbstractResponseMessage {
      * @since 2019-10-08
      */
     public void setUser(UserDTO user) {
-        if(user== null)
-            throw new NullPointerException("User can not be null");
+        if (user == null) throw new NullPointerException("User can not be null");
         this.user = user;
     }
 

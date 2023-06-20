@@ -11,14 +11,12 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.common.chat.message.TextHistoryMessage;
+import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.*;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
-import de.uol.swp.common.game.request.GetMapDataRequest;
-import de.uol.swp.common.game.request.GetProgramCardsRequest;
-import de.uol.swp.common.game.request.StartGameRequest;
-import de.uol.swp.common.game.request.SubmitCardsRequest;
+import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
@@ -88,33 +86,20 @@ public class GameService extends AbstractService {
         // create and save Game Object
         games.put(
                 lobbyID,
-                new Game(lobbyID,
-                        lobby.get().getUsers(),
-                        mapName,
-                        numberBots,
-                        checkpointCount
-                )
-        );
-        //games.get(lobbyID).startGame();
+                new Game(lobbyID, lobby.get().getUsers(), mapName, numberBots, checkpointCount));
 
         // Create DTOs objects
-        // TODO: create Player
         List<PlayerDTO> players = new ArrayList<>();
-        for(AbstractPlayer player: games.get(lobbyID).getPlayers()) {
+        for (AbstractPlayer player : games.get(lobbyID).getPlayers()) {
             // add in the list
-            players.add(
-                    convertPlayerToPlayerDTO(player)
-            );
+            players.add(convertPlayerToPlayerDTO(player));
         }
-
-        // TODO: create Board, instead of using 4d array
-        // BlockDTO blockDTO = new BlockDTO();
-
-        GameDTO gameDTO = new GameDTO(players);
+        BlockDTO[][] boardDTO = convertBoardToBoardDTO(games.get(lobbyID).getBoard());
+        GameDTO gameDTO = new GameDTO(players, boardDTO);
 
         gamesDTO.put(lobbyID, gameDTO); // save reference to the GameDTO
 
-        LOG.debug("Number of players including Bots: "+ players.size() );
+        LOG.debug("Number of players including Bots: " + players.size());
         return gameDTO;
     }
 
@@ -160,24 +145,31 @@ public class GameService extends AbstractService {
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
      * StartGameMessage to all the users in the lobby, containing the
      *
+     * <p>PS.: GetMapDataRequest/Response was removed, and now the board is sent together with
+     * startGameMessage inside the gameDTO object (2023-06-18)
+     *
      * @param msg StartGameRequest found on the EventBus
-     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
+     * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel, Jann
      * @see de.uol.swp.common.game.request.StartGameRequest
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
     @Subscribe
-    public void onStartGameRequest(StartGameRequest msg) {
+    public void onStartGameRequest(StartGameRequest msg) throws LobbyDoesNotExistException {
         Optional<LobbyDTO> tmp = lobbyManagement.getLobby(msg.getLobbyID());
         if (!tmp.isEmpty()) {
             System.out.println("Creating game");
-            GameDTO game = createNewGame(msg.getLobbyID(), msg.getLobby().getMapName(), msg.getNumberBots(), msg.getNumberCheckpoints());
+            GameDTO game =
+                    createNewGame(
+                            msg.getLobbyID(),
+                            msg.getLobby().getMapName(),
+                            msg.getNumberBots(),
+                            msg.getNumberCheckpoints());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
-                    msg.getLobbyID(),
-                    new StartGameMessage(
-                            msg.getLobbyID(), msg.getLobby() , game));
-            tmp.get().resetCounterRequest();
+                    msg.getLobbyID(), new StartGameMessage(msg.getLobbyID(), msg.getLobby(), game));
+        } else {
+            // TODO: send ErrorResponse
         }
     }
 
@@ -194,7 +186,8 @@ public class GameService extends AbstractService {
      * @since 2023-02-28
      */
     @Subscribe
-    public void onGetProgramCardsRequest(GetProgramCardsRequest msg) throws InterruptedException {
+    public void onGetProgramCardsRequest(GetProgramCardsRequest msg)
+            throws InterruptedException, LobbyDoesNotExistException {
         LOG.debug("onGetProgramCardsRequest");
         Optional<Game> game = getGame(msg.getLobbyID());
         boolean callBot = false;
@@ -218,50 +211,36 @@ public class GameService extends AbstractService {
                 LOG.debug("   id={} priority={}", card.getId(), card.getPriority());
             }
             // todo verify we need to check if user is a bot
-            if(callBot) {
+            if (callBot) {
                 selectCardBot(game.get(), msg.getLobbyID());
             }
         }
     }
 
     /**
-     * Handles GetMapDataRequest found on the EventBus
+     * Handles TurnRobotOffRequest found on the EventBus
      *
-     * <p>If a GetMapDataRequest is detected on the EventBus, this method is called. It posts a
-     * GetMapDataMessage to all the users in the lobby, containing the game board
+     * <p>If a TurnRobotOffRequest is detected on the EventBus, this method is called. It posts a
+     * RobotTurnedOffMessage to all the users in the lobby, saying that this player is ready
      *
-     * @param msg GetMapDataRequest found on the EventBus
+     * @param request SubmitCardsRequest found on the EventBus
      * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.common.game.request.GetMapDataRequest
-     * @see GetMapDataResponse
-     * @since 2023-02-28
+     * @see de.uol.swp.common.game.request.TurnRobotOffRequest
+     * @since 2023-06-13
      */
     @Subscribe
-    public void onGetMapDataRequest(GetMapDataRequest msg) {
-
-        System.out.println("Get Map Data server");
-        Optional<Game> game = getGame(msg.getLobby().getLobbyID());
+    public void onTurnRobotOffRequest(TurnRobotOffRequest request)
+            throws LobbyDoesNotExistException, InterruptedException {
+        Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
-            Block[][] board = game.get().getBoard();
+            boolean allChosen = game.get().setPowerDown(request.getLoggedInUser());
+            lobbyService.sendToAllInLobby(
+                    request.getLobbyID(),
+                    new RobotTurnedOffMessage(request.getLobbyID(), request.getLoggedInUser()));
 
-            if (board == null) {
-                throw new IllegalStateException("Board is nicht initialisiert");
+            if (allChosen) {
+                manageRoundsUpdates(game.get(), request.getLobbyID());
             }
-
-            BlockDTO[][] boardDTOs = new BlockDTO[board.length][board[0].length];
-
-            for (int row = 0; row < board.length; row++) {
-                for (int col = 0; col < board[0].length; col++) {
-                    boardDTOs[row][col] = new BlockDTO(board[row][col].getImages());
-                }
-            }
-            GetMapDataResponse getMapDataResponse =
-                    new GetMapDataResponse(
-                            boardDTOs, msg.getLobby(), game.get().getDockingStartPosition());
-            getMapDataResponse.initWithMessage(msg);
-            post(getMapDataResponse);
-        } else {
-            // TODO: send ErrorResponse
         }
     }
 
@@ -277,7 +256,8 @@ public class GameService extends AbstractService {
      * @since 2023-05-18
      */
     @Subscribe
-    public void onSubmitCardsRequest(SubmitCardsRequest request) throws InterruptedException {
+    public void onSubmitCardsRequest(SubmitCardsRequest request)
+            throws InterruptedException, LobbyDoesNotExistException {
         Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
             // TODO
@@ -286,7 +266,9 @@ public class GameService extends AbstractService {
                 LOG.debug(card.getID() + " -  " + card.getPriority());
 
             Boolean allChosen =
-                    game.get().registerCardsFromUser(request.getLoggedInUser(), request.getCardDTOs());
+                    game.get()
+                            .registerCardsFromUser(
+                                    request.getLoggedInUser(), request.getCardDTOs());
             PlayerIsReadyMessage msg =
                     new PlayerIsReadyMessage(request.getLoggedInUser(), request.getLobbyID());
             lobbyService.sendToAllInLobby(request.getLobbyID(), msg);
@@ -297,28 +279,32 @@ public class GameService extends AbstractService {
         }
     }
 
-    private void selectCardBot(Game game,int lobbyID) throws InterruptedException {
+    private void selectCardBot(Game game, int lobbyID)
+            throws InterruptedException, LobbyDoesNotExistException {
         Boolean allChosen = game.registerCardsFromBot();
-        for(AbstractPlayer botPlayer : game.getPlayers()) {
-            if(botPlayer instanceof BotPlayer) {
+        for (AbstractPlayer botPlayer : game.getPlayers()) {
+            if (botPlayer instanceof BotPlayer) {
                 PlayerIsReadyMessage msg = new PlayerIsReadyMessage(botPlayer.getUser(), lobbyID);
                 lobbyService.sendToAllInLobby(lobbyID, msg);
             }
         }
 
-
-        if(allChosen){
+        if (allChosen) {
             LOG.debug("All players have chosen cards");
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
-            for(Map.Entry<UserDTO, CardDTO> userCurrentCard: userDTOCardDTOMap.entrySet())
-                LOG.debug("Player " + userCurrentCard.getKey().getUsername() +
-                        " card " + userCurrentCard.getValue().getID() + " - " + userCurrentCard.getValue().getPriority());
-            lobbyService.sendToAllInLobby(lobbyID,
-                    new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+            for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet())
+                LOG.debug(
+                        "Player "
+                                + userCurrentCard.getKey().getUsername()
+                                + " card "
+                                + userCurrentCard.getValue().getID()
+                                + " - "
+                                + userCurrentCard.getValue().getPriority());
+            lobbyService.sendToAllInLobby(
+                    lobbyID, new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
             manageRoundsUpdates(game, lobbyID);
         }
     }
-
 
     /**
      * Handles all rounds, call calcGame() for every round and send messages to update the view
@@ -335,7 +321,8 @@ public class GameService extends AbstractService {
      * @see de.uol.swp.common.game.request.SubmitCardsRequest
      * @since 2023-05-24
      */
-    public void manageRoundsUpdates(Game game, int lobbyID) throws InterruptedException {
+    public void manageRoundsUpdates(Game game, int lobbyID)
+            throws InterruptedException, LobbyDoesNotExistException {
         // TODO
         int secondsToWait = 1;
 
@@ -354,9 +341,13 @@ public class GameService extends AbstractService {
             scheduler.schedule(
                     new Runnable() {
                         public void run() {
-                            lobbyService.sendToAllInLobby(
-                                    lobbyID,
-                                    new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                            try {
+                                lobbyService.sendToAllInLobby(
+                                        lobbyID,
+                                        new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID));
+                            } catch (LobbyDoesNotExistException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     },
                     secondsToWait,
@@ -395,14 +386,16 @@ public class GameService extends AbstractService {
 
         UserDTO winner = game.roundIsOver(); // reset variables
         AbstractLobbyMessage msg;
-        if(Objects.equals(winner, null))
-            msg = new RoundIsOverMessage(lobbyID);
-        else
-            msg = new GameOverMessage(lobbyID, winner);
+        if (Objects.equals(winner, null)) msg = new RoundIsOverMessage(lobbyID);
+        else msg = new GameOverMessage(lobbyID, winner);
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -417,7 +410,7 @@ public class GameService extends AbstractService {
             previousPositions.add(pos);
             LOG.debug(
                     "     Robot Position {} pos = x {} y {}",
-                     player.getUser().getUsername(),
+                    player.getUser().getUsername(),
                     pos.x,
                     pos.y);
         }
@@ -528,19 +521,20 @@ public class GameService extends AbstractService {
             sendCardMoveMessage(lobbyID, convertPlayerToPlayerDTO(player), secondsToWait);
             sendAbstractLobbyMessage(lobbyID, secondsToWait, msg);
 
-            if (!player.getRobot().isAlive()){
+            if (!player.getRobot().isAlive()) {
                 // if robot is dead, send message
-                sendAbstractLobbyMessage(lobbyID, secondsToWait,
-                        new TextHistoryMessage(lobbyID,
-                                player.getUser().getUsername() + " is dead!\n"));
+                sendAbstractLobbyMessage(
+                        lobbyID,
+                        secondsToWait,
+                        new TextHistoryMessage(
+                                lobbyID, player.getUser().getUsername() + " is dead!\n"));
                 player.getRobot().setDeadForTheRound(true);
-                if(player.getRobot().getLifeToken() <= 0){
+                if (player.getRobot().getLifeToken() <= 0) {
                     player.getRobot().setDeadForever();
                     sendAbstractLobbyMessage(
-                            lobbyID, secondsToWait, new RobotIsFinallyDead(
-                                    lobbyID, player.getUser()
-                            )
-                    );
+                            lobbyID,
+                            secondsToWait,
+                            new RobotIsFinallyDead(lobbyID, player.getUser()));
                 }
             }
 
@@ -549,13 +543,16 @@ public class GameService extends AbstractService {
         return secondsToWait;
     }
 
-    public void sendCardMoveMessage(
-            int lobbyID, PlayerDTO playerDTO, int secondsToWait) {
+    public void sendCardMoveMessage(int lobbyID, PlayerDTO playerDTO, int secondsToWait) {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new ShowRobotMovingMessage(lobbyID, playerDTO));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -566,20 +563,27 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new ShowBoardMovingMessage(lobbyID, players));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
                 SECONDS);
     }
 
-    public void sendAbstractLobbyMessage(
-            int lobbyID, int secondsToWait, AbstractLobbyMessage msg) {
+    public void sendAbstractLobbyMessage(int lobbyID, int secondsToWait, AbstractLobbyMessage msg) {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,
@@ -620,8 +624,12 @@ public class GameService extends AbstractService {
         scheduler.schedule(
                 new Runnable() {
                     public void run() {
-                        lobbyService.sendToAllInLobby(
-                                lobbyID, new GameOverMessage(lobbyID, userWon));
+                        try {
+                            lobbyService.sendToAllInLobby(
+                                    lobbyID, new GameOverMessage(lobbyID, userWon));
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 },
                 secondsToWait,

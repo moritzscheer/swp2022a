@@ -10,14 +10,14 @@ import de.uol.swp.client.auth.LoginPresenter;
 import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.credit.CreditPresenter;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
-import de.uol.swp.client.lobby.LobbyGameManagement;
-import de.uol.swp.client.lobby.LobbyService;
-import de.uol.swp.client.lobby.game.GameService;
-import de.uol.swp.client.lobby.game.events.ShowGameOverEvent;
-import de.uol.swp.client.lobby.game.events.ShowGameViewEvent;
-import de.uol.swp.client.lobby.game.presenter.GamePresenter;
-import de.uol.swp.client.lobby.lobby.event.ShowLobbyViewEvent;
-import de.uol.swp.client.lobby.lobby.presenter.LobbyPresenter;
+import de.uol.swp.client.lobbyGame.LobbyGameManagement;
+import de.uol.swp.client.lobbyGame.game.GameService;
+import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
+import de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent;
+import de.uol.swp.client.lobbyGame.game.presenter.GamePresenter;
+import de.uol.swp.client.lobbyGame.lobby.LobbyService;
+import de.uol.swp.client.lobbyGame.lobby.event.ShowLobbyViewEvent;
+import de.uol.swp.client.lobbyGame.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.main.AccountMenuPresenter;
 import de.uol.swp.client.main.MainMenuPresenter;
 import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
@@ -410,7 +410,7 @@ public class SceneManager {
         } catch (Exception e) {
             throw new IOException(String.format("Could not load View! %s", e.getMessage()), e);
         }
-        LobbyGameManagement.getInstance().setupLobbyGame(lobbyID, gameParent, gamePresenter);
+        LobbyGameManagement.getInstance().setLobbyGamePresenter(lobbyID, gameParent, gamePresenter);
         return gameParent;
     }
 
@@ -654,10 +654,10 @@ public class SceneManager {
      * @since 2023-03-09
      */
     @Subscribe
-    public void onShowGameViewEvent(ShowGameViewEvent event) {
+    public void onShowGameViewEvent(ShowGameViewEvent event) throws IOException {
         System.out.println("SceneManager.onShowGameViewEvent");
-        createGameView(event.getLobby());
-        showGameScreen(event.getLobbyID());
+        Parent thisGameParent = initGameView(event.getLobbyID());
+        showGameScreen(event.getLobbyID(), thisGameParent);
     }
 
     /**
@@ -987,8 +987,8 @@ public class SceneManager {
      *
      * @since 2023-03-09
      */
-    public void showGameScreen(Integer lobbyID) {
-        showNode(lobbyID, LobbyGameManagement.getInstance().getGameParent(lobbyID));
+    public void showGameScreen(Integer lobbyID, Parent thisGameParent) {
+        showNode(lobbyID, thisGameParent);
     }
 
     /**
@@ -1033,23 +1033,6 @@ public class SceneManager {
             LobbyGameManagement.getInstance().setupLobby(lobby, user);
             tabPresenter.createTab(lobby, lobbyParent);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Handles StartGameMessage detected on the EventBus
-     *
-     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
-     *
-     * @author Moritz Scheer & Maxim Erden
-     * @see de.uol.swp.common.game.message.StartGameMessage
-     * @since 2023-02-28
-     */
-    public void createGameView(LobbyDTO lobby) {
-        try {
-            Parent gameParent = initGameView(lobby.getLobbyID());
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }

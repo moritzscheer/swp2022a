@@ -1,10 +1,10 @@
 package de.uol.swp.common.chat;
 
-import de.uol.swp.common.chat.message.TextHistoryMessage;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import de.uol.swp.common.chat.message.TextHistoryMessage;
+
+import org.junit.jupiter.api.Test;
 
 public class TextHistoryMessageTest {
 

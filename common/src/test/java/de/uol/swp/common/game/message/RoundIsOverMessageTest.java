@@ -1,6 +1,5 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.message.RoundIsOverMessage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

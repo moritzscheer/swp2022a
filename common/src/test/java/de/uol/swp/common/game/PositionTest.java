@@ -1,6 +1,7 @@
 package de.uol.swp.common.game;
 
 import de.uol.swp.common.game.enums.CardinalDirection;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,5 +39,4 @@ public class PositionTest {
 
         Assertions.assertNotEquals(p1, p3);
     }
-
 }

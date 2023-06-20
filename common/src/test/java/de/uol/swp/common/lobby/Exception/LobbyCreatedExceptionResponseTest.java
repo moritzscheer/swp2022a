@@ -1,6 +1,7 @@
 package de.uol.swp.common.lobby.Exception;
 
 import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,14 +25,14 @@ public class LobbyCreatedExceptionResponseTest {
         LobbyCreatedExceptionResponse response2 = new LobbyCreatedExceptionResponse(message);
 
         assertEquals(response1, response2);
-
     }
 
     @Test
     public void testNotEquals() {
         String message = "Lobby creation failed";
         LobbyCreatedExceptionResponse response1 = new LobbyCreatedExceptionResponse(message);
-        LobbyCreatedExceptionResponse response3 = new LobbyCreatedExceptionResponse("Different message");
+        LobbyCreatedExceptionResponse response3 =
+                new LobbyCreatedExceptionResponse("Different message");
 
         assertNotEquals(response1, response3);
     }

@@ -23,7 +23,6 @@ public class ShowBoardMovingMessage extends AbstractLobbyMessage {
         return lobbyID;
     }
 
-
     public List<PlayerDTO> getPlayersDTO() {
         return playersDTO;
     }

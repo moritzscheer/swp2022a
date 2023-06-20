@@ -1,12 +1,12 @@
 package de.uol.swp.common.user.message;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class UsersListMessageTest {
 
@@ -44,6 +44,4 @@ public class UsersListMessageTest {
         // Different objects
         assertNotEquals(message1, message3);
     }
-
-
 }

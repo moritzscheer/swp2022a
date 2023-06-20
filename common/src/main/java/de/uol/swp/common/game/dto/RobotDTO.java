@@ -29,6 +29,8 @@ public class RobotDTO implements Serializable {
 
     private boolean alive = true;
 
+    private boolean powerDown = false;
+
     public RobotDTO(int robotID, Position position, CardinalDirection direction) {
         this.robotID = robotID;
         this.position = position;
@@ -81,7 +83,6 @@ public class RobotDTO implements Serializable {
         this.damageToken = damageToken;
     }
 
-
     public int getLastCheckpoint() {
         return lastCheckpoint;
     }
@@ -96,5 +97,13 @@ public class RobotDTO implements Serializable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    public void setPowerDown(boolean powerDown) {
+        this.powerDown = powerDown;
     }
 }

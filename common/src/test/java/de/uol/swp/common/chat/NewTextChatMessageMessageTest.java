@@ -1,17 +1,16 @@
 package de.uol.swp.common.chat;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 public class NewTextChatMessageMessageTest {
 
     private final UUID channelID = UUID.randomUUID();
-
 
     private final TextChatChannelDTO channel = new TextChatChannelDTO(channelID);
 
