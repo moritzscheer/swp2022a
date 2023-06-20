@@ -28,9 +28,7 @@ public class ShowRobotMovingMessage extends AbstractLobbyMessage {
         return lobbyID;
     }
 
-
     public PlayerDTO getPlayerDTO() {
         return playerDTO;
     }
-
 }

@@ -89,7 +89,7 @@ public class Block implements Serializable, Cloneable {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023
      */
-    public List<MoveIntent> OnExpressConveyorStage(int programStep) {
+    public List<MoveIntent> onExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
             if (behaviour.onExpressConveyorStage(programStep) != null) {

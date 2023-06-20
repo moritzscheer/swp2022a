@@ -24,5 +24,4 @@ public class TextChatMessage implements Serializable {
     public String getTimeStamp() {
         return timeStamp;
     }
-
 }

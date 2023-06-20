@@ -9,6 +9,7 @@ import com.google.inject.assistedinject.Assisted;
 import de.uol.swp.common.MyObjectDecoder;
 import de.uol.swp.common.MyObjectEncoder;
 import de.uol.swp.common.message.*;
+import de.uol.swp.common.user.exception.ServerNotRespondingExceptionMessage;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -26,7 +27,32 @@ import org.apache.logging.log4j.Logger;
 import java.net.InetSocketAddress;
 import java.nio.channels.NotYetConnectedException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
+
+/**
+ * The Helper class
+ *
+ * <p>This Class is used to handle the case that the server does not respond. It times out after an
+ * interval specified when it is called.
+ *
+ * @author Ole Zimmermann
+ * @since 2023-06-18
+ */
+class Helper extends TimerTask {
+    EventBus eventBus;
+
+    public void setBus(EventBus bus) {
+        this.eventBus = bus;
+    }
+
+    public void run() {
+        eventBus.post(
+                new ServerNotRespondingExceptionMessage(
+                        "unknown reason! \n Please restart the client and/or the server!"));
+    }
+}
 
 /**
  * The ClientConnection Connection class
@@ -48,6 +74,8 @@ public class ClientConnection {
     private EventLoopGroup group;
     private EventBus eventBus;
     private Channel channel;
+
+    protected Timer timer;
 
     /**
      * Creates a new connection to a specific port on the given host
@@ -131,6 +159,24 @@ public class ClientConnection {
     }
 
     /**
+     * Stops the timer
+     *
+     * <p>Stops the timer and purges it. This is necessary to prevent the timer from running in the
+     * background when the client is supposed to be closed.
+     *
+     * @author Ole Zimmermann
+     * @since 2023-06-18
+     */
+    public void stopTimer() {
+        try {
+            this.timer.cancel();
+            this.timer.purge();
+        } catch (Exception e) {
+            LOG.error("Error while stopping timer");
+        }
+    }
+
+    /**
      * Calls the ConnectionEstablished method of every ConnectionListener added to this.
      *
      * @param channel The netty channel the new Connection is established on
@@ -163,7 +209,8 @@ public class ClientConnection {
      * <p>Post on event bus " and the Message to the LOG if the LOG-Level is set to DEBUG or higher.
      * If it is a different kind of Message, it gets discarded and with LOG-Level set to WARN or
      * higher "Can only process ServerMessage and ResponseMessage. Received " and the message are
-     * written to the LOG.
+     * written to the LOG. Every time it receives a message it cancels the timer and purges it since
+     * the server just responded.
      *
      * @param in The incoming messages read by the ClientHandler
      * @see de.uol.swp.client.ClientHandler
@@ -172,6 +219,12 @@ public class ClientConnection {
     public void receivedMessage(Message in) {
         LOG.debug("Received message. Post on event bus {}", in);
         eventBus.post(in);
+        try {
+            this.timer.cancel();
+            this.timer.purge();
+        } catch (Exception e) {
+            LOG.error("Timer cancel failed");
+        }
     }
 
     /**
@@ -180,15 +233,26 @@ public class ClientConnection {
      * <p>If the client is connected to the server and the channel of this object is set the
      * RequestMessage given to this method is send to the server. Otherwise "Some tries to send a
      * message, but server is not connected" is written to the LOG if the LOG-Level is set to WARN
-     * or higher.
+     * or higher. Every time it sends a message it cancels the timer and purges it. After that it
+     * creates a new task that waits 5 seconds for a response and then executes the Helper task.
      *
      * @param message The RequestMessage object to send to the server
      * @since 2019-08-29
+     * @see de.uol.swp.client.Helper
      */
     @Subscribe
     public void onRequestMessage(RequestMessage message) {
         if (channel != null) {
             channel.writeAndFlush(message);
+            Helper task = new Helper();
+            task.setBus(eventBus);
+            try {
+                this.timer.cancel();
+                this.timer.purge();
+            } catch (Exception e) {
+            }
+            this.timer = new Timer();
+            this.timer.schedule(task, 5000);
         } else {
             throw new NotYetConnectedException();
         }

@@ -4,7 +4,7 @@ import com.google.common.eventbus.Subscribe;
 
 import de.uol.swp.client.AbstractPresenter;
 import de.uol.swp.client.CloseClientEvent;
-import de.uol.swp.client.lobby.lobby.event.LeaveLobbyEvent;
+import de.uol.swp.client.lobbyGame.lobby.event.LeaveLobbyEvent;
 import de.uol.swp.client.tab.event.*;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyLeftExceptionResponse;
@@ -371,7 +371,7 @@ public class TabPresenter extends AbstractPresenter {
                                 (UserDTO) loggedInUser,
                                 Integer.valueOf(tab.getId()),
                                 tab.getText(),
-                                true));
+                                !tab.getText().equals("Singleplayer")));
                 updateInfoBox();
 
                 tabPane.getTabs().remove(tab);

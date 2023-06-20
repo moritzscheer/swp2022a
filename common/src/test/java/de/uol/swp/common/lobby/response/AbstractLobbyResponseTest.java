@@ -1,12 +1,13 @@
 package de.uol.swp.common.lobby.response;
 
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbstractLobbyResponseTest {
 
-    private final UserDTO user = new UserDTO("Player1","pw","ml");
+    private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
     @Test
     public void testGettersAndSetters() {

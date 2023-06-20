@@ -6,6 +6,13 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.util.List;
 
+/**
+ * Request sent to the server when the user requests to send his chosen cards
+ *
+ * @see de.uol.swp.common.message.AbstractRequestMessage
+ * @author Ole Zimmermann & Maria Eduarda Costa Leite Andrade
+ * @since 2023-04-25
+ */
 public class SubmitCardsRequest extends AbstractRequestMessage {
     private static final long serialVersionUID = -5910486927806761643L;
     private final List<CardDTO> cardDTO;
@@ -20,10 +27,10 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
         if (lobbyID < 0) {
             throw new IllegalArgumentException("Lobby can not be null");
         }
-        if(userDTO == null) {
+        if (userDTO == null) {
             throw new NullPointerException("User can not be null");
         }
-        if(cardDTOS == null) {
+        if (cardDTOS == null) {
             throw new NullPointerException("CardDTO can not be null");
         }
         this.lobbyID = lobbyID;

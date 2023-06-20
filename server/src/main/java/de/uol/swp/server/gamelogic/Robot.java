@@ -126,14 +126,13 @@ public class Robot implements Serializable {
     }
 
     public void setAlive(boolean alivee) {
-        if(!alivee){
+        if (!alivee) {
             // robot is dead
             this.lifeToken--;
             setCurrentPosition(this.lastBackupCopyPosition);
             this.alive = alivee;
-        }
-        else{
-            if(this.lifeToken > 0){
+        } else {
+            if (this.lifeToken > 0) {
                 this.alive = alivee;
             }
             // robot is dead forever
@@ -177,7 +176,7 @@ public class Robot implements Serializable {
 
     public void setDamageToken(int damageToken) {
         this.damageToken = damageToken;
-        if(damageToken >= 10){
+        if (damageToken >= 10) {
             setAlive(false);
         }
     }
@@ -189,7 +188,7 @@ public class Robot implements Serializable {
      * @since 2023-06-12
      */
     public void fixDamageToken() {
-        if(this.damageToken > 0){
+        if (this.damageToken > 0) {
             this.damageToken--;
         }
     }
@@ -273,5 +272,4 @@ public class Robot implements Serializable {
     public void setDeadForever() {
         this.deadForever = true;
     }
-
 }

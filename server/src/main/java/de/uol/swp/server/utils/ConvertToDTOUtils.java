@@ -1,12 +1,13 @@
 package de.uol.swp.server.utils;
 
+import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.Player;
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
 
@@ -53,6 +54,7 @@ public final class ConvertToDTOUtils {
         robotDTO.setDamageToken(robot.getDamageToken());
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         robotDTO.setAlive(robot.isAlive());
+        robotDTO.setPowerDown(robot.isPowerDown());
         return robotDTO;
     }
 
@@ -101,10 +103,8 @@ public final class ConvertToDTOUtils {
      */
     public static PlayerDTO convertPlayerToPlayerDTO(AbstractPlayer player) {
 
-        PlayerDTO playerDTO = new PlayerDTO(
-                convertRobotToRobotDTO(player.getRobot()),
-                player.getUser()
-        );
+        PlayerDTO playerDTO =
+                new PlayerDTO(convertRobotToRobotDTO(player.getRobot()), player.getUser());
 
         return playerDTO;
     }
@@ -117,5 +117,33 @@ public final class ConvertToDTOUtils {
         }
 
         return playersDTO;
+    }
+
+    /**
+     * This function converts Board to BoardDTO
+     *
+     * <p>This is necessary to send a response when game starts, and the board needs to be loaded
+     *
+     * <p>This method was based on Jann's implementation
+     *
+     * @param board board to be converted to DTO
+     * @return BlockDTO[][]
+     * @author Maria Andrade, Jann Bruns
+     * @since 2023-06-18
+     */
+    public static BlockDTO[][] convertBoardToBoardDTO(Block[][] board) {
+
+        if (board == null) {
+            throw new IllegalStateException("Board was not initialized");
+        }
+        BlockDTO[][] boardDTO = new BlockDTO[board.length][board[0].length];
+
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                boardDTO[row][col] = new BlockDTO(board[row][col].getImages());
+            }
+        }
+
+        return boardDTO;
     }
 }

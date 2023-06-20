@@ -1,14 +1,15 @@
 package de.uol.swp.common.message;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
 import de.uol.swp.common.user.Session;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class ExceptionMessageTest {
 
@@ -16,8 +17,7 @@ public class ExceptionMessageTest {
 
     @BeforeEach
     void setUp() {
-        serverMessage = new AbstractServerMessage() {
-        };
+        serverMessage = new AbstractServerMessage() {};
     }
 
     @Test
@@ -36,12 +36,9 @@ public class ExceptionMessageTest {
 
     @Test
     void testEquals() {
-        AbstractServerMessage message1 = new AbstractServerMessage() {
-        };
+        AbstractServerMessage message1 = new AbstractServerMessage() {};
 
-        AbstractServerMessage message2 = new AbstractServerMessage() {
-        };
-
+        AbstractServerMessage message2 = new AbstractServerMessage() {};
 
         // Same object
         assertEquals(message1, message1);

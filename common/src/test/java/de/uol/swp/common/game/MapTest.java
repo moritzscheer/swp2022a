@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.net.URL;
-import java.nio.file.Path;
 
 public class MapTest {
-
 
     /**
      * Tests whether a list of Maps is returned by getMapList or not
@@ -64,6 +62,5 @@ public class MapTest {
         Assertions.assertNotNull(maps);
         Assertions.assertEquals(5, maps.length);
         Assertions.assertEquals("Map 1", maps[0].getName());
-
     }
 }
