@@ -473,5 +473,246 @@ public class gameTest {
             System.out.println(ex);
         }
     }
+
+    /** Test for stoying on Express conveyor belt
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void staysOnExpressConveyorBelt(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(1, 1));
+            cards[0] = new Card(36, "3", 420, "");      // Right Turn
+            cards[1] = new Card(36, "3", 420, "");      // Right Turn
+            cards[2] = new Card(36, "3", 420, "");      // Right Turn
+            cards[3] = new Card(20, "3", 420, "");
+            cards[4] = new Card(52, "6", 520, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 2);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for moving over Express conveyor belt
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOverExpressConveyorBelt(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(2, 0));
+            cards[0] = new Card(36, "3", 420, "");      // Right Turn
+            cards[1] = new Card(75, "7", 750, "");      // Forward 2
+            cards[2] = new Card(51, "6", 510, "");      // Forward 1
+            cards[3] = new Card(75, "7", 750, "");      // Forward 2
+            cards[4] = new Card(51, "6", 510, "");      // Forward 1
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(8, 0));
+            assertEquals(robotOne.getDirection().ordinal(), 1);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for moving over conveyorbelt
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOverConveyor(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(7, 11));
+            for(int i = 0; i < 5; i++)
+                cards[i] = new Card(0, "7", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(7, 8));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for on the next checkpoint
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOnNextRightCheckPoint(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(7, 6));
+            cards[0] = new Card(51, "6", 510, "");      // Forward 1
+            cards[1] = new Card(36, "3", 420, "");      // Right Turn
+            cards[2] = new Card(36, "3", 420, "");      // Right Turn
+            cards[3] = new Card(36, "3", 420, "");      // Right Turn
+            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(7, 5));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+            assertEquals(robotOne.getLastCheckPoint(), 2);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for on the next checkpoint
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOnMultipleRightCheckPoint(){
+        try {
+            SetGameOnMapOneWithMoreCP();
+            //robotOne.setCurrentPosition(new Position(0, 11));
+            cards[0] = new Card(51, "6", 510, "");      // Forward 1
+            cards[1] = new Card(51, "6", 510, "");      // Forward 1
+            cards[2] = new Card(51, "6", 510, "");      // Forward 1
+            cards[3] = new Card(36, "3", 420, "");      // Right Turn
+            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(7, 5));
+            assertEquals(robotOne.getDirection().ordinal(), 2);
+            assertEquals(robotOne.getLastCheckPoint(), 4);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for moving over the next checkpoint
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOverNextRightCheckPoint(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(7, 6));
+            cards[0] = new Card(75, "7", 750, "");      // Forward 2
+            cards[1] = new Card(36, "3", 420, "");      // Right Turn
+            cards[2] = new Card(36, "3", 420, "");      // Right Turn
+            cards[3] = new Card(36, "3", 420, "");      // Right Turn
+            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(7, 4));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+            assertEquals(robotOne.getLastCheckPoint(), 1);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+
+    /** Test for moving on conveyorbelt
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOnConveyor(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(7, 11));
+            for(int i = 0; i < 5; i++)
+                cards[i] = new Card(0, "6", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+            assertEquals(robotOne.getLifeToken(), 2);
+            assertEquals(robotOne.isAlive(), false);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+    /** Test for moving on a wrong checkpoint
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOnWrongCheckpoint(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(3, 11));
+
+            cards[0] = new Card(0, "3", 0, "");
+            cards[1] = new Card(0, "6", 0, "");
+            cards[2] = new Card(0, "7", 0, "");
+            cards[3] = new Card(0, "6", 0, "");
+            cards[4] = new Card(0, "6", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+            assertEquals(robotOne.getPosition().x, 5);
+            assertEquals(robotOne.getPosition().y, 10);
+            assertEquals(robotOne.getDirection().ordinal(), 3);
+            assertEquals(robotOne.getLifeToken(), 3);
+            assertEquals(robotOne.isAlive(), true);
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+    /** Test for moving on a wrong checkpoint
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingOnLastCheckpoint(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(7, 6));
+
+            for(int i = 0; i < 5; i++)
+                cards[i] = new Card(0, "6", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+            assertEquals(robotOne.getPosition().y, 5);//new Position(7,5));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+            assertEquals(robotOne.getLifeToken(), 3);
+            assertEquals(robotOne.isAlive(), true);
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
 }
 
