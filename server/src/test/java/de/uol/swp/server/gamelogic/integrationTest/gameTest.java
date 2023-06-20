@@ -5,12 +5,9 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.request.LoginRequest;
-import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.*;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.server.gamelogic.Game;
-import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
@@ -28,86 +25,449 @@ import static org.junit.Assert.assertEquals;
 
 public class gameTest {
     private Game game;
-    private AbstractPlayer player;
-    private Robot robot;
+    private Game gameSaveOnePlayer;
+    private Game gameSaveTwoPlayers;
+    private Game gameOnMapTwo;
+    private Card[] cards= new Card[5];
+    private AbstractPlayer playerOne;
+    private Robot robotOne;
+    private AbstractPlayer playerTwo;
+    private Robot robotTwo;
     /** Setup for gamelogic integration tests
      *
      * @author Jann Erik Bruns, Tommy Dang
      * @since 2023-06-19
      */
-    @Before
+
     public void setup(){
-        User user = new UserDTO("test1", "test1", "");
-        List<User> users = new ArrayList<User>();
 
-        users.add(user);
-        Set<User> usersSet = new HashSet<>(users);
 
-        game = new Game(1,  usersSet, "MapOne", 0, 3);
-        Position firstCP = game.getStartCheckpoint();
-        while(firstCP.x != 4 && firstCP.y != 3){
-            game = new Game(1,  usersSet, "MapOne", 0, 3);
-            firstCP = game.getStartCheckpoint();
-        }
-        player = game.getPlayers().get(0);
-        robot = player.getRobot();
+
+        //First Checkpoint is x = 4 and y = 11
+
+
+
+
     }
-    /** execute the 5 chosen cards of the players
+    /** Cloning gameSaveOnePlayer object in game to reset the game
      *
      * @author Jann Erik Bruns, Tommy Dang
      * @since 2023-06-19
      */
-    public void executeCards(){
+    public void SetGameOnePlayer(){
+        List<User> users = new ArrayList<User>();
+        users.add(new UserDTO("test1", "test1", ""));
+        Set<User> usersSet = new HashSet<>(users);
+
+        game = new Game(1,  usersSet, "MapOne", 0, 2, 1);
+
+        playerOne = game.getPlayers().get(0);
+        robotOne = playerOne.getRobot();
+    }
+    /** Cloning gameSaveTwoPlayers object in game to reset the game
+     *
+     * @author Jann Erik Bruns, Tommy Dang
+     * @since 2023-06-19
+     */
+    public void SetGameTwoPlayers(){
+        List<User> users = new ArrayList<>();
+        users.add(new UserDTO("test1", "test1", ""));
+        users.add(new UserDTO("test2", "test2", ""));
+        Set<User> usersSet = new HashSet<>(users);
+
+        game = new Game(1,  usersSet, "MapOne", 0, 2, 1);
+
+        playerOne = game.getPlayers().get(0);
+        robotOne = playerOne.getRobot();
+        playerTwo = game.getPlayers().get(1);
+        robotTwo = playerTwo.getRobot();
+    }
+
+    /** Cloning gameSaveOnePlayer object in game to reset the game
+     *
+     * @author Jann Erik Bruns, Tommy Dang
+     * @since 2023-06-19
+     */
+    public void SetGameOnMapOneWithMoreCP(){
+        List<User> users = new ArrayList<User>();
+        users.add(new UserDTO("test1", "test1", ""));
+        Set<User> usersSet = new HashSet<>(users);
+
+        gameOnMapTwo = new Game(1, usersSet, "MapOne", 0, 4, 1);
+
+        game = gameOnMapTwo;
+        playerOne = game.getPlayers().get(0);
+        robotOne = playerOne.getRobot();
+    }
+
+    /** execute the 5 chosen cards of the players and the board elements
+     *
+     * @author Jann Erik Bruns, Tommy Dang
+     * @since 2023-06-19
+     */
+    public void calcGameRound(){
         try{
-            game.register();
-                for(int i = 0; i < 5; i++){
-                    game.calcGameRoundCards();
+            boolean gameOver = false;
+            for(int i = 0; i < game.getPlayers().size(); i++){
+                game.register();
+            }
+            for(int i = 0; i < 5; i++){
+                game.calcGameRoundCards();
+                game.calcGameRoundBoard();
+                game.increaseProgramStep();
+                for (AbstractPlayer player : game.getPlayers()) {
+                    if (player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()) {
+                        gameOver = true;
+                    }
                 }
+                if(gameOver)
+                    break;
+            }
+
         }catch (Exception ex){
             System.out.println(ex);
         }
     }
 
-
-    /** Test for move1ForwardCard
+    /** Test for moveForwardCard
      *
      * @author Jann Erik Bruns, Tommy Dang
      * @since 2023-06-19
      */
     @Test
-    public void moveForward1Test() throws InterruptedException {
+    public void moveForward(){
         try {
+            SetGameOnePlayer();
             // Create 5 Move1ForwardCards
-            Card[] cards= new Card[5];
             for(int i = 0; i < 5; i++)
                 cards[i] = new Card(52, "6", 520, "");
 
-            player.chooseCardsOrder(cards);
-            executeCards();
-            assertEquals(robot.getPosition(), new Position(4, 0));
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+            assertEquals(robotOne.getPosition(), new Position(4, 8));
 
         } catch (Exception ex){
             System.out.println(ex);
         }
     }
+
+    /** Test for moving backwards, u turn and left turn
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void moveBackwardAndTurnLeft(){
+        try {
+            SetGameOnePlayer();
+            cards[0] = new Card(84, "5", 840, "");      // Move 3
+            cards[1] = new Card(43, "8", 430, "");      // Back-Up
+            cards[2] = new Card(43, "8", 430, "");      // Back-Up
+            cards[3] = new Card(43, "8", 430, "");      // Back-Up
+            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 3);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+    /** Test for staying in a laser
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void stayInLaser(){
+        try {
+            SetGameOnePlayer();
+
+            robotOne.setCurrentPosition(new Position(3, 3));
+            robotOne.setDirection(CardinalDirection.South);
+
+            cards[0] = new Card(51, "6", 510, "");
+            cards[1] = new Card(7, "1", 190, "");
+            cards[2] = new Card(7, "1", 190, "");
+            cards[3] = new Card(7, "1", 190, "");
+            cards[4] = new Card(7, "1", 190, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(3, 4));
+            assertEquals(robotOne.getDirection().ordinal(), 2);
+            assertEquals(robotOne.getDamageToken(), 5);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+
+    /** Test for moving through laser and takes no damage
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void moveTroughLaser(){
+        try {
+            SetGameOnePlayer();
+
+            robotOne.setCurrentPosition(new Position(3, 3));
+            cards[0] = new Card(7, "1", 190, "");       // Left Turn
+            cards[1] = new Card(7, "1", 190, "");       // Left Turn
+            cards[2] = new Card(75, "7", 750, "");      // Forward 2
+            cards[3] = new Card(51, "6", 510, "");      // Forward 1
+            cards[4] = new Card(37, "4", 10, "");       // U Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getDamageToken(), 0);
+            assertEquals(robotOne.getPosition(), new Position(3, 6));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+    /** Test for moving against wall
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void moveAgainstWall(){
+        try {
+            SetGameOnePlayer();
+            cards[0] = new Card(0, "5", 0, "");
+            cards[1] = new Card(0, "5", 0, "");
+            cards[2] = new Card(0, "5", 0, "");
+            cards[3] = new Card(0, "5", 0, "");
+            cards[4] = new Card(0, "5", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(4, 8));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+            assertEquals(robotOne.getDamageToken(), 0);
+            assertEquals(robotOne.isAlive(), true);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for moving into pit and lose 1 life token
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movingIntoPit(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(4, 3));
+
+            cards[0] = new Card(51, "6", 510, "");      // Forward 1
+            cards[1] = new Card(7, "1", 190, "");       // Left Turn
+            cards[2] = new Card(51, "6", 510, "");      // Forward 1
+            cards[3] = new Card(51, "6", 510, "");      // Forward 1
+            cards[4] = new Card(51, "6", 510, "");      // Forward 1
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getDamageToken(), 0);
+            assertEquals(robotOne.getLifeToken(), 2);
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 3);
+            assertEquals(robotOne.isAlive(), false);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+    /** Test for moving against wall
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void moveOutOfMap(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(4,11));
+            cards[0] = new Card(0, "6", 0, "");
+            cards[1] = new Card(0, "3", 0, "");
+            cards[2] = new Card(0, "6", 0, "");
+            cards[3] = new Card(0, "3", 0, "");
+            cards[4] = new Card(0, "5", 0, "");
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 2);
+            assertEquals(robotOne.getDamageToken(), 0);
+            assertEquals(robotOne.getLifeToken(), 2);
+            assertEquals(robotOne.isAlive(), false);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for getting moved by pusher
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void movedByPusher(){
+        try {
+            SetGameOnePlayer();
+
+            robotOne.setCurrentPosition(new Position(9, 5));
+            cards[0] = new Card(7, "1", 190, "");       // Left Turn
+            cards[1] = new Card(7, "1", 190, "");       // Left Turn
+            cards[2] = new Card(7, "1", 190, "");       // Left Turn
+            cards[3] = new Card(7, "1", 190, "");       // Left Turn
+            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(10, 5));
+            assertEquals(robotOne.getDirection().ordinal(), 3);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+    /** Test for roboters pushing each other
+     *
+     * @author Jann Erik Bruns
+     * @since 2023-06-20
+     */
+    @Test
+    public void roboterPushesRoboter(){
+        try {
+            SetGameTwoPlayers();
+
+            robotOne.setCurrentPosition(new Position(5, 3));
+            robotOne.setDirection(CardinalDirection.East);
+            robotTwo.setCurrentPosition(new Position(6, 3));
+            robotTwo.setDirection(CardinalDirection.East);
+            Card[] cards1 = new Card[5];
+            cards1[0] = new Card(0, "6", 10, "");
+            cards1[1] = new Card(0, "6", 20, "");
+            cards1[2] = new Card(0, "6", 30, "");
+            cards1[3] = new Card(0, "6", 40, "");
+            cards1[4] = new Card(0, "6", 50, "");
+
+            playerOne.chooseCardsOrder(cards1);
+
+            Card[] cards2 = new Card[5];
+            cards2[0] = new Card(0, "8", 5, "");
+            cards2[1] = new Card(0, "8", 15, "");
+            cards2[2] = new Card(0, "8", 25, "");
+            cards2[3] = new Card(0, "8", 35, "");
+            cards2[4] = new Card(0, "6", 45, "");
+
+            playerTwo.chooseCardsOrder(cards2);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(6, 3));
+            assertEquals(robotTwo.getPosition(), new Position(8, 3));
+            assertEquals(robotOne.getDirection().ordinal(), 1);
+            assertEquals(robotTwo.getDirection().ordinal(), 1);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for getting turned by GearLeft
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void turnedByGearLeft(){
+        try {
+            SetGameOnePlayer();
+
+            robotOne.setCurrentPosition(new Position(0, 1));
+            cards[0] = new Card(7, "1", 190, "");       // Left Turn
+            cards[1] = new Card(7, "1", 190, "");       // Left Turn
+            cards[2] = new Card(7, "1", 190, "");       // Left Turn
+            cards[3] = new Card(7, "1", 190, "");       // Left Turn
+            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(0, 1));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    /** Test for getting turned by GearLeft
+     *
+     * @author Tommy Dang
+     * @since 2023-06-20
+     */
+    @Test
+    public void turnedByGearRight(){
+        try {
+            SetGameOnePlayer();
+
+            robotOne.setCurrentPosition(new Position(1, 8));
+            cards[0] = new Card(36, "3", 420, "");       // Right Turn
+            cards[1] = new Card(36, "3", 420, "");       // Right Turn
+            cards[2] = new Card(36, "3", 420, "");       // Right Turn
+            cards[3] = new Card(36, "3", 420, "");       // Right Turn
+            cards[4] = new Card(36, "3", 420, "");       // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(1, 8));
+            assertEquals(robotOne.getDirection().ordinal(), 0);
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
     /** Test for moving and turning in one round
      *
      * @author Jann Erik Bruns
      * @since 2023-06-20
      */
     @Test
-    public void moveForwardAndTurnTest() throws InterruptedException {
+    public void moveForwardAndTurn(){
         try {
-            Card[] cards= new Card[5];
+            SetGameOnePlayer();
             for(int i = 0; i < 3; i++)
                 cards[i] = new Card(52, "6", 520, "");
-            cards[3] = new Card(20, "3", 100, "");
+            cards[3] = new Card(20, "3", 420, "");
             cards[4] = new Card(52, "6", 520, "");
 
-            player.chooseCardsOrder(cards);
-            executeCards();
-            assertEquals(robot.getPosition(), new Position(5, 0));
-            assertEquals(robot.getDirection().ordinal(), 1);
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getPosition(), new Position(5, 8));
+            assertEquals(robotOne.getDirection().ordinal(), 1);
 
         } catch (Exception ex){
             System.out.println(ex);

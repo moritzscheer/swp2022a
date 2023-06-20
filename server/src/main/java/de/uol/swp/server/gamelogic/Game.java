@@ -33,7 +33,6 @@ import java.util.stream.IntStream;
  */
 public class Game {
     private static final Logger LOG = LogManager.getLogger(Game.class);
-
     private final Integer lobbyID;
     private Block[][] board;
     private int roundNumber = 1;
@@ -66,7 +65,10 @@ public class Game {
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
-
+    private String fullMapName;
+    public String getFullMapName(){
+        return fullMapName;
+    }
     /**
      * Constructor
      *
@@ -76,8 +78,7 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(
-            Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
+    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount, int version) {
         this.lobbyID = lobbyID;
         this.programStep = 0;
         this.readyRegister = 0;
@@ -88,8 +89,17 @@ public class Game {
         //assert users.size() + numberBots <= 8;
 
         // create board
-        Random random = new Random();
-        int version = random.nextInt(3) + 1;
+        if(version == -1){
+            Random random = new Random();
+            version = random.nextInt(3) + 1;
+        }
+
+        fullMapName = this.mapName
+                + "V"
+                + version
+                + "C"
+                + checkpointCount;
+
         LOG.debug(version);
         LOG.debug(
                 "server/src/main/resources/maps/"
