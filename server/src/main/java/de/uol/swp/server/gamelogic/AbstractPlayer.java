@@ -16,6 +16,7 @@ public abstract class AbstractPlayer {
     protected UserDTO userDTO;
     protected int numCardToPlay = 0;
 
+
     /** Constructor */
     public AbstractPlayer() {}
 

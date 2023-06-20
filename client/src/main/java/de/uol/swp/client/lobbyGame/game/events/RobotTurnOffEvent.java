@@ -1,33 +1,27 @@
 package de.uol.swp.client.lobbyGame.game.events;
-
-import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.user.UserDTO;
 
-import java.util.List;
-
 /**
- * Event used to submit the cards of a players
+ * Event used to turn off a player robot
  *
  *
  * @author Maria Andrade
- * @since 2023-05-19
+ * @since 2023-06-19
  */
-public class SubmitCardsEvent {
+public class RobotTurnOffEvent {
 
     private final int lobbyID;
     private final UserDTO loggedInUser;
-    private final List<CardDTO> cardDTOS;
 
     /**
      * constructor
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-05-01
+     * @since 2023-06-19
      */
-    public SubmitCardsEvent(int lobbyID, UserDTO loggedInUser, List<CardDTO> cardDTOS) {
+    public RobotTurnOffEvent(int lobbyID, UserDTO loggedInUser) {
         this.lobbyID = lobbyID;
         this.loggedInUser = loggedInUser;
-        this.cardDTOS = cardDTOS;
     }
 
     public int getLobbyID() {
@@ -36,9 +30,5 @@ public class SubmitCardsEvent {
 
     public UserDTO getLoggedInUser() {
         return loggedInUser;
-    }
-
-    public List<CardDTO> getCardDTOS() {
-        return cardDTOS;
     }
 }

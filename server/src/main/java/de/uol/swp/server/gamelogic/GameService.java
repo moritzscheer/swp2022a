@@ -230,13 +230,17 @@ public class GameService extends AbstractService {
      */
     @Subscribe
     public void onTurnRobotOffRequest(TurnRobotOffRequest request)
-            throws LobbyDoesNotExistException {
+            throws LobbyDoesNotExistException, InterruptedException {
         Optional<Game> game = getGame(request.getLobbyID());
         if (game.isPresent()) {
-            game.get().getPlayerByUserDTO(request.getLoggedInUser()).getRobot().setPowerDown(true);
+            boolean allChosen = game.get().setPowerDown(request.getLoggedInUser());
             lobbyService.sendToAllInLobby(
                     request.getLobbyID(),
                     new RobotTurnedOffMessage(request.getLobbyID(), request.getLoggedInUser()));
+
+            if (allChosen) {
+                manageRoundsUpdates(game.get(), request.getLobbyID());
+            }
         }
     }
 
