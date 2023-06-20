@@ -20,4 +20,14 @@ public class RoundIsOverMessageTest {
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+        int lobbyID = 123;
+        RoundIsOverMessage message1 = new RoundIsOverMessage(lobbyID);
+        RoundIsOverMessage message2 = new RoundIsOverMessage(lobbyID);
+
+        Assertions.assertEquals(message1, message2);
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
 }

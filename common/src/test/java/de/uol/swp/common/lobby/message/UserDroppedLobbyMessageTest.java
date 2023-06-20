@@ -54,4 +54,16 @@ public class UserDroppedLobbyMessageTest {
 
         Assertions.assertEquals(userDTO, message.getUser());
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+
+        UserDroppedLobbyMessage message1 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+
+        UserDroppedLobbyMessage message2 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+
+        Assertions.assertEquals(message1, message2);
+
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
 }

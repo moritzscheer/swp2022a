@@ -82,4 +82,17 @@ public class PlayerIsReadyInLobbyMessageTest {
                     new PlayerReadyInLobbyMessage(null, userDTO, ready);
                 });
     }
+
+    @Test
+    public void testEqualsAndHashCode() {
+
+        boolean ready1 = true;
+        PlayerReadyInLobbyMessage message1 = new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
+
+        PlayerReadyInLobbyMessage message2 = new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
+
+        Assertions.assertEquals(message1, message2);
+
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
 }
