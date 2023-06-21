@@ -185,6 +185,20 @@ public class GearBehaviourTest {
     }
 
     @Test
+    public void testGetType() {
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        gearBehaviour.setType(34);
+        assertEquals(34, gearBehaviour.getType());
+    }
+
+    @Test
+    public void testSetType() {
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        gearBehaviour.setType(33);
+        assertEquals(33, gearBehaviour.getType());
+    }
+
+    @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
         GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];

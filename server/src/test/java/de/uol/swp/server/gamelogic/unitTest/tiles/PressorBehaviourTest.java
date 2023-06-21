@@ -1,9 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static junit.framework.TestCase.assertNull;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
@@ -14,6 +12,7 @@ import de.uol.swp.server.gamelogic.tiles.PressorBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +29,7 @@ public class PressorBehaviourTest {
 
     private int[] activeInProgramSteps = new int[] {1, 2};
     private PressorBehaviour pressorBehaviour;
+    private PressorBehaviour pressorBehaviour2;
 
     @Before
     public void setUp() throws Exception {
@@ -45,6 +45,14 @@ public class PressorBehaviourTest {
                         activeInProgramSteps,
                         CardinalDirection.West,
                         true);
+        pressorBehaviour2 =
+                new PressorBehaviour(
+                        List.of(robotStates),
+                        board,
+                        blockPos,
+                        activeInProgramSteps,
+                        CardinalDirection.West,
+                        false);
     }
 
     /**
@@ -91,5 +99,25 @@ public class PressorBehaviourTest {
         robotStates[0].setCurrentPosition(new Position(1, 1));
         assertNull(pressorBehaviour.onPressorStage(3));
         assertTrue(robotStates[0].isAlive());
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        if(!pressorBehaviour2.isCrossing()) {
+            image = pressorBehaviour2.getImage();
+            if(activeInProgramSteps[0] == 1) {
+                assertEquals(35, image.get(0)[0]);
+            }else {
+                assertEquals(36, image.get(0)[0]);
+            }
+        }else {
+            image = pressorBehaviour.getImage();
+            if(activeInProgramSteps[0] == 2) {
+                assertEquals(37, image.get(0)[0]);
+            }else {
+                assertEquals(38, image.get(0)[0]);
+            }
+        }
     }
 }

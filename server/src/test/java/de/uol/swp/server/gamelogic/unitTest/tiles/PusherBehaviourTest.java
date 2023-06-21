@@ -13,6 +13,7 @@ import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,6 +81,29 @@ public class PusherBehaviourTest {
      */
     @Test
     public void dontPushRobotWestTest() {
-        // TODO must be tested together with move intent
+        // No pusher action at program step 2
+        List<MoveIntent> moves = board[0][0].OnPusherStage(2);
+        assertEquals(0,moves.size());
+    }
+
+    @Test
+    public void testGetActiveInProgramSteps() {
+        PusherBehaviour pusher = (PusherBehaviour) behaviours1[0];
+        assertEquals(1, pusher.getActiveInProgramSteps().get(0));
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        if(activeInProgramSteps.length == 3) {
+            image = behaviours1[0].getImage();
+            assertEquals(42,image.get(0)[0]);
+        } else if(activeInProgramSteps.length == 2) {
+            image = behaviours1[0].getImage();
+            assertEquals(43,image.get(0)[0]);
+        } else {
+            image = behaviours1[0].getImage();
+            assertEquals(38,image.get(0)[0]);
+        }
     }
 }

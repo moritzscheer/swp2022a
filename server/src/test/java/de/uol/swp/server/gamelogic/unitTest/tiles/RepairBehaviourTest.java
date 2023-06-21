@@ -12,6 +12,7 @@ import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class RepairBehaviourTest {
         previousDamage = robots[0].getDamageToken();
 
         // robot is in repair station
-        ((RepairBehaviour) behaviours1[0]).onCardEnding(4);
+        behaviours1[0].onCardEnding(4);
 
         assertEquals(previousDamage - 1, robots[0].getDamageToken());
         assertEquals(
@@ -84,11 +85,34 @@ public class RepairBehaviourTest {
 
         // robot is in repair station
         int previousOptionCard = robots[1].getOptionCard();
-        ((RepairBehaviour) behaviours2[0]).onCardEnding(4);
+        behaviours2[0].onCardEnding(4);
 
         assertEquals(previousDamage - 2, robots[1].getDamageToken());
         assertEquals(
                 ((RepairBehaviour) behaviours2[0]).getCheckPointPosition(),
                 robots[1].getLastBackupCopyPosition());
+    }
+
+    @Test
+    public void fixDamageTokenTest() {
+        RepairBehaviour repairBehaviour = (RepairBehaviour) behaviours1[0];
+        repairBehaviour.fixDamageToken(0);
+        assertEquals(0, robots[0].getDamageToken());
+    }
+
+    @Test
+    public void setBackupCopyTest() {
+        RepairBehaviour repairBehaviour = (RepairBehaviour) behaviours1[0];
+        repairBehaviour.setBackupCopy(1);
+
+        assertEquals(pos1, robots[0].getLastBackupCopyPosition());
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        image = behaviours1[0].getImage();
+        assertEquals(1, image.size());
+        assertEquals(25, image.get(0)[0]);
     }
 }
