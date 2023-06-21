@@ -1,4 +1,4 @@
-package de.uol.swp.server.gamelogic.unitTest.enums;
+package de.uol.swp.server.gamelogic.unitTest.tiles.enums;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;

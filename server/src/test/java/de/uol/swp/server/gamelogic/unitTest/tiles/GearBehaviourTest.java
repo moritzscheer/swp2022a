@@ -12,6 +12,7 @@ import de.uol.swp.server.gamelogic.tiles.GearBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -181,5 +182,25 @@ public class GearBehaviourTest {
         assertEquals(CardinalDirection.North, robots[1].getDirection());
         behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.West, robots[1].getDirection());
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        if(gearBehaviour.isTurnClockwise()) {
+            image = gearBehaviour.getImage();
+        }
+        assertEquals(1, image.size());
+        assertEquals(34, image.get(0)[0]);
+        assertEquals(0, image.get(0)[1]);
+
+        GearBehaviour gearBehaviour2 = (GearBehaviour) behaviours2[0];
+        if(!gearBehaviour2.isTurnClockwise()) {
+            image = gearBehaviour2.getImage();
+        }
+        assertEquals(1, image.size());
+        assertEquals(33, image.get(0)[0]);
+        assertEquals(0, image.get(0)[1]);
     }
 }

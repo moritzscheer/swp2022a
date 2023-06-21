@@ -84,7 +84,7 @@ public class LaserBehaviourTest {
         // robot 1 in same block as laser
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         int beforeDamage = robots[0].getDamageToken();
-        ((LaserBehaviour) behaviours1[0]).onLaserStage(1);
+        behaviours1[0].onLaserStage(1);
         int afterDamage = robots[0].getDamageToken();
         assertEquals(((LaserBehaviour) behaviours1[0]).getLaserBeam(), afterDamage - beforeDamage);
     }
@@ -103,7 +103,7 @@ public class LaserBehaviourTest {
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         assertEquals(robots[1].getPosition(), pos2);
         int beforeDamage = robots[1].getDamageToken();
-        ((LaserBehaviour) behaviours1[0]).onLaserStage(0);
+        behaviours1[0].onLaserStage(0);
         int afterDamage = robots[1].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }
@@ -122,7 +122,7 @@ public class LaserBehaviourTest {
         // robot in same block as wall
         assertEquals(robots[2].getPosition(), behaviours3[0].getBlockPos());
         int beforeDamage = robots[2].getDamageToken();
-        ((LaserBehaviour) behaviours4[0]).onLaserStage(0);
+        behaviours4[0].onLaserStage(0);
         int afterDamage = robots[2].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }

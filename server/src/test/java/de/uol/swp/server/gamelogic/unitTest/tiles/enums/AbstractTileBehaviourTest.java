@@ -1,18 +1,18 @@
-package de.uol.swp.server.gamelogic.unitTest.enums;
+package de.uol.swp.server.gamelogic.unitTest.tiles.enums;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static junit.framework.TestCase.*;
 
 public class AbstractTileBehaviourTest {
 
@@ -31,75 +31,75 @@ public class AbstractTileBehaviourTest {
 
     @Test
     public void testGetBlockPos() {
-        assertEquals(blockPos, tileBehaviour.getBlockPos());
+        Assertions.assertEquals(blockPos, tileBehaviour.getBlockPos());
     }
 
     @Test
     public void testOnRobotEntered() {
         List<MoveIntent> moveIntents = tileBehaviour.onRobotEntered(0);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnExpressConveyorStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onExpressConveyorStage(1);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnConveyorStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onConveyorStage(2);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnLaserStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onLaserStage(3);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnPusherStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onPusherStage(4);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnPressorStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onPressorStage(5);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testGetImage() {
         List<int[]> image = tileBehaviour.getImage();
-        assertTrue(image.isEmpty());
+        Assertions.assertTrue(image.isEmpty());
     }
 
     @Test
     public void testGetObstruction() {
-        assertFalse(tileBehaviour.getObstruction(CardinalDirection.North));
-        assertFalse(tileBehaviour.getObstruction(CardinalDirection.South));
-        assertFalse(tileBehaviour.getObstruction(CardinalDirection.East));
-        assertFalse(tileBehaviour.getObstruction(CardinalDirection.West));
+        Assertions.assertFalse(tileBehaviour.getObstruction(CardinalDirection.North));
+        Assertions.assertFalse(tileBehaviour.getObstruction(CardinalDirection.South));
+        Assertions.assertFalse(tileBehaviour.getObstruction(CardinalDirection.East));
+        Assertions.assertFalse(tileBehaviour.getObstruction(CardinalDirection.West));
     }
 
     @Test
     public void testOnCardEnding() {
         List<MoveIntent> moveIntents = tileBehaviour.onCardEnding(6);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnRotatorStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onRotatorStage(7);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     @Test
     public void testOnCheckPointStage() {
         List<MoveIntent> moveIntents = tileBehaviour.onCheckPointStage(8);
-        assertNull(moveIntents);
+        Assertions.assertNull(moveIntents);
     }
 
     private static class AbstractTileBehaviourImpl extends AbstractTileBehaviour {
