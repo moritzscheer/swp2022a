@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
