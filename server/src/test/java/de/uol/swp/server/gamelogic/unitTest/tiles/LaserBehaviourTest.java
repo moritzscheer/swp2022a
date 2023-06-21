@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
+import static junit.framework.TestCase.assertFalse;
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.common.game.Position;
@@ -13,6 +15,7 @@ import de.uol.swp.server.gamelogic.tiles.WallBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -125,5 +128,88 @@ public class LaserBehaviourTest {
         behaviours4[0].onLaserStage(0);
         int afterDamage = robots[2].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
+    }
+
+    @Test
+    public void testGetLaserDirection() {
+        LaserBehaviour laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos1, CardinalDirection.North, 1, true);
+        assertEquals(CardinalDirection.North, laserBehaviour.getLaserDirection());
+
+        laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos2, CardinalDirection.West, 2, false);
+        assertEquals(CardinalDirection.West, laserBehaviour.getLaserDirection());
+    }
+
+    /**
+     * Testet die Methode `getLaserBeam()`.
+     */
+    @Test
+    public void testGetLaserBeam() {
+        LaserBehaviour laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos1, CardinalDirection.North, 1, true);
+        assertEquals(1, laserBehaviour.getLaserBeam());
+
+        laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos2, CardinalDirection.West, 2, false);
+        assertEquals(2, laserBehaviour.getLaserBeam());
+    }
+
+    /**
+     * Testet die Methode `getStart()` und `setStart(boolean)`.
+     */
+    @Test
+    public void testGetSetStart() {
+        LaserBehaviour laserBehaviour = (LaserBehaviour) behaviours1[0];
+        assertTrue(laserBehaviour.getStart());
+
+        laserBehaviour.setStart(false);
+        assertFalse(laserBehaviour.getStart());
+
+        laserBehaviour.setStart(true);
+        assertTrue(laserBehaviour.getStart());
+    }
+
+    /**
+     * Testet die Methode `setLaserBeam(int)`.
+     */
+    @Test
+    public void testSetLaserBeam() {
+        LaserBehaviour laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos1, CardinalDirection.North, 1, true);
+        assertEquals(1, laserBehaviour.getLaserBeam());
+
+        laserBehaviour.setLaserBeam(3);
+        assertEquals(3, laserBehaviour.getLaserBeam());
+
+        laserBehaviour.setLaserBeam(0);
+        assertEquals(0, laserBehaviour.getLaserBeam());
+    }
+
+    /**
+     * Testet die Methode `getImage()`.
+     */
+    @Test
+    public void testGetImage() {
+        LaserBehaviour laserBehaviour = new LaserBehaviour(
+                new ArrayList<>(), board, activeInProgramSteps,
+                pos1, CardinalDirection.North, 1, true);
+        List<int[]> expectedImage = new ArrayList<>();
+
+        if (laserBehaviour.isFullLaser()) {
+            expectedImage = laserBehaviour.getImage();
+            assertEquals(19, expectedImage.get(0)[0]);
+        } else if (laserBehaviour.getStart()) {
+            expectedImage = laserBehaviour.getImage();
+            assertEquals(16, expectedImage.get(0)[0]);
+        } else {
+            expectedImage = laserBehaviour.getImage();
+            assertEquals(17, expectedImage.get(0)[0]);
+        }
     }
 }
