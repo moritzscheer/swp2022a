@@ -23,7 +23,7 @@ public class GameMovement {
 
     private boolean someoneMoved = false;
 
-
+    private boolean isCardMove = false;
 
     public GameMovement(List<PlayerDTO> robotsPositionsInOneMove, String moveType, GameMovement oldState,
                         String robotThatPlayedTheCard) {
@@ -36,10 +36,9 @@ public class GameMovement {
         if(!Objects.equals(this.oldState, null)){
             createMessageOfRobotsThatMoved();
         }
-
-        else
-            this.moveMessage = "";
-
+        if(!Objects.equals(robotThatPlayedTheCard, "")){
+            isCardMove = true;
+        }
 
     }
 
@@ -81,9 +80,16 @@ public class GameMovement {
                         + "} \n"; // new direction
             }
             if (oldPlayerDTO.getRobotDTO().isAlive() & !newPlayerDTO.getRobotDTO().isAlive()) {
-                this.moveMessage = this.moveMessage +
-                        "    " + oldPlayerDTO.getUser().getUsername() // User ("
-                        + " died\n";
+                if(newPlayerDTO.getRobotDTO().isDeadForever()){
+                    this.moveMessage = this.moveMessage +
+                            "    " + oldPlayerDTO.getUser().getUsername() // User ("
+                            + " died FOREVEEEEER\n";
+                }
+                else{
+                    this.moveMessage = this.moveMessage +
+                            "    " + oldPlayerDTO.getUser().getUsername() // User ("
+                            + " died\n";
+                }
             }
         }
     }
@@ -91,5 +97,9 @@ public class GameMovement {
 
     public boolean isSomeoneMoved() {
         return someoneMoved;
+    }
+
+    public boolean isCardMove() {
+        return isCardMove;
     }
 }

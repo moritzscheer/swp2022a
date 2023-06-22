@@ -330,6 +330,7 @@ public class GameService extends AbstractService {
     public void manageGameUpdate(Game game, int lobbyID) {
 
         int secondsToWait = 1;
+        boolean gameOver = false;
 
         try {
             lobbyService.sendToAllInLobby(
@@ -357,6 +358,10 @@ public class GameService extends AbstractService {
             for (GameMovement gameMovement: gameMovements) {
                 List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
+                // just to speed up when there are no moves
+                if(gameMovement.isSomeoneMoved() || gameMovement.isCardMove())
+                    secondsToWait += 1;
+
                 scheduler.schedule(() -> {
                     try {
                         lobbyService.sendToAllInLobby(lobbyID,
@@ -367,34 +372,35 @@ public class GameService extends AbstractService {
                         throw new RuntimeException(e);
                     }
                 }, secondsToWait, SECONDS);
-
-                // just to speed up when there are no moves
-                if(gameMovement.isSomeoneMoved())
-                    secondsToWait += 1;
             }
-            if (isGameOver(lobbyID, game, secondsToWait)) {
+            gameOver = isGameOver(lobbyID, game, secondsToWait+2);
+            if (gameOver) {
                 break;
             }
 
             game.increaseProgramStep();
         }
+        secondsToWait += 1;
+        // if game was over, message was sent already
+        if(!gameOver){
+            UserDTO winner = game.roundIsOver(); // reset variables
+            AbstractLobbyMessage msg;
+            if (Objects.equals(winner, null))
+                msg = new RoundIsOverMessage(lobbyID, game.getRespawnRobots());
+            else
+                msg = new GameOverMessage(lobbyID, winner);
+            scheduler.schedule(
+                    () -> {
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    secondsToWait,
+                    SECONDS);
+        }
 
-        UserDTO winner = game.roundIsOver(); // reset variables
-        AbstractLobbyMessage msg;
-        if (Objects.equals(winner, null))
-            msg = new RoundIsOverMessage(lobbyID, game.getRespawnRobots());
-        else
-            msg = new GameOverMessage(lobbyID, winner);
-        scheduler.schedule(
-                () -> {
-                    try {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
-                    } catch (LobbyDoesNotExistException e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                secondsToWait,
-                SECONDS);
     }
 
     /**
