@@ -424,6 +424,7 @@ public class Game {
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
+        this.respawnRobots = new ArrayList<>();
 
         int countSurvivors = 0;
         UserDTO survivor = null;
