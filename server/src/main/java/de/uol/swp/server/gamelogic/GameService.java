@@ -340,10 +340,8 @@ public class GameService extends AbstractService {
         }
 
         for (int i = 0; i < 5; i++) {
-            List<List<PlayerDTO>> moveList = game.calcAllGameRound();
+            game.calcAllGameRound();
             List<GameMovement> gameMovements = game.getGameMovements();
-
-            //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
@@ -370,11 +368,12 @@ public class GameService extends AbstractService {
                     }
                 }, secondsToWait, SECONDS);
 
-                secondsToWait += 1;
-
-                if (isGameOver(lobbyID, game, secondsToWait)) {
-                    break;
-                }
+                // just to speed up when there are no moves
+                if(gameMovement.isSomeoneMoved())
+                    secondsToWait += 1;
+            }
+            if (isGameOver(lobbyID, game, secondsToWait)) {
+                break;
             }
 
             game.increaseProgramStep();
@@ -414,6 +413,20 @@ public class GameService extends AbstractService {
                 return true;
             }
         }
+        UserDTO survivor = new UserDTO("Nobody", "", "");
+        int countSurvivors = 0;
+        for (AbstractPlayer player : game.getPlayers()) {
+            if (!player.getRobot().isDeadForever()) {
+                countSurvivors++;
+                survivor = player.getUser();
+            }
+        }
+        if (countSurvivors <= 1) {
+            // gameover
+            playerWonTheGame(lobbyID, survivor, secondsToWait);
+            return true;
+        }
+
         return false;
     }
 
