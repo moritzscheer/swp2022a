@@ -16,10 +16,12 @@ import java.util.Objects;
  * @since 2023-06-20
  */
 public class GameMovement {
-    private String moveMessage;
+    private String moveMessage = "";
     private final List<PlayerDTO> robotsPositionsInOneMove;
 
     private final GameMovement oldState;
+
+    private boolean someoneMoved = false;
 
 
 
@@ -30,10 +32,11 @@ public class GameMovement {
 
         if(!Objects.equals(moveType, null)){
             this.moveMessage = "[" + moveType + "] "+ robotThatPlayedTheCard + "\n";
-            if(!Objects.equals(this.oldState, null)){
-                createMessageOfRobotsThatMoved();
-            }
         }
+        if(!Objects.equals(this.oldState, null)){
+            createMessageOfRobotsThatMoved();
+        }
+
         else
             this.moveMessage = "";
 
@@ -55,6 +58,7 @@ public class GameMovement {
             assert oldPlayerDTO.getUser().equals(newPlayerDTO.getUser());
 
             if (!oldPlayerDTO.getRobotDTO().equals(newPlayerDTO.getRobotDTO())) {
+                this.someoneMoved = true;
                 this.moveMessage = this.moveMessage +
                         "    " + oldPlayerDTO.getUser().getUsername() // User ("
                         + " ("
@@ -82,5 +86,10 @@ public class GameMovement {
                         + " died\n";
             }
         }
+    }
+
+
+    public boolean isSomeoneMoved() {
+        return someoneMoved;
     }
 }
