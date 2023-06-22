@@ -6,6 +6,7 @@ import de.uol.swp.common.user.UserDTO;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class ShowAllPlayerCardsMessageTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID);
+        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID, new ArrayList<>());
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }

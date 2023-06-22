@@ -73,6 +73,8 @@ public class Game {
     private boolean notDistributedCards = true;
     private List<GameMovement> gameMovements;
 
+    private List<PlayerDTO> respawnRobots;
+
     /**
      * Constructor
      *
@@ -427,10 +429,21 @@ public class Game {
         UserDTO survivor = null;
         for (AbstractPlayer player : this.players) {
             if (!player.getRobot().isDeadForever()) {
+                // only when dead for the round, set in the backup
+                boolean addRespawn = false;
+                if(player.getRobot().isDeadForTheRound()){
+                    player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+                    addRespawn = true;
+                }
+
                 player.getRobot().setAlive(true);
                 player.getRobot().setDeadForTheRound(false);
                 player.getRobot().setPowerDown(false);
-                player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+
+                // needs to be done down here after all variables were set
+                if(addRespawn)
+                    respawnRobots.add(convertPlayerToPlayerDTO(player));
+
                 countSurvivors++;
                 survivor = player.getUser();
             }
@@ -519,14 +532,13 @@ public class Game {
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnCheckPointStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "CheckPoint", oldMove, ""));
+        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         // must execute this actions at the end
@@ -722,7 +734,8 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
-                if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
+                if (!this.robots.get(move.robotID).isAlive()
+                        || this.robots.get(move.robotID).isPowerDown()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
                 // after robot moved to new block, check for behvaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
@@ -960,7 +973,13 @@ public class Game {
     }
 
     public List<GameMovement> getGameMovements() {
+        if(Objects.equals(gameMovements, null))
+            return new ArrayList<>();
         return gameMovements;
+    }
+
+    public List<PlayerDTO> getRespawnRobots() {
+        return respawnRobots;
     }
 
     /**

@@ -10,7 +10,6 @@ import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
@@ -30,8 +29,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
-import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
-import static java.lang.Math.abs;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
@@ -386,7 +383,7 @@ public class GameService extends AbstractService {
         UserDTO winner = game.roundIsOver(); // reset variables
         AbstractLobbyMessage msg;
         if (Objects.equals(winner, null))
-            msg = new RoundIsOverMessage(lobbyID);
+            msg = new RoundIsOverMessage(lobbyID, game.getRespawnRobots());
         else
             msg = new GameOverMessage(lobbyID, winner);
         scheduler.schedule(
