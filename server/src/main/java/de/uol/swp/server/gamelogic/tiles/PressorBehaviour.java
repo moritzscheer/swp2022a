@@ -47,6 +47,8 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
+                    if(!robotState.isAlive())
+                        continue;
                     if (Objects.equals(robotState.getPosition(), blockPos)) {
                         robotState.setAlive(false);
                         break;

@@ -855,7 +855,7 @@ public class Game {
             for (int j = 0; j < robots.size(); j++) {
                 Robot robot = robots.get(j);
                 if (!robot.equals(robots.get(move.robotID))) {
-                    if (robot.getPosition().equals(destinationTile)) {
+                    if (robot.getPosition().equals(destinationTile) && robot.isAlive()) {
                         boolean alreadyHasMoveIntent = false;
                         for (MoveResult moveResult : moveList) {
                             if (robot.equals(robots.get(moveResult.robotID))) {

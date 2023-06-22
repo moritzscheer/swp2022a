@@ -69,6 +69,8 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
+                    if(!robotState.isAlive())
+                        continue;
                     if (robotState.getPosition().equals(blockPos)) {
                         robotState.setDamageToken(robotState.getDamageToken() + laserBeam);
                         break;

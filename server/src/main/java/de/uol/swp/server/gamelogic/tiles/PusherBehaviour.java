@@ -52,6 +52,8 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         List<MoveIntent> moves = new ArrayList<>();
         if (this.activeInProgramSteps.contains(programStep)) {
             for (Robot robotState : this.robotStates) {
+                if(!robotState.isAlive())
+                    continue;
                 if (Objects.equals(robotState.getPosition(), this.blockPos)) {
                     moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));
                     break;
