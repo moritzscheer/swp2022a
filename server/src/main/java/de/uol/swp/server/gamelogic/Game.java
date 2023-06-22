@@ -464,21 +464,15 @@ public class Game {
         }
     }
 
-    public List<List<PlayerDTO>> calcAllGameRound() {
-        List<List<PlayerDTO>> moves = new ArrayList<>();
-
-        if(areAllRobotsAreDeadOrTurnedOff()){
-            return moves;
-        }
+    public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-
-        moves.add(getPlayerDTOSForAllPlayers());
+        if(areAllRobotsAreDeadOrTurnedOff()){
+            return;
+        }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
 
-        moves.addAll(calcGameRoundCardsNew());
-        moves.addAll(calcGameRoundBoardNew());
-
-        return moves;
+        calcGameRoundCardsNew();
+        calcGameRoundBoardNew();
     }
 
     private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
@@ -735,8 +729,7 @@ public class Game {
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
-                if (!this.robots.get(move.robotID).isAlive()
-                        || this.robots.get(move.robotID).isPowerDown()) continue; // if not alive, go on
+                if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
                 // after robot moved to new block, check for behvaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
@@ -790,6 +783,8 @@ public class Game {
         // execute board elements functions, other than moves
         try {
             for (Robot robot : robots) {
+                if(!robot.isAlive())
+                    continue;
                 Position position = robot.getPosition();
                 for (AbstractTileBehaviour behaviour :
                         board[position.x][position.y].getBehaviourList()) {
@@ -1029,6 +1024,9 @@ public class Game {
      */
     private void checkRobotFellFromBoard() {
         for (Robot robot : this.robots) {
+            if(!robot.isAlive()){
+                continue;
+            }
             Position position = robot.getPosition();
             if (position.x < 0
                     || position.y < 0
