@@ -71,6 +71,10 @@ public class Robot implements Serializable {
         currentPosition = Position.translate(currentPosition, directionToMove);
     }
 
+    public void move(Position targetCoords) {
+        ;;
+    }
+
     public boolean isAlive() {
         return !isDeadForever() && !isDeadForTheRound();
     }
