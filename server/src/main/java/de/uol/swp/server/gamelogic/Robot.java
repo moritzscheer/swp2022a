@@ -39,10 +39,9 @@ public class Robot implements Serializable {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 06-02-2023
      */
-    public Robot(int id, Position currentPosition, boolean alive, CardinalDirection direction) {
+    public Robot(int id, Position currentPosition, CardinalDirection direction) {
         this.id = id;
         this.currentPosition = currentPosition;
-        this.alive = alive;
         this.damageToken = 0;
         this.direction = direction;
         this.lifeToken = 3;
@@ -52,15 +51,6 @@ public class Robot implements Serializable {
         this.lastBackupCopyPosition = currentPosition;
         this.deadForTheRound = false;
         this.deadForever = false;
-    }
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public boolean registerReady() {
-        // TODO
-        return false;
     }
 
     /**
@@ -81,31 +71,8 @@ public class Robot implements Serializable {
         currentPosition = Position.translate(currentPosition, directionToMove);
     }
 
-    public void move(Position targetCoords) {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public void setPowerDown() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
-     */
-    public int lockRegister() {
-        // TODO
-        return 0;
-    }
-
     public boolean isAlive() {
-        return this.alive;
+        return !isDeadForever() && !isDeadForTheRound();
     }
 
     public Position getPosition() {
@@ -128,14 +95,19 @@ public class Robot implements Serializable {
     public void setAlive(boolean alivee) {
         if (!alivee) {
             // robot is dead
-            this.lifeToken--;
+            setLifeToken(getLifeToken()-1);
             //setCurrentPosition(this.lastBackupCopyPosition);
-            this.alive = alivee;
+            setDeadForTheRound(true);
         } else {
             if (this.lifeToken > 0) {
-                this.alive = alivee;
+                setDeadForTheRound(false);
             }
-            // robot is dead forever
+            else {
+                // robot is dead forever
+                setDeadForever();
+                setDeadForTheRound(true);
+            }
+
         }
     }
 
@@ -198,26 +170,6 @@ public class Robot implements Serializable {
     }
 
     /**
-     * Getter for the robot Image Path
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-05-13
-     */
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    /**
-     * Setter for the robot Image Path
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-05-13
-     */
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
-    }
-
-    /**
      * Getter for the robot Life Token
      *
      * @author Maria Eduarda Costa Leite Andrade
@@ -234,7 +186,13 @@ public class Robot implements Serializable {
      * @since 2023-05-14
      */
     public void setLifeToken(int lifeToken) {
-        this.lifeToken = lifeToken;
+        if(lifeToken > 0)
+            this.lifeToken = lifeToken;
+        else if (lifeToken == 0) {
+            setDeadForever();
+            this.lifeToken = lifeToken;
+        }
+        return;
     }
 
     /**
