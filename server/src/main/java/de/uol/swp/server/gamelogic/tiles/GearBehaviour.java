@@ -46,6 +46,8 @@ public class GearBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onRotatorStage(int programStep) {
         for (Robot robotState : robotStates) {
+            if(!robotState.isAlive())
+                continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (this.turnClockwise) {
                     CardinalDirection dir = robotState.getDirection();

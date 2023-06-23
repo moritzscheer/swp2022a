@@ -32,6 +32,8 @@ public class RobotDTO implements Serializable {
 
     private boolean powerDown = false;
 
+    private boolean deadForever = false;
+
     public RobotDTO(int robotID, Position position, CardinalDirection direction) {
         this.robotID = robotID;
         this.position = position;
@@ -119,5 +121,13 @@ public class RobotDTO implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(robotID, position, direction, lifeToken, damageToken, lastCheckpoint, alive);
+    }
+
+    public boolean isDeadForever() {
+        return deadForever;
+    }
+
+    public void setDeadForever(boolean deadForever) {
+        this.deadForever = deadForever;
     }
 }

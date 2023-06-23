@@ -48,6 +48,8 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     public List<MoveIntent> onConveyorStage(int programmStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
+            if(!robotState.isAlive())
+                continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 moves.add(new MoveIntent(robotState.getID(), direction));
 

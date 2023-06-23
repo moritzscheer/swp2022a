@@ -36,7 +36,7 @@ public class PusherBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
         behaviours1[0] =
                 new PusherBehaviour(List.of(robots), board, pos1, activeInProgramSteps, direction);
         board[0][0] = new Block(behaviours1, "", pos1);

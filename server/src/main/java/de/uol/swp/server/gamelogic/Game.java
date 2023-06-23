@@ -73,6 +73,8 @@ public class Game {
     private boolean notDistributedCards = true;
     private List<GameMovement> gameMovements;
 
+    private List<PlayerDTO> respawnRobots;
+
     /**
      * Constructor
      *
@@ -237,7 +239,6 @@ public class Game {
                     count = count + 9 - damage;
 
                 }
-                // TODO: lock the registers
                 else {
                     int[] cardsIDs =
                             Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
@@ -287,13 +288,49 @@ public class Game {
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
                 Card[] chosenCards = botPlayer.getReceivedCards();
-
-                botPlayer.chooseCardsOrder(Arrays.copyOfRange(chosenCards, 0, 5));
+                botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
                 System.out.println(chosenCards.length); // set cards of this bot
                 allReady = register();
             }
         }
         return allReady;
+    }
+
+    /**
+     * The method makes sure that the first card of the first round is a move
+     *
+     *
+     * @return chosenCards
+     * @Author Maria
+     * @since 2023-06-23
+     */
+    public Card[] chooseFirstCardMoveBot(Card[] chosenCards){
+        if(this.roundNumber != 1){
+            return chosenCards;
+        }
+        LOG.debug("Bot cards:");
+        for (int i = 0; i < 5; i++) {
+            LOG.debug(chosenCards[i].getBehaviourType());
+        }
+        if(Objects.equals(chosenCards[0].getBehaviourType(), "1")
+                || Objects.equals(chosenCards[0].getBehaviourType(), "3")
+                || Objects.equals(chosenCards[0].getBehaviourType(), "4")){
+            int i = 1;
+            while(Objects.equals(chosenCards[i].getBehaviourType(), "1")
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "3")
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")){
+
+                i++;
+            }
+            Card tmp = chosenCards[0];
+            chosenCards[0] = chosenCards[i];
+            chosenCards[i] = tmp;
+        }
+        LOG.debug("Bot cards AFTER:");
+        for (int i = 0; i < 5; i++) {
+            LOG.debug(chosenCards[i].getBehaviourType());
+        }
+        return chosenCards;
     }
 
     /**
@@ -422,15 +459,27 @@ public class Game {
         this.cardsIDs = IntStream.range(1, 85).toArray(); // From 1 to 84
         this.cardsIDsList = Arrays.stream(cardsIDs).boxed().collect(Collectors.toList());
         this.roundNumber++;
+        this.respawnRobots = new ArrayList<>();
 
         int countSurvivors = 0;
         UserDTO survivor = null;
         for (AbstractPlayer player : this.players) {
             if (!player.getRobot().isDeadForever()) {
+                // only when dead for the round, set in the backup
+                boolean addRespawn = false;
+                if(player.getRobot().isDeadForTheRound()){
+                    player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+                    addRespawn = true;
+                }
+
                 player.getRobot().setAlive(true);
                 player.getRobot().setDeadForTheRound(false);
                 player.getRobot().setPowerDown(false);
-                player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+
+                // needs to be done down here after all variables were set
+                if(addRespawn)
+                    respawnRobots.add(convertPlayerToPlayerDTO(player));
+
                 countSurvivors++;
                 survivor = player.getUser();
             }
@@ -450,21 +499,15 @@ public class Game {
         }
     }
 
-    public List<List<PlayerDTO>> calcAllGameRound() {
-        List<List<PlayerDTO>> moves = new ArrayList<>();
-
-        if(areAllRobotsAreDeadOrTurnedOff()){
-            return moves;
-        }
+    public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-
-        moves.add(getPlayerDTOSForAllPlayers());
+        if(areAllRobotsAreDeadOrTurnedOff()){
+            return;
+        }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
 
-        moves.addAll(calcGameRoundCardsNew());
-        moves.addAll(calcGameRoundBoardNew());
-
-        return moves;
+        calcGameRoundCardsNew();
+        calcGameRoundBoardNew();
     }
 
     private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
@@ -519,14 +562,13 @@ public class Game {
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnCheckPointStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
         oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "CheckPoint", oldMove, ""));
+        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         // must execute this actions at the end
@@ -776,6 +818,8 @@ public class Game {
         // execute board elements functions, other than moves
         try {
             for (Robot robot : robots) {
+                if(!robot.isAlive())
+                    continue;
                 Position position = robot.getPosition();
                 for (AbstractTileBehaviour behaviour :
                         board[position.x][position.y].getBehaviourList()) {
@@ -841,7 +885,7 @@ public class Game {
             for (int j = 0; j < robots.size(); j++) {
                 Robot robot = robots.get(j);
                 if (!robot.equals(robots.get(move.robotID))) {
-                    if (robot.getPosition().equals(destinationTile)) {
+                    if (robot.getPosition().equals(destinationTile) && robot.isAlive()) {
                         boolean alreadyHasMoveIntent = false;
                         for (MoveResult moveResult : moveList) {
                             if (robot.equals(robots.get(moveResult.robotID))) {
@@ -960,7 +1004,13 @@ public class Game {
     }
 
     public List<GameMovement> getGameMovements() {
+        if(Objects.equals(gameMovements, null))
+            return new ArrayList<>();
         return gameMovements;
+    }
+
+    public List<PlayerDTO> getRespawnRobots() {
+        return respawnRobots;
     }
 
     /**
@@ -1009,6 +1059,9 @@ public class Game {
      */
     private void checkRobotFellFromBoard() {
         for (Robot robot : this.robots) {
+            if(!robot.isAlive()){
+                continue;
+            }
             Position position = robot.getPosition();
             if (position.x < 0
                     || position.y < 0

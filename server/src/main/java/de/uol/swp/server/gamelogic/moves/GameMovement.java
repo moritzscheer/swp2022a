@@ -16,12 +16,14 @@ import java.util.Objects;
  * @since 2023-06-20
  */
 public class GameMovement {
-    private String moveMessage;
+    private String moveMessage = "";
     private final List<PlayerDTO> robotsPositionsInOneMove;
 
     private final GameMovement oldState;
 
+    private boolean someoneMoved = false;
 
+    private boolean isCardMove = false;
 
     public GameMovement(List<PlayerDTO> robotsPositionsInOneMove, String moveType, GameMovement oldState,
                         String robotThatPlayedTheCard) {
@@ -30,13 +32,13 @@ public class GameMovement {
 
         if(!Objects.equals(moveType, null)){
             this.moveMessage = "[" + moveType + "] "+ robotThatPlayedTheCard + "\n";
-            if(!Objects.equals(this.oldState, null)){
-                createMessageOfRobotsThatMoved();
-            }
         }
-        else
-            this.moveMessage = "";
-
+        if(!Objects.equals(this.oldState, null)){
+            createMessageOfRobotsThatMoved();
+        }
+        if(!Objects.equals(robotThatPlayedTheCard, "")){
+            isCardMove = true;
+        }
 
     }
 
@@ -55,6 +57,7 @@ public class GameMovement {
             assert oldPlayerDTO.getUser().equals(newPlayerDTO.getUser());
 
             if (!oldPlayerDTO.getRobotDTO().equals(newPlayerDTO.getRobotDTO())) {
+                this.someoneMoved = true;
                 this.moveMessage = this.moveMessage +
                         "    " + oldPlayerDTO.getUser().getUsername() // User ("
                         + " ("
@@ -77,10 +80,26 @@ public class GameMovement {
                         + "} \n"; // new direction
             }
             if (oldPlayerDTO.getRobotDTO().isAlive() & !newPlayerDTO.getRobotDTO().isAlive()) {
-                this.moveMessage = this.moveMessage +
-                        "    " + oldPlayerDTO.getUser().getUsername() // User ("
-                        + " died\n";
+                if(newPlayerDTO.getRobotDTO().isDeadForever()){
+                    this.moveMessage = this.moveMessage +
+                            "    " + oldPlayerDTO.getUser().getUsername() // User ("
+                            + " died FOREVEEEEER\n";
+                }
+                else{
+                    this.moveMessage = this.moveMessage +
+                            "    " + oldPlayerDTO.getUser().getUsername() // User ("
+                            + " died\n";
+                }
             }
         }
+    }
+
+
+    public boolean isSomeoneMoved() {
+        return someoneMoved;
+    }
+
+    public boolean isCardMove() {
+        return isCardMove;
     }
 }

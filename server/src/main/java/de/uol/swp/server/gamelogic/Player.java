@@ -24,7 +24,7 @@ public class Player extends AbstractPlayer {
         super();
         this.userDTO = userDTO;
         // TODO: we might need to change the robot constructor
-        this.robot = new Robot(robotID, startPosition, true, CardinalDirection.North);
+        this.robot = new Robot(robotID, startPosition, CardinalDirection.North);
     }
 
     public void setUser(UserDTO user) {

@@ -10,7 +10,6 @@ import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
@@ -30,8 +29,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
-import static de.uol.swp.server.utils.JsonUtils.searchCardTypeInJSON;
-import static java.lang.Math.abs;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
@@ -333,6 +330,7 @@ public class GameService extends AbstractService {
     public void manageGameUpdate(Game game, int lobbyID) {
 
         int secondsToWait = 1;
+        boolean gameOver = false;
 
         try {
             lobbyService.sendToAllInLobby(
@@ -343,10 +341,8 @@ public class GameService extends AbstractService {
         }
 
         for (int i = 0; i < 5; i++) {
-            List<List<PlayerDTO>> moveList = game.calcAllGameRound();
+            game.calcAllGameRound();
             List<GameMovement> gameMovements = game.getGameMovements();
-
-            //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
@@ -362,6 +358,10 @@ public class GameService extends AbstractService {
             for (GameMovement gameMovement: gameMovements) {
                 List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
+                // just to speed up when there are no moves
+                if(gameMovement.isSomeoneMoved() || gameMovement.isCardMove())
+                    secondsToWait += 1;
+
                 scheduler.schedule(() -> {
                     try {
                         lobbyService.sendToAllInLobby(lobbyID,
@@ -372,33 +372,35 @@ public class GameService extends AbstractService {
                         throw new RuntimeException(e);
                     }
                 }, secondsToWait, SECONDS);
-
-                secondsToWait += 1;
-
-                if (isGameOver(lobbyID, game, secondsToWait)) {
-                    break;
-                }
+            }
+            gameOver = isGameOver(lobbyID, game, secondsToWait+2);
+            if (gameOver) {
+                break;
             }
 
             game.increaseProgramStep();
         }
+        secondsToWait += 1;
+        // if game was over, message was sent already
+        if(!gameOver){
+            UserDTO winner = game.roundIsOver(); // reset variables
+            AbstractLobbyMessage msg;
+            if (Objects.equals(winner, null))
+                msg = new RoundIsOverMessage(lobbyID, game.getRespawnRobots());
+            else
+                msg = new GameOverMessage(lobbyID, winner);
+            scheduler.schedule(
+                    () -> {
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, msg);
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    secondsToWait,
+                    SECONDS);
+        }
 
-        UserDTO winner = game.roundIsOver(); // reset variables
-        AbstractLobbyMessage msg;
-        if (Objects.equals(winner, null))
-            msg = new RoundIsOverMessage(lobbyID);
-        else
-            msg = new GameOverMessage(lobbyID, winner);
-        scheduler.schedule(
-                () -> {
-                    try {
-                        lobbyService.sendToAllInLobby(lobbyID, msg);
-                    } catch (LobbyDoesNotExistException e) {
-                        throw new RuntimeException(e);
-                    }
-                },
-                secondsToWait,
-                SECONDS);
     }
 
     /**
@@ -417,6 +419,20 @@ public class GameService extends AbstractService {
                 return true;
             }
         }
+        UserDTO survivor = new UserDTO("Nobody", "", "");
+        int countSurvivors = 0;
+        for (AbstractPlayer player : game.getPlayers()) {
+            if (!player.getRobot().isDeadForever()) {
+                countSurvivors++;
+                survivor = player.getUser();
+            }
+        }
+        if (countSurvivors <= 1) {
+            // gameover
+            playerWonTheGame(lobbyID, survivor, secondsToWait);
+            return true;
+        }
+
         return false;
     }
 

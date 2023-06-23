@@ -30,6 +30,8 @@ public class PitBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onRobotEntered(int indexMoveRobot) {
         for (Robot robotState : robotStates) {
+            if(!robotState.isAlive())
+                continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);
                 break;
