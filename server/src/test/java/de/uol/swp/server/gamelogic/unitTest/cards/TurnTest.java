@@ -14,7 +14,7 @@ public class TurnTest {
 
     private Position position = new Position(0, 0);
 
-    private Robot robot = new Robot(1, position, true, null);
+    private Robot robot = new Robot(1, position, null);
 
     /** These following four tests implements the right turn */
 

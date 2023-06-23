@@ -7,6 +7,7 @@ import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
+import de.uol.swp.server.gamelogic.BotPlayer;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -55,6 +56,7 @@ public final class ConvertToDTOUtils {
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         robotDTO.setAlive(robot.isAlive());
         robotDTO.setPowerDown(robot.isPowerDown());
+        robotDTO.setDeadForever(robotDTO.isDeadForever());
         return robotDTO;
     }
 

@@ -87,7 +87,7 @@ public class RobotIsFinallyDeadTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID);
+        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID, new ArrayList<>());
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }

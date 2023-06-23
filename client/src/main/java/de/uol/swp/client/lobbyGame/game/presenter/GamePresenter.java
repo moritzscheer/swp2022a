@@ -1804,4 +1804,47 @@ public class GamePresenter extends AbstractPresenter {
             playerGrids.get(position).setVisible(false);
         }
     }
+
+    /** Respawn robots after round is over
+     *
+     * @param respawnRobots
+     * @author Maria Andrade
+     * @since 2023-06-22
+     */
+    public void respawnDeadRobots(List<PlayerDTO> respawnRobots){
+        Platform.runLater(
+                () -> {
+                    Position startPosition;
+
+                    // update robot position in board
+                    for (PlayerDTO player :
+                            respawnRobots) {
+                        startPosition = player.getRobotDTO().getPosition();
+                        LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
+
+                        // show this player robot, since they all start in checkpoint 1
+                        int robotID = player.getRobotDTO().getRobotID();
+                        ImageView imageView = jsonUtils.getRobotImage(robotID);
+                        imageView.setRotate(
+                                (player.getRobotDTO().getDirection().ordinal()) * 90);
+                        imageView
+                                .fitWidthProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board.length + 1)
+                                                .subtract(10));
+                        imageView
+                                .fitHeightProperty()
+                                .bind(
+                                        gameBoardWrapper
+                                                .heightProperty()
+                                                .divide(board[0].length + 1)
+                                                .subtract(10));
+
+                        gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
+                        this.userRobotImageViewReference.replace(player.getUser(), imageView);
+                    }
+                });
+    }
 }

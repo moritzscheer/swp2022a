@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -69,6 +69,8 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
+                    if(!robotState.isAlive())
+                        continue;
                     if (robotState.getPosition().equals(blockPos)) {
                         robotState.setDamageToken(robotState.getDamageToken() + laserBeam);
                         break;

@@ -4,6 +4,7 @@ import de.uol.swp.common.user.UserDTO;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Object to transfer the information of a Player
@@ -85,5 +86,18 @@ public class PlayerDTO implements Serializable {
      */
     public UserDTO getUser() {
         return user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerDTO playerDTO = (PlayerDTO) o;
+        return getRobotDTO().equals(playerDTO.getRobotDTO()) && Objects.equals(getCurrentCards(), playerDTO.getCurrentCards()) && getUser().equals(playerDTO.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getRobotDTO(), getCurrentCards(), getUser());
     }
 }

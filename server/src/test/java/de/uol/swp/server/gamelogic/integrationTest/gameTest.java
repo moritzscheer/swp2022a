@@ -35,7 +35,7 @@ public class gameTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
 
         // Create behaviour of the board
         // check points
