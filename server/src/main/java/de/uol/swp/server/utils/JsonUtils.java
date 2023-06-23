@@ -46,8 +46,7 @@ public final class JsonUtils {
                         Card card;
                         String cardType = obj.getString("type-id");
                         int priority = obj.getInt("priority");
-                        String imgPath = obj.getString("source");
-                        card = new Card(cardId, cardType, priority, imgPath);
+                        card = new Card(cardId, cardType, priority);
                         return card;
                     }
                 } catch (Exception e) {

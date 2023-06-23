@@ -239,7 +239,6 @@ public class Game {
                     count = count + 9 - damage;
 
                 }
-                // TODO: lock the registers
                 else {
                     int[] cardsIDs =
                             Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
@@ -289,13 +288,49 @@ public class Game {
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
                 Card[] chosenCards = botPlayer.getReceivedCards();
-
-                botPlayer.chooseCardsOrder(Arrays.copyOfRange(chosenCards, 0, 5));
+                botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
                 System.out.println(chosenCards.length); // set cards of this bot
                 allReady = register();
             }
         }
         return allReady;
+    }
+
+    /**
+     * The method makes sure that the first card of the first round is a move
+     *
+     *
+     * @return chosenCards
+     * @Author Maria
+     * @since 2023-06-23
+     */
+    public Card[] chooseFirstCardMoveBot(Card[] chosenCards){
+        if(this.roundNumber != 1){
+            return chosenCards;
+        }
+        LOG.debug("Bot cards:");
+        for (int i = 0; i < 5; i++) {
+            LOG.debug(chosenCards[i].getBehaviourType());
+        }
+        if(Objects.equals(chosenCards[0].getBehaviourType(), "1")
+                || Objects.equals(chosenCards[0].getBehaviourType(), "3")
+                || Objects.equals(chosenCards[0].getBehaviourType(), "4")){
+            int i = 1;
+            while(Objects.equals(chosenCards[i].getBehaviourType(), "1")
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "3")
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")){
+
+                i++;
+            }
+            Card tmp = chosenCards[0];
+            chosenCards[0] = chosenCards[i];
+            chosenCards[i] = tmp;
+        }
+        LOG.debug("Bot cards AFTER:");
+        for (int i = 0; i < 5; i++) {
+            LOG.debug(chosenCards[i].getBehaviourType());
+        }
+        return chosenCards;
     }
 
     /**
