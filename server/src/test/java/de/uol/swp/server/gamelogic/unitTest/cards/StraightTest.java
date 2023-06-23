@@ -13,7 +13,7 @@ public class StraightTest {
 
     private final Position position = new Position(3, 0);
     private final CardinalDirection direction = CardinalDirection.North;
-    private final Robot robot = new Robot(123,position,true,direction);
+    private final Robot robot = new Robot(123, position, direction);
 
     @Test
     void testGetMoves() {

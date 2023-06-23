@@ -21,7 +21,7 @@ public class CheckPointBehaviourTest {
     private final CardinalDirection direction = CardinalDirection.North;
     private final int checkPointNumber = 1;
 
-    private final Robot robot = new Robot(123,blockPos,true,direction);
+    private final Robot robot = new Robot(123,blockPos,direction);
 
     @BeforeEach
     public void setUp() {

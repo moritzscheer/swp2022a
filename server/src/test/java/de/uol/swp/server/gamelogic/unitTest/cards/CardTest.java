@@ -17,7 +17,7 @@ public class CardTest {
 
     @Test
     void testCardConstructorWithBehaviour() {
-        Card card = new Card(1, new Turn(Direction.Left), 3, "path/to/image.jpg");
+        Card card = new Card(1, new Turn(Direction.Left), 3);
         Assertions.assertEquals(1, card.getId());
         Assertions.assertEquals(3, card.getPriority());
         Assertions.assertEquals(Direction.Left, card.getDirectionCard());
@@ -27,7 +27,7 @@ public class CardTest {
 
     @Test
     void testCardConstructorWithPowerDown() {
-        Card card = new Card(1, new Turn(Direction.Left), 3, "path/to/image.jpg");
+        Card card = new Card(1, new Turn(Direction.Left), 3);
         Assertions.assertEquals(1, card.getId());
         Assertions.assertEquals(3, card.getPriority());
         Assertions.assertNotNull(card.getDirectionCard());
@@ -37,7 +37,7 @@ public class CardTest {
 
     @Test
     void testCardConstructorWithBehaviourTypeValid() throws Exception {
-        Card card = new Card(3, "4", 2, "path/to/image.jpg");
+        Card card = new Card(3, "4", 2);
         Assertions.assertEquals(3, card.getId());
         Assertions.assertEquals(2, card.getPriority());
         Assertions.assertNull(card.getDirectionCard());
@@ -48,14 +48,14 @@ public class CardTest {
     @Test
     void testCardConstructorWithBehaviourTypeInvalid() {
         Assertions.assertThrows(Exception.class, () -> {
-            Card card = new Card(4, "2", 1, "path/to/image.jpg");
+            Card card = new Card(4, "2", 1);
         });
     }
 
     @Test
     void testExecuteBehaviour() {
-        Card card = new Card(5, new Straight(2), 3, "path/to/image.jpg");
-        Robot robot = new Robot(123,position, true, cardinalDirection);
+        Card card = new Card(5, new Straight(2), 3);
+        Robot robot = new Robot(123,position, cardinalDirection);
         card.executeBehaviour(robot);
         Assertions.assertEquals(robot.getPosition(), robot.getPosition());
     }
