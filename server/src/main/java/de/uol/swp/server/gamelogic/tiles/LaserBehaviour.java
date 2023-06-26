@@ -123,4 +123,15 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         }
         return new ArrayList<>(List.of(new int[] {placeholder + laserBeam, direction.ordinal()}));
     }
+
+    public CardinalDirection getDirection() {
+        return direction;
+    }
+
+    public void setDirection(CardinalDirection direction) {
+        this.direction = direction;
+    }
+    public boolean isFullLaser() {
+        return fullLaser;
+    }
 }
