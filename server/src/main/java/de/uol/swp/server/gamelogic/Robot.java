@@ -100,6 +100,7 @@ public class Robot implements Serializable {
         if (!alivee) {
             // robot is dead
             setLifeToken(getLifeToken()-1);
+            setDamageToken(0);
             //setCurrentPosition(this.lastBackupCopyPosition);
             setDeadForTheRound(true);
         } else {
@@ -111,7 +112,6 @@ public class Robot implements Serializable {
                 setDeadForever();
                 setDeadForTheRound(true);
             }
-
         }
     }
 
