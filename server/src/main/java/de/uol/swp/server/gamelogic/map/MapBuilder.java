@@ -26,6 +26,7 @@ public final class MapBuilder {
 
     public static List<ArrayList> checkpointLocations = new LinkedList<ArrayList>();
     public static ArrayList<int[][]> checkpointsMapOne = new ArrayList<>();
+    public static ArrayList<int[][]> checkpointsMapThree = new ArrayList<>();
 
     static {
         // define all three positions for each version
@@ -43,6 +44,16 @@ public final class MapBuilder {
         //Map2
 
         //Map3
+
+        Position[] versionPositionsMap3 = {new Position(3,10), new Position(4,3), new Position(3, 5)};
+        for(int v = 1; v <= 3; v++){
+            for(int c = 2; c <= 6; c++){
+                mapStringToCheckpointNumberAndFirstPosition.put(
+                        "MapThreeV" + (v) + "C" + (c),
+                        new Pair<>(c, versionPositionsMap3[v-1])
+                );
+            }
+        }
 
         //Each TestMap 4 CHECKPOINTS
         int testCheckPoints = 4;
@@ -84,7 +95,9 @@ public final class MapBuilder {
     public  static void main(String[] args) throws IOException {
 
         maps.add(new MapOne());
-        maps.add(new MapTwo());
+        //maps.add(new MapTwoTEST());
+        maps.add(new MapThree());
+
         testMaps.add(new TestLaserMap());
         testMaps.add(new TestPusherMap());
         testMaps.add(new TestWallMap());
@@ -108,6 +121,24 @@ public final class MapBuilder {
         checkpointsMapOne.add(new int[][] {{3,6,8,9,5,4}, {5,8,3,8,11,9}});
 
         checkpointLocations.add(checkpointsMapOne);
+
+        checkpointsMapThree.add(new int[][] {{3,9}, {10,3}});
+        checkpointsMapThree.add(new int[][] {{3,9,2}, {10,3,2}});
+        checkpointsMapThree.add(new int[][] {{3,9,2,4}, {10,3,2,5}});
+        checkpointsMapThree.add(new int[][] {{3,9,2,4,8}, {10,3,2,5,6}});
+        checkpointsMapThree.add(new int[][] {{3,9,2,4,8,9}, {10,3,2,5,6,9}});
+        checkpointsMapThree.add(new int[][] {{4,7}, {3,5}});
+        checkpointsMapThree.add(new int[][] {{4,7,3}, {3,5,10}});
+        checkpointsMapThree.add(new int[][] {{4,7,3,6}, {3,5,10,8}});
+        checkpointsMapThree.add(new int[][] {{4,7,3,6,0}, {3,5,10,8,5}});
+        checkpointsMapThree.add(new int[][] {{4,7,3,6,0,4}, {3,5,10,8,5,2}});
+        checkpointsMapThree.add(new int[][] {{3,6}, {5,8}});
+        checkpointsMapThree.add(new int[][] {{3,6,8}, {5,8,3}});
+        checkpointsMapThree.add(new int[][] {{3,6,8,9}, {5,8,3,8}});
+        checkpointsMapThree.add(new int[][] {{3,6,8,9,5}, {5,8,3,8,11}});
+        checkpointsMapThree.add(new int[][] {{3,6,8,9,5,4}, {5,8,3,8,11,9}});
+
+        checkpointLocations.add(checkpointsMapThree);
 
 
         mapGen();

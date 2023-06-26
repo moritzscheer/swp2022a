@@ -106,7 +106,7 @@ public class Map implements Serializable {
     private static final String[][] mapList = {
             {"Map 1", "MapOne.png"},
 //            {"Map 2", "MapTwo.png"},
-//            {"Map 3", "MapThree.png"},
+            {"Map 3", "MapThree.png"},
 //            {"Map 4", "MapFour.png"},
 //            {"Map 5", "MapFive.png"},
             {"TEST_LaserMap", "TestLaserMap.png"},
