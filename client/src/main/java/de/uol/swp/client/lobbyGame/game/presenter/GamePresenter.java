@@ -1515,111 +1515,113 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-06-13
      */
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {
-        // TODO ANIMATION
-        // all info is in PlayerDTO, current Positions and current Directions as well the UserDTO
-        // TODO: remove this temporary code
+        Platform.runLater(
+                () -> {
+            try{
 
-        LOG.debug("in animateBoardElements");
+                ArrayList<RotateTransition> rotateAnimations = new ArrayList<>();
+                ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
-        ArrayList<RotateTransition> rotateAnimations = new ArrayList<>();
-        ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
+                for (PlayerDTO playerDTO : playerDTOList) {
+                    UserDTO userToUpdate = playerDTO.getUser();
+                    Position newPos = playerDTO.getRobotDTO().getPosition();
+                    Position prevPos =
+                            this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
+                    int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
+                    int prevDir =
+                            this.userDTOPlayerDTOMap
+                                    .get(userToUpdate)
+                                    .getRobotDTO()
+                                    .getDirection()
+                                    .ordinal();
+                    int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
+                    ImageView imageView = jsonUtils.getRobotImage(robotID);
 
-        for (PlayerDTO playerDTO : playerDTOList) {
-            UserDTO userToUpdate = playerDTO.getUser();
-            Position newPos = playerDTO.getRobotDTO().getPosition();
-            Position prevPos =
-                    this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
-            int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
-            int prevDir =
-                    this.userDTOPlayerDTOMap
-                            .get(userToUpdate)
-                            .getRobotDTO()
-                            .getDirection()
-                            .ordinal();
-            int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
-            ImageView imageView = jsonUtils.getRobotImage(robotID);
+                    Node node = this.userRobotImageViewReference.get(userToUpdate);
 
-            Node node = this.userRobotImageViewReference.get(userToUpdate);
+                    if (newDir != prevDir) {
+                        RotateTransition rotateTransition =
+                                new RotateTransition(Duration.millis(500), node);
+                        int degrees = (prevDir - newDir) * -90;
+                        if (degrees > 180) degrees = (degrees - 360);
+                        else if (degrees < -180) degrees = (degrees + 360);
+                        rotateTransition.setByAngle(degrees);
+                        rotateTransition.setNode(node);
+                        rotateAnimations.add(rotateTransition);
+                    } else if (prevPos.x != newPos.x || newPos.y != prevPos.y) {
 
-            if (newDir != prevDir) {
-                RotateTransition rotateTransition =
-                        new RotateTransition(Duration.millis(500), node);
-                int degrees = (prevDir - newDir) * -90;
-                if (degrees > 180) degrees = (degrees - 360);
-                else if (degrees < -180) degrees = (degrees + 360);
-                rotateTransition.setByAngle(degrees);
-                rotateTransition.setNode(node);
-                rotateAnimations.add(rotateTransition);
-            } else if (prevPos.x != newPos.x || newPos.y != prevPos.y) {
-                Platform.runLater(
-                        () -> {
-                            TranslateTransition translateTransition =
-                                    new TranslateTransition(Duration.millis(500), node);
-                            imageView.setVisible(false);
+                                    TranslateTransition translateTransition =
+                                            new TranslateTransition(Duration.millis(500), node);
+                                    imageView.setVisible(false);
 
-                            imageView
-                                    .fitWidthProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board.length + 1)
-                                                    .subtract(10));
-                            imageView
-                                    .fitHeightProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board[0].length + 1)
-                                                    .subtract(10));
-                            gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                            gameBoard.layout();
+                                    imageView
+                                            .fitWidthProperty()
+                                            .bind(
+                                                    gameBoardWrapper
+                                                            .heightProperty()
+                                                            .divide(board.length + 1)
+                                                            .subtract(10));
+                                    imageView
+                                            .fitHeightProperty()
+                                            .bind(
+                                                    gameBoardWrapper
+                                                            .heightProperty()
+                                                            .divide(board[0].length + 1)
+                                                            .subtract(10));
+                                    gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
+                                    gameBoard.layout();
 
-                            double toX = imageView.getLayoutX();
-                            double toY = imageView.getLayoutY();
+                                    double toX = imageView.getLayoutX();
+                                    double toY = imageView.getLayoutY();
 
-                            double fromX = node.getLayoutX();
-                            double fromY = node.getLayoutY();
+                                    double fromX = node.getLayoutX();
+                                    double fromY = node.getLayoutY();
 
-                            double moveX = 0;
-                            double moveY = 0;
+                                    double moveX = 0;
+                                    double moveY = 0;
 
-                            moveX = fromX - toX;
-                            moveY = fromY - toY;
+                                    moveX = fromX - toX;
+                                    moveY = fromY - toY;
 
-                            if (fromY <= 0 && toY >= 0) moveY = toY + fromY * -1;
-                            else if (fromY >= 0 && toY <= 0) moveY = toY - fromY * -1;
-                            else if (fromY <= 0 && toY <= 0) moveY = toY + fromY * -1;
-                            else if (fromY >= 0 && toY >= 0) moveY = toY - fromY;
+                                    if (fromY <= 0 && toY >= 0) moveY = toY + fromY * -1;
+                                    else if (fromY >= 0 && toY <= 0) moveY = toY - fromY * -1;
+                                    else if (fromY <= 0 && toY <= 0) moveY = toY + fromY * -1;
+                                    else if (fromY >= 0 && toY >= 0) moveY = toY - fromY;
 
-                            if (fromX <= 0 && toX >= 0) moveX = toX + fromX * -1;
-                            else if (fromX >= 0 && toX <= 0) moveX = toX - fromX * -1;
-                            else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
-                            else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
+                                    if (fromX <= 0 && toX >= 0) moveX = toX + fromX * -1;
+                                    else if (fromX >= 0 && toX <= 0) moveX = toX - fromX * -1;
+                                    else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
+                                    else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
-                            gameBoard.getChildren().remove(imageView);
-                            imageView.setVisible(true);
+                                    gameBoard.getChildren().remove(imageView);
+                                    imageView.setVisible(true);
 
-                            translateTransition.setToX(moveX);
-                            translateTransition.setToY(moveY);
-                            moveAnimations.add(translateTransition);
-                        });
+                                    translateTransition.setToX(moveX);
+                                    translateTransition.setToY(moveY);
+                                    moveAnimations.add(translateTransition);
+
+                    }
+                }
+                int i = 0;
+                int z = 0;
+                for (RotateTransition rotateTransition : rotateAnimations) {
+                    i++;
+                    if (rotateAnimations.size() == i)
+                        rotateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
+                    rotateTransition.play();
+                }
+                for (TranslateTransition translateTransition : moveAnimations) {
+                    z++;
+                    if (moveAnimations.size() == z && i == 0)
+                        translateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
+                    translateTransition.play();
+                }
+                if (i == 0 && z == 0)
+                    updateBoardElements(playerDTOList);
+            }catch (Exception ex){
+                LOG.debug("Error while playing animations: " + ex.getMessage());
             }
-        }
-        int i = 0;
-        int z = 0;
-        for (RotateTransition rotateTransition : rotateAnimations) {
-            i++;
-            if (rotateAnimations.size() == i)
-                rotateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
-            rotateTransition.play();
-        }
-        for (TranslateTransition translateTransition : moveAnimations) {
-            z++;
-            if (moveAnimations.size() == z && i == 0)
-                translateTransition.setOnFinished(e -> updateBoardElements(playerDTOList));
-            translateTransition.play();
-        }
-        if (i == 0 && z == 0) updateBoardElements(playerDTOList);
+        });
     }
 
     public void updateBoardElements(List<PlayerDTO> playerDTOList) {
