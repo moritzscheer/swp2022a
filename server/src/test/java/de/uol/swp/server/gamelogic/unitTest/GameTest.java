@@ -11,14 +11,20 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.cards.Card;
+import de.uol.swp.server.gamelogic.map.MapBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class GameTest {
 
+    private static final Logger LOG = LogManager.getLogger(Game.class);
     private Game game;
     private LobbyDTO lobby;
     private UserDTO user1 = new UserDTO("Player1","pw1", "ml1");
@@ -34,11 +40,13 @@ public class GameTest {
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1,user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,user2);
 
-    @BeforeEach
-    public void setup() {
 
-        String mapName = "TestMap";
-        int numberBots = 0;
+    @BeforeEach
+    public void setup() throws IOException {
+
+        MapBuilder.main(null);
+        String mapName = "MapOne";
+        int numberBots = 2;
         int checkpoint = 3;
 
         lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
@@ -67,6 +75,42 @@ public class GameTest {
         playerDTO2.setCurrentCards(player2Cards);
 
 
+    }
+
+
+
+    @Test
+    public void testRegisterCardsFromUser() throws InterruptedException, IOException {
+        // Distribute program cards first
+        System.out.println((new File(".").getAbsolutePath()));
+        game.distributeProgramCards();
+
+        boolean result = game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
+        Assertions.assertFalse(result);
+
+        result = game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
+        Assertions.assertFalse(result);
+
+        // Check if the chosen cards are set for each player
+        AbstractPlayer player1 = game.getPlayerByUserDTO(user1);
+        Card[] player1ChosenCards = player1.getChosenCards();
+        Assertions.assertNotNull(player1ChosenCards);
+        Assertions.assertEquals(5, player1ChosenCards.length);
+        Assertions.assertEquals(1, player1ChosenCards[0].getId());
+        Assertions.assertEquals(2, player1ChosenCards[1].getId());
+        Assertions.assertEquals(3, player1ChosenCards[2].getId());
+        Assertions.assertEquals(4, player1ChosenCards[3].getId());
+        Assertions.assertEquals(5, player1ChosenCards[4].getId());
+
+        AbstractPlayer player2 = game.getPlayerByUserDTO(user2);
+        Card[] player2ChosenCards = player2.getChosenCards();
+        Assertions.assertNotNull(player2ChosenCards);
+        Assertions.assertEquals(5, player2ChosenCards.length);
+        Assertions.assertEquals(6, player2ChosenCards[0].getId());
+        Assertions.assertEquals(7, player2ChosenCards[1].getId());
+        Assertions.assertEquals(8, player2ChosenCards[2].getId());
+        Assertions.assertEquals(9, player2ChosenCards[3].getId());
+        Assertions.assertEquals(10, player2ChosenCards[4].getId());
     }
 
     /**

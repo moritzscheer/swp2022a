@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.io.FileReader;
 
 /**
@@ -31,11 +32,18 @@ public final class JsonUtils {
         JSONObject json;
         JSONArray jsonArray;
 
+        String jsonFilePath = "server/src/main/resources/json/cards.json";
+        //TODO: change File Path if executed from tests
+        if(new File(".").getAbsolutePath().endsWith("server\\.")){
+            jsonFilePath = "src/main/resources/json/cards.json";
+        }
+
+
         try {
             json =
                     new JSONObject(
                             new JSONTokener(
-                                    new FileReader("server/src/main/resources/json/cards.json")));
+                                    new FileReader(jsonFilePath)));
             jsonArray = json.getJSONArray("cards");
 
             for (int i = 0; i < jsonArray.length(); i++) {
