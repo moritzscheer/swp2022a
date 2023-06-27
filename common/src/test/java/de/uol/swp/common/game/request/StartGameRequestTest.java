@@ -40,6 +40,18 @@ public class StartGameRequestTest {
     }
 
     @Test
+    public void testConstructorWithNegativeNumberCheckpoints() {
+        int numberBots = -1;
+        int checkpoints = -1;
+
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    new StartGameRequest(lobbyDTO, numberBots, checkpoints);
+                });
+    }
+
+    @Test
     public void testGetLobbyID() {
         int numberBots = 2;
         int checkpoints = 4;
@@ -60,4 +72,17 @@ public class StartGameRequestTest {
 
         Assertions.assertEquals(numberBots, result);
     }
+
+    @Test
+    public void testGetNumberCheckpoints() {
+        int numberBots = 2;
+        int checkpoints = 4;
+        StartGameRequest request = new StartGameRequest(lobbyDTO, numberBots, checkpoints);
+
+        int result = request.getNumberCheckpoints();
+
+        Assertions.assertEquals(checkpoints, result);
+    }
+
+
 }

@@ -14,12 +14,32 @@ import java.util.List;
 public class ExceptionMessageTest {
 
     private AbstractServerMessage serverMessage;
+    private String message = "Exception Message";
 
     @BeforeEach
     void setUp() {
         serverMessage = new AbstractServerMessage() {};
     }
 
+    @Test
+    public void testConstructorAndGetters() {
+        ExceptionMessage exceptionMessage = new ExceptionMessage(message);
+        assertEquals(message, exceptionMessage.getException());
+    }
+
+    @Test
+    public void testExceptionEquals() {
+        ExceptionMessage exceptionMessage1 = new ExceptionMessage(message);
+        ExceptionMessage exceptionMessage2 = new ExceptionMessage(message);
+        assertEquals(exceptionMessage1, exceptionMessage2);
+    }
+
+    @Test
+    public void testHashCode() {
+        ExceptionMessage exceptionMessage1 = new ExceptionMessage(message);
+        ExceptionMessage exceptionMessage2 = new ExceptionMessage(message);
+        assertEquals(exceptionMessage1.hashCode(), exceptionMessage2.hashCode());
+    }
     @Test
     void testSetReceiver() {
         List<Session> receiver = new ArrayList<>();
