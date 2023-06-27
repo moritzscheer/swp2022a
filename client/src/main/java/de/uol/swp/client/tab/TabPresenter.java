@@ -403,4 +403,14 @@ public class TabPresenter extends AbstractPresenter {
         }
         updateInfoBox();
     }
+
+    /**
+     * Helper Method for getting the current logged in user
+     *
+     * @author Tommy Dang
+     * @since 2023-06-27
+     */
+    public User getLoggedInUser(){
+        return loggedInUser;
+    }
 }

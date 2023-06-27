@@ -19,7 +19,7 @@ import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.exception.ServerNotRespondingExceptionMessage;
 import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
-import de.uol.swp.common.user.request.ReturnToMainMenuRequest;
+import de.uol.swp.common.user.message.ReturnToMainMenuMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
@@ -316,11 +316,11 @@ public class ClientApp extends Application implements ConnectionListener {
      * @param message The ReturnToMainMenuRequest object detected on the EventBus
      * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.client.SceneManager
-     * @see de.uol.swp.common.user.request.ReturnToMainMenuRequest
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
      * @since 2022-12-02
      */
     @Subscribe
-    public void onReturnToMainMenuRequest(ReturnToMainMenuRequest message) {
+    public void onReturnToMainMenuMessage(ReturnToMainMenuMessage message) {
         LOG.debug("user  {}", message.getLoggedInUser().getUsername());
         this.user = message.getLoggedInUser();
         sceneManager.showMainScreen();
