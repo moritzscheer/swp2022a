@@ -44,8 +44,6 @@ public class GameTest {
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1,user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,user2);
 
-    private final AbstractPlayer botPlayer1 = new BotPlayer(position, robotDTO1.getRobotID());
-    private final AbstractPlayer botPlayer2 = new BotPlayer(position, robotDTO2.getRobotID());
 
 
     @BeforeEach
@@ -60,8 +58,6 @@ public class GameTest {
         Set<User> users = new HashSet<>();
         users.add(user1);
         users.add(user2);
-        // users.add((User) botPlayer1);
-        // users.add((User) botPlayer2);
 
         game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
 
@@ -73,8 +69,6 @@ public class GameTest {
         player1Cards.add(new CardDTO(5,50));
 
         playerDTO1.setCurrentCards(player1Cards);
-        // Card[] botCards = (Card[]) player1Cards.toArray();
-        // botPlayer1.chooseCardsOrder(botCards);
         playerDTO1.getRobotDTO().setPowerDown(false);
 
 
@@ -87,8 +81,6 @@ public class GameTest {
         player2Cards.add(new CardDTO(10,100));
 
         playerDTO2.setCurrentCards(player2Cards);
-        //Card[] botCards2 = (Card[]) player2Cards.toArray();
-        //botPlayer2.chooseCardsOrder(botCards2);
         playerDTO2.getRobotDTO().setPowerDown(false);
 
         game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
@@ -101,7 +93,6 @@ public class GameTest {
 
     @Test
     public void testRegisterCardsFromUser() throws InterruptedException, IOException {
-        // Distribute program cards first
         System.out.println((new File(".").getAbsolutePath()));
         game.distributeProgramCards();
 
@@ -111,7 +102,6 @@ public class GameTest {
         result = game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
         Assertions.assertTrue(result);
 
-        // Check if the chosen cards are set for each player
         AbstractPlayer player1 = game.getPlayerByUserDTO(user1);
         Card[] player1ChosenCards = player1.getChosenCards();
         Assertions.assertNotNull(player1ChosenCards);
