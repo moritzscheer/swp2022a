@@ -516,6 +516,8 @@ public class Game {
         }
     }
 
+
+
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
         if(areAllRobotsAreDeadOrTurnedOff()){
@@ -527,7 +529,7 @@ public class Game {
         calcGameRoundBoardNew();
     }
 
-    private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
+    public List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
         for (AbstractPlayer player :
                 players) {
@@ -1186,5 +1188,13 @@ public class Game {
 
     public void setNotDistributedCards(boolean notDistributedCards) {
         this.notDistributedCards = notDistributedCards;
+    }
+
+    public boolean isNotDistributedCards() {
+        return notDistributedCards;
+    }
+
+    public int getProgramStep() {
+        return programStep;
     }
 }
