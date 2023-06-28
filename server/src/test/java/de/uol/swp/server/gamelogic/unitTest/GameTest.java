@@ -49,7 +49,7 @@ public class GameTest {
     @BeforeEach
     public void setup() throws IOException, InterruptedException {
 
-        MapBuilder.main(null);
+        //MapBuilder.main(null);
         String mapName = "MapOne";
         int numberBots = 2;
         int checkpoint = 3;
