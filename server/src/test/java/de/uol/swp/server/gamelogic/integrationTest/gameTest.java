@@ -97,9 +97,7 @@ public class gameTest {
                 game.register();
             }
             for(int i = 0; i < 5; i++){
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
                 for (AbstractPlayer player : game.getPlayers()) {
                     if (player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()) {
@@ -126,7 +124,7 @@ public class gameTest {
             SetGameOnePlayer();
             // Create 5 Move1ForwardCards
             for(int i = 0; i < 5; i++)
-                cards[i] = new Card(52, "6", 520, "");
+                cards[i] = new Card(52, "6", 520);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -146,11 +144,11 @@ public class gameTest {
     public void moveBackwardAndTurnLeft(){
         try {
             SetGameOnePlayer();
-            cards[0] = new Card(84, "5", 840, "");      // Move 3
-            cards[1] = new Card(43, "8", 430, "");      // Back-Up
-            cards[2] = new Card(43, "8", 430, "");      // Back-Up
-            cards[3] = new Card(43, "8", 430, "");      // Back-Up
-            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+            cards[0] = new Card(84, "5", 840);      // Move 3
+            cards[1] = new Card(43, "8", 430);      // Back-Up
+            cards[2] = new Card(43, "8", 430);      // Back-Up
+            cards[3] = new Card(43, "8", 430);      // Back-Up
+            cards[4] = new Card(7, "1", 190);       // Left Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -175,11 +173,11 @@ public class gameTest {
             robotOne.setCurrentPosition(new Position(3, 3));
             robotOne.setDirection(CardinalDirection.South);
 
-            cards[0] = new Card(51, "6", 510, "");
-            cards[1] = new Card(7, "1", 190, "");
-            cards[2] = new Card(7, "1", 190, "");
-            cards[3] = new Card(7, "1", 190, "");
-            cards[4] = new Card(7, "1", 190, "");
+            cards[0] = new Card(51, "6", 510);
+            cards[1] = new Card(7, "1", 190);
+            cards[2] = new Card(7, "1", 190);
+            cards[3] = new Card(7, "1", 190);
+            cards[4] = new Card(7, "1", 190);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -205,11 +203,11 @@ public class gameTest {
             SetGameOnePlayer();
 
             robotOne.setCurrentPosition(new Position(3, 3));
-            cards[0] = new Card(7, "1", 190, "");       // Left Turn
-            cards[1] = new Card(7, "1", 190, "");       // Left Turn
-            cards[2] = new Card(75, "7", 750, "");      // Forward 2
-            cards[3] = new Card(51, "6", 510, "");      // Forward 1
-            cards[4] = new Card(37, "4", 10, "");       // U Turn
+            cards[0] = new Card(7, "1", 190);       // Left Turn
+            cards[1] = new Card(7, "1", 190);       // Left Turn
+            cards[2] = new Card(75, "7", 750);      // Forward 2
+            cards[3] = new Card(51, "6", 510);      // Forward 1
+            cards[4] = new Card(37, "4", 10);       // U Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -231,11 +229,11 @@ public class gameTest {
     public void moveAgainstWall(){
         try {
             SetGameOnePlayer();
-            cards[0] = new Card(0, "5", 0, "");
-            cards[1] = new Card(0, "5", 0, "");
-            cards[2] = new Card(0, "5", 0, "");
-            cards[3] = new Card(0, "5", 0, "");
-            cards[4] = new Card(0, "5", 0, "");
+            cards[0] = new Card(0, "5", 0);
+            cards[1] = new Card(0, "5", 0);
+            cards[2] = new Card(0, "5", 0);
+            cards[3] = new Card(0, "5", 0);
+            cards[4] = new Card(0, "5", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -261,20 +259,25 @@ public class gameTest {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(4, 3));
 
-            cards[0] = new Card(51, "6", 510, "");      // Forward 1
-            cards[1] = new Card(7, "1", 190, "");       // Left Turn
-            cards[2] = new Card(51, "6", 510, "");      // Forward 1
-            cards[3] = new Card(51, "6", 510, "");      // Forward 1
-            cards[4] = new Card(51, "6", 510, "");      // Forward 1
+            cards[0] = new Card(51, "6", 510);      // Forward 1
+            cards[1] = new Card(7, "1", 190);       // Left Turn
+            cards[2] = new Card(51, "6", 510);      // Forward 1
+            cards[3] = new Card(51, "6", 510);      // Forward 1
+            cards[4] = new Card(51, "6", 510);      // Forward 1
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
             assertEquals(robotOne.getDamageToken(), 0);
             assertEquals(robotOne.getLifeToken(), 2);
-            assertEquals(robotOne.getPosition(), new Position(4, 11));
             assertEquals(robotOne.getDirection().ordinal(), 3);
             assertEquals(robotOne.isAlive(), false);
+
+            game.roundIsOver();
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
+            assertEquals(robotOne.getDirection().ordinal(), 3);
+            assertEquals(robotOne.isAlive(), true);
+            assertEquals(robotOne.getLifeToken(), 2);
 
         } catch (Exception ex) {
             System.out.println(ex);
@@ -289,21 +292,30 @@ public class gameTest {
     public void moveOutOfMap(){
         try {
             SetGameOnePlayer();
-            robotOne.setCurrentPosition(new Position(4,11));
-            cards[0] = new Card(0, "6", 0, "");
-            cards[1] = new Card(0, "3", 0, "");
-            cards[2] = new Card(0, "6", 0, "");
-            cards[3] = new Card(0, "3", 0, "");
-            cards[4] = new Card(0, "5", 0, "");
+            //robotOne.setCurrentPosition(new Position(4,11));
+            cards[0] = new Card(0, "6", 0);
+            cards[1] = new Card(0, "3", 0);
+            cards[2] = new Card(0, "6", 0);
+            cards[3] = new Card(0, "3", 0);
+            cards[4] = new Card(0, "5", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
-            assertEquals(robotOne.getPosition(), new Position(4, 11));
+
             assertEquals(robotOne.getDirection().ordinal(), 2);
             assertEquals(robotOne.getDamageToken(), 0);
             assertEquals(robotOne.getLifeToken(), 2);
             assertEquals(robotOne.isAlive(), false);
+            game.roundIsOver();
 
+            cards[0] = new Card(0, "4", 0);
+            cards[1] = new Card(0, "6", 0);
+            cards[2] = new Card(0, "6", 0);
+            cards[3] = new Card(0, "6", 0);
+            cards[4] = new Card(0, "6", 0);
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+            assertEquals(robotOne.getPosition(), new Position(4, 8));
         } catch (Exception ex){
             System.out.println(ex);
         }
@@ -320,11 +332,11 @@ public class gameTest {
             SetGameOnePlayer();
 
             robotOne.setCurrentPosition(new Position(9, 5));
-            cards[0] = new Card(7, "1", 190, "");       // Left Turn
-            cards[1] = new Card(7, "1", 190, "");       // Left Turn
-            cards[2] = new Card(7, "1", 190, "");       // Left Turn
-            cards[3] = new Card(7, "1", 190, "");       // Left Turn
-            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+            cards[0] = new Card(7, "1", 190);       // Left Turn
+            cards[1] = new Card(7, "1", 190);       // Left Turn
+            cards[2] = new Card(7, "1", 190);       // Left Turn
+            cards[3] = new Card(7, "1", 190);       // Left Turn
+            cards[4] = new Card(7, "1", 190);       // Left Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -351,20 +363,20 @@ public class gameTest {
             robotTwo.setCurrentPosition(new Position(6, 3));
             robotTwo.setDirection(CardinalDirection.East);
             Card[] cards1 = new Card[5];
-            cards1[0] = new Card(0, "6", 10, "");
-            cards1[1] = new Card(0, "6", 20, "");
-            cards1[2] = new Card(0, "6", 30, "");
-            cards1[3] = new Card(0, "6", 40, "");
-            cards1[4] = new Card(0, "6", 50, "");
+            cards1[0] = new Card(0, "6", 10);
+            cards1[1] = new Card(0, "6", 20);
+            cards1[2] = new Card(0, "6", 30);
+            cards1[3] = new Card(0, "6", 40);
+            cards1[4] = new Card(0, "6", 50);
 
             playerOne.chooseCardsOrder(cards1);
 
             Card[] cards2 = new Card[5];
-            cards2[0] = new Card(0, "8", 5, "");
-            cards2[1] = new Card(0, "8", 15, "");
-            cards2[2] = new Card(0, "8", 25, "");
-            cards2[3] = new Card(0, "8", 35, "");
-            cards2[4] = new Card(0, "6", 45, "");
+            cards2[0] = new Card(0, "8", 5);
+            cards2[1] = new Card(0, "8", 15);
+            cards2[2] = new Card(0, "8", 25);
+            cards2[3] = new Card(0, "8", 35);
+            cards2[4] = new Card(0, "6", 45);
 
             playerTwo.chooseCardsOrder(cards2);
             calcGameRound();
@@ -390,11 +402,11 @@ public class gameTest {
             SetGameOnePlayer();
 
             robotOne.setCurrentPosition(new Position(0, 1));
-            cards[0] = new Card(7, "1", 190, "");       // Left Turn
-            cards[1] = new Card(7, "1", 190, "");       // Left Turn
-            cards[2] = new Card(7, "1", 190, "");       // Left Turn
-            cards[3] = new Card(7, "1", 190, "");       // Left Turn
-            cards[4] = new Card(7, "1", 190, "");       // Left Turn
+            cards[0] = new Card(7, "1", 190);       // Left Turn
+            cards[1] = new Card(7, "1", 190);       // Left Turn
+            cards[2] = new Card(7, "1", 190);       // Left Turn
+            cards[3] = new Card(7, "1", 190);       // Left Turn
+            cards[4] = new Card(7, "1", 190);       // Left Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -418,11 +430,11 @@ public class gameTest {
             SetGameOnePlayer();
 
             robotOne.setCurrentPosition(new Position(1, 8));
-            cards[0] = new Card(36, "3", 420, "");       // Right Turn
-            cards[1] = new Card(36, "3", 420, "");       // Right Turn
-            cards[2] = new Card(36, "3", 420, "");       // Right Turn
-            cards[3] = new Card(36, "3", 420, "");       // Right Turn
-            cards[4] = new Card(36, "3", 420, "");       // Right Turn
+            cards[0] = new Card(36, "3", 420);       // Right Turn
+            cards[1] = new Card(36, "3", 420);       // Right Turn
+            cards[2] = new Card(36, "3", 420);       // Right Turn
+            cards[3] = new Card(36, "3", 420);       // Right Turn
+            cards[4] = new Card(36, "3", 420);       // Right Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -445,9 +457,9 @@ public class gameTest {
         try {
             SetGameOnePlayer();
             for(int i = 0; i < 3; i++)
-                cards[i] = new Card(52, "6", 520, "");
-            cards[3] = new Card(20, "3", 420, "");
-            cards[4] = new Card(52, "6", 520, "");
+                cards[i] = new Card(52, "6", 520);
+            cards[3] = new Card(20, "3", 420);
+            cards[4] = new Card(52, "6", 520);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -469,12 +481,12 @@ public class gameTest {
     public void staysOnExpressConveyorBelt(){
         try {
             SetGameOnePlayer();
-            robotOne.setCurrentPosition(new Position(1, 1));
-            cards[0] = new Card(36, "3", 420, "");      // Right Turn
-            cards[1] = new Card(36, "3", 420, "");      // Right Turn
-            cards[2] = new Card(36, "3", 420, "");      // Right Turn
-            cards[3] = new Card(20, "3", 420, "");
-            cards[4] = new Card(52, "6", 520, "");
+            robotOne.setCurrentPosition(new Position(1, 0));
+            cards[0] = new Card(36, "3", 420);      // Right Turn
+            cards[1] = new Card(36, "3", 420);      // Right Turn
+            cards[2] = new Card(36, "3", 420);      // Right Turn
+            cards[3] = new Card(7, "1", 190);       // Left Turn
+            cards[4] = new Card(52, "6", 520);      // Forward move 1
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -497,11 +509,11 @@ public class gameTest {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(2, 0));
-            cards[0] = new Card(36, "3", 420, "");      // Right Turn
-            cards[1] = new Card(75, "7", 750, "");      // Forward 2
-            cards[2] = new Card(51, "6", 510, "");      // Forward 1
-            cards[3] = new Card(75, "7", 750, "");      // Forward 2
-            cards[4] = new Card(51, "6", 510, "");      // Forward 1
+            cards[0] = new Card(36, "3", 420);      // Right Turn
+            cards[1] = new Card(75, "7", 750);      // Forward 2
+            cards[2] = new Card(51, "6", 510);      // Forward 1
+            cards[3] = new Card(75, "7", 750);      // Forward 2
+            cards[4] = new Card(51, "6", 510);      // Forward 1
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -525,7 +537,7 @@ public class gameTest {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 11));
             for(int i = 0; i < 5; i++)
-                cards[i] = new Card(0, "7", 0, "");
+                cards[i] = new Card(0, "7", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -548,11 +560,11 @@ public class gameTest {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 6));
-            cards[0] = new Card(51, "6", 510, "");      // Forward 1
-            cards[1] = new Card(36, "3", 420, "");      // Right Turn
-            cards[2] = new Card(36, "3", 420, "");      // Right Turn
-            cards[3] = new Card(36, "3", 420, "");      // Right Turn
-            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+            cards[0] = new Card(51, "6", 510);      // Forward 1
+            cards[1] = new Card(36, "3", 420);      // Right Turn
+            cards[2] = new Card(36, "3", 420);      // Right Turn
+            cards[3] = new Card(36, "3", 420);      // Right Turn
+            cards[4] = new Card(36, "3", 420);      // Right Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -680,10 +692,12 @@ public class gameTest {
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(4, 11));
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLifeToken(), 2);
             assertEquals(robotOne.isAlive(), false);
+
+            game.roundIsOver();
+            assertEquals(robotOne.getPosition(), new Position(4, 11));
 
         } catch (Exception ex){
             System.out.println(ex);
@@ -733,10 +747,12 @@ public class gameTest {
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
-            assertEquals(robotOne.getPosition().y, 5);//new Position(7,5));
+            assertEquals(robotOne.getPosition().y, 4);
+            assertEquals(robotOne.getPosition().x, 7);
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLifeToken(), 3);
             assertEquals(robotOne.isAlive(), true);
+            assertEquals(robotOne.getLastCheckPoint(), 2);
         } catch (Exception ex){
             System.out.println(ex);
         }
