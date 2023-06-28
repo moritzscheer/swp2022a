@@ -7,7 +7,6 @@ import de.uol.swp.common.chat.TextChatMessage;
 import de.uol.swp.common.chat.message.NewTextChatMessageMessage;
 import de.uol.swp.common.user.Session;
 
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
