@@ -31,8 +31,8 @@ public class GearBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
-        robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
+        robots[1] = new Robot(2, pos2, CardinalDirection.East);
         behaviours1[0] = new GearBehaviour(List.of(robots), board, pos1, true);
         behaviours2[0] = new GearBehaviour(List.of(robots), board, pos2, false);
         board[0][0] = new Block(behaviours1, "", pos1);

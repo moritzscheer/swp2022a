@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
@@ -48,6 +48,8 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     public List<MoveIntent> onConveyorStage(int programmStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
+            if(!robotState.isAlive())
+                continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 moves.add(new MoveIntent(robotState.getID(), direction));
 

@@ -85,4 +85,8 @@ public abstract class AbstractPlayer {
     public UserDTO getUser() {
         return userDTO;
     }
+
+    public void setUser(UserDTO user) {
+        this.userDTO = user;
+    }
 }

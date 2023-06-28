@@ -222,7 +222,7 @@ public class LobbyService extends AbstractService {
             returnMessage =
                     new LobbyLeftExceptionResponse(
                             leaveLobbyRequest.getName(),
-                            (UserDTO) leaveLobbyRequest.getUser(),
+                            leaveLobbyRequest.getUser(),
                             "Cannot find lobby. Lobby does not exist!");
         }
         leaveLobbyRequest.getMessageContext().ifPresent(returnMessage::setMessageContext);
