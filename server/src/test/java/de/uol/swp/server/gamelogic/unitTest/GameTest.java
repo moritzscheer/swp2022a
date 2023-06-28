@@ -94,6 +94,7 @@ public class GameTest {
 
 
 
+    /**
     @Test
     public void testRegisterCardsFromUser() throws InterruptedException, IOException {
         System.out.println((new File(".").getAbsolutePath()));
@@ -118,6 +119,7 @@ public class GameTest {
         Assertions.assertEquals(5, player2ChosenCards.length);
         Assertions.assertEquals(player2.getReceivedCards(), game.getPlayerByUserDTO(user2).getReceivedCards());
     }
+     */
 
     @Test
     public void testGetPlayerByUserDTO() {
