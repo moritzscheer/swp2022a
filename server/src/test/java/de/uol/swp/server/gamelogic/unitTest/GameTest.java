@@ -9,6 +9,7 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
+import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.BotPlayer;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -43,6 +44,7 @@ public class GameTest {
 
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1,user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,user2);
+    private Block[][] board;
 
 
 
@@ -60,6 +62,7 @@ public class GameTest {
         users.add(user2);
 
         game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
+        board = game.getBoard();
 
         List<CardDTO> player1Cards = new ArrayList<>();
         player1Cards.add(new CardDTO(1,10));
@@ -238,64 +241,4 @@ public class GameTest {
         game.setNotDistributedCards(true);
         Assertions.assertTrue(game.isNotDistributedCards());
     }
-
-
-    /**
-     *
-     * Es wird nicht der Pfad zur Spielkarte gefunden, dementsprechend kann der Test nicht durchgeführt werden.
-     *  @Test
-     *     public void testDistributeProgramCards() {
-     *         boolean result = game.distributeProgramCards();
-     *         Assertions.assertTrue(result);
-     *
-     *         // Check if each player received the correct number of cards
-     *         for (AbstractPlayer player : game.getPlayers()) {
-     *             Card[] cards = player.getReceivedCards();
-     *             Assertions.assertNotNull(cards);
-     *             if (player.getUser().equals(user1) || player.getUser().equals(user2)) {
-     *                 Assertions.assertEquals(9, cards.length);
-     *             } else {
-     *                 Assertions.assertEquals(0, cards.length);
-     *             }
-     *         }
-     *     }
-     */
-
-
-    /**
-     * Es wird nicht der Pfad zur Spielkarte gefunden, dementsprechend kann der Test nicht durchgeführt werden.
-     *
-    @Test
-    public void testRegisterCardsFromUser() throws InterruptedException {
-        // Distribute program cards first
-        game.distributeProgramCards();
-
-        boolean result = game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
-        Assertions.assertTrue(result);
-
-        result = game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
-        Assertions.assertTrue(result);
-
-        // Check if the chosen cards are set for each player
-        AbstractPlayer player1 = game.getPlayerByUserDTO(user1);
-        Card[] player1ChosenCards = player1.getChosenCards();
-        Assertions.assertNotNull(player1ChosenCards);
-        Assertions.assertEquals(5, player1ChosenCards.length);
-        Assertions.assertEquals(1, player1ChosenCards[0].getId());
-        Assertions.assertEquals(2, player1ChosenCards[1].getId());
-        Assertions.assertEquals(3, player1ChosenCards[2].getId());
-        Assertions.assertEquals(4, player1ChosenCards[3].getId());
-        Assertions.assertEquals(5, player1ChosenCards[4].getId());
-
-        AbstractPlayer player2 = game.getPlayerByUserDTO(user2);
-        Card[] player2ChosenCards = player2.getChosenCards();
-        Assertions.assertNotNull(player2ChosenCards);
-        Assertions.assertEquals(5, player2ChosenCards.length);
-        Assertions.assertEquals(6, player2ChosenCards[0].getId());
-        Assertions.assertEquals(7, player2ChosenCards[1].getId());
-        Assertions.assertEquals(8, player2ChosenCards[2].getId());
-        Assertions.assertEquals(9, player2ChosenCards[3].getId());
-        Assertions.assertEquals(10, player2ChosenCards[4].getId());
-    }*/
-
 }
