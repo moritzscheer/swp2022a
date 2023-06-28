@@ -491,8 +491,8 @@ public class gameTest {
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(4, 11));
-            assertEquals(robotOne.getDirection().ordinal(), 2);
+            assertEquals(robotOne.getPosition(), new Position(3, 1));
+            assertEquals(robotOne.getDirection().ordinal(), 1);
 
         } catch (Exception ex){
             System.out.println(ex);
@@ -589,11 +589,11 @@ public class gameTest {
             SetGameOnMapOneWithMoreCP();
 
             robotOne.setCurrentPosition(new Position(9, 4));
-            cards[0] = new Card(51, "6", 510, "");      // Forward 1
-            cards[1] = new Card(51, "6", 510, "");      // Forward 1
-            cards[2] = new Card(51, "6", 510, "");      // Forward 1
-            cards[3] = new Card(36, "3", 420, "");      // Right Turn
-            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+            cards[0] = new Card(51, "6", 510);      // Forward 1
+            cards[1] = new Card(51, "6", 510);      // Forward 1
+            cards[2] = new Card(51, "6", 510);      // Forward 1
+            cards[3] = new Card(36, "3", 420);      // Right Turn
+            cards[4] = new Card(36, "3", 420);      // Right Turn
 
             playerOne.chooseCardsOrder(cards);
 
@@ -604,32 +604,22 @@ public class gameTest {
                 }
 
                 robotOne.setCurrentPosition(new Position(9, 4));
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
 
 
                 robotOne.setCurrentPosition(new Position(2, 4));
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
 
                 robotOne.setCurrentPosition(new Position(5, 5));
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
 
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
 
-                game.calcGameRoundCards();
-                //game.calcAll();
-                game.calcGameRoundBoard();
+                game.calcAllGameRound();
                 game.increaseProgramStep();
 
 
@@ -639,7 +629,7 @@ public class gameTest {
 
             assertEquals(robotOne.getPosition(), new Position(4, 5));
             assertEquals(robotOne.getDirection().ordinal(), 2);
-            assertEquals(robotOne.getLastCheckPoint(), 3);
+            assertEquals(robotOne.getLastCheckPoint(), 4);
 
 
         } catch (Exception ex){
@@ -657,11 +647,11 @@ public class gameTest {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 6));
-            cards[0] = new Card(75, "7", 750, "");      // Forward 2
-            cards[1] = new Card(36, "3", 420, "");      // Right Turn
-            cards[2] = new Card(36, "3", 420, "");      // Right Turn
-            cards[3] = new Card(36, "3", 420, "");      // Right Turn
-            cards[4] = new Card(36, "3", 420, "");      // Right Turn
+            cards[0] = new Card(75, "7", 750);      // Forward 2
+            cards[1] = new Card(36, "3", 420);      // Right Turn
+            cards[2] = new Card(36, "3", 420);      // Right Turn
+            cards[3] = new Card(36, "3", 420);      // Right Turn
+            cards[4] = new Card(36, "3", 420);      // Right Turn
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -687,7 +677,7 @@ public class gameTest {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 11));
             for(int i = 0; i < 5; i++)
-                cards[i] = new Card(0, "6", 0, "");
+                cards[i] = new Card(0, "6", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -714,11 +704,11 @@ public class gameTest {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(3, 11));
 
-            cards[0] = new Card(0, "3", 0, "");
-            cards[1] = new Card(0, "6", 0, "");
-            cards[2] = new Card(0, "7", 0, "");
-            cards[3] = new Card(0, "6", 0, "");
-            cards[4] = new Card(0, "6", 0, "");
+            cards[0] = new Card(0, "3", 0);
+            cards[1] = new Card(0, "6", 0);
+            cards[2] = new Card(0, "7", 0);
+            cards[3] = new Card(0, "6", 0);
+            cards[4] = new Card(0, "6", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -743,7 +733,7 @@ public class gameTest {
             robotOne.setCurrentPosition(new Position(7, 6));
 
             for(int i = 0; i < 5; i++)
-                cards[i] = new Card(0, "6", 0, "");
+                cards[i] = new Card(0, "6", 0);
 
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
@@ -769,11 +759,11 @@ public class gameTest {
             SetGameOnePlayer();
 
             for(int i = 1; i < 5; i++) {
-                cards[0] = new Card(43, "8", 430, "");      // Back-Up
-                cards[1] = new Card(43, "8", 430, "");      // Back-Up
-                cards[2] = new Card(43, "8", 430, "");      // Back-Up
-                cards[3] = new Card(43, "8", 430, "");      // Back-Up
-                cards[4] = new Card(43, "8", 430, "");      // Back-Up
+                cards[0] = new Card(43, "8", 430);      // Back-Up
+                cards[1] = new Card(43, "8", 430);      // Back-Up
+                cards[2] = new Card(43, "8", 430);      // Back-Up
+                cards[3] = new Card(43, "8", 430);      // Back-Up
+                cards[4] = new Card(43, "8", 430);      // Back-Up
 
                 playerOne.chooseCardsOrder(cards);
                 calcGameRound();
