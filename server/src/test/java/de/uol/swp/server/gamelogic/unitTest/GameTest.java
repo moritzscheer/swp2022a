@@ -30,11 +30,15 @@ import static junit.framework.TestCase.assertEquals;
 public class GameTest {
 
     private static final Logger LOG = LogManager.getLogger(Game.class);
-    private Game game;
-    private LobbyDTO lobby;
+
+    String mapName = "MapOne";
+    int numberBots = 2;
+    int checkpoint = 3;
+    private final UUID uuid = UUID.randomUUID();
     private UserDTO user1 = new UserDTO("Player1","pw1", "ml1");
     private UserDTO user2 = new UserDTO("Player2","pw2", "ml2");
-    private final UUID uuid = UUID.randomUUID();
+    private LobbyDTO lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
+
 
     private final Position position = new Position(0,0);
     private final CardinalDirection cardinalDirection = CardinalDirection.North;
@@ -45,6 +49,7 @@ public class GameTest {
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1,user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,user2);
     private Block[][] board;
+    private Game game2;
 
 
 
@@ -52,17 +57,13 @@ public class GameTest {
     public void setup() throws IOException, InterruptedException {
 
         //MapBuilder.main(null);
-        String mapName = "MapOne";
-        int numberBots = 2;
-        int checkpoint = 3;
 
-        lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
         Set<User> users = new HashSet<>();
         users.add(user1);
         users.add(user2);
 
-        game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
-        board = game.getBoard();
+        game2 = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
+        board = game2.getBoard();
 
         List<CardDTO> player1Cards = new ArrayList<>();
         player1Cards.add(new CardDTO(1,10));
@@ -86,8 +87,8 @@ public class GameTest {
         playerDTO2.setCurrentCards(player2Cards);
         playerDTO2.getRobotDTO().setPowerDown(false);
 
-        game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
-        game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
+        game2.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
+        game2.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
 
 
     }
@@ -97,6 +98,7 @@ public class GameTest {
 
     @Test
     public void testRegisterCardsFromUser() throws InterruptedException, IOException {
+        Game game = game2;
         System.out.println((new File(".").getAbsolutePath()));
         game.distributeProgramCards();
 
@@ -122,6 +124,7 @@ public class GameTest {
 
     @Test
     public void testGetPlayerByUserDTO() {
+        Game game = game2;
         AbstractPlayer player = game.getPlayerByUserDTO(user1);
         Assertions.assertNotNull(player);
         Assertions.assertEquals(user1, player.getUser());
@@ -133,6 +136,7 @@ public class GameTest {
 
     @Test
     public void testSetPowerDown() {
+        Game game = game2;
         playerDTO1.getRobotDTO().setPowerDown(true);
         Assertions.assertTrue(playerDTO1.getRobotDTO().isPowerDown());
         playerDTO2.getRobotDTO().setPowerDown(true);
@@ -141,6 +145,7 @@ public class GameTest {
 
     @Test
     public void testRoundIsOver() {
+        Game game = game2;
         playerDTO1.getRobotDTO().setAlive(false);
         playerDTO2.getRobotDTO().setAlive(false);
         playerDTO1.getRobotDTO().setDeadForever(true);
@@ -152,12 +157,14 @@ public class GameTest {
 
     @Test
     public void testBoardLength() {
+        Game game = game2;
       int size = game.getBoard().length;
       Assertions.assertEquals(12, size);
     }
 
     @Test
     public void testGetPlayerDTOSForAllPlayers() {
+        Game game = game2;
         List<PlayerDTO> playerDTOS = game.getPlayerDTOSForAllPlayers();
         Assertions.assertNotNull(playerDTOS);
         Assertions.assertEquals(4, playerDTOS.size());
@@ -169,18 +176,21 @@ public class GameTest {
 
     @Test
     public void testGetRoundNumber() {
+        Game game = game2;
         int roundNumber = game.getRoundNumber();
         Assertions.assertEquals(1, roundNumber);
     }
 
     @Test
     public void testGetLastCheckPoint() {
+        Game game = game2;
         int lastCheckPoint = game.getLastCheckPoint();
         Assertions.assertEquals(3, lastCheckPoint);
     }
 
     @Test
     public void testGetGameMovements() {
+        Game game = game2;
         List<GameMovement> gameMovements = game.getGameMovements();
         Assertions.assertNotNull(gameMovements);
         Assertions.assertEquals(0, gameMovements.size());
@@ -188,23 +198,27 @@ public class GameTest {
 
     @Test
     public void testGetRespawnRobots() {
+        Game game = game2;
         List<PlayerDTO> respawnRobots = game.getRespawnRobots();
         Assertions.assertNull(respawnRobots);
     }
 
     @Test
     public void testGetBoard() {
+        Game game = game2;
         Assertions.assertNotNull(game.getBoard());
     }
 
     @Test
     public void testSetBoard() {
+        Game game = game2;
         game.setBoard(null);
         Assertions.assertNull(game.getBoard());
     }
 
     @Test
     public void testGetPlayers() {
+        Game game = game2;
         List<AbstractPlayer> players = game.getPlayers();
         Assertions.assertNotNull(players);
         Assertions.assertEquals(4, players.size());
@@ -216,29 +230,34 @@ public class GameTest {
 
     @Test
     public void testGetStartCheckpoint() {
+        Game game = game2;
         Position startCheckpoint = game.getStartCheckpoint();
         Assertions.assertEquals(game.getStartCheckpoint(), startCheckpoint);
     }
 
     @Test
     public void testGetDockingStartPosition() {
+        Game game = game2;
         Position dockingStartPosition = game.getDockingStartPosition();
         Assertions.assertEquals(game.getDockingStartPosition(), dockingStartPosition);
     }
 
     @Test
     public void testIncreaseProgramStep() {
+        Game game = game2;
         game.increaseProgramStep();
         Assertions.assertEquals(1, game.getProgramStep());
     }
 
     @Test
     public void testAreAllRobotsAreDeadOrTurnedOff() {
+        Game game = game2;
         Assertions.assertFalse(game.areAllRobotsAreDeadOrTurnedOff());
     }
 
     @Test
     public void testSetNotDistributedCards() {
+        Game game = game2;
         game.setNotDistributedCards(true);
         Assertions.assertTrue(game.isNotDistributedCards());
     }
