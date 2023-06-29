@@ -10,13 +10,9 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.BotPlayer;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.cards.Card;
-import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,20 +21,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static junit.framework.TestCase.assertEquals;
 
 public class GameTest {
-
-    private static final Logger LOG = LogManager.getLogger(Game.class);
 
     String mapName = "MapOne";
     int numberBots = 2;
     int checkpoint = 3;
     private final UUID uuid = UUID.randomUUID();
-    private UserDTO user1 = new UserDTO("Player1","pw1", "ml1");
-    private UserDTO user2 = new UserDTO("Player2","pw2", "ml2");
+    private final UserDTO user1 = new UserDTO("Player1","pw1", "ml1");
+    private final UserDTO user2 = new UserDTO("Player2","pw2", "ml2");
     private Game game;
-    private LobbyDTO lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
+    private final LobbyDTO lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
 
 
     private final Position position = new Position(0,0);
@@ -49,8 +42,6 @@ public class GameTest {
 
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1,user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2,user2);
-    private Block[][] board;
-
 
 
     @BeforeEach
@@ -63,7 +54,7 @@ public class GameTest {
         users.add(user2);
 
         game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
-        board = game.getBoard();
+        Block[][] board = game.getBoard();
 
         List<CardDTO> player1Cards = new ArrayList<>();
         player1Cards.add(new CardDTO(1,10));
@@ -97,7 +88,7 @@ public class GameTest {
 
 
     @Test
-    public void testRegisterCardsFromUser() throws InterruptedException, IOException {
+    public void testRegisterCardsFromUser() throws InterruptedException {
         System.out.println((new File(".").getAbsolutePath()));
         game.distributeProgramCards();
 
