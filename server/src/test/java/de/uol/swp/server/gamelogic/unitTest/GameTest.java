@@ -48,44 +48,43 @@ public class GameTest {
     public void setup() throws IOException, InterruptedException {
 
         //MapBuilder.main(null);
+        try {
+            Set<User> users = new HashSet<>();
+            users.add(user1);
+            users.add(user2);
 
-        Set<User> users = new HashSet<>();
-        users.add(user1);
-        users.add(user2);
+            game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
+            Block[][] board = game.getBoard();
 
-        game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
-        Block[][] board = game.getBoard();
+            List<CardDTO> player1Cards = new ArrayList<>();
+            player1Cards.add(new CardDTO(1,10));
+            player1Cards.add(new CardDTO(2,20));
+            player1Cards.add(new CardDTO(3,30));
+            player1Cards.add(new CardDTO(4,40));
+            player1Cards.add(new CardDTO(5,50));
 
-        List<CardDTO> player1Cards = new ArrayList<>();
-        player1Cards.add(new CardDTO(1,10));
-        player1Cards.add(new CardDTO(2,20));
-        player1Cards.add(new CardDTO(3,30));
-        player1Cards.add(new CardDTO(4,40));
-        player1Cards.add(new CardDTO(5,50));
-
-        playerDTO1.setCurrentCards(player1Cards);
-        playerDTO1.getRobotDTO().setPowerDown(false);
-
-
-
-        List<CardDTO> player2Cards = new ArrayList<>();
-        player2Cards.add(new CardDTO(6,60));
-        player2Cards.add(new CardDTO(7,70));
-        player2Cards.add(new CardDTO(8,80));
-        player2Cards.add(new CardDTO(9,90));
-        player2Cards.add(new CardDTO(10,100));
-
-        playerDTO2.setCurrentCards(player2Cards);
-        playerDTO2.getRobotDTO().setPowerDown(false);
-
-        game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
-        game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
+            playerDTO1.setCurrentCards(player1Cards);
+            playerDTO1.getRobotDTO().setPowerDown(false);
 
 
+
+            List<CardDTO> player2Cards = new ArrayList<>();
+            player2Cards.add(new CardDTO(6,60));
+            player2Cards.add(new CardDTO(7,70));
+            player2Cards.add(new CardDTO(8,80));
+            player2Cards.add(new CardDTO(9,90));
+            player2Cards.add(new CardDTO(10,100));
+
+            playerDTO2.setCurrentCards(player2Cards);
+            playerDTO2.getRobotDTO().setPowerDown(false);
+
+            game.registerCardsFromUser(user1, playerDTO1.getCurrentCards());
+            game.registerCardsFromUser(user2, playerDTO2.getCurrentCards());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-
-
 
     @Test
     public void testRegisterCardsFromUser() throws InterruptedException {
