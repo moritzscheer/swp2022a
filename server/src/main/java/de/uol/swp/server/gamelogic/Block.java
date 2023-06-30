@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Ole Zimmermann */
+/**
+ * @author Ole Zimmermann
+ */
 public class Block implements Serializable, Cloneable {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -145,6 +147,10 @@ public class Block implements Serializable, Cloneable {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public <T extends AbstractTileBehaviour> T GetBehaviour(Class<T> type) {
         for (AbstractTileBehaviour behaviour : behaviourList) {
             if (type.isInstance(behaviour)) {
@@ -154,6 +160,10 @@ public class Block implements Serializable, Cloneable {
         return null;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<MoveIntent> OnRotatorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
@@ -164,6 +174,10 @@ public class Block implements Serializable, Cloneable {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<MoveIntent> OnCheckPointStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
@@ -207,6 +221,10 @@ public class Block implements Serializable, Cloneable {
         return this.imgPath;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setRobotsInfo(List<Robot> robots) {
         for (int i = 0; i < behaviourList.length; i++) {
             behaviourList[i].setRobotStates(robots);
@@ -233,6 +251,10 @@ public class Block implements Serializable, Cloneable {
         return imagesArr;
     }
 
+    /**
+     * @author
+     * @since
+     */
     @Override
     public Block clone() {
         try {

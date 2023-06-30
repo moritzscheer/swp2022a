@@ -8,7 +8,9 @@ import de.uol.swp.server.gamelogic.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Ole Zimemrmann */
+/** @author Ole Zimemrmann
+ *
+ */
 public class WallBehaviour extends AbstractTileBehaviour {
 
     private final CardinalDirection wallDirection;
@@ -41,6 +43,10 @@ public class WallBehaviour extends AbstractTileBehaviour {
         return direction == this.wallDirection;
     }
 
+    /**
+     * @author
+     * @since
+     */
     @Override
     public List<int[]> getImage() {
         return new ArrayList<>(List.of(new int[] {1, wallDirection.ordinal()}));

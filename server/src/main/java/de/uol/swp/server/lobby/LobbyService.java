@@ -274,6 +274,10 @@ public class LobbyService extends AbstractService {
         post(response);
     }
 
+    /**
+     * @author
+     * @since
+     */
     @Subscribe
     public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request)
             throws LobbyDoesNotExistException {

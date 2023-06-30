@@ -17,12 +17,20 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
 
     protected int number;
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public CheckPointBehaviour(
             List<Robot> robotStates, Block[][] board, Position blockPos, int checkPointNumber) {
         super(robotStates, board, blockPos);
         this.number = checkPointNumber;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public int getCheckPointNumber() {
         return number;
     }
@@ -54,6 +62,10 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
         robotStates.get(indexOfMovedRobot).fixDamageToken();
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         return new ArrayList<>(List.of(new int[] {2 + number, 0}));

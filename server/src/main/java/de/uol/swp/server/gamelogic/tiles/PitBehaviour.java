@@ -40,6 +40,10 @@ public class PitBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         return new ArrayList<>(List.of(new int[] {2, 0}));

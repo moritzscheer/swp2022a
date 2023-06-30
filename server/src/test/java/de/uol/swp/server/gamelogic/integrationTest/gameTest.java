@@ -578,7 +578,7 @@ public class gameTest {
         }
     }
 
-    /** Test for on multiple checkpoints
+    /** Test for on multiple checkpoints in one round
      *
      * @author Tommy Dang
      * @since 2023-06-20

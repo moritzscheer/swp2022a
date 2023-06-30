@@ -71,31 +71,59 @@ public class Robot implements Serializable {
         currentPosition = Position.translate(currentPosition, directionToMove);
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void move(Position targetCoords) {
         ;;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public boolean isAlive() {
         return !isDeadForever() && !isDeadForTheRound();
     }
 
+    /**
+     * @author
+     * @since
+     */
     public Position getPosition() {
         return this.currentPosition;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public CardinalDirection setDirection(CardinalDirection dir) {
         this.direction = dir;
         return this.direction;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public CardinalDirection getDirection() {
         return this.direction;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setAlive(boolean alivee) {
         if (!alivee) {
             // robot is dead
@@ -115,22 +143,42 @@ public class Robot implements Serializable {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setLastCheckPoint(int checkPointNumber) {
         this.lastCheckPoint = checkPointNumber;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getLastCheckPoint() {
         return this.lastCheckPoint;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public Position getLastBackupCopyPosition() {
         return this.lastBackupCopyPosition;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setLastBackupCopyPosition(Position pos) {
         this.lastBackupCopyPosition = pos;
     }
@@ -146,10 +194,18 @@ public class Robot implements Serializable {
         this.damageToken += 2;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getDamageToken() {
         return this.damageToken;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setDamageToken(int damageToken) {
         this.damageToken = damageToken;
         if (damageToken >= 10) {
@@ -219,18 +275,34 @@ public class Robot implements Serializable {
         this.powerDown = powerDown;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public boolean isDeadForTheRound() {
         return deadForTheRound;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setDeadForTheRound(boolean deadForTheRound) {
         this.deadForTheRound = deadForTheRound;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public boolean isDeadForever() {
         return deadForever;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setDeadForever() {
         this.deadForever = true;
     }

@@ -7,8 +7,20 @@ import de.uol.swp.server.gamelogic.tiles.WallBehaviour;
 
 import java.util.Random;
 
+/**
+ *
+ *
+ * @author
+ * @since
+ */
 public class TestWallMap extends AbstractMap {
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public TestWallMap() {
         // WallTestMap
         int x = 0;

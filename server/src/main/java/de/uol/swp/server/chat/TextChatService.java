@@ -16,6 +16,11 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ *
+ * @author
+ * @since
+ */
 @SuppressWarnings("UnstableApiUsage")
 @Singleton
 public class TextChatService extends AbstractService {
@@ -45,6 +50,11 @@ public class TextChatService extends AbstractService {
         instance = this;
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     public void joinUser(UUID channel, User user) {
         Optional<Session> session = authenticationService.getSession(user);
         if (session.isPresent()) {
@@ -52,6 +62,11 @@ public class TextChatService extends AbstractService {
         }
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     public void dropUser(UUID channel, User user) {
         Optional<Session> session = authenticationService.getSession(user);
         if (session.isPresent()) {
@@ -59,6 +74,11 @@ public class TextChatService extends AbstractService {
         }
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     @Subscribe
     public void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
         if (!channelList.containsKey(message.getChannel().getUUID())) return;
@@ -72,12 +92,22 @@ public class TextChatService extends AbstractService {
         channel.addUserTextMessage(sender, text);
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     public void SendServerTextMessage(UUID channelID, String message) {
         TextChatChannel channel = channelList.get(channelID);
 
         channel.addServerTextMessage(message);
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     public UUID createTextChatChannel() {
         UUID id = UUID.randomUUID();
         TextChatChannel channel = new TextChatChannel(id, eventBus);
@@ -85,6 +115,11 @@ public class TextChatService extends AbstractService {
         return id;
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     public void closeTextChatChannel(UUID id) {
         channelList.remove(id);
     }

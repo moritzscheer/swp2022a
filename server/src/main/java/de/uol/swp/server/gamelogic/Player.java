@@ -27,6 +27,10 @@ public class Player extends AbstractPlayer {
         this.robot = new Robot(robotID, startPosition, CardinalDirection.North);
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }

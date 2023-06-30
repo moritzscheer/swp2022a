@@ -130,6 +130,12 @@ public class Card {
         return id;
     }
 
+    /**
+     * Get behaviour type
+     *
+     * @author Maria
+     * @since 2023-06-23
+     */
     public String getBehaviourType() {
         return behaviourType;
     }
