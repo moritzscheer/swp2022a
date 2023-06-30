@@ -31,4 +31,10 @@ public class RegistrationExceptionMessageTest {
         // Different objects
         assertNotEquals(message1, message2);
     }
+
+    @Test
+    public void testHashCode() {
+        RegistrationExceptionMessage message = new RegistrationExceptionMessage("Test Exception");
+        assertEquals(message.hashCode(), message.hashCode());
+    }
 }

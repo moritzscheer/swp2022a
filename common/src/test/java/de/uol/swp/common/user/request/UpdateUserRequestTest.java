@@ -43,4 +43,10 @@ public class UpdateUserRequestTest {
     void equals_null_false() {
         assertFalse(request.equals(null));
     }
+
+    @Test
+    public void testHashCode() {
+        UpdateUserRequest request = new UpdateUserRequest(user);
+        assertEquals(request.hashCode(), request.hashCode());
+    }
 }

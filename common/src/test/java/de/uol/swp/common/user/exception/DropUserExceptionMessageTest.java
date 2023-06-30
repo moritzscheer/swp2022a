@@ -30,4 +30,10 @@ public class DropUserExceptionMessageTest {
         // Different objects
         assertNotEquals(message1, message2);
     }
+
+    @Test
+    public void testHashCode() {
+        DropUserExceptionMessage message = new DropUserExceptionMessage("Test Exception");
+        assertEquals(message.hashCode(), message.hashCode());
+    }
 }

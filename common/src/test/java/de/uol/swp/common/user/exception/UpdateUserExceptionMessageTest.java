@@ -30,4 +30,10 @@ public class UpdateUserExceptionMessageTest {
         // Different objects
         assertNotEquals(message1, message2);
     }
+
+    @Test
+    public void testHashCode() {
+        UpdateUserExceptionMessage message = new UpdateUserExceptionMessage("Test Exception");
+        assertEquals(message.hashCode(), message.hashCode());
+    }
 }
