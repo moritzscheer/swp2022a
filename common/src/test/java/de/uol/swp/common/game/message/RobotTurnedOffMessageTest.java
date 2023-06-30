@@ -14,6 +14,15 @@ public class RobotTurnedOffMessageTest {
     private final UserDTO turnedOffUser = new UserDTO("testUser", "pw", "ml");
     private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", turnedOffUser, "pw", true, uuid);
 
+    /**
+     * Tests the constructor and the getter
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @result The method should return the correct values
+     * @see de.uol.swp.common.game.message.RobotTurnedOffMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testConstructorAndGetter() {
         RobotTurnedOffMessage robotTurnedOffMessage = new RobotTurnedOffMessage(lobbyDTO.getLobbyID(), turnedOffUser);

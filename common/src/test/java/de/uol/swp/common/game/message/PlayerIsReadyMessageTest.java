@@ -18,8 +18,16 @@ public class PlayerIsReadyMessageTest {
     private final UserDTO playerIsReady = new UserDTO("Player1", "pw", "ml");
     private final UserDTO playerIsReady2 = new UserDTO("Player2", "pw", "ml2");
 
+    /**
+     * Tests the constructor and the getters
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void constructor_ShouldSetCorrectValues() {
+    void testConstructor() {
         int lobbyID = 123;
 
         PlayerIsReadyMessage message = new PlayerIsReadyMessage(playerIsReady, lobbyID);
@@ -28,8 +36,16 @@ public class PlayerIsReadyMessageTest {
         assertEquals(lobbyID, message.getLobbyID());
     }
 
+    /**
+     * Tests to set the receiver
+     *
+     * @author WKempel
+     * @result The setter should work without throwing an exception
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void setReceiver_ShouldSetReceiversCorrectly() {
+    void testSetReceiver() {
         int lobbyID = 123;
 
         PlayerIsReadyMessage message = new PlayerIsReadyMessage(playerIsReady, lobbyID);
@@ -65,8 +81,16 @@ public class PlayerIsReadyMessageTest {
         assertEquals(receivers, message.getReceiver());
     }
 
+    /**
+     * Tests to set the receiver to null
+     *
+     * @author WKempel
+     * @result The setter should work without throwing an exception
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void setReceiver_ShouldSetReceiversToEmptyListIfNull() {
+    void testSetReceiverShouldSetReceiversToEmptyListIfNull() {
         int lobbyID = 123;
 
         PlayerIsReadyMessage message = new PlayerIsReadyMessage(playerIsReady, lobbyID);
@@ -77,8 +101,16 @@ public class PlayerIsReadyMessageTest {
         assertNotEquals(Collections.emptyList(), message.getReceiver());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true for equal messages
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void equals_ShouldReturnTrueForEqualMessages() {
+    void testEqualsShouldReturnTrueForEqualMessages() {
         int lobbyID = 123;
 
         PlayerIsReadyMessage message1 = new PlayerIsReadyMessage(playerIsReady, lobbyID);
@@ -87,19 +119,35 @@ public class PlayerIsReadyMessageTest {
         assertEquals(message1, message2);
     }
 
+    /**
+     * Tests the equals method by different lobbyIDs
+     *
+     * @author WKempel
+     * @result The equals method should return true for different lobbyIDs
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void equals_ShouldReturnFalseForDifferentMessages() {
+    void testEqualsShouldReturnFalseForDifferentMessages() {
         int lobbyID1 = 123;
         int lobbyID2 = 456;
 
         PlayerIsReadyMessage message1 = new PlayerIsReadyMessage(playerIsReady, lobbyID1);
         PlayerIsReadyMessage message2 = new PlayerIsReadyMessage(playerIsReady2, lobbyID2);
 
-        assertFalse(message1.equals(message2));
+        assertNotEquals(message1, message2);
     }
 
+    /**
+     * Tests the constructor to not get empty messages
+     *
+     * @author WKempel
+     * @result The method should return true if the message is not empty
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
-    void constructor_ShouldCreateNonNullInstance() {
+    void testConstructorShouldCreateNonNullInstance() {
         int lobbyID = 123;
 
         PlayerIsReadyMessage message = new PlayerIsReadyMessage(playerIsReady, lobbyID);
@@ -107,6 +155,14 @@ public class PlayerIsReadyMessageTest {
         assertNotNull(message);
     }
 
+    /**
+     * Tests the constructor with negative lobbyID
+     *
+     * @author WKempel
+     * @result The method should throw an IllegalArgumentException
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
