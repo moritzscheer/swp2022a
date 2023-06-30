@@ -141,7 +141,7 @@ public class AbstractGameRequestTest {
      * @result The method should return true if the lobby name and lobbyDTO is the same
      * @result The method should return false if the lobby name and lobbyDTO is not the same
      * @see de.uol.swp.common.game.request.AbstractGameRequest
-     * @since 2023-06-15
+     * @since 2023-06-18
      */
     @Test
     public void testEqualsAndHashCode() {

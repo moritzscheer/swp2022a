@@ -15,6 +15,12 @@ public class ProgramCardDataResponseTest {
     private final int freeCards = 0;
     private final int lobbyID = 123;
 
+    /**
+     * Sets up the test
+     *
+     * @author WKempel
+     * @since 2023-06-27
+     */
     @BeforeEach
     public void setup() {
         cards.add(new CardDTO(1, 10));
@@ -25,6 +31,14 @@ public class ProgramCardDataResponseTest {
 
     }
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The constructor should return the correct values like cards, freeCards and lobbyID
+     * @see de.uol.swp.common.game.response.ProgramCardDataResponse
+     * @since 2023-06-27
+     */
     @Test
     public void testConstructorAndGetters() {
         ProgramCardDataResponse programCardDataResponse = new ProgramCardDataResponse(cards, freeCards, lobbyID);

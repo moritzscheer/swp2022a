@@ -17,6 +17,12 @@ public class AllUsersInLobbyResponseTest {
     private List<UserDTO> users;
     private String lobbyName;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
     void setUp() {
         lobbyName = "Lobby 1";
@@ -34,38 +40,86 @@ public class AllUsersInLobbyResponseTest {
         response = new AllUsersInLobbyResponse(lobbyName, new ArrayList<>(users));
     }
 
+    /**
+     * Tests the getUsers method
+     *
+     * @author WKempel
+     * @result The getter should return the correct users
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getUsers() {
+    public void testGetUsers() {
         List<UserDTO> actualUsers = response.getUsers();
         assertEquals(users, actualUsers);
     }
 
+    /**
+     * Tests the getLobbyName method
+     *
+     * @author WKempel
+     * @result The getter should return the correct lobby name
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getLobbyName() {
+    public void testGetLobbyName() {
         String actualLobbyName = response.getLobbyName();
         assertEquals(lobbyName, actualLobbyName);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are equal
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(response.equals(response));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(response, response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are equal
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         List<UserDTO> otherUsers = new ArrayList<>(users);
         AllUsersInLobbyResponse other =
                 new AllUsersInLobbyResponse(lobbyName, new ArrayList<>(otherUsers));
-        assertTrue(response.equals(other));
+        assertEquals(response, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return false if the objects are not equal
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(response.equals("not an AllUsersInLobbyResponse object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not an AllUsersInLobbyResponse object", response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return false if the objects are null
+     * @see de.uol.swp.common.user.response.AllUsersInLobbyResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(response.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, response);
     }
 }

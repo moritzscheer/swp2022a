@@ -15,27 +15,57 @@ public class AbstractServerMessageTest {
 
     private AbstractServerMessage serverMessage;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         serverMessage = new AbstractServerMessage() {};
     }
 
+    /**
+     * Tests the setSender and getSender methods
+     *
+     * @author WKempel
+     * @result The getter should return the correct sender
+     * @see de.uol.swp.common.message.AbstractServerMessage
+     * @since 2023-06-17
+     */
     @Test
-    void testSetReceiver() {
+    public void testSetReceiver() {
         List<Session> receiver = new ArrayList<>();
         serverMessage.setReceiver(receiver);
         assertEquals(receiver, serverMessage.getReceiver());
     }
 
+    /**
+     * Tests the getReceiver method
+     *
+     * @author WKempel
+     * @result The getter should return the correct receiver
+     * @see de.uol.swp.common.message.AbstractServerMessage
+     * @since 2023-06-17
+     */
     @Test
-    void testGetReceiver() {
+    public void testGetReceiver() {
         List<Session> receiver = new ArrayList<>();
         serverMessage.setReceiver(receiver);
         assertEquals(receiver, serverMessage.getReceiver());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are the same and false if they are different
+     * @see de.uol.swp.common.message.AbstractServerMessage
+     * @since 2023-06-17
+     */
     @Test
-    void testEquals() {
+   public void testEquals() {
         AbstractServerMessage message1 = new AbstractServerMessage() {};
 
         AbstractServerMessage message2 = new AbstractServerMessage() {};

@@ -12,12 +12,26 @@ public class UsersListMessageTest {
 
     private UsersListMessage usersListMessage;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
     void setUp() {
         List<String> users = Arrays.asList("user1", "user2", "user3");
         usersListMessage = new UsersListMessage(users);
     }
 
+    /**
+     * Tests the getUsers method
+     *
+     * @author WKempel
+     * @result The getter should return the correct users
+     * @see de.uol.swp.common.user.message.UsersListMessage
+     * @since 2023-06-17
+     */
     @Test
     void testGetUsers() {
         List<String> users = usersListMessage.getUsers();
@@ -27,6 +41,14 @@ public class UsersListMessageTest {
         assertTrue(users.contains("user3"));
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are equal and false if they are different
+     * @see de.uol.swp.common.user.message.UsersListMessage
+     * @since 2023-06-17
+     */
     @Test
     void testEquals() {
         List<String> users1 = Arrays.asList("user1", "user2", "user3");

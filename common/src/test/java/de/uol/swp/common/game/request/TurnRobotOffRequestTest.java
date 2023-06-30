@@ -15,6 +15,14 @@ public class TurnRobotOffRequestTest {
     private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", turnedOffUser, "pw", true, uuid);
 
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The constructor should return the correct values like lobbyID and loggedInUser
+     * @see de.uol.swp.common.game.request.TurnRobotOffRequest
+     * @since 2023-06-27
+     */
     @Test
     public void testConstructorAndGetters() {
         TurnRobotOffRequest turnRobotOffRequest = new TurnRobotOffRequest(lobbyDTO.getLobbyID(), turnedOffUser);

@@ -14,6 +14,15 @@ public class StartGameRequestTest {
     private final UUID chatID = UUID.randomUUID();
     private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID);
 
+    /**
+     * Tests the constructor with null as lobby
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @see de.uol.swp.common.lobby.dto.LobbyDTO
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNullLobby() {
         lobbyDTO = null;
@@ -27,6 +36,14 @@ public class StartGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with a negative number of bots
+     *
+     * @author WKempel
+     * @result The constructor should throw a IllegalArgumentException
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNegativeNumberBots() {
         int numberBots = -1;
@@ -39,6 +56,14 @@ public class StartGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with a negative number of checkpoints
+     *
+     * @author WKempel
+     * @result The constructor should throw a IllegalArgumentException
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @since 2023-06-27
+     */
     @Test
     public void testConstructorWithNegativeNumberCheckpoints() {
         int numberBots = -1;
@@ -51,6 +76,14 @@ public class StartGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The method should return the lobbyID
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetLobbyID() {
         int numberBots = 2;
@@ -62,6 +95,14 @@ public class StartGameRequestTest {
         Assertions.assertEquals(lobbyDTO.getLobbyID(), result);
     }
 
+    /**
+     * Tests the getNumberBots method
+     *
+     * @author WKempel
+     * @result The method should return the number of bots
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetNumberBots() {
         int numberBots = 2;
@@ -73,6 +114,14 @@ public class StartGameRequestTest {
         Assertions.assertEquals(numberBots, result);
     }
 
+    /**
+     * Tests the getNumberCheckpoints method
+     *
+     * @author WKempel
+     * @result The method should return the number of checkpoints
+     * @see de.uol.swp.common.game.request.StartGameRequest
+     * @since 2023-06-27
+     */
     @Test
     public void testGetNumberCheckpoints() {
         int numberBots = 2;
@@ -83,6 +132,4 @@ public class StartGameRequestTest {
 
         Assertions.assertEquals(checkpoints, result);
     }
-
-
 }

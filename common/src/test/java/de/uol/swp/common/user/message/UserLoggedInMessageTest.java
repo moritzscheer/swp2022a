@@ -10,18 +10,40 @@ public class UserLoggedInMessageTest {
 
     private UserLoggedInMessage loggedInMessage;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         loggedInMessage = new UserLoggedInMessage("testuser");
     }
 
+    /**
+     * Tests the getUsername method
+     *
+     * @author WKempel
+     * @result The getUsername method should return the correct username
+     * @see de.uol.swp.common.user.message.UserLoggedInMessage
+     * @since 2023-06-17
+     */
     @Test
-    void testGetUsername() {
+    public void testGetUsername() {
         assertEquals("testuser", loggedInMessage.getUsername());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the UserLoggedInMessages are equal and false if they are not
+     * @see de.uol.swp.common.user.message.UserLoggedInMessage
+     * @since 2023-06-17
+     */
     @Test
-    void testEquals() {
+    public void testEquals() {
         UserLoggedInMessage message1 = new UserLoggedInMessage("testuser");
         UserLoggedInMessage message2 = new UserLoggedInMessage("differentUser");
 

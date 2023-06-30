@@ -13,6 +13,14 @@ public class MapChangedMessageTest {
     private final UserDTO userDTO2 = new UserDTO("Player2", "pw", "ml");
     private final int lobbyID = 123;
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyID, userDTO and map
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @since 2023-06-18
+     */
     @Test
     public void testConstructorAndGetters() {
         Map map = null;
@@ -24,6 +32,14 @@ public class MapChangedMessageTest {
         Assertions.assertEquals(map, message.getMap());
     }
 
+    /**
+     * Tests the equals and hashCode methods
+     *
+     * @author WKempel
+     * @result The equals and hashCode methods should return true if the lobbyID, userDTO and map are the same
+     * @see de.uol.swp.common.lobby.message.MapChangedMessage
+     * @since 2023-06-18
+     */
     @Test
     public void testEqualsAndHashCode() {
         int lobbyID1 = 123;

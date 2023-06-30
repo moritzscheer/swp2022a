@@ -16,8 +16,14 @@ public class AllOnlineUsersResponseTest {
     private AllOnlineUsersResponse response;
     private List<UserDTO> users;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         UserDTO user1 = new UserDTO("user1", "password1", "email1");
         UserDTO user2 = new UserDTO("user2", "password2", "email2");
         UserDTO user3 = new UserDTO("user3", "password3", "email3");
@@ -31,31 +37,71 @@ public class AllOnlineUsersResponseTest {
         response = new AllOnlineUsersResponse(new ArrayList<>(users));
     }
 
+    /**
+     * Tests the getUsers method
+     *
+     * @author WKempel
+     * @result The getter should return the correct users
+     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getUsers() {
+    public void testGetUsers() {
         List<UserDTO> actualUsers = response.getUsers();
         assertEquals(users, actualUsers);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are equal
+     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(response.equals(response));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(response, response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return true if the objects are equal
+     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         List<UserDTO> otherUsers = new ArrayList<>(users);
         AllOnlineUsersResponse other = new AllOnlineUsersResponse(new ArrayList<>(otherUsers));
-        assertTrue(response.equals(other));
+        assertEquals(response, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return false if the objects are different
+     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(response.equals("not an AllOnlineUsersResponse object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not an AllOnlineUsersResponse object", response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return false if the objects are null
+     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(response.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, response);
     }
 }
