@@ -159,6 +159,12 @@ public class LobbyServiceTest {
         bus.post(request);
     }
 
+    /**
+     * Tests the onSetPlayerReadyInLobbyRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnSetPlayerReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
@@ -175,6 +181,12 @@ public class LobbyServiceTest {
         assertTrue(request3.isReady(), "Player is ready");
     }
 
+    /**
+     * Tests the onSetPlayerIsNotReadyInLobbyRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnSetPlayerIsNotReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
@@ -191,6 +203,12 @@ public class LobbyServiceTest {
         assertFalse(request3.isReady(), "Player is not ready");
     }
 
+    /**
+     * Tests the onMapChangeRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnMapChangeRequest() {
         Map map = new Map();
@@ -207,5 +225,4 @@ public class LobbyServiceTest {
         assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
         assertNull(lobbyManagement.getLobby(1).get().getMapName());
     }
-
 }

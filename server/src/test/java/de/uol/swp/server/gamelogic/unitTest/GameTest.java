@@ -44,6 +44,15 @@ public class GameTest {
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2, user2);
 
 
+    /**
+     * Setup for the tests to create a game
+     *
+     * @author WKempel
+     * @throws IOException
+     * @throws InterruptedException
+     * @see de.uol.swp.server.gamelogic.Game
+     * @since 2023-06-28
+     */
     @BeforeEach
     public void setup() throws IOException, InterruptedException {
 
@@ -85,6 +94,15 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests if the game is created correctly and the registerCardsFromUser method
+     *
+     * @author WKempel
+     * @throws InterruptedException
+     * @result The game is created correctly and the registerCardsFromUser method works
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @since 2023-06-28
+     */
     @Test
     public void testRegisterCardsFromUser() throws InterruptedException {
         try {
@@ -114,6 +132,14 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests if the game is created correctly and the getPlayerByUserDTO method
+     *
+     * @author WKempel
+     * @result The game is created correctly and the getPlayerByUserDTO method works, all players found and exist in the game
+     * @see de.uol.swp.server.gamelogic
+     * @since 2023-06-28
+     */
     @Test
     public void testGetPlayerByUserDTO() {
         try {
@@ -129,6 +155,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the setPowerDown method
+     *
+     * @author WKempel
+     * @result The setPowerDown method works because the powerDown status changed
+     * @since 2023-06-28
+     */
     @Test
     public void testSetPowerDown() {
         try {
@@ -141,6 +174,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the roundIsOver method
+     *
+     * @author WKempel
+     * @result The roundIsOver method works because the players are dead
+     * @since 2023-06-28
+     */
     @Test
     public void testRoundIsOver() {
         try {
@@ -156,6 +196,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getBoard method
+     *
+     * @author WKempel
+     * @result The getBoard method works because the board is not null and has the correct size
+     * @since 2023-06-28
+     */
     @Test
     public void testBoardLength() {
         try {
@@ -166,6 +213,14 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getPlayerDTOSForAllPlayers method
+     *
+     * @author WKempel
+     * @result The getPlayerDTOSForAllPlayers method works because the playerDTOs are not null,
+     * have the correct size and contains the correct players
+     * @since 2023-06-28
+     */
     @Test
     public void testGetPlayerDTOSForAllPlayers() {
         try {
@@ -181,6 +236,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getRoundNumber method
+     *
+     * @author WKempel
+     * @result The getRoundNumber method works because the roundNumber is correct
+     * @since 2023-06-28
+     */
     @Test
     public void testGetRoundNumber() {
         try {
@@ -191,6 +253,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getLastCheckPoint method
+     *
+     * @author WKempel
+     * @result The getLastCheckPoint method works because the lastCheckPoint is correct
+     * @since 2023-06-28
+     */
     @Test
     public void testGetLastCheckPoint() {
         try {
@@ -201,6 +270,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getGameMovements method
+     *
+     * @author WKempel
+     * @result The getGameMovements method works because the gameMovements are not null and have the correct size
+     * @since 2023-06-28
+     */
     @Test
     public void testGetGameMovements() {
         try {
@@ -212,6 +288,14 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getRespawnRobots method
+     *
+     *
+     * @author WKempel
+     * @result The getRespawnRobots method works because no robot died and has to respawn
+     * @since 2023-06-28
+     */
     @Test
     public void testGetRespawnRobots() {
         try {
@@ -222,6 +306,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getBoard method
+     *
+     * @author WKempel
+     * @result The getBoard method works because the board is not null
+     * @since 2023-06-28
+     */
     @Test
     public void testGetBoard() {
         try {
@@ -231,6 +322,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the setBoard method
+     *
+     * @author WKempel
+     * @result The setBoard method works because the board is null
+     * @since 2023-06-28
+     */
     @Test
     public void testSetBoard() {
         try {
@@ -241,6 +339,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getPlayers method
+     *
+     * @author WKempel
+     * @result The getPlayers method works because the players are not null, have the correct size and contains the correct players
+     * @since 2023-06-28
+     */
     @Test
     public void testGetPlayers() {
         try {
@@ -256,6 +361,14 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getStartCheckpoint method
+     *
+     * @author WKempel
+     * @result The getStartCheckpoint method works because the startCheckpoint is not null
+     * every robot has the same startCheckpoint
+     * @since 2023-06-28
+     */
     @Test
     public void testGetStartCheckpoint() {
         try {
@@ -266,6 +379,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the getDockingStartPosition method
+     *
+     * @author WKempel
+     * @result The getDockingStartPosition method works because the dockingStartPosition is not null
+     * @since 2023-06-28
+     */
     @Test
     public void testGetDockingStartPosition() {
         try {
@@ -277,6 +397,13 @@ public class GameTest {
 
     }
 
+    /**
+     * Tests the increaseProgramStep method
+     *
+     * @author WKempel
+     * @result The increaseProgramStep method works because the programStep is correct
+     * @since 2023-06-28
+     */
     @Test
     public void testIncreaseProgramStep() {
         try {
@@ -288,6 +415,13 @@ public class GameTest {
 
     }
 
+    /**
+     * Tests the areAllRobotsAreDeadOrTurnedOff method
+     *
+     * @author WKempel
+     * @result The areAllRobotsAreDeadOrTurnedOff method works because all robots are alive and not turned off
+     * @since 2023-06-28
+     */
     @Test
     public void testAreAllRobotsAreDeadOrTurnedOff() {
         try {
@@ -297,6 +431,13 @@ public class GameTest {
         }
     }
 
+    /**
+     * Tests the setNotDistributedCards method
+     *
+     * @author WKempel
+     * @result The setNotDistributedCards method works because the notDistributedCards is true after setting it
+     * @since 2023-06-28
+     */
     @Test
     public void testSetNotDistributedCards() {
         try {

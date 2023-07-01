@@ -92,6 +92,12 @@ public class WallBehaviourTest {
         board[2][2] = new Block(tileBehaviours, "", new Position(2, 2));
     }
 
+    /**
+     * Tests if a robot is pushed in a wall
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @Test
     public void pushRobotInWallTest() {
         // robot in block 1,1 to be pushed
@@ -108,6 +114,12 @@ public class WallBehaviourTest {
         assertEquals(new Position(1, 1), robots[0].getPosition());
     }
 
+    /**
+     * Tests if a conveyor belt is in a wall
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @Test
     public void conveyorInWallTest() {
         // robot in block 1,1 to be pushed
@@ -124,6 +136,12 @@ public class WallBehaviourTest {
         assertEquals(new Position(1, 1), robots[0].getPosition());
     }
 
+    /**
+     * Tests if a robot get damage behind standing a wall
+     *
+     * @author WKempel
+     * @since 2023-03-13
+     */
     @Test
     public void notDamageRobotBehindWall() {
         // robot in same block as wall
@@ -132,6 +150,7 @@ public class WallBehaviourTest {
         int afterDamage = robots[1].getDamageToken();
         assertEquals(0, beforeDamage - afterDamage);
     }
+
 
     @Test
     public void robotMoveCard() {
@@ -143,6 +162,12 @@ public class WallBehaviourTest {
         assertEquals(robots[0].getPosition(), before);
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
