@@ -82,7 +82,7 @@ public class PusherBehaviourTest {
     @Test
     public void dontPushRobotWestTest() {
         // No pusher action at program step 2
-        List<MoveIntent> moves = board[0][0].OnPusherStage(2);
+        List<MoveIntent> moves = board[0][0].onPusherStage(2);
         assertEquals(0,moves.size());
     }
 
