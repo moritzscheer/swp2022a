@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.*;
 
 import java.io.Serializable;
@@ -89,7 +90,7 @@ public class Block implements Serializable, Cloneable {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023
      */
-    public List<MoveIntent> OnExpressConveyorStage(int programStep) {
+    public List<MoveIntent> onExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
             if (behaviour.onExpressConveyorStage(programStep) != null) {

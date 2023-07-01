@@ -1,11 +1,12 @@
 package de.uol.swp.common.game.message;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.chat.TextChatChannelDTO;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class TextChatChannelDTOTest {
 

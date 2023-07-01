@@ -1,17 +1,18 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.message.GameOverMessage;
-import de.uol.swp.common.game.message.RoundIsOverMessage;
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.ArrayList;
 
 public class GameOverMessageTest {
 
-    private final UserDTO userWon = new UserDTO("Player1","pw","ml");
-    private final UserDTO userNotWon = new UserDTO("Player2","pw","ml2");
+    private final UserDTO userWon = new UserDTO("Player1", "pw", "ml");
+    private final UserDTO userNotWon = new UserDTO("Player2", "pw", "ml2");
 
     @Test
     public void testGetLobbyID() {
@@ -28,6 +29,7 @@ public class GameOverMessageTest {
 
         assertEquals(userWon, message.getUserWon());
     }
+
     @Test
     public void testGetUserNotWon() {
         int lobbyID = 123;
@@ -39,9 +41,8 @@ public class GameOverMessageTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID);
+        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID, new ArrayList<>());
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
-
 }

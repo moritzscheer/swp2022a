@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -47,6 +47,8 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
+                    if(!robotState.isAlive())
+                        continue;
                     if (Objects.equals(robotState.getPosition(), blockPos)) {
                         robotState.setAlive(false);
                         break;
@@ -57,6 +59,17 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         }
         return null;
     }
+
+    public boolean isCrossing() {
+        return crossing;
+    }
+
+    /**
+     * When the robot is under a pressor then it will die.
+     *
+     * @param activeInProgramSteps the current program step
+     * @return null
+     */
 
     @Override
     public List<int[]> getImage() {

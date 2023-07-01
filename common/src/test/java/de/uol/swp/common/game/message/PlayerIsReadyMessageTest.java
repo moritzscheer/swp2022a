@@ -1,22 +1,22 @@
 package de.uol.swp.common.game.message;
 
-import de.uol.swp.common.game.message.PlayerIsReadyMessage;
-import de.uol.swp.common.game.message.RoundIsOverMessage;
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.Session;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 public class PlayerIsReadyMessageTest {
 
-    private final UserDTO playerIsReady = new UserDTO("Player1","pw","ml");
-    private final UserDTO playerIsReady2 = new UserDTO("Player2","pw","ml2");
+    private final UserDTO playerIsReady = new UserDTO("Player1", "pw", "ml");
+    private final UserDTO playerIsReady2 = new UserDTO("Player2", "pw", "ml2");
 
     @Test
     void constructor_ShouldSetCorrectValues() {
@@ -34,28 +34,30 @@ public class PlayerIsReadyMessageTest {
 
         PlayerIsReadyMessage message = new PlayerIsReadyMessage(playerIsReady, lobbyID);
 
-        Session session1 = new Session() {
-            @Override
-            public String getSessionId() {
-                return null;
-            }
+        Session session1 =
+                new Session() {
+                    @Override
+                    public String getSessionId() {
+                        return null;
+                    }
 
-            @Override
-            public User getUser() {
-                return null;
-            }
-        };
-        Session session2 = new Session() {
-            @Override
-            public String getSessionId() {
-                return null;
-            }
+                    @Override
+                    public User getUser() {
+                        return null;
+                    }
+                };
+        Session session2 =
+                new Session() {
+                    @Override
+                    public String getSessionId() {
+                        return null;
+                    }
 
-            @Override
-            public User getUser() {
-                return null;
-            }
-        };
+                    @Override
+                    public User getUser() {
+                        return null;
+                    }
+                };
         List<Session> receivers = List.of(session1, session2);
 
         message.setReceiver(receivers);
@@ -108,7 +110,7 @@ public class PlayerIsReadyMessageTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID);
+        RoundIsOverMessage message = new RoundIsOverMessage(lobbyID, new ArrayList<>());
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }

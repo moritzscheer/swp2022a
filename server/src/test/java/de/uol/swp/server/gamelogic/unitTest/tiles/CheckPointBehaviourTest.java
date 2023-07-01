@@ -1,5 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
@@ -11,8 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test CheckPointBehaviour
@@ -30,7 +30,7 @@ public class CheckPointBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
         behaviours1[0] = new CheckPointBehaviour(List.of(robots), board, pos1, checkPointNumber);
         board[0][0] = new Block(behaviours1, "", pos1);
     }

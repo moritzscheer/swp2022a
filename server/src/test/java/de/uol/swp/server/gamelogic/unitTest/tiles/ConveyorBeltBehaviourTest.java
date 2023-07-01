@@ -6,6 +6,7 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
@@ -31,9 +32,9 @@ public class ConveyorBeltBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, new Position(1, 1), true, CardinalDirection.East);
-        robots[1] = new Robot(2, new Position(1, 4), true, CardinalDirection.West);
-        robots[2] = new Robot(3, new Position(2, 1), true, CardinalDirection.North);
+        robots[0] = new Robot(1, new Position(1, 1), CardinalDirection.East);
+        robots[1] = new Robot(2, new Position(1, 4), CardinalDirection.West);
+        robots[2] = new Robot(3, new Position(2, 1), CardinalDirection.North);
 
         behaviours1[0] =
                 new ConveyorBeltBehaviour(
@@ -84,7 +85,11 @@ public class ConveyorBeltBehaviourTest {
     public void moveRobot() {
         // move robot in conveyorBelt
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
-        ((ConveyorBeltBehaviour) behaviours1[0]).onConveyorStage(1);
+        List<MoveIntent> moveIntents = ((ConveyorBeltBehaviour) behaviours1[0]).onConveyorStage(1);
+        assertEquals(1, moveIntents.size());
+        MoveIntent moveIntent = moveIntents.get(0);
+        assertEquals(robots[0].getID(), moveIntent.robotID);
+        assertEquals(CardinalDirection.East, moveIntent.getDirection());
         // TODO: Must be tested with move intent
         // assertEquals(robots[0].getPosition(), behaviours2[0].getBlockPos());
     }
@@ -120,7 +125,11 @@ public class ConveyorBeltBehaviourTest {
         // move robot in conveyorBelt
         assertEquals(robots[2].getPosition(), behaviours4[0].getBlockPos());
         assertEquals(robots[2].getDirection(), CardinalDirection.North);
-        ((ConveyorBeltBehaviour) behaviours4[0]).onConveyorStage(1);
+        List<MoveIntent> moveIntents = behaviours4[0].onConveyorStage(1);
+        assertEquals(1, moveIntents.size());
+        MoveIntent moveIntent = moveIntents.get(0);
+        assertEquals(robots[2].getID(), moveIntent.robotID);
+        assertEquals(CardinalDirection.North, moveIntent.getDirection());
         // TODO: must be tested with move intent
         //        assertEquals(robots[2].getPosition(), new Position(2, 2));
         //        assertEquals(robots[2].getDirection(), CardinalDirection.East);

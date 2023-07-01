@@ -1,10 +1,11 @@
 package de.uol.swp.common.game;
 
-import de.uol.swp.common.game.dto.CardDTO;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import de.uol.swp.common.game.dto.CardDTO;
+
+import org.junit.jupiter.api.Test;
 
 public class CardDTOTest {
 

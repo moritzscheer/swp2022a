@@ -1,13 +1,15 @@
 package de.uol.swp.common.lobby.request;
 
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class AbstractLobbyRequestTest {
 
-    private final UserDTO user = new UserDTO("Player1","pw","ml");
-    private final UserDTO newUser = new UserDTO("Player2","pw","ml");
+    private final UserDTO user = new UserDTO("Player1", "pw", "ml");
+    private final UserDTO newUser = new UserDTO("Player2", "pw", "ml");
+
     @Test
     public void testConstructorAndGetters() {
 
@@ -49,9 +51,11 @@ public class AbstractLobbyRequestTest {
 
         String name = null;
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            AbstractLobbyRequest request = new AbstractLobbyRequest(name, user);
-        });
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    AbstractLobbyRequest request = new AbstractLobbyRequest(name, user);
+                });
     }
 
     @Test
@@ -59,8 +63,10 @@ public class AbstractLobbyRequestTest {
 
         UserDTO user = null;
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            AbstractLobbyRequest request = new AbstractLobbyRequest("LobbyName", user);
-        });
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> {
+                    AbstractLobbyRequest request = new AbstractLobbyRequest("LobbyName", user);
+                });
     }
 }

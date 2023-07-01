@@ -12,18 +12,26 @@ public class Card {
     private final int id;
     private CardBehaviour behaviour;
     private int priority;
-    private String imgPath;
+    private String behaviourType;
 
     /**
      * @author WKempel
      * @see
      * @since 2023-04-03
      */
-    public Card(int id, CardBehaviour behaviour, int priority, String imgPath) {
+    public Card(int id, CardBehaviour behaviour, int priority) {
         this.id = id;
         this.behaviour = behaviour;
         this.priority = priority;
-        this.imgPath = imgPath;
+    }
+
+    /** Constructor for when Player is powered down
+     * @author Maria
+     * @see
+     * @since 2023-06-19
+     */
+    public Card(int id) {
+        this.id = id;
     }
 
     /**
@@ -31,10 +39,10 @@ public class Card {
      * @see
      * @since 2023-05-06
      */
-    public Card(int id, String behaviourType, int priority, String imgPath) throws Exception {
+    public Card(int id, String behaviourType, int priority) throws Exception {
         this.id = id;
         this.priority = priority;
-        this.imgPath = imgPath;
+        this.behaviourType = behaviourType;
 
         switch (behaviourType) {
             case "1":
@@ -120,5 +128,9 @@ public class Card {
      */
     public int getId() {
         return id;
+    }
+
+    public String getBehaviourType() {
+        return behaviourType;
     }
 }

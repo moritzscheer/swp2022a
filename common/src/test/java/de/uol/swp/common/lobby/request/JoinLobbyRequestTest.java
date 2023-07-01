@@ -1,12 +1,13 @@
 package de.uol.swp.common.lobby.request;
 
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class JoinLobbyRequestTest {
 
-    private final UserDTO user = new UserDTO("Player1","pw","ml");
+    private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
     @Test
     public void testConstructorAndGetters() {

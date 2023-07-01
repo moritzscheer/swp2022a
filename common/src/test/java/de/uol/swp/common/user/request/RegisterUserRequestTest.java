@@ -1,11 +1,12 @@
 package de.uol.swp.common.user.request;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class RegisterUserRequestTest {
 
@@ -35,7 +36,6 @@ public class RegisterUserRequestTest {
         UserDTO user1 = new UserDTO("username", "password", "email");
         UserDTO user2 = new UserDTO("username", "password", "email");
         UserDTO user3 = new UserDTO("username2", "password", "email");
-
 
         RegisterUserRequest request1 = new RegisterUserRequest(user1);
         RegisterUserRequest request2 = new RegisterUserRequest(user2);

@@ -1,9 +1,9 @@
 package de.uol.swp.common.chat;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class TextChatMessageTest {
 
@@ -18,7 +18,6 @@ public class TextChatMessageTest {
         assertEquals(sender, message.getMessage());
         assertEquals(content, message.getSenderString());
     }
-
 
     @Test
     void equals_withDifferentObjects() {

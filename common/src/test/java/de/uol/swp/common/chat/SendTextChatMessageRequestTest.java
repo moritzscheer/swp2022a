@@ -1,11 +1,12 @@
 package de.uol.swp.common.chat;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import de.uol.swp.common.chat.message.SendTextChatMessageRequest;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class SendTextChatMessageRequestTest {
 

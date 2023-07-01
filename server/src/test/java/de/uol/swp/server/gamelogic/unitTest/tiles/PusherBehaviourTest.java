@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
@@ -13,6 +13,7 @@ import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,12 +31,12 @@ public class PusherBehaviourTest {
     private static final Block[][] board = new Block[1][2];
 
     int[] activeInProgramSteps = {1, 3};
-    CardinalDirection direction = CardinalDirection.East;
+    CardinalDirection direction = CardinalDirection.West; // means it will push east
     int programStep = 1;
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
         behaviours1[0] =
                 new PusherBehaviour(List.of(robots), board, pos1, activeInProgramSteps, direction);
         board[0][0] = new Block(behaviours1, "", pos1);
@@ -55,14 +56,18 @@ public class PusherBehaviourTest {
     public void pushRobotWestTest() {
         // robot in block 0,0 to be pushed
         // program step is 1
-        assertEquals(CardinalDirection.East, ((PusherBehaviour) behaviours1[0]).getDirection());
+        assertEquals(CardinalDirection.West, ((PusherBehaviour) behaviours1[0]).getDirection());
+        assertEquals(
+                CardinalDirection.East, ((PusherBehaviour) behaviours1[0]).getPushingDirection());
         // Pushes robot to west
         ((PusherBehaviour) behaviours1[0]).onPusherStage(1);
 
         // solve move intentions
         List<MoveIntent> moves;
         moves = board[0][0].OnPusherStage(1);
-        assertEquals(moves.get(0).getDirection(), robots[0].getDirection());
+        assertEquals(
+                moves.get(0).getDirection(),
+                ((PusherBehaviour) behaviours1[0]).getPushingDirection());
     }
 
     /**
@@ -76,6 +81,29 @@ public class PusherBehaviourTest {
      */
     @Test
     public void dontPushRobotWestTest() {
-        // TODO must be tested together with move intent
+        // No pusher action at program step 2
+        List<MoveIntent> moves = board[0][0].OnPusherStage(2);
+        assertEquals(0,moves.size());
+    }
+
+    @Test
+    public void testGetActiveInProgramSteps() {
+        PusherBehaviour pusher = (PusherBehaviour) behaviours1[0];
+        assertEquals(1, pusher.getActiveInProgramSteps().get(0));
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        if(activeInProgramSteps.length == 3) {
+            image = behaviours1[0].getImage();
+            assertEquals(42,image.get(0)[0]);
+        } else if(activeInProgramSteps.length == 2) {
+            image = behaviours1[0].getImage();
+            assertEquals(43,image.get(0)[0]);
+        } else {
+            image = behaviours1[0].getImage();
+            assertEquals(38,image.get(0)[0]);
+        }
     }
 }

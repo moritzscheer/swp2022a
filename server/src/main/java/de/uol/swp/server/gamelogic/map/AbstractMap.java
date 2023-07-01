@@ -7,10 +7,7 @@ import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 public abstract class AbstractMap {
     protected Block[][] map = new Block[12][12];
 
-
-
-
-    public AbstractMap(){
+    public AbstractMap() {
         // Template
         int x = 0;
         int y = 0;
@@ -337,7 +334,7 @@ public abstract class AbstractMap {
         this.map[x][y] = new Block(behaviours, null, new Position(x, y));
     }
 
-    public Block[][] getMap(){
+    public Block[][] getMap() {
         return this.map;
     }
 }

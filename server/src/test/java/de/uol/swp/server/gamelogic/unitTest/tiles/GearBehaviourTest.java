@@ -12,6 +12,7 @@ import de.uol.swp.server.gamelogic.tiles.GearBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public class GearBehaviourTest {
 
     @Before
     public void setup() throws Exception {
-        robots[0] = new Robot(1, pos1, true, CardinalDirection.East);
-        robots[1] = new Robot(2, pos2, true, CardinalDirection.East);
+        robots[0] = new Robot(1, pos1, CardinalDirection.East);
+        robots[1] = new Robot(2, pos2, CardinalDirection.East);
         behaviours1[0] = new GearBehaviour(List.of(robots), board, pos1, true);
         behaviours2[0] = new GearBehaviour(List.of(robots), board, pos2, false);
         board[0][0] = new Block(behaviours1, "", pos1);
@@ -181,5 +182,39 @@ public class GearBehaviourTest {
         assertEquals(CardinalDirection.North, robots[1].getDirection());
         behaviours2[0].onRotatorStage(1);
         assertEquals(CardinalDirection.West, robots[1].getDirection());
+    }
+
+    @Test
+    public void testGetType() {
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        gearBehaviour.setType(34);
+        assertEquals(34, gearBehaviour.getType());
+    }
+
+    @Test
+    public void testSetType() {
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        gearBehaviour.setType(33);
+        assertEquals(33, gearBehaviour.getType());
+    }
+
+    @Test
+    public void testGetImage() {
+        List<int[]> image = new ArrayList<>();
+        GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
+        if(gearBehaviour.isTurnClockwise()) {
+            image = gearBehaviour.getImage();
+        }
+        assertEquals(1, image.size());
+        assertEquals(34, image.get(0)[0]);
+        assertEquals(0, image.get(0)[1]);
+
+        GearBehaviour gearBehaviour2 = (GearBehaviour) behaviours2[0];
+        if(!gearBehaviour2.isTurnClockwise()) {
+            image = gearBehaviour2.getImage();
+        }
+        assertEquals(1, image.size());
+        assertEquals(33, image.get(0)[0]);
+        assertEquals(0, image.get(0)[1]);
     }
 }

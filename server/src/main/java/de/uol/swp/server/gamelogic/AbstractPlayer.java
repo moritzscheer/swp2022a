@@ -16,6 +16,7 @@ public abstract class AbstractPlayer {
     protected UserDTO userDTO;
     protected int numCardToPlay = 0;
 
+
     /** Constructor */
     public AbstractPlayer() {}
 
@@ -83,5 +84,21 @@ public abstract class AbstractPlayer {
 
     public UserDTO getUser() {
         return userDTO;
+    }
+
+    public void setUser(UserDTO user) {
+        this.userDTO = user;
+    }
+
+    public void setReceivedCards(Card[] receivedCards) {
+        this.receivedCards = receivedCards;
+    }
+
+    public int getNumCardToPlay() {
+        return numCardToPlay;
+    }
+
+    public void setNumCardToPlay(int numCardToPlay) {
+        this.numCardToPlay = numCardToPlay;
     }
 }

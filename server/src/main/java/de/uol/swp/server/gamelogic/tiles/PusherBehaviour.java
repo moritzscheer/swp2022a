@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -31,8 +31,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
             int[] activeInProgramSteps,
             CardinalDirection direction) {
         super(robotStates, board, blockPos);
-        this.activeInProgramSteps = Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());;
-        this.direction =  direction;
+        this.activeInProgramSteps =
+                Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());
+        ;
+        this.direction = direction;
         this.pushingDirection = CardinalDirection.values()[(direction.ordinal() + 2) % 4];
     }
 
@@ -42,14 +44,16 @@ public class PusherBehaviour extends AbstractTileBehaviour {
      *
      * @author Tommy Dang and Finn Oldeboershuis
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
-     * @see de.uol.swp.server.gamelogic.MoveIntent
+     * @see MoveIntent
      * @since 28.02.2023
      */
     @Override
     public List<MoveIntent> onPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
-        if(this.activeInProgramSteps.contains(programStep)){
+        if (this.activeInProgramSteps.contains(programStep)) {
             for (Robot robotState : this.robotStates) {
+                if(!robotState.isAlive())
+                    continue;
                 if (Objects.equals(robotState.getPosition(), this.blockPos)) {
                     moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));
                     break;
@@ -62,6 +66,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
 
     public CardinalDirection getDirection() {
         return this.direction;
+    }
+
+    public CardinalDirection getPushingDirection() {
+        return this.pushingDirection;
     }
 
     public List<Integer> getActiveInProgramSteps() {

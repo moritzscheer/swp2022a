@@ -1,6 +1,7 @@
 package de.uol.swp.common.lobby.request;
 
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,15 +9,15 @@ import java.util.Map;
 
 public class MapChangeRequestTest {
 
-    private final UserDTO user = new UserDTO("Player1","pw","ml");
-
+    private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
     @Test
     public void testConstructorAndGetters() {
         int lobbyID = 123;
         Map map = null;
 
-        MapChangeRequest request = new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
+        MapChangeRequest request =
+                new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
 
         Assertions.assertEquals(lobbyID, request.getID());
         Assertions.assertEquals(user, request.getUser());
@@ -28,7 +29,8 @@ public class MapChangeRequestTest {
         int lobbyID = 123;
         Map map = null;
 
-        MapChangeRequest request = new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
+        MapChangeRequest request =
+                new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
 
         Map retrievedMap = (Map) request.getMap();
 
@@ -40,7 +42,8 @@ public class MapChangeRequestTest {
         int lobbyID = 123;
         Map map = null;
 
-        MapChangeRequest request = new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
+        MapChangeRequest request =
+                new MapChangeRequest(lobbyID, user, (de.uol.swp.common.game.Map) map);
 
         int retrievedID = request.getID();
 

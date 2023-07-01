@@ -2,7 +2,7 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.MoveIntent;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
 
 import java.util.ArrayList;
@@ -52,12 +52,12 @@ public class RepairBehaviour extends AbstractTileBehaviour {
      */
     public void fixDamageToken(int indexOfMovedRobot) {
         robotStates.get(indexOfMovedRobot).fixDamageToken();
-        if(repairSiteKey == 2){
+        if (repairSiteKey == 2) {
             robotStates.get(indexOfMovedRobot).fixDamageToken();
         }
     }
 
-    public void setBackupCopy(int robotID){
+    public void setBackupCopy(int robotID) {
         robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
     }
 

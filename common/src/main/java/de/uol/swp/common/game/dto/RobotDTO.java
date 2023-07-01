@@ -4,6 +4,7 @@ import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Object to transfer the information of a Robot
@@ -28,6 +29,10 @@ public class RobotDTO implements Serializable {
     private int lastCheckpoint;
 
     private boolean alive = true;
+
+    private boolean powerDown = false;
+
+    private boolean deadForever = false;
 
     public RobotDTO(int robotID, Position position, CardinalDirection direction) {
         this.robotID = robotID;
@@ -81,7 +86,6 @@ public class RobotDTO implements Serializable {
         this.damageToken = damageToken;
     }
 
-
     public int getLastCheckpoint() {
         return lastCheckpoint;
     }
@@ -96,5 +100,34 @@ public class RobotDTO implements Serializable {
 
     public void setAlive(boolean alive) {
         this.alive = alive;
+    }
+
+    public boolean isPowerDown() {
+        return powerDown;
+    }
+
+    public void setPowerDown(boolean powerDown) {
+        this.powerDown = powerDown;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RobotDTO robotDTO = (RobotDTO) o;
+        return robotID == robotDTO.robotID && lifeToken == robotDTO.lifeToken && damageToken == robotDTO.damageToken && lastCheckpoint == robotDTO.lastCheckpoint && alive == robotDTO.alive && position.equals(robotDTO.position) && direction == robotDTO.direction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(robotID, position, direction, lifeToken, damageToken, lastCheckpoint, alive);
+    }
+
+    public boolean isDeadForever() {
+        return deadForever;
+    }
+
+    public void setDeadForever(boolean deadForever) {
+        this.deadForever = deadForever;
     }
 }
