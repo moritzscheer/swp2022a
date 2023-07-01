@@ -7,6 +7,7 @@ import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.ExpressConveyorBeltBehaviour;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,6 +17,14 @@ import static junit.framework.TestCase.assertEquals;
 
 public class ExpressConveyorBeltBehaviourTest {
 
+    /**
+     * Tests the onExpressConveyorStage method
+     *
+     * @author WKempel
+     * @result The onExpressConveyorStage method should return true because the expectedMoves and actualMoves are the same
+     * @see de.uol.swp.server.gamelogic.tiles.enums
+     * @since 2023-06-21
+     */
     @Test
     public void onExpressConveyorStageTest() {
         List<Robot> robots = new ArrayList<>();
@@ -36,6 +45,6 @@ public class ExpressConveyorBeltBehaviourTest {
         int programmStep = 0;
         List<MoveIntent> actualMoves = expressConveyorBelt.onExpressConveyorStage(programmStep);
 
-        assertEquals(expectedMoves, actualMoves);
+        Assertions.assertEquals(expectedMoves, actualMoves);
     }
 }

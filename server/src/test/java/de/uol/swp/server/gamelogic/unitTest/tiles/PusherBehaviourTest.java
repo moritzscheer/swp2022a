@@ -86,12 +86,26 @@ public class PusherBehaviourTest {
         assertEquals(0,moves.size());
     }
 
+    /**
+     * Tests the getActiveInProgramSteps method
+     *
+     * @author WKempel
+     * @result The method returns true if the activeInProgramSteps is equal to the excpected value
+     * @since 2023-06-21
+     */
     @Test
     public void testGetActiveInProgramSteps() {
         PusherBehaviour pusher = (PusherBehaviour) behaviours1[0];
         assertEquals(1, pusher.getActiveInProgramSteps().get(0));
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @result The method returns the correct image
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();

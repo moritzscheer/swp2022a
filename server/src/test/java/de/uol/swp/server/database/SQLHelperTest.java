@@ -1,5 +1,6 @@
 package de.uol.swp.server.database;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
@@ -15,9 +16,18 @@ public class SQLHelperTest {
     private static final String DB_PASS = "*softwareprojekt2022A*";
     private static Connection SqlConnection;
 
+    /**
+     * Tests the getSqlConnection method
+     *
+     * @author WKempel
+     * @result The getSqlConnection method should return a connection to the database
+     * @throws SQLException
+     * @see de.uol.swp.server.database.SQLHelper
+     * @since 2023-06-27
+     */
     @Test
     public void testGetSqlConnection() throws SQLException {
         SqlConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-       assertNotNull(SqlConnection);
+       Assertions.assertNotNull(SqlConnection);
     }
 }

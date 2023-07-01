@@ -23,16 +23,39 @@ public class CheckPointBehaviourTest {
 
     private final Robot robot = new Robot(123,blockPos,direction);
 
+    /**
+     * Set up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @BeforeEach
     public void setUp() {
         Block[][] board = new Block[12][12];
         checkPointBehaviour = new CheckPointBehaviour(robotStates, board, blockPos, checkPointNumber);
     }
+
+    /**
+     * Tests getCheckPointNumber method
+     *
+     * @author WKempel
+     * @result The getCheckPointNumber method should return true if the checkPointNumber is correct
+     * @see de.uol.swp.server.gamelogic.tiles.enums
+     * @since 2023-06-21
+     */
     @Test
     public void testGetCheckPointNumber() {
         Assertions.assertEquals(checkPointNumber, checkPointBehaviour.getCheckPointNumber());
     }
 
+    /**
+     * Tests setCheckPoint method
+     *
+     * @author WKempel
+     * @result The setCheckPoint method should return true if the checkPointNumber is correct
+     * @see de.uol.swp.server.gamelogic.tiles.enums
+     * @since 2023-06-21
+     */
     @Test
     public void testSetCheckPoint_NextCheckpoint() {
         robot.setLastCheckPoint(checkPointNumber - 1);
@@ -43,6 +66,14 @@ public class CheckPointBehaviourTest {
         Assertions.assertEquals(blockPos, robot.getLastBackupCopyPosition());
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @result The getImage method should return true if the image is correct
+     * @see de.uol.swp.server.gamelogic.tiles.enums
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = checkPointBehaviour.getImage();

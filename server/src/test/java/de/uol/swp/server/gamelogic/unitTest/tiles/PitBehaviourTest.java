@@ -26,6 +26,13 @@ public class PitBehaviourTest {
     private PitBehaviour pitBehaviour;
     private static final AbstractTileBehaviour[] behaviours1 = new AbstractTileBehaviour[1];
 
+    /**
+     * Set up the test
+     *
+     * @author WKempel
+     * @throws Exception
+     * @since 2023-02-26
+     */
     @Before
     public void SetUp() throws Exception {
         robotStates = new Robot[1];
@@ -42,7 +49,7 @@ public class PitBehaviourTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PitBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 26-02-2023
+     * @since 2023-02-26
      */
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
