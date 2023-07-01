@@ -63,7 +63,7 @@ public class PusherBehaviourTest {
 
         // solve move intentions
         List<MoveIntent> moves;
-        moves = board[0][0].OnPusherStage(1);
+        moves = board[0][0].onPusherStage(1);
         assertEquals(
                 moves.get(0).getDirection(),
                 ((PusherBehaviour) behaviours1[0]).getPushingDirection());

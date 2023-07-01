@@ -78,8 +78,9 @@ public class Block implements Serializable, Cloneable {
     public List<MoveIntent> OnConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onConveyorStage(programStep) != null) {
-                moves.addAll(behaviour.onConveyorStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onConveyorStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -93,8 +94,9 @@ public class Block implements Serializable, Cloneable {
     public List<MoveIntent> onExpressConveyorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onExpressConveyorStage(programStep) != null) {
-                moves.addAll(behaviour.onExpressConveyorStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onExpressConveyorStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -105,11 +107,12 @@ public class Block implements Serializable, Cloneable {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023
      */
-    public List<MoveIntent> OnPusherStage(int programStep) {
+    public List<MoveIntent> onPusherStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onPusherStage(programStep) != null) {
-                moves.addAll(behaviour.onPusherStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onPusherStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -120,11 +123,12 @@ public class Block implements Serializable, Cloneable {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023
      */
-    public List<MoveIntent> OnLaserStage(int programStep) {
+    public List<MoveIntent> onLaserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onLaserStage(programStep) != null) {
-                moves.addAll(behaviour.onLaserStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onLaserStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -135,11 +139,12 @@ public class Block implements Serializable, Cloneable {
      * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
      * @since 13-03-2023
      */
-    public List<MoveIntent> OnPresserStage(int programStep) {
+    public List<MoveIntent> onPressorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onPressorStage(programStep) != null) {
-                moves.addAll(behaviour.onPressorStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onPressorStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -157,8 +162,9 @@ public class Block implements Serializable, Cloneable {
     public List<MoveIntent> OnRotatorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onRotatorStage(programStep) != null) {
-                moves.addAll(behaviour.onRotatorStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onRotatorStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;
@@ -167,8 +173,9 @@ public class Block implements Serializable, Cloneable {
     public List<MoveIntent> OnCheckPointStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            if (behaviour.onCheckPointStage(programStep) != null) {
-                moves.addAll(behaviour.onCheckPointStage(programStep));
+            List<MoveIntent> thisMoves = behaviour.onCheckPointStage(programStep);
+            if (thisMoves != null) {
+                moves.addAll(thisMoves);
             }
         }
         return moves;

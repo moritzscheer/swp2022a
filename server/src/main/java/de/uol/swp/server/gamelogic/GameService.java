@@ -331,7 +331,7 @@ public class GameService extends AbstractService {
         try {
             lobbyService.sendToAllInLobby(
                     lobbyID,
-                    new TextHistoryMessage(lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+                    new TextHistoryMessage(lobbyID, "======= Round: " + game.getRoundNumber() + " ======= \n"));
         } catch (LobbyDoesNotExistException e) {
             throw new RuntimeException(e);
         }
@@ -339,6 +339,17 @@ public class GameService extends AbstractService {
         for (int i = 0; i < 5; i++) {
             game.calcAllGameRound();
             List<GameMovement> gameMovements = game.getGameMovements();
+
+            String programStep = "" + i;
+            scheduler.schedule(() -> {
+                try {
+                    lobbyService.sendToAllInLobby(lobbyID, new TextHistoryMessage(lobbyID, "==== Program Step: " + programStep + " ==== \n"));
+                } catch (LobbyDoesNotExistException e) {
+                    throw new RuntimeException(e);
+                }
+            }, secondsToWait, SECONDS);
+
+            //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 

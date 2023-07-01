@@ -501,7 +501,7 @@ public class Game {
 
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-        if(areAllRobotsAreDeadOrTurnedOff()){
+        if(areAllRobotsAreDead()){
             return;
         }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
@@ -652,7 +652,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnPusherStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPusherStage(programStep+1);
                 moves.addAll(blockMoves);
             }
         }
@@ -676,7 +676,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnPresserStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPressorStage(programStep+1);
                 moves.addAll(blockMoves);
             }
         }
@@ -688,7 +688,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnLaserStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onLaserStage(programStep+1);
                 moves.addAll(blockMoves);
             }
         }
@@ -1158,9 +1158,9 @@ public class Game {
      * @since 2023-06-20
      */
     // TODO: fix this function, when all are dead
-    public boolean areAllRobotsAreDeadOrTurnedOff(){
+    public boolean areAllRobotsAreDead(){
         for (Robot robot: this.robots ) {
-            if (!robot.isDeadForTheRound() && !robot.isPowerDown()){
+            if (!robot.isDeadForTheRound()){
                 return false;
             }
         }
