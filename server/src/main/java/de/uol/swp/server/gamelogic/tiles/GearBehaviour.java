@@ -73,4 +73,16 @@ public class GearBehaviour extends AbstractTileBehaviour {
         }
         return new ArrayList<>(List.of(new int[] {type, 0}));
     }
+
+    public boolean isTurnClockwise() {
+        return turnClockwise;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }

@@ -60,6 +60,17 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    public boolean isCrossing() {
+        return crossing;
+    }
+
+    /**
+     * When the robot is under a pressor then it will die.
+     *
+     * @param activeInProgramSteps the current program step
+     * @return null
+     */
+
     @Override
     public List<int[]> getImage() {
         int type = 0;
