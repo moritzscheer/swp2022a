@@ -18,6 +18,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.*;
 
+
+/**
+ * Test GameManagement
+ *
+ * @author Maria Eduarda Costa Leite Andrade
+ * @since 2023-07-02
+ */
 public class GameManagementTest {
     private GameManagement gameManagement;
     private static final int lobbyID = 1;
