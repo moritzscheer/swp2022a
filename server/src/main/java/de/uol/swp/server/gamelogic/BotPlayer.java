@@ -12,6 +12,10 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class BotPlayer extends AbstractPlayer {
 
+    /**
+     * @author
+     * @since
+     */
     public BotPlayer(Position startPosition, int robotID) {
         super();
         int botNumber = robotID + 1;

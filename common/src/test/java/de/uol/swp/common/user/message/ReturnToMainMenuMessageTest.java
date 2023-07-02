@@ -1,4 +1,4 @@
-package de.uol.swp.common.user.request;
+package de.uol.swp.common.user.message;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,40 +7,40 @@ import de.uol.swp.common.user.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class ReturnToMainMenuRequestTest {
+public class ReturnToMainMenuMessageTest {
 
-    private ReturnToMainMenuRequest request;
+    private ReturnToMainMenuMessage message;
     private UserDTO user;
 
     @BeforeEach
     void setUp() {
         user = new UserDTO("username", "password", "email");
-        request = new ReturnToMainMenuRequest(user);
+        message = new ReturnToMainMenuMessage(user);
     }
 
     @Test
     void getLoggedInUser() {
-        assertEquals(user, request.getLoggedInUser());
+        assertEquals(user, message.getLoggedInUser());
     }
 
     @Test
     void equals_sameObject_true() {
-        assertTrue(request.equals(request));
+        assertTrue(message.equals(message));
     }
 
     @Test
     void equals_sameValues_true() {
-        ReturnToMainMenuRequest other = new ReturnToMainMenuRequest(user);
-        assertTrue(request.equals(other));
+        ReturnToMainMenuMessage other = new ReturnToMainMenuMessage(user);
+        assertTrue(message.equals(other));
     }
 
     @Test
     void equals_differentType_false() {
-        assertFalse(request.equals("not a ReturnToMainMenuRequest object"));
+        assertFalse(message.equals("not a ReturnToMainMenuRequest object"));
     }
 
     @Test
     void equals_null_false() {
-        assertFalse(request.equals(null));
+        assertFalse(message.equals(null));
     }
 }

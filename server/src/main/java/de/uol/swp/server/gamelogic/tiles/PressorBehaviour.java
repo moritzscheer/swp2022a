@@ -22,6 +22,10 @@ public class PressorBehaviour extends AbstractTileBehaviour {
 
     private boolean crossing;
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public PressorBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -60,6 +64,10 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public boolean isCrossing() {
         return crossing;
     }
@@ -70,7 +78,6 @@ public class PressorBehaviour extends AbstractTileBehaviour {
      * @param activeInProgramSteps the current program step
      * @return null
      */
-
     @Override
     public List<int[]> getImage() {
         int type = 0;

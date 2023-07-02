@@ -21,6 +21,10 @@ public abstract class AbstractTileBehaviour implements Serializable {
     protected Block[][] board;
     protected Position blockPos;
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public AbstractTileBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
         this.robotStates = robotStates;
         this.board = board;
@@ -120,14 +124,26 @@ public abstract class AbstractTileBehaviour implements Serializable {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public List<MoveIntent> onRotatorStage(int programStep) {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public List<MoveIntent> onCheckPointStage(int programStep) {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public void setRobotStates(List<Robot> robots) {
         robotStates = robots;
     }

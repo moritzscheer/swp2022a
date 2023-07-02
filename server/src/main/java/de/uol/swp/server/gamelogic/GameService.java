@@ -77,10 +77,6 @@ public class GameService extends AbstractService {
         System.out.println("I am creating your game :)");
 
         System.out.println("New id :)");
-        // TODO: fix docking positions
-        Position[] checkpointsList = {
-                new Position(11, 3), new Position(9, 3), new Position(7, 4), new Position(1, 9)
-        };
         System.out.println("dockings :)");
         Optional<LobbyDTO> lobby = lobbyManagement.getLobby(lobbyID);
         if (!lobby.isPresent()) {
@@ -90,7 +86,7 @@ public class GameService extends AbstractService {
         // create and save Game Object
         games.put(
                 lobbyID,
-                new Game(lobbyID, lobby.get().getUsers(), mapName, numberBots, checkpointCount));
+                new Game(lobbyID, lobby.get().getUsers(), mapName, numberBots, checkpointCount, -1)); // Version -1 if it should be random generated
 
         // Create DTOs objects
         List<PlayerDTO> players = new ArrayList<>();
@@ -335,7 +331,7 @@ public class GameService extends AbstractService {
         try {
             lobbyService.sendToAllInLobby(
                     lobbyID,
-                    new TextHistoryMessage(lobbyID, "======= Round " + game.getRoundNumber() + " ======= \n"));
+                    new TextHistoryMessage(lobbyID, "======= Round: " + game.getRoundNumber() + " ======= \n"));
         } catch (LobbyDoesNotExistException e) {
             throw new RuntimeException(e);
         }
@@ -343,6 +339,17 @@ public class GameService extends AbstractService {
         for (int i = 0; i < 5; i++) {
             game.calcAllGameRound();
             List<GameMovement> gameMovements = game.getGameMovements();
+
+            String programStep = "" + i;
+            scheduler.schedule(() -> {
+                try {
+                    lobbyService.sendToAllInLobby(lobbyID, new TextHistoryMessage(lobbyID, "==== Program Step: " + programStep + " ==== \n"));
+                } catch (LobbyDoesNotExistException e) {
+                    throw new RuntimeException(e);
+                }
+            }, secondsToWait, SECONDS);
+
+            //moveList = filterMoveList(moveList);
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 

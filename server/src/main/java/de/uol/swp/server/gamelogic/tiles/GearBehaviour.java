@@ -64,6 +64,10 @@ public class GearBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         if (this.turnClockwise) {
@@ -74,14 +78,26 @@ public class GearBehaviour extends AbstractTileBehaviour {
         return new ArrayList<>(List.of(new int[] {type, 0}));
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public boolean isTurnClockwise() {
         return turnClockwise;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public int getType() {
         return type;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public void setType(int type) {
         this.type = type;
     }

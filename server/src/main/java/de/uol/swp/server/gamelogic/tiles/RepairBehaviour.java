@@ -57,6 +57,10 @@ public class RepairBehaviour extends AbstractTileBehaviour {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setBackupCopy(int robotID) {
         robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
     }
@@ -82,6 +86,10 @@ public class RepairBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author
+     * @since
+     */
     @Override
     public List<int[]> getImage() {
         return new ArrayList<>(List.of(new int[] {25, 0}));

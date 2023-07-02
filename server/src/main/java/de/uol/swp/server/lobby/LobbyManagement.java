@@ -27,6 +27,10 @@ public class LobbyManagement {
     //        return  instance;
     //    }
 
+    /**
+     * @author
+     * @since
+     */
     @Inject
     public LobbyManagement() {}
 

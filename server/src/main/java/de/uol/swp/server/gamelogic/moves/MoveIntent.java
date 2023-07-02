@@ -12,11 +12,23 @@ public class MoveIntent {
     public final int robotID;
     public final CardinalDirection direction;
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public MoveIntent(int id, CardinalDirection dir) {
         this.robotID = id;
         this.direction = dir;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public CardinalDirection getDirection() {
         return this.direction;
     }

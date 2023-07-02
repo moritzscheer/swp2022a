@@ -5,8 +5,20 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 
+/**
+ *
+ *
+ * @author
+ * @since
+ */
 public class TestLaserMap extends AbstractMap {
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public TestLaserMap() {
         // LASERTEST
         int x = 0;
