@@ -558,8 +558,8 @@ public class gameTest {
     @Test
     public void movingOnNextRightCheckPoint(){
         try {
-            SetGameOnePlayer();
-            robotOne.setCurrentPosition(new Position(7, 6));
+            SetGameOnMapOneWithMoreCP();
+            robotOne.setCurrentPosition(new Position(9, 4));
             cards[0] = new Card(51, "6", 510);      // Forward 1
             cards[1] = new Card(36, "3", 420);      // Right Turn
             cards[2] = new Card(36, "3", 420);      // Right Turn
@@ -569,7 +569,7 @@ public class gameTest {
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(7, 5));
+            assertEquals(robotOne.getPosition(), new Position(9, 3));
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLastCheckPoint(), 2);
 
@@ -608,11 +608,11 @@ public class gameTest {
                 game.increaseProgramStep();
 
 
-                robotOne.setCurrentPosition(new Position(2, 4));
+                robotOne.setCurrentPosition(new Position(2, 3));
                 game.calcAllGameRound();
                 game.increaseProgramStep();
 
-                robotOne.setCurrentPosition(new Position(5, 5));
+                robotOne.setCurrentPosition(new Position(4, 6));
                 game.calcAllGameRound();
                 game.increaseProgramStep();
 
@@ -646,7 +646,7 @@ public class gameTest {
     public void movingOverNextRightCheckPoint(){
         try {
             SetGameOnePlayer();
-            robotOne.setCurrentPosition(new Position(7, 6));
+            robotOne.setCurrentPosition(new Position(9, 4));
             cards[0] = new Card(75, "7", 750);      // Forward 2
             cards[1] = new Card(36, "3", 420);      // Right Turn
             cards[2] = new Card(36, "3", 420);      // Right Turn
@@ -656,7 +656,7 @@ public class gameTest {
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(7, 4));
+            assertEquals(robotOne.getPosition(), new Position(9, 2));
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLastCheckPoint(), 2);
 
@@ -666,7 +666,7 @@ public class gameTest {
     }
 
 
-    /** Test for moving on conveyorbelt
+    /** Test for moving on conveyor belt
      *
      * @author Jann Erik Bruns
      * @since 2023-06-20
@@ -730,15 +730,16 @@ public class gameTest {
     public void movingOnLastCheckpoint(){
         try {
             SetGameOnePlayer();
-            robotOne.setCurrentPosition(new Position(7, 6));
+            robotOne.setCurrentPosition(new Position(9, 4));
 
             for(int i = 0; i < 5; i++)
                 cards[i] = new Card(0, "6", 0);
 
+            game.getStartCheckpoint();
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
-            assertEquals(robotOne.getPosition().y, 4);
-            assertEquals(robotOne.getPosition().x, 7);
+            assertEquals(robotOne.getPosition().y, 3);
+            assertEquals(robotOne.getPosition().x, 9);
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLifeToken(), 3);
             assertEquals(robotOne.isAlive(), true);
