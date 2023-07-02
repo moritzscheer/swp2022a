@@ -777,5 +777,42 @@ public class gameTest {
             System.out.println(ex);
         }
     }
+
+    /** Test for checking if player has more than nine damage token
+     *
+     * @author Tommy Dang
+     * @since 2023-07-02
+     */
+    @Test
+    public void playerGetsMoreThanNineDamageToken(){
+        try {
+            SetGameOnePlayer();
+            robotOne.setCurrentPosition(new Position(3, 4));
+
+            cards[0] = new Card(36, "3", 420);      // Right Turn
+            cards[1] = new Card(36, "3", 420);      // Right Turn
+            cards[2] = new Card(36, "3", 420);      // Right Turn
+            cards[3] = new Card(36, "3", 420);      // Right Turn
+            cards[4] = new Card(36, "3", 420);      // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            cards[0] = new Card(36, "3", 420);      // Right Turn
+            cards[1] = new Card(36, "3", 420);      // Right Turn
+            cards[2] = new Card(36, "3", 420);      // Right Turn
+            cards[3] = new Card(36, "3", 420);      // Right Turn
+            cards[4] = new Card(36, "3", 420);      // Right Turn
+
+            playerOne.chooseCardsOrder(cards);
+            calcGameRound();
+
+            assertEquals(robotOne.getDamageToken(), 0);
+            assertEquals(robotOne.getLifeToken(), 2);
+
+        } catch (Exception ex){
+            System.out.println(ex);
+        }
+    }
 }
 
