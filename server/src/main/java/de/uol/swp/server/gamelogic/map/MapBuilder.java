@@ -64,6 +64,12 @@ public final class MapBuilder {
                 "TestConveyorPressorAndPitMap", new Pair<>(testCheckPoints, new Position(6, 7)));
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public static Block[][] getMap(String mapPath) {
         try {
             ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath));
@@ -71,11 +77,24 @@ public final class MapBuilder {
             objIn.close();
             return map;
         } catch (IOException | ClassNotFoundException IOExcept) {
-            System.out.println(IOExcept.getMessage());
-            return null;
+            try {
+                ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath.replace("server/", "")));
+                Block[][] map = (Block[][]) objIn.readObject();
+                objIn.close();
+                return map;
+            }catch (IOException | ClassNotFoundException IOExcept2){
+                System.out.println(IOExcept2.getMessage());
+                return null;
+            }
         }
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public static void main(String[] args) throws IOException {
 
         maps.add(new MapOne());
@@ -112,6 +131,12 @@ public final class MapBuilder {
         // }
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public static Pair<Integer, Position> getMapStringToCheckpointNumberAndFirstPosition(
             String mapName) {
         System.out.println("In getMapStringToCheckpointNumberAndFirstPosition");
@@ -121,6 +146,12 @@ public final class MapBuilder {
         return mapStringToCheckpointNumberAndFirstPosition.get(mapName);
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public static void mapGen() throws IOException {
 
         // Generate Normal Maps
@@ -165,6 +196,12 @@ public final class MapBuilder {
         }
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     private static Block[][] copyMap(Block[][] originalMap) {
         Block[][] copy = new Block[originalMap.length][originalMap[0].length];
         for (int i = 0; i < originalMap.length; i++) {
@@ -175,6 +212,12 @@ public final class MapBuilder {
         return copy;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     private static Block[][] mapGenExtracted(
             Block[][] mapFromClass, int version, int checkpoints, int checkpointLoc) {
         int x = 0;
@@ -270,6 +313,12 @@ public final class MapBuilder {
         return map;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     private static void laserStart(
             Block[][] map, int x, int y, int beam, CardinalDirection direction) {
         int x2 = x;
@@ -393,6 +442,12 @@ public final class MapBuilder {
         }
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     // Sorts the behaviours so the pictures get selected correctly
     private static AbstractTileBehaviour[] sortBehaviourList(
             AbstractTileBehaviour[] behaviourList) {

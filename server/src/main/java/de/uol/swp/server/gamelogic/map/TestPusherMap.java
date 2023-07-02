@@ -6,8 +6,20 @@ import de.uol.swp.server.gamelogic.tiles.*;
 
 import java.util.Random;
 
+/**
+ *
+ *
+ * @author
+ * @since
+ */
 public class TestPusherMap extends AbstractMap {
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public TestPusherMap() {
         // LASERTEST
         int x = 0;

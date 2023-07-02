@@ -859,7 +859,7 @@ public class SceneManager {
      * @since 2019-09-03
      */
     public void showTabScreen() {
-        showScene(tabScene, "");
+        showScene(tabScene, "Login");
         showNode(0, loginParent);
         tabPresenter.changeMainTabTitle("Login");
     }
@@ -875,6 +875,10 @@ public class SceneManager {
     public void showRegistrationScreen() {
         tabPresenter.changeMainTabTitle("Registration");
         showNode(0, registrationParent);
+        Platform.runLater(
+            () -> {
+                primaryStage.setTitle("Registration");
+            });
     }
 
     /**
@@ -887,6 +891,10 @@ public class SceneManager {
     public void showLoginScreen() {
         tabPresenter.changeMainTabTitle("Login");
         showNode(0, loginParent);
+        Platform.runLater(
+            () -> {
+                primaryStage.setTitle("Login");
+            });
     }
 
     /**
@@ -900,6 +908,10 @@ public class SceneManager {
     public void showMainScreen() {
         tabPresenter.changeMainTabTitle("Main Menu");
         showNode(0, mainParent);
+        Platform.runLater(
+            () -> {
+                primaryStage.setTitle("Logged in as: " + tabPresenter.getLoggedInUser().getUsername());
+            });
     }
 
     /**

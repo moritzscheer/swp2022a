@@ -111,6 +111,10 @@ public final class ConvertToDTOUtils {
         return playerDTO;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public static List<PlayerDTO> convertPlayerListToPlayerDTOList(List<AbstractPlayer> players) {
 
         List<PlayerDTO> playersDTO = new ArrayList<>();

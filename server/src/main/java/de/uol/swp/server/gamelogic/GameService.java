@@ -86,7 +86,7 @@ public class GameService extends AbstractService {
         // create and save Game Object
         games.put(
                 lobbyID,
-                new Game(lobbyID, lobby.get().getUsers(), mapName, numberBots, checkpointCount));
+                new Game(lobbyID, lobby.get().getUsers(), mapName, numberBots, checkpointCount, -1)); // Version -1 if it should be random generated
 
         // Create DTOs objects
         List<PlayerDTO> players = new ArrayList<>();

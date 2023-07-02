@@ -24,6 +24,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private final CardinalDirection direction;
     private final CardinalDirection pushingDirection;
 
+    /**
+     * @author
+     * @since
+     */
     public PusherBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -64,18 +68,35 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public CardinalDirection getDirection() {
         return this.direction;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public CardinalDirection getPushingDirection() {
         return this.pushingDirection;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<Integer> getActiveInProgramSteps() {
         return this.activeInProgramSteps;
     }
 
+    /**
+     *
+     * @author
+     * @since
+     */
     @Override
     public List<int[]> getImage() {
         int type;

@@ -25,6 +25,12 @@ public class GameMovement {
 
     private boolean isCardMove = false;
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public GameMovement(List<PlayerDTO> robotsPositionsInOneMove, String moveType, GameMovement oldState,
                         String robotThatPlayedTheCard) {
         this.robotsPositionsInOneMove = robotsPositionsInOneMove;
@@ -42,14 +48,32 @@ public class GameMovement {
 
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public List<PlayerDTO> getRobotsPositionsInOneMove() {
         return robotsPositionsInOneMove;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public String getMoveMessage() {
         return moveMessage;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     private void createMessageOfRobotsThatMoved(){
         for (int i = 0; i < oldState.getRobotsPositionsInOneMove().size(); i++) {
             PlayerDTO oldPlayerDTO = oldState.getRobotsPositionsInOneMove().get(i);
@@ -94,11 +118,22 @@ public class GameMovement {
         }
     }
 
-
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public boolean isSomeoneMoved() {
         return someoneMoved;
     }
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public boolean isCardMove() {
         return isCardMove;
     }

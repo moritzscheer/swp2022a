@@ -89,6 +89,10 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
         return moves;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         int rotation = direction.ordinal();

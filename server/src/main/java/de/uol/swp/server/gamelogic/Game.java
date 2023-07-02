@@ -21,7 +21,6 @@ import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
-
 import de.uol.swp.server.utils.ConvertToDTOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -71,6 +70,10 @@ public class Game {
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
+    private String fullMapName;
+    public String getFullMapName(){
+        return fullMapName;
+    }
     private List<GameMovement> gameMovements;
 
     private List<PlayerDTO> respawnRobots;
@@ -84,19 +87,28 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(
-            Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
+    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount, int version) {
         this.lobbyID = lobbyID;
         this.programStep = 0;
         this.readyRegister = 0;
         this.mapName = mapName;
         this.checkpointCount = checkpointCount;
 
-        assert users.size() + numberBots <= 8;
+
+        //assert users.size() + numberBots <= 8;
 
         // create board
-        Random random = new Random();
-        int version = random.nextInt(3) + 1;
+        if(version == -1){
+            Random random = new Random();
+            version = random.nextInt(3) + 1;
+        }
+
+        fullMapName = this.mapName
+                + "V"
+                + version
+                + "C"
+                + checkpointCount;
+
         LOG.debug(version);
         LOG.debug(
                 "server/src/main/resources/maps/"
@@ -155,12 +167,13 @@ public class Game {
 
         // create players and robots
         int i = 0; // start robots id in 0
-        for (User user : users) {
-            Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
-            this.players.add(newPlayer);
-            this.robots.add(newPlayer.getRobot());
-            i++;
-        }
+        if(!Objects.equals(users, null)) // important to run integration tests
+            for (User user : users) {
+                Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+                this.players.add(newPlayer);
+                this.robots.add(newPlayer.getRobot());
+                i++;
+            }
 
         nRealPlayers = users.size();
 
@@ -491,6 +504,10 @@ public class Game {
         return null;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (Block[] blocks : board) {
             for (Block block : blocks) {
@@ -499,6 +516,10 @@ public class Game {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
         if(areAllRobotsAreDeadOrTurnedOff()){
@@ -510,6 +531,10 @@ public class Game {
         calcGameRoundBoardNew();
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
         for (AbstractPlayer player :
@@ -519,6 +544,10 @@ public class Game {
         return initialPlayerStates;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<List<PlayerDTO>> calcGameRoundBoardNew() {
         List<MoveIntent> currentMoves;
         List<List<PlayerDTO>> moves = new ArrayList<>();
@@ -576,6 +605,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<List<PlayerDTO>> calcGameRoundCardsNew() {
         List<List<PlayerDTO>> moves = new ArrayList<>();
         Card[] cardsToPlay = new Card[playedCards.length];
@@ -625,6 +658,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> onExpressConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
@@ -636,6 +673,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> onConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
@@ -647,6 +688,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> onPusherStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
@@ -659,6 +704,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> onRotatorStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
@@ -671,6 +720,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> onPresserStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
@@ -683,6 +736,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> OnLaserStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
@@ -695,6 +752,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<MoveIntent> OnCheckPointStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
@@ -713,6 +774,10 @@ public class Game {
 // SOLVING MOVE INTENTS
 /////////////////////////////
 
+    /**
+     * @author
+     * @since
+     */
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
         switch (directionCard) {
@@ -730,6 +795,10 @@ public class Game {
                 CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
     }
 
+    /**
+     * @author
+     * @since
+     */
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
         List<List<MoveIntent>> moves = new ArrayList<>();
         // TODO: handle rotations
@@ -756,11 +825,19 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private void uTurn(Robot robot) {
         turn(robot, Direction.Left);
         turn(robot, Direction.Left);
     }
 
+    /**
+     * @author
+     * @since
+     */
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
@@ -835,6 +912,10 @@ public class Game {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
@@ -875,6 +956,10 @@ public class Game {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * @author
+     * @since
+     */
     private boolean addPushMoves(ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
             MoveResult move = moveList.get(i);
@@ -904,6 +989,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private static boolean removeSameDestinationConflicts(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -927,6 +1016,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private static boolean removeWallIntersections(
             ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -944,6 +1037,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private static boolean removeHeadOnCollisions(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -970,6 +1067,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author
+     * @since
+     */
     private static boolean checkForObstruction(
             Position currentTile,
             Position destinationTile,
@@ -985,6 +1086,10 @@ public class Game {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     private static void removeMoveResultAndParents(
             MoveResult move, ArrayList<MoveResult> moveList) {
         while (moveList.contains(move)) {
@@ -995,20 +1100,36 @@ public class Game {
         }
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getRoundNumber() {
         return roundNumber;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getLastCheckPoint() {
         return lastCheckPoint;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<GameMovement> getGameMovements() {
         if(Objects.equals(gameMovements, null))
             return new ArrayList<>();
         return gameMovements;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public List<PlayerDTO> getRespawnRobots() {
         return respawnRobots;
     }
@@ -1020,16 +1141,28 @@ public class Game {
 
         public final MoveResult parentMove;
 
+        /**
+         * @author
+         * @since
+         */
         public MoveResult(MoveIntent intent) {
             super(intent.robotID, intent.direction);
             parentMove = null;
         }
 
+        /**
+         * @author
+         * @since
+         */
         public MoveResult(MoveResult parentMove, int robotID) {
             super(robotID, parentMove.direction);
             this.parentMove = parentMove;
         }
 
+        /**
+         * @author
+         * @since
+         */
         public Position getTargetPosition() {
             Position p = robots.get(robotID).getPosition();
             switch (direction) {
@@ -1045,6 +1178,10 @@ public class Game {
             throw new IllegalStateException();
         }
 
+        /**
+         * @author
+         * @since
+         */
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
