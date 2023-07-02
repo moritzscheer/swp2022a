@@ -1,6 +1,5 @@
 package de.uol.swp.server.gamelogic;
 
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
@@ -57,8 +56,8 @@ public class GameManagement {
 
         // create and save Game Object
         games.put(
-                lobbyID,
-                new Game(lobbyID, users, mapName, numberBots, checkpointCount));
+                lobbyID,                        // Version -1 if it should be random generated
+                new Game(lobbyID, users, mapName, numberBots, checkpointCount, -1));
 
         // Create DTOs objects
         List<PlayerDTO> players = new ArrayList<>();
@@ -199,12 +198,18 @@ public class GameManagement {
         List<Pair<Integer, AbstractLobbyMessage>> secondsToMessage = new ArrayList<>();
         secondsToMessage.add(
                 new Pair<>(secondsToWait,
-                new TextHistoryMessage(lobbyID, "======= Round " +
+                new TextHistoryMessage(lobbyID, "======= Round: " +
                 games.get(lobbyID).getRoundNumber() + " ======= \n")));
 
         for (int i = 0; i < 5; i++) {
             game.calcAllGameRound();
             List<GameMovement> gameMovements = game.getGameMovements();
+            String programStep = String.valueOf(i);
+
+            secondsToMessage.add(
+                    new Pair<>(secondsToWait,
+                            new TextHistoryMessage(lobbyID, "==== Program Step: " + programStep + " ==== \n")));
+
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
             secondsToMessage.add(
