@@ -550,7 +550,7 @@ public class Game {
      * @author
      * @since
      */
-    private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
+    public List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
         for (AbstractPlayer player :
                 players) {

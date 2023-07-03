@@ -416,16 +416,17 @@ public class GameTest {
     }
 
     /**
-     * Tests the areAllRobotsAreDeadOrTurnedOff method
+     * Tests the areAllRobotsAreDead method
      *
      * @author WKempel
-     * @result The areAllRobotsAreDeadOrTurnedOff method works because all robots are alive and not turned off
+     * @result The areAllRobotsAreDead method returns true when all robots are dead, so it is not
+     * necessary to keep calculating next program steps
      * @since 2023-06-28
      */
     @Test
-    public void testAreAllRobotsAreDeadOrTurnedOff() {
+    public void testAreAllRobotsAreDead() {
         try {
-            Assertions.assertFalse(game.areAllRobotsAreDeadOrTurnedOff());
+            Assertions.assertFalse(game.areAllRobotsAreDead());
         } catch (Exception e) {
             e.printStackTrace();
         }
