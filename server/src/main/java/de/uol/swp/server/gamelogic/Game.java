@@ -17,10 +17,7 @@ import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
 import de.uol.swp.server.gamelogic.moves.MoveIntent;
-import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
-import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
-import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
-import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
+import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.utils.ConvertToDTOUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -100,6 +97,57 @@ public class Game {
 
         assert users.size() + numberBots <= 8;
 
+        this.startCheckpoint = loadMapBuilder(version);
+
+        if (this.board == null) {
+            // TODO: Log error "Map couldn't be loaded"
+            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
+        }
+
+        updateBoardInAllBehaviours(); // otherwise laser don't work
+        LOG.debug("Checkpoints size: {}", this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
+
+        // set info
+        setRobotsInfoInBehaviours(board, robots);
+
+        // there must be as many docking as users
+        // assert dockingBays.length == users.size();
+        this.dockingStartPosition = startCheckpoint;
+        this.lastCheckPoint = this.checkpointCount;
+
+        // create players and robots
+        int i = 0; // start robots id in 0
+        if(!Objects.equals(users, null)) // important to run integration tests
+            for (User user : users) {
+                Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+                this.players.add(newPlayer);
+                this.robots.add(newPlayer.getRobot());
+                i++;
+            }
+
+        nRealPlayers = users.size();
+
+        // create bots and robots
+        for (int j = 0; j < numberBots; j++) {
+            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
+            this.players.add(newPlayer);
+            this.robots.add(newPlayer.getRobot());
+            i++;
+        }
+
+        this.nRobots = robots.size();
+        this.playedCards = new Card[this.nRobots][5];
+    }
+
+    /**
+     *  Method to load Map outside constructor
+     *
+     * @author Jann, Tommy, Maxim, Maria, WKempel
+     * @see de.uol.swp.server.gamelogic.map.MapBuilder
+     * @since 2023-06-19
+     */
+    private Position loadMapBuilder(int version){
         LOG.debug(new File(".").getAbsolutePath());
         // create board
         if (version == -1) {
@@ -163,50 +211,9 @@ public class Game {
                     MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
                             mapName + "V" + version + "C" + checkpointCount);
         }
-
-        this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 
-        if (tmp == null) {
-            // TODO: Log error "Map couldn't be loaded"
-            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
-        }
-
-        updateBoardInAllBehaviours(); // otherwise laser don't work
-        LOG.debug("Checkpoints size: {}", this.checkpointCount);
-        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
-
-        // set info
-        setRobotsInfoInBehaviours(board, robots);
-
-        // there must be as many docking as users
-        // assert dockingBays.length == users.size();
-        this.dockingStartPosition = startCheckpoint;
-        this.lastCheckPoint = this.checkpointCount;
-
-        // create players and robots
-        int i = 0; // start robots id in 0
-        if (!Objects.equals(users, null)) // important to run integration tests
-        for (User user : users) {
-                Player newPlayer =
-                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
-                this.players.add(newPlayer);
-                this.robots.add(newPlayer.getRobot());
-                i++;
-            }
-
-        nRealPlayers = users.size();
-
-        // create bots and robots
-        for (int j = 0; j < numberBots; j++) {
-            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
-            this.players.add(newPlayer);
-            this.robots.add(newPlayer.getRobot());
-            i++;
-        }
-
-        this.nRobots = robots.size();
-        this.playedCards = new Card[this.nRobots][5];
+        return tmp.getValue1();
     }
 
 
@@ -484,6 +491,18 @@ public class Game {
 
 
     /**
+     * Increase program step to get the new cards from each player
+     * Clear gameMovements
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-04-25
+     */
+    public void increaseProgramStep() {
+        this.programStep++;
+        this.gameMovements = null;
+    }
+
+    /**
      * This function call each one of the five steps of one round
      *
      * <p>it increments this.programStep and call calcGameRound
@@ -543,6 +562,21 @@ public class Game {
                 block.setRobotsInfo(robots);
             }
         }
+    }
+
+    /**
+     * check if all robots are dead or turned off to not keep sending messages
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-20
+     */
+    public boolean areAllRobotsAreDead(){
+        for (Robot robot: this.robots ) {
+            if (!robot.isDeadForTheRound()){
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -816,26 +850,6 @@ public class Game {
     // SOLVING MOVE INTENTS
     /////////////////////////////
 
-    /**
-     * @author Finn & Maria
-     * @since 2023-04-24
-     */
-    private void turn(Robot robot, Direction directionCard) {
-        int rotation;
-        switch (directionCard) {
-            case Left:
-                rotation = 3;
-                break;
-            case Right:
-                rotation = 1;
-                break;
-            default:
-                rotation = 0;
-                break;
-        }
-        robot.setDirection(
-                CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
-    }
 
     /**
      * @author Maria
@@ -864,6 +878,28 @@ public class Game {
         }
         return moves;
     }
+
+    /**
+     * @author Finn & Maria
+     * @since 2023-04-24
+     */
+    private void turn(Robot robot, Direction directionCard) {
+        int rotation;
+        switch (directionCard) {
+            case Left:
+                rotation = 3;
+                break;
+            case Right:
+                rotation = 1;
+                break;
+            default:
+                rotation = 0;
+                break;
+        }
+        robot.setDirection(
+                CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
+    }
+
 
     /**
      * @author Finn
@@ -1139,39 +1175,6 @@ public class Game {
         }
     }
 
-    /**
-     * @author WKempel
-     * @since 2023-06-02
-     */
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
-    /**
-     * @author Maria
-     * @since 2023-06-05
-     */
-    public int getLastCheckPoint() {
-        return lastCheckPoint;
-    }
-
-    /**
-     * @author Maria
-     * @since 2023-06-20
-     */
-    public List<GameMovement> getGameMovements() {
-        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
-        return gameMovements;
-    }
-
-    /**
-     * @author Maria
-     * @since 2023-06-22
-     */
-    public List<PlayerDTO> getRespawnRobots() {
-        return respawnRobots;
-    }
-
     /** @author Finn */
     private class MoveResult extends MoveIntent {
 
@@ -1244,9 +1247,42 @@ public class Game {
         }
     }
 
-    //////////////////////////////
-    // GETTERS // SETTERS
-    /////////////////////////////
+//////////////////////////////
+// GETTERS // SETTERS
+/////////////////////////////
+
+    /**
+     * @author WKempel
+     * @since 2023-06-02
+     */
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-05
+     */
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-20
+     */
+    public List<GameMovement> getGameMovements() {
+        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
+        return gameMovements;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-22
+     */
+    public List<PlayerDTO> getRespawnRobots() {
+        return respawnRobots;
+    }
 
     /**
      * Getter for Board Array
@@ -1321,26 +1357,6 @@ public class Game {
         return fullMapName;
     }
 
-    public void increaseProgramStep() {
-        this.programStep++;
-        this.gameMovements = null;
-    }
-
-    /**
-     * check if all robots are dead or turned off to not keep sending messages
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-06-20
-     */
-    // TODO: fix this function, when all are dead
-    public boolean areAllRobotsAreDead() {
-        for (Robot robot : this.robots) {
-            if (!robot.isDeadForTheRound()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     public void setNotDistributedCards(boolean notDistributedCards) {
         this.notDistributedCards = notDistributedCards;
