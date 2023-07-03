@@ -220,11 +220,12 @@ public class SceneManager {
     /**
      * Initializes the login view
      *
-     * <p>If the loginScene is null it gets set to a new scene containing a pane showing the login
+     * If the loginParent is null it gets set to a new Parent containing a pane showing the login
      * view as specified by the LoginView FXML file.
      *
+     * @author Moritz Scheer
      * @see de.uol.swp.client.auth.LoginPresenter
-     * @since 2019-09-03
+     * @since 2023-05-23
      */
     private void initLoginView() throws IOException {
         if (loginParent == null) {
@@ -235,11 +236,12 @@ public class SceneManager {
     /**
      * Initializes the registration view
      *
-     * <p>If the registrationScene is null it gets set to a new scene containing a pane showing the
+     * If the registrationParent is null it gets set to a new scene containing a pane showing the
      * registration view as specified by the RegistrationView FXML file.
      *
+     * @author Moritz Scheer
      * @see de.uol.swp.client.register.RegistrationPresenter
-     * @since 2019-09-03
+     * @since 2023-05-23
      */
     private void initRegistrationView() throws IOException {
         if (registrationParent == null) {
@@ -250,11 +252,12 @@ public class SceneManager {
     /**
      * Initializes the setting view
      *
-     * <p>If the settingParent is null it gets set to a new scene containing the a pane showing the
+     * If the settingParent is null it gets set to a new scene containing the a pane showing the
      * setting view as specified by the SettingView FXML file.
      *
+     * @author Moritz Scheer
      * @see de.uol.swp.client.setting.SettingPresenter
-     * @since 2022-12-11
+     * @since 2023-05-23
      */
     private void initSettingView() throws IOException {
         if (settingParent == null) {
@@ -265,7 +268,7 @@ public class SceneManager {
     /**
      * Initializes the main menu view
      *
-     * <p>If the mainParent is null it gets set to a new Parent showing the main menu view as
+     * If the mainParent is null it gets set to a new Parent showing the main menu view as
      * specified by the MainMenuView FXML file.
      *
      * @author Moritz Scheer
@@ -281,12 +284,12 @@ public class SceneManager {
     /**
      * Initializes the rule book view
      *
-     * <p>If the rulebookParent is null it gets set to a new Parent showing the rule book view as
+     * If the rulebookParent is null it gets set to a new Parent showing the rule book view as
      * specified by the RuleBookView FXML file.
      *
      * @author Moritz Scheer
      * @see de.uol.swp.client.rulebook.RulebookPresenter
-     * @since 2022-12-27
+     * @since 2023-01-04
      */
     private void initRulebookView() throws IOException {
         if (rulebookParent == null) {
@@ -297,10 +300,10 @@ public class SceneManager {
     /**
      * Initializes the credit view
      *
-     * <p>If the creditParent is null it gets set to a new Parent showing the credit view as
+     * If the creditParent is null it gets set to a new Parent showing the credit view as
      * specified by the RuleBookView FXML file.
      *
-     * @author Moritz Scheer
+     * @author Moritz Scheer and Tommy Dang
      * @see de.uol.swp.client.credit.CreditPresenter
      * @since 2022-12-27
      */
@@ -313,10 +316,10 @@ public class SceneManager {
     /**
      * Initializes the change account option view
      *
-     * <p>If the changeAccountOptionsParent is null it gets set to a new Parent showing the change
+     * If the changeAccountOptionsParent is null it gets set to a new Parent showing the change
      * account option view as specified by the changeAccountOptionView FXML file.
      *
-     * @author Moritz Scheer
+     * @author Moritz Scheer, Waldemar Kempel and Tommy Dang
      * @see de.uol.swp.client.main.AccountMenuPresenter
      * @since 2022-12-27
      */
@@ -329,12 +332,12 @@ public class SceneManager {
     /**
      * Initializes the join or create view
      *
-     * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create view as
+     * If the lobbyParent is null it gets set to a new Parent showing the join or create view as
      * specified by the JoinOrCreate FXML file.
      *
      * @author Moritz Scheer
      * @see de.uol.swp.client.preLobby.presenter.JoinOrCreatePresenter
-     * @since 2022-12-27
+     * @since 2022-01-04
      */
     private void initJoinOrCreateView() throws IOException {
         if (joinOrCreateParent == null) {
@@ -345,12 +348,12 @@ public class SceneManager {
     /**
      * Initializes the create lobby view
      *
-     * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create lobby
+     * If the lobbyParent is null it gets set to a new Parent showing the join or create lobby
      * view as specified by the CreateLobby FXML file.
      *
-     * @author Moritz Scheerini
+     * @author Moritz Scheer
      * @see de.uol.swp.client.preLobby.presenter.CreateLobbyPresenter
-     * @since 2022-12-27
+     * @since 2022-01-04
      */
     private void initCreateLobbyView() throws IOException {
         if (createLobbyParent == null) {
@@ -361,12 +364,12 @@ public class SceneManager {
     /**
      * Initializes the lobby view
      *
-     * <p>If the lobbyScene is null it gets set to a new scene containing a pane showing the lobby
-     * view as specified by the lobbyView FXML file.
+     * Creates a lobbyParent with the given lobbyID and sets the Controller for the fxml file to a new LobbyPresenter
+     * Controller.
      *
-     * @author Moritz Scheer
-     * @see LobbyPresenter
-     * @since 2022-11-30
+     * @author Moritz Scheer and Maria Eduarda
+     * @see de.uol.swp.client.lobbyGame.lobby.presenter.LobbyPresenter
+     * @since 2022-05-16
      */
     private Parent initLobbyView(int lobbyID) throws IOException {
         Parent lobbyParent;
@@ -389,12 +392,12 @@ public class SceneManager {
     /**
      * Initializes the game view
      *
-     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * If the gameParent is null it gets set to a new Parent showing the game view as specified
      * by the GameView FXML file.
      *
-     * @author Moritz Scheer
+     * @author Maria Eduarda
      * @see GamePresenter
-     * @since 2023-02-20
+     * @since 2023-05-16
      */
     private Parent initGameView(int lobbyID) throws IOException {
 
@@ -437,7 +440,7 @@ public class SceneManager {
     /**
      * Handles successfully joined Lobbies
      *
-     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
      * called. It calls a private method to set up a tab.
      *
      * @author Moritz Scheer
