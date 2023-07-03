@@ -9,6 +9,8 @@ public class ServerExceptionMessageTest {
      * Tests the getException method
      *
      * @author WKempel
+     * @see de.uol.swp.server.message.ServerExceptionMessage
+     * @see java.lang.Exception
      * @since 2023-06-23
      */
     @Test
@@ -25,6 +27,8 @@ public class ServerExceptionMessageTest {
      * Tests the equals method
      *
      * @author WKempel
+     * @see de.uol.swp.server.message.ServerExceptionMessage
+     * @see java.lang.Exception
      * @since 2023-06-23
      */
     @Test

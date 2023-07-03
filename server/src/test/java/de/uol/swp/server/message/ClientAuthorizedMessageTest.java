@@ -15,6 +15,8 @@ public class ClientAuthorizedMessageTest {
      * Tests the getUser method
      *
      * @author WKempel
+     * @see de.uol.swp.server.message.ClientAuthorizedMessage
+     * @see de.uol.swp.common.user.User
      * @since 2023-06-23
      */
     @Test
@@ -31,6 +33,8 @@ public class ClientAuthorizedMessageTest {
      * Tests the equals method
      *
      * @author WKempel
+     * @see de.uol.swp.server.message.ClientAuthorizedMessage
+     * @see de.uol.swp.common.user.User
      * @since 2023-06-23
      */
     @Test
