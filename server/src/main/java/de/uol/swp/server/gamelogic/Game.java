@@ -169,6 +169,8 @@ public class Game {
             // TODO: Log error "Map couldn't be loaded"
             LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
         }
+
+        updateBoardInAllBehaviours(); // otherwise laser don't work
         LOG.debug("Checkpoints size: {}", this.checkpointCount);
         LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
 
@@ -203,6 +205,24 @@ public class Game {
         this.nRobots = robots.size();
         this.playedCards = new Card[this.nRobots][5];
     }
+
+
+    /** Update board in each Behaviour, because some behaviours
+     * are dynamically added
+     *
+     * (In order to laser logic to works)
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-07-03
+     */
+    private void updateBoardInAllBehaviours() {
+        for (Block[] boardCol : board)
+            for (Block block : boardCol)
+                for(AbstractTileBehaviour behaviour: block.getBehaviourList())
+                    behaviour.setBoard(board);
+    }
+
 
     /**
      * Generate random cards for a player (max. 9, min. 5) The cards are generated based on the id,
