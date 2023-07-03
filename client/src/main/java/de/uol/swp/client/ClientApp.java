@@ -47,7 +47,6 @@ import java.util.List;
  * @see javafx.application.Application
  * @since 2017-03-17
  */
-@SuppressWarnings("UnstableApiUsage")
 public class ClientApp extends Application implements ConnectionListener {
 
     private static final Logger LOG = LogManager.getLogger(ClientApp.class);

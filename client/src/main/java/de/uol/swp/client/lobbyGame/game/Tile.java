@@ -23,6 +23,12 @@ public class Tile {
         this.imageSize = imageSize;
     }
 
+    /**
+     * method to rotate tileImage
+     *
+     * @author Tommy Dang
+     * @since 2023-03-19
+     */
     public int rotateTileImage(int direction) {
         return 90 * direction;
     }

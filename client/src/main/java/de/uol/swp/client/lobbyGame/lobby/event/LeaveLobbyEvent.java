@@ -15,6 +15,12 @@ public class LeaveLobbyEvent {
     private final UserDTO loggedInUser;
     private final Boolean multiplayer;
 
+    /**
+     * Constructor for the class
+     *
+     * @author Maria Andrade
+     * @since 2022-05-16
+     */
     public LeaveLobbyEvent(
             UserDTO loggedInUser, Integer lobbyID, String lobbyName, Boolean multiplayer) {
         this.lobbyID = lobbyID;

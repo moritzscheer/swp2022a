@@ -20,6 +20,13 @@ public class ShowGameViewEvent {
         this.lobby = lobby;
     }
 
+    /**
+     * Getter Method for the lobby ID
+     *
+     * @author Finn Oldeboershuis, Ole Zimmermann
+     * @return the lobby id
+     * @since 2023-05-23
+     */
     public Integer getLobbyID() {
         return lobby.getLobbyID();
     }

@@ -11,5 +11,13 @@ package de.uol.swp.client.main.event;
  * @since 2022-11-25
  */
 public class ShowAccountOptionsViewEvent {
+
+    /**
+     * Default Constructor
+     *
+     * @author Waldemar Kempel
+     * @see de.uol.swp.client.SceneManager
+     * @since 2022-11-25
+     */
     public ShowAccountOptionsViewEvent() {}
 }

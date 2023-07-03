@@ -21,6 +21,13 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+
+/**
+ * Mangaes the createLobby window
+ *
+ * @author Maria Eduarda, Moritz Scheer, Maxim Erden
+ * @since 2022-11-17
+ */
 public class CreateLobbyPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/CreateLobbyView.fxml";
