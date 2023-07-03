@@ -26,12 +26,10 @@ public class TestConveyorMap extends AbstractMap {
      */
     public TestConveyorMap() {
         // ConveyorTest
-        int x = 0;
-        int y = 0;
         boolean express = false;
 
-        for (y = 1; y <= 11; y = y + 2) {
-            for (x = 0; x <= 11; x++) {
+        for (int y = 1; y <= 11; y = y + 2) {
+            for (int x = 0; x <= 11; x++) {
 
                 if (y == 7) {
                     generateBlock(
@@ -58,9 +56,6 @@ public class TestConveyorMap extends AbstractMap {
                     y--;
                 }
 
-                if (y == 12) {
-                    break;
-                }
                 Random random = new Random();
 
                 int directionRDM = random.nextInt(4);

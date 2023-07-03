@@ -555,9 +555,6 @@ public class TestLaserMap extends AbstractMap {
 
         for (y = 1; y < 11; y = y + 3) {
             for (x = 1; x < 11; x = x + 3) {
-                if (x > 11) {
-                    break;
-                }
                 AbstractTileBehaviour[] copy =
                         new AbstractTileBehaviour[map[x][y].getBehaviourList().length + 1];
                 System.arraycopy(map[x][y].getBehaviourList(), 0, copy, 0, copy.length - 1);

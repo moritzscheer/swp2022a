@@ -24,8 +24,8 @@ public class GameMovement {
     private boolean isCardMove = false;
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-20
      */
     public GameMovement(
             List<PlayerDTO> robotsPositionsInOneMove,
@@ -47,24 +47,24 @@ public class GameMovement {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-20
      */
     public List<PlayerDTO> getRobotsPositionsInOneMove() {
         return robotsPositionsInOneMove;
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-20
      */
     public String getMoveMessage() {
         return moveMessage;
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-20
      */
     private void createMessageOfRobotsThatMoved() {
         for (int i = 0; i < oldState.getRobotsPositionsInOneMove().size(); i++) {
@@ -116,16 +116,16 @@ public class GameMovement {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-20
      */
     public boolean isSomeoneMoved() {
         return someoneMoved;
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-22
      */
     public boolean isCardMove() {
         return isCardMove;

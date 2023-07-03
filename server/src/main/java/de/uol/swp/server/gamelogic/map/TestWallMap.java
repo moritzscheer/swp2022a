@@ -28,8 +28,8 @@ public class TestWallMap extends AbstractMap {
      */
     public TestWallMap() {
 
-        for (y = 0; y <= 11; y++) {
-            for (x = 0; x <= 11; x++) {
+        for (int y = 0; y <= 11; y++) {
+            for (int x = 0; x <= 11; x++) {
 
                 if (y == 6 && x == 6) {
                     generateBlock(

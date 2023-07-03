@@ -25,7 +25,7 @@ public class TextChatChannel {
     private EventBus eventBus;
 
     /**
-     * Adds before the name in chat a timestamp
+     * Gets the timestamp of the current time
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -35,7 +35,7 @@ public class TextChatChannel {
     }
 
     /**
-     * Adds before the name in chat a timestamp
+     * Adds a timestamp in after the name of the sender in chat
      *
      * @author Tommy Dang
      * @see de.uol.swp.common.chat.TextChatMessage
@@ -50,7 +50,7 @@ public class TextChatChannel {
     }
 
     /**
-     * Adds before the name in chat a timestamp
+     * Adds a timestamp if the server sends a message
      *
      * @author Tommy Dang
      * @see de.uol.swp.common.chat.TextChatMessage
