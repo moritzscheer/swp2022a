@@ -1,6 +1,5 @@
 package de.uol.swp.common.exception;
 
-
 /**
  * Exception to state e.g. that a lobby does not exist
  *

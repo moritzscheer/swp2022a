@@ -12,35 +12,83 @@ public class ReturnToMainMenuMessageTest {
     private ReturnToMainMenuMessage message;
     private UserDTO user;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         user = new UserDTO("username", "password", "email");
         message = new ReturnToMainMenuMessage(user);
     }
 
+    /**
+     * Tests the getLoggedInUser method
+     *
+     * @author WKempel
+     * @result The getLoggedInUser method should return the correct user
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
+     * @since 2023-06-17
+     */
     @Test
-    void getLoggedInUser() {
+    public void getLoggedInUser() {
         assertEquals(user, message.getLoggedInUser());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the ReturnToMainMenuRequests are equal
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(message.equals(message));
+    public void testEqualsSameObjectThanTrue() {
+        assertEquals(message, message);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the ReturnToMainMenuRequests have the same
+     *     values
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         ReturnToMainMenuMessage other = new ReturnToMainMenuMessage(user);
-        assertTrue(message.equals(other));
+        assertEquals(message, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the ReturnToMainMenuRequests have different
+     *     values
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(message.equals("not a ReturnToMainMenuRequest object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not a ReturnToMainMenuMessage object", message);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the ReturnToMainMenuRequests is null
+     * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(message.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, message);
     }
 }

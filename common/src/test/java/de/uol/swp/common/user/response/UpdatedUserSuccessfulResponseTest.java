@@ -13,36 +13,83 @@ public class UpdatedUserSuccessfulResponseTest {
     private UpdatedUserSuccessfulResponse response;
     private UserDTO updatedUser;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         updatedUser = new UserDTO("username", "password", "email");
         response = new UpdatedUserSuccessfulResponse(updatedUser);
     }
 
+    /**
+     * Tests the getUpdatedUser method
+     *
+     * @author WKempel
+     * @result The getUpdatedUser method should return the correct user
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getUpdatedUser() {
+    public void testGetUpdatedUser() {
         User actualUpdatedUser = response.getUpdatedUser();
         assertEquals(updatedUser, actualUpdatedUser);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the UpdatedUserSuccessfulResponses are equal
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(response.equals(response));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(response, response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the UpdatedUserSuccessfulResponses are equal
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         UpdatedUserSuccessfulResponse other = new UpdatedUserSuccessfulResponse(updatedUser);
-        assertTrue(response.equals(other));
+        assertEquals(response, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the UpdatedUserSuccessfulResponses are not
+     *     equal
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(response.equals("not an UpdatedUserSuccessfulResponse object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not an UpdatedUserSuccessfulResponse object", response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the UpdatedUserSuccessfulResponses are null
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(response.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, response);
     }
 }

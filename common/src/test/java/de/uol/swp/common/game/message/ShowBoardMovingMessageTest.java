@@ -24,6 +24,15 @@ public class ShowBoardMovingMessageTest {
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2, userDTO2);
     private final List<PlayerDTO> playerDTOList = new ArrayList<>();
 
+    /**
+     * Tests the getter of the LobbyID
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an
+     * @result The method should return true and the correct lobbyID if the player is in the list
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyID() {
         int lobbyID = 123;
@@ -36,6 +45,14 @@ public class ShowBoardMovingMessageTest {
         Assertions.assertEquals(lobbyID, result);
     }
 
+    /**
+     * Tests the getPlayerDTO method
+     *
+     * @author WKempel
+     * @result The method should return true and the correct playerDTO if the player is in the list
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetPlayersDTO() {
         playerDTOList.add(playerDTO);
@@ -47,6 +64,14 @@ public class ShowBoardMovingMessageTest {
         Assertions.assertEquals(playerDTOList, result);
     }
 
+    /**
+     * Tests the getPlayerDTO method with null as value
+     *
+     * @author WKempel
+     * @result The method should return null
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetPlayersDTONull() {
         ShowBoardMovingMessage message = new ShowBoardMovingMessage(123, null);
@@ -56,6 +81,14 @@ public class ShowBoardMovingMessageTest {
         Assertions.assertNull(result);
     }
 
+    /**
+     * Tests the getLobbyID with a negative value
+     *
+     * @author WKempel
+     * @result The method should throw an IllegalArgumentException
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;

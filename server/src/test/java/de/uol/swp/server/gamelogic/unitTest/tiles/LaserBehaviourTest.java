@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.common.game.Position;
@@ -130,37 +131,78 @@ public class LaserBehaviourTest {
         assertEquals(0, beforeDamage - afterDamage);
     }
 
+    /**
+     * Tests the getLaserDirection method.
+     *
+     * @author WKempel
+     * @result The laser direction is returned correctly when the cardinal direction and laser
+     *     behaviour has the same direction.
+     * @since 2023-06-21
+     */
     @Test
     public void testGetLaserDirection() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(CardinalDirection.North, laserBehaviour.getLaserDirection());
 
-        laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos2, CardinalDirection.West, 2, false);
+        laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos2,
+                        CardinalDirection.West,
+                        2,
+                        false);
         assertEquals(CardinalDirection.West, laserBehaviour.getLaserDirection());
     }
 
     /**
-     * Testet die Methode `getLaserBeam()`.
+     * Tests the getLaserBeam method.
+     *
+     * @author WKempel
+     * @result The laser beam is returned correctly because the expected value is the same as in the
+     *     constructor.
+     * @since 2023-06-21
      */
     @Test
     public void testGetLaserBeam() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(1, laserBehaviour.getLaserBeam());
 
-        laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos2, CardinalDirection.West, 2, false);
+        laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos2,
+                        CardinalDirection.West,
+                        2,
+                        false);
         assertEquals(2, laserBehaviour.getLaserBeam());
     }
 
     /**
-     * Testet die Methode `getStart()` und `setStart(boolean)`.
+     * Tests the getSetStart method.
+     *
+     * @author WKempel
+     * @result The getStart method returns true or false after setting it.
+     * @since 2023-06-21
      */
     @Test
     public void testGetSetStart() {
@@ -175,13 +217,23 @@ public class LaserBehaviourTest {
     }
 
     /**
-     * Testet die Methode `setLaserBeam(int)`.
+     * Tests the setLaserBeam method.
+     *
+     * @author WKempel
+     * @result The laser beam is set correctly.
+     * @since 2023-06-21
      */
     @Test
     public void testSetLaserBeam() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(1, laserBehaviour.getLaserBeam());
 
         laserBehaviour.setLaserBeam(3);
@@ -192,13 +244,23 @@ public class LaserBehaviourTest {
     }
 
     /**
-     * Testet die Methode `getImage()`.
+     * Tests the getImage method.
+     *
+     * @author WKempel
+     * @result The image is returned correctly.
+     * @since 2023-06-21
      */
     @Test
     public void testGetImage() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         List<int[]> expectedImage = new ArrayList<>();
 
         if (laserBehaviour.isFullLaser()) {

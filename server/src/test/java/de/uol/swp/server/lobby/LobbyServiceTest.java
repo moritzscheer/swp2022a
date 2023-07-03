@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.eventbus.EventBus;
 
-import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.message.AbstractServerMessage;
-import de.uol.swp.common.message.Message;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
@@ -19,7 +16,6 @@ import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -159,12 +155,19 @@ public class LobbyServiceTest {
         bus.post(request);
     }
 
+    /**
+     * Tests the onSetPlayerReadyInLobbyRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnSetPlayerReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 = new SetPlayerReadyInLobbyRequest(1, user, true);
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(1, user, true);
 
         bus.post(request);
         bus.post(request2);
@@ -175,12 +178,19 @@ public class LobbyServiceTest {
         assertTrue(request3.isReady(), "Player is ready");
     }
 
+    /**
+     * Tests the onSetPlayerIsNotReadyInLobbyRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnSetPlayerIsNotReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 = new SetPlayerReadyInLobbyRequest(1, user, false);
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(1, user, false);
 
         bus.post(request);
         bus.post(request2);
@@ -191,6 +201,12 @@ public class LobbyServiceTest {
         assertFalse(request3.isReady(), "Player is not ready");
     }
 
+    /**
+     * Tests the onMapChangeRequest method.
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testOnMapChangeRequest() {
         Map map = new Map();
@@ -207,5 +223,4 @@ public class LobbyServiceTest {
         assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
         assertNull(lobbyManagement.getLobby(1).get().getMapName());
     }
-
 }

@@ -21,12 +21,6 @@ import java.util.*;
 public class LobbyManagement {
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
-    //    private static LobbyManagement instance;
-    //
-    //    public static LobbyManagement getInstance(){
-    //        return  instance;
-    //    }
-
     /**
      * @author
      * @since

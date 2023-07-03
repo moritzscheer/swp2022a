@@ -9,6 +9,14 @@ public class SetPlayerReadyInLobbyRequestTest {
 
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
+    /**
+     * Tests the getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyID and ready status
+     * @see de.uol.swp.common.lobby.request.SetPlayerReadyInLobbyRequest
+     * @since 2023-06-17
+     */
     @Test
     public void testGetters() {
         Integer lobbyID = 123;

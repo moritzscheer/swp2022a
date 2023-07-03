@@ -15,6 +15,14 @@ public class UserDroppedLobbyMessageTest {
     private final LobbyDTO lobbyDTO =
             new LobbyDTO(123, "testLobby", userDTO, "pw", true, randomUUID);
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyDTO userName and userDTO
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
 
@@ -27,6 +35,14 @@ public class UserDroppedLobbyMessageTest {
         Assertions.assertEquals(userDTO, message.getUser());
     }
 
+    /**
+     * Tests the getLobby method
+     *
+     * @author WKempel
+     * @result The getLobby method should return the correct lobbyDTO
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetLobby() {
 
@@ -37,6 +53,14 @@ public class UserDroppedLobbyMessageTest {
         Assertions.assertNotEquals(lobbyDTO, message.getLobby());
     }
 
+    /**
+     * Tests the getName method
+     *
+     * @author WKempel
+     * @result The getName method should return the correct name
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetName() {
 
@@ -46,6 +70,14 @@ public class UserDroppedLobbyMessageTest {
         Assertions.assertEquals(lobbyDTO.getName(), message.getName());
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct userDTO
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetUser() {
 
@@ -55,12 +87,22 @@ public class UserDroppedLobbyMessageTest {
         Assertions.assertEquals(userDTO, message.getUser());
     }
 
+    /**
+     * Tests the equals and the hashCode method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the objects are equal
+     * @see de.uol.swp.common.lobby.message.UserDroppedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testEqualsAndHashCode() {
 
-        UserDroppedLobbyMessage message1 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+        UserDroppedLobbyMessage message1 =
+                new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
 
-        UserDroppedLobbyMessage message2 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+        UserDroppedLobbyMessage message2 =
+                new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
 
         Assertions.assertEquals(message1, message2);
 

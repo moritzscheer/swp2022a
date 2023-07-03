@@ -93,6 +93,14 @@ public class RepairBehaviourTest {
                 robots[1].getLastBackupCopyPosition());
     }
 
+    /**
+     * Test when robot is on crossed wrench/hammer repair station
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @see de.uol.swp.server.gamelogic.Robot;
+     * @since 2023-06-21
+     */
     @Test
     public void fixDamageTokenTest() {
         RepairBehaviour repairBehaviour = (RepairBehaviour) behaviours1[0];
@@ -100,6 +108,14 @@ public class RepairBehaviourTest {
         assertEquals(0, robots[0].getDamageToken());
     }
 
+    /**
+     * Test the setBackupCopy method
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @see de.uol.swp.server.gamelogic.Robot;
+     * @since 2023-06-21
+     */
     @Test
     public void setBackupCopyTest() {
         RepairBehaviour repairBehaviour = (RepairBehaviour) behaviours1[0];
@@ -108,6 +124,13 @@ public class RepairBehaviourTest {
         assertEquals(pos1, robots[0].getLastBackupCopyPosition());
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @result The image is returned correctly
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();

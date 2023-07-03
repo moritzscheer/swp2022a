@@ -9,6 +9,14 @@ public class LeaveLobbyRequestTest {
 
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyName,lobbyID, user and multiplayer status
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
         Integer lobbyID = 123;
@@ -23,6 +31,14 @@ public class LeaveLobbyRequestTest {
         Assertions.assertEquals(multiplayer, request.isMultiplayer());
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The getter should return the correct lobbyID
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testGetLobbyID() {
         Integer lobbyID = 123;
@@ -36,6 +52,14 @@ public class LeaveLobbyRequestTest {
         Assertions.assertEquals(lobbyID, retrievedLobbyID);
     }
 
+    /**
+     * Tests the isMultiplayer method
+     *
+     * @author WKempel
+     * @result The getter should return the correct multiplayer status
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testIsMultiplayer() {
         Integer lobbyID = 123;

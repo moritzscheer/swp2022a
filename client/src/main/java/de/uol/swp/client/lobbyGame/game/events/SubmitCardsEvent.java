@@ -8,7 +8,6 @@ import java.util.List;
 /**
  * Event used to submit the cards of a players
  *
- *
  * @author Maria Andrade
  * @since 2023-05-19
  */

@@ -17,7 +17,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- *
  * @author
  * @since
  */
@@ -51,7 +50,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */
@@ -63,7 +61,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */
@@ -75,7 +72,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */
@@ -93,7 +89,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */
@@ -104,7 +99,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */
@@ -116,7 +110,6 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     *
      * @author
      * @since
      */

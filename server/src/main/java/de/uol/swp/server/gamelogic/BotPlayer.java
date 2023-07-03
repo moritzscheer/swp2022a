@@ -23,5 +23,4 @@ public class BotPlayer extends AbstractPlayer {
 
         this.robot = new Robot(robotID, startPosition, CardinalDirection.North);
     }
-
 }

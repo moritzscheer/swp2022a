@@ -13,8 +13,17 @@ public class AbstractGameRequestTest {
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
     private final UUID chatID = UUID.randomUUID();
     private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID);
-    private LobbyDTO lobbyDTO2 = new LobbyDTO(123,"testLobby2",userDTO,"pw",false,chatID);
+    private LobbyDTO lobbyDTO2 = new LobbyDTO(123, "testLobby2", userDTO, "pw", false, chatID);
 
+    /**
+     * Tests the constructor and the getters
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an
+     * @result The method should return true if the lobby name and lobbyDTO is the same
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorAndGetters() {
 
@@ -24,6 +33,15 @@ public class AbstractGameRequestTest {
         Assertions.assertEquals(lobbyDTO, request.getLobby());
     }
 
+    /**
+     * Tests the setters
+     *
+     * @author WKempel
+     * @result The setters should work without throwing an exception
+     * @result The method should set the correct values like the name and lobbyDTO
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testSetters() {
 
@@ -37,6 +55,14 @@ public class AbstractGameRequestTest {
         Assertions.assertEquals(lobbyDTO, request.getLobby());
     }
 
+    /**
+     * Tests the constructor with null as value for the name
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNullName() {
         String name = null;
@@ -48,6 +74,14 @@ public class AbstractGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with null as value for the lobbyDTO
+     *
+     * @author WKempel
+     * @result The constructor should throw a IllegalArgumentException
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNullLobby() {
         String name = "Test Game";
@@ -60,6 +94,14 @@ public class AbstractGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the setter with null as value for the name
+     *
+     * @author WKempel
+     * @result The setter should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testSetterWithNullName() {
         AbstractGameRequest request = new AbstractGameRequest(lobbyDTO.getName(), lobbyDTO);
@@ -72,6 +114,14 @@ public class AbstractGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the setter with null as value for the lobbyDTO
+     *
+     * @author WKempel
+     * @result The setter should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testSetterWithNullLobby() {
         AbstractGameRequest request = new AbstractGameRequest(lobbyDTO.getName(), lobbyDTO);
@@ -84,6 +134,15 @@ public class AbstractGameRequestTest {
                 });
     }
 
+    /**
+     * Tests the equals and hashCode method
+     *
+     * @author WKempel
+     * @result The method should return true if the lobby name and lobbyDTO is the same
+     * @result The method should return false if the lobby name and lobbyDTO is not the same
+     * @see de.uol.swp.common.game.request.AbstractGameRequest
+     * @since 2023-06-18
+     */
     @Test
     public void testEqualsAndHashCode() {
 

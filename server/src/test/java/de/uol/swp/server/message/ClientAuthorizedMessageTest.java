@@ -2,15 +2,21 @@ package de.uol.swp.server.message;
 
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 
 public class ClientAuthorizedMessageTest {
 
     UserDTO userDTO = new UserDTO("testUser", "pw", "mail");
     UserDTO userDTO2 = new UserDTO("testUser", "pw", "mail");
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testGetUser() {
         User user = userDTO;
@@ -21,6 +27,12 @@ public class ClientAuthorizedMessageTest {
         Assertions.assertEquals(user, actualUser);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @since 2023-06-23
+     */
     @Test
     public void testEquals() {
         User user1 = userDTO;

@@ -184,6 +184,13 @@ public class GearBehaviourTest {
         assertEquals(CardinalDirection.West, robots[1].getDirection());
     }
 
+    /**
+     * Tests the getType method
+     *
+     * @author WKempel
+     * @result The correct type is returned
+     * @since 2023-06-21
+     */
     @Test
     public void testGetType() {
         GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
@@ -191,6 +198,13 @@ public class GearBehaviourTest {
         assertEquals(34, gearBehaviour.getType());
     }
 
+    /**
+     * Tests the setType method
+     *
+     * @author WKempel
+     * @result The correct type is set
+     * @since 2023-06-21
+     */
     @Test
     public void testSetType() {
         GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
@@ -198,11 +212,18 @@ public class GearBehaviourTest {
         assertEquals(33, gearBehaviour.getType());
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @result The correct image is returned if the gear turns clockwise or not
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
         GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
-        if(gearBehaviour.isTurnClockwise()) {
+        if (gearBehaviour.isTurnClockwise()) {
             image = gearBehaviour.getImage();
         }
         assertEquals(1, image.size());
@@ -210,7 +231,7 @@ public class GearBehaviourTest {
         assertEquals(0, image.get(0)[1]);
 
         GearBehaviour gearBehaviour2 = (GearBehaviour) behaviours2[0];
-        if(!gearBehaviour2.isTurnClockwise()) {
+        if (!gearBehaviour2.isTurnClockwise()) {
             image = gearBehaviour2.getImage();
         }
         assertEquals(1, image.size());

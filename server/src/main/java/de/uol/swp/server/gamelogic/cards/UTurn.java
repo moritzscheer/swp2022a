@@ -34,7 +34,8 @@ public class UTurn extends CardBehaviour {
         return this.uTurn;
     }
 
-    /** method to turn the robot 180 degree
+    /**
+     * method to turn the robot 180 degree
      *
      * @author Tommy & WKempel
      * @since 2023-04-03

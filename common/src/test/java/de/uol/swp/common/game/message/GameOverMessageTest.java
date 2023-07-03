@@ -14,6 +14,14 @@ public class GameOverMessageTest {
     private final UserDTO userWon = new UserDTO("Player1", "pw", "ml");
     private final UserDTO userNotWon = new UserDTO("Player2", "pw", "ml2");
 
+    /**
+     * Tests the getter of the LobbyID
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see GameOverMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyID() {
         int lobbyID = 123;
@@ -22,6 +30,14 @@ public class GameOverMessageTest {
         assertEquals(lobbyID, message.getLobbyID());
     }
 
+    /**
+     * Tests the getter of the UserWon
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see GameOverMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetUserWon() {
         int lobbyID = 123;
@@ -30,6 +46,14 @@ public class GameOverMessageTest {
         assertEquals(userWon, message.getUserWon());
     }
 
+    /**
+     * Tests the getter of the UserWon
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see GameOverMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetUserNotWon() {
         int lobbyID = 123;
@@ -38,6 +62,14 @@ public class GameOverMessageTest {
         assertNotEquals(userNotWon, message.getUserWon());
     }
 
+    /**
+     * Tests the constructor with a negative value for the lobbyID
+     *
+     * @author WKempel
+     * @throws IllegalArgumentException
+     * @see GameOverMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;

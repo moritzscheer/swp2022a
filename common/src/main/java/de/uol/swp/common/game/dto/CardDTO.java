@@ -1,5 +1,7 @@
 package de.uol.swp.common.game.dto;
 
+import java.util.Objects;
+
 /**
  * Object to transfer the information of a game card
  *
@@ -34,5 +36,13 @@ public class CardDTO implements Card {
     @Override
     public int getPriority() {
         return this.priority;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CardDTO cardDTO = (CardDTO) o;
+        return Objects.equals(cardID, cardDTO.cardID) && Objects.equals(priority, cardDTO.priority);
     }
 }

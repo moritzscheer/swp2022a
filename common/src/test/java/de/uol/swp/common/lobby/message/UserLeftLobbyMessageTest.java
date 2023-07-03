@@ -15,6 +15,14 @@ public class UserLeftLobbyMessageTest {
     private final UUID randomUUID = UUID.randomUUID();
     private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", user, "pw", true, randomUUID);
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyID, lobbyName, userDTO and newOwner
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
 
@@ -27,6 +35,14 @@ public class UserLeftLobbyMessageTest {
         Assertions.assertEquals(newOwner, message.getNewOwner());
     }
 
+    /**
+     * Tests the getNewOwner method
+     *
+     * @author WKempel
+     * @result The getNewOwner method should return the correct newOwner
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetNewOwner() {
 
@@ -36,6 +52,14 @@ public class UserLeftLobbyMessageTest {
         Assertions.assertEquals(newOwner, message.getNewOwner());
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The getLobbyID method should return the correct lobbyID
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetLobbyID() {
 
@@ -45,6 +69,14 @@ public class UserLeftLobbyMessageTest {
         Assertions.assertEquals(lobbyDTO.getLobbyID(), message.getLobbyID());
     }
 
+    /**
+     * Tests the getName method
+     *
+     * @author WKempel
+     * @result The getName method should return the correct lobbyName
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetName() {
         UserLeftLobbyMessage message =
@@ -53,6 +85,14 @@ public class UserLeftLobbyMessageTest {
         Assertions.assertEquals(lobbyDTO.getName(), message.getName());
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct userDTO
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetUser() {
 
@@ -62,12 +102,22 @@ public class UserLeftLobbyMessageTest {
         Assertions.assertEquals(user, message.getUser());
     }
 
+    /**
+     * Tests the equals and hashCode method
+     *
+     * @author WKempel
+     * @result The equals and hashCode method should return true if the objects are the same
+     * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
+     * @since 2023-06-18
+     */
     @Test
     public void testEqualsAndHashCode() {
 
-        UserLeftLobbyMessage message1 = new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+        UserLeftLobbyMessage message1 =
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
 
-        UserLeftLobbyMessage message2 = new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+        UserLeftLobbyMessage message2 =
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
 
         Assertions.assertEquals(message1, message2);
 

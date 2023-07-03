@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-
-/** Class to create a chat channel for the lobbies and main menu
+/**
+ * Class to create a chat channel for the lobbies and main menu
  *
  * @author Tommy Dang, Finn Oldeboershuis
  * @since 2022-12-08
@@ -24,7 +24,8 @@ public class TextChatChannel {
     private ArrayList<Session> loggedInUsers;
     private EventBus eventBus;
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -33,7 +34,8 @@ public class TextChatChannel {
         return new SimpleDateFormat("HH:mm:ss").format(new Date());
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -46,7 +48,8 @@ public class TextChatChannel {
         sendTextToUsers(text);
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -58,7 +61,8 @@ public class TextChatChannel {
         sendTextToUsers(text);
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -70,7 +74,8 @@ public class TextChatChannel {
         eventBus.post(message);
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -79,7 +84,8 @@ public class TextChatChannel {
         loggedInUsers.add(user);
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02
@@ -90,7 +96,8 @@ public class TextChatChannel {
         }
     }
 
-    /** Adds before the name in chat a timestamp
+    /**
+     * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
      * @since 2023-05-02

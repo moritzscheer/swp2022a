@@ -6,16 +6,12 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 
 /**
- *
- *
  * @author
  * @since
  */
 public class TestLaserMap extends AbstractMap {
 
     /**
-     *
-     *
      * @author
      * @since
      */

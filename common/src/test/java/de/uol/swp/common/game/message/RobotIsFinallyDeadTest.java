@@ -15,6 +15,15 @@ public class RobotIsFinallyDeadTest {
     UserDTO userDied3 = new UserDTO("Test3", "pw", "mail");
     UserDTO userDied4 = new UserDTO("Test4", "pw", "mail");
 
+    /**
+     * Tests the getter of the LobbyID
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an Exception
+     * @result The method should return true if the user is in the list and the lobbyID is the same
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyID() {
         int lobbyID = 123;
@@ -25,6 +34,15 @@ public class RobotIsFinallyDeadTest {
         Assertions.assertEquals(lobbyID, result);
     }
 
+    /**
+     * Tests the getter of the died User
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an Exception
+     * @result The method should return true if the user is in the list and the lobbyID is the same
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testGetUserDied() {
         int lobbyID = 123;
@@ -35,6 +53,15 @@ public class RobotIsFinallyDeadTest {
         Assertions.assertEquals(userDied, result);
     }
 
+    /**
+     * Tests the getter of the died UserList
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an Exception
+     * @result The method should return true if the user is in the list and the lobbyID is the same
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testGetUserListDied() {
         int lobbyID = 123;
@@ -58,6 +85,15 @@ public class RobotIsFinallyDeadTest {
         }
     }
 
+    /**
+     * Tests the getter of the died UserList
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an Exception
+     * @result The method should return true if the user is not in the list
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testGetUserListNotDied() {
         int lobbyID = 123;
@@ -84,6 +120,14 @@ public class RobotIsFinallyDeadTest {
         }
     }
 
+    /**
+     * Tests the getter of the lobbyID with a negative value
+     *
+     * @author WKempel
+     * @result The constructor should throw an IllegalArgumentException
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
@@ -92,6 +136,15 @@ public class RobotIsFinallyDeadTest {
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
 
+    /**
+     * Tests the equals method and the hashCode method
+     *
+     * @author WKempel
+     * @result The methods should work without throwing an Exception
+     * @result The method should return true if the messages are the same
+     * @see de.uol.swp.common.game.message.RobotIsFinallyDead
+     * @since 2023-06-14
+     */
     @Test
     public void testEqualsAndHashCode() {
         int lobbyID = 123;
