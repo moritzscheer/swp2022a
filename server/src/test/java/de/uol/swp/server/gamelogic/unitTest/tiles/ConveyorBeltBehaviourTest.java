@@ -13,6 +13,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,5 +134,41 @@ public class ConveyorBeltBehaviourTest {
         // TODO: must be tested with move intent
         //        assertEquals(robots[2].getPosition(), new Position(2, 2));
         //        assertEquals(robots[2].getDirection(), CardinalDirection.East);
+    }
+
+    @Test
+   public void getImageTest() {
+        List<Robot> robots = new ArrayList<>();
+        Block[][] board = new Block[12][12];
+
+        ConveyorBeltBehaviour conveyorBelt = new ConveyorBeltBehaviour(
+                robots,
+                board,
+                new Position(1, 1),
+                ArrowType.Straight,
+                CardinalDirection.East);
+
+        List<int[]> expectedImage = new ArrayList<>();
+
+        if (conveyorBelt.getArrowType() == ArrowType.Straight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(9, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TurnRight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(11, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TurnLeft) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(12, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.StraightTurnRight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(15, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.StraightTurnLeft) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(14, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TTurn) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(52, expectedImage.get(0)[0]);
+        }
+
     }
 }

@@ -14,8 +14,18 @@ public class NewTextChatMessageMessageTest {
 
     private final TextChatChannelDTO channel = new TextChatChannelDTO(channelID);
 
+    /**
+     * Tests the constructor and the getters
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see de.uol.swp.common.chat.message.NewTextChatMessageMessage
+     * @see de.uol.swp.common.chat.TextChatChannelDTO
+     * @see de.uol.swp.common.chat.TextChatMessage
+     * @since 2023-06-17
+     */
     @Test
-    void getters() {
+    public void testConstructorAndGetter() {
 
         TextChatMessage message = new TextChatMessage("senderId", "senderName", "Hello, World!");
 

@@ -12,12 +12,26 @@ public class RegisterUserRequestTest {
 
     private RegisterUserRequest registerUserRequest;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
     void setUp() {
         UserDTO user = new UserDTO("username", "password", "email");
         registerUserRequest = new RegisterUserRequest(user);
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct user
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testGetUser() {
         User user = registerUserRequest.getUser();
@@ -26,11 +40,27 @@ public class RegisterUserRequestTest {
         assertEquals("password", user.getPassword());
     }
 
+    /**
+     * Tests the authorizationNeeded method
+     *
+     * @author WKempel
+     * @result The authorizationNeeded method should return false
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testAuthorizationNeeded() {
         assertFalse(registerUserRequest.authorizationNeeded());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the objects are equal and false if they are not
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testEquals() {
         UserDTO user1 = new UserDTO("username", "password", "email");

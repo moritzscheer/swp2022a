@@ -16,6 +16,13 @@ public class BotPlayerTest {
 
     private AbstractPlayer botPlayer = new BotPlayer(position, robotID);
 
+    /**
+     * Tests the constructor of the BotPlayer class
+     *
+     * @author WKempel
+     * @result The constructor should create a BotPlayer with the given parameters like the username, email, password, robotID, position and direction
+     * @since 2023-06-23
+     */
     @Test
     public void testBotPlayerConstructor() {
 
@@ -27,6 +34,13 @@ public class BotPlayerTest {
         assert(botPlayer.getRobot().getDirection().equals(CardinalDirection.North));
     }
 
+    /**
+     * Tests the constructor of the BotPlayer class with two bots
+     *
+     * @author WKempel
+     * @result The constructor should create two BotPlayers with the given parameters like the username, email, password, robotID, position and direction
+     * @since 2023-06-23
+     */
     @Test
     public void testBotPlayerConstructorWithTwoBots() {
 

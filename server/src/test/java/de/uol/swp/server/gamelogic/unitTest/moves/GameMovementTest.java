@@ -29,6 +29,12 @@ public class GameMovementTest {
     private final UserDTO userDTO = new UserDTO("Player1","pw","email");
     private final PlayerDTO playerDTO = new PlayerDTO(robotDTO,userDTO);
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @BeforeEach
     public void setUp() {
         robotsPositionsInOneMove.add(playerDTO);
@@ -40,11 +46,27 @@ public class GameMovementTest {
         gameMovement = new GameMovement(robotsPositionsInOneMove, moveType, oldState, robotThatPlayedTheCard);
     }
 
+    /**
+     * Tests getRobotsPositionsInOneMove method
+     *
+     * @author WKempel
+     * @result The getRobotsPositionsInOneMove method should return true if the robotsPositionsInOneMove are correct
+     * @see de.uol.swp.server.gamelogic.moves.GameMovement
+     * @since 2023-06-21
+     */
     @Test
     public void testGetRobotsPositionsInOneMove() {
         Assertions.assertEquals(robotsPositionsInOneMove, gameMovement.getRobotsPositionsInOneMove());
     }
 
+    /**
+     * Tests getMoveType method
+     *
+     * @author WKempel
+     * @result The getMoveType method should return true if the moveType is correct
+     * @see de.uol.swp.server.gamelogic.moves.GameMovement
+     * @since 2023-06-21
+     */
     @Test
     public void testGetMoveMessage() {
         String expectedMoveMessage = "[" + moveType + "] " + robotThatPlayedTheCard + "\n";

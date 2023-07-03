@@ -146,4 +146,12 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
         return new ArrayList<>(
                 Arrays.asList(new int[]{type, rotation}, new int[]{arrowType, rotation}));
     }
+
+    public ArrowType getArrowType() {
+        return arrowType;
+    }
+
+    public void setArrowType(ArrowType arrowType) {
+        this.arrowType = arrowType;
+    }
 }

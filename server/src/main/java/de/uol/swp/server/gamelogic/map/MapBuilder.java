@@ -172,6 +172,11 @@ public final class MapBuilder {
                                     + "C"
                                     + (checkpoints + 2)
                                     + ".map";
+
+                    if(new File(".").getAbsolutePath().endsWith("server\\.")){
+                        path = path.replace("server/", "");
+                    }
+
                     ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
                     objOut.writeObject(map);
                     objOut.flush();
@@ -189,6 +194,11 @@ public final class MapBuilder {
                                     .getName()
                                     .replace("de.uol.swp.server.gamelogic.map.", "")
                             + ".map";
+
+            if(new File(".").getAbsolutePath().endsWith("server\\.")){
+                path = path.replace("server/", "");
+            }
+
             ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
             objOut.writeObject(map);
             objOut.flush();

@@ -9,8 +9,16 @@ import org.junit.jupiter.api.Test;
 
 public class CardDTOTest {
 
+    /**
+     * Tests the getID method
+     *
+     *@author WKempel
+     * @result The method should return the correct ID
+     * @see de.uol.swp.common.game.dto.CardDTO
+     * @since 2023-06-12
+     */
     @Test
-    void getIDTest() {
+    public void testGetIDTest() {
         Integer expectedCardID = 123;
         Integer notExpectedCardID = 321;
         int priority = 1;
@@ -22,8 +30,16 @@ public class CardDTOTest {
         assertNotEquals(expectedCardID, cardDTO2.getID());
     }
 
+    /**
+     * Tests the getPriority method
+     *
+     * @author WKempel
+     * @result The method should return the correct priority
+     * @see de.uol.swp.common.game.dto.CardDTO
+     * @since 2023-06-12
+     */
     @Test
-    void getPriorityTest() {
+    public void testGetPriorityTest() {
         Integer expectedPriorityHigher = 123;
         Integer notExpectedPriorityLower = 321;
         int priority = 10;

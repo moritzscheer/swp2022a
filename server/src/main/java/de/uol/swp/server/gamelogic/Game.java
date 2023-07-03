@@ -26,6 +26,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -71,9 +72,7 @@ public class Game {
 
     private boolean notDistributedCards = true;
     private String fullMapName;
-    public String getFullMapName(){
-        return fullMapName;
-    }
+
     private List<GameMovement> gameMovements;
 
     private List<PlayerDTO> respawnRobots;
@@ -94,9 +93,9 @@ public class Game {
         this.mapName = mapName;
         this.checkpointCount = checkpointCount;
 
+        assert users.size() + numberBots <= 8;
 
-        //assert users.size() + numberBots <= 8;
-
+        LOG.debug(new File(".").getAbsolutePath());
         // create board
         if(version == -1){
             Random random = new Random();
@@ -125,15 +124,31 @@ public class Game {
                     MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
             tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(mapName);
         } else {
-            this.board =
-                    MapBuilder.getMap(
-                            "server/src/main/resources/maps/"
-                                    + this.mapName
-                                    + "V"
-                                    + version
-                                    + "C"
-                                    + checkpointCount
-                                    + ".map");
+            String mapPath = "";
+
+            //TODO: this is for testing purposes, because for some reason the tests are run from swp2022/server/ while the server is run from swp2022/
+            if(new File(".").getAbsolutePath().endsWith("server\\.")){
+                mapPath =
+                                "src/main/resources/maps/"
+                                        + this.mapName
+                                        + "V"
+                                        + version
+                                        + "C"
+                                        + checkpointCount
+                                        + ".map";
+            }else{
+                mapPath =
+                                            "server/src/main/resources/maps/"
+                                                    + this.mapName
+                                                    + "V"
+                                                    + version
+                                                    + "C"
+                                                    + checkpointCount
+                                                    + ".map";
+            }
+
+            LOG.debug(new File(mapPath).getAbsolutePath());
+            this.board = MapBuilder.getMap(mapPath);
 
             if (board == null) {
                 // TODO: Log error "Map couldn't be loaded"
@@ -1283,6 +1298,10 @@ public class Game {
         return this.dockingStartPosition;
     }
 
+    public String getFullMapName(){
+        return fullMapName;
+    }
+
     public void increaseProgramStep() {
         this.programStep++;
         this.gameMovements = null;
@@ -1303,4 +1322,17 @@ public class Game {
         }
         return true;
     }
+
+    public void setNotDistributedCards(boolean notDistributedCards) {
+        this.notDistributedCards = notDistributedCards;
+    }
+
+    public boolean isNotDistributedCards() {
+        return notDistributedCards;
+    }
+
+    public int getProgramStep() {
+        return programStep;
+    }
+
 }

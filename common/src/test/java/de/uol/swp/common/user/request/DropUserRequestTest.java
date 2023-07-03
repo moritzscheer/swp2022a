@@ -13,29 +13,67 @@ public class DropUserRequestTest {
     private UserDTO user;
     private DropUserRequest dropUserRequest;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
     void setUp() {
         user = new UserDTO("username", "password", "email");
         dropUserRequest = new DropUserRequest(user);
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct user
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testGetUser() {
         User retrievedUser = dropUserRequest.getUser();
         assertEquals(user, retrievedUser);
     }
 
+    /**
+     * Tests the getUsername method
+     *
+     * @author WKempel
+     * @result The getUsername method should return the correct username
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testGetUsername() {
         String username = dropUserRequest.getUsername();
         assertEquals("username", username);
     }
 
+    /**
+     * Tests the authorizationNeeded method
+     *
+     * @author WKempel
+     * @result The authorizationNeeded method should return false
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testAuthorizationNeeded() {
         assertFalse(dropUserRequest.authorizationNeeded());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the DropUserRequests are equal and false if they are not
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @since 2023-06-17
+     */
     @Test
     void testEquals() {
         User user1 = new UserDTO("username", "password", "email");

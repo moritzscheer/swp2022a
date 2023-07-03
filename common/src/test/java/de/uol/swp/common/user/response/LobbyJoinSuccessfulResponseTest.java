@@ -13,36 +13,82 @@ public class LobbyJoinSuccessfulResponseTest {
     private LobbyJoinSuccessfulResponse response;
     private UserDTO user;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         user = new UserDTO("user", "password", "email");
         response = new LobbyJoinSuccessfulResponse(user);
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct user
+     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getUser() {
+    public void testGetUsers() {
         User actualUser = response.getUser();
         assertEquals(user, actualUser);
     }
 
+    /**
+     * Tests the getUsername method
+     *
+     * @author WKempel
+     * @result The getUsername method should return the correct username
+     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(response.equals(response));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(response, response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the LobbyJoinSuccessfulResponses are equal
+     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         LobbyJoinSuccessfulResponse other = new LobbyJoinSuccessfulResponse(user);
-        assertTrue(response.equals(other));
+        assertEquals(response, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the LobbyJoinSuccessfulResponses are not equal
+     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(response.equals("not a LobbyJoinSuccessfulResponse object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not a LobbyJoinSuccessfulResponse object", response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the LobbyJoinSuccessfulResponses are null
+     * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(response.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, response);
     }
 }

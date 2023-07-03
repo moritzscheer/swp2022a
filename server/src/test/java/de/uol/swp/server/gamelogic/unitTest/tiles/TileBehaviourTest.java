@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
 
 public class TileBehaviourTest {
 
+    /**
+     * Tests the enum values of TileBehaviour
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @Test
     public void testEnumValues() {
         // Überprüft, ob die Anzahl der Werte in der Enumeration korrekt ist

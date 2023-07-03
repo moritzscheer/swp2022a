@@ -36,4 +36,5 @@ public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
     public List<MoveIntent> onExpressConveyorStage(int programmStep) {
         return onConveyorStage(programmStep);
     }
+
 }

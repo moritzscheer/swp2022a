@@ -11,6 +11,14 @@ public class MapChangeRequestTest {
 
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyID, user and map
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
         int lobbyID = 123;
@@ -24,6 +32,14 @@ public class MapChangeRequestTest {
         Assertions.assertEquals(map, request.getMap());
     }
 
+    /**
+     * Tests the getMap method
+     *
+     * @author WKempel
+     * @result The getter should return the correct map
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testGetMap() {
         int lobbyID = 123;
@@ -37,6 +53,14 @@ public class MapChangeRequestTest {
         Assertions.assertEquals(map, retrievedMap);
     }
 
+    /**
+     * Tests the getID method
+     *
+     * @author WKempel
+     * @result The getter should return the correct lobbyID
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testGetID() {
         int lobbyID = 123;
