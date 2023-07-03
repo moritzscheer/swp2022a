@@ -6,17 +6,26 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 
 /**
- * @author
- * @since
+ * TestLaserMap
+ *
+ * @author Ole Zimmermann & Merden
+ * @since 2023-06-11
  */
 public class TestLaserMap extends AbstractMap {
 
     /**
-     * @author
-     * @since
+     * Constructor for TestLaserMap
+     *
+     * @author Ole Zimmermann & Merden
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.WallBehaviour
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.common.game.Position
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-06-11
      */
     public TestLaserMap() {
-        // LASERTEST
         int x = 0;
         int y = 0;
 

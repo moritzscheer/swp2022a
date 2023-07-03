@@ -15,16 +15,17 @@ import java.util.*;
  * Map Builder
  *
  * @author Finn Oldeboershuis
+ * @see de.uol.swp.server.gamelogic.Block
  * @since 2023-04-28
  */
 public final class MapBuilder {
 
-    public static List<AbstractMap> maps = new LinkedList<AbstractMap>();
-    public static List<AbstractMap> testMaps = new LinkedList<AbstractMap>();
+    public static List<AbstractMap> maps = new LinkedList<>();
+    public static List<AbstractMap> testMaps = new LinkedList<>();
     private static final HashMap<String, Pair<Integer, Position>>
             mapStringToCheckpointNumberAndFirstPosition = new HashMap<>();
 
-    public static List<ArrayList> checkpointLocations = new LinkedList<ArrayList>();
+    public static List<ArrayList> checkpointLocations = new LinkedList<>();
     public static ArrayList<int[][]> checkpointsMapOne = new ArrayList<>();
     public static ArrayList<int[][]> checkpointsMapTwo = new ArrayList<>();
     public static ArrayList<int[][]> checkpointsMapThree = new ArrayList<>();
@@ -85,8 +86,12 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Get the map with the given name
+     *
+     * @author Merden
+     * @see de.uol.swp.server.gamelogic.Block
+     * @see de.uol.swp.server.gamelogic.map.AbstractMap
+     * @since 2023-06-06
      */
     public static Block[][] getMap(String mapPath) {
         try {
@@ -109,14 +114,22 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Create some maps with all given parameters like checkpoints, behaviour types
+     *
+     * @author Merden
+     * @see de.uol.swp.server.gamelogic.map.MapOne
+     * @see de.uol.swp.server.gamelogic.map.MapTwo
+     * @see de.uol.swp.server.gamelogic.map.MapThree
+     * @see de.uol.swp.server.gamelogic.map.TestLaserMap
+     * @see de.uol.swp.server.gamelogic.map.TestPusherMap
+     * @see de.uol.swp.server.gamelogic.map.TestWallMap
+     * @see de.uol.swp.server.gamelogic.map.TestConveyorMap
+     * @since 2023-06-06
      */
     public static void main(String[] args) throws IOException {
 
         maps.add(new MapOne());
         maps.add(new MapTwo());
-        // maps.add(new MapTwoTEST());
         maps.add(new MapThree());
 
         testMaps.add(new TestLaserMap());
@@ -180,16 +193,14 @@ public final class MapBuilder {
         checkpointLocations.add(checkpointsMapThree);
 
         mapGen();
-
-        // Block[][] map = getMap("server/src/main/resources/maps/MapOneV1C2.map");
-        // if (map != null) {
-        //     System.out.println(map.length);
-        // }
     }
 
     /**
-     * @author
-     * @since
+     * Get the Strings for the checkpoints and the first position of the map
+     *
+     * @author Maria
+     * @see de.uol.swp.common.game.Position
+     * @since 2023-06-30
      */
     public static Pair<Integer, Position> getMapStringToCheckpointNumberAndFirstPosition(
             String mapName) {
@@ -201,8 +212,13 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Generate the maps
+     *
+     * @author Ole Zimmermann
+     * @see de.uol.swp.server.gamelogic.Block
+     * @see java.io
+     *
+     * @since 2023-06-18
      */
     public static void mapGen() throws IOException {
 
@@ -257,8 +273,11 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Copy the map
+     *
+     * @author Merden
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-06-07
      */
     private static Block[][] copyMap(Block[][] originalMap) {
         Block[][] copy = new Block[originalMap.length][originalMap[0].length];
@@ -271,15 +290,18 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Extract the map
+     *
+     * @author Merden
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-06-07
      */
     private static Block[][] mapGenExtracted(
             Block[][] mapFromClass, int version, int checkpoints, int checkpointLoc) {
         int x = 0;
         int y = 0;
         Block[][] map = mapFromClass;
-        // Place Checkpoints on normal maps (Version >0) and not on Testmaps with Version 0
+        // Place Checkpoints on normal maps (Version >0) and not on Test-maps with Version 0
         if (version >= 0) {
             try {
                 int[][] checkpointLocation =
@@ -310,13 +332,9 @@ public final class MapBuilder {
         for (y = 0; y < 12; y++) {
             for (x = 0; x < 12; x++) {
 
-                // boolean pitBehaviourFound = false;
-                // boolean conveyorBeltBehaviourFound = false;
-                // boolean repairBehaviourFound = false;
-                // boolean gearBehaviourFound = false;
                 for (int i = 0; i < map[x][y].getBehaviourList().length; i++) {
                     if (map[x][y].getBehaviourList()[i] instanceof LaserBehaviour) {
-                        if (((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart() == true) {
+                        if (((LaserBehaviour) map[x][y].getBehaviourList()[i]).getStart()) {
                             laserStart(
                                     map,
                                     x,
@@ -327,24 +345,9 @@ public final class MapBuilder {
                                             .getLaserDirection());
                         }
                     }
-                    /*
-                    else if(map[x][y].getBehaviourList()[i] instanceof PitBehaviour){
-                        pitBehaviourFound = true;
-                    }
-                    */
                     else if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
                         checkpointFound++;
                     }
-                    /*
-                    else if(map[x][y].getBehaviourList()[i] instanceof ConveyorBeltBehaviour || map[x][y].getBehaviourList()[i] instanceof ExpressConveyorBeltBehaviour){
-                        conveyorBeltBehaviourFound = true;
-                    }
-                    else if(map[x][y].getBehaviourList()[i] instanceof RepairBehaviour){
-                        repairBehaviourFound = true;
-                    }
-                    else if(map[x][y].getBehaviourList()[i] instanceof GearBehaviour){
-                        gearBehaviourFound = true;
-                     */
                 }
             }
         }
@@ -368,8 +371,13 @@ public final class MapBuilder {
         return map;
     }
     /**
-     * @author
-     * @since
+     * Set the start of the laser
+     *
+     * @author Merden
+     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @since 2023-06-06
      */
     private static void laserStart(
             Block[][] map, int x, int y, int beam, CardinalDirection direction) {
@@ -495,10 +503,12 @@ public final class MapBuilder {
     }
 
     /**
-     * @author
-     * @since
+     * Sorts the behaviours so the pictures get selected correctly
+     *
+     * @author Ole Zimmermann
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @since 2023-06-06
      */
-    // Sorts the behaviours so the pictures get selected correctly
     private static AbstractTileBehaviour[] sortBehaviourList(
             AbstractTileBehaviour[] behaviourList) {
         Arrays.sort(behaviourList, new BehaviourTypeComparator());

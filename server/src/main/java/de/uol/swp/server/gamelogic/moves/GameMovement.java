@@ -103,7 +103,7 @@ public class GameMovement {
                             this.moveMessage
                                     + "    "
                                     + oldPlayerDTO.getUser().getUsername() // User ("
-                                    + " died FOREVEEEEER\n";
+                                    + " died FOREVER\n";
                 } else {
                     this.moveMessage =
                             this.moveMessage

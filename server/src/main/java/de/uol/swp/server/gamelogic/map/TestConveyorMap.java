@@ -8,14 +8,21 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import java.util.Random;
 
 /**
- * @author
- * @since
+ * @author Ole Zimmermann & Merden
+ * @since 2023-03-05
  */
 public class TestConveyorMap extends AbstractMap {
 
     /**
-     * @author
-     * @since
+     * Constructor for TestConveyorMap
+     *
+     * @author Merden & Ole Zimmermann
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.ExpressConveyorBeltBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @since 2023-06-11
      */
     public TestConveyorMap() {
         // ConveyorTest

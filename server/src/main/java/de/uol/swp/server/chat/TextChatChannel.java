@@ -38,6 +38,7 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see de.uol.swp.common.chat.TextChatMessage
      * @since 2023-05-02
      */
     public void addUserTextMessage(String sender, String message) {
@@ -52,6 +53,7 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see de.uol.swp.common.chat.TextChatMessage
      * @since 2023-05-02
      */
     public void addServerTextMessage(String message) {
@@ -65,6 +67,7 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see de.uol.swp.common.chat.message.NewTextChatMessageMessage
      * @since 2023-05-02
      */
     private void sendTextToUsers(TextChatMessage text) {
@@ -78,6 +81,7 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see de.uol.swp.common.user.Session
      * @since 2023-05-02
      */
     public void addUser(Session user) {
@@ -88,6 +92,7 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see de.uol.swp.common.user.Session
      * @since 2023-05-02
      */
     public void removeUser(Session user) {
@@ -100,6 +105,8 @@ public class TextChatChannel {
      * Adds before the name in chat a timestamp
      *
      * @author Tommy Dang
+     * @see java.util.UUID
+     * @see com.google.common.eventbus.EventBus
      * @since 2023-05-02
      */
     TextChatChannel(UUID id, EventBus eventBus) {

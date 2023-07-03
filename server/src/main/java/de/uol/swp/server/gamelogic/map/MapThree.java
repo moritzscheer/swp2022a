@@ -5,8 +5,29 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
+/**
+ * This is the third map of the game
+ *
+ * @author Ole Zimmermann & Merden
+ * @since 2023-06-26
+ */
 public class MapThree extends AbstractMap {
 
+    /**
+     * Constructor
+     *
+     * @author Merden & ole Zimmermann
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.WallBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.PusherBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
+     * @see de.uol.swp.server.gamelogic.Block
+     * @see de.uol.swp.common.game.Position
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
+     * @since 2023-06.26
+     */
     public MapThree() {
         int x = 0;
         int y = 0;

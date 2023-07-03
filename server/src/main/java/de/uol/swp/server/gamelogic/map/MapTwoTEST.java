@@ -5,10 +5,29 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
+/**
+ * MapTwoTEST
+ *
+ * @author Ole Zimmermann & Merden
+ * @since 2023-06-26
+ */
 public class MapTwoTEST extends AbstractMap {
 
+    /**
+     * Constructor
+     *
+     * @author Ole Zimmermann & Merden
+     * @see de.uol.swp.server.gamelogic.map.AbstractMap
+     * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.WallBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
+     * @since 2023-06-26
+     */
     public MapTwoTEST() {
-        // SECOND TESTMAP
         int x = 0;
         int y = 0;
 
