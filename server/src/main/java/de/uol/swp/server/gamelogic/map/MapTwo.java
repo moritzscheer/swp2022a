@@ -5,8 +5,20 @@ import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
+/**
+ *
+ *
+ * @author
+ * @since
+ */
 public class MapTwo extends AbstractMap{
 
+    /**
+     *
+     *
+     * @author
+     * @since
+     */
     public MapTwo(){
         int x = 0;
         int y = 0;

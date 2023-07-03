@@ -17,7 +17,8 @@ public abstract class AbstractPlayer {
     protected int numCardToPlay = 0;
 
 
-    /** Constructor */
+    /** Constructor
+     */
     public AbstractPlayer() {}
 
     /**
@@ -82,22 +83,42 @@ public abstract class AbstractPlayer {
         return nextCard;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public UserDTO getUser() {
         return userDTO;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setReceivedCards(Card[] receivedCards) {
         this.receivedCards = receivedCards;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public int getNumCardToPlay() {
         return numCardToPlay;
     }
 
+    /**
+     * @author
+     * @since
+     */
     public void setNumCardToPlay(int numCardToPlay) {
         this.numCardToPlay = numCardToPlay;
     }

@@ -4,6 +4,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.auth.events.ShowLoginViewEvent;
 import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.chat.messages.NewTextChatMessageReceived;
 import de.uol.swp.client.credit.event.ShowCreditViewEvent;
@@ -302,6 +303,8 @@ public class MainMenuPresenter extends AbstractPresenter {
     private void onLogoutButtonPressed(ActionEvent event) {
         tabPresenter.setInfoLabel(1);
         tabPresenter.updateInfoBox();
+        userService.logout(loggedInUser);
+        eventBus.post(new ShowLoginViewEvent());
     }
 
     /**
@@ -319,6 +322,7 @@ public class MainMenuPresenter extends AbstractPresenter {
     private void onExitButtonPressed(ActionEvent event) {
         tabPresenter.setInfoLabel(2);
         tabPresenter.updateInfoBox();
+        userService.logout(loggedInUser);
     }
 
     @FXML

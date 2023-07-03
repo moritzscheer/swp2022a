@@ -25,6 +25,10 @@ public class LaserBehaviour extends AbstractTileBehaviour {
 
     private boolean fullLaser;
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public LaserBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -42,6 +46,10 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         this.fullLaser = fullLaser;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public LaserBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -101,18 +109,34 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         return this.laserBeam;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public boolean getStart() {
         return this.start;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public void setStart(boolean start) {
         this.start = start;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public void setLaserBeam(int beam) {
         this.laserBeam = beam;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         int placeholder = 17;
@@ -124,13 +148,26 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         return new ArrayList<>(List.of(new int[] {placeholder + laserBeam, direction.ordinal()}));
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public CardinalDirection getDirection() {
         return direction;
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public void setDirection(CardinalDirection direction) {
         this.direction = direction;
     }
+
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public boolean isFullLaser() {
         return fullLaser;
     }

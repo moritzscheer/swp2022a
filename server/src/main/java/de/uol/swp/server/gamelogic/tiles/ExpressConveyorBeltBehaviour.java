@@ -9,8 +9,16 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
 import java.util.List;
 
+/**
+ * @author
+ * @since 2023-03-05
+ */
 public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     public ExpressConveyorBeltBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -20,6 +28,10 @@ public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
         super(robotStates, board, blockPos, arrowType, direction);
     }
 
+    /**
+     * @author
+     * @since 2023-03-05
+     */
     @Override
     public List<MoveIntent> onExpressConveyorStage(int programmStep) {
         return onConveyorStage(programmStep);

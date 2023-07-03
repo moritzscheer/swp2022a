@@ -46,7 +46,7 @@ public class GameTest {
         users.add(user1);
         users.add(user2);
 
-        game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint);
+        game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint, -1);
 
         List<CardDTO> player1Cards = new ArrayList<>();
         player1Cards.add(new CardDTO(1,10));
