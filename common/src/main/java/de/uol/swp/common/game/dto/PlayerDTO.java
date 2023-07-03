@@ -27,6 +27,7 @@ public class PlayerDTO implements Serializable {
      * @param robotDTO robot that belongs to this Player
      * @see de.uol.swp.common.game.dto.RobotDTO
      * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
      */
     public PlayerDTO(RobotDTO robotDTO, UserDTO userDTO) {
         this.robotDTO = robotDTO;
@@ -87,7 +88,12 @@ public class PlayerDTO implements Serializable {
     public UserDTO getUser() {
         return user;
     }
-
+    /**
+     * Override for equals method to compare not only the object but the object's attributes
+     *
+     * @author Finn Oldeborshuis
+     * @since 2023-06-19
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,7 +103,12 @@ public class PlayerDTO implements Serializable {
                 && Objects.equals(getCurrentCards(), playerDTO.getCurrentCards())
                 && getUser().equals(playerDTO.getUser());
     }
-
+    /**
+     * Override for hashCode method
+     *
+     * @author Finn Oldeborshuis
+     * @since 2023-06-19
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getRobotDTO(), getCurrentCards(), getUser());
