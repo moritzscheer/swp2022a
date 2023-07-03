@@ -118,20 +118,33 @@ public class LaserBehaviour extends AbstractTileBehaviour {
                             break;
                         }
                     }
-                    break;
-                } else if (behaviour instanceof WallBehaviour) {
+                }
+                if (behaviour instanceof WallBehaviour) {
                     if(behaviour.getObstruction(direction))
                         foundWall = true;
                 }
             }
             if(foundWall || foundRobot)
                 break;
+
             if(direction == CardinalDirection.West || direction == CardinalDirection.East) { // x
                 x = x + op;
             }else { // y
                 y = y + op;
             }
-            if(y < 0 || y == board[0].length || x < 0 || x == board.length)
+            // test if there is wall in next block
+            try {
+                for (AbstractTileBehaviour behaviour: board[x][y].getBehaviourList()) {
+                    // check the opposite direction for a wall in the next block
+                    if(behaviour.getObstruction(CardinalDirection.values()[(direction.ordinal() + 2) % 4])){
+                        foundWall = true;
+                        break; // do not go to next block
+                    }
+                }
+            }catch (IndexOutOfBoundsException ignored){
+                ;;
+            }
+            if(foundWall || y < 0 || y == board[0].length || x < 0 || x == board.length)
                 break;
         }
     }
