@@ -6,6 +6,7 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Player;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
+
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +17,9 @@ public class AbstractPlayerTest {
     private final CardinalDirection cardinalDirection = CardinalDirection.North;
     private final Robot robot = new Robot(123, position, cardinalDirection);
     private final Card[] cards = new Card[9];
-    private final Card[] cards2 = new Card[] {
-            new Card(0),
-            new Card(1),
-            new Card(2),
+    private final Card[] cards2 =
+            new Card[] {
+                new Card(0), new Card(1), new Card(2),
             };
     private final Card[] chosenCards = new Card[5];
     private final UserDTO userDTO = new UserDTO("testUser", "testPassword", "testMail");
@@ -44,7 +44,8 @@ public class AbstractPlayerTest {
      * Tests the receiveCards method
      *
      * @author WKempel
-     * @result The receiveCards method should return true if the cards are received and the length of the cards-array musst be equal
+     * @result The receiveCards method should return true if the cards are received and the length
+     *     of the cards-array musst be equal
      * @see de.uol.swp.server.gamelogic.tiles
      * @since 2023-06-23
      */
@@ -58,7 +59,8 @@ public class AbstractPlayerTest {
      * Tests the chooseCardsOrder method
      *
      * @author WKempel
-     * @result The chooseCardsOrder method should return true if the cards are chosen and the length of the chosenCards-array musst be equal
+     * @result The chooseCardsOrder method should return true if the cards are chosen and the length
+     *     of the chosenCards-array musst be equal
      * @see de.uol.swp.server.gamelogic.tiles
      * @since 2023-06-23
      */
@@ -130,7 +132,8 @@ public class AbstractPlayerTest {
      * Tests the setReceivedCards method
      *
      * @author WKempel
-     * @result The setReceivedCards method should return the correct value and length after setting it
+     * @result The setReceivedCards method should return the correct value and length after setting
+     *     it
      * @see de.uol.swp.server.gamelogic.tiles
      * @since 2023-06-23
      */

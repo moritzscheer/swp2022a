@@ -7,7 +7,6 @@ import de.uol.swp.server.gamelogic.Robot;
  * Turns the robot 90 degree in clockwise or counterclockwise
  *
  * @author Tommy & WKempel
- * @see
  * @since 2023-04-03
  */
 public class Turn extends CardBehaviour {
@@ -18,6 +17,7 @@ public class Turn extends CardBehaviour {
      * Constructor
      *
      * @author Maria
+     * @see de.uol.swp.server.gamelogic.cards.Direction
      * @since 2023-04-23
      */
     public Turn(Direction dir) {
@@ -40,7 +40,7 @@ public class Turn extends CardBehaviour {
      * the robot
      *
      * @author Tommy & WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     @Override

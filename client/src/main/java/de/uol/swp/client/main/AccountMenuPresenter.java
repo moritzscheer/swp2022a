@@ -22,18 +22,24 @@ import javafx.scene.control.TextField;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * Manages the Account Menu
+ *
+ * @author Waldemar Kempel
+ * @see de.uol.swp.client.SceneManager
+ * @see de.uol.swp.client.AbstractPresenter
+ * @since 2022-11-25
+ */
 public class AccountMenuPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/AccountView.fxml";
-
     private static final Logger LOG = LogManager.getLogger(AccountMenuPresenter.class);
-
     private User loggedInUser;
-
-    @FXML private Button DeleteAccountButton, PasswordResetButton, EmailResetButton, BackButton;
-
+    @FXML private Button DeleteAccountButton;
+    @FXML private Button PasswordResetButton;
+    @FXML private Button EmailResetButton;
+    @FXML private Button BackButton;
     @FXML private TextField emailField;
-
     @FXML private PasswordField passwordField;
 
     /**
@@ -120,7 +126,6 @@ public class AccountMenuPresenter extends AbstractPresenter {
      * @since 2022-12-02
      */
 
-    // Option = A message for the user that the password was successfully deleted
     @FXML
     private void onPasswordResetButtonPressed(ActionEvent event) {
         if (emailField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
@@ -178,11 +183,24 @@ public class AccountMenuPresenter extends AbstractPresenter {
         eventBus.post(new ReturnToMainMenuMessage(loggedInUser));
     }
 
-    // Setter
+    /**
+     * setter method to set the email field
+     *
+     * @author Ole Zimmerman
+     * @param emailField
+     * @since 2023-02-27
+     */
     public void setEmailField(TextField emailField) {
         this.emailField = emailField;
     }
 
+    /**
+     * setter method to set the email field
+     *
+     * @author Ole Zimmerman
+     * @param passwordField
+     * @since 2023-02-27
+     */
     public void setPasswordField(PasswordField passwordField) {
         this.passwordField = passwordField;
     }

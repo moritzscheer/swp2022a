@@ -22,7 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Mapping vom event bus calls to user management calls
+ * Mapping of event bus calls to user management calls
  *
  * @see de.uol.swp.server.AbstractService
  * @author Marco Grawunder

@@ -223,7 +223,7 @@ public class GearBehaviourTest {
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
         GearBehaviour gearBehaviour = (GearBehaviour) behaviours1[0];
-        if(gearBehaviour.isTurnClockwise()) {
+        if (gearBehaviour.isTurnClockwise()) {
             image = gearBehaviour.getImage();
         }
         assertEquals(1, image.size());
@@ -231,7 +231,7 @@ public class GearBehaviourTest {
         assertEquals(0, image.get(0)[1]);
 
         GearBehaviour gearBehaviour2 = (GearBehaviour) behaviours2[0];
-        if(!gearBehaviour2.isTurnClockwise()) {
+        if (!gearBehaviour2.isTurnClockwise()) {
             image = gearBehaviour2.getImage();
         }
         assertEquals(1, image.size());

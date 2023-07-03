@@ -33,19 +33,15 @@ public final class JsonUtils {
         JSONArray jsonArray;
 
         String jsonFilePath = "server/src/main/resources/json/cards.json";
-        //TODO: change File Path if executed from tests
-        if(new File(".").getAbsolutePath().endsWith("server\\.")){
+        // TODO: change File Path if executed from tests
+        if (new File(".").getAbsolutePath().endsWith("server\\.")) {
             jsonFilePath = "src/main/resources/json/cards.json";
         }
 
-
         try {
-            try{
-                json =
-                        new JSONObject(
-                                new JSONTokener(
-                                        new FileReader(jsonFilePath)));
-            }catch (Exception ex){
+            try {
+                json = new JSONObject(new JSONTokener(new FileReader(jsonFilePath)));
+            } catch (Exception ex) {
                 json =
                         new JSONObject(
                                 new JSONTokener(
@@ -114,10 +110,8 @@ public final class JsonUtils {
         return null;
     }
 
-
     /**
      * Helper method to search for a card Type
-     *
      *
      * @param cardId the cardID that wants to be searched for
      * @author Maria Andrade

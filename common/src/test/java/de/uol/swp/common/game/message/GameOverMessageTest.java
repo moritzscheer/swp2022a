@@ -16,6 +16,7 @@ public class GameOverMessageTest {
 
     /**
      * Tests the getter of the LobbyID
+     *
      * @author WKempel
      * @result The constructor and the getters should work without throwing an exception
      * @see GameOverMessage

@@ -18,8 +18,8 @@ import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.exception.RegistrationExceptionMessage;
 import de.uol.swp.common.user.exception.ServerNotRespondingExceptionMessage;
 import de.uol.swp.common.user.exception.UpdateUserExceptionMessage;
-import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.message.ReturnToMainMenuMessage;
+import de.uol.swp.common.user.message.UserLoggedOutMessage;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 import de.uol.swp.common.user.response.RegistrationSuccessfulResponse;
 import de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse;
@@ -47,7 +47,6 @@ import java.util.List;
  * @see javafx.application.Application
  * @since 2017-03-17
  */
-@SuppressWarnings("UnstableApiUsage")
 public class ClientApp extends Application implements ConnectionListener {
 
     private static final Logger LOG = LogManager.getLogger(ClientApp.class);

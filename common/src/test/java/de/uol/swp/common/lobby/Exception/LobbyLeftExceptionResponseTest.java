@@ -63,7 +63,8 @@ public class LobbyLeftExceptionResponseTest {
     public void testEqualsAndHashCode() {
         String lobbyName1 = "Test Lobby 1";
         String message1 = "Lobby left failed";
-        LobbyLeftExceptionResponse response1 = new LobbyLeftExceptionResponse(lobbyName1, userDTO, message1);
+        LobbyLeftExceptionResponse response1 =
+                new LobbyLeftExceptionResponse(lobbyName1, userDTO, message1);
 
         Assertions.assertEquals(response1, response1);
 

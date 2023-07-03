@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     private boolean fullLaser;
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     public LaserBehaviour(
@@ -47,7 +47,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     public LaserBehaviour(
@@ -156,7 +156,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     public boolean getStart() {
@@ -164,7 +164,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Ole Zimmermann
      * @since 2023-03-05
      */
     public void setStart(boolean start) {
@@ -172,7 +172,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     public void setLaserBeam(int beam) {
@@ -180,7 +180,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     @Override
@@ -195,7 +195,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public CardinalDirection getDirection() {
@@ -203,7 +203,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public void setDirection(CardinalDirection direction) {
@@ -211,7 +211,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public boolean isFullLaser() {

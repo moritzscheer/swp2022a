@@ -24,6 +24,12 @@ public class ClientModule extends AbstractModule {
     final TabPresenter tabPresenter = new TabPresenter();
     final LobbyGameManagement lobbyGameManagement = new LobbyGameManagement(eventBus);
 
+    /**
+     * Set up the LobbyPresenterFactory and the GamePresenterFactory
+     *
+     * @author Moritz Scheer and Maria Eduarda
+     * @since 2023-01-14
+     */
     @Override
     protected void configure() {
         install(

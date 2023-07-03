@@ -4,13 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.eventbus.EventBus;
 
-import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.Map;
 import de.uol.swp.common.lobby.Lobby;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.request.*;
-import de.uol.swp.common.message.AbstractServerMessage;
-import de.uol.swp.common.message.Message;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.chat.TextChatService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
@@ -19,7 +16,6 @@ import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
@@ -41,8 +37,16 @@ public class LobbyServiceTest {
     // onCreateLobbyRequest tests
     // ------------------------------------------
 
+    /**
+     * Tests if a lobby can be created
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.server.lobby.LobbyService
+     * @since 2023-02-20
+     */
     @Test
-    void CreateLobby() {
+    public void testCreateLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
 
         // The post will lead to a call of a UserService function
@@ -52,8 +56,16 @@ public class LobbyServiceTest {
         assertEquals(1, lobbyManagement.getLobbies().size());
     }
 
+    /**
+     * Tests if a lobby can be created with the same name
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.server.lobby.LobbyService
+     * @since 2023-02-20
+     */
     @Test
-    void CreateLobbyWithSameName() {
+    public void testCreateLobbyWithSameName() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
 
         // The post will lead to a call of a UserService function
@@ -66,8 +78,17 @@ public class LobbyServiceTest {
     // onJoinLobbyRequest tests
     // ------------------------------------------
 
+    /**
+     * Tests if a user can join a lobby
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.server.lobby.LobbyService
+     * @since 2023-01-20
+     */
     @Test
-    void JoinLobby() {
+    public void testJoinLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
@@ -76,11 +97,19 @@ public class LobbyServiceTest {
         bus.post(request2);
 
         assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertEquals(true, lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
     }
 
+    /**
+     * Tests if lobby can be joined with the same user again
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-01-20
+     */
     @Test
-    void JoinLobbyWithSameUser() {
+    public void testJoinLobbyWithSameUser() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
@@ -95,8 +124,16 @@ public class LobbyServiceTest {
         assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
     }
 
+    /**
+     * Tests if a user can join a lobby with a false password
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-01-20
+     */
     @Test
-    void JoinLobbyWithFalsePassword() {
+    public void testJoinLobbyWithFalsePassword() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "1234");
 
@@ -111,8 +148,16 @@ public class LobbyServiceTest {
     // onLeaveLobbyRequest tests
     // ------------------------------------------
 
+    /**
+     * Tests if a user can leave a Multiple-lobby
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-01-20
+     */
     @Test
-    void leaveMultiplayerLobby() {
+    public void testLeaveMultiplayerLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
@@ -126,8 +171,16 @@ public class LobbyServiceTest {
         assertEquals(1, lobbyManagement.getLobby(1).get().getUsers().size());
     }
 
+    /**
+     * Tests if a user can leave a Single-lobby
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-01-20
+     */
     @Test
-    void leaveSingleplayerLobby() {
+    public void testLeaveSingleplayerLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, false, null);
         final LeaveLobbyRequest request2 = new LeaveLobbyRequest(1, "lobby1", user, false);
 
@@ -137,8 +190,16 @@ public class LobbyServiceTest {
         assertTrue(lobbyManagement.getLobbies().isEmpty());
     }
 
+    /**
+     * Tests if a user was dropped from a lobby
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.LeaveLobbyRequest
+     * @since 2023-01-20
+     */
     @Test
-    void dropLobby() {
+    public void testDropLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final LeaveLobbyRequest request2 = new LeaveLobbyRequest(1, "lobby1", user, true);
 
@@ -152,8 +213,15 @@ public class LobbyServiceTest {
     // onRetrieveAllOnlineLobbiesRequest tests
     // ------------------------------------------
 
+    /**
+     * Tests the onRetrieveAllOnlineLobbiesRequest method
+     *
+     * @author Moritz
+     * @see de.uol.swp.common.lobby.request.RetrieveAllOnlineLobbiesRequest
+     * @since 2023-01-20
+     */
     @Test
-    void onRetrieveAllOnlineLobbiesRequest() {
+    public void testOnRetrieveAllOnlineLobbiesRequest() {
         final RetrieveAllOnlineLobbiesRequest request = new RetrieveAllOnlineLobbiesRequest();
 
         bus.post(request);
@@ -163,6 +231,9 @@ public class LobbyServiceTest {
      * Tests the onSetPlayerReadyInLobbyRequest method.
      *
      * @author WKempel
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @see de.uol.swp.common.lobby.request.SetPlayerReadyInLobbyRequest
      * @since 2023-06-23
      */
     @Test
@@ -170,7 +241,8 @@ public class LobbyServiceTest {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 = new SetPlayerReadyInLobbyRequest(1, user, true);
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(1, user, true);
 
         bus.post(request);
         bus.post(request2);
@@ -185,6 +257,9 @@ public class LobbyServiceTest {
      * Tests the onSetPlayerIsNotReadyInLobbyRequest method.
      *
      * @author WKempel
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @see de.uol.swp.common.lobby.request.SetPlayerReadyInLobbyRequest
      * @since 2023-06-23
      */
     @Test
@@ -192,7 +267,8 @@ public class LobbyServiceTest {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         final JoinLobbyRequest request2 =
                 new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 = new SetPlayerReadyInLobbyRequest(1, user, false);
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(1, user, false);
 
         bus.post(request);
         bus.post(request2);
@@ -207,6 +283,9 @@ public class LobbyServiceTest {
      * Tests the onMapChangeRequest method.
      *
      * @author WKempel
+     * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @see de.uol.swp.common.lobby.request.MapChangeRequest
      * @since 2023-06-23
      */
     @Test

@@ -26,6 +26,13 @@ public final class JsonUtils {
     private final JSONObject jsonCard;
     private final JSONArray jsonCardArray;
 
+    /**
+     * constructor the set the json file for tile and cards
+     *
+     * @exception FileNotFoundException
+     * @author Maria Andrade
+     * @since 2023-05-14
+     */
     public JsonUtils() throws FileNotFoundException {
         jsonTile =
                 new JSONObject(
@@ -47,10 +54,9 @@ public final class JsonUtils {
      * the value from the parameter. Then in returns the path of the image.
      *
      * @param tileId the tileID that wants to be searched for
-     * @author Moritz Scheer
+     * @exception Exception
+     * @author Maria Andrade und Moritz Scheer
      * @since 2023-03-23
-     * @author Maria Andrade
-     * @since 2023-05-14
      */
     public ImageView searchInTileJSON(String tileId) {
         String path;
@@ -77,6 +83,7 @@ public final class JsonUtils {
      * the value from the parameter. Then in returns the Image of the card.
      *
      * @param cardID the cardID that wants to be searched for
+     * @exception Exception
      * @author Maria Andrade
      * @since 2023-05-18
      */
@@ -102,6 +109,7 @@ public final class JsonUtils {
      * Helper method to create the Image for the robot
      *
      * @param robotID the robotID to get the path
+     * @return an imageview
      * @author Maria Andrade
      * @since 2023-05-19
      */
@@ -117,6 +125,7 @@ public final class JsonUtils {
      * Helper method to create the ImageView for the card
      *
      * @param cardID the cardID to get the path
+     * @exception Exception
      * @author Maria Andrade
      * @since 2023-05-20
      */

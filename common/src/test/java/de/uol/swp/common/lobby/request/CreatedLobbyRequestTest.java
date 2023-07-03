@@ -14,7 +14,8 @@ public class CreatedLobbyRequestTest {
      * Tests the constructor and getters
      *
      * @author WKempel
-     * @result The getters should return the correct lobbyName, owner, multiplayer status and password
+     * @result The getters should return the correct lobbyName, owner, multiplayer status and
+     *     password
      * @see de.uol.swp.common.lobby.request.CreateLobbyRequest
      * @since 2023-06-16
      */

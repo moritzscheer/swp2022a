@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 public class AbstractLobbyMessageTest {
 
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
-    private final UserDTO userDTO2 = new UserDTO("Player2","pw","ml");
+    private final UserDTO userDTO2 = new UserDTO("Player2", "pw", "ml");
 
     /**
      * Tests the constructor and getters

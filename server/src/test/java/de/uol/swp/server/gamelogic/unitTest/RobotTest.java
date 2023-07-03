@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic.unitTest;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Robot;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,7 @@ public class RobotTest {
 
     private Robot robot;
     private int id = 123;
-    private Position currentPosition =  new Position(0, 0);
+    private Position currentPosition = new Position(0, 0);
     private CardinalDirection direction = CardinalDirection.North;
 
     /**

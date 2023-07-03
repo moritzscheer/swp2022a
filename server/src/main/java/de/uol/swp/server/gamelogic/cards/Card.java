@@ -4,7 +4,6 @@ import de.uol.swp.server.gamelogic.Robot;
 
 /**
  * @author Tommy & WKempel
- * @see
  * @since 2023-04-03
  */
 public class Card {
@@ -15,8 +14,10 @@ public class Card {
     private String behaviourType;
 
     /**
+     * Constructor
+     *
      * @author WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.cards.CardBehaviour
      * @since 2023-04-03
      */
     public Card(int id, CardBehaviour behaviour, int priority) {
@@ -25,9 +26,10 @@ public class Card {
         this.priority = priority;
     }
 
-    /** Constructor for when Player is powered down
+    /**
+     * Constructor for when Player is powered down
+     *
      * @author Maria
-     * @see
      * @since 2023-06-19
      */
     public Card(int id) {
@@ -35,8 +37,9 @@ public class Card {
     }
 
     /**
+     * Constructor for Card with behaviourType which identify with the ID of the card the behaviour
+     *
      * @author Maria
-     * @see
      * @since 2023-05-06
      */
     public Card(int id, String behaviourType, int priority) throws Exception {
@@ -72,8 +75,10 @@ public class Card {
     }
 
     /**
+     * The method execute the behaviour of the card for the robot
+     *
      * @author WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     public void executeBehaviour(Robot robot) {

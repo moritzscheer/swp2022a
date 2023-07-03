@@ -151,9 +151,8 @@ public class WallBehaviourTest {
         assertEquals(0, beforeDamage - afterDamage);
     }
 
-
     @Test
-    public void robotMoveCard() {
+    public void testRobotMoveCard() {
         assertTrue(tileBehaviours[0].getObstruction(CardinalDirection.East));
         Position before = robots[0].getPosition();
 
@@ -172,6 +171,6 @@ public class WallBehaviourTest {
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
         image = tileBehaviours[0].getImage();
-    	assertEquals(1, image.get(0)[0]);
+        assertEquals(1, image.get(0)[0]);
     }
 }

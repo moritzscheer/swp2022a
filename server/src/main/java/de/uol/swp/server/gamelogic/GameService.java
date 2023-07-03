@@ -1,8 +1,11 @@
 package de.uol.swp.server.gamelogic;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
+
 import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
@@ -16,6 +19,7 @@ import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.AbstractService;
 import de.uol.swp.server.lobby.LobbyManagement;
 import de.uol.swp.server.lobby.LobbyService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
@@ -23,7 +27,6 @@ import org.javatuples.Pair;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * Handles the game requests send by the users
@@ -43,25 +46,27 @@ public class GameService extends AbstractService {
     /**
      * Constructor
      *
-     * @param bus          the EvenBus used throughout the server
+     * @param bus the EventBus used throughout the server
      * @param gameManagement
      * @since 2023-05-06
      */
     @Inject
-    public GameService(EventBus bus, GameManagement gameManagement, LobbyManagement lobbyManagement,
-                       LobbyService lobbyService) {
+    public GameService(
+            EventBus bus,
+            GameManagement gameManagement,
+            LobbyManagement lobbyManagement,
+            LobbyService lobbyService) {
         super(bus);
         this.gameManagement = gameManagement;
         this.lobbyManagement = lobbyManagement;
         this.lobbyService = lobbyService;
     }
 
-
     /**
      * Handles StartGameRequest found on the EventBus
      *
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
-     * StartGameMessage to all the users in the lobby, containing the
+     * StartGameMessage to all the users in the lobby
      *
      * <p>PS.: GetMapDataRequest/Response was removed, and now the board is sent together with
      * startGameMessage inside the gameDTO object (2023-06-18)
@@ -87,7 +92,8 @@ public class GameService extends AbstractService {
             lobbyService.sendToAllInLobby(
                     msg.getLobbyID(), new StartGameMessage(msg.getLobbyID(), msg.getLobby(), game));
         } else {
-            throw new LobbyDoesNotExistException("Lobby Not Found! ID: "+ msg.getLobbyID(), msg.getLobbyID());
+            throw new LobbyDoesNotExistException(
+                    "Lobby Not Found! ID: " + msg.getLobbyID(), msg.getLobbyID());
         }
     }
 
@@ -95,7 +101,7 @@ public class GameService extends AbstractService {
      * Handles GetProgramCardsRequest found on the EventBus
      *
      * <p>If a GetProgramCardsRequest is detected on the EventBus, this method is called. It posts a
-     * GetProgramCardsRequest to all the users in the lobby, containing the
+     * GetProgramCardsRequest to all the users in the lobby
      *
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
@@ -186,7 +192,6 @@ public class GameService extends AbstractService {
         }
     }
 
-
     /**
      * Select the cards from the bots and send a message to all players that the bots are ready
      *
@@ -196,15 +201,13 @@ public class GameService extends AbstractService {
      */
     private void selectCardBot(int lobbyID)
             throws InterruptedException, LobbyDoesNotExistException {
-        Pair<Boolean, List<AbstractLobbyMessage>> pair =
-                gameManagement.selectCardBot(lobbyID);
+        Pair<Boolean, List<AbstractLobbyMessage>> pair = gameManagement.selectCardBot(lobbyID);
         boolean allChosen = pair.getValue0();
         List<AbstractLobbyMessage> msgs = pair.getValue1();
         for (AbstractLobbyMessage msg : msgs) {
             lobbyService.sendToAllInLobby(lobbyID, msg);
         }
-        if(allChosen)
-            manageGameUpdate(lobbyID);
+        if (allChosen) manageGameUpdate(lobbyID);
     }
 
     /**
@@ -218,15 +221,17 @@ public class GameService extends AbstractService {
     public void manageGameUpdate(int lobbyID) {
         List<Pair<Integer, AbstractLobbyMessage>> pairs = gameManagement.manageGameUpdate(lobbyID);
 
-        for(Pair<Integer, AbstractLobbyMessage> pair: pairs){
-            scheduler.schedule(() -> {
-                try {
-                    lobbyService.sendToAllInLobby(lobbyID, pair.getValue1());
-                } catch (LobbyDoesNotExistException e) {
-                    throw new RuntimeException(e);
-                }
-            }, pair.getValue0(), SECONDS);
+        for (Pair<Integer, AbstractLobbyMessage> pair : pairs) {
+            scheduler.schedule(
+                    () -> {
+                        try {
+                            lobbyService.sendToAllInLobby(lobbyID, pair.getValue1());
+                        } catch (LobbyDoesNotExistException e) {
+                            throw new RuntimeException(e);
+                        }
+                    },
+                    pair.getValue0(),
+                    SECONDS);
         }
     }
-
 }

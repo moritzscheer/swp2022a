@@ -70,7 +70,8 @@ public class DropUserRequestTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return true if the DropUserRequests are equal and false if they are not
+     * @result The equals method should return true if the DropUserRequests are equal and false if
+     *     they are not
      * @see de.uol.swp.common.user.request.DropUserRequest
      * @since 2023-06-17
      */

@@ -115,12 +115,19 @@ public class RobotDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RobotDTO robotDTO = (RobotDTO) o;
-        return robotID == robotDTO.robotID && lifeToken == robotDTO.lifeToken && damageToken == robotDTO.damageToken && lastCheckpoint == robotDTO.lastCheckpoint && alive == robotDTO.alive && position.equals(robotDTO.position) && direction == robotDTO.direction;
+        return robotID == robotDTO.robotID
+                && lifeToken == robotDTO.lifeToken
+                && damageToken == robotDTO.damageToken
+                && lastCheckpoint == robotDTO.lastCheckpoint
+                && alive == robotDTO.alive
+                && position.equals(robotDTO.position)
+                && direction == robotDTO.direction;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(robotID, position, direction, lifeToken, damageToken, lastCheckpoint, alive);
+        return Objects.hash(
+                robotID, position, direction, lifeToken, damageToken, lastCheckpoint, alive);
     }
 
     public boolean isDeadForever() {

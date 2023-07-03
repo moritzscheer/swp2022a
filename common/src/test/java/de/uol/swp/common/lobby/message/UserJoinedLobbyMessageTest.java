@@ -97,10 +97,11 @@ public class UserJoinedLobbyMessageTest {
     @Test
     public void testEqualsAndHashCode() {
 
-        UserJoinedLobbyMessage message1 = new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
+        UserJoinedLobbyMessage message1 =
+                new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
 
-
-        UserJoinedLobbyMessage message2 = new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
+        UserJoinedLobbyMessage message2 =
+                new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
 
         Assertions.assertEquals(message1, message2);
 

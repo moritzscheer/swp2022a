@@ -1,8 +1,8 @@
 package de.uol.swp.common.exception;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class LobbyDoesNotExistExceptionTest {
 
@@ -19,7 +19,8 @@ public class LobbyDoesNotExistExceptionTest {
      */
     @Test
     public void testConstructor() {
-        LobbyDoesNotExistException lobbyDoesNotExistException = new LobbyDoesNotExistException(message, lobbyID);
+        LobbyDoesNotExistException lobbyDoesNotExistException =
+                new LobbyDoesNotExistException(message, lobbyID);
         assertEquals(message, lobbyDoesNotExistException.getMessage());
     }
 }

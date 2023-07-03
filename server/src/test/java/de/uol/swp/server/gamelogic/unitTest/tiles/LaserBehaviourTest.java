@@ -2,6 +2,7 @@ package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import de.uol.swp.common.game.Position;
@@ -83,7 +84,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void laserDamageRobot() {
+    public void testLaserDamageRobot() {
         // robot 1 in same block as laser
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         int beforeDamage = robots[0].getDamageToken();
@@ -102,7 +103,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void notDamageSecondRobot() {
+    public void testNotDamageSecondRobot() {
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         assertEquals(robots[1].getPosition(), pos2);
         int beforeDamage = robots[1].getDamageToken();
@@ -121,7 +122,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void notDamageSecondRobotWall() {
+    public void testNotDamageSecondRobotWall() {
         // robot in same block as wall
         assertEquals(robots[2].getPosition(), behaviours3[0].getBlockPos());
         int beforeDamage = robots[2].getDamageToken();
@@ -134,19 +135,32 @@ public class LaserBehaviourTest {
      * Tests the getLaserDirection method.
      *
      * @author WKempel
-     * @result The laser direction is returned correctly when the cardinal direction and laser behaviour has the same direction.
+     * @result The laser direction is returned correctly when the cardinal direction and laser
+     *     behaviour has the same direction.
      * @since 2023-06-21
      */
     @Test
     public void testGetLaserDirection() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(CardinalDirection.North, laserBehaviour.getLaserDirection());
 
-        laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos2, CardinalDirection.West, 2, false);
+        laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos2,
+                        CardinalDirection.West,
+                        2,
+                        false);
         assertEquals(CardinalDirection.West, laserBehaviour.getLaserDirection());
     }
 
@@ -154,19 +168,32 @@ public class LaserBehaviourTest {
      * Tests the getLaserBeam method.
      *
      * @author WKempel
-     * @result The laser beam is returned correctly because the expected value is the same as in the constructor.
+     * @result The laser beam is returned correctly because the expected value is the same as in the
+     *     constructor.
      * @since 2023-06-21
      */
     @Test
     public void testGetLaserBeam() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(1, laserBehaviour.getLaserBeam());
 
-        laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos2, CardinalDirection.West, 2, false);
+        laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos2,
+                        CardinalDirection.West,
+                        2,
+                        false);
         assertEquals(2, laserBehaviour.getLaserBeam());
     }
 
@@ -198,9 +225,15 @@ public class LaserBehaviourTest {
      */
     @Test
     public void testSetLaserBeam() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         assertEquals(1, laserBehaviour.getLaserBeam());
 
         laserBehaviour.setLaserBeam(3);
@@ -219,9 +252,15 @@ public class LaserBehaviourTest {
      */
     @Test
     public void testGetImage() {
-        LaserBehaviour laserBehaviour = new LaserBehaviour(
-                new ArrayList<>(), board, activeInProgramSteps,
-                pos1, CardinalDirection.North, 1, true);
+        LaserBehaviour laserBehaviour =
+                new LaserBehaviour(
+                        new ArrayList<>(),
+                        board,
+                        activeInProgramSteps,
+                        pos1,
+                        CardinalDirection.North,
+                        1,
+                        true);
         List<int[]> expectedImage = new ArrayList<>();
 
         if (laserBehaviour.isFullLaser()) {

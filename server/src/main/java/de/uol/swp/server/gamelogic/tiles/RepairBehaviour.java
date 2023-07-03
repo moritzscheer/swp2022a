@@ -2,8 +2,8 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +58,8 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-12
      */
     public void setBackupCopy(int robotID) {
         robotStates.get(robotID).setLastBackupCopyPosition(this.blockPos);
@@ -87,8 +87,8 @@ public class RepairBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-05-06
      */
     @Override
     public List<int[]> getImage() {

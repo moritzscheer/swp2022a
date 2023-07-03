@@ -67,7 +67,8 @@ public class UserDroppedSuccessfulResponseTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return false if the UserDroppedSuccessfulResponses are not equal
+     * @result The equals method should return false if the UserDroppedSuccessfulResponses are not
+     *     equal
      * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
      * @since 2023-06-17
      */
@@ -80,12 +81,13 @@ public class UserDroppedSuccessfulResponseTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return false if the UserDroppedSuccessfulResponses are not equal
+     * @result The equals method should return false if the UserDroppedSuccessfulResponses are not
+     *     equal
      * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
      * @since 2023-06-17
      */
     @Test
-    public void testEqualsNullThanFalse()  {
+    public void testEqualsNullThanFalse() {
         assertNotEquals(null, response);
     }
 }

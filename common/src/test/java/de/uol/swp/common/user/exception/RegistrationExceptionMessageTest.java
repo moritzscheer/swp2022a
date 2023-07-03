@@ -25,7 +25,8 @@ public class RegistrationExceptionMessageTest {
      * Tests the toString method
      *
      * @author WKempel
-     * @result The toString method should return "RegistrationExceptionMessage Test Exception " + the String representation
+     * @result The toString method should return "RegistrationExceptionMessage Test Exception " +
+     *     the String representation
      * @see de.uol.swp.common.user.exception.RegistrationExceptionMessage
      * @since 2023-06-17
      */
@@ -58,7 +59,8 @@ public class RegistrationExceptionMessageTest {
      * Tests the hashCode method
      *
      * @author WKempel
-     * @result The hashCode method should return the same hashCode for the same RegistrationExceptionMessage
+     * @result The hashCode method should return the same hashCode for the same
+     *     RegistrationExceptionMessage
      * @see de.uol.swp.common.user.exception.RegistrationExceptionMessage
      * @since 2023-06-30
      */

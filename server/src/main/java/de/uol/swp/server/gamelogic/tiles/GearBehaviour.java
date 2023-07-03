@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onRotatorStage(int programStep) {
         for (Robot robotState : robotStates) {
-            if(!robotState.isAlive())
-                continue;
+            if (!robotState.isAlive()) continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 if (this.turnClockwise) {
                     CardinalDirection dir = robotState.getDirection();
@@ -65,7 +64,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     @Override
@@ -79,7 +78,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public boolean isTurnClockwise() {
@@ -87,7 +86,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public int getType() {
@@ -95,7 +94,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public void setType(int type) {

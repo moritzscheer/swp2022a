@@ -45,7 +45,6 @@ import java.util.List;
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2019-08-29
  */
-@SuppressWarnings("UnstableApiUsage")
 public class MainMenuPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/MainMenuView.fxml";
@@ -87,6 +86,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param message the LoginSuccessfulResponse object seen on the EventBus
      * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @author Marco Grawunder
      * @since 2019-09-05
      */
     @Subscribe
@@ -106,6 +106,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param message the UserLoggedInMessage object seen on the EventBus
      * @see de.uol.swp.common.user.message.UserLoggedInMessage
+     * @author Marco Grawunder
      * @since 2019-08-29
      */
     @Subscribe
@@ -130,6 +131,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param message the UserLoggedOutMessage object seen on the EventBus
      * @see de.uol.swp.common.user.message.UserLoggedOutMessage
+     * @author Marco Grawunder
      * @since 2019-08-29
      */
     @Subscribe
@@ -140,24 +142,6 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Handles new list of users
-     *
-     * <p>If a new AllOnlineUsersResponse object is posted to the EventBus the names of currently
-     * logged-in users are put onto the user list in the main menu. Furthermore, if the LOG-Level is
-     * set to DEBUG the message "Update of user list" with the names of all currently logged-in
-     * users is displayed in the log.
-     *
-     * @param allUsersResponse the AllOnlineUsersResponse object seen on the EventBus
-     * @see de.uol.swp.common.user.response.AllOnlineUsersResponse
-     * @since 2019-08-29
-     */
-    @Subscribe
-    public void onAllOnlineUsersResponse(AllOnlineUsersResponse allUsersResponse) {
-        LOG.debug("Update of user list {}", allUsersResponse.getUsers());
-        updateUsersList(allUsersResponse.getUsers());
-    }
-
-    /**
      * Method called when the Delete User button is pressed
      *
      * <p>If the Delete User button is pressed, this method requests the user service first to log
@@ -165,37 +149,13 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the Delete User button
      * @see LobbyService
+     * @author Marco Grawunder
      * @since 2022-11-08
      */
     @FXML
     private void onDropUser(ActionEvent event) {
         userService.dropUser(loggedInUser);
         userService.logout(loggedInUser);
-    }
-
-    /**
-     * Updates the main menus user list according to the list given
-     *
-     * <p>This method clears the entire user list and then adds the name of each user in the list
-     * given to the main menus user list. If there ist no user list this it creates one.
-     *
-     * @implNote The code inside this Method has to run in the JavaFX-application thread. Therefore,
-     *     it is crucial not to remove the {@code Platform.runLater()}
-     * @param userList A list of UserDTO objects including all currently logged-in users
-     * @see de.uol.swp.common.user.UserDTO
-     * @since 2019-08-29
-     */
-    private void updateUsersList(List<UserDTO> userList) {
-        // Attention: This must be done on the FX Thread!
-        //        Platform.runLater(
-        //                () -> {
-        //                    if (users == null) {
-        //                        users = FXCollections.observableArrayList();
-        //                        usersView.setItems(users);
-        //                    }
-        //                    users.clear();
-        //                    userList.forEach(u -> users.add(u.getUsername()));
-        //                });
     }
 
     /**
@@ -206,6 +166,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param actionEvent The ActionEvent created by pressing the join lobby button
      * @see LobbyService
+     * @author Marco Grawunder, Maria Anrade, Moritz Scheer
      * @since 2022-11-30
      */
     @FXML
@@ -222,6 +183,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the join lobby button
      * @see LobbyService
+     * @author Marco Grawunder, Maria Anrade, Moritz Scheer
      * @since 2022-11-30
      */
     @FXML
@@ -254,6 +216,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the credit button
      * @see de.uol.swp.client.credit
+     * @author Tommy Dang
      * @since 2022-11-29
      */
     @FXML
@@ -268,6 +231,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the rulebook button
      * @see de.uol.swp.client.rulebook
+     * @author Tommy Dang
      * @since 2022-11-27
      */
     @FXML
@@ -282,6 +246,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the setting button
      * @see de.uol.swp.client.setting
+     * @author Tommy Dang
      * @since 2022-11-27
      */
     @FXML
@@ -297,6 +262,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      *
      * @param event The ActionEvent created by pressing the logout button
      * @see LobbyService
+     * @author Tommy Dang, Moritz Scheer
      * @since 2022-11-08
      */
     @FXML
@@ -316,6 +282,7 @@ public class MainMenuPresenter extends AbstractPresenter {
      * @param event The ActionEvent generated by pressing the exit button
      * @see de.uol.swp.client.CloseClientEvent
      * @see de.uol.swp.client.SceneManager
+     * @author Tommy Dang, Moritz Scheer
      * @since 2023-01-04
      */
     @FXML
@@ -325,6 +292,13 @@ public class MainMenuPresenter extends AbstractPresenter {
         userService.logout(loggedInUser);
     }
 
+    /**
+     * Method is called, when chat input key "Enter" is pressed
+     *
+     * @author Finn Oldeboershuis, Tommy Dang
+     * @param actionEvent
+     * @since 2023-01-10
+     */
     @FXML
     private void textChatInputKeyPressed(KeyEvent actionEvent) {
         if (actionEvent.getCode() == KeyCode.ENTER) {
@@ -335,6 +309,14 @@ public class MainMenuPresenter extends AbstractPresenter {
         }
     }
 
+    /**
+     * Method is subscribed to NewTextChatMessageReceived, when NewTextChatMessageReceived is posted on bus
+     *
+     * @author Finn Oldeboershuis, Tommy Dang
+     * @see de.uol.swp.client.chat.messages.NewTextChatMessageReceived
+     * @param message
+     * @since 2023-01-10
+     */
     @Subscribe
     public void onNewTextChatMessage(NewTextChatMessageReceived message) {
         if (textChat == null) return;

@@ -45,7 +45,8 @@ public class UsersListMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The method should return true if the objects are equal and false if they are different
+     * @result The method should return true if the objects are equal and false if they are
+     *     different
      * @see de.uol.swp.common.user.message.UsersListMessage
      * @since 2023-06-17
      */

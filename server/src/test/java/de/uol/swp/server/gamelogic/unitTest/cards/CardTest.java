@@ -7,6 +7,7 @@ import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.cards.Straight;
 import de.uol.swp.server.gamelogic.cards.Turn;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,8 @@ public class CardTest {
     private final CardinalDirection cardinalDirection = CardinalDirection.North;
 
     /**
-     * Tests the Card constructor with a turn left behaviour and checks the gedID, getPriority, getDirectionCard
+     * Tests the Card constructor with a turn left behaviour and checks the gedID, getPriority,
+     * getDirectionCard
      *
      * @author WKempel
      * @result The Card constructor should create a Card with the correct values
@@ -34,8 +36,8 @@ public class CardTest {
     }
 
     /**
-     * Tests the Card constructor with a turn left behaviour and checks the gedID, getPriority, getDirectionCard
-     * Also checks if the card is a power down card
+     * Tests the Card constructor with a turn left behaviour and checks the gedID, getPriority,
+     * getDirectionCard Also checks if the card is a power down card
      *
      * @author WKempel
      * @result The Card constructor should create a Card with the correct values
@@ -53,7 +55,8 @@ public class CardTest {
     }
 
     /**
-     * Tests the Card constructor with valid types and checks the gedID, getPriority, getDirectionCard
+     * Tests the Card constructor with valid types and checks the gedID, getPriority,
+     * getDirectionCard
      *
      * @author WKempel
      * @throws Exception
@@ -82,9 +85,11 @@ public class CardTest {
      */
     @Test
     public void testCardConstructorWithBehaviourTypeInvalid() {
-        Assertions.assertThrows(Exception.class, () -> {
-            Card card = new Card(4, "2", 1);
-        });
+        Assertions.assertThrows(
+                Exception.class,
+                () -> {
+                    Card card = new Card(4, "2", 1);
+                });
     }
 
     /**
@@ -98,7 +103,7 @@ public class CardTest {
     @Test
     public void testExecuteBehaviour() {
         Card card = new Card(5, new Straight(2), 3);
-        Robot robot = new Robot(123,position, cardinalDirection);
+        Robot robot = new Robot(123, position, cardinalDirection);
         card.executeBehaviour(robot);
         Assertions.assertEquals(robot.getPosition(), robot.getPosition());
     }

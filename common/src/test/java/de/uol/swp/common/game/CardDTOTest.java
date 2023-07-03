@@ -12,7 +12,7 @@ public class CardDTOTest {
     /**
      * Tests the getID method
      *
-     *@author WKempel
+     * @author WKempel
      * @result The method should return the correct ID
      * @see de.uol.swp.common.game.dto.CardDTO
      * @since 2023-06-12

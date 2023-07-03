@@ -1,9 +1,9 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import de.uol.swp.server.gamelogic.tiles.enums.TileBehaviour;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 
 public class TileBehaviourTest {
 

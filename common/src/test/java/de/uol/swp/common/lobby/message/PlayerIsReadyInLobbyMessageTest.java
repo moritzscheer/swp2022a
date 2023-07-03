@@ -39,7 +39,8 @@ public class PlayerIsReadyInLobbyMessageTest {
      * Tests the isReady method
      *
      * @author WKempel
-     * @result The isReady method should return true if the player is ready and false if the player is not ready
+     * @result The isReady method should return true if the player is ready and false if the player
+     *     is not ready
      * @see de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage
      * @since 2023-06-16
      */
@@ -143,9 +144,11 @@ public class PlayerIsReadyInLobbyMessageTest {
     public void testEqualsAndHashCode() {
 
         boolean ready1 = true;
-        PlayerReadyInLobbyMessage message1 = new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
+        PlayerReadyInLobbyMessage message1 =
+                new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
 
-        PlayerReadyInLobbyMessage message2 = new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
+        PlayerReadyInLobbyMessage message2 =
+                new PlayerReadyInLobbyMessage(lobbyDTO.getLobbyID(), userDTO, ready1);
 
         Assertions.assertEquals(message1, message2);
 

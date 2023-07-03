@@ -6,21 +6,26 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 
 /**
+ * TestLaserMap
  *
- *
- * @author
- * @since
+ * @author Ole Zimmermann & Merden
+ * @since 2023-06-11
  */
 public class TestLaserMap extends AbstractMap {
 
     /**
+     * Constructor for TestLaserMap
      *
-     *
-     * @author
-     * @since
+     * @author Ole Zimmermann & Merden
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.WallBehaviour
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.common.game.Position
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-06-11
      */
     public TestLaserMap() {
-        // LASERTEST
         int x = 0;
         int y = 0;
 
@@ -550,9 +555,6 @@ public class TestLaserMap extends AbstractMap {
 
         for (y = 1; y < 11; y = y + 3) {
             for (x = 1; x < 11; x = x + 3) {
-                if (x > 11) {
-                    break;
-                }
                 AbstractTileBehaviour[] copy =
                         new AbstractTileBehaviour[map[x][y].getBehaviourList().length + 1];
                 System.arraycopy(map[x][y].getBehaviourList(), 0, copy, 0, copy.length - 1);

@@ -1,5 +1,8 @@
 package de.uol.swp.server.gamelogic.unitTest;
 
+import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.PlayerIsReadyMessage;
@@ -7,17 +10,14 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.GameManagement;
 import de.uol.swp.server.gamelogic.Game;
+import de.uol.swp.server.gamelogic.GameManagement;
+
 import org.javatuples.Pair;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
-
 import java.util.*;
-
 
 /**
  * Test GameManagement
@@ -50,7 +50,9 @@ public class GameManagementTest {
     @Test
     public void testCreateNewGame() {
         assertNotNull(gameDTO);
-        assertEquals(users.size() + numberBots, gameManagement.getGame(lobbyID).get().getPlayers().size());
+        assertEquals(
+                users.size() + numberBots,
+                gameManagement.getGame(lobbyID).get().getPlayers().size());
         assertEquals(checkPoints, gameManagement.getGame(lobbyID).get().getLastCheckPoint());
         assertEquals(gameDTO.getPlayers().size(), users.size() + numberBots);
     }
@@ -60,7 +62,9 @@ public class GameManagementTest {
         Optional<Game> gameOptional = gameManagement.getGame(lobbyID);
 
         assertTrue(gameOptional.isPresent());
-        assertEquals(gameDTO.getPlayers().get(0).getUser(), gameOptional.get().getPlayers().get(0).getUser());
+        assertEquals(
+                gameDTO.getPlayers().get(0).getUser(),
+                gameOptional.get().getPlayers().get(0).getUser());
     }
 
     @Test
@@ -69,7 +73,6 @@ public class GameManagementTest {
 
         assertTrue(callBot);
     }
-
 
     @Test
     public void testGetPlayerReceivedCards() {
@@ -82,9 +85,11 @@ public class GameManagementTest {
         assertEquals(playerReceivedCards.size(), player.getReceivedCards().length);
 
         for (int i = 0; i < playerReceivedCards.size(); i++) {
-            assertEquals(Optional.ofNullable(playerReceivedCards.get(i).getID()),
+            assertEquals(
+                    Optional.ofNullable(playerReceivedCards.get(i).getID()),
                     Optional.of(player.getReceivedCards()[i].getId()));
-            assertEquals(playerReceivedCards.get(i).getPriority(),
+            assertEquals(
+                    playerReceivedCards.get(i).getPriority(),
                     player.getReceivedCards()[i].getPriority());
         }
     }
@@ -93,8 +98,14 @@ public class GameManagementTest {
     public void testGetPlayerDamageTokens() {
         int playerDamageTokens = gameManagement.getPlayerDamageTokens(lobbyID, user);
 
-        assertEquals(playerDamageTokens,
-                gameManagement.getGame(lobbyID).get().getPlayerByUserDTO(user).getRobot().getDamageToken());
+        assertEquals(
+                playerDamageTokens,
+                gameManagement
+                        .getGame(lobbyID)
+                        .get()
+                        .getPlayerByUserDTO(user)
+                        .getRobot()
+                        .getDamageToken());
     }
 
     @Test
@@ -110,9 +121,10 @@ public class GameManagementTest {
         List<AbstractLobbyMessage> msgs = pair.getValue1();
         assertNotNull(msgs);
 
-        for (AbstractLobbyMessage msg: msgs ) {
-            assertTrue("msg should be of type PlayerIsReadyMessage", msg instanceof PlayerIsReadyMessage);
+        for (AbstractLobbyMessage msg : msgs) {
+            assertTrue(
+                    "msg should be of type PlayerIsReadyMessage",
+                    msg instanceof PlayerIsReadyMessage);
         }
     }
 }
-

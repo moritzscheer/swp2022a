@@ -9,9 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Ole Zimmermann
- */
+/** @author Ole Zimmermann */
 public class Block implements Serializable, Cloneable {
 
     private AbstractTileBehaviour[] behaviourList;
@@ -155,8 +153,8 @@ public class Block implements Serializable, Cloneable {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-17
      */
     public <T extends AbstractTileBehaviour> T GetBehaviour(Class<T> type) {
         for (AbstractTileBehaviour behaviour : behaviourList) {
@@ -168,8 +166,8 @@ public class Block implements Serializable, Cloneable {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-24
      */
     public List<MoveIntent> OnRotatorStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -183,8 +181,8 @@ public class Block implements Serializable, Cloneable {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-24
      */
     public List<MoveIntent> OnCheckPointStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
@@ -220,19 +218,8 @@ public class Block implements Serializable, Cloneable {
     }
 
     /**
-     * Getter imagePath
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
-     * @since 2023-04-25
-     */
-    public String getImgPath() {
-        return this.imgPath;
-    }
-
-    /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-05-04
      */
     public void setRobotsInfo(List<Robot> robots) {
         for (int i = 0; i < behaviourList.length; i++) {
@@ -261,8 +248,8 @@ public class Block implements Serializable, Cloneable {
     }
 
     /**
-     * @author
-     * @since
+     * @author Merden
+     * @since 2023-06-07
      */
     @Override
     public Block clone() {

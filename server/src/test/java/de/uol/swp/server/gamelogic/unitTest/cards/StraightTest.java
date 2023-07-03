@@ -1,13 +1,12 @@
 package de.uol.swp.server.gamelogic.unitTest.cards;
 
-
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Straight;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 
 public class StraightTest {
 
@@ -19,7 +18,8 @@ public class StraightTest {
      * Tests getMoves method
      *
      * @author WKempel
-     * @result The getMoves method should return the correct value and true if the number of moves are correct
+     * @result The getMoves method should return the correct value and true if the number of moves
+     *     are correct
      * @see de.uol.swp.server.gamelogic.cards.Straight
      * @since 2023-06-21
      */

@@ -9,10 +9,10 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,6 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
 
 public class GameTest {
 
@@ -33,7 +32,6 @@ public class GameTest {
     private Game game;
     private final LobbyDTO lobby = new LobbyDTO(123, "testLobby", user1, null, true, uuid);
 
-
     private final Position position = new Position(0, 0);
     private final CardinalDirection cardinalDirection = CardinalDirection.North;
 
@@ -42,7 +40,6 @@ public class GameTest {
 
     private final PlayerDTO playerDTO1 = new PlayerDTO(robotDTO1, user1);
     private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2, user2);
-
 
     /**
      * Setup for the tests to create a game
@@ -56,14 +53,12 @@ public class GameTest {
     @BeforeEach
     public void setup() throws IOException, InterruptedException {
 
-        //MapBuilder.main(null);
         try {
             Set<User> users = new HashSet<>();
             users.add(user1);
             users.add(user2);
 
             game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint, -1);
-            Block[][] board = game.getBoard();
 
             List<CardDTO> player1Cards = new ArrayList<>();
             player1Cards.add(new CardDTO(1, 10));
@@ -74,7 +69,6 @@ public class GameTest {
 
             playerDTO1.setCurrentCards(player1Cards);
             playerDTO1.getRobotDTO().setPowerDown(false);
-
 
             List<CardDTO> player2Cards = new ArrayList<>();
             player2Cards.add(new CardDTO(6, 60));
@@ -119,14 +113,15 @@ public class GameTest {
             Card[] player1ChosenCards = player1.getChosenCards();
             Assertions.assertNotNull(player1ChosenCards);
             Assertions.assertEquals(5, player1ChosenCards.length);
-            Assertions.assertEquals(player1.getReceivedCards(), game.getPlayerByUserDTO(user1).getReceivedCards());
-
+            Assertions.assertEquals(
+                    player1.getReceivedCards(), game.getPlayerByUserDTO(user1).getReceivedCards());
 
             AbstractPlayer player2 = game.getPlayerByUserDTO(user2);
             Card[] player2ChosenCards = player2.getChosenCards();
             Assertions.assertNotNull(player2ChosenCards);
             Assertions.assertEquals(5, player2ChosenCards.length);
-            Assertions.assertEquals(player2.getReceivedCards(), game.getPlayerByUserDTO(user2).getReceivedCards());
+            Assertions.assertEquals(
+                    player2.getReceivedCards(), game.getPlayerByUserDTO(user2).getReceivedCards());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -136,7 +131,8 @@ public class GameTest {
      * Tests if the game is created correctly and the getPlayerByUserDTO method
      *
      * @author WKempel
-     * @result The game is created correctly and the getPlayerByUserDTO method works, all players found and exist in the game
+     * @result The game is created correctly and the getPlayerByUserDTO method works, all players
+     *     found and exist in the game
      * @see de.uol.swp.server.gamelogic
      * @since 2023-06-28
      */
@@ -217,8 +213,8 @@ public class GameTest {
      * Tests the getPlayerDTOSForAllPlayers method
      *
      * @author WKempel
-     * @result The getPlayerDTOSForAllPlayers method works because the playerDTOs are not null,
-     * have the correct size and contains the correct players
+     * @result The getPlayerDTOSForAllPlayers method works because the playerDTOs are not null, have
+     *     the correct size and contains the correct players
      * @since 2023-06-28
      */
     @Test
@@ -274,7 +270,8 @@ public class GameTest {
      * Tests the getGameMovements method
      *
      * @author WKempel
-     * @result The getGameMovements method works because the gameMovements are not null and have the correct size
+     * @result The getGameMovements method works because the gameMovements are not null and have the
+     *     correct size
      * @since 2023-06-28
      */
     @Test
@@ -290,7 +287,6 @@ public class GameTest {
 
     /**
      * Tests the getRespawnRobots method
-     *
      *
      * @author WKempel
      * @result The getRespawnRobots method works because no robot died and has to respawn
@@ -343,7 +339,8 @@ public class GameTest {
      * Tests the getPlayers method
      *
      * @author WKempel
-     * @result The getPlayers method works because the players are not null, have the correct size and contains the correct players
+     * @result The getPlayers method works because the players are not null, have the correct size
+     *     and contains the correct players
      * @since 2023-06-28
      */
     @Test
@@ -365,8 +362,8 @@ public class GameTest {
      * Tests the getStartCheckpoint method
      *
      * @author WKempel
-     * @result The getStartCheckpoint method works because the startCheckpoint is not null
-     * every robot has the same startCheckpoint
+     * @result The getStartCheckpoint method works because the startCheckpoint is not null every
+     *     robot has the same startCheckpoint
      * @since 2023-06-28
      */
     @Test
@@ -394,7 +391,6 @@ public class GameTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -412,7 +408,6 @@ public class GameTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -420,7 +415,7 @@ public class GameTest {
      *
      * @author WKempel
      * @result The areAllRobotsAreDead method returns true when all robots are dead, so it is not
-     * necessary to keep calculating next program steps
+     *     necessary to keep calculating next program steps
      * @since 2023-06-28
      */
     @Test
@@ -436,7 +431,8 @@ public class GameTest {
      * Tests the setNotDistributedCards method
      *
      * @author WKempel
-     * @result The setNotDistributedCards method works because the notDistributedCards is true after setting it
+     * @result The setNotDistributedCards method works because the notDistributedCards is true after
+     *     setting it
      * @since 2023-06-28
      */
     @Test
@@ -446,7 +442,6 @@ public class GameTest {
             Assertions.assertTrue(game.isNotDistributedCards());
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 }
