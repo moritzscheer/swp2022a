@@ -76,7 +76,8 @@ public class Robot implements Serializable {
      * @since
      */
     public void move(Position targetCoords) {
-        ;;
+        ;
+        ;
     }
 
     /**
@@ -127,15 +128,14 @@ public class Robot implements Serializable {
     public void setAlive(boolean alivee) {
         if (!alivee) {
             // robot is dead
-            setLifeToken(getLifeToken()-1);
+            setLifeToken(getLifeToken() - 1);
             setDamageToken(0);
-            //setCurrentPosition(this.lastBackupCopyPosition);
+            // setCurrentPosition(this.lastBackupCopyPosition);
             setDeadForTheRound(true);
         } else {
             if (this.lifeToken > 0) {
                 setDeadForTheRound(false);
-            }
-            else {
+            } else {
                 // robot is dead forever
                 setDeadForever();
                 setDeadForTheRound(true);
@@ -246,8 +246,7 @@ public class Robot implements Serializable {
      * @since 2023-05-14
      */
     public void setLifeToken(int lifeToken) {
-        if(lifeToken > 0)
-            this.lifeToken = lifeToken;
+        if (lifeToken > 0) this.lifeToken = lifeToken;
         else if (lifeToken == 0) {
             setDeadForever();
             this.lifeToken = lifeToken;

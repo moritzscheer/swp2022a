@@ -1,9 +1,9 @@
 package de.uol.swp.common.game.response;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.Test;
 
 public class AbstractGameResponseTest {
 
@@ -19,8 +19,7 @@ public class AbstractGameResponseTest {
      */
     @Test
     public void testConstructorAndGetGameID() {
-        AbstractGameResponse abstractGameResponse = new AbstractGameResponse(gameID) {
-        };
+        AbstractGameResponse abstractGameResponse = new AbstractGameResponse(gameID) {};
 
         assertEquals(gameID, abstractGameResponse.getGameID());
     }
@@ -35,8 +34,7 @@ public class AbstractGameResponseTest {
      */
     @Test
     public void testSetGameID() {
-        AbstractGameResponse abstractGameResponse = new AbstractGameResponse(gameID) {
-        };
+        AbstractGameResponse abstractGameResponse = new AbstractGameResponse(gameID) {};
 
         abstractGameResponse.setGameID(2);
         assertEquals(2, abstractGameResponse.getGameID());
@@ -51,10 +49,8 @@ public class AbstractGameResponseTest {
      */
     @Test
     public void testNotEquals() {
-        AbstractGameResponse response = new AbstractGameResponse(gameID) {
-        };
-        AbstractGameResponse otherResponse = new AbstractGameResponse(gameID) {
-        };
+        AbstractGameResponse response = new AbstractGameResponse(gameID) {};
+        AbstractGameResponse otherResponse = new AbstractGameResponse(gameID) {};
         assertNotEquals(response, otherResponse);
     }
 
@@ -68,11 +64,8 @@ public class AbstractGameResponseTest {
      */
     @Test
     public void testHashCode() {
-        AbstractGameResponse response = new AbstractGameResponse(gameID) {
-        };
-        AbstractGameResponse otherResponse = new AbstractGameResponse(gameID) {
-        };
+        AbstractGameResponse response = new AbstractGameResponse(gameID) {};
+        AbstractGameResponse otherResponse = new AbstractGameResponse(gameID) {};
         assertEquals(response.hashCode(), otherResponse.hashCode());
     }
-
 }

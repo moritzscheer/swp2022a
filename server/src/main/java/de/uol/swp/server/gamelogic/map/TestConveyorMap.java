@@ -8,16 +8,12 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import java.util.Random;
 
 /**
- *
- *
  * @author
  * @since
  */
 public class TestConveyorMap extends AbstractMap {
 
     /**
-     *
-     *
      * @author
      * @since
      */

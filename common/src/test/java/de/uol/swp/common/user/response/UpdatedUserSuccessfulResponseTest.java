@@ -70,7 +70,8 @@ public class UpdatedUserSuccessfulResponseTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return false if the UpdatedUserSuccessfulResponses are not equal
+     * @result The equals method should return false if the UpdatedUserSuccessfulResponses are not
+     *     equal
      * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
      * @since 2023-06-17
      */

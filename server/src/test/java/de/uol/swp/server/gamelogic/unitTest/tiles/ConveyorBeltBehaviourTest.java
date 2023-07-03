@@ -137,16 +137,17 @@ public class ConveyorBeltBehaviourTest {
     }
 
     @Test
-   public void getImageTest() {
+    public void getImageTest() {
         List<Robot> robots = new ArrayList<>();
         Block[][] board = new Block[12][12];
 
-        ConveyorBeltBehaviour conveyorBelt = new ConveyorBeltBehaviour(
-                robots,
-                board,
-                new Position(1, 1),
-                ArrowType.Straight,
-                CardinalDirection.East);
+        ConveyorBeltBehaviour conveyorBelt =
+                new ConveyorBeltBehaviour(
+                        robots,
+                        board,
+                        new Position(1, 1),
+                        ArrowType.Straight,
+                        CardinalDirection.East);
 
         List<int[]> expectedImage = new ArrayList<>();
 
@@ -169,6 +170,5 @@ public class ConveyorBeltBehaviourTest {
             expectedImage = conveyorBelt.getImage();
             assertEquals(52, expectedImage.get(0)[0]);
         }
-
     }
 }

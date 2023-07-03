@@ -2,9 +2,9 @@ package de.uol.swp.server.message;
 
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 
 public class ClientAuthorizedMessageTest {
 

@@ -5,8 +5,6 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 
 /**
- *
- *
  * @author
  * @since
  */
@@ -14,8 +12,6 @@ public abstract class AbstractMap {
     protected Block[][] map = new Block[12][12];
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -343,8 +339,6 @@ public abstract class AbstractMap {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -352,8 +346,8 @@ public abstract class AbstractMap {
         this.map[x][y] = new Block(behaviours, null, new Position(x, y));
     }
 
-    /** get method for the map
-     *
+    /**
+     * get method for the map
      *
      * @author Maxim Erden and Finn Oldeboershuis
      * @since 2023-05-21

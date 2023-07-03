@@ -13,8 +13,6 @@ public class MoveIntent {
     public final CardinalDirection direction;
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -24,8 +22,6 @@ public class MoveIntent {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */

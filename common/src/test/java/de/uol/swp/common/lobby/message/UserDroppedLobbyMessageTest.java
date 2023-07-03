@@ -98,9 +98,11 @@ public class UserDroppedLobbyMessageTest {
     @Test
     public void testEqualsAndHashCode() {
 
-        UserDroppedLobbyMessage message1 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+        UserDroppedLobbyMessage message1 =
+                new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
 
-        UserDroppedLobbyMessage message2 = new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
+        UserDroppedLobbyMessage message2 =
+                new UserDroppedLobbyMessage(lobbyDTO, lobbyDTO.getName(), userDTO);
 
         Assertions.assertEquals(message1, message2);
 

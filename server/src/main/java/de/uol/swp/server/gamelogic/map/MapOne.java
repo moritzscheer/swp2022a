@@ -6,16 +6,12 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
 /**
- *
- *
  * @author
  * @since
  */
 public class MapOne extends AbstractMap {
 
     /**
-     *
-     *
      * @author
      * @since
      */

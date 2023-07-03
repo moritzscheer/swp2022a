@@ -8,9 +8,7 @@ import de.uol.swp.server.gamelogic.Robot;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Ole Zimemrmann
- *
- */
+/** @author Ole Zimemrmann */
 public class WallBehaviour extends AbstractTileBehaviour {
 
     private final CardinalDirection wallDirection;

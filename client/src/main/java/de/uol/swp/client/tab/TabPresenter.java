@@ -410,7 +410,7 @@ public class TabPresenter extends AbstractPresenter {
      * @author Tommy Dang
      * @since 2023-06-27
      */
-    public User getLoggedInUser(){
+    public User getLoggedInUser() {
         return loggedInUser;
     }
 }

@@ -38,7 +38,8 @@ public class UserLoggedOutMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return true if the UserLoggedOutMessages are equal and false if they are not
+     * @result The equals method should return true if the UserLoggedOutMessages are equal and false
+     *     if they are not
      * @see de.uol.swp.common.user.message.UserLoggedOutMessage
      * @since 2023-06-17
      */

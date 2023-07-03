@@ -21,7 +21,6 @@ import java.util.*;
 public class LobbyManagement {
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
-
     /**
      * @author
      * @since

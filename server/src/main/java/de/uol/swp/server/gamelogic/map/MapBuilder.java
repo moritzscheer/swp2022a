@@ -26,12 +26,14 @@ public final class MapBuilder {
 
     public static List<ArrayList> checkpointLocations = new LinkedList<ArrayList>();
     public static ArrayList<int[][]> checkpointsMapOne = new ArrayList<>();
+    public static ArrayList<int[][]> checkpointsMapTwo = new ArrayList<>();
+    public static ArrayList<int[][]> checkpointsMapThree = new ArrayList<>();
 
     static {
         // define all three positions for each version
         // Map1
         Position[] versionPositionsMap1 = {
-            new Position(4,11), new Position(4, 3), new Position(3, 5)
+            new Position(3, 10), new Position(4, 3), new Position(3, 5)
         };
         for (int v = 1; v <= 3; v++) {
             for (int c = 2; c <= 6; c++) {
@@ -41,8 +43,26 @@ public final class MapBuilder {
         }
 
         // Map2
+        Position[] versionPositionsMap2 = {
+            new Position(2, 4), new Position(9, 9), new Position(5, 5)
+        };
+        for (int v = 1; v <= 3; v++) {
+            for (int c = 2; c <= 6; c++) {
+                mapStringToCheckpointNumberAndFirstPosition.put(
+                        "MapTwoV" + (v) + "C" + (c), new Pair<>(c, versionPositionsMap2[v - 1]));
+            }
+        }
 
         // Map3
+        Position[] versionPositionsMap3 = {
+            new Position(2, 2), new Position(3, 4), new Position(6, 8)
+        };
+        for (int v = 1; v <= 3; v++) {
+            for (int c = 2; c <= 6; c++) {
+                mapStringToCheckpointNumberAndFirstPosition.put(
+                        "MapThreeV" + (v) + "C" + (c), new Pair<>(c, versionPositionsMap3[v - 1]));
+            }
+        }
 
         // Each TestMap 4 CHECKPOINTS
         int testCheckPoints = 4;
@@ -65,8 +85,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -78,11 +96,12 @@ public final class MapBuilder {
             return map;
         } catch (IOException | ClassNotFoundException IOExcept) {
             try {
-                ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(mapPath.replace("server/", "")));
+                ObjectInputStream objIn =
+                        new ObjectInputStream(new FileInputStream(mapPath.replace("server/", "")));
                 Block[][] map = (Block[][]) objIn.readObject();
                 objIn.close();
                 return map;
-            }catch (IOException | ClassNotFoundException IOExcept2){
+            } catch (IOException | ClassNotFoundException IOExcept2) {
                 System.out.println(IOExcept2.getMessage());
                 return null;
             }
@@ -90,8 +109,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -99,17 +116,20 @@ public final class MapBuilder {
 
         maps.add(new MapOne());
         maps.add(new MapTwo());
+        // maps.add(new MapTwoTEST());
+        maps.add(new MapThree());
+
         testMaps.add(new TestLaserMap());
         testMaps.add(new TestPusherMap());
         testMaps.add(new TestWallMap());
         testMaps.add(new TestConveyorMap());
 
         // Checkpoints added as {x1,x2,x3 ... x6} , {y1,y2,y3 ... y6}
-        checkpointsMapOne.add(new int[][] {{4, 9}, {11, 3}});
-        checkpointsMapOne.add(new int[][] {{4, 9, 2}, {11, 3, 2}});
-        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4}, {11, 3, 2, 5}});
-        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4, 8}, {11, 3, 2, 5, 6}});
-        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4, 8, 9}, {11, 3, 2, 5, 6, 9}});
+        checkpointsMapOne.add(new int[][] {{3, 9}, {10, 3}});
+        checkpointsMapOne.add(new int[][] {{3, 9, 2}, {10, 3, 2}});
+        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4}, {10, 3, 2, 5}});
+        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4, 8}, {10, 3, 2, 5, 6}});
+        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4, 8, 9}, {10, 3, 2, 5, 6, 9}});
         checkpointsMapOne.add(new int[][] {{4, 7}, {3, 5}});
         checkpointsMapOne.add(new int[][] {{4, 7, 3}, {3, 5, 10}});
         checkpointsMapOne.add(new int[][] {{4, 7, 3, 6}, {3, 5, 10, 8}});
@@ -123,6 +143,42 @@ public final class MapBuilder {
 
         checkpointLocations.add(checkpointsMapOne);
 
+        checkpointsMapTwo.add(new int[][] {{2, 9}, {4, 4}});
+        checkpointsMapTwo.add(new int[][] {{2, 9, 5}, {4, 4, 6}});
+        checkpointsMapTwo.add(new int[][] {{2, 9, 5, 4}, {4, 4, 6, 1}});
+        checkpointsMapTwo.add(new int[][] {{2, 9, 5, 4, 9}, {4, 4, 6, 1, 9}});
+        checkpointsMapTwo.add(new int[][] {{2, 9, 5, 4, 9, 4}, {4, 4, 6, 1, 9, 10}});
+        checkpointsMapTwo.add(new int[][] {{9, 10}, {9, 4}});
+        checkpointsMapTwo.add(new int[][] {{9, 10, 6}, {9, 4, 5}});
+        checkpointsMapTwo.add(new int[][] {{9, 10, 6, 4}, {9, 4, 5, 3}});
+        checkpointsMapTwo.add(new int[][] {{9, 10, 6, 4, 1}, {9, 4, 5, 3, 2}});
+        checkpointsMapTwo.add(new int[][] {{9, 10, 6, 4, 1, 1}, {9, 4, 5, 3, 2, 10}});
+        checkpointsMapTwo.add(new int[][] {{5, 7}, {5, 8}});
+        checkpointsMapTwo.add(new int[][] {{5, 7, 10}, {5, 8, 4}});
+        checkpointsMapTwo.add(new int[][] {{5, 7, 10, 4}, {5, 8, 4, 2}});
+        checkpointsMapTwo.add(new int[][] {{5, 7, 10, 4, 1}, {5, 8, 4, 2, 7}});
+        checkpointsMapTwo.add(new int[][] {{5, 7, 10, 4, 1, 6}, {5, 8, 4, 2, 7, 6}});
+
+        checkpointLocations.add(checkpointsMapTwo);
+
+        checkpointsMapThree.add(new int[][] {{2, 9}, {2, 9}});
+        checkpointsMapThree.add(new int[][] {{2, 9, 2}, {2, 9, 9}});
+        checkpointsMapThree.add(new int[][] {{2, 9, 2, 9}, {2, 9, 9, 2}});
+        checkpointsMapThree.add(new int[][] {{2, 9, 2, 9, 1}, {2, 9, 9, 2, 8}});
+        checkpointsMapThree.add(new int[][] {{2, 9, 2, 9, 1, 10}, {2, 9, 9, 2, 8, 5}});
+        checkpointsMapThree.add(new int[][] {{3, 10}, {4, 1}});
+        checkpointsMapThree.add(new int[][] {{3, 10, 8}, {4, 1, 4}});
+        checkpointsMapThree.add(new int[][] {{3, 10, 8, 8}, {4, 1, 4, 8}});
+        checkpointsMapThree.add(new int[][] {{3, 10, 8, 8, 1}, {4, 1, 4, 8, 8}});
+        checkpointsMapThree.add(new int[][] {{3, 10, 8, 8, 1, 2}, {4, 1, 4, 8, 8, 2}});
+        checkpointsMapThree.add(new int[][] {{6, 3}, {8, 2}});
+        checkpointsMapThree.add(new int[][] {{6, 3, 8}, {8, 2, 3}});
+        checkpointsMapThree.add(new int[][] {{6, 3, 8, 9}, {8, 2, 3, 8}});
+        checkpointsMapThree.add(new int[][] {{6, 3, 8, 9, 5}, {8, 2, 3, 8, 11}});
+        checkpointsMapThree.add(new int[][] {{6, 3, 8, 9, 5, 2}, {8, 2, 3, 8, 11, 9}});
+
+        checkpointLocations.add(checkpointsMapThree);
+
         mapGen();
 
         // Block[][] map = getMap("server/src/main/resources/maps/MapOneV1C2.map");
@@ -132,8 +188,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -147,8 +201,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -173,10 +225,9 @@ public final class MapBuilder {
                                     + (checkpoints + 2)
                                     + ".map";
 
-                    if(new File(".").getAbsolutePath().endsWith("server\\.")){
+                    if (new File(".").getAbsolutePath().endsWith("server\\.")) {
                         path = path.replace("server/", "");
                     }
-
                     ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
                     objOut.writeObject(map);
                     objOut.flush();
@@ -195,10 +246,9 @@ public final class MapBuilder {
                                     .replace("de.uol.swp.server.gamelogic.map.", "")
                             + ".map";
 
-            if(new File(".").getAbsolutePath().endsWith("server\\.")){
+            if (new File(".").getAbsolutePath().endsWith("server\\.")) {
                 path = path.replace("server/", "");
             }
-
             ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(path));
             objOut.writeObject(map);
             objOut.flush();
@@ -207,8 +257,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -223,8 +271,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -233,7 +279,6 @@ public final class MapBuilder {
         int x = 0;
         int y = 0;
         Block[][] map = mapFromClass;
-
         // Place Checkpoints on normal maps (Version >0) and not on Testmaps with Version 0
         if (version >= 0) {
             try {
@@ -322,10 +367,7 @@ public final class MapBuilder {
         }
         return map;
     }
-
     /**
-     *
-     *
      * @author
      * @since
      */
@@ -453,8 +495,6 @@ public final class MapBuilder {
     }
 
     /**
-     *
-     *
      * @author
      * @since
      */

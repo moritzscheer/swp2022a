@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static junit.framework.TestCase.assertNull;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.common.game.Position;
@@ -119,18 +120,18 @@ public class PressorBehaviourTest {
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
-        if(!pressorBehaviour2.isCrossing()) {
+        if (!pressorBehaviour2.isCrossing()) {
             image = pressorBehaviour2.getImage();
-            if(activeInProgramSteps[0] == 1) {
+            if (activeInProgramSteps[0] == 1) {
                 assertEquals(35, image.get(0)[0]);
-            }else {
+            } else {
                 assertEquals(36, image.get(0)[0]);
             }
-        }else {
+        } else {
             image = pressorBehaviour.getImage();
-            if(activeInProgramSteps[0] == 2) {
+            if (activeInProgramSteps[0] == 2) {
                 assertEquals(37, image.get(0)[0]);
-            }else {
+            } else {
                 assertEquals(38, image.get(0)[0]);
             }
         }

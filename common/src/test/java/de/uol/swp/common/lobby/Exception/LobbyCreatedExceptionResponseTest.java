@@ -1,12 +1,11 @@
 package de.uol.swp.common.lobby.Exception;
 
-import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import de.uol.swp.common.lobby.exception.LobbyCreatedExceptionResponse;
+
+import org.junit.jupiter.api.Test;
 
 public class LobbyCreatedExceptionResponseTest {
 

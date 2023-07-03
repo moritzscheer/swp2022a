@@ -12,7 +12,6 @@ import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PitBehaviourTest {

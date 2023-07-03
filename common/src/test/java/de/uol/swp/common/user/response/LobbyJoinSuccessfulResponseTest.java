@@ -70,7 +70,8 @@ public class LobbyJoinSuccessfulResponseTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return false if the LobbyJoinSuccessfulResponses are not equal
+     * @result The equals method should return false if the LobbyJoinSuccessfulResponses are not
+     *     equal
      * @see de.uol.swp.common.user.response.LobbyJoinSuccessfulResponse
      * @since 2023-06-17
      */

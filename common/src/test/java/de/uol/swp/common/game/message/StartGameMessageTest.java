@@ -40,7 +40,8 @@ public class StartGameMessageTest {
      * Tests the getLobbyID method
      *
      * @author WKempel
-     * @result The method should return true and the correct lobbyID if the StartGameMessage has the correct lobbyID, lobbyDTO and gameDTO
+     * @result The method should return true and the correct lobbyID if the StartGameMessage has the
+     *     correct lobbyID, lobbyDTO and gameDTO
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @see de.uol.swp.common.game.dto.PlayerDTO
@@ -67,7 +68,8 @@ public class StartGameMessageTest {
      * Tests the getLobby method
      *
      * @author WKempel
-     * @result The method should return true and the correct lobby if the StartGameMessage has the correct lobbyID, lobbyDTO and gameDTO
+     * @result The method should return true and the correct lobby if the StartGameMessage has the
+     *     correct lobbyID, lobbyDTO and gameDTO
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @see de.uol.swp.common.game.dto.PlayerDTO
@@ -89,7 +91,8 @@ public class StartGameMessageTest {
      * Tests the getGame method
      *
      * @author WKempel
-     * @result The method should return true and the correct game if the StartGameMessage has the correct lobbyID, lobbyDTO and gameDTO
+     * @result The method should return true and the correct game if the StartGameMessage has the
+     *     correct lobbyID, lobbyDTO and gameDTO
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @see de.uol.swp.common.game.dto.PlayerDTO
@@ -156,7 +159,8 @@ public class StartGameMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The method should return true if the StartGameMessage has the correct lobbyID, lobbyDTO, gameDTO and these are equal
+     * @result The method should return true if the StartGameMessage has the correct lobbyID,
+     *     lobbyDTO, gameDTO and these are equal
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @since 2023-06-14
@@ -180,7 +184,8 @@ public class StartGameMessageTest {
      * Tests the equals method with the same instance
      *
      * @author WKempel
-     * @result The method should return true if the StartGameMessage has the correct lobbyID, lobbyDTO, gameDTO and this is the same instance
+     * @result The method should return true if the StartGameMessage has the correct lobbyID,
+     *     lobbyDTO, gameDTO and this is the same instance
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @since 2023-06-14
@@ -199,7 +204,8 @@ public class StartGameMessageTest {
      * Tests the equals method with a null object
      *
      * @author WKempel
-     * @result The method should return false if the StartGameMessage has the correct lobbyID, lobbyDTO, gameDTO and the object is null
+     * @result The method should return false if the StartGameMessage has the correct lobbyID,
+     *     lobbyDTO, gameDTO and the object is null
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @see de.uol.swp.common.game.dto.GameDTO
      * @since 2023-06-14

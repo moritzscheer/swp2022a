@@ -8,8 +8,8 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -22,6 +22,7 @@ import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
 import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
 import de.uol.swp.server.utils.ConvertToDTOUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
@@ -86,7 +87,13 @@ public class Game {
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 20-02-2023
      */
-    public Game(Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount, int version) {
+    public Game(
+            Integer lobbyID,
+            Set<User> users,
+            String mapName,
+            int numberBots,
+            int checkpointCount,
+            int version) {
         this.lobbyID = lobbyID;
         this.programStep = 0;
         this.readyRegister = 0;
@@ -97,16 +104,12 @@ public class Game {
 
         LOG.debug(new File(".").getAbsolutePath());
         // create board
-        if(version == -1){
+        if (version == -1) {
             Random random = new Random();
             version = random.nextInt(3) + 1;
         }
 
-        fullMapName = this.mapName
-                + "V"
-                + version
-                + "C"
-                + checkpointCount;
+        fullMapName = this.mapName + "V" + version + "C" + checkpointCount;
 
         LOG.debug(version);
         LOG.debug(
@@ -126,25 +129,26 @@ public class Game {
         } else {
             String mapPath = "";
 
-            //TODO: this is for testing purposes, because for some reason the tests are run from swp2022/server/ while the server is run from swp2022/
-            if(new File(".").getAbsolutePath().endsWith("server\\.")){
+            // TODO: this is for testing purposes, because for some reason the tests are run from
+            // swp2022/server/ while the server is run from swp2022/
+            if (new File(".").getAbsolutePath().endsWith("server\\.")) {
                 mapPath =
-                                "src/main/resources/maps/"
-                                        + this.mapName
-                                        + "V"
-                                        + version
-                                        + "C"
-                                        + checkpointCount
-                                        + ".map";
-            }else{
+                        "src/main/resources/maps/"
+                                + this.mapName
+                                + "V"
+                                + version
+                                + "C"
+                                + checkpointCount
+                                + ".map";
+            } else {
                 mapPath =
-                                            "server/src/main/resources/maps/"
-                                                    + this.mapName
-                                                    + "V"
-                                                    + version
-                                                    + "C"
-                                                    + checkpointCount
-                                                    + ".map";
+                        "server/src/main/resources/maps/"
+                                + this.mapName
+                                + "V"
+                                + version
+                                + "C"
+                                + checkpointCount
+                                + ".map";
             }
 
             LOG.debug(new File(mapPath).getAbsolutePath());
@@ -182,9 +186,10 @@ public class Game {
 
         // create players and robots
         int i = 0; // start robots id in 0
-        if(!Objects.equals(users, null)) // important to run integration tests
-            for (User user : users) {
-                Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+        if (!Objects.equals(users, null)) // important to run integration tests
+        for (User user : users) {
+                Player newPlayer =
+                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
                 this.players.add(newPlayer);
                 this.robots.add(newPlayer.getRobot());
                 i++;
@@ -227,7 +232,7 @@ public class Game {
 
             for (AbstractPlayer player : this.players) {
                 // when robot is powered off, just set empty cards
-                if(player.getRobot().isPowerDown()){
+                if (player.getRobot().isPowerDown()) {
                     continue;
                 }
                 LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
@@ -266,8 +271,7 @@ public class Game {
                     player.receiveCards(cards);
                     count = count + 9 - damage;
 
-                }
-                else {
+                } else {
                     int[] cardsIDs =
                             Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
@@ -316,7 +320,8 @@ public class Game {
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
                 Card[] chosenCards = botPlayer.getReceivedCards();
-                botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
+                botPlayer.chooseCardsOrder(
+                        chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
                 System.out.println(chosenCards.length); // set cards of this bot
                 allReady = register();
             }
@@ -327,26 +332,24 @@ public class Game {
     /**
      * The method makes sure that the first card of the first round is a move
      *
-     *
-     * @return chosenCards
-     * @Author Maria
+     * @return chosenCards @Author Maria
      * @since 2023-06-23
      */
-    public Card[] chooseFirstCardMoveBot(Card[] chosenCards){
-        if(this.roundNumber != 1){
+    public Card[] chooseFirstCardMoveBot(Card[] chosenCards) {
+        if (this.roundNumber != 1) {
             return chosenCards;
         }
         LOG.debug("Bot cards:");
         for (int i = 0; i < 5; i++) {
             LOG.debug(chosenCards[i].getBehaviourType());
         }
-        if(Objects.equals(chosenCards[0].getBehaviourType(), "1")
+        if (Objects.equals(chosenCards[0].getBehaviourType(), "1")
                 || Objects.equals(chosenCards[0].getBehaviourType(), "3")
-                || Objects.equals(chosenCards[0].getBehaviourType(), "4")){
+                || Objects.equals(chosenCards[0].getBehaviourType(), "4")) {
             int i = 1;
-            while(Objects.equals(chosenCards[i].getBehaviourType(), "1")
+            while (Objects.equals(chosenCards[i].getBehaviourType(), "1")
                     || Objects.equals(chosenCards[i].getBehaviourType(), "3")
-                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")){
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")) {
 
                 i++;
             }
@@ -391,7 +394,6 @@ public class Game {
         player.getRobot().setPowerDown(true);
         LOG.debug("setPowerDown {}", player.getUser().getUsername());
 
-
         // set empty cards
         Card[] cards = new Card[5];
         for (int i = 0; i < 5; i++) {
@@ -403,7 +405,7 @@ public class Game {
         player.getRobot().setDamageToken(0);
 
         boolean allChosen = register();
-        if(nRealPlayers == readyRegister){
+        if (nRealPlayers == readyRegister) {
             // if all real players decided to turn off, we have to
             // start the bots manually, so the game can happen
             distributeProgramCards();
@@ -495,8 +497,9 @@ public class Game {
             if (!player.getRobot().isDeadForever()) {
                 // only when dead for the round, set in the backup
                 boolean addRespawn = false;
-                if(player.getRobot().isDeadForTheRound()){
-                    player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+                if (player.getRobot().isDeadForTheRound()) {
+                    player.getRobot()
+                            .setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
                     addRespawn = true;
                 }
 
@@ -505,8 +508,7 @@ public class Game {
                 player.getRobot().setPowerDown(false);
 
                 // needs to be done down here after all variables were set
-                if(addRespawn)
-                    respawnRobots.add(convertPlayerToPlayerDTO(player));
+                if (addRespawn) respawnRobots.add(convertPlayerToPlayerDTO(player));
 
                 countSurvivors++;
                 survivor = player.getUser();
@@ -537,7 +539,7 @@ public class Game {
      */
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-        if(areAllRobotsAreDead()){
+        if (areAllRobotsAreDead()) {
             return;
         }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
@@ -552,8 +554,7 @@ public class Game {
      */
     public List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
-        for (AbstractPlayer player :
-                players) {
+        for (AbstractPlayer player : players) {
             initialPlayerStates.add(ConvertToDTOUtils.convertPlayerToPlayerDTO(player));
         }
         return initialPlayerStates;
@@ -570,49 +571,54 @@ public class Game {
         currentMoves = onExpressConveyorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        GameMovement oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "ExpressConveyor", oldMove, ""));
+        GameMovement oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "ExpressConveyor", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onConveyorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Conveyor", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Conveyor", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onPusherStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Pusher", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Pusher", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onRotatorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
         this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Gear", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onPresserStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Presser", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Presser", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnLaserStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnCheckPointStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         // must execute this actions at the end
@@ -632,42 +638,53 @@ public class Game {
             cardsToPlay[i] = playedCards[i][programStep];
         }
 
-        //Get lists of the Priorities to execute cards in the right order
-        Integer[] sortedPriorities = Arrays.stream(cardsToPlay).map(Card::getPriority)
-                .sorted(Comparator.reverseOrder()).toArray(Integer[]::new);
-        Integer[] priorities = Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
+        // Get lists of the Priorities to execute cards in the right order
+        Integer[] sortedPriorities =
+                Arrays.stream(cardsToPlay)
+                        .map(Card::getPriority)
+                        .sorted(Comparator.reverseOrder())
+                        .toArray(Integer[]::new);
+        Integer[] priorities =
+                Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
 
         for (int i = 0; i < cardsToPlay.length; i++) {
-            //Get index of next card to play
+            // Get index of next card to play
             int indexOfCurrentCard = Arrays.asList(priorities).indexOf(sortedPriorities[i]);
             Card currentCard = cardsToPlay[indexOfCurrentCard];
 
-            //Check if executing robot is alive or powerdown
+            // Check if executing robot is alive or powerdown
             if (!robots.get(indexOfCurrentCard).isAlive()
                     || this.robots.get(indexOfCurrentCard).isPowerDown()) {
-                continue;  // if not alive or powered down, go on
+                continue; // if not alive or powered down, go on
             }
 
-            //Get Move Intents and execute them
+            // Get Move Intents and execute them
             List<List<MoveIntent>> moveIntents = resolveCard(currentCard, indexOfCurrentCard);
             GameMovement oldMove;
             String cardType = searchCardType(currentCard.getId());
             for (List<MoveIntent> move : moveIntents) {
                 List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
                 executeMoveIntents(resolvedMoves);
-                oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+                oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
                 this.gameMovements.add(
-                        new GameMovement(getPlayerDTOSForAllPlayers(), cardType, oldMove,
+                        new GameMovement(
+                                getPlayerDTOSForAllPlayers(),
+                                cardType,
+                                oldMove,
                                 players.get(indexOfCurrentCard).getUser().getUsername()));
                 cardType = null;
             }
-            if(moveIntents.size()==0){
-                oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+            if (moveIntents.size() == 0) {
+                oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
                 this.gameMovements.add(
-                        new GameMovement(getPlayerDTOSForAllPlayers(), cardType, oldMove,
+                        new GameMovement(
+                                getPlayerDTOSForAllPlayers(),
+                                cardType,
+                                oldMove,
                                 players.get(indexOfCurrentCard).getUser().getUsername()));
             }
-            System.out.println(this.gameMovements.get(this.gameMovements.size()-1).getMoveMessage());
+            System.out.println(
+                    this.gameMovements.get(this.gameMovements.size() - 1).getMoveMessage());
             moves.add(getPlayerDTOSForAllPlayers());
         }
         return moves;
@@ -681,7 +698,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -696,7 +713,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -712,7 +729,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.onPusherStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPusherStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -728,7 +745,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -744,7 +761,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.onPressorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPressorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -760,7 +777,7 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.onLaserStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onLaserStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
@@ -776,18 +793,16 @@ public class Game {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
-
-
-//////////////////////////////
-// SOLVING MOVE INTENTS
-/////////////////////////////
+    //////////////////////////////
+    // SOLVING MOVE INTENTS
+    /////////////////////////////
 
     /**
      * @author
@@ -830,9 +845,7 @@ public class Game {
                     new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
             moves.add(subMoveList);
         }
-        for (int i = 0;
-             i < card.getMoves();
-             i++) {
+        for (int i = 0; i < card.getMoves(); i++) {
             List<MoveIntent> subMoveList = new ArrayList<>();
             subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
             moves.add(subMoveList);
@@ -865,7 +878,7 @@ public class Game {
 
         checkRobotFellFromBoard();
     }
-/**
+    /**
      * Execute behaviour that may occur only by passing through the block and does not require in
      * the block to land i.e.: Checkpoint, save BackupPosition in repair or checkpoint block, fell
      * on a pit
@@ -910,8 +923,7 @@ public class Game {
         // execute board elements functions, other than moves
         try {
             for (Robot robot : robots) {
-                if(!robot.isAlive())
-                    continue;
+                if (!robot.isAlive()) continue;
                 Position position = robot.getPosition();
                 for (AbstractTileBehaviour behaviour :
                         board[position.x][position.y].getBehaviourList()) {
@@ -1067,8 +1079,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                            == CardinalDirection.values()[
-                            (moveList.get(j).getDirection().ordinal() + 2) % 4]
+                                    == CardinalDirection.values()[
+                                            (moveList.get(j).getDirection().ordinal() + 2) % 4]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -1136,8 +1148,7 @@ public class Game {
      * @since
      */
     public List<GameMovement> getGameMovements() {
-        if(Objects.equals(gameMovements, null))
-            return new ArrayList<>();
+        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
         return gameMovements;
     }
 
@@ -1149,9 +1160,7 @@ public class Game {
         return respawnRobots;
     }
 
-    /**
-     * @author Finn
-     */
+    /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
@@ -1200,7 +1209,6 @@ public class Game {
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
-
     }
 
     /**
@@ -1211,7 +1219,7 @@ public class Game {
      */
     private void checkRobotFellFromBoard() {
         for (Robot robot : this.robots) {
-            if(!robot.isAlive()){
+            if (!robot.isAlive()) {
                 continue;
             }
             Position position = robot.getPosition();
@@ -1227,7 +1235,6 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
-
 
     /**
      * Getter for Board Array
@@ -1298,7 +1305,7 @@ public class Game {
         return this.dockingStartPosition;
     }
 
-    public String getFullMapName(){
+    public String getFullMapName() {
         return fullMapName;
     }
 
@@ -1314,9 +1321,9 @@ public class Game {
      * @since 2023-06-20
      */
     // TODO: fix this function, when all are dead
-    public boolean areAllRobotsAreDead(){
-        for (Robot robot: this.robots ) {
-            if (!robot.isDeadForTheRound()){
+    public boolean areAllRobotsAreDead() {
+        for (Robot robot : this.robots) {
+            if (!robot.isDeadForTheRound()) {
                 return false;
             }
         }
@@ -1334,5 +1341,4 @@ public class Game {
     public int getProgramStep() {
         return programStep;
     }
-
 }

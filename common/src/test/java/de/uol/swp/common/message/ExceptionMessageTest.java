@@ -105,7 +105,8 @@ public class ExceptionMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return true if the AbstractServerMessages are equal and false if they are not
+     * @result The equals method should return true if the AbstractServerMessages are equal and
+     *     false if they are not
      * @see de.uol.swp.common.message.AbstractServerMessage
      * @since 2023-06-17
      */

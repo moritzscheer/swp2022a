@@ -25,7 +25,8 @@ public class DropUserExceptionMessageTest {
      * Tests the toString method
      *
      * @author WKempel
-     * @result The toString method should return "DropUserExceptionMessage Test Exception " + the String representation
+     * @result The toString method should return "DropUserExceptionMessage Test Exception " + the
+     *     String representation
      * @see de.uol.swp.common.user.exception.DropUserExceptionMessage
      * @since 2023-06-17
      */
@@ -57,7 +58,8 @@ public class DropUserExceptionMessageTest {
      * Tests the hashCode method
      *
      * @author WKempel
-     * @result The hashCode method should return the same hashCode for the same DropUserExceptionMessage
+     * @result The hashCode method should return the same hashCode for the same
+     *     DropUserExceptionMessage
      * @see de.uol.swp.common.user.exception.DropUserExceptionMessage
      * @since 2023-06-17
      */

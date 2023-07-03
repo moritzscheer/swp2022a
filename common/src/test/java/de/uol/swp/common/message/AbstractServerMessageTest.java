@@ -60,12 +60,13 @@ public class AbstractServerMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The method should return true if the objects are the same and false if they are different
+     * @result The method should return true if the objects are the same and false if they are
+     *     different
      * @see de.uol.swp.common.message.AbstractServerMessage
      * @since 2023-06-17
      */
     @Test
-   public void testEquals() {
+    public void testEquals() {
         AbstractServerMessage message1 = new AbstractServerMessage() {};
 
         AbstractServerMessage message2 = new AbstractServerMessage() {};

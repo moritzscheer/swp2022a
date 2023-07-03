@@ -9,9 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Ole Zimmermann
- */
+/** @author Ole Zimmermann */
 public class Block implements Serializable, Cloneable {
 
     private AbstractTileBehaviour[] behaviourList;

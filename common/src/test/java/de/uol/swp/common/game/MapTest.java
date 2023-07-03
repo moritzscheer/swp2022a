@@ -18,7 +18,7 @@ public class MapTest {
     void getMapListTest() {
         Map[] maps = Map.getMapList();
         Assertions.assertNotNull(maps);
-        Assertions.assertEquals(5, maps.length);
+        Assertions.assertEquals(7, maps.length);
         Assertions.assertEquals("Map 1", maps[0].getName());
         assertNotEquals(maps.length, 0);
     }
@@ -100,7 +100,7 @@ public class MapTest {
     public void testGetMapList() {
         Map[] maps = Map.getMapList();
         Assertions.assertNotNull(maps);
-        Assertions.assertEquals(5, maps.length);
+        Assertions.assertEquals(7, maps.length);
         Assertions.assertEquals("Map 1", maps[0].getName());
     }
 }

@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 import de.uol.swp.server.gamelogic.tiles.PusherBehaviour;
 
@@ -83,7 +83,7 @@ public class PusherBehaviourTest {
     public void dontPushRobotWestTest() {
         // No pusher action at program step 2
         List<MoveIntent> moves = board[0][0].onPusherStage(2);
-        assertEquals(0,moves.size());
+        assertEquals(0, moves.size());
     }
 
     /**
@@ -109,15 +109,15 @@ public class PusherBehaviourTest {
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
-        if(activeInProgramSteps.length == 3) {
+        if (activeInProgramSteps.length == 3) {
             image = behaviours1[0].getImage();
-            assertEquals(42,image.get(0)[0]);
-        } else if(activeInProgramSteps.length == 2) {
+            assertEquals(42, image.get(0)[0]);
+        } else if (activeInProgramSteps.length == 2) {
             image = behaviours1[0].getImage();
-            assertEquals(43,image.get(0)[0]);
+            assertEquals(43, image.get(0)[0]);
         } else {
             image = behaviours1[0].getImage();
-            assertEquals(38,image.get(0)[0]);
+            assertEquals(38, image.get(0)[0]);
         }
     }
 }

@@ -1,7 +1,10 @@
 package de.uol.swp.server.gamelogic;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
@@ -13,13 +16,12 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 
 import java.util.*;
-
-import static de.uol.swp.server.utils.ConvertToDTOUtils.*;
 
 /**
  * Manages creation, deletion and storing of games
@@ -36,9 +38,7 @@ public class GameManagement {
     private final Map<Integer, GameDTO> gamesDTO = new HashMap<>();
 
     @Inject
-    public GameManagement(){
-
-    }
+    public GameManagement() {}
 
     /**
      * Handles the StartGameRequest
@@ -51,12 +51,13 @@ public class GameManagement {
      * @see de.uol.swp.common.game.message.StartGameMessage
      * @since 2023-02-28
      */
-    public GameDTO createNewGame(int lobbyID, String mapName, int numberBots, int checkpointCount, Set<User> users) {
+    public GameDTO createNewGame(
+            int lobbyID, String mapName, int numberBots, int checkpointCount, Set<User> users) {
         LOG.debug("createNewGame");
 
         // create and save Game Object
         games.put(
-                lobbyID,                        // Version -1 if it should be random generated
+                lobbyID, // Version -1 if it should be random generated
                 new Game(lobbyID, users, mapName, numberBots, checkpointCount, -1));
 
         // Create DTOs objects
@@ -92,7 +93,6 @@ public class GameManagement {
         return Optional.empty();
     }
 
-
     /**
      * Handles GetProgramCardsRequest found on the EventBus
      *
@@ -121,7 +121,7 @@ public class GameManagement {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-02-28
      */
-    public void printReceivedCards(int lobbyID, UserDTO user){
+    public void printReceivedCards(int lobbyID, UserDTO user) {
         LOG.debug("Server, cards received by user {}", user.getUsername());
         for (Card card : games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards()) {
             LOG.debug("   id={} priority={}", card.getId(), card.getPriority());
@@ -136,11 +136,11 @@ public class GameManagement {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-02-28
      */
-    public List<CardDTO> getPlayerReceivedCards(int lobbyID, UserDTO user){
-        List<CardDTO> cardDTOS = convertCardsToCardsDTO(
+    public List<CardDTO> getPlayerReceivedCards(int lobbyID, UserDTO user) {
+        List<CardDTO> cardDTOS =
+                convertCardsToCardsDTO(
                         games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
         return cardDTOS;
-
     }
 
     /**
@@ -151,7 +151,7 @@ public class GameManagement {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-02-28
      */
-    public int getPlayerDamageTokens(int lobbyID, UserDTO user){
+    public int getPlayerDamageTokens(int lobbyID, UserDTO user) {
         return games.get(lobbyID).getPlayerByUserDTO(user).getRobot().getDamageToken();
     }
 
@@ -173,14 +173,13 @@ public class GameManagement {
             }
         }
 
-        if (allChosen){
+        if (allChosen) {
             LOG.debug("All players have chosen cards");
             manageGameUpdate(lobbyID);
         }
 
         return new Pair<>(allChosen, msgs);
     }
-
 
     /**
      * Handles all rounds, call calcGame() for every round and send messages to update the view
@@ -193,13 +192,17 @@ public class GameManagement {
     public List<Pair<Integer, AbstractLobbyMessage>> manageGameUpdate(int lobbyID) {
         int secondsToWait = 1;
         AbstractLobbyMessage msg = null;
-        Game game =  games.get(lobbyID);
+        Game game = games.get(lobbyID);
 
         List<Pair<Integer, AbstractLobbyMessage>> secondsToMessage = new ArrayList<>();
         secondsToMessage.add(
-                new Pair<>(secondsToWait,
-                new TextHistoryMessage(lobbyID, "======= Round: " +
-                games.get(lobbyID).getRoundNumber() + " ======= \n")));
+                new Pair<>(
+                        secondsToWait,
+                        new TextHistoryMessage(
+                                lobbyID,
+                                "======= Round: "
+                                        + games.get(lobbyID).getRoundNumber()
+                                        + " ======= \n")));
 
         for (int i = 0; i < 5; i++) {
             game.calcAllGameRound();
@@ -207,38 +210,33 @@ public class GameManagement {
             String programStep = String.valueOf(i);
 
             secondsToMessage.add(
-                    new Pair<>(secondsToWait,
-                            new TextHistoryMessage(lobbyID, "==== Program Step: " + programStep + " ==== \n")));
+                    new Pair<>(
+                            secondsToWait,
+                            new TextHistoryMessage(
+                                    lobbyID, "==== Program Step: " + programStep + " ==== \n")));
 
             Map<UserDTO, CardDTO> userDTOCardDTOMap = game.revealProgramCards();
 
             secondsToMessage.add(
-                    new Pair<>(secondsToWait,
-                            new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID))
-            );
-            for (GameMovement gameMovement: gameMovements) {
+                    new Pair<>(
+                            secondsToWait,
+                            new ShowAllPlayersCardsMessage(userDTOCardDTOMap, lobbyID)));
+            for (GameMovement gameMovement : gameMovements) {
                 List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
                 // just to speed up when there are no moves
-                if(gameMovement.isSomeoneMoved() || gameMovement.isCardMove())
-                    secondsToWait += 1;
+                if (gameMovement.isSomeoneMoved() || gameMovement.isCardMove()) secondsToWait += 1;
 
                 secondsToMessage.add(
-                        new Pair<>(
-                                secondsToWait,
-                                new ShowBoardMovingMessage(lobbyID, moves)
-                        )
-                );
+                        new Pair<>(secondsToWait, new ShowBoardMovingMessage(lobbyID, moves)));
                 secondsToMessage.add(
                         new Pair<>(
                                 secondsToWait,
-                                new TextHistoryMessage(lobbyID, gameMovement.getMoveMessage())
-                        )
-                );
+                                new TextHistoryMessage(lobbyID, gameMovement.getMoveMessage())));
             }
             msg = isGameOver(lobbyID, game);
             if (!Objects.equals(msg, null)) {
-                secondsToMessage.add(new Pair<>(secondsToWait+1, msg));
+                secondsToMessage.add(new Pair<>(secondsToWait + 1, msg));
                 break;
             }
 
@@ -246,22 +244,20 @@ public class GameManagement {
         }
         secondsToWait += 1;
         // else: if game was over, message was sent already
-        if(Objects.equals(msg, null)){
+        if (Objects.equals(msg, null)) {
             UserDTO winner = game.roundIsOver(); // reset variables
             if (Objects.equals(winner, null))
                 msg = new RoundIsOverMessage(lobbyID, game.getRespawnRobots());
-            else
-                msg = new GameOverMessage(lobbyID, winner);
+            else msg = new GameOverMessage(lobbyID, winner);
             secondsToMessage.add(new Pair<>(secondsToWait, msg));
         }
         return secondsToMessage;
     }
 
-
     /**
      * Check if a Player achieved the last checkpoint
      *
-     * @param game    reference to which game
+     * @param game reference to which game
      * @param lobbyID lobbyID to which the game belongs
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.common.game.request.SubmitCardsRequest

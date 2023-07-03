@@ -3,6 +3,7 @@ package de.uol.swp.server.gamelogic.unitTest;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Player;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

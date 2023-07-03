@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,8 +56,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         List<MoveIntent> moves = new ArrayList<>();
         if (this.activeInProgramSteps.contains(programStep)) {
             for (Robot robotState : this.robotStates) {
-                if(!robotState.isAlive())
-                    continue;
+                if (!robotState.isAlive()) continue;
                 if (Objects.equals(robotState.getPosition(), this.blockPos)) {
                     moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));
                     break;
@@ -93,7 +92,6 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     *
      * @author
      * @since
      */

@@ -25,7 +25,9 @@ public class Card {
         this.priority = priority;
     }
 
-    /** Constructor for when Player is powered down
+    /**
+     * Constructor for when Player is powered down
+     *
      * @author Maria
      * @see
      * @since 2023-06-19

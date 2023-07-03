@@ -25,7 +25,8 @@ public class UpdateUserExceptionMessageTest {
      * Tests the toString method
      *
      * @author WKempel
-     * @result The toString method should return "UpdateUserExceptionMessage Test Exception " + the String representation
+     * @result The toString method should return "UpdateUserExceptionMessage Test Exception " + the
+     *     String representation
      * @see de.uol.swp.common.user.exception.UpdateUserExceptionMessage
      * @since 2023-06-17
      */

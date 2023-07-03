@@ -2,8 +2,8 @@ package de.uol.swp.server.gamelogic.tiles;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +30,7 @@ public class PitBehaviour extends AbstractTileBehaviour {
     @Override
     public List<MoveIntent> onRobotEntered(int indexMoveRobot) {
         for (Robot robotState : robotStates) {
-            if(!robotState.isAlive())
-                continue;
+            if (!robotState.isAlive()) continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 robotState.setAlive(false);
                 break;

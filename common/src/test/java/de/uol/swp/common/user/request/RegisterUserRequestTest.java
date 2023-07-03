@@ -57,7 +57,8 @@ public class RegisterUserRequestTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return true if the objects are equal and false if they are not
+     * @result The equals method should return true if the objects are equal and false if they are
+     *     not
      * @see de.uol.swp.common.user.request.RegisterUserRequest
      * @since 2023-06-17
      */

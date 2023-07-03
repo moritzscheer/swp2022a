@@ -1,13 +1,14 @@
 package de.uol.swp.common.game.response;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import de.uol.swp.common.game.dto.CardDTO;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProgramCardDataResponseTest {
 
@@ -28,7 +29,6 @@ public class ProgramCardDataResponseTest {
         cards.add(new CardDTO(3, 30));
         cards.add(new CardDTO(4, 40));
         cards.add(new CardDTO(5, 50));
-
     }
 
     /**
@@ -41,10 +41,11 @@ public class ProgramCardDataResponseTest {
      */
     @Test
     public void testConstructorAndGetters() {
-        ProgramCardDataResponse programCardDataResponse = new ProgramCardDataResponse(cards, freeCards, lobbyID);
+        ProgramCardDataResponse programCardDataResponse =
+                new ProgramCardDataResponse(cards, freeCards, lobbyID);
 
-       assertEquals(cards, programCardDataResponse.getAssignedProgramCards());
-       assertEquals(freeCards, programCardDataResponse.getFreeCards());
-       assertEquals(lobbyID, programCardDataResponse.getLobbyID());
+        assertEquals(cards, programCardDataResponse.getAssignedProgramCards());
+        assertEquals(freeCards, programCardDataResponse.getFreeCards());
+        assertEquals(lobbyID, programCardDataResponse.getLobbyID());
     }
 }

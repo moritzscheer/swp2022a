@@ -36,7 +36,8 @@ public class MapChangedMessageTest {
      * Tests the equals and hashCode methods
      *
      * @author WKempel
-     * @result The equals and hashCode methods should return true if the lobbyID, userDTO and map are the same
+     * @result The equals and hashCode methods should return true if the lobbyID, userDTO and map
+     *     are the same
      * @see de.uol.swp.common.lobby.message.MapChangedMessage
      * @since 2023-06-18
      */
@@ -44,13 +45,16 @@ public class MapChangedMessageTest {
     public void testEqualsAndHashCode() {
         int lobbyID1 = 123;
         Map map1 = null;
-        MapChangedMessage message1 = new MapChangedMessage(lobbyID1, userDTO, (de.uol.swp.common.game.Map) map1);
+        MapChangedMessage message1 =
+                new MapChangedMessage(lobbyID1, userDTO, (de.uol.swp.common.game.Map) map1);
 
         int lobbyID2 = 456;
         Map map2 = null;
-        MapChangedMessage message2 = new MapChangedMessage(lobbyID2, userDTO2, (de.uol.swp.common.game.Map) map2);
+        MapChangedMessage message2 =
+                new MapChangedMessage(lobbyID2, userDTO2, (de.uol.swp.common.game.Map) map2);
 
-        MapChangedMessage message3 = new MapChangedMessage(lobbyID1, userDTO, (de.uol.swp.common.game.Map) map1);
+        MapChangedMessage message3 =
+                new MapChangedMessage(lobbyID1, userDTO, (de.uol.swp.common.game.Map) map1);
 
         Assertions.assertNotEquals(message1, message2);
         Assertions.assertEquals(message1, message3);

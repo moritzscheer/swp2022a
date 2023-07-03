@@ -1,9 +1,9 @@
 package de.uol.swp.client.lobbyGame.game.events;
+
 import de.uol.swp.common.user.UserDTO;
 
 /**
  * Event used to turn off a player robot
- *
  *
  * @author Maria Andrade
  * @since 2023-06-19

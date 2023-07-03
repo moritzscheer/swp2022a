@@ -876,9 +876,9 @@ public class SceneManager {
         tabPresenter.changeMainTabTitle("Registration");
         showNode(0, registrationParent);
         Platform.runLater(
-            () -> {
-                primaryStage.setTitle("Registration");
-            });
+                () -> {
+                    primaryStage.setTitle("Registration");
+                });
     }
 
     /**
@@ -892,9 +892,9 @@ public class SceneManager {
         tabPresenter.changeMainTabTitle("Login");
         showNode(0, loginParent);
         Platform.runLater(
-            () -> {
-                primaryStage.setTitle("Login");
-            });
+                () -> {
+                    primaryStage.setTitle("Login");
+                });
     }
 
     /**
@@ -909,9 +909,10 @@ public class SceneManager {
         tabPresenter.changeMainTabTitle("Main Menu");
         showNode(0, mainParent);
         Platform.runLater(
-            () -> {
-                primaryStage.setTitle("Logged in as: " + tabPresenter.getLoggedInUser().getUsername());
-            });
+                () -> {
+                    primaryStage.setTitle(
+                            "Logged in as: " + tabPresenter.getLoggedInUser().getUsername());
+                });
     }
 
     /**

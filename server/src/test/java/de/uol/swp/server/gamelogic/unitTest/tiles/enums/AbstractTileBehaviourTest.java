@@ -6,13 +6,13 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class AbstractTileBehaviourTest {
 
@@ -205,7 +205,8 @@ public class AbstractTileBehaviourTest {
     }
 
     private static class AbstractTileBehaviourImpl extends AbstractTileBehaviour {
-        public AbstractTileBehaviourImpl(List<Robot> robotStates, Block[][] board, Position blockPos) {
+        public AbstractTileBehaviourImpl(
+                List<Robot> robotStates, Block[][] board, Position blockPos) {
             super(robotStates, board, blockPos);
         }
     }

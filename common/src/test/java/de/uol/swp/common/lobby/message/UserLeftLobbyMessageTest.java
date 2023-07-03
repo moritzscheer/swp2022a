@@ -113,9 +113,11 @@ public class UserLeftLobbyMessageTest {
     @Test
     public void testEqualsAndHashCode() {
 
-        UserLeftLobbyMessage message1 = new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+        UserLeftLobbyMessage message1 =
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
 
-        UserLeftLobbyMessage message2 = new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+        UserLeftLobbyMessage message2 =
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
 
         Assertions.assertEquals(message1, message2);
 

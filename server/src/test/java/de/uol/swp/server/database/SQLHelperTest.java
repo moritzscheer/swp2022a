@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static junit.framework.TestCase.assertNotNull;
-
 public class SQLHelperTest {
 
     private static final String DB_URL = "jdbc:mysql://duemmer.informatik.uni-oldenburg.de:2151";
@@ -28,6 +26,6 @@ public class SQLHelperTest {
     @Test
     public void testGetSqlConnection() throws SQLException {
         SqlConnection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-       Assertions.assertNotNull(SqlConnection);
+        Assertions.assertNotNull(SqlConnection);
     }
 }

@@ -54,7 +54,8 @@ public class ReturnToMainMenuMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return true if the ReturnToMainMenuRequests have the same values
+     * @result The equals method should return true if the ReturnToMainMenuRequests have the same
+     *     values
      * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
      * @since 2023-06-17
      */
@@ -68,7 +69,8 @@ public class ReturnToMainMenuMessageTest {
      * Tests the equals method
      *
      * @author WKempel
-     * @result The equals method should return false if the ReturnToMainMenuRequests have different values
+     * @result The equals method should return false if the ReturnToMainMenuRequests have different
+     *     values
      * @see de.uol.swp.common.user.message.ReturnToMainMenuMessage
      * @since 2023-06-17
      */

@@ -93,7 +93,9 @@ public class PlayerDTO implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PlayerDTO playerDTO = (PlayerDTO) o;
-        return getRobotDTO().equals(playerDTO.getRobotDTO()) && Objects.equals(getCurrentCards(), playerDTO.getCurrentCards()) && getUser().equals(playerDTO.getUser());
+        return getRobotDTO().equals(playerDTO.getRobotDTO())
+                && Objects.equals(getCurrentCards(), playerDTO.getCurrentCards())
+                && getUser().equals(playerDTO.getUser());
     }
 
     @Override
