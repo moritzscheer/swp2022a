@@ -116,7 +116,7 @@ public class gameTest {
      * @since 2023-06-19
      */
     @Test
-    public void moveForward() {
+    public void testMoveForward() {
         try {
             SetGameOnePlayer();
             // Create 5 Move1ForwardCards
@@ -138,7 +138,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void moveBackwardAndTurnLeft() {
+    public void testMoveBackwardAndTurnLeft() {
         try {
             SetGameOnePlayer();
             cards[0] = new Card(84, "5", 840); // Move 3
@@ -164,7 +164,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void stayInLaser() {
+    public void testStayInLaser() {
         try {
             SetGameOnePlayer();
 
@@ -196,7 +196,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void moveTroughLaser() {
+    public void testMoveTroughLaser() {
         try {
             SetGameOnePlayer();
 
@@ -225,7 +225,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void moveAgainstWall() {
+    public void testMoveAgainstWall() {
         try {
             SetGameOnePlayer();
             cards[0] = new Card(0, "5", 0);
@@ -254,7 +254,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingIntoPit() {
+    public void testMovingIntoPit() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(4, 3));
@@ -290,7 +290,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void moveOutOfMap() {
+    public void testMoveOutOfMap() {
         try {
             SetGameOnePlayer();
             // robotOne.setCurrentPosition(new Position(4,11));
@@ -329,7 +329,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movedByPusher() {
+    public void testMovedByPusher() {
         try {
             SetGameOnePlayer();
 
@@ -357,7 +357,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void roboterPushesRoboter() {
+    public void testRoboterPushesRoboter() {
         try {
             SetGameTwoPlayers();
 
@@ -401,7 +401,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void turnedByGearLeft() {
+    public void testTurnedByGearLeft() {
         try {
             SetGameOnePlayer();
 
@@ -430,7 +430,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void turnedByGearRight() {
+    public void testTurnedByGearRight() {
         try {
             SetGameOnePlayer();
 
@@ -459,7 +459,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void moveForwardAndTurn() {
+    public void testMoveForwardAndTurn() {
         try {
             SetGameOnePlayer();
             for (int i = 0; i < 3; i++) cards[i] = new Card(52, "6", 520);
@@ -484,7 +484,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void staysOnExpressConveyorBelt() {
+    public void testStaysOnExpressConveyorBelt() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(1, 0));
@@ -512,7 +512,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOverExpressConveyorBelt() {
+    public void testMovingOverExpressConveyorBelt() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(2, 0));
@@ -540,7 +540,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOverConveyor() {
+    public void testMovingOverConveyor() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 11));
@@ -564,7 +564,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOnNextRightCheckPoint() {
+    public void testMovingOnNextRightCheckPoint() {
         try {
             SetGameOnMapOneWithMoreCP();
             robotOne.setCurrentPosition(new Position(9, 4));
@@ -593,7 +593,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOnMultipleRightCheckPoint() {
+    public void testMovingOnMultipleRightCheckPoint() {
         try {
             SetGameOnMapOneWithMoreCP();
 
@@ -650,7 +650,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOverNextRightCheckPoint() {
+    public void testMovingOverNextRightCheckPoint() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(9, 4));
@@ -679,7 +679,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOnConveyor() {
+    public void testMovingOnConveyor() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(7, 11));
@@ -706,7 +706,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOnWrongCheckpoint() {
+    public void testMovingOnWrongCheckpoint() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(3, 11));
@@ -735,7 +735,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void movingOnLastCheckpoint() {
+    public void testMovingOnLastCheckpoint() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(9, 4));
@@ -763,7 +763,7 @@ public class gameTest {
      * @since 2023-06-20
      */
     @Test
-    public void checkingPlayerHasLost() {
+    public void testCheckingPlayerHasLost() {
         try {
             SetGameOnePlayer();
 
@@ -793,7 +793,7 @@ public class gameTest {
      * @since 2023-07-02
      */
     @Test
-    public void playerGetsMoreThanNineDamageToken() {
+    public void testPlayerGetsMoreThanNineDamageToken() {
         try {
             SetGameOnePlayer();
             robotOne.setCurrentPosition(new Position(3, 4));

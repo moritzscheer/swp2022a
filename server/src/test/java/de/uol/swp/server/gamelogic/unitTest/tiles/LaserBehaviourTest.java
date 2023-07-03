@@ -84,7 +84,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void laserDamageRobot() {
+    public void testLaserDamageRobot() {
         // robot 1 in same block as laser
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         int beforeDamage = robots[0].getDamageToken();
@@ -103,7 +103,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void notDamageSecondRobot() {
+    public void testNotDamageSecondRobot() {
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         assertEquals(robots[1].getPosition(), pos2);
         int beforeDamage = robots[1].getDamageToken();
@@ -122,7 +122,7 @@ public class LaserBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void notDamageSecondRobotWall() {
+    public void testNotDamageSecondRobotWall() {
         // robot in same block as wall
         assertEquals(robots[2].getPosition(), behaviours3[0].getBlockPos());
         int beforeDamage = robots[2].getDamageToken();
