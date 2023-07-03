@@ -5,15 +5,17 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
 
 /**
- * @author
- * @since
+ * @author Merden
+ * @since 2023-06-06
  */
 public abstract class AbstractMap {
     protected Block[][] map = new Block[12][12];
 
     /**
-     * @author
-     * @since
+     * Generates a block with a tile
+     *
+     * @author Merden
+     * @since 2023-06-06
      */
     public AbstractMap() {
         // Template
@@ -339,8 +341,10 @@ public abstract class AbstractMap {
     }
 
     /**
-     * @author
-     * @since
+     * Generate a block with a position and a list of behaviours
+     *
+     * @author Merden
+     * @since 2023-06-06
      */
     public void generateBlock(Block[][] map, int x, int y, AbstractTileBehaviour... behaviours) {
         this.map[x][y] = new Block(behaviours, null, new Position(x, y));

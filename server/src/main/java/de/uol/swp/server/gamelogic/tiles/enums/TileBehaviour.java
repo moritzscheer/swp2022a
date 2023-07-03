@@ -3,7 +3,7 @@ package de.uol.swp.server.gamelogic.tiles.enums;
 /**
  * enum for the different tile behaviours
  *
- * @author Tommy Danh
+ * @author Tommy Dang
  * @since 2023-01-24
  */
 public enum TileBehaviour {

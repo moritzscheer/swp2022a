@@ -69,53 +69,42 @@ public abstract class AbstractPlayer {
         return this.robot;
     }
 
-    /**
-     * Return next card to be played
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-03-28
-     */
-    public Card playCard() {
-        Card nextCard = this.chosenCards[numCardToPlay];
-        numCardToPlay += 1;
-        return nextCard;
-    }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-06-05
      */
     public UserDTO getUser() {
         return userDTO;
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-06-05
      */
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }
 
     /**
-     * @author
-     * @since
+     * @author WKempel
+     * @since 2023-06-23
      */
     public void setReceivedCards(Card[] receivedCards) {
         this.receivedCards = receivedCards;
     }
 
     /**
-     * @author
-     * @since
+     * @author WKempel
+     * @since 2023-06-23
      */
     public int getNumCardToPlay() {
         return numCardToPlay;
     }
 
     /**
-     * @author
-     * @since
+     * @author WKempel
+     * @since 2023-06-23
      */
     public void setNumCardToPlay(int numCardToPlay) {
         this.numCardToPlay = numCardToPlay;

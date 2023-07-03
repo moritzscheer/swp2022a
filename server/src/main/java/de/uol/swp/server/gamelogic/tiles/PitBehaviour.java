@@ -40,7 +40,7 @@ public class PitBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     @Override

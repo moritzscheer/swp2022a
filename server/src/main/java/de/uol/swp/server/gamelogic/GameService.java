@@ -46,7 +46,7 @@ public class GameService extends AbstractService {
     /**
      * Constructor
      *
-     * @param bus the EvenBus used throughout the server
+     * @param bus the EventBus used throughout the server
      * @param gameManagement
      * @since 2023-05-06
      */
@@ -66,7 +66,7 @@ public class GameService extends AbstractService {
      * Handles StartGameRequest found on the EventBus
      *
      * <p>If a StartGameRequest is detected on the EventBus, this method is called. It posts a
-     * StartGameMessage to all the users in the lobby, containing the
+     * StartGameMessage to all the users in the lobby
      *
      * <p>PS.: GetMapDataRequest/Response was removed, and now the board is sent together with
      * startGameMessage inside the gameDTO object (2023-06-18)
@@ -101,7 +101,7 @@ public class GameService extends AbstractService {
      * Handles GetProgramCardsRequest found on the EventBus
      *
      * <p>If a GetProgramCardsRequest is detected on the EventBus, this method is called. It posts a
-     * GetProgramCardsRequest to all the users in the lobby, containing the
+     * GetProgramCardsRequest to all the users in the lobby
      *
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel

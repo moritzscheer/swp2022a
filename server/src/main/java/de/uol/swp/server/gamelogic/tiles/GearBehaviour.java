@@ -64,7 +64,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Merden
      * @since 2023-03-05
      */
     @Override
@@ -78,7 +78,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public boolean isTurnClockwise() {
@@ -86,7 +86,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public int getType() {
@@ -94,7 +94,7 @@ public class GearBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public void setType(int type) {

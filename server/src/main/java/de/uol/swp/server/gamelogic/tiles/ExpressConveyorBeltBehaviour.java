@@ -10,13 +10,13 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import java.util.List;
 
 /**
- * @author
+ * @author Finn
  * @since 2023-03-05
  */
 public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     public ExpressConveyorBeltBehaviour(
@@ -29,7 +29,7 @@ public class ExpressConveyorBeltBehaviour extends ConveyorBeltBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     @Override

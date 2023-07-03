@@ -23,7 +23,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     private boolean crossing;
 
     /**
-     * @author
+     * @author Ole Zimmermann
      * @since 2023-03-05
      */
     public PressorBehaviour(
@@ -64,7 +64,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public boolean isCrossing() {
@@ -74,7 +74,6 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     /**
      * When the robot is under a pressor then it will die.
      *
-     * @param activeInProgramSteps the current program step
      * @return null
      */
     @Override

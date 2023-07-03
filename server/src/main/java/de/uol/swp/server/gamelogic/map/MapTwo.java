@@ -6,14 +6,26 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
 /**
- * @author
- * @since
+ * This is the second map of the game.
+ *
+ * @author Ole Zimmermann & Merden
+ * @since 2023-05-21
  */
 public class MapTwo extends AbstractMap {
 
     /**
-     * @author
-     * @since
+     * @author Ole Zimmermann & Merden
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.WallBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.ConveyorBeltBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.RepairBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.GearBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.LaserBehaviour
+     * @see de.uol.swp.server.gamelogic.Block
+     * @see de.uol.swp.common.game.Position
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.server.gamelogic.tiles.enums.ArrowType
+     * @since 2023-05-21
      */
     public MapTwo() {
         int x = 0;
