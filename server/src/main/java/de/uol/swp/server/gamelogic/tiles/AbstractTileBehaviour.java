@@ -151,7 +151,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
      * @author Maria
      * @since 2023-07-03
      */
-    public void setBoard(Block[][] newBoard){
+    public void setBoard(Block[][] newBoard) {
         this.board = newBoard;
     }
 }

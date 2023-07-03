@@ -20,7 +20,6 @@ import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.common.user.message.UserLoggedInMessage;
 import de.uol.swp.common.user.message.UserLoggedOutMessage;
-import de.uol.swp.common.user.response.AllOnlineUsersResponse;
 import de.uol.swp.common.user.response.LoginSuccessfulResponse;
 
 import javafx.application.Platform;
@@ -35,8 +34,6 @@ import javafx.scene.input.KeyEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 /**
  * Manages the main menu
@@ -310,7 +307,8 @@ public class MainMenuPresenter extends AbstractPresenter {
     }
 
     /**
-     * Method is subscribed to NewTextChatMessageReceived, when NewTextChatMessageReceived is posted on bus
+     * Method is subscribed to NewTextChatMessageReceived, when NewTextChatMessageReceived is posted
+     * on bus
      *
      * @author Finn Oldeboershuis, Tommy Dang
      * @see de.uol.swp.client.chat.messages.NewTextChatMessageReceived

@@ -125,7 +125,6 @@ public class AccountMenuPresenter extends AbstractPresenter {
      * @author Waldemar Kempel
      * @since 2022-12-02
      */
-
     @FXML
     private void onPasswordResetButtonPressed(ActionEvent event) {
         if (emailField.getText().isEmpty() && !passwordField.getText().isEmpty()) {

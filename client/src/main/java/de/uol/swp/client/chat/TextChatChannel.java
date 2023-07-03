@@ -72,8 +72,8 @@ public class TextChatChannel {
     /**
      * Handles new text chat message received
      *
-     * If a NewTextChatMessageMessage is posted to the EventBus the loggedInUser of this client updates
-     * the chat history.
+     * <p>If a NewTextChatMessageMessage is posted to the EventBus the loggedInUser of this client
+     * updates the chat history.
      *
      * @author Finn Oldeboershuis
      * @since 2023-01-06

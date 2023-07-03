@@ -2,6 +2,7 @@ package de.uol.swp.common.chat;
 
 import java.io.Serializable;
 import java.util.UUID;
+
 /**
  * Class to store the text channel id (UUID)
  *
@@ -14,7 +15,6 @@ public class TextChatChannelDTO implements Serializable {
      * Constructor of the TextChatChannelDTO class
      *
      * @param channelID ID of the lobby
-     *
      * @author Finn Oldeborshuis
      * @since 2022-12-16
      */

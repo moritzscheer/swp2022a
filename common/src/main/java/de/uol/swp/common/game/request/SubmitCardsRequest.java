@@ -22,19 +22,16 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
     /**
      * Constructor
      *
-     * @param lobbyID  integer of the lobby
-     * @param userDTO  UserDTO of the user
+     * @param lobbyID integer of the lobby
+     * @param userDTO UserDTO of the user
      * @param cardDTOS List of card DTOs
      * @author Waldemar Kempel, Maria Andrade
      * @since 2023-05-19
      */
     public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO> cardDTOS) {
-        if (lobbyID < 0)
-            throw new IllegalArgumentException("Lobby can not be null");
-        if (userDTO == null)
-            throw new NullPointerException("User can not be null");
-        if (cardDTOS == null)
-            throw new NullPointerException("CardDTO can not be null");
+        if (lobbyID < 0) throw new IllegalArgumentException("Lobby can not be null");
+        if (userDTO == null) throw new NullPointerException("User can not be null");
+        if (cardDTOS == null) throw new NullPointerException("CardDTO can not be null");
         this.lobbyID = lobbyID;
         this.loggedInUser = userDTO;
         this.cardDTO = cardDTOS;

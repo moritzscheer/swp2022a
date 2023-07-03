@@ -77,7 +77,7 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         // this is now called only on the block which starts
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
-                switch (direction){
+                switch (direction) {
                     case North:
                     case West:
                         searchRobot(direction, -1);
@@ -93,25 +93,24 @@ public class LaserBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
-    /** Search for the first robot that the laser finds
-     * and spare the others
+    /**
+     * Search for the first robot that the laser finds and spare the others
      *
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-07-03
      */
-    private void searchRobot(CardinalDirection direction, int op){
+    private void searchRobot(CardinalDirection direction, int op) {
         boolean foundRobot = false;
         int x = blockPos.x;
         int y = blockPos.y;
 
-        while(true){ // iterate through blocks
+        while (true) { // iterate through blocks
             boolean foundWall = false;
-            for(AbstractTileBehaviour behaviour: board[x][y].getBehaviourList()){
-                if(behaviour instanceof LaserBehaviour){
+            for (AbstractTileBehaviour behaviour : board[x][y].getBehaviourList()) {
+                if (behaviour instanceof LaserBehaviour) {
                     for (Robot robotState : robotStates) {
-                        if(!robotState.isAlive())
-                            continue;
+                        if (!robotState.isAlive()) continue;
                         if (robotState.getPosition().equals(new Position(x, y))) {
                             foundRobot = true;
                             robotState.setDamageToken(robotState.getDamageToken() + laserBeam);
@@ -120,32 +119,31 @@ public class LaserBehaviour extends AbstractTileBehaviour {
                     }
                 }
                 if (behaviour instanceof WallBehaviour) {
-                    if(behaviour.getObstruction(direction))
-                        foundWall = true;
+                    if (behaviour.getObstruction(direction)) foundWall = true;
                 }
             }
-            if(foundWall || foundRobot)
-                break;
+            if (foundWall || foundRobot) break;
 
-            if(direction == CardinalDirection.West || direction == CardinalDirection.East) { // x
+            if (direction == CardinalDirection.West || direction == CardinalDirection.East) { // x
                 x = x + op;
-            }else { // y
+            } else { // y
                 y = y + op;
             }
             // test if there is wall in next block
             try {
-                for (AbstractTileBehaviour behaviour: board[x][y].getBehaviourList()) {
+                for (AbstractTileBehaviour behaviour : board[x][y].getBehaviourList()) {
                     // check the opposite direction for a wall in the next block
-                    if(behaviour.getObstruction(CardinalDirection.values()[(direction.ordinal() + 2) % 4])){
+                    if (behaviour.getObstruction(
+                            CardinalDirection.values()[(direction.ordinal() + 2) % 4])) {
                         foundWall = true;
                         break; // do not go to next block
                     }
                 }
-            }catch (IndexOutOfBoundsException ignored){
-                ;;
+            } catch (IndexOutOfBoundsException ignored) {
+                ;
+                ;
             }
-            if(foundWall || y < 0 || y == board[0].length || x < 0 || x == board.length)
-                break;
+            if (foundWall || y < 0 || y == board[0].length || x < 0 || x == board.length) break;
         }
     }
 

@@ -217,7 +217,6 @@ public final class MapBuilder {
      * @author Ole Zimmermann
      * @see de.uol.swp.server.gamelogic.Block
      * @see java.io
-     *
      * @since 2023-06-18
      */
     public static void mapGen() throws IOException {
@@ -344,8 +343,7 @@ public final class MapBuilder {
                                     ((LaserBehaviour) map[x][y].getBehaviourList()[i])
                                             .getLaserDirection());
                         }
-                    }
-                    else if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
+                    } else if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
                         checkpointFound++;
                     }
                 }

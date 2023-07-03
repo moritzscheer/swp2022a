@@ -220,7 +220,7 @@ public class SceneManager {
     /**
      * Initializes the login view
      *
-     * If the loginParent is null it gets set to a new Parent containing a pane showing the login
+     * <p>If the loginParent is null it gets set to a new Parent containing a pane showing the login
      * view as specified by the LoginView FXML file.
      *
      * @author Moritz Scheer
@@ -236,7 +236,7 @@ public class SceneManager {
     /**
      * Initializes the registration view
      *
-     * If the registrationParent is null it gets set to a new scene containing a pane showing the
+     * <p>If the registrationParent is null it gets set to a new scene containing a pane showing the
      * registration view as specified by the RegistrationView FXML file.
      *
      * @author Moritz Scheer
@@ -252,7 +252,7 @@ public class SceneManager {
     /**
      * Initializes the setting view
      *
-     * If the settingParent is null it gets set to a new scene containing the a pane showing the
+     * <p>If the settingParent is null it gets set to a new scene containing the a pane showing the
      * setting view as specified by the SettingView FXML file.
      *
      * @author Moritz Scheer
@@ -268,7 +268,7 @@ public class SceneManager {
     /**
      * Initializes the main menu view
      *
-     * If the mainParent is null it gets set to a new Parent showing the main menu view as
+     * <p>If the mainParent is null it gets set to a new Parent showing the main menu view as
      * specified by the MainMenuView FXML file.
      *
      * @author Moritz Scheer
@@ -284,7 +284,7 @@ public class SceneManager {
     /**
      * Initializes the rule book view
      *
-     * If the rulebookParent is null it gets set to a new Parent showing the rule book view as
+     * <p>If the rulebookParent is null it gets set to a new Parent showing the rule book view as
      * specified by the RuleBookView FXML file.
      *
      * @author Moritz Scheer
@@ -300,7 +300,7 @@ public class SceneManager {
     /**
      * Initializes the credit view
      *
-     * If the creditParent is null it gets set to a new Parent showing the credit view as
+     * <p>If the creditParent is null it gets set to a new Parent showing the credit view as
      * specified by the RuleBookView FXML file.
      *
      * @author Moritz Scheer and Tommy Dang
@@ -316,7 +316,7 @@ public class SceneManager {
     /**
      * Initializes the change account option view
      *
-     * If the changeAccountOptionsParent is null it gets set to a new Parent showing the change
+     * <p>If the changeAccountOptionsParent is null it gets set to a new Parent showing the change
      * account option view as specified by the changeAccountOptionView FXML file.
      *
      * @author Moritz Scheer, Waldemar Kempel and Tommy Dang
@@ -332,7 +332,7 @@ public class SceneManager {
     /**
      * Initializes the join or create view
      *
-     * If the lobbyParent is null it gets set to a new Parent showing the join or create view as
+     * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create view as
      * specified by the JoinOrCreate FXML file.
      *
      * @author Moritz Scheer
@@ -348,7 +348,7 @@ public class SceneManager {
     /**
      * Initializes the create lobby view
      *
-     * If the lobbyParent is null it gets set to a new Parent showing the join or create lobby
+     * <p>If the lobbyParent is null it gets set to a new Parent showing the join or create lobby
      * view as specified by the CreateLobby FXML file.
      *
      * @author Moritz Scheer
@@ -364,8 +364,8 @@ public class SceneManager {
     /**
      * Initializes the lobby view
      *
-     * Creates a lobbyParent with the given lobbyID and sets the Controller for the fxml file to a new LobbyPresenter
-     * Controller.
+     * <p>Creates a lobbyParent with the given lobbyID and sets the Controller for the fxml file to
+     * a new LobbyPresenter Controller.
      *
      * @author Moritz Scheer and Maria Eduarda
      * @see de.uol.swp.client.lobbyGame.lobby.presenter.LobbyPresenter
@@ -392,7 +392,7 @@ public class SceneManager {
     /**
      * Initializes the game view
      *
-     * If the gameParent is null it gets set to a new Parent showing the game view as specified
+     * <p>If the gameParent is null it gets set to a new Parent showing the game view as specified
      * by the GameView FXML file.
      *
      * @author Maria Eduarda
@@ -424,7 +424,7 @@ public class SceneManager {
     /**
      * Handles successfully created Lobbies
      *
-     * If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
+     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
      * called. It calls a private method to set up a tab.
      *
      * @author Moritz Scheer
@@ -440,7 +440,7 @@ public class SceneManager {
     /**
      * Handles successfully joined Lobbies
      *
-     * If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
+     * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
      * called. It calls a private method to set up a tab.
      *
      * @author Moritz Scheer
@@ -456,7 +456,7 @@ public class SceneManager {
     /**
      * Handles ShowCreditViewEvent detected on the EventBus
      *
-     * If a ShowCreditViewEvent is detected on the EventBus, this method gets called. It calls a
+     * <p>If a ShowCreditViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the credit screen.
      *
      * @author Tommy Dang
@@ -472,7 +472,7 @@ public class SceneManager {
     /**
      * Handles ShowRulebookViewEvent detected on the EventBus
      *
-     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets called. It calls
+     * <p>If a ShowRulebookViewEvent is detected on the EventBus, this method gets called. It calls
      * a method to switch the current screen to the rulebook screen.
      *
      * @author Tommy Dang
@@ -488,7 +488,7 @@ public class SceneManager {
     /**
      * Handles ShowSettingViewEvent detected on the EventBus
      *
-     * If a ShowSettingViewEvent is detected on the EventBus, this method gets called. It calls a
+     * <p>If a ShowSettingViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the setting screen.
      *
      * @author Tommy Dang
@@ -508,7 +508,7 @@ public class SceneManager {
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
-     * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets called. It
+     * <p>If a ShowRegistrationViewEvent is detected on the EventBus, this method gets called. It
      * calls a method to switch the current screen to the registration screen.
      *
      * @param event The ShowRegistrationViewEvent detected on the EventBus
@@ -523,7 +523,7 @@ public class SceneManager {
     /**
      * Handles ShowLoginViewEvent detected on the EventBus
      *
-     * If a ShowLoginViewEvent is detected on the EventBus, this method gets called. It calls a
+     * <p>If a ShowLoginViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the login screen.
      *
      * @author Moritz Scheer
@@ -539,7 +539,7 @@ public class SceneManager {
     /**
      * Handles RegistrationCanceledEvent detected on the EventBus
      *
-     * If a RegistrationCanceledEvent is detected on the EventBus, this method gets called. It
+     * <p>If a RegistrationCanceledEvent is detected on the EventBus, this method gets called. It
      * calls a method to show the screen shown before registration.
      *
      * @author Moritz Scheer
@@ -555,7 +555,7 @@ public class SceneManager {
     /**
      * Handles RegistrationErrorEvent detected on the EventBus
      *
-     * If a RegistrationErrorEvent is detected on the EventBus, this method gets called. It shows
+     * <p>If a RegistrationErrorEvent is detected on the EventBus, this method gets called. It shows
      * the error message of the event in an error alert.
      *
      * @author Moritz Scheer
@@ -571,7 +571,7 @@ public class SceneManager {
     /**
      * Handles ShowAccountOptionsViewEvent detected on the EventBus
      *
-     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets called. It
+     * <p>If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets called. It
      * shows the AccountOptionView.
      *
      * @param event The ShowAccountOptionsViewEvent detected on the EventBus
@@ -587,7 +587,7 @@ public class SceneManager {
     /**
      * Handles ShowMainMenuViewEvent detected on the EventBus
      *
-     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets called. It calls
+     * <p>If a ShowMainMenuViewEvent is detected on the EventBus, this method gets called. It calls
      * a method to switch the current screen to the main manu screen.
      *
      * @author Moritz Scheer
@@ -603,7 +603,7 @@ public class SceneManager {
     /**
      * Handles ShowJoinOrCreateViewEvent detected on the EventBus
      *
-     * If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets called.
+     * <p>If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets called.
      *
      * @author Moritz Scheer
      * @param event The ShowJoinOrCreateViewEvent detected on the EventBus
@@ -618,7 +618,7 @@ public class SceneManager {
     /**
      * Handles JoinOrCreateCanceledEvent detected on the EventBus
      *
-     * If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets called.
+     * <p>If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets called.
      *
      * @author Moritz Scheer, Maxim Merden
      * @param event The JoinOrCreateCanceledEvent detected on the EventBus
@@ -633,7 +633,7 @@ public class SceneManager {
     /**
      * Handles CreateLobbyCanceledEvent detected on the EventBus
      *
-     * If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets called.
+     * <p>If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets called.
      *
      * @author Maria Andrade
      * @param event The CreateLobbyCanceledEvent detected on the EventBus
@@ -663,7 +663,7 @@ public class SceneManager {
     /**
      * Handles ShowGameViewEvent detected on the EventBus
      *
-     * If a ShowGameViewEvent is detected on the EventBus, this method gets called.
+     * <p>If a ShowGameViewEvent is detected on the EventBus, this method gets called.
      *
      * @author Moritz Scheer, Finn Oldeboershuis, Maria Andrade
      * @param event The ShowGameViewEvent detected on the EventBus
@@ -680,7 +680,7 @@ public class SceneManager {
     /**
      * Handles ShowLobbyViewEvent detected on the EventBus
      *
-     * If a ShowLobbyViewEvent is detected on the EventBus, this method gets called.
+     * <p>If a ShowLobbyViewEvent is detected on the EventBus, this method gets called.
      *
      * @author Moritz Scheer
      * @param event The ShowLobbyViewEvent detected on the EventBus
@@ -695,7 +695,7 @@ public class SceneManager {
     /**
      * Handles CloseClientEvent detected on the EventBus
      *
-     * If a CloseClientEvent is detected on the EventBus, this method gets called.
+     * <p>If a CloseClientEvent is detected on the EventBus, this method gets called.
      *
      * @autor Tommy Dang
      * @param event The CloseClientEvent detected on the EventBus
@@ -717,7 +717,7 @@ public class SceneManager {
      * @author Marco Grawunder, Maria Andrade
      * @param message The type of error to be shown
      * @param e The error message
-     *@since 2019-09-03
+     * @since 2019-09-03
      */
     public void showError(String message, String e) {
         Platform.runLater(
@@ -758,7 +758,7 @@ public class SceneManager {
     /**
      * Switches the current scene and title to the given ones and changes the width and height
      *
-     * The current scene, title, screen width and height are saved in the lastScene, lastTitle,
+     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle,
      * lastSceneWidth and lastSceneHeight variables, before the new scene, title and their width and
      * height are set and shown.
      *
@@ -820,7 +820,7 @@ public class SceneManager {
     /**
      * Shows the login error alert
      *
-     * Opens an ErrorAlert popup saying "Error logging in to server"
+     * <p>Opens an ErrorAlert popup saying "Error logging in to server"
      *
      * @author Gra
      * @since 2019-09-03
@@ -841,7 +841,7 @@ public class SceneManager {
     /**
      * Shows the GameOver Dialog
      *
-     * If the Game is over, is appears a Dialog to shows this
+     * <p>If the Game is over, is appears a Dialog to shows this
      *
      * @author Daniel Merzo & Maria Eduarda
      * @param event use a ShowGameOverEvent Object
@@ -875,7 +875,7 @@ public class SceneManager {
     /**
      * Shows the tab screen
      *
-     * Switches the current Scene to the tabScene and sets the title of the window to "User:
+     * <p>Switches the current Scene to the tabScene and sets the title of the window to "User:
      * (username)" and also show the main menu node in the tabScene.
      *
      * @author Moritz Scheer & Tommy Dang
@@ -890,7 +890,7 @@ public class SceneManager {
     /**
      * Shows the registration screen
      *
-     * Switches the current Scene to the registrationScene and sets the title of the window to
+     * <p>Switches the current Scene to the registrationScene and sets the title of the window to
      * "Registration"
      *
      * @author Moritz Scheer & Tommy Dang
@@ -908,7 +908,7 @@ public class SceneManager {
     /**
      * Shows the login screen
      *
-     * Switches the current Scene to the loginScene and sets the title of the window to "Login"
+     * <p>Switches the current Scene to the loginScene and sets the title of the window to "Login"
      *
      * @author Moritz Scheer & Maria Andrade
      * @since 2019-09-03
@@ -925,7 +925,7 @@ public class SceneManager {
     /**
      * Shows the main menu
      *
-     * Switches the current Scene to the mainScene and sets the title of the window to "Welcome "
+     * <p>Switches the current Scene to the mainScene and sets the title of the window to "Welcome "
      * and the username of the current user
      *
      * @author Moritz Scheer, Ole Zimmermann, Tommy Dang
@@ -944,7 +944,7 @@ public class SceneManager {
     /**
      * Shows the rulebook screen
      *
-     * Switches the main menu Scene to the rulebookScene and sets the title of the window to
+     * <p>Switches the main menu Scene to the rulebookScene and sets the title of the window to
      * "Rulebook"
      *
      * @author Moritz Scheer
@@ -958,7 +958,7 @@ public class SceneManager {
     /**
      * Shows the credit screen
      *
-     * Switches the main menu Scene to the creditScene and sets the title of the window to
+     * <p>Switches the main menu Scene to the creditScene and sets the title of the window to
      * "Credits"
      *
      * @author Moritz Scheer
@@ -972,7 +972,7 @@ public class SceneManager {
     /**
      * Shows the setting screen
      *
-     * Switches the main menu Scene to the settingParent and sets the title of the window to
+     * <p>Switches the main menu Scene to the settingParent and sets the title of the window to
      * "Settings"
      *
      * @author Moritz Scheer
@@ -986,7 +986,7 @@ public class SceneManager {
     /**
      * Shows the account screen
      *
-     * Switches the current Scene to the accountScene and sets the title of the window to
+     * <p>Switches the current Scene to the accountScene and sets the title of the window to
      * "Account options"
      *
      * @author Moritz Scheer & Maria Andrade
@@ -1000,7 +1000,7 @@ public class SceneManager {
     /**
      * Shows the joinOrCreate screen
      *
-     * Switches the current Scene to the joinOrCreateScene and sets the title of the window to
+     * <p>Switches the current Scene to the joinOrCreateScene and sets the title of the window to
      * "Lobbies"
      *
      * @author Moritz Scheer
@@ -1014,7 +1014,7 @@ public class SceneManager {
     /**
      * Shows the createLobby screen
      *
-     * Switches the current Scene to the createLobbyScene and sets the title of the window to
+     * <p>Switches the current Scene to the createLobbyScene and sets the title of the window to
      * "Create Lobby"
      *
      * @author Moritz Scheer & Maxim Merden
@@ -1028,7 +1028,7 @@ public class SceneManager {
     /**
      * Shows the game screen
      *
-     * Switches the current Parent to the gameParent
+     * <p>Switches the current Parent to the gameParent
      *
      * @author Moritz Scheer
      * @since 2023-03-09
@@ -1040,7 +1040,7 @@ public class SceneManager {
     /**
      * Shows the lobby screen
      *
-     * Switches the current Parent to the lobbyParent
+     * <p>Switches the current Parent to the lobbyParent
      *
      * @author Moritz Scheer
      * @since 2023-03-09
@@ -1056,7 +1056,7 @@ public class SceneManager {
     /**
      * Helper method to create a tab and initialize the lobby view
      *
-     * This method initializes the lobbyview and shows different views depending on if the lobby
+     * <p>This method initializes the lobbyview and shows different views depending on if the lobby
      * is set to private or not. Also it opens the setup method to setup the lobby and opens the
      * createTab method to create a tab with the given content.
      *

@@ -1066,8 +1066,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    public void setPlayerReadyStatus(
-            UserDTO playerIsReady) {
+    public void setPlayerReadyStatus(UserDTO playerIsReady) {
         if (Objects.equals(playerIsReady, loggedInUser)) {
             readyButton.setDisable(true);
         } else {
@@ -1265,8 +1264,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
      * @since 2023-06-12
      */
-    public void setPlayerCard(
-            Map<UserDTO, CardDTO> userDTOCardDTOMap) {
+    public void setPlayerCard(Map<UserDTO, CardDTO> userDTOCardDTOMap) {
         for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
             if (this.userDTOPlayerDTOMap
                     .get(userCurrentCard.getKey())
@@ -1534,8 +1532,7 @@ public class GamePresenter extends AbstractPresenter {
      * animate multiple board elements
      *
      * @author Jann Erik Bruns
-     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
-     * @Exeption Exception
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage @Exeption Exception
      * @since 2023-06-13
      */
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {

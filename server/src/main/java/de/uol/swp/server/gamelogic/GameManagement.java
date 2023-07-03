@@ -133,7 +133,8 @@ public class GameManagement {
      * @since 2023-02-28
      */
     public List<CardDTO> getPlayerReceivedCards(int lobbyID, UserDTO user) {
-        return convertCardsToCardsDTO(games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
+        return convertCardsToCardsDTO(
+                games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
     }
 
     /**

@@ -20,8 +20,8 @@ public class BlockDTO implements Serializable {
     /**
      * Constructor
      *
-     * @param inputImageInfo Array that stores the information of the images to display a block of the map
-     *
+     * @param inputImageInfo Array that stores the information of the images to display a block of
+     *     the map
      * @author Jann Erik Bruns
      * @since 2023-05-16
      */

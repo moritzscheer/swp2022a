@@ -114,7 +114,7 @@ public class GameService {
     /**
      * Handles StartGameMessage detected on the EventBus
      *
-     * If a StartGameMessage is detected on the EventBus, this method gets called.
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The StartGameMessage detected on the EventBus
      * @see de.uol.swp.common.game.message.StartGameMessage
@@ -130,7 +130,7 @@ public class GameService {
     /**
      * Handles ProgramCardDataResponse detected on the EventBus
      *
-     * If a StartGameMessage is detected on the EventBus, this method gets called.
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The ProgramCardDataResponse on the EventBus
      * @see de.uol.swp.common.game.response.ProgramCardDataResponse
@@ -150,7 +150,7 @@ public class GameService {
     /**
      * Handles RobotTurnedOffMessage detected on the EventBus
      *
-     * If a RobotTurnedOffMessage is detected on the EventBus, this method gets called.
+     * <p>If a RobotTurnedOffMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The RobotTurnedOffMessage on the EventBus
      * @see de.uol.swp.common.game.message.RobotTurnedOffMessage
@@ -166,7 +166,7 @@ public class GameService {
     /**
      * Handles PlayerIsReadyMessage detected on the EventBus
      *
-     * If a PlayerIsReadyMessage is detected on the EventBus, this method gets called.
+     * <p>If a PlayerIsReadyMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The PlayerIsReadyMessage on the EventBus
      * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
@@ -182,7 +182,7 @@ public class GameService {
     /**
      * Handles ShowAllPlayersCardsMessage detected on the EventBus
      *
-     * If a ShowAllPlayersCardsMessage is detected on the EventBus, this method gets called.
+     * <p>If a ShowAllPlayersCardsMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The ShowAllPlayersCardsMessage on the EventBus
      * @see de.uol.swp.common.game.message.ShowAllPlayersCardsMessage
@@ -198,7 +198,7 @@ public class GameService {
     /**
      * Handles ShowRobotMovingMessage detected on the EventBus
      *
-     * If a ShowRobotMovingMessage is detected on the EventBus, this method gets called.
+     * <p>If a ShowRobotMovingMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The ShowRobotMovingMessage on the EventBus
      * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
@@ -214,7 +214,7 @@ public class GameService {
     /**
      * Handles TextHistoryMessage detected on the EventBus
      *
-     * If a TextHistoryMessage is detected on the EventBus, this method gets called.
+     * <p>If a TextHistoryMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The TextHistoryMessage on the EventBus
      * @see de.uol.swp.common.chat.message.TextHistoryMessage
@@ -230,7 +230,7 @@ public class GameService {
     /**
      * Handles ShowBoardMovingMessage detected on the EventBus
      *
-     * If a ShowBoardMovingMessage is detected on the EventBus, this method gets called.
+     * <p>If a ShowBoardMovingMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The ShowBoardMovingMessage on the EventBus
      * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
@@ -246,7 +246,7 @@ public class GameService {
     /**
      * Handles RoundIsOverMessage detected on the EventBus
      *
-     * If a RoundIsOverMessage is detected on the EventBus, this method gets called.
+     * <p>If a RoundIsOverMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The RoundIsOverMessage on the EventBus
      * @see de.uol.swp.common.game.message.RoundIsOverMessage
@@ -262,7 +262,7 @@ public class GameService {
     /**
      * Handles RobotIsFinallyDead detected on the EventBus
      *
-     * If a RobotIsFinallyDead is detected on the EventBus, this method gets called.
+     * <p>If a RobotIsFinallyDead is detected on the EventBus, this method gets called.
      *
      * @param msg The RobotIsFinallyDead detected on the EventBus
      * @see de.uol.swp.common.game.message.RobotIsFinallyDead

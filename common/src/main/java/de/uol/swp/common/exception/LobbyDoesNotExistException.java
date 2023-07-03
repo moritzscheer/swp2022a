@@ -15,7 +15,6 @@ public class LobbyDoesNotExistException extends Exception {
      *
      * @param lobbyID the not existing lobby id
      * @param message content of the exception
-     *
      * @author Maria Andrade
      * @since 2023-06-18
      */

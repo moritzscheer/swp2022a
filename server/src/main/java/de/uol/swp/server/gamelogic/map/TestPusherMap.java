@@ -24,7 +24,7 @@ public class TestPusherMap extends AbstractMap {
      * @see de.uol.swp.common.game.enums.CardinalDirection
      * @see de.uol.swp.common.game.Position
      * @since 2023-06-11
-     * */
+     */
     public TestPusherMap() {
 
         for (int y = 0; y <= 11; y++) {

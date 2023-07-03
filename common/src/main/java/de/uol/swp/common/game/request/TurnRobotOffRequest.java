@@ -16,8 +16,8 @@ public class TurnRobotOffRequest extends AbstractLobbyRequest {
     /**
      * Constructor
      *
-     * @param lobbyID  integer of the lobby
-     * @param loggedInUser  UserDTO of the user who is logged in
+     * @param lobbyID integer of the lobby
+     * @param loggedInUser UserDTO of the user who is logged in
      * @author Waldemar Kempel, Maria Andrade
      * @since 2023-06-13
      */

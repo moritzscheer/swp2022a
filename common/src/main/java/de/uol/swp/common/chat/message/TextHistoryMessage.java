@@ -1,6 +1,7 @@
 package de.uol.swp.common.chat.message;
 
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
+
 /**
  * Class used to send information about game related actions to display in the GameView
  *
@@ -17,7 +18,6 @@ public class TextHistoryMessage extends AbstractLobbyMessage {
      *
      * @param lobbyID ID of the lobby
      * @param message content of the message
-     *
      * @author Waldemar Kempel
      * @since 2022-06-02
      */

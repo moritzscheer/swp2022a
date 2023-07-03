@@ -107,8 +107,7 @@ public class TabPresenter extends AbstractPresenter {
      * @since 2023-01-04
      */
     @Subscribe
-    public void onLobbyLeaveExceptionResponse(LobbyLeftExceptionResponse message) {
-    }
+    public void onLobbyLeaveExceptionResponse(LobbyLeftExceptionResponse message) {}
 
     // -----------------------------------------------------
     // public methods
@@ -233,8 +232,7 @@ public class TabPresenter extends AbstractPresenter {
     /**
      * method for checking if an exit request send
      *
-     * @author Moritz Scheer
-     * #@return set infoLabel2 to visibl
+     * @author Moritz Scheer #@return set infoLabel2 to visibl
      * @since 2022-12-28
      */
     public boolean infoLabel2IsVisible() {

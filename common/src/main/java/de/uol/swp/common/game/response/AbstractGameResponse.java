@@ -37,6 +37,7 @@ public class AbstractGameResponse extends AbstractResponseMessage {
 
     /**
      * Getter for the gameID variable
+     *
      * @author Maria Eduarda Costa Leite Andrade
      * @return game responsible for the creation of this message
      * @since 2023-05-01
@@ -47,6 +48,7 @@ public class AbstractGameResponse extends AbstractResponseMessage {
 
     /**
      * Setter for the gameID variable
+     *
      * @author Maria Eduarda Costa Leite Andrade
      * @param gameID game responsible for the creation of this message
      * @since 2023-05-01

@@ -1,6 +1,7 @@
 package de.uol.swp.common.chat;
 
 import java.io.Serializable;
+
 /**
  * Container class for text message related informations
  *
@@ -19,7 +20,6 @@ public class TextChatMessage implements Serializable {
      * @param message Content of the message
      * @param senderString sender string of the message
      * @param timeStamp Timestamp of the message
-     *
      * @author Finn Oldeborshuis
      * @since 2022-12-16
      */

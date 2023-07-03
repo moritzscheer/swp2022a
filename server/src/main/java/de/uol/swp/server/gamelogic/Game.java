@@ -118,9 +118,10 @@ public class Game {
 
         // create players and robots
         int i = 0; // start robots id in 0
-        if(!Objects.equals(users, null)) // important to run integration tests
-            for (User user : users) {
-                Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+        if (!Objects.equals(users, null)) // important to run integration tests
+        for (User user : users) {
+                Player newPlayer =
+                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
                 this.players.add(newPlayer);
                 this.robots.add(newPlayer.getRobot());
                 i++;
@@ -141,13 +142,13 @@ public class Game {
     }
 
     /**
-     *  Method to load Map outside constructor
+     * Method to load Map outside constructor
      *
      * @author Jann, Tommy, Maxim, Maria, WKempel
      * @see de.uol.swp.server.gamelogic.map.MapBuilder
      * @since 2023-06-19
      */
-    private Position loadMapBuilder(int version){
+    private Position loadMapBuilder(int version) {
         LOG.debug(new File(".").getAbsolutePath());
         // create board
         if (version == -1) {
@@ -216,11 +217,10 @@ public class Game {
         return tmp.getValue1();
     }
 
-
-    /** Update board in each Behaviour, because some behaviours
-     * are dynamically added
+    /**
+     * Update board in each Behaviour, because some behaviours are dynamically added
      *
-     * (In order to laser logic to works)
+     * <p>(In order to laser logic to works)
      *
      * @author Maria
      * @see de.uol.swp.server.gamelogic.Block
@@ -229,10 +229,9 @@ public class Game {
     private void updateBoardInAllBehaviours() {
         for (Block[] boardCol : board)
             for (Block block : boardCol)
-                for(AbstractTileBehaviour behaviour: block.getBehaviourList())
+                for (AbstractTileBehaviour behaviour : block.getBehaviourList())
                     behaviour.setBoard(board);
     }
-
 
     /**
      * Generate random cards for a player (max. 9, min. 5) The cards are generated based on the id,
@@ -338,7 +337,6 @@ public class Game {
      * botPlayers of ready with the method register.
      *
      * @author WKempel & Maria
-     *
      * @return allReady
      * @throws InterruptedException
      */
@@ -395,8 +393,8 @@ public class Game {
      * When a player has chosen its cards, he will press "register" button this function will call
      * the player function that will register his cards Once all players have chosen, the calcGame
      * will be called
-     * @author WKempel & Maria
      *
+     * @author WKempel & Maria
      * @param loggedInUser
      * @param playerCards
      * @return register
@@ -489,10 +487,8 @@ public class Game {
         return userDTOCardDTOMap;
     }
 
-
     /**
-     * Increase program step to get the new cards from each player
-     * Clear gameMovements
+     * Increase program step to get the new cards from each player Clear gameMovements
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-04-25
@@ -570,9 +566,9 @@ public class Game {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-06-20
      */
-    public boolean areAllRobotsAreDead(){
-        for (Robot robot: this.robots ) {
-            if (!robot.isDeadForTheRound()){
+    public boolean areAllRobotsAreDead() {
+        for (Robot robot : this.robots) {
+            if (!robot.isDeadForTheRound()) {
                 return false;
             }
         }
@@ -850,7 +846,6 @@ public class Game {
     // SOLVING MOVE INTENTS
     /////////////////////////////
 
-
     /**
      * @author Maria
      * @since 2023-04-18
@@ -899,7 +894,6 @@ public class Game {
         robot.setDirection(
                 CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
     }
-
 
     /**
      * @author Finn
@@ -1247,9 +1241,9 @@ public class Game {
         }
     }
 
-//////////////////////////////
-// GETTERS // SETTERS
-/////////////////////////////
+    //////////////////////////////
+    // GETTERS // SETTERS
+    /////////////////////////////
 
     /**
      * @author WKempel
@@ -1356,7 +1350,6 @@ public class Game {
     public String getFullMapName() {
         return fullMapName;
     }
-
 
     public void setNotDistributedCards(boolean notDistributedCards) {
         this.notDistributedCards = notDistributedCards;
