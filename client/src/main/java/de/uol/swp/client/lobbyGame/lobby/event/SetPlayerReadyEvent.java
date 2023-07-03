@@ -63,3 +63,4 @@ public class SetPlayerReadyEvent {
         return ready;
     }
 }
+

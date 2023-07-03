@@ -1822,6 +1822,13 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    /**
+     * Update the History in the game
+     *
+     * @author Waldemar Kempel
+     * @param message
+     * @since 2023-06-02
+     */
     public void updateHistoryMessage(String message) {
         historyOutput.appendText(message);
         historyOutput.setWrapText(true);
@@ -1831,6 +1838,13 @@ public class GamePresenter extends AbstractPresenter {
                 });
     }
 
+    /**
+     * Disables the player's interface and suspends programming card selection
+     *
+     * @author Maria Andrade, Ole Zimmermann, Tommy Dang
+     * @param userDied
+     * @since 2023-09-09
+     */
     public void setRobotDied(UserDTO userDied) {
         deadForeverUsers.add(userDied);
         if (Objects.equals(loggedInUser.getUsername(), userDied.getUsername())) {
@@ -1858,8 +1872,8 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Respawn robots after round is over
      *
+     * @author Maria Andrade & Ole Zimmermann
      * @param respawnRobots
-     * @author Maria Andrade
      * @since 2023-06-22
      */
     public void respawnDeadRobots(List<PlayerDTO> respawnRobots) {

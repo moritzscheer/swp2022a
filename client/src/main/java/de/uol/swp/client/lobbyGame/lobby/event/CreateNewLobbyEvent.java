@@ -15,6 +15,12 @@ public class CreateNewLobbyEvent {
     private final Boolean multiplayer;
     private final String password;
 
+    /**
+     * Constructor for the class
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public CreateNewLobbyEvent(String name, UserDTO user, Boolean multiplayer, String password) {
         this.name = name;
         this.user = user;
@@ -22,18 +28,42 @@ public class CreateNewLobbyEvent {
         this.password = password;
     }
 
+    /**
+     * Getter for name variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter for User variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public UserDTO getUser() {
         return user;
     }
 
+    /**
+     * Getter for Multiplayer variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public Boolean getMultiplayer() {
         return multiplayer;
     }
 
+    /**
+     * Getter for Password variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public String getPassword() {
         return password;
     }

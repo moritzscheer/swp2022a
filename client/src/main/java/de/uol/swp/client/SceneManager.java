@@ -421,9 +421,10 @@ public class SceneManager {
     /**
      * Handles successfully created Lobbies
      *
-     * <p>If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
+     * If an LobbyCreatedSuccessfulResponse object is detected on the EventBus this method is
      * called. It calls a private method to set up a tab.
      *
+     * @author Moritz Scheer
      * @param message The LobbyCreatedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
@@ -439,6 +440,7 @@ public class SceneManager {
      * <p>If an LobbyJoinedSuccessfulResponse object is detected on the EventBus this method is
      * called. It calls a private method to set up a tab.
      *
+     * @author Moritz Scheer
      * @param message The LobbyJoinedSuccessfulResponse object detected on the EventBus
      * @author Moritz Scheer
      * @since 2022-12-27
@@ -451,9 +453,10 @@ public class SceneManager {
     /**
      * Handles ShowCreditViewEvent detected on the EventBus
      *
-     * <p>If a ShowCreditViewEvent is detected on the EventBus, this method gets called. It calls a
+     * If a ShowCreditViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the credit screen.
      *
+     * @author Tommy Dang
      * @param event The ShowCreditViewEvent detected on the EventBus
      * @see de.uol.swp.client.credit.event.ShowCreditViewEvent
      * @since 2022-11-29
@@ -466,9 +469,10 @@ public class SceneManager {
     /**
      * Handles ShowRulebookViewEvent detected on the EventBus
      *
-     * <p>If a ShowRulebookViewEvent is detected on the EventBus, this method gets called. It calls
+     * If a ShowRulebookViewEvent is detected on the EventBus, this method gets called. It calls
      * a method to switch the current screen to the rulebook screen.
      *
+     * @author Tommy Dang
      * @param event The ShowRulebookViewEvent detected on the EventBus
      * @see de.uol.swp.client.rulebook.event.ShowRulebookViewEvent
      * @since 2022-11-27
@@ -481,9 +485,10 @@ public class SceneManager {
     /**
      * Handles ShowSettingViewEvent detected on the EventBus
      *
-     * <p>If a ShowSettingViewEvent is detected on the EventBus, this method gets called. It calls a
+     * If a ShowSettingViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the setting screen.
      *
+     * @author Tommy Dang
      * @param event The ShowSettingViewEvent detected on the EventBus
      * @see de.uol.swp.client.setting.event.ShowSettingViewEvent
      * @since 2022-11-27
@@ -500,7 +505,7 @@ public class SceneManager {
     /**
      * Handles ShowRegistrationViewEvent detected on the EventBus
      *
-     * <p>If a ShowRegistrationViewEvent is detected on the EventBus, this method gets called. It
+     * If a ShowRegistrationViewEvent is detected on the EventBus, this method gets called. It
      * calls a method to switch the current screen to the registration screen.
      *
      * @param event The ShowRegistrationViewEvent detected on the EventBus
@@ -515,9 +520,10 @@ public class SceneManager {
     /**
      * Handles ShowLoginViewEvent detected on the EventBus
      *
-     * <p>If a ShowLoginViewEvent is detected on the EventBus, this method gets called. It calls a
+     * If a ShowLoginViewEvent is detected on the EventBus, this method gets called. It calls a
      * method to switch the current screen to the login screen.
      *
+     * @author Moritz Scheer
      * @param event The ShowLoginViewEvent detected on the EventBus
      * @see de.uol.swp.client.auth.events.ShowLoginViewEvent
      * @since 2019-09-03
@@ -530,9 +536,10 @@ public class SceneManager {
     /**
      * Handles RegistrationCanceledEvent detected on the EventBus
      *
-     * <p>If a RegistrationCanceledEvent is detected on the EventBus, this method gets called. It
+     * If a RegistrationCanceledEvent is detected on the EventBus, this method gets called. It
      * calls a method to show the screen shown before registration.
      *
+     * @author Moritz Scheer
      * @param event The RegistrationCanceledEvent detected on the EventBus
      * @see de.uol.swp.client.register.event.RegistrationCanceledEvent
      * @since 2019-09-03
@@ -545,9 +552,10 @@ public class SceneManager {
     /**
      * Handles RegistrationErrorEvent detected on the EventBus
      *
-     * <p>If a RegistrationErrorEvent is detected on the EventBus, this method gets called. It shows
+     * If a RegistrationErrorEvent is detected on the EventBus, this method gets called. It shows
      * the error message of the event in an error alert.
      *
+     * @author Moritz Scheer
      * @param event The RegistrationErrorEvent detected on the EventBus
      * @see de.uol.swp.client.register.event.RegistrationErrorEvent
      * @since 2019-09-03
@@ -560,11 +568,11 @@ public class SceneManager {
     /**
      * Handles ShowAccountOptionsViewEvent detected on the EventBus
      *
-     * <p>If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets called. It
+     * If a ShowAccountOptionsViewEvent is detected on the EventBus, this method gets called. It
      * shows the AccountOptionView.
      *
      * @param event The ShowAccountOptionsViewEvent detected on the EventBus
-     * @author Waldemar Kempel and Maria Eduarda Costa Leite Andrade
+     * @author Waldemar Kempel & Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.client.main.event.ShowAccountOptionsViewEvent
      * @since 2022-12-03
      */
@@ -576,9 +584,10 @@ public class SceneManager {
     /**
      * Handles ShowMainMenuViewEvent detected on the EventBus
      *
-     * <p>If a ShowMainMenuViewEvent is detected on the EventBus, this method gets called. It calls
+     * If a ShowMainMenuViewEvent is detected on the EventBus, this method gets called. It calls
      * a method to switch the current screen to the main manu screen.
      *
+     * @author Moritz Scheer
      * @param event The ShowMainMenuViewEvent detected on the EventBus
      * @see de.uol.swp.client.main.event.ShowMainMenuViewEvent
      * @since 2022-11-22
@@ -591,10 +600,11 @@ public class SceneManager {
     /**
      * Handles ShowJoinOrCreateViewEvent detected on the EventBus
      *
-     * <p>If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets called.
+     * If a ShowJoinOrCreateViewEvent is detected on the EventBus, this method gets called.
      *
+     * @author Moritz Scheer
      * @param event The ShowJoinOrCreateViewEvent detected on the EventBus
-     * @see ShowJoinOrCreateViewEvent
+     * @see de.uol.swp.client.preLobby.events
      * @since 2022-11-17
      */
     @Subscribe
@@ -605,10 +615,11 @@ public class SceneManager {
     /**
      * Handles JoinOrCreateCanceledEvent detected on the EventBus
      *
-     * <p>If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets called.
+     * If a JoinOrCreateCanceledEvent is detected on the EventBus, this method gets called.
      *
+     * @author Moritz Scheer, Maxim Merden
      * @param event The JoinOrCreateCanceledEvent detected on the EventBus
-     * @see JoinOrCreateCanceledEvent
+     * @see de.uol.swp.client.lobbyGame.game.presenter.GamePresenter
      * @since 2022-11-19
      */
     @Subscribe
@@ -619,10 +630,11 @@ public class SceneManager {
     /**
      * Handles CreateLobbyCanceledEvent detected on the EventBus
      *
-     * <p>If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets called.
+     * If a CreateLobbyCanceledEvent is detected on the EventBus, this method gets called.
      *
+     * @author Maria Andrade
      * @param event The CreateLobbyCanceledEvent detected on the EventBus
-     * @see CreateLobbyCanceledEvent
+     * @see de.uol.swp.client.lobbyGame.game.presenter.GamePresenter
      * @since 2022-11-15
      */
     @Subscribe
@@ -635,8 +647,9 @@ public class SceneManager {
      *
      * <p>If a ShowCreateLobbyViewEvent is detected on the EventBus, this method gets called.
      *
+     * @author Moritz Scheer
      * @param event The RegistrationCanceledEvent detected on the EventBus
-     * @see ShowCreateLobbyViewEvent
+     * @see de.uol.swp.client.lobbyGame.game.presenter.GamePresenter
      * @since 2022-11-17
      */
     @Subscribe
@@ -647,10 +660,11 @@ public class SceneManager {
     /**
      * Handles ShowGameViewEvent detected on the EventBus
      *
-     * <p>If a ShowGameViewEvent is detected on the EventBus, this method gets called.
+     * If a ShowGameViewEvent is detected on the EventBus, this method gets called.
      *
+     * @author Moritz Scheer, Finn Oldeboershuis, Maria Andrade
      * @param event The ShowGameViewEvent detected on the EventBus
-     * @see ShowGameViewEvent
+     * @see de.uol.swp.client.lobbyGame.game.events.RequestStartGameEvent
      * @since 2023-03-09
      */
     @Subscribe
@@ -663,10 +677,11 @@ public class SceneManager {
     /**
      * Handles ShowLobbyViewEvent detected on the EventBus
      *
-     * <p>If a ShowLobbyViewEvent is detected on the EventBus, this method gets called.
+     * If a ShowLobbyViewEvent is detected on the EventBus, this method gets called.
      *
+     * @author Moritz Scheer
      * @param event The ShowLobbyViewEvent detected on the EventBus
-     * @see ShowLobbyViewEvent
+     * @see de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent
      * @since 2023-03-09
      */
     @Subscribe
@@ -677,8 +692,9 @@ public class SceneManager {
     /**
      * Handles CloseClientEvent detected on the EventBus
      *
-     * <p>If a CloseClientEvent is detected on the EventBus, this method gets called.
+     * If a CloseClientEvent is detected on the EventBus, this method gets called.
      *
+     * @autor Tommy Dang
      * @param event The CloseClientEvent detected on the EventBus
      * @see de.uol.swp.client.CloseClientEvent
      * @since 2023-01-04
@@ -695,9 +711,10 @@ public class SceneManager {
     /**
      * Shows an error message inside an error alert
      *
+     * @author Marco Grawunder, Maria Andrade
      * @param message The type of error to be shown
      * @param e The error message
-     * @since 2019-09-03
+     *@since 2019-09-03
      */
     public void showError(String message, String e) {
         Platform.runLater(
@@ -738,13 +755,13 @@ public class SceneManager {
     /**
      * Switches the current scene and title to the given ones and changes the width and height
      *
-     * <p>The current scene, title, screen width and height are saved in the lastScene, lastTitle,
+     * The current scene, title, screen width and height are saved in the lastScene, lastTitle,
      * lastSceneWidth and lastSceneHeight variables, before the new scene, title and their width and
      * height are set and shown.
      *
      * @param scene New scene to show
      * @param title New window title
-     * @author Tommy Dang
+     * @author Tommy Dang, Moritz Scheer, Maria Andrade
      * @since 2023-01-04
      */
     private void showScene(final Scene scene, final String title) {
@@ -800,8 +817,9 @@ public class SceneManager {
     /**
      * Shows the login error alert
      *
-     * <p>Opens an ErrorAlert popup saying "Error logging in to server"
+     * Opens an ErrorAlert popup saying "Error logging in to server"
      *
+     * @author Gra
      * @since 2019-09-03
      */
     public void showLoginErrorScreen() {
@@ -820,9 +838,10 @@ public class SceneManager {
     /**
      * Shows the GameOver Dialog
      *
-     * <p>If the Game is over, is appears a Dialog to shows this
+     * If the Game is over, is appears a Dialog to shows this
      *
      * @author Daniel Merzo & Maria Eduarda
+     * @param event use a ShowGameOverEvent Object
      * @since 2023-05-24
      */
     @Subscribe
@@ -853,9 +872,10 @@ public class SceneManager {
     /**
      * Shows the tab screen
      *
-     * <p>Switches the current Scene to the tabScene and sets the title of the window to "User:
+     * Switches the current Scene to the tabScene and sets the title of the window to "User:
      * (username)" and also show the main menu node in the tabScene.
      *
+     * @author Moritz Scheer & Tommy Dang
      * @since 2019-09-03
      */
     public void showTabScreen() {
@@ -867,9 +887,10 @@ public class SceneManager {
     /**
      * Shows the registration screen
      *
-     * <p>Switches the current Scene to the registrationScene and sets the title of the window to
+     * Switches the current Scene to the registrationScene and sets the title of the window to
      * "Registration"
      *
+     * @author Moritz Scheer & Tommy Dang
      * @since 2019-09-03
      */
     public void showRegistrationScreen() {
@@ -884,8 +905,9 @@ public class SceneManager {
     /**
      * Shows the login screen
      *
-     * <p>Switches the current Scene to the loginScene and sets the title of the window to "Login"
+     * Switches the current Scene to the loginScene and sets the title of the window to "Login"
      *
+     * @author Moritz Scheer & Maria Andrade
      * @since 2019-09-03
      */
     public void showLoginScreen() {
@@ -900,9 +922,10 @@ public class SceneManager {
     /**
      * Shows the main menu
      *
-     * <p>Switches the current Scene to the mainScene and sets the title of the window to "Welcome "
+     * Switches the current Scene to the mainScene and sets the title of the window to "Welcome "
      * and the username of the current user
      *
+     * @author Moritz Scheer, Ole Zimmermann, Tommy Dang
      * @since 2019-09-03
      */
     public void showMainScreen() {
@@ -918,9 +941,10 @@ public class SceneManager {
     /**
      * Shows the rulebook screen
      *
-     * <p>Switches the main menu Scene to the rulebookScene and sets the title of the window to
+     * Switches the main menu Scene to the rulebookScene and sets the title of the window to
      * "Rulebook"
      *
+     * @author Moritz Scheer
      * @since 2022-11-27
      */
     public void showRulebookScreen() {
@@ -931,9 +955,10 @@ public class SceneManager {
     /**
      * Shows the credit screen
      *
-     * <p>Switches the main menu Scene to the creditScene and sets the title of the window to
+     * Switches the main menu Scene to the creditScene and sets the title of the window to
      * "Credits"
      *
+     * @author Moritz Scheer
      * @since 2022-11-29
      */
     public void showCreditScreen() {
@@ -944,9 +969,10 @@ public class SceneManager {
     /**
      * Shows the setting screen
      *
-     * <p>Switches the main menu Scene to the settingParent and sets the title of the window to
+     * Switches the main menu Scene to the settingParent and sets the title of the window to
      * "Settings"
      *
+     * @author Moritz Scheer
      * @since 2022-12-11
      */
     public void showSettingScreen() {
@@ -957,9 +983,10 @@ public class SceneManager {
     /**
      * Shows the account screen
      *
-     * <p>Switches the current Scene to the accountScene and sets the title of the window to
+     * Switches the current Scene to the accountScene and sets the title of the window to
      * "Account options"
      *
+     * @author Moritz Scheer & Maria Andrade
      * @since 2022-12-01
      */
     public void showAccountOptionScreen() {
@@ -970,9 +997,10 @@ public class SceneManager {
     /**
      * Shows the joinOrCreate screen
      *
-     * <p>Switches the current Scene to the joinOrCreateScene and sets the title of the window to
+     * Switches the current Scene to the joinOrCreateScene and sets the title of the window to
      * "Lobbies"
      *
+     * @author Moritz Scheer
      * @since 2022-11-30
      */
     public void showJoinOrCreateScreen() {
@@ -983,9 +1011,10 @@ public class SceneManager {
     /**
      * Shows the createLobby screen
      *
-     * <p>Switches the current Scene to the createLobbyScene and sets the title of the window to
+     * Switches the current Scene to the createLobbyScene and sets the title of the window to
      * "Create Lobby"
      *
+     * @author Moritz Scheer & Maxim Merden
      * @since 2022-11-30
      */
     public void showCreateLobbyScreen() {
@@ -996,8 +1025,9 @@ public class SceneManager {
     /**
      * Shows the game screen
      *
-     * <p>Switches the current Parent to the gameParent
+     * Switches the current Parent to the gameParent
      *
+     * @author Moritz Scheer
      * @since 2023-03-09
      */
     public void showGameScreen(Integer lobbyID, Parent thisGameParent) {
@@ -1007,8 +1037,9 @@ public class SceneManager {
     /**
      * Shows the lobby screen
      *
-     * <p>Switches the current Parent to the lobbyParent
+     * Switches the current Parent to the lobbyParent
      *
+     * @author Moritz Scheer
      * @since 2023-03-09
      */
     public void showLobbyScreen(Integer lobbyID) {
@@ -1022,7 +1053,7 @@ public class SceneManager {
     /**
      * Helper method to create a tab and initialize the lobby view
      *
-     * <p>This method initializes the lobbyview and shows different views depending on if the lobby
+     * This method initializes the lobbyview and shows different views depending on if the lobby
      * is set to private or not. Also it opens the setup method to setup the lobby and opens the
      * createTab method to create a tab with the given content.
      *
