@@ -10,7 +10,7 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
  * @see AbstractLobbyMessage
  * @see de.uol.swp.common.user.User
  * @author Maria Eduarda Costa Leite Andrade, WKempel
- * @since 2022-02-28
+ * @since 2023-02-28
  */
 public class StartGameMessage extends AbstractLobbyMessage {
 
@@ -24,7 +24,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      * @param lobby LobbyDTO Object containing all the information of the lobby
      * @param game GameDTO object
      * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @since 2022-03-23
+     * @since 2023-03-23
      */
     public StartGameMessage(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
         if (lobby == null) {
@@ -43,7 +43,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      *
      * @return Integer containing the Lobby ID
      * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @since 2022-02-28
+     * @since 2023-02-28
      */
     public Integer getLobbyID() {
         if (lobbyID < 0) {
@@ -57,7 +57,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      *
      * @return GameDTO Object containing all the information of the lobby
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 2022-05-07
+     * @since 2023-05-07
      */
     public GameDTO getGame() {
         return game;
@@ -68,7 +68,7 @@ public class StartGameMessage extends AbstractLobbyMessage {
      *
      * @return LobbyDTO Object containing all the information of the lobby
      * @author Maria Eduarda Costa Leite Andrade, WKempel
-     * @since 2022-03-23
+     * @since 2023-03-23
      */
     public LobbyDTO getLobby() {
         return lobby;

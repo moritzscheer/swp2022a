@@ -1,9 +1,10 @@
 package de.uol.swp.common.game.enums;
 
 /**
- * @author
- * @see
- * @since
+ * Enum for the CardinalDirection (North, East, South, West)
+ *
+ * @author Tommy Dang
+ * @since 2023-01-24
  */
 public enum CardinalDirection {
     North,
