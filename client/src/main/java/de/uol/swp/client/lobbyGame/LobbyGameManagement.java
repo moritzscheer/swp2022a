@@ -398,20 +398,6 @@ public class LobbyGameManagement extends AbstractPresenter {
         else LOG.warn("gamePresenter object was deleted! Ignoring ShowAllPlayersCardsMessage!");
     }
 
-    /**
-     * Handles ShowRobotMovingMessage
-     *
-     * @param msg the ShowRobotMovingMessage object seen on the EventBus
-     * @see ShowRobotMovingMessage
-     * @author Maria Andrade
-     * @since 2023-05-20
-     */
-    public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg) {
-        GamePresenter gamePresenter =
-                lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.animateRobotState(msg.getPlayerDTO());
-    }
-
     public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();

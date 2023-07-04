@@ -196,22 +196,6 @@ public class GameService {
     }
 
     /**
-     * Handles ShowRobotMovingMessage detected on the EventBus
-     *
-     * <p>If a ShowRobotMovingMessage is detected on the EventBus, this method gets called.
-     *
-     * @param msg The ShowRobotMovingMessage on the EventBus
-     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
-     * @author Maria Eduarda
-     * @since 2023-05-20
-     */
-    @Subscribe
-    public void onShowRobotMovingMessage(ShowRobotMovingMessage msg) {
-        LOG.debug("Updating view, robot moving - " + msg.getPlayerDTO().getUser().getUsername());
-        LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
-    }
-
-    /**
      * Handles TextHistoryMessage detected on the EventBus
      *
      * <p>If a TextHistoryMessage is detected on the EventBus, this method gets called.
