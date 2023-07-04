@@ -224,7 +224,7 @@ public class ClientApp extends Application implements ConnectionListener {
     /**
      * Handles Logout
      *
-     * <p>If an UserLoggedOutMessage object is UserLoggedOutMessagedetected on the EventBus this
+     * <p>If an UserLoggedOutMessage object is UserLoggedOutMessage detected on the EventBus this
      * method is called. It tells the SceneManager to show the login window. If the loglevel is set
      * to INFO or higher "User {username} logged out." is written to the log.
      *
@@ -238,11 +238,13 @@ public class ClientApp extends Application implements ConnectionListener {
         LOG.info("User {} logged out.", message.getUsername());
         Platform.runLater(
                 () -> {
-                    if (message.getUsername().equals(user.getUsername())) {
-                        if (tabPresenter.infoLabel2IsVisible()) {
-                            eventBus.post(new CloseClientEvent());
-                        } else {
-                            eventBus.post(new ShowLoginViewEvent());
+                    if(user != null){
+                        if (message.getUsername().equals(user.getUsername())) {
+                            if (tabPresenter.infoLabel2IsVisible()) {
+                                eventBus.post(new CloseClientEvent());
+                            } else {
+                                eventBus.post(new ShowLoginViewEvent());
+                            }
                         }
                     }
                 });

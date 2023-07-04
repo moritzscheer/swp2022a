@@ -52,6 +52,20 @@ public class UserManagement extends AbstractUserManagement {
         return loggedInUsers.containsKey(username.getUsername());
     }
 
+    /**
+     * Helper method to see if user is already logged in
+     *
+     *
+     * @param username as String instead as User
+     * @return boolean if user is logged in or not
+     * @author Tommy Dang
+     * @since 2023-07-04
+     */
+    public boolean isLoggedIn(String username) {
+        return loggedInUsers.containsKey(username);
+    }
+
+
     @Override
     public User createUser(User userToCreate) {
         Optional<User> user = userStore.findUser(userToCreate.getUsername());
