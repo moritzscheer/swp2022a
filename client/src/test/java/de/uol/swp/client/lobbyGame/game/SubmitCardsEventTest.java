@@ -14,6 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Test SubmitCardsEventTest
+ *
+ * @author WKempel
+ * @see SubmitCardsEventTest
+ * @since 2023-06-26
+ */
 public class SubmitCardsEventTest {
 
     private final UserDTO user = new UserDTO("player1", "pw1", "ml1");

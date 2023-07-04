@@ -8,6 +8,13 @@ import javafx.scene.Parent;
 
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test ShowNodeEventTest
+ *
+ * @author WKempel
+ * @see de.uol.swp.client.tab.ShowNodeEventTest
+ * @since 2023-06-26
+ */
 public class ShowNodeEventTest {
 
     private final Parent parent = new Parent() {};

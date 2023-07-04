@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test ShowGameOverEventTest
+ *
+ * @author WKempel
+ * @see ShowGameOverEventTest
+ * @since 2023-06-26
+ */
 public class ShowGameOverEventTest {
 
     private final UserDTO userWon = new UserDTO("player1", "pw1", "ml1");

@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test ShowNodeEventTest
+ *
+ * @author WKempel
+ * @see de.uol.swp.client.tab.ChangeElementEventTest
+ * @since 2023-06-26
+ */
 public class ChangeElementEventTest {
 
     private final UserDTO user = new UserDTO("player1", "pw1", "ml1");

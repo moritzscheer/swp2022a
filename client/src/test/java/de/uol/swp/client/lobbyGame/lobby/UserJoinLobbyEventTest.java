@@ -1,4 +1,4 @@
-package de.uol.swp.client.lobbyGame.game.lobby;
+package de.uol.swp.client.lobbyGame.lobby;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test UserJoinLobbyEventTest
+ *
+ * @author WKempel
+ * @see de.uol.swp.client.lobbyGame.lobby.UserJoinLobbyEventTest
+ * @since 2023-06-26
+ */
 public class UserJoinLobbyEventTest {
 
     private final UserDTO user = new UserDTO("player1", "pw1", "ml1");

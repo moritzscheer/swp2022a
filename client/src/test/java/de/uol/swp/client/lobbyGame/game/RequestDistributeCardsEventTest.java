@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test RequestDistributeCardsEventTest
+ *
+ * @author WKempel
+ * @see RequestDistributeCardsEventTest
+ * @since 2023-06-26
+ */
 public class RequestDistributeCardsEventTest {
 
     private final UserDTO loggedInUser = new UserDTO("player1", "pw1", "ml1");

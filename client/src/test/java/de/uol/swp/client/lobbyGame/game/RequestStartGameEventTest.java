@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test RequestStartGameEventTest
+ *
+ * @author WKempel
+ * @see RequestStartGameEventTest
+ * @since 2023-06-26
+ */
 public class RequestStartGameEventTest {
 
     private final int numberBots = 3;

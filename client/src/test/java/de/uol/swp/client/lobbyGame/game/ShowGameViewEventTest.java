@@ -10,6 +10,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+/**
+ * Test ShowGameViewEventTest
+ *
+ * @author WKempel
+ * @see ShowGameViewEventTest
+ * @since 2023-06-26
+ */
 public class ShowGameViewEventTest {
 
     private final UserDTO user = new UserDTO("player1", "pw1", "ml1");
