@@ -933,6 +933,12 @@ public class GamePresenter extends AbstractPresenter {
             }
             countCards++;
         }
+        // block red ones
+        for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
+            if (Objects.equals(cardSlot.getKey().getFill(), RED)) {
+                cardSlot.getKey().setDisable(true);
+            }
+        }
         LOG.debug("countCards " + countCards);
         LOG.debug("freeCards " + freeCards);
         int i = 0;
@@ -1745,6 +1751,14 @@ public class GamePresenter extends AbstractPresenter {
      * @since 2023-07-04
      */
     public ImageView getUserWonImage(UserDTO userWonTheGame) {
-        return userRobotImageViewReference.get(userWonTheGame);
+        int robotID = userDTOPlayerDTOMap.get(userWonTheGame).getRobotDTO().getRobotID();
+        ImageView imageView = jsonUtils.getRobotImage(robotID);
+        imageView
+                .fitWidthProperty()
+                .bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+        imageView
+                .fitHeightProperty()
+                .bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+        return imageView;
     }
 }

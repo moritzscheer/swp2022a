@@ -212,7 +212,7 @@ public class LobbyManagementTest {
 
         assertEquals(2, lobbyManagement.getMultiplayerLobbies().size());
 
-        assertEquals(users.get(0), lobbyManagement.getLobbies().get(0).getOwner());
-        assertEquals(users.get(1), lobbyManagement.getLobbies().get(1).getOwner());
+        assertEquals(users.get(0), lobbyManagement.getLobby(lobbyIds[0]).get().getOwner());
+        assertEquals(users.get(1), lobbyManagement.getLobby(lobbyIds[1]).get().getOwner());
     }
 }

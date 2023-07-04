@@ -1,9 +1,10 @@
 package de.uol.swp.client.main;
 
-import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import de.uol.swp.client.main.event.ShowAccountOptionsViewEvent;
+
+import org.junit.jupiter.api.Test;
 
 public class ShowAccountOptionsViewEventTest {
 
