@@ -152,7 +152,7 @@ public class WallBehaviourTest {
     }
 
     @Test
-    public void robotMoveCard() {
+    public void testRobotMoveCard() {
         assertTrue(tileBehaviours[0].getObstruction(CardinalDirection.East));
         Position before = robots[0].getPosition();
 

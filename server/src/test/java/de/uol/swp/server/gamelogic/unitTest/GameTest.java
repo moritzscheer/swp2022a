@@ -9,7 +9,6 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.cards.Card;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
@@ -54,14 +53,12 @@ public class GameTest {
     @BeforeEach
     public void setup() throws IOException, InterruptedException {
 
-        // MapBuilder.main(null);
         try {
             Set<User> users = new HashSet<>();
             users.add(user1);
             users.add(user2);
 
             game = new Game(lobby.getLobbyID(), users, mapName, numberBots, checkpoint, -1);
-            Block[][] board = game.getBoard();
 
             List<CardDTO> player1Cards = new ArrayList<>();
             player1Cards.add(new CardDTO(1, 10));

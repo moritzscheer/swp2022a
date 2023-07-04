@@ -60,6 +60,15 @@ class UserServiceTest {
         assertNotEquals(loggedInUser.getEMail(), userWithSameName.getEMail());
     }
 
+    /**
+     * Tests the UpdateUserRequest
+     *
+     * @author WKempel
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
+     * @since 2023-06-23
+     */
     @Test
     public void testOnDropUserRequest() {
         final RegisterUserRequest request = new RegisterUserRequest(userToRegister);
@@ -80,6 +89,15 @@ class UserServiceTest {
         assertTrue(true);
     }
 
+    /**
+     * Tests the UpdateUserRequest
+     *
+     * @author WKempel
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-23
+     */
     @Test
     public void testOnUpdateUserRequest() {
         final RegisterUserRequest request = new RegisterUserRequest(userToRegister);

@@ -27,7 +27,6 @@ import org.apache.logging.log4j.Logger;
  * @author Marco Grawunder
  * @since 2019-11-20
  */
-@SuppressWarnings("UnstableApiUsage")
 @Singleton
 public class LobbyService {
 

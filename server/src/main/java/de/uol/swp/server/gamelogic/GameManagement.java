@@ -61,11 +61,7 @@ public class GameManagement {
                 new Game(lobbyID, users, mapName, numberBots, checkpointCount, -1));
 
         // Create DTOs objects
-        List<PlayerDTO> players = new ArrayList<>();
-        for (AbstractPlayer player : games.get(lobbyID).getPlayers()) {
-            // add in the list
-            players.add(convertPlayerToPlayerDTO(player));
-        }
+        List<PlayerDTO> players = convertPlayerListToPlayerDTOList(games.get(lobbyID).getPlayers());
         BlockDTO[][] boardDTO = convertBoardToBoardDTO(games.get(lobbyID).getBoard());
         GameDTO gameDTO = new GameDTO(players, boardDTO);
 
@@ -137,10 +133,8 @@ public class GameManagement {
      * @since 2023-02-28
      */
     public List<CardDTO> getPlayerReceivedCards(int lobbyID, UserDTO user) {
-        List<CardDTO> cardDTOS =
-                convertCardsToCardsDTO(
-                        games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
-        return cardDTOS;
+        return convertCardsToCardsDTO(
+                games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
     }
 
     /**

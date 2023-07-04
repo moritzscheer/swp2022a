@@ -17,10 +17,7 @@ import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
 import de.uol.swp.server.gamelogic.moves.MoveIntent;
-import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
-import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
-import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
-import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
+import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.utils.ConvertToDTOUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +31,6 @@ import java.util.stream.IntStream;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
- * @see
  * @since 2023
  */
 public class Game {
@@ -52,7 +48,6 @@ public class Game {
     private final int nRobots;
     private final int nRealPlayers;
     private int programStep; // program steps from 0 to 4
-    private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
     private final List<AbstractPlayer> players = new ArrayList<>();
     private final Card[][] playedCards;
@@ -102,6 +97,58 @@ public class Game {
 
         assert users.size() + numberBots <= 8;
 
+        this.startCheckpoint = loadMapBuilder(version);
+
+        if (this.board == null) {
+            // TODO: Log error "Map couldn't be loaded"
+            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
+        }
+
+        updateBoardInAllBehaviours(); // otherwise laser don't work
+        LOG.debug("Checkpoints size: {}", this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
+
+        // set info
+        setRobotsInfoInBehaviours(board, robots);
+
+        // there must be as many docking as users
+        // assert dockingBays.length == users.size();
+        this.dockingStartPosition = startCheckpoint;
+        this.lastCheckPoint = this.checkpointCount;
+
+        // create players and robots
+        int i = 0; // start robots id in 0
+        if (!Objects.equals(users, null)) // important to run integration tests
+        for (User user : users) {
+                Player newPlayer =
+                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+                this.players.add(newPlayer);
+                this.robots.add(newPlayer.getRobot());
+                i++;
+            }
+
+        nRealPlayers = users.size();
+
+        // create bots and robots
+        for (int j = 0; j < numberBots; j++) {
+            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
+            this.players.add(newPlayer);
+            this.robots.add(newPlayer.getRobot());
+            i++;
+        }
+
+        this.nRobots = robots.size();
+        this.playedCards = new Card[this.nRobots][5];
+    }
+
+    /**
+     * Method to load Map outside constructor
+     *
+     * @author Jann, Tommy, Maxim, Maria, WKempel
+     * @see de.uol.swp.server.gamelogic.map.MapBuilder
+     * @since 2023-06-19
+     */
+    private Position loadMapBuilder(int version) {
         LOG.debug(new File(".").getAbsolutePath());
         // create board
         if (version == -1) {
@@ -165,48 +212,25 @@ public class Game {
                     MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
                             mapName + "V" + version + "C" + checkpointCount);
         }
-
-        this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 
-        if (tmp == null) {
-            // TODO: Log error "Map couldn't be loaded"
-            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
-        }
-        LOG.debug("Checkpoints size: {}", this.checkpointCount);
-        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
+        return tmp.getValue1();
+    }
 
-        // set info
-        setRobotsInfoInBehaviours(board, robots);
-
-        // there must be as many docking as users
-        // assert dockingBays.length == users.size();
-        this.dockingStartPosition = startCheckpoint;
-        this.lastCheckPoint = this.checkpointCount;
-
-        // create players and robots
-        int i = 0; // start robots id in 0
-        if (!Objects.equals(users, null)) // important to run integration tests
-        for (User user : users) {
-                Player newPlayer =
-                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
-                this.players.add(newPlayer);
-                this.robots.add(newPlayer.getRobot());
-                i++;
-            }
-
-        nRealPlayers = users.size();
-
-        // create bots and robots
-        for (int j = 0; j < numberBots; j++) {
-            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
-            this.players.add(newPlayer);
-            this.robots.add(newPlayer.getRobot());
-            i++;
-        }
-
-        this.nRobots = robots.size();
-        this.playedCards = new Card[this.nRobots][5];
+    /**
+     * Update board in each Behaviour, because some behaviours are dynamically added
+     *
+     * <p>(In order to laser logic to works)
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-07-03
+     */
+    private void updateBoardInAllBehaviours() {
+        for (Block[] boardCol : board)
+            for (Block block : boardCol)
+                for (AbstractTileBehaviour behaviour : block.getBehaviourList())
+                    behaviour.setBoard(board);
     }
 
     /**
@@ -264,7 +288,7 @@ public class Game {
                     int i = 0;
                     for (int cardID : cardsIDs) {
                         cards[i] = searchCardInJSON(cardID);
-                        // save references to these Card objetcs
+                        // save references to these Card objects
                         cardIdCardMap.put(cards[i].getId(), cards[i]);
                         i++;
                     }
@@ -277,7 +301,7 @@ public class Game {
 
                     while (cardsIdsOnlyTurn.containsAll(
                             Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))) {
-                        LOG.debug("Ups, all cards are turn type");
+                        LOG.debug("Whoops, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
                         cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
@@ -293,7 +317,7 @@ public class Game {
                     int i = 0;
                     for (int cardID : cardsIDs) {
                         cards[i] = searchCardInJSON(cardID);
-                        // save references to these Card objetcs
+                        // save references to these Card objects
                         assert cards[i] != null;
                         cardIdCardMap.put(cards[i].getId(), cards[i]);
                         i++;
@@ -310,8 +334,9 @@ public class Game {
     /**
      * The method iterate over all AbstractPlayer if there are any players who are a BotPlayer we're
      * saving the first five cards from the botPlayer received cards in chosenCards. Also, we set
-     * botPlayers of ready with the method register. @Author WKempel & Maria
+     * botPlayers of ready with the method register.
      *
+     * @author WKempel & Maria
      * @return allReady
      * @throws InterruptedException
      */
@@ -367,8 +392,9 @@ public class Game {
     /**
      * When a player has chosen its cards, he will press "register" button this function will call
      * the player function that will register his cards Once all players have chosen, the calcGame
-     * will be called @ Author WKempel & Maria
+     * will be called
      *
+     * @author WKempel & Maria
      * @param loggedInUser
      * @param playerCards
      * @return register
@@ -430,7 +456,6 @@ public class Game {
         this.readyRegister += 1;
 
         if (this.readyRegister == this.nRobots - 1) {
-            startTimer();
         } else if (this.readyRegister == this.nRobots) {
             this.programStep = 0; // start in the first (0) program step, until 4
             for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
@@ -463,12 +488,14 @@ public class Game {
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * Increase program step to get the new cards from each player Clear gameMovements
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-04-25
      */
-    public void startTimer() {
-        // TODO
+    public void increaseProgramStep() {
+        this.programStep++;
+        this.gameMovements = null;
     }
 
     /**
@@ -515,15 +542,15 @@ public class Game {
             }
         }
         if (countSurvivors <= 1) {
-            // gameover
+            // game over
             return survivor;
         }
         return null;
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria & Finn
+     * @since 2023-05-06
      */
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (Block[] blocks : board) {
@@ -534,8 +561,23 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * check if all robots are dead or turned off to not keep sending messages
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-20
+     */
+    public boolean areAllRobotsAreDead() {
+        for (Robot robot : this.robots) {
+            if (!robot.isDeadForTheRound()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @author Maria & Finn
+     * @since 2023-06-22
      */
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
@@ -549,8 +591,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-06-05
      */
     public List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
@@ -561,8 +603,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn & Maria
+     * @since 2023-06-05
      */
     private List<List<PlayerDTO>> calcGameRoundBoardNew() {
         List<MoveIntent> currentMoves;
@@ -627,8 +669,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria & Finn
+     * @since 2023-06-05
      */
     private List<List<PlayerDTO>> calcGameRoundCardsNew() {
         List<List<PlayerDTO>> moves = new ArrayList<>();
@@ -691,8 +733,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> onExpressConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
@@ -706,8 +748,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> onConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
@@ -721,8 +763,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> onPusherStage() {
 
@@ -737,8 +779,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> onRotatorStage() {
 
@@ -753,8 +795,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> onPresserStage() {
 
@@ -769,8 +811,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> OnLaserStage() {
 
@@ -785,8 +827,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-06-19
      */
     private List<MoveIntent> OnCheckPointStage() {
 
@@ -805,29 +847,8 @@ public class Game {
     /////////////////////////////
 
     /**
-     * @author
-     * @since
-     */
-    private void turn(Robot robot, Direction directionCard) {
-        int rotation;
-        switch (directionCard) {
-            case Left:
-                rotation = 3;
-                break;
-            case Right:
-                rotation = 1;
-                break;
-            default:
-                rotation = 0;
-                break;
-        }
-        robot.setDirection(
-                CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
-    }
-
-    /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-04-18
      */
     private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
         List<List<MoveIntent>> moves = new ArrayList<>();
@@ -854,8 +875,29 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn & Maria
+     * @since 2023-04-24
+     */
+    private void turn(Robot robot, Direction directionCard) {
+        int rotation;
+        switch (directionCard) {
+            case Left:
+                rotation = 3;
+                break;
+            case Right:
+                rotation = 1;
+                break;
+            default:
+                rotation = 0;
+                break;
+        }
+        robot.setDirection(
+                CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
+    }
+
+    /**
+     * @author Finn
+     * @since 2023-04-24
      */
     private void uTurn(Robot robot) {
         turn(robot, Direction.Left);
@@ -863,15 +905,15 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-03-24
      */
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
-                // after robot moved to new block, check for behvaviours to be executed
+                // after robot moved to new block, check for behaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
             }
         }
@@ -940,8 +982,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-06
      */
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
         ArrayList<MoveResult> moveList = new ArrayList<>();
@@ -984,8 +1026,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-06
      */
     private boolean addPushMoves(ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -1017,8 +1059,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-13
      */
     private static boolean removeSameDestinationConflicts(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
@@ -1044,8 +1086,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-13
      */
     private static boolean removeWallIntersections(
             ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
@@ -1065,8 +1107,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn & Maria
+     * @since 2023-03-13
      */
     private static boolean removeHeadOnCollisions(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
@@ -1095,8 +1137,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-03-28
      */
     private static boolean checkForObstruction(
             Position currentTile,
@@ -1114,8 +1156,8 @@ public class Game {
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-13
      */
     private static void removeMoveResultAndParents(
             MoveResult move, ArrayList<MoveResult> moveList) {
@@ -1127,47 +1169,14 @@ public class Game {
         }
     }
 
-    /**
-     * @author
-     * @since
-     */
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
-    /**
-     * @author
-     * @since
-     */
-    public int getLastCheckPoint() {
-        return lastCheckPoint;
-    }
-
-    /**
-     * @author
-     * @since
-     */
-    public List<GameMovement> getGameMovements() {
-        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
-        return gameMovements;
-    }
-
-    /**
-     * @author
-     * @since
-     */
-    public List<PlayerDTO> getRespawnRobots() {
-        return respawnRobots;
-    }
-
     /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
 
         /**
-         * @author
-         * @since
+         * @author Finn
+         * @since 2023-03-06
          */
         public MoveResult(MoveIntent intent) {
             super(intent.robotID, intent.direction);
@@ -1175,8 +1184,8 @@ public class Game {
         }
 
         /**
-         * @author
-         * @since
+         * @author Finn
+         * @since 2023-03-06
          */
         public MoveResult(MoveResult parentMove, int robotID) {
             super(robotID, parentMove.direction);
@@ -1184,8 +1193,8 @@ public class Game {
         }
 
         /**
-         * @author
-         * @since
+         * @author Finn
+         * @since 2023-03-06
          */
         public Position getTargetPosition() {
             Position p = robots.get(robotID).getPosition();
@@ -1203,8 +1212,8 @@ public class Game {
         }
 
         /**
-         * @author
-         * @since
+         * @author Finn
+         * @since 2023-03-13
          */
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
@@ -1235,6 +1244,39 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
+
+    /**
+     * @author WKempel
+     * @since 2023-06-02
+     */
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-05
+     */
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-20
+     */
+    public List<GameMovement> getGameMovements() {
+        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
+        return gameMovements;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-22
+     */
+    public List<PlayerDTO> getRespawnRobots() {
+        return respawnRobots;
+    }
 
     /**
      * Getter for Board Array
@@ -1307,27 +1349,6 @@ public class Game {
 
     public String getFullMapName() {
         return fullMapName;
-    }
-
-    public void increaseProgramStep() {
-        this.programStep++;
-        this.gameMovements = null;
-    }
-
-    /**
-     * check if all robots are dead or turned off to not keep sending messages
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-06-20
-     */
-    // TODO: fix this function, when all are dead
-    public boolean areAllRobotsAreDead() {
-        for (Robot robot : this.robots) {
-            if (!robot.isDeadForTheRound()) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void setNotDistributedCards(boolean notDistributedCards) {

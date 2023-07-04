@@ -52,8 +52,8 @@ public class GameService {
      * Posts a request to start the game on the EventBus
      *
      * @param event To identify the lobby with a unique key
-     * @see StartGameRequest
-     * @author Moritz Scheer
+     * @see de.uol.swp.common.game.request
+     * @author Moritz Scheer, Ole Zimmermann
      * @since 2023-03-09
      */
     @Subscribe
@@ -127,6 +127,16 @@ public class GameService {
         LobbyGameManagement.getInstance().startGame(msg);
     }
 
+    /**
+     * Handles ProgramCardDataResponse detected on the EventBus
+     *
+     * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The ProgramCardDataResponse on the EventBus
+     * @see de.uol.swp.common.game.response.ProgramCardDataResponse
+     * @author Maria Eduarda
+     * @since 2023-05-18
+     */
     @Subscribe
     public void onProgramCardDataResponse(ProgramCardDataResponse msg) {
         LOG.debug("onProgramCardDataResponse");
@@ -137,42 +147,112 @@ public class GameService {
         LobbyGameManagement.getInstance().showCardsToUser(msg);
     }
 
+    /**
+     * Handles RobotTurnedOffMessage detected on the EventBus
+     *
+     * <p>If a RobotTurnedOffMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The RobotTurnedOffMessage on the EventBus
+     * @see de.uol.swp.common.game.message.RobotTurnedOffMessage
+     * @author Maria Eduarda
+     * @since 2023-06-13
+     */
     @Subscribe
     public void onRobotTurnedOffMessage(RobotTurnedOffMessage msg) {
         LOG.debug("Player {} is turned off for the round", msg.getTurnedOffUser().getUsername());
         LobbyGameManagement.getInstance().sendMessageTurnedOffRobot(msg);
     }
 
+    /**
+     * Handles PlayerIsReadyMessage detected on the EventBus
+     *
+     * <p>If a PlayerIsReadyMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The PlayerIsReadyMessage on the EventBus
+     * @see de.uol.swp.common.game.message.PlayerIsReadyMessage
+     * @author Maria Eduarda
+     * @since 2023-05-20
+     */
     @Subscribe
     public void onPlayerIsReadyMessage(PlayerIsReadyMessage msg) {
         LOG.debug("Player {} is ready", msg.getPlayerIsReady().getUsername());
         LobbyGameManagement.getInstance().sendMessagePlayerIsReady(msg);
     }
 
+    /**
+     * Handles ShowAllPlayersCardsMessage detected on the EventBus
+     *
+     * <p>If a ShowAllPlayersCardsMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The ShowAllPlayersCardsMessage on the EventBus
+     * @see de.uol.swp.common.game.message.ShowAllPlayersCardsMessage
+     * @author Maria Eduarda
+     * @since 2023-05-20
+     */
     @Subscribe
     public void onShowAllPlayersCardsMessage(ShowAllPlayersCardsMessage msg) {
         LOG.debug("All players have chosen cards");
         LobbyGameManagement.getInstance().sendMessageAllPlayersAreReady(msg);
     }
 
+    /**
+     * Handles ShowRobotMovingMessage detected on the EventBus
+     *
+     * <p>If a ShowRobotMovingMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The ShowRobotMovingMessage on the EventBus
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @author Maria Eduarda
+     * @since 2023-05-20
+     */
     @Subscribe
     public void onShowRobotMovingMessage(ShowRobotMovingMessage msg) {
         LOG.debug("Updating view, robot moving - " + msg.getPlayerDTO().getUser().getUsername());
         LobbyGameManagement.getInstance().sendMessageRobotIsMoving(msg);
     }
 
+    /**
+     * Handles TextHistoryMessage detected on the EventBus
+     *
+     * <p>If a TextHistoryMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The TextHistoryMessage on the EventBus
+     * @see de.uol.swp.common.chat.message.TextHistoryMessage
+     * @author Maria Eduarda
+     * @since 2023-06-02
+     */
     @Subscribe
     public void onHistoryMessage(TextHistoryMessage msg) {
         LOG.debug("Updating history - " + msg.getMessage());
         LobbyGameManagement.getInstance().updateHistory(msg);
     }
 
+    /**
+     * Handles ShowBoardMovingMessage detected on the EventBus
+     *
+     * <p>If a ShowBoardMovingMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The ShowBoardMovingMessage on the EventBus
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
+     * @author Maria Eduarda
+     * @since 2023-05-27
+     */
     @Subscribe
     public void onShowBoardMovingMessage(ShowBoardMovingMessage msg) {
         LOG.debug("Updating view, board moving ");
         LobbyGameManagement.getInstance().sendMessageBoardIsMoving(msg);
     }
 
+    /**
+     * Handles RoundIsOverMessage detected on the EventBus
+     *
+     * <p>If a RoundIsOverMessage is detected on the EventBus, this method gets called.
+     *
+     * @param msg The RoundIsOverMessage on the EventBus
+     * @see de.uol.swp.common.game.message.RoundIsOverMessage
+     * @author Maria Eduarda
+     * @since 2023-05-24
+     */
     @Subscribe
     public void onRoundIsOverMessage(RoundIsOverMessage msg) {
         LOG.debug("Restarting rounds");

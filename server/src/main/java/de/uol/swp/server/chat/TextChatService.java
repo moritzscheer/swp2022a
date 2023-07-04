@@ -17,8 +17,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * @author
- * @since
+ * The TextChatService class is responsible for managing the text chat channels.
+ *
+ * @author Finn
+ * @see de.uol.swp.server.usermanagement.UserService
+ * @see com.google.common.eventbus.EventBus
+ * @see de.uol.swp.server.usermanagement.AuthenticationService
+ * @see de.uol.swp.server.AbstractService
+ * @since 2022-12-08
  */
 @SuppressWarnings("UnstableApiUsage")
 @Singleton
@@ -37,8 +43,11 @@ public class TextChatService extends AbstractService {
     /**
      * Constructor
      *
+     * @author Finn
      * @param bus the EvenBus used throughout the server
-     * @since 2019-10-08
+     * @see com.google.common.eventbus.EventBus
+     * @see de.uol.swp.server.usermanagement.AuthenticationService
+     * @since 2022-12-08
      */
     @Inject
     public TextChatService(AuthenticationService authenticationService, EventBus bus) {
@@ -50,30 +59,39 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     * @author
-     * @since
+     * The method let join a user to a channel.
+     *
+     * @author Finn
+     * @see java.util.UUID
+     * @see de.uol.swp.common.user.User
+     * @since 2022-12-16
      */
     public void joinUser(UUID channel, User user) {
         Optional<Session> session = authenticationService.getSession(user);
-        if (session.isPresent()) {
-            channelList.get(channel).addUser(session.get());
-        }
+        session.ifPresent(value -> channelList.get(channel).addUser(value));
     }
 
     /**
-     * @author
-     * @since
+     * @author Finn
+     * @see java.util.UUID
+     * @see de.uol.swp.common.user.User
+     * @since 2022-12-16
      */
     public void dropUser(UUID channel, User user) {
         Optional<Session> session = authenticationService.getSession(user);
-        if (session.isPresent()) {
-            channelList.get(channel).removeUser(session.get());
-        }
+        session.ifPresent(value -> channelList.get(channel).removeUser(value));
     }
 
     /**
-     * @author
-     * @since
+     * The onSendTextChatMessageRequest method is called when a user sends a message
+     *
+     * @author Finn
+     * @see de.uol.swp.common.chat.message.SendTextChatMessageRequest
+     * @see de.uol.swp.server.chat.TextChatChannel
+     * @see com.google.common.eventbus.Subscribe
+     * @see java.util.Optional
+     * @see de.uol.swp.common.user.Session
+     * @since 2022-12-16
      */
     @Subscribe
     public void onSendTextChatMessageRequest(SendTextChatMessageRequest message) {
@@ -89,18 +107,26 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     * @author
-     * @since
+     * The sendServerTextMessage sends a message to the server
+     *
+     * @author Finn
+     * @see java.util.UUID
+     * @see de.uol.swp.server.chat.TextChatChannel
+     * @since 2022-12-16
      */
-    public void SendServerTextMessage(UUID channelID, String message) {
+    public void sendServerTextMessage(UUID channelID, String message) {
         TextChatChannel channel = channelList.get(channelID);
 
         channel.addServerTextMessage(message);
     }
 
     /**
-     * @author
-     * @since
+     * The method creates a new text chat channel
+     *
+     * @author Finn
+     * @see java.util.UUID
+     * @see de.uol.swp.server.chat.TextChatChannel
+     * @since 2022-12-16
      */
     public UUID createTextChatChannel() {
         UUID id = UUID.randomUUID();
@@ -110,8 +136,11 @@ public class TextChatService extends AbstractService {
     }
 
     /**
-     * @author
-     * @since
+     * The method closes a text chat channel
+     *
+     * @author Finn
+     * @see java.util.UUID
+     * @since 2022-12-19
      */
     public void closeTextChatChannel(UUID id) {
         channelList.remove(id);

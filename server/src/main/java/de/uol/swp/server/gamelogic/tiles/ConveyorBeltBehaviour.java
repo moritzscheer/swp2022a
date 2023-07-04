@@ -91,15 +91,13 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     @Override
     public List<int[]> getImage() {
         int rotation = direction.ordinal();
         int arrowType;
-        int secondArrowType = 0;
-        boolean hasSecondArrow = false;
         int type = 9;
         if (this instanceof ExpressConveyorBeltBehaviour) {
             type = 26;
@@ -159,9 +157,5 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
     public ArrowType getArrowType() {
         return arrowType;
-    }
-
-    public void setArrowType(ArrowType arrowType) {
-        this.arrowType = arrowType;
     }
 }

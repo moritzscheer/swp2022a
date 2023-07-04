@@ -15,21 +15,42 @@ public class UserJoinLobbyEvent {
     private final UserDTO loggedInUser;
     private final String password;
 
+    /**
+     * Constructor for the class
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public UserJoinLobbyEvent(LobbyDTO lobby, UserDTO loggedInUser, String password) {
 
         this.lobby = lobby;
         this.loggedInUser = loggedInUser;
         this.password = password;
     }
-
+    /**
+     * Getter for the lobby variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public LobbyDTO getLobby() {
         return lobby;
     }
-
+    /**
+     * Getter for the loggedInUser variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public UserDTO getLoggedInUser() {
         return loggedInUser;
     }
-
+    /**
+     * Getter for the password variable
+     *
+     * @author Maria Andrade
+     * @since 2023-05-16
+     */
     public String getPassword() {
         return password;
     }

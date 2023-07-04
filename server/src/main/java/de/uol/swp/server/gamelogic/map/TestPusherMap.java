@@ -7,22 +7,28 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import java.util.Random;
 
 /**
- * @author
- * @since
+ * TestPusherMap
+ *
+ * @author Ole Zimmermann & Merden
+ * @since 2023-06-11
  */
 public class TestPusherMap extends AbstractMap {
 
     /**
-     * @author
-     * @since
+     * Constructor of the TestPusherMap
+     *
+     * @author Ole Zimmermann & Merden
+     * @see de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour
+     * @see de.uol.swp.server.gamelogic.tiles.PusherBehaviour
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @see de.uol.swp.common.game.Position
+     * @since 2023-06-11
      */
     public TestPusherMap() {
-        // LASERTEST
-        int x = 0;
-        int y = 0;
 
-        for (y = 0; y <= 11; y++) {
-            for (x = 0; x <= 11; x++) {
+        for (int y = 0; y <= 11; y++) {
+            for (int x = 0; x <= 11; x++) {
 
                 if (y == 6 && x == 6) {
                     generateBlock(

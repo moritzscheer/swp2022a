@@ -29,14 +29,35 @@ public class SubmitCardsEvent {
         this.cardDTOS = cardDTOS;
     }
 
+    /**
+     * Getter Method for lobbyID
+     *
+     * @author Maria Andrade
+     * @return the lobby id
+     * @since 2023-05-19
+     */
     public int getLobbyID() {
         return lobbyID;
     }
 
+    /**
+     * Getter Method for current logged-in user
+     *
+     * @author Maria Andrade
+     * @return the current logged-in user
+     * @since 2023-05-19
+     */
     public UserDTO getLoggedInUser() {
         return loggedInUser;
     }
 
+    /**
+     * Getter Method for cardDTOS
+     *
+     * @author Maria Andrade
+     * @return the cardDTOS
+     * @since 2023-05-19
+     */
     public List<CardDTO> getCardDTOS() {
         return cardDTOS;
     }

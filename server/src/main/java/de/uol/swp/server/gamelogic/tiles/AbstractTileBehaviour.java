@@ -12,7 +12,6 @@ import java.util.List;
 
 /**
  * @author Tommy Dang & WKempel & Maria Andrade & Finn Oldeboershuis
- * @see
  * @since 2023-03-05
  */
 public abstract class AbstractTileBehaviour implements Serializable {
@@ -22,7 +21,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
     protected Position blockPos;
 
     /**
-     * @author
+     * @author Finn
      * @since 2023-03-05
      */
     public AbstractTileBehaviour(List<Robot> robotStates, Block[][] board, Position blockPos) {
@@ -125,7 +124,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public List<MoveIntent> onRotatorStage(int programStep) {
@@ -133,7 +132,7 @@ public abstract class AbstractTileBehaviour implements Serializable {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public List<MoveIntent> onCheckPointStage(int programStep) {
@@ -141,10 +140,18 @@ public abstract class AbstractTileBehaviour implements Serializable {
     }
 
     /**
-     * @author
+     * @author Maria & Finn
      * @since 2023-03-05
      */
     public void setRobotStates(List<Robot> robots) {
         robotStates = robots;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-07-03
+     */
+    public void setBoard(Block[][] newBoard) {
+        this.board = newBoard;
     }
 }

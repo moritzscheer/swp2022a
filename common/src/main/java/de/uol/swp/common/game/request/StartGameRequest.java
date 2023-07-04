@@ -19,7 +19,7 @@ public class StartGameRequest extends AbstractGameRequest {
      * constructor
      *
      * @param lobby Integer containing the ID of the lobby
-     * @param numberBots
+     * @param numberBots Integer containing the number of bots
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-02-28
      */
@@ -49,11 +49,23 @@ public class StartGameRequest extends AbstractGameRequest {
     public int getLobbyID() {
         return lobbyID;
     }
-
+    /**
+     * Getter for the number of bots
+     *
+     * @return Integer containing the number of bots
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
+     * @since 2023-06-05
+     */
     public int getNumberBots() {
         return numberBots;
     }
-
+    /**
+     * Getter for the number of checkpoints
+     *
+     * @return Integer containing the number of checkpoints
+     * @author Maria Eduarda Costa Leite Andrade, WKempel
+     * @since 2023-06-09
+     */
     public int getNumberCheckpoints() {
         return numberCheckpoints;
     }

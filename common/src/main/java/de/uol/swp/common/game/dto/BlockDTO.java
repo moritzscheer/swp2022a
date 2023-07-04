@@ -17,7 +17,14 @@ public class BlockDTO implements Serializable {
 
     private final int[] blockImages;
     private final CardinalDirection[] blockImagesDirection;
-
+    /**
+     * Constructor
+     *
+     * @param inputImageInfo Array that stores the information of the images to display a block of
+     *     the map
+     * @author Jann Erik Bruns
+     * @since 2023-05-16
+     */
     public BlockDTO(int[][] inputImageInfo) {
         blockImages = new int[inputImageInfo.length];
         blockImagesDirection = new CardinalDirection[inputImageInfo.length];
@@ -26,11 +33,21 @@ public class BlockDTO implements Serializable {
             blockImagesDirection[i] = CardinalDirection.values()[(inputImageInfo[i][1] + 4) % 4];
         }
     }
-
+    /**
+     * Gets the images of the block
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-16
+     */
     public int[] getBlockImages() {
         return blockImages;
     }
-
+    /**
+     * Gets the direction of the block's images
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-16
+     */
     public CardinalDirection[] getBlockImagesDirection() {
         return blockImagesDirection;
     }
