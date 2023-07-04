@@ -7,6 +7,15 @@ import org.junit.jupiter.api.Test;
 
 public class PositionTest {
 
+    /**
+     * Tests the translate method
+     *
+     * @author WKempel
+     * @result The method should return the correct position
+     * @see de.uol.swp.common.game.Position
+     * @see de.uol.swp.common.game.enums.CardinalDirection
+     * @since 2023-06-15
+     */
     @Test
     public void testTranslate() {
         Position position = new Position(0, 0);
@@ -29,6 +38,14 @@ public class PositionTest {
         Assertions.assertEquals(1, southPosition.y);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The method should return the correct boolean
+     * @see de.uol.swp.common.game.Position
+     * @since 2023-06-15
+     */
     @Test
     public void testEquals() {
         Position p1 = new Position(0, 0);

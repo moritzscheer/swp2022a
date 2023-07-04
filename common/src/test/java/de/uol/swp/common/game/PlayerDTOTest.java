@@ -21,8 +21,16 @@ public class PlayerDTOTest {
 
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
 
+    /**
+     * Tests the constructor
+     *
+     * @author WKempel
+     * @result The constructor should return the correct robotDTO and userDTO
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void constructorTest() {
+    public void constructorTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
 
         assertNotNull(playerDTO);
@@ -30,8 +38,16 @@ public class PlayerDTOTest {
         assertEquals(userDTO, playerDTO.getUser());
     }
 
+    /**
+     * Tests the setRobotDTO method
+     *
+     * @author WKempel
+     * @result The method should set the correct robotDTO
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void setRobotDTOTest() {
+    public void setRobotDTOTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
 
         playerDTO.setRobotDTO(robotDTO2);
@@ -39,8 +55,16 @@ public class PlayerDTOTest {
         assertEquals(robotDTO2, playerDTO.getRobotDTO());
     }
 
+    /**
+     * Tests the setCurrentCards method
+     *
+     * @author WKempel
+     * @result The method should set the correct cards
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void setCurrentCardsTest() {
+    public void setCurrentCardsTest() {
         List<CardDTO> cards = new ArrayList<>();
         cards.add(new CardDTO(1, 1));
         cards.add(new CardDTO(2, 2));
@@ -52,8 +76,16 @@ public class PlayerDTOTest {
         assertEquals(cards, playerDTO.getCurrentCards());
     }
 
+    /**
+     * Tests the getCurrentCards method
+     *
+     * @author WKempel
+     * @result The method should return the correct cards
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void getCurrentCardsTest() {
+    public void getCurrentCardsTest() {
         List<CardDTO> cards = new ArrayList<>();
         cards.add(new CardDTO(1, 1));
         cards.add(new CardDTO(2, 2));
@@ -64,15 +96,31 @@ public class PlayerDTOTest {
         assertEquals(cards, playerDTO.getCurrentCards());
     }
 
+    /**
+     * Tests getUser method
+     *
+     * @author WKempel
+     * @result The method should return the correct user
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void getUserTest() {
+    public void getUserTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
 
         assertEquals(userDTO, playerDTO.getUser());
     }
 
+    /**
+     * Tests the setCurrentCards method with null
+     *
+     * @author WKempel
+     * @result The method should set the currentCards to null
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void setCurrentCardsNullTest() {
+    public void setCurrentCardsNullTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
 
         playerDTO.setCurrentCards(null);
@@ -80,8 +128,16 @@ public class PlayerDTOTest {
         assertNull(playerDTO.getCurrentCards());
     }
 
+    /**
+     * Tests the setRobotDTO method with null
+     *
+     * @author WKempel
+     * @result The method should set the robotDTO to null
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void setRobotDTONullTest() {
+    public void setRobotDTONullTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
 
         playerDTO.setRobotDTO(null);
@@ -89,8 +145,16 @@ public class PlayerDTOTest {
         assertNull(playerDTO.getRobotDTO());
     }
 
+    /**
+     * Tests the setUser method with null
+     *
+     * @author WKempel
+     * @result The method should set the user to null
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-13
+     */
     @Test
-    void setNullUserTest() {
+    public void setNullUserTest() {
         PlayerDTO playerDTO = new PlayerDTO(robotDTO, null);
 
         assertNull(playerDTO.getUser());

@@ -21,12 +21,6 @@ import java.util.*;
 public class LobbyManagement {
     private final Map<Integer, LobbyDTO> lobbies = new HashMap<>();
 
-    //    private static LobbyManagement instance;
-    //
-    //    public static LobbyManagement getInstance(){
-    //        return  instance;
-    //    }
-
     @Inject
     public LobbyManagement() {}
 
@@ -104,7 +98,7 @@ public class LobbyManagement {
     }
 
     /**
-     * getter for all lobby
+     * Getter for all open lobbies
      *
      * @return List<LobbyDTO> containing all the open lobbies
      * @author Moritz Scheer
@@ -120,7 +114,7 @@ public class LobbyManagement {
     }
 
     /**
-     * getter for the lobby List
+     * Getter for the list of open multiplayer lobbies
      *
      * @return List<LobbyDTO> containing all the open multiplayer lobbies
      * @author Moritz Scheer

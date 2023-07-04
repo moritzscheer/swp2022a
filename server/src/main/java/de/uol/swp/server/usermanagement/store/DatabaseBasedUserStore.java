@@ -34,7 +34,9 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
      *
      * @param username The user to be found.
      * @param password The password of the user to be found.
+     * @return the UserDTO if the user exists.
      * @throws NullPointerException If the users are null.
+     * @see de.uol.swp.server.database.SQLHelper
      */
     @Override
     public Optional<User> findUser(String username, String password) {
@@ -64,8 +66,9 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
      * Finds a user by its username.
      *
      * @param username The username of the user.
-     * @return The user.
+     * @return The UserDTO.
      * @author Jann Bruns & Ole Zimmermann
+     * @see de.uol.swp.server.database.SQLHelper
      * @since 2022-12-02
      * @throws IllegalArgumentException If the username is null or empty.
      */
@@ -97,8 +100,9 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
      * @param username The username of the user.
      * @param password The password of the user.
      * @param eMail The eMail of the user.
-     * @return The created user.
+     * @return The created UserDTO.
      * @author Jann Bruns & Ole Zimmermann
+     * @see de.uol.swp.server.database.SQLHelper
      * @since 2022-12-02
      * @throws IllegalArgumentException If the username is null or empty.
      */
@@ -134,8 +138,9 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
      * @param username The username of the user.
      * @param password The password of the user.
      * @param eMail The eMail of the user.
-     * @return The updated user.
+     * @return The updated UserDTO.
      * @author Jann Bruns & Ole Zimmermann
+     * @see de.uol.swp.server.database.SQLHelper
      * @since 2022-12-02
      * @throws IllegalArgumentException If the username is null or empty.
      */
@@ -163,6 +168,7 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
      *
      * @param username The username of the user.
      * @author Jann Bruns
+     * @see de.uol.swp.server.database.SQLHelper
      * @since 2022-12-02
      * @throws IllegalArgumentException If the username is null or empty.
      */
@@ -178,8 +184,9 @@ public class DatabaseBasedUserStore extends AbstractUserStore implements UserSto
     /**
      * Gets all users from the Database.
      *
-     * @return The list of all users.
+     * @return The list of all UserDTOs.
      * @author Jann Bruns & Ole Zimmermann
+     * @see de.uol.swp.server.database.SQLHelper
      * @since 2022-12-02
      */
     @Override

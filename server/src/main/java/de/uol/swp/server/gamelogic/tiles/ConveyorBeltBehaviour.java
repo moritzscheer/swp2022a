@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
 import java.util.ArrayList;
@@ -48,39 +48,40 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
     public List<MoveIntent> onConveyorStage(int programmStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (Robot robotState : robotStates) {
-            if(!robotState.isAlive())
-                continue;
+            if (!robotState.isAlive()) continue;
             if (Objects.equals(robotState.getPosition(), blockPos)) {
                 moves.add(new MoveIntent(robotState.getID(), direction));
 
                 // rotate robot if moved on other Conv. Belt
-                try {
-                    Position targetPos = Position.translate(blockPos, direction);
-                    if (targetPos != null) {
-                        Block nextBlock = board[targetPos.x][targetPos.y];
-                        ConveyorBeltBehaviour conBehaviourOnNextBlock;
-                        try {
-                            conBehaviourOnNextBlock =
-                                    nextBlock.GetBehaviour(
-                                            (Class<ConveyorBeltBehaviour>) this.getClass());
-                        } catch (NullPointerException exp) {
-                            // next block does not exist
-                            conBehaviourOnNextBlock = null;
-                        }
+                Position targetPos = Position.translate(blockPos, direction);
+                if (targetPos != null
+                        && targetPos.x < board.length
+                        && targetPos.x >= 0
+                        && targetPos.y < board[targetPos.x].length
+                        && targetPos.y >= 0) {
+                    Block nextBlock = board[targetPos.x][targetPos.y];
+                    ConveyorBeltBehaviour conBehaviourOnNextBlock;
 
-                        if (conBehaviourOnNextBlock != null) {
-                            int rotation =
-                                    (conBehaviourOnNextBlock.direction.ordinal()
-                                                    - direction.ordinal()
-                                                    + 4)
-                                            % 4;
-                            robotState.setDirection(
-                                    CardinalDirection.values()[
-                                            robotState.getDirection().ordinal() + rotation]);
-                        }
+                    try {
+                        conBehaviourOnNextBlock =
+                                nextBlock.GetBehaviour(
+                                        (Class<ConveyorBeltBehaviour>) this.getClass());
+                    } catch (NullPointerException exp) {
+                        // next block does not have a conveyor
+                        conBehaviourOnNextBlock = null;
                     }
-                } catch (IndexOutOfBoundsException exp) {
-                    //
+
+                    if (conBehaviourOnNextBlock != null) {
+                        int rotation =
+                                (conBehaviourOnNextBlock.direction.ordinal()
+                                                - direction.ordinal()
+                                                + 4)
+                                        % 4;
+                        System.out.println("Rotation could happen now");
+                        robotState.setDirection(
+                                CardinalDirection.values()[
+                                        (robotState.getDirection().ordinal() + rotation) % 4]);
+                    }
                 }
 
                 break;
@@ -89,12 +90,14 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-03-05
+     */
     @Override
     public List<int[]> getImage() {
         int rotation = direction.ordinal();
         int arrowType;
-        int secondArrowType = 0;
-        boolean hasSecondArrow = false;
         int type = 9;
         if (this instanceof ExpressConveyorBeltBehaviour) {
             type = 26;
@@ -150,5 +153,9 @@ public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
 
         return new ArrayList<>(
                 Arrays.asList(new int[] {type, rotation}, new int[] {arrowType, rotation}));
+    }
+
+    public ArrowType getArrowType() {
+        return arrowType;
     }
 }

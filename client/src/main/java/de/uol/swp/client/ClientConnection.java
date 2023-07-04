@@ -43,10 +43,22 @@ import java.util.concurrent.CopyOnWriteArrayList;
 class Helper extends TimerTask {
     EventBus eventBus;
 
+    /**
+     * setter method to set the eventbus
+     *
+     * @author Ole Zimmermann
+     * @since 2023-05-15
+     */
     public void setBus(EventBus bus) {
         this.eventBus = bus;
     }
 
+    /**
+     * method to post ServerNotRespondingExceptionMessage on the bus
+     *
+     * @author Ole Zimmermann
+     * @since 2023-05-15
+     */
     public void run() {
         eventBus.post(
                 new ServerNotRespondingExceptionMessage(
@@ -63,7 +75,6 @@ class Helper extends TimerTask {
  * @author Marco Grawunder
  * @since 2017-03-17
  */
-@SuppressWarnings("UnstableApiUsage")
 public class ClientConnection {
 
     private static final Logger LOG = LogManager.getLogger(ClientConnection.class);

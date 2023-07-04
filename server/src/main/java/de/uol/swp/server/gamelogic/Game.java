@@ -8,8 +8,8 @@ import com.google.common.primitives.Ints;
 
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
-import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -17,23 +17,20 @@ import de.uol.swp.server.gamelogic.cards.Direction;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.moves.GameMovement;
 import de.uol.swp.server.gamelogic.moves.MoveIntent;
-import de.uol.swp.server.gamelogic.tiles.AbstractTileBehaviour;
-import de.uol.swp.server.gamelogic.tiles.CheckPointBehaviour;
-import de.uol.swp.server.gamelogic.tiles.PitBehaviour;
-import de.uol.swp.server.gamelogic.tiles.RepairBehaviour;
-
+import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.utils.ConvertToDTOUtils;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
  * @author Maria Andrade & Finn Oldeboershuis
- * @see
  * @since 2023
  */
 public class Game {
@@ -51,7 +48,6 @@ public class Game {
     private final int nRobots;
     private final int nRealPlayers;
     private int programStep; // program steps from 0 to 4
-    private final Timer timer = new Timer();
     private int readyRegister; // count how many are ready
     private final List<AbstractPlayer> players = new ArrayList<>();
     private final Card[][] playedCards;
@@ -71,6 +67,8 @@ public class Game {
     private Map<Integer, Card> cardIdCardMap = new HashMap<>();
 
     private boolean notDistributedCards = true;
+    private String fullMapName;
+
     private List<GameMovement> gameMovements;
 
     private List<PlayerDTO> respawnRobots;
@@ -85,7 +83,12 @@ public class Game {
      * @since 20-02-2023
      */
     public Game(
-            Integer lobbyID, Set<User> users, String mapName, int numberBots, int checkpointCount) {
+            Integer lobbyID,
+            Set<User> users,
+            String mapName,
+            int numberBots,
+            int checkpointCount,
+            int version) {
         this.lobbyID = lobbyID;
         this.programStep = 0;
         this.readyRegister = 0;
@@ -94,9 +97,67 @@ public class Game {
 
         assert users.size() + numberBots <= 8;
 
+        this.startCheckpoint = loadMapBuilder(version);
+
+        if (this.board == null) {
+            // TODO: Log error "Map couldn't be loaded"
+            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
+        }
+
+        updateBoardInAllBehaviours(); // otherwise laser don't work
+        LOG.debug("Checkpoints size: {}", this.checkpointCount);
+        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
+
+        // set info
+        setRobotsInfoInBehaviours(board, robots);
+
+        // there must be as many docking as users
+        // assert dockingBays.length == users.size();
+        this.dockingStartPosition = startCheckpoint;
+        this.lastCheckPoint = this.checkpointCount;
+
+        // create players and robots
+        int i = 0; // start robots id in 0
+        if (!Objects.equals(users, null)) // important to run integration tests
+        for (User user : users) {
+                Player newPlayer =
+                        new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
+                this.players.add(newPlayer);
+                this.robots.add(newPlayer.getRobot());
+                i++;
+            }
+
+        nRealPlayers = users.size();
+
+        // create bots and robots
+        for (int j = 0; j < numberBots; j++) {
+            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
+            this.players.add(newPlayer);
+            this.robots.add(newPlayer.getRobot());
+            i++;
+        }
+
+        this.nRobots = robots.size();
+        this.playedCards = new Card[this.nRobots][5];
+    }
+
+    /**
+     * Method to load Map outside constructor
+     *
+     * @author Jann, Tommy, Maxim, Maria, WKempel
+     * @see de.uol.swp.server.gamelogic.map.MapBuilder
+     * @since 2023-06-19
+     */
+    private Position loadMapBuilder(int version) {
+        LOG.debug(new File(".").getAbsolutePath());
         // create board
-        Random random = new Random();
-        int version = random.nextInt(3) + 1;
+        if (version == -1) {
+            Random random = new Random();
+            version = random.nextInt(3) + 1;
+        }
+
+        fullMapName = this.mapName + "V" + version + "C" + checkpointCount;
+
         LOG.debug(version);
         LOG.debug(
                 "server/src/main/resources/maps/"
@@ -113,15 +174,32 @@ public class Game {
                     MapBuilder.getMap("server/src/main/resources/maps/" + this.mapName + ".map");
             tmp = MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(mapName);
         } else {
-            this.board =
-                    MapBuilder.getMap(
-                            "server/src/main/resources/maps/"
-                                    + this.mapName
-                                    + "V"
-                                    + version
-                                    + "C"
-                                    + checkpointCount
-                                    + ".map");
+            String mapPath = "";
+
+            // TODO: this is for testing purposes, because for some reason the tests are run from
+            // swp2022/server/ while the server is run from swp2022/
+            if (new File(".").getAbsolutePath().endsWith("server\\.")) {
+                mapPath =
+                        "src/main/resources/maps/"
+                                + this.mapName
+                                + "V"
+                                + version
+                                + "C"
+                                + checkpointCount
+                                + ".map";
+            } else {
+                mapPath =
+                        "server/src/main/resources/maps/"
+                                + this.mapName
+                                + "V"
+                                + version
+                                + "C"
+                                + checkpointCount
+                                + ".map";
+            }
+
+            LOG.debug(new File(mapPath).getAbsolutePath());
+            this.board = MapBuilder.getMap(mapPath);
 
             if (board == null) {
                 // TODO: Log error "Map couldn't be loaded"
@@ -134,46 +212,25 @@ public class Game {
                     MapBuilder.getMapStringToCheckpointNumberAndFirstPosition(
                             mapName + "V" + version + "C" + checkpointCount);
         }
-
-        this.startCheckpoint = tmp.getValue1();
         assert tmp.getValue0() == checkpointCount;
 
-        if (tmp == null) {
-            // TODO: Log error "Map couldn't be loaded"
-            LOG.error("CheckPoints couldn't be loaded. MapName = " + mapName);
-        }
-        LOG.debug("Checkpoints size: {}", this.checkpointCount);
-        LOG.debug("StartPosition x={}, y={}", this.startCheckpoint.x, this.startCheckpoint.y);
+        return tmp.getValue1();
+    }
 
-        // set info
-        setRobotsInfoInBehaviours(board, robots);
-
-        // there must be as many docking as users
-        // assert dockingBays.length == users.size();
-        this.dockingStartPosition = startCheckpoint;
-        this.lastCheckPoint = this.checkpointCount;
-
-        // create players and robots
-        int i = 0; // start robots id in 0
-        for (User user : users) {
-            Player newPlayer = new Player(convertUserToUserDTO(user), this.dockingStartPosition, i);
-            this.players.add(newPlayer);
-            this.robots.add(newPlayer.getRobot());
-            i++;
-        }
-
-        nRealPlayers = users.size();
-
-        // create bots and robots
-        for (int j = 0; j < numberBots; j++) {
-            BotPlayer newPlayer = new BotPlayer(this.dockingStartPosition, i);
-            this.players.add(newPlayer);
-            this.robots.add(newPlayer.getRobot());
-            i++;
-        }
-
-        this.nRobots = robots.size();
-        this.playedCards = new Card[this.nRobots][5];
+    /**
+     * Update board in each Behaviour, because some behaviours are dynamically added
+     *
+     * <p>(In order to laser logic to works)
+     *
+     * @author Maria
+     * @see de.uol.swp.server.gamelogic.Block
+     * @since 2023-07-03
+     */
+    private void updateBoardInAllBehaviours() {
+        for (Block[] boardCol : board)
+            for (Block block : boardCol)
+                for (AbstractTileBehaviour behaviour : block.getBehaviourList())
+                    behaviour.setBoard(board);
     }
 
     /**
@@ -199,7 +256,7 @@ public class Game {
 
             for (AbstractPlayer player : this.players) {
                 // when robot is powered off, just set empty cards
-                if(player.getRobot().isPowerDown()){
+                if (player.getRobot().isPowerDown()) {
                     continue;
                 }
                 LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
@@ -231,21 +288,20 @@ public class Game {
                     int i = 0;
                     for (int cardID : cardsIDs) {
                         cards[i] = searchCardInJSON(cardID);
-                        // save references to these Card objetcs
+                        // save references to these Card objects
                         cardIdCardMap.put(cards[i].getId(), cards[i]);
                         i++;
                     }
                     player.receiveCards(cards);
                     count = count + 9 - damage;
 
-                }
-                else {
+                } else {
                     int[] cardsIDs =
                             Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
                     while (cardsIdsOnlyTurn.containsAll(
                             Arrays.stream(cardsIDs).boxed().collect(Collectors.toList()))) {
-                        LOG.debug("Ups, all cards are turn type");
+                        LOG.debug("Whoops, all cards are turn type");
                         Collections.shuffle(cardsIDsList);
                         cardsIDs = Arrays.copyOfRange(Ints.toArray(cardsIDsList), count, count + 5);
 
@@ -261,7 +317,7 @@ public class Game {
                     int i = 0;
                     for (int cardID : cardsIDs) {
                         cards[i] = searchCardInJSON(cardID);
-                        // save references to these Card objetcs
+                        // save references to these Card objects
                         assert cards[i] != null;
                         cardIdCardMap.put(cards[i].getId(), cards[i]);
                         i++;
@@ -278,8 +334,9 @@ public class Game {
     /**
      * The method iterate over all AbstractPlayer if there are any players who are a BotPlayer we're
      * saving the first five cards from the botPlayer received cards in chosenCards. Also, we set
-     * botPlayers of ready with the method register. @Author WKempel & Maria
+     * botPlayers of ready with the method register.
      *
+     * @author WKempel & Maria
      * @return allReady
      * @throws InterruptedException
      */
@@ -288,7 +345,8 @@ public class Game {
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
                 Card[] chosenCards = botPlayer.getReceivedCards();
-                botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
+                botPlayer.chooseCardsOrder(
+                        chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
                 System.out.println(chosenCards.length); // set cards of this bot
                 allReady = register();
             }
@@ -299,26 +357,24 @@ public class Game {
     /**
      * The method makes sure that the first card of the first round is a move
      *
-     *
-     * @return chosenCards
-     * @Author Maria
+     * @return chosenCards @Author Maria
      * @since 2023-06-23
      */
-    public Card[] chooseFirstCardMoveBot(Card[] chosenCards){
-        if(this.roundNumber != 1){
+    public Card[] chooseFirstCardMoveBot(Card[] chosenCards) {
+        if (this.roundNumber != 1) {
             return chosenCards;
         }
         LOG.debug("Bot cards:");
         for (int i = 0; i < 5; i++) {
             LOG.debug(chosenCards[i].getBehaviourType());
         }
-        if(Objects.equals(chosenCards[0].getBehaviourType(), "1")
+        if (Objects.equals(chosenCards[0].getBehaviourType(), "1")
                 || Objects.equals(chosenCards[0].getBehaviourType(), "3")
-                || Objects.equals(chosenCards[0].getBehaviourType(), "4")){
+                || Objects.equals(chosenCards[0].getBehaviourType(), "4")) {
             int i = 1;
-            while(Objects.equals(chosenCards[i].getBehaviourType(), "1")
+            while (Objects.equals(chosenCards[i].getBehaviourType(), "1")
                     || Objects.equals(chosenCards[i].getBehaviourType(), "3")
-                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")){
+                    || Objects.equals(chosenCards[i].getBehaviourType(), "4")) {
 
                 i++;
             }
@@ -336,8 +392,9 @@ public class Game {
     /**
      * When a player has chosen its cards, he will press "register" button this function will call
      * the player function that will register his cards Once all players have chosen, the calcGame
-     * will be called @ Author WKempel & Maria
+     * will be called
      *
+     * @author WKempel & Maria
      * @param loggedInUser
      * @param playerCards
      * @return register
@@ -363,7 +420,6 @@ public class Game {
         player.getRobot().setPowerDown(true);
         LOG.debug("setPowerDown {}", player.getUser().getUsername());
 
-
         // set empty cards
         Card[] cards = new Card[5];
         for (int i = 0; i < 5; i++) {
@@ -375,7 +431,7 @@ public class Game {
         player.getRobot().setDamageToken(0);
 
         boolean allChosen = register();
-        if(nRealPlayers == readyRegister){
+        if (nRealPlayers == readyRegister) {
             // if all real players decided to turn off, we have to
             // start the bots manually, so the game can happen
             distributeProgramCards();
@@ -400,7 +456,6 @@ public class Game {
         this.readyRegister += 1;
 
         if (this.readyRegister == this.nRobots - 1) {
-            startTimer();
         } else if (this.readyRegister == this.nRobots) {
             this.programStep = 0; // start in the first (0) program step, until 4
             for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
@@ -433,12 +488,14 @@ public class Game {
     }
 
     /**
-     * @author
-     * @see
-     * @since
+     * Increase program step to get the new cards from each player Clear gameMovements
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-04-25
      */
-    public void startTimer() {
-        // TODO
+    public void increaseProgramStep() {
+        this.programStep++;
+        this.gameMovements = null;
     }
 
     /**
@@ -467,8 +524,9 @@ public class Game {
             if (!player.getRobot().isDeadForever()) {
                 // only when dead for the round, set in the backup
                 boolean addRespawn = false;
-                if(player.getRobot().isDeadForTheRound()){
-                    player.getRobot().setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
+                if (player.getRobot().isDeadForTheRound()) {
+                    player.getRobot()
+                            .setCurrentPosition(player.getRobot().getLastBackupCopyPosition());
                     addRespawn = true;
                 }
 
@@ -477,20 +535,23 @@ public class Game {
                 player.getRobot().setPowerDown(false);
 
                 // needs to be done down here after all variables were set
-                if(addRespawn)
-                    respawnRobots.add(convertPlayerToPlayerDTO(player));
+                if (addRespawn) respawnRobots.add(convertPlayerToPlayerDTO(player));
 
                 countSurvivors++;
                 survivor = player.getUser();
             }
         }
         if (countSurvivors <= 1) {
-            // gameover
+            // game over
             return survivor;
         }
         return null;
     }
 
+    /**
+     * @author Maria & Finn
+     * @since 2023-05-06
+     */
     private void setRobotsInfoInBehaviours(Block[][] board, List<Robot> robots) {
         for (Block[] blocks : board) {
             for (Block block : blocks) {
@@ -499,9 +560,28 @@ public class Game {
         }
     }
 
+    /**
+     * check if all robots are dead or turned off to not keep sending messages
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-20
+     */
+    public boolean areAllRobotsAreDead() {
+        for (Robot robot : this.robots) {
+            if (!robot.isDeadForTheRound()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @author Maria & Finn
+     * @since 2023-06-22
+     */
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-        if(areAllRobotsAreDeadOrTurnedOff()){
+        if (areAllRobotsAreDead()) {
             return;
         }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
@@ -510,15 +590,22 @@ public class Game {
         calcGameRoundBoardNew();
     }
 
-    private List<PlayerDTO> getPlayerDTOSForAllPlayers() {
+    /**
+     * @author Finn
+     * @since 2023-06-05
+     */
+    public List<PlayerDTO> getPlayerDTOSForAllPlayers() {
         List<PlayerDTO> initialPlayerStates = new ArrayList<>();
-        for (AbstractPlayer player :
-                players) {
+        for (AbstractPlayer player : players) {
             initialPlayerStates.add(ConvertToDTOUtils.convertPlayerToPlayerDTO(player));
         }
         return initialPlayerStates;
     }
 
+    /**
+     * @author Finn & Maria
+     * @since 2023-06-05
+     */
     private List<List<PlayerDTO>> calcGameRoundBoardNew() {
         List<MoveIntent> currentMoves;
         List<List<PlayerDTO>> moves = new ArrayList<>();
@@ -526,49 +613,54 @@ public class Game {
         currentMoves = onExpressConveyorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        GameMovement oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "ExpressConveyor", oldMove, ""));
+        GameMovement oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "ExpressConveyor", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onConveyorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Conveyor", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Conveyor", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onPusherStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Pusher", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Pusher", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onRotatorStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
         this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Gear", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = onPresserStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Presser", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Presser", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnLaserStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
         moves.add(getPlayerDTOSForAllPlayers());
 
         currentMoves = OnCheckPointStage();
         currentMoves = resolveMoveIntentConflicts(currentMoves);
         executeMoveIntents(currentMoves);
-        oldMove = this.gameMovements.get(this.gameMovements.size()-1);
-        this.gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
+        oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
+        this.gameMovements.add(
+                new GameMovement(getPlayerDTOSForAllPlayers(), "Laser/CheckPoint", oldMove, ""));
         moves.add(getPlayerDTOSForAllPlayers());
 
         // must execute this actions at the end
@@ -576,6 +668,10 @@ public class Game {
         return moves;
     }
 
+    /**
+     * @author Maria & Finn
+     * @since 2023-06-05
+     */
     private List<List<PlayerDTO>> calcGameRoundCardsNew() {
         List<List<PlayerDTO>> moves = new ArrayList<>();
         Card[] cardsToPlay = new Card[playedCards.length];
@@ -584,135 +680,204 @@ public class Game {
             cardsToPlay[i] = playedCards[i][programStep];
         }
 
-        //Get lists of the Priorities to execute cards in the right order
-        Integer[] sortedPriorities = Arrays.stream(cardsToPlay).map(Card::getPriority)
-                .sorted(Comparator.reverseOrder()).toArray(Integer[]::new);
-        Integer[] priorities = Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
+        // Get lists of the Priorities to execute cards in the right order
+        Integer[] sortedPriorities =
+                Arrays.stream(cardsToPlay)
+                        .map(Card::getPriority)
+                        .sorted(Comparator.reverseOrder())
+                        .toArray(Integer[]::new);
+        Integer[] priorities =
+                Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
 
         for (int i = 0; i < cardsToPlay.length; i++) {
-            //Get index of next card to play
+            // Get index of next card to play
             int indexOfCurrentCard = Arrays.asList(priorities).indexOf(sortedPriorities[i]);
             Card currentCard = cardsToPlay[indexOfCurrentCard];
 
-            //Check if executing robot is alive or powerdown
+            // Check if executing robot is alive or powerdown
             if (!robots.get(indexOfCurrentCard).isAlive()
                     || this.robots.get(indexOfCurrentCard).isPowerDown()) {
-                continue;  // if not alive or powered down, go on
+                continue; // if not alive or powered down, go on
             }
 
-            //Get Move Intents and execute them
+            // Get Move Intents and execute them
             List<List<MoveIntent>> moveIntents = resolveCard(currentCard, indexOfCurrentCard);
             GameMovement oldMove;
             String cardType = searchCardType(currentCard.getId());
             for (List<MoveIntent> move : moveIntents) {
                 List<MoveIntent> resolvedMoves = resolveMoveIntentConflicts(move);
                 executeMoveIntents(resolvedMoves);
-                oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+                oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
                 this.gameMovements.add(
-                        new GameMovement(getPlayerDTOSForAllPlayers(), cardType, oldMove,
+                        new GameMovement(
+                                getPlayerDTOSForAllPlayers(),
+                                cardType,
+                                oldMove,
                                 players.get(indexOfCurrentCard).getUser().getUsername()));
                 cardType = null;
             }
-            if(moveIntents.size()==0){
-                oldMove = this.gameMovements.get(this.gameMovements.size()-1);
+            if (moveIntents.size() == 0) {
+                oldMove = this.gameMovements.get(this.gameMovements.size() - 1);
                 this.gameMovements.add(
-                        new GameMovement(getPlayerDTOSForAllPlayers(), cardType, oldMove,
+                        new GameMovement(
+                                getPlayerDTOSForAllPlayers(),
+                                cardType,
+                                oldMove,
                                 players.get(indexOfCurrentCard).getUser().getUsername()));
             }
-            System.out.println(this.gameMovements.get(this.gameMovements.size()-1).getMoveMessage());
+            System.out.println(
+                    this.gameMovements.get(this.gameMovements.size() - 1).getMoveMessage());
             moves.add(getPlayerDTOSForAllPlayers());
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> onExpressConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onExpressConveyorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> onConveyorStage() {
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnConveyorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> onPusherStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnPusherStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPusherStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> onRotatorStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnRotatorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> onPresserStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnPresserStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onPressorStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> OnLaserStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnLaserStage(programStep+1);
+                List<MoveIntent> blockMoves = block.onLaserStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-19
+     */
     private List<MoveIntent> OnCheckPointStage() {
 
         List<MoveIntent> moves = new ArrayList<>();
         for (Block[] boardCol : board) {
             for (Block block : boardCol) {
-                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep+1);
+                List<MoveIntent> blockMoves = block.OnCheckPointStage(programStep + 1);
                 moves.addAll(blockMoves);
             }
         }
         return moves;
     }
 
+    //////////////////////////////
+    // SOLVING MOVE INTENTS
+    /////////////////////////////
 
+    /**
+     * @author Maria
+     * @since 2023-04-18
+     */
+    private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
+        List<List<MoveIntent>> moves = new ArrayList<>();
+        // TODO: handle rotations
+        if (card.getDirectionCard() != null) {
+            turn(robots.get(robotID), card.getDirectionCard());
+        }
+        if (card.getUTurn()) {
+            uTurn(robots.get(robotID));
+        }
+        if (card.getMoves() == -1) {
+            List<MoveIntent> subMoveList = new ArrayList<>();
+            CardinalDirection dir = robots.get(robotID).getDirection();
+            subMoveList.add(
+                    new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
+            moves.add(subMoveList);
+        }
+        for (int i = 0; i < card.getMoves(); i++) {
+            List<MoveIntent> subMoveList = new ArrayList<>();
+            subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
+            moves.add(subMoveList);
+        }
+        return moves;
+    }
 
-//////////////////////////////
-// SOLVING MOVE INTENTS
-/////////////////////////////
-
+    /**
+     * @author Finn & Maria
+     * @since 2023-04-24
+     */
     private void turn(Robot robot, Direction directionCard) {
         int rotation;
         switch (directionCard) {
@@ -730,50 +895,32 @@ public class Game {
                 CardinalDirection.values()[(robot.getDirection().ordinal() + rotation) % 4]);
     }
 
-    private List<List<MoveIntent>> resolveCard(Card card, int robotID) {
-        List<List<MoveIntent>> moves = new ArrayList<>();
-        // TODO: handle rotations
-        if (card.getDirectionCard() != null) {
-            turn(robots.get(robotID), card.getDirectionCard());
-        }
-        if (card.getUTurn()) {
-            uTurn(robots.get(robotID));
-        }
-        if (card.getMoves() == -1) {
-            List<MoveIntent> subMoveList = new ArrayList<>();
-            CardinalDirection dir = robots.get(robotID).getDirection();
-            subMoveList.add(
-                    new MoveIntent(robotID, CardinalDirection.values()[(dir.ordinal() + 2) % 4]));
-            moves.add(subMoveList);
-        }
-        for (int i = 0;
-             i < card.getMoves();
-             i++) {
-            List<MoveIntent> subMoveList = new ArrayList<>();
-            subMoveList.add(new MoveIntent(robotID, robots.get(robotID).getDirection()));
-            moves.add(subMoveList);
-        }
-        return moves;
-    }
-
+    /**
+     * @author Finn
+     * @since 2023-04-24
+     */
     private void uTurn(Robot robot) {
         turn(robot, Direction.Left);
         turn(robot, Direction.Left);
     }
 
+    /**
+     * @author Maria
+     * @since 2023-03-24
+     */
     private void executeMoveIntents(List<MoveIntent> moves) {
         if (moves != null) {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
-                // after robot moved to new block, check for behvaviours to be executed
+                // after robot moved to new block, check for behaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
             }
         }
 
         checkRobotFellFromBoard();
     }
-/**
+    /**
      * Execute behaviour that may occur only by passing through the block and does not require in
      * the block to land i.e.: Checkpoint, save BackupPosition in repair or checkpoint block, fell
      * on a pit
@@ -818,8 +965,7 @@ public class Game {
         // execute board elements functions, other than moves
         try {
             for (Robot robot : robots) {
-                if(!robot.isAlive())
-                    continue;
+                if (!robot.isAlive()) continue;
                 Position position = robot.getPosition();
                 for (AbstractTileBehaviour behaviour :
                         board[position.x][position.y].getBehaviourList()) {
@@ -835,6 +981,10 @@ public class Game {
         }
     }
 
+    /**
+     * @author Finn
+     * @since 2023-03-06
+     */
     public List<MoveIntent> resolveMoveIntentConflicts(List<MoveIntent> movesIn) {
         ArrayList<MoveResult> moveList = new ArrayList<>();
 
@@ -875,6 +1025,10 @@ public class Game {
                 .collect(Collectors.toList()));
     }
 
+    /**
+     * @author Finn
+     * @since 2023-03-06
+     */
     private boolean addPushMoves(ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
             MoveResult move = moveList.get(i);
@@ -904,6 +1058,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author Finn
+     * @since 2023-03-13
+     */
     private static boolean removeSameDestinationConflicts(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -927,6 +1085,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author Finn
+     * @since 2023-03-13
+     */
     private static boolean removeWallIntersections(
             ArrayList<MoveResult> moveList, boolean somethingChanged, Block[][] board) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -944,6 +1106,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author Finn & Maria
+     * @since 2023-03-13
+     */
     private static boolean removeHeadOnCollisions(
             ArrayList<MoveResult> moveList, boolean somethingChanged) {
         for (int i = 0; i < moveList.size(); i++) {
@@ -955,8 +1121,8 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (moveDir
-                            == CardinalDirection.values()[
-                            (moveList.get(j).getDirection().ordinal() + 2) % 4]
+                                    == CardinalDirection.values()[
+                                            (moveList.get(j).getDirection().ordinal() + 2) % 4]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
                         removeMoveResultAndParents(move, moveList);
                         removeMoveResultAndParents(moveList.get(j), moveList);
@@ -970,6 +1136,10 @@ public class Game {
         return somethingChanged;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-03-28
+     */
     private static boolean checkForObstruction(
             Position currentTile,
             Position destinationTile,
@@ -985,6 +1155,10 @@ public class Game {
         }
     }
 
+    /**
+     * @author Finn
+     * @since 2023-03-13
+     */
     private static void removeMoveResultAndParents(
             MoveResult move, ArrayList<MoveResult> moveList) {
         while (moveList.contains(move)) {
@@ -995,41 +1169,33 @@ public class Game {
         }
     }
 
-    public int getRoundNumber() {
-        return roundNumber;
-    }
-
-    public int getLastCheckPoint() {
-        return lastCheckPoint;
-    }
-
-    public List<GameMovement> getGameMovements() {
-        if(Objects.equals(gameMovements, null))
-            return new ArrayList<>();
-        return gameMovements;
-    }
-
-    public List<PlayerDTO> getRespawnRobots() {
-        return respawnRobots;
-    }
-
-    /**
-     * @author Finn
-     */
+    /** @author Finn */
     private class MoveResult extends MoveIntent {
 
         public final MoveResult parentMove;
 
+        /**
+         * @author Finn
+         * @since 2023-03-06
+         */
         public MoveResult(MoveIntent intent) {
             super(intent.robotID, intent.direction);
             parentMove = null;
         }
 
+        /**
+         * @author Finn
+         * @since 2023-03-06
+         */
         public MoveResult(MoveResult parentMove, int robotID) {
             super(robotID, parentMove.direction);
             this.parentMove = parentMove;
         }
 
+        /**
+         * @author Finn
+         * @since 2023-03-06
+         */
         public Position getTargetPosition() {
             Position p = robots.get(robotID).getPosition();
             switch (direction) {
@@ -1045,10 +1211,13 @@ public class Game {
             throw new IllegalStateException();
         }
 
+        /**
+         * @author Finn
+         * @since 2023-03-13
+         */
         public Position getOriginPosition() {
             return robots.get(robotID).getPosition();
         }
-
     }
 
     /**
@@ -1059,7 +1228,7 @@ public class Game {
      */
     private void checkRobotFellFromBoard() {
         for (Robot robot : this.robots) {
-            if(!robot.isAlive()){
+            if (!robot.isAlive()) {
                 continue;
             }
             Position position = robot.getPosition();
@@ -1076,6 +1245,38 @@ public class Game {
     // GETTERS // SETTERS
     /////////////////////////////
 
+    /**
+     * @author WKempel
+     * @since 2023-06-02
+     */
+    public int getRoundNumber() {
+        return roundNumber;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-05
+     */
+    public int getLastCheckPoint() {
+        return lastCheckPoint;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-20
+     */
+    public List<GameMovement> getGameMovements() {
+        if (Objects.equals(gameMovements, null)) return new ArrayList<>();
+        return gameMovements;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-06-22
+     */
+    public List<PlayerDTO> getRespawnRobots() {
+        return respawnRobots;
+    }
 
     /**
      * Getter for Board Array
@@ -1146,24 +1347,19 @@ public class Game {
         return this.dockingStartPosition;
     }
 
-    public void increaseProgramStep() {
-        this.programStep++;
-        this.gameMovements = null;
+    public String getFullMapName() {
+        return fullMapName;
     }
 
-    /**
-     * check if all robots are dead or turned off to not keep sending messages
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-06-20
-     */
-    // TODO: fix this function, when all are dead
-    public boolean areAllRobotsAreDeadOrTurnedOff(){
-        for (Robot robot: this.robots ) {
-            if (!robot.isDeadForTheRound() && !robot.isPowerDown()){
-                return false;
-            }
-        }
-        return true;
+    public void setNotDistributedCards(boolean notDistributedCards) {
+        this.notDistributedCards = notDistributedCards;
+    }
+
+    public boolean isNotDistributedCards() {
+        return notDistributedCards;
+    }
+
+    public int getProgramStep() {
+        return programStep;
     }
 }

@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * Request sent to the server when the user requests to send his chosen cards
  *
- * @see de.uol.swp.common.message.AbstractRequestMessage
  * @author Ole Zimmermann & Maria Eduarda Costa Leite Andrade
+ * @see de.uol.swp.common.message.AbstractRequestMessage
  * @since 2023-04-25
  */
 public class SubmitCardsRequest extends AbstractRequestMessage {
@@ -20,27 +20,29 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
     private final UserDTO loggedInUser;
 
     /**
-     * @author Ole Zimmermann
-     * @since 2023-04-25
+     * Constructor
+     *
+     * @param lobbyID integer of the lobby
+     * @param userDTO UserDTO of the user
+     * @param cardDTOS List of card DTOs
+     * @author Waldemar Kempel, Maria Andrade
+     * @since 2023-05-19
      */
     public SubmitCardsRequest(int lobbyID, UserDTO userDTO, List<CardDTO> cardDTOS) {
-        if (lobbyID < 0) {
-            throw new IllegalArgumentException("Lobby can not be null");
-        }
-        if (userDTO == null) {
-            throw new NullPointerException("User can not be null");
-        }
-        if (cardDTOS == null) {
-            throw new NullPointerException("CardDTO can not be null");
-        }
+        if (lobbyID < 0) throw new IllegalArgumentException("Lobby can not be null");
+        if (userDTO == null) throw new NullPointerException("User can not be null");
+        if (cardDTOS == null) throw new NullPointerException("CardDTO can not be null");
         this.lobbyID = lobbyID;
         this.loggedInUser = userDTO;
         this.cardDTO = cardDTOS;
     }
 
     /**
-     * @author Ole Zimmermann
-     * @since 2023-04-25
+     * Getter for the card DTOs
+     *
+     * @return list of card DTOs
+     * @author Maria Andrade
+     * @since 2023-05-19
      */
     public List<CardDTO> getCardDTOs() {
         return cardDTO;
@@ -52,16 +54,22 @@ public class SubmitCardsRequest extends AbstractRequestMessage {
     }
 
     /**
+     * Getter for the lobby id
+     *
+     * @return lobby id as integer
      * @author Maria Andrade
-     * @since 2023-05-18
+     * @since 2023-05-19
      */
     public int getLobbyID() {
         return lobbyID;
     }
 
     /**
+     * Getter for the logged in user
+     *
+     * @return UserDTO of the user who is logged in
      * @author Maria Andrade
-     * @since 2023-05-18
+     * @since 2023-05-13
      */
     public UserDTO getLoggedInUser() {
         return loggedInUser;

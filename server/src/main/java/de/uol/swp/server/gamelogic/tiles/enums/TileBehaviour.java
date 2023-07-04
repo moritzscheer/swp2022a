@@ -1,9 +1,10 @@
 package de.uol.swp.server.gamelogic.tiles.enums;
 
 /**
- * @author
- * @see
- * @since
+ * enum for the different tile behaviours
+ *
+ * @author Tommy Dang
+ * @since 2023-01-24
  */
 public enum TileBehaviour {
     RepairBehaviour,

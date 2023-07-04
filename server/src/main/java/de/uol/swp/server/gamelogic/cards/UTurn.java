@@ -7,7 +7,6 @@ import de.uol.swp.server.gamelogic.Robot;
  * Turns the robot 180 degree
  *
  * @author Tommy & WKempel
- * @see
  * @since 2023-04-03
  */
 public class UTurn extends CardBehaviour {
@@ -18,7 +17,6 @@ public class UTurn extends CardBehaviour {
      * Constructor
      *
      * @author Maria
-     * @see
      * @since 2023-04-23
      */
     public UTurn() {
@@ -37,8 +35,9 @@ public class UTurn extends CardBehaviour {
     }
 
     /**
+     * method to turn the robot 180 degree
+     *
      * @author Tommy & WKempel
-     * @see
      * @since 2023-04-03
      */
     @Override

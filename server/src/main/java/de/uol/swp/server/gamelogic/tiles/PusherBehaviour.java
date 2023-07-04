@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +24,10 @@ public class PusherBehaviour extends AbstractTileBehaviour {
     private final CardinalDirection direction;
     private final CardinalDirection pushingDirection;
 
+    /**
+     * @author Maria
+     * @since 2023-03-05
+     */
     public PusherBehaviour(
             List<Robot> robotStates,
             Block[][] board,
@@ -33,7 +37,6 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         super(robotStates, board, blockPos);
         this.activeInProgramSteps =
                 Arrays.stream(activeInProgramSteps).boxed().collect(Collectors.toList());
-        ;
         this.direction = direction;
         this.pushingDirection = CardinalDirection.values()[(direction.ordinal() + 2) % 4];
     }
@@ -52,8 +55,7 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         List<MoveIntent> moves = new ArrayList<>();
         if (this.activeInProgramSteps.contains(programStep)) {
             for (Robot robotState : this.robotStates) {
-                if(!robotState.isAlive())
-                    continue;
+                if (!robotState.isAlive()) continue;
                 if (Objects.equals(robotState.getPosition(), this.blockPos)) {
                     moves.add(new MoveIntent(robotState.getID(), this.pushingDirection));
                     break;
@@ -64,18 +66,34 @@ public class PusherBehaviour extends AbstractTileBehaviour {
         return null;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-03-05
+     */
     public CardinalDirection getDirection() {
         return this.direction;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-18
+     */
     public CardinalDirection getPushingDirection() {
         return this.pushingDirection;
     }
 
+    /**
+     * @author Maria
+     * @since 2023-06-12
+     */
     public List<Integer> getActiveInProgramSteps() {
         return this.activeInProgramSteps;
     }
 
+    /**
+     * @author Merden
+     * @since 2023-05-21
+     */
     @Override
     public List<int[]> getImage() {
         int type;

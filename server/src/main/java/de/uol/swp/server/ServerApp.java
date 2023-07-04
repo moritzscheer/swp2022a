@@ -23,8 +23,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * This class handles the startup of the server, as well as, the creation of default users while the
- * MainMemoryBasedUserStore is still in use.
+ * This class handles the startup of the server, as well as, the creation of default users when the
+ * MainMemoryBasedUserStore was still in use.
  *
  * @author Marco Grawunder
  * @see de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore
@@ -41,6 +41,10 @@ class ServerApp {
      *
      * @param args Any arguments given when starting the application e.g. a port number
      * @since 2017-03-17
+     * @see de.uol.swp.server.gamelogic.map.MapBuilder
+     * @see de.uol.swp.server.communication.ServerHandler
+     * @see de.uol.swp.server.communication.netty.Server
+     * @see io.netty.channel.ChannelHandler;
      */
     public static void main(String[] args) throws Exception {
         // Run MapBuilder to avoid NullPointer Exception
@@ -68,10 +72,11 @@ class ServerApp {
     }
 
     /**
-     * Helper method to create the services the server uses and for the time being the test users
+     * Helper method to create the services the server uses
      *
      * @param injector the google guice injector used for dependency injection
      * @since 2019-09-18
+     * @see com.google.inject.Injector
      */
     private static void createServices(Injector injector) {
         UserManagement userManagement = injector.getInstance(UserManagement.class);

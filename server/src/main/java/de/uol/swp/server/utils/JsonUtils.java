@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.io.FileReader;
 
 /**
@@ -31,11 +32,21 @@ public final class JsonUtils {
         JSONObject json;
         JSONArray jsonArray;
 
+        String jsonFilePath = "server/src/main/resources/json/cards.json";
+        // TODO: change File Path if executed from tests
+        if (new File(".").getAbsolutePath().endsWith("server\\.")) {
+            jsonFilePath = "src/main/resources/json/cards.json";
+        }
+
         try {
-            json =
-                    new JSONObject(
-                            new JSONTokener(
-                                    new FileReader("server/src/main/resources/json/cards.json")));
+            try {
+                json = new JSONObject(new JSONTokener(new FileReader(jsonFilePath)));
+            } catch (Exception ex) {
+                json =
+                        new JSONObject(
+                                new JSONTokener(
+                                        new FileReader("src/main/resources/json/cards.json")));
+            }
             jsonArray = json.getJSONArray("cards");
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -99,10 +110,8 @@ public final class JsonUtils {
         return null;
     }
 
-
     /**
      * Helper method to search for a card Type
-     *
      *
      * @param cardId the cardID that wants to be searched for
      * @author Maria Andrade

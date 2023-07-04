@@ -2,8 +2,16 @@ package de.uol.swp.server.gamelogic;
 
 import java.util.Comparator;
 
+/**
+ * @author Merden
+ * @since 2023-05-31
+ */
 public class BehaviourTypeComparator implements Comparator<Object> {
 
+    /**
+     * @author Merden
+     * @since 2023-05-31
+     */
     @Override
     public int compare(Object obj1, Object obj2) {
         // Vergleichen der BehaviourKlassen

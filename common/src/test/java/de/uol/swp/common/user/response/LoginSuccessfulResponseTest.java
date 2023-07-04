@@ -16,43 +16,95 @@ public class LoginSuccessfulResponseTest {
     private UserDTO user;
     private UUID chatID;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         user = new UserDTO("user1", "password1", "email1");
         chatID = UUID.randomUUID();
         response = new LoginSuccessfulResponse(user, chatID);
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct user
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getUser() {
+    public void testGetUsers() {
         User actualUser = response.getUser();
         assertEquals(user, actualUser);
     }
 
+    /**
+     * Tests the getChatID method
+     *
+     * @author WKempel
+     * @result The getChatID method should return the correct chatID
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void getChatID() {
+    public void testGetChatID() {
         UUID actualChatID = response.getChatID();
         assertEquals(chatID, actualChatID);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the LoginSuccessfulResponses are equal
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(response.equals(response));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(response, response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the LoginSuccessfulResponses are equal
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualsSameValuesThanTrue() {
         LoginSuccessfulResponse other = new LoginSuccessfulResponse(user, chatID);
-        assertTrue(response.equals(other));
+        assertEquals(response, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the LoginSuccessfulResponses are not equal
+     * @see de.uol.swp.common.user.response.LoginSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(response.equals("not a LoginSuccessfulResponse object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not a LoginSuccessfulResponse object", response);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the LoginSuccessfulResponses are null
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(response.equals(null));
+    public void testEqualsNullThanFalse() {
+        assertNotEquals(null, response);
     }
 }

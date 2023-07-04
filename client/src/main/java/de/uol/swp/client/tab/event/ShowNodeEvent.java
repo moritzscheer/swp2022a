@@ -22,10 +22,24 @@ public class ShowNodeEvent {
         this.tabID = tabID;
     }
 
+    /**
+     * Getter Method to get the parent of the node
+     *
+     * @author Moritz Scheer
+     * @return the parent of the node
+     * @since 2022-12-27
+     */
     public Parent getParent() {
         return parent;
     }
 
+    /**
+     * Getter Method to get the tabID
+     *
+     * @author Moritz Scheer
+     * @return the tabID
+     * @since 2022-12-27
+     */
     public int getTabID() {
         return tabID;
     }

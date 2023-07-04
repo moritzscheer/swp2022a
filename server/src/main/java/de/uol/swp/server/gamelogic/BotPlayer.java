@@ -12,6 +12,10 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class BotPlayer extends AbstractPlayer {
 
+    /**
+     * @author Maria
+     * @since 2023-05-06
+     */
     public BotPlayer(Position startPosition, int robotID) {
         super();
         int botNumber = robotID + 1;
@@ -19,5 +23,4 @@ public class BotPlayer extends AbstractPlayer {
 
         this.robot = new Robot(robotID, startPosition, CardinalDirection.North);
     }
-
 }

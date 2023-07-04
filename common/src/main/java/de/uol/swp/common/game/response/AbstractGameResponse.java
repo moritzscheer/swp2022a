@@ -19,6 +19,7 @@ public class AbstractGameResponse extends AbstractResponseMessage {
      * Default constructor
      *
      * @implNote this constructor is needed for serialization
+     * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
     public AbstractGameResponse() {}
@@ -27,6 +28,7 @@ public class AbstractGameResponse extends AbstractResponseMessage {
      * Constructor
      *
      * @param gameID game responsible for the creation of this message
+     * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-05-01
      */
     public AbstractGameResponse(Integer gameID) {
@@ -36,6 +38,7 @@ public class AbstractGameResponse extends AbstractResponseMessage {
     /**
      * Getter for the gameID variable
      *
+     * @author Maria Eduarda Costa Leite Andrade
      * @return game responsible for the creation of this message
      * @since 2023-05-01
      */
@@ -44,15 +47,23 @@ public class AbstractGameResponse extends AbstractResponseMessage {
     }
 
     /**
-     * Setter for the lobby variable
+     * Setter for the gameID variable
      *
+     * @author Maria Eduarda Costa Leite Andrade
      * @param gameID game responsible for the creation of this message
      * @since 2023-05-01
      */
     public void setGameID(Integer gameID) {
         this.gameID = gameID;
     }
-
+    /**
+     * Override of the equals method
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @param o Object
+     * @return boolean for gameID equals gameID
+     * @since 2023-05-01
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -60,7 +71,13 @@ public class AbstractGameResponse extends AbstractResponseMessage {
         AbstractGameResponse that = (AbstractGameResponse) o;
         return Objects.equals(gameID, that.gameID);
     }
-
+    /**
+     * Override of the hashCode method
+     *
+     * @author Maria Eduarda Costa Leite Andrade
+     * @return hash of gameID
+     * @since 2023-05-01
+     */
     @Override
     public int hashCode() {
         return Objects.hash(gameID);

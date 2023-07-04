@@ -14,9 +14,7 @@ import java.io.Serializable;
 public class Robot implements Serializable {
 
     private int id;
-    private String imgPath;
     private Position currentPosition;
-    private boolean alive;
     private int damageToken;
     private CardinalDirection direction;
     private int lastCheckPoint;
@@ -24,12 +22,7 @@ public class Robot implements Serializable {
     private int lifeToken;
     private boolean powerDown;
 
-    private boolean a;
-
-    private boolean b;
-
     private int optionCard;
-    private int lockedRegisters;
     private boolean deadForTheRound;
     private boolean deadForever;
 
@@ -37,7 +30,7 @@ public class Robot implements Serializable {
      * Constructor
      *
      * @author Maria Eduarda Costa Leite Andrade
-     * @since 06-02-2023
+     * @since 2023-06-12
      */
     public Robot(int id, Position currentPosition, CardinalDirection direction) {
         this.id = id;
@@ -54,83 +47,119 @@ public class Robot implements Serializable {
     }
 
     /**
-     * @author
+     * @author Maria Eduarda Costa Leite Andrade
      * @see
-     * @since
-     */
-    public void fireLaser() {
-        // TODO
-    }
-
-    /**
-     * @author
-     * @see
-     * @since
+     * @since 2023-06-12
      */
     public void move(CardinalDirection directionToMove) {
         currentPosition = Position.translate(currentPosition, directionToMove);
     }
 
-    public void move(Position targetCoords) {
-        ;;
-    }
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
+    public void move(Position targetCoords) {}
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public boolean isAlive() {
         return !isDeadForever() && !isDeadForTheRound();
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public Position getPosition() {
         return this.currentPosition;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public int getID() {
         return id;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public CardinalDirection setDirection(CardinalDirection dir) {
         this.direction = dir;
         return this.direction;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public CardinalDirection getDirection() {
         return this.direction;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public void setAlive(boolean alivee) {
         if (!alivee) {
             // robot is dead
-            setLifeToken(getLifeToken()-1);
-            //setCurrentPosition(this.lastBackupCopyPosition);
+            setLifeToken(getLifeToken() - 1);
+            setDamageToken(0);
+            // setCurrentPosition(this.lastBackupCopyPosition);
             setDeadForTheRound(true);
         } else {
             if (this.lifeToken > 0) {
                 setDeadForTheRound(false);
-            }
-            else {
+            } else {
                 // robot is dead forever
                 setDeadForever();
                 setDeadForTheRound(true);
             }
-
         }
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public void setLastCheckPoint(int checkPointNumber) {
         this.lastCheckPoint = checkPointNumber;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public int getLastCheckPoint() {
         return this.lastCheckPoint;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public Position getLastBackupCopyPosition() {
         return this.lastBackupCopyPosition;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-06-12
+     */
     public void setLastBackupCopyPosition(Position pos) {
         this.lastBackupCopyPosition = pos;
     }
@@ -146,10 +175,18 @@ public class Robot implements Serializable {
         this.damageToken += 2;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
     public int getDamageToken() {
         return this.damageToken;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-02-26
+     */
     public void setDamageToken(int damageToken) {
         this.damageToken = damageToken;
         if (damageToken >= 10) {
@@ -190,13 +227,11 @@ public class Robot implements Serializable {
      * @since 2023-05-14
      */
     public void setLifeToken(int lifeToken) {
-        if(lifeToken > 0)
-            this.lifeToken = lifeToken;
+        if (lifeToken > 0) this.lifeToken = lifeToken;
         else if (lifeToken == 0) {
             setDeadForever();
             this.lifeToken = lifeToken;
         }
-        return;
     }
 
     /**
@@ -219,18 +254,34 @@ public class Robot implements Serializable {
         this.powerDown = powerDown;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
     public boolean isDeadForTheRound() {
         return deadForTheRound;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
     public void setDeadForTheRound(boolean deadForTheRound) {
         this.deadForTheRound = deadForTheRound;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
     public boolean isDeadForever() {
         return deadForever;
     }
 
+    /**
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-14
+     */
     public void setDeadForever() {
         this.deadForever = true;
     }

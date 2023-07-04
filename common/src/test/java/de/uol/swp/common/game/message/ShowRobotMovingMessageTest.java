@@ -15,14 +15,20 @@ public class ShowRobotMovingMessageTest {
 
     private final Position position = new Position(1, 1);
     private final RobotDTO robotDTO = new RobotDTO(1, position, CardinalDirection.North);
-    private final RobotDTO robotDTO2 = new RobotDTO(2, position, CardinalDirection.North);
 
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
-    private final UserDTO userDTO2 = new UserDTO("Player2", "pw", "ml");
 
     private final PlayerDTO playerDTO = new PlayerDTO(robotDTO, userDTO);
-    private final PlayerDTO playerDTO2 = new PlayerDTO(robotDTO2, userDTO2);
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an
+     * @result The method should return true and the correct lobbyID if the player is in the list
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyID() {
         int lobbyID = 123;
@@ -33,6 +39,15 @@ public class ShowRobotMovingMessageTest {
         Assertions.assertEquals(lobbyID, result);
     }
 
+    /**
+     * Tests the getPlayerDTO method
+     *
+     * @author WKempel
+     * @result The method should return true and the correct playerDTO if the player is in the list
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-06-14
+     */
     @Test
     public void testGetPlayerDTO() {
         int lobbyID = 123;
@@ -43,6 +58,15 @@ public class ShowRobotMovingMessageTest {
         Assertions.assertEquals(playerDTO, result);
     }
 
+    /**
+     * Tests the getLobbyID method with a negative lobbyID
+     *
+     * @author WKempel
+     * @result The method should throw an IllegalArgumentException
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
+     * @since 2023-06-14
+     */
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;

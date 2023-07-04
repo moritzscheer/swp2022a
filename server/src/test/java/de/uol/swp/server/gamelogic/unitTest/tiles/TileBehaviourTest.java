@@ -1,12 +1,18 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import de.uol.swp.server.gamelogic.tiles.enums.TileBehaviour;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 public class TileBehaviourTest {
 
+    /**
+     * Tests the enum values of TileBehaviour
+     *
+     * @author WKempel
+     * @since 2023-06-21
+     */
     @Test
     public void testEnumValues() {
         // Überprüft, ob die Anzahl der Werte in der Enumeration korrekt ist

@@ -16,7 +16,6 @@ public abstract class AbstractPlayer {
     protected UserDTO userDTO;
     protected int numCardToPlay = 0;
 
-
     /** Constructor */
     public AbstractPlayer() {}
 
@@ -71,33 +70,41 @@ public abstract class AbstractPlayer {
     }
 
     /**
-     * Return next card to be played
-     *
-     * @author Maria Eduarda Costa Leite Andrade
-     * @since 2023-03-28
+     * @author Finn
+     * @since 2023-06-05
      */
-    public Card playCard() {
-        Card nextCard = this.chosenCards[numCardToPlay];
-        numCardToPlay += 1;
-        return nextCard;
-    }
-
     public UserDTO getUser() {
         return userDTO;
     }
 
+    /**
+     * @author Finn
+     * @since 2023-06-05
+     */
     public void setUser(UserDTO user) {
         this.userDTO = user;
     }
 
+    /**
+     * @author WKempel
+     * @since 2023-06-23
+     */
     public void setReceivedCards(Card[] receivedCards) {
         this.receivedCards = receivedCards;
     }
 
+    /**
+     * @author WKempel
+     * @since 2023-06-23
+     */
     public int getNumCardToPlay() {
         return numCardToPlay;
     }
 
+    /**
+     * @author WKempel
+     * @since 2023-06-23
+     */
     public void setNumCardToPlay(int numCardToPlay) {
         this.numCardToPlay = numCardToPlay;
     }

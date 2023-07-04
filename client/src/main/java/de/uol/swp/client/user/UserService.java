@@ -13,7 +13,6 @@ import de.uol.swp.common.user.request.*;
  * @see ClientUserService
  * @since 2017-03-17
  */
-@SuppressWarnings("UnstableApiUsage")
 public class UserService implements ClientUserService {
 
     private final EventBus bus;
