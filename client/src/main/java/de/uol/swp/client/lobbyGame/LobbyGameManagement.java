@@ -461,6 +461,35 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-24
      */
     public void gameOver(GameOverMessage msg) {
-        eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
+        GamePresenter gamePresenter =
+                lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.setUserWon(msg.getUserWon());
+            eventBus.post(
+                    new ShowGameOverEvent(
+                            msg.getLobbyID(),
+                            msg.getUserWon(),
+                            gamePresenter.getUserWonImage(msg.getUserWon()),
+                            loggedInUser,
+                            lobbyIdToLobbyDTOMap.get(msg.getLobbyID()).getName(),
+                            lobbyIdToLobbyDTOMap.get(msg.getLobbyID()).isMultiplayer()));
+
+        } else LOG.warn("gamePresenter object was deleted! Ignoring RobotIsFinallyDead!");
+    }
+
+    /**
+     * Handles game over after clicking button to stay in game view
+     *
+     * @author Maria Eduarda
+     * @since 2023-07-04
+     */
+    public void gameOverAfterDialog(int lobbyID) {
+        GamePresenter gamePresenter =
+                lobbyIdToLobbyGamePresenterMap.get(lobbyID).getGamePresenter();
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.gameOver();
+        } else LOG.warn("gamePresenter object was deleted! Ignoring RobotIsFinallyDead!");
     }
 }

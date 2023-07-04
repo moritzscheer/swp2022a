@@ -253,6 +253,7 @@ public class GamePresenter extends AbstractPresenter {
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
     private List<UserDTO> deadForeverUsers = new ArrayList<>();
+    private UserDTO userWonTheGame;
 
     @FXML private Button robotOffButton;
     private int x = 2;
@@ -1708,5 +1709,42 @@ public class GamePresenter extends AbstractPresenter {
                         this.userRobotImageViewReference.replace(player.getUser(), imageView);
                     }
                 });
+    }
+
+    /**
+     * Block everything when game is over
+     *
+     * @author Maria Andrade
+     * @since 2023-07-04
+     */
+    public void gameOver() {
+        selectedCardGridPane.setDisable(true);
+        handCardGridPane.setDisable(true);
+        readyButton.setDisable(true);
+        robotOffButton.setDisable(true);
+
+        ImageView imageView = userRobotImageViewReference.get(userWonTheGame);
+        Position pos = userDTOPlayerDTOMap.get(userWonTheGame).getRobotDTO().getPosition();
+        gameBoard.add(imageView, pos.x + 1, pos.y + 1);
+    }
+
+    /**
+     * Setter
+     *
+     * @author Maria
+     * @since 2023-07-04
+     */
+    public void setUserWon(UserDTO userWonTheGame) {
+        this.userWonTheGame = userWonTheGame;
+    }
+
+    /**
+     * Getter
+     *
+     * @author Maria Andrade
+     * @since 2023-07-04
+     */
+    public ImageView getUserWonImage(UserDTO userWonTheGame) {
+        return userRobotImageViewReference.get(userWonTheGame);
     }
 }
