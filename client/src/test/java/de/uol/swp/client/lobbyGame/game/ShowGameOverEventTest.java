@@ -2,7 +2,7 @@ package de.uol.swp.client.lobbyGame.game;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import de.uol.swp.client.lobbyGame.events.ShowGameOverEvent;
+import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
