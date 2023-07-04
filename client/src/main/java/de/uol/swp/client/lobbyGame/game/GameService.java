@@ -16,6 +16,7 @@ import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 
+import de.uol.swp.common.game.response.StartGameResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -119,12 +120,12 @@ public class GameService {
      * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The StartGameMessage detected on the EventBus
-     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @see StartGameResponse
      * @author Moritz Scheer & Maxim Erden & Maria Eduarda
      * @since 2023-02-28
      */
     @Subscribe
-    public void onStartGameMessage(StartGameMessage msg) {
+    public void onStartGameMessage(StartGameResponse msg) {
         LOG.debug("onStartGameMessage");
         LobbyGameManagement.getInstance().startGame(msg);
     }

@@ -5,7 +5,6 @@ import com.google.common.eventbus.Subscribe;
 import com.google.inject.Inject;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.exception.LobbyDoesNotExistException;
-import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
@@ -13,6 +12,7 @@ import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
+import de.uol.swp.common.game.response.StartGameResponse;
 import de.uol.swp.common.lobby.dto.*;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.UserDTO;
@@ -70,7 +70,7 @@ public class GameService extends AbstractService {
      *
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.common.game.request.StartGameRequest
-     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @see StartGameResponse
      * @since 2023-02-28
      */
     public GameDTO createNewGame(int lobbyID, String mapName, int numberBots, int checkpointCount) {
@@ -151,7 +151,7 @@ public class GameService extends AbstractService {
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel, Jann
      * @see de.uol.swp.common.game.request.StartGameRequest
-     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @see StartGameResponse
      * @since 2023-02-28
      */
     @Subscribe
@@ -167,7 +167,8 @@ public class GameService extends AbstractService {
                             msg.getNumberCheckpoints());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
-                    msg.getLobbyID(), new StartGameMessage(msg.getLobbyID(), msg.getLobby(), game));
+                    msg.getLobbyID(), new StartGameResponse(msg.getLobbyID(), msg.getLobby(), game));
+            post(new StartGameMessage(msg.getLobbyID()));
         } else {
             // TODO: send ErrorResponse
         }
@@ -182,7 +183,7 @@ public class GameService extends AbstractService {
      * @param msg StartGameRequest found on the EventBus
      * @author Moritz Scheer, Maria Eduarda Costa Leite Andrade, WKempel
      * @see de.uol.swp.common.game.request.StartGameRequest
-     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @see StartGameResponse
      * @since 2023-02-28
      */
     @Subscribe

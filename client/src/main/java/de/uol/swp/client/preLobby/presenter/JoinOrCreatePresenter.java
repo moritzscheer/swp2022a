@@ -7,6 +7,8 @@ import de.uol.swp.client.lobbyGame.LobbyGameManagement;
 import de.uol.swp.client.lobbyGame.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
+import de.uol.swp.common.game.message.StartGameMessage;
+import de.uol.swp.common.game.response.StartGameResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
@@ -283,6 +285,18 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                                     lobbiesList.add(u);
                                 }
                             });
+                });
+    }
+
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage message) {
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null
+                            && loggedInUser != null) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobbyID()));
+                    }
                 });
     }
 

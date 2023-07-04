@@ -13,6 +13,7 @@ import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
+import de.uol.swp.common.game.response.StartGameResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage;
 import de.uol.swp.common.lobby.message.UserJoinedLobbyMessage;
@@ -300,11 +301,11 @@ public class LobbyGameManagement extends AbstractPresenter {
      * <p>If a StartGameMessage is detected on the EventBus, this method gets called.
      *
      * @param msg The StartGameMessage detected on the EventBus
-     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @see StartGameResponse
      * @author Moritz Scheer & Maxim Erden & Maria Eduarda
      * @since 2023-02-28
      */
-    public void startGame(StartGameMessage msg) {
+    public void startGame(StartGameResponse msg) {
         // save game and id
         lobbyIdToGameDTOMap.put(msg.getLobbyID(), msg.getGame());
         lobbyIdToLobbyDTOMap.put(msg.getLobbyID(), msg.getLobby());
