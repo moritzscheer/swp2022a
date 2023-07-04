@@ -166,7 +166,7 @@ public class LobbyService {
      */
     @Subscribe
     public void onLobbyDroppedSuccessfulResponse(LobbyDroppedSuccessfulResponse message) {
-        LobbyGameManagement.getInstance().removeLobby(message);
+        LobbyGameManagement.getInstance().removeLobbyAndGame(message);
     }
 
     /**
