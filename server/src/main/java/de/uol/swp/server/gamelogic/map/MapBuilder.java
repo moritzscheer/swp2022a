@@ -138,11 +138,11 @@ public final class MapBuilder {
         testMaps.add(new TestConveyorMap());
 
         // Checkpoints added as {x1,x2,x3 ... x6} , {y1,y2,y3 ... y6}
-        checkpointsMapOne.add(new int[][] {{3, 9}, {10, 3}});
-        checkpointsMapOne.add(new int[][] {{3, 9, 2}, {10, 3, 2}});
-        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4}, {10, 3, 2, 5}});
-        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4, 8}, {10, 3, 2, 5, 6}});
-        checkpointsMapOne.add(new int[][] {{3, 9, 2, 4, 8, 9}, {10, 3, 2, 5, 6, 9}});
+        checkpointsMapOne.add(new int[][] {{4, 9}, {11, 3}});
+        checkpointsMapOne.add(new int[][] {{4, 9, 2}, {11, 3, 2}});
+        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4}, {11, 3, 2, 5}});
+        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4, 8}, {11, 3, 2, 5, 6}});
+        checkpointsMapOne.add(new int[][] {{4, 9, 2, 4, 8, 9}, {11, 3, 2, 5, 6, 9}});
         checkpointsMapOne.add(new int[][] {{4, 7}, {3, 5}});
         checkpointsMapOne.add(new int[][] {{4, 7, 3}, {3, 5, 10}});
         checkpointsMapOne.add(new int[][] {{4, 7, 3, 6}, {3, 5, 10, 8}});
