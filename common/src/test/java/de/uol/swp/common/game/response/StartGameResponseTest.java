@@ -1,4 +1,4 @@
-package de.uol.swp.common.game.message;
+package de.uol.swp.common.game.response;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
