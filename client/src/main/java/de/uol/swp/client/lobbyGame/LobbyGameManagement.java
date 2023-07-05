@@ -3,6 +3,7 @@ package de.uol.swp.client.lobbyGame;
 import com.google.common.eventbus.EventBus;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent;
@@ -265,6 +266,7 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void initPresenterAndStartRequests(Integer lobbyID) {
         // after presenter is created, we must call init() with the data
         // initialize the board and the robots on board inside init method
+        TextChatChannel lobbyChat = lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyPresenter().getTextChat();
         lobbyIdToLobbyGamePresenterMap
                 .get(lobbyID)
                 .getGamePresenter()
@@ -272,7 +274,9 @@ public class LobbyGameManagement extends AbstractPresenter {
                         lobbyID,
                         lobbyIdToLobbyDTOMap.get(lobbyID),
                         lobbyIdToGameDTOMap.get(lobbyID),
-                        this.loggedInUser);
+                        this.loggedInUser,
+                        lobbyChat
+                );
 
         // create request to get the cards
         eventBus.post(

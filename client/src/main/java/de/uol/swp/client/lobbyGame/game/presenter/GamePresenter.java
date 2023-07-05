@@ -278,10 +278,11 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(int lobbyID, LobbyDTO lobby, GameDTO game, UserDTO loggedInUser) {
+    public void init(int lobbyID, LobbyDTO lobby, GameDTO game, UserDTO loggedInUser, TextChatChannel lobbyChat) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
-        this.textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
+        this.textChat = lobbyChat;
+        chatOutput.setText(textChat.getChatString());
 
         for (PlayerDTO playerDTO : game.getPlayers()) {
             this.userDTOPlayerDTOMap.put(playerDTO.getUser(), playerDTO);

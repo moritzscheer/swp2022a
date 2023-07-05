@@ -536,4 +536,15 @@ public class LobbyPresenter extends AbstractPresenter {
                     mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
                 });
     }
+
+    /**
+     * Get the same Chat object to be displayed in the game
+     *
+     * @see de.uol.swp.client.chat.TextChatChannel
+     * @author Maria
+     * @since 2023-07-05
+     */
+    public TextChatChannel getTextChat(){
+        return this.textChat;
+    }
 }
