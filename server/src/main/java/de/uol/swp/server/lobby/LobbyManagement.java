@@ -71,7 +71,7 @@ public class LobbyManagement {
 
         lobbies.put(
                 lobbyID,
-                new LobbyDTO(lobbyID, name, owner, password, multiplayer, textChannelUUID));
+                new LobbyDTO(lobbyID, name, owner, password, multiplayer, textChannelUUID, false));
         return lobbyID;
     }
 
@@ -134,7 +134,7 @@ public class LobbyManagement {
         List<LobbyDTO> list = new ArrayList<>();
 
         for (Map.Entry<Integer, LobbyDTO> entry : lobbies.entrySet()) {
-            if (entry.getValue().isMultiplayer()) {
+            if (entry.getValue().isMultiplayer() && !entry.getValue().isLobbyStarted()) {
                 list.add(entry.getValue().createWithoutUserPassword(entry.getValue()));
             }
         }
