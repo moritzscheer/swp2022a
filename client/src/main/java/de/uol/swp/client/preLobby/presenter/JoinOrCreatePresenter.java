@@ -8,7 +8,6 @@ import de.uol.swp.client.lobbyGame.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
 import de.uol.swp.common.game.message.StartGameMessage;
-import de.uol.swp.common.game.response.StartGameResponse;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;

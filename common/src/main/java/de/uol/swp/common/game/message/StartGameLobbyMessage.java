@@ -1,4 +1,4 @@
-package de.uol.swp.common.game.response;
+package de.uol.swp.common.game.message;
 
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
@@ -12,7 +12,7 @@ import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
  * @author Maria Eduarda Costa Leite Andrade, WKempel
  * @since 2022-02-28
  */
-public class StartGameResponse extends AbstractLobbyMessage {
+public class StartGameLobbyMessage extends AbstractLobbyMessage {
 
     private final Integer lobbyID;
     private final LobbyDTO lobby;
@@ -26,7 +26,7 @@ public class StartGameResponse extends AbstractLobbyMessage {
      * @author Maria Eduarda Costa Leite Andrade, WKempel
      * @since 2022-03-23
      */
-    public StartGameResponse(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
+    public StartGameLobbyMessage(Integer lobbyID, LobbyDTO lobby, GameDTO game) {
         if (lobby == null) {
             throw new NullPointerException("Lobby can not be null");
         }

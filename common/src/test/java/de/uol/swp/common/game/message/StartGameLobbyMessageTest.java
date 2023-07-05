@@ -1,4 +1,4 @@
-package de.uol.swp.common.game.response;
+package de.uol.swp.common.game.message;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,7 +8,7 @@ import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
-import de.uol.swp.common.game.response.StartGameResponse;
+import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class StartGameResponseTest {
+public class StartGameLobbyMessageTest {
 
     private final Position position = new Position(1, 1);
     private final RobotDTO robotDTO = new RobotDTO(1, position, CardinalDirection.North);
@@ -43,7 +43,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
 
-        StartGameResponse message = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         Integer result = message.getLobbyID();
 
@@ -55,7 +55,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         LobbyDTO result = message.getLobby();
 
@@ -67,7 +67,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         GameDTO result = message.getGame();
 
@@ -84,7 +84,7 @@ public class StartGameResponseTest {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {
-                    new StartGameResponse(lobby.getLobbyID(), lobby, game);
+                    new StartGameLobbyMessage(lobby.getLobbyID(), lobby, game);
                 });
     }
 
@@ -95,7 +95,7 @@ public class StartGameResponseTest {
         Assertions.assertThrows(
                 NullPointerException.class,
                 () -> {
-                    new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+                    new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
                 });
     }
 
@@ -104,12 +104,12 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message1 = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message1 = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         playerDTOList2.add(playerDTO);
         playerDTOList2.add(playerDTO2);
         GameDTO game2 = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message2 = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game2);
+        StartGameLobbyMessage message2 = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game2);
 
         assertEquals(message1, message2);
     }
@@ -119,7 +119,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         assertEquals(message, message);
     }
@@ -129,7 +129,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message = new StartGameResponse(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         Assertions.assertNotEquals(message, null);
     }
@@ -141,7 +141,7 @@ public class StartGameResponseTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameResponse message = new StartGameResponse(lobby.getLobbyID(), lobby, game);
+        StartGameLobbyMessage message = new StartGameLobbyMessage(lobby.getLobbyID(), lobby, game);
 
         Assertions.assertThrows(IllegalArgumentException.class, message::getLobbyID);
     }
