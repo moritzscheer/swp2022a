@@ -289,7 +289,16 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                 });
     }
 
-
+    /**
+     * Deletes the lobby in the lobby list
+     *
+     * If a Game has been started, the lobby will be deleted from the list of open lobbies
+     *
+     * @author Moritz Scheer
+     * @param message the StartGameMessage from the server
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @since 2023-07-05
+     */
     @Subscribe
     public void onStartGameMessage(StartGameMessage message) {
         Platform.runLater(
