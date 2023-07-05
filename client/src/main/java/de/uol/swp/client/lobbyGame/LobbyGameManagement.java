@@ -266,7 +266,8 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void initPresenterAndStartRequests(Integer lobbyID) {
         // after presenter is created, we must call init() with the data
         // initialize the board and the robots on board inside init method
-        TextChatChannel lobbyChat = lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyPresenter().getTextChat();
+        TextChatChannel lobbyChat =
+                lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyPresenter().getTextChat();
         lobbyIdToLobbyGamePresenterMap
                 .get(lobbyID)
                 .getGamePresenter()
@@ -275,8 +276,7 @@ public class LobbyGameManagement extends AbstractPresenter {
                         lobbyIdToLobbyDTOMap.get(lobbyID),
                         lobbyIdToGameDTOMap.get(lobbyID),
                         this.loggedInUser,
-                        lobbyChat
-                );
+                        lobbyChat);
 
         // create request to get the cards
         eventBus.post(

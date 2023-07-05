@@ -278,7 +278,12 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(int lobbyID, LobbyDTO lobby, GameDTO game, UserDTO loggedInUser, TextChatChannel lobbyChat) {
+    public void init(
+            int lobbyID,
+            LobbyDTO lobby,
+            GameDTO game,
+            UserDTO loggedInUser,
+            TextChatChannel lobbyChat) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
         this.textChat = lobbyChat;
@@ -1297,8 +1302,8 @@ public class GamePresenter extends AbstractPresenter {
                         ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
                         for (PlayerDTO playerDTO : playerDTOList) {
-                            if(!playerDTO.getRobotDTO().isAlive() || deadForeverUsers.contains(playerDTO.getUser()))
-                                continue;
+                            if (!playerDTO.getRobotDTO().isAlive()
+                                    || deadForeverUsers.contains(playerDTO.getUser())) continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
                             Position prevPos =
@@ -1376,8 +1381,8 @@ public class GamePresenter extends AbstractPresenter {
                                 else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
                                 else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
-                                //gameBoard.getChildren().remove(node);
-                                //imageView.setVisible(true);
+                                // gameBoard.getChildren().remove(node);
+                                // imageView.setVisible(true);
 
                                 translateTransition.setToX(moveX);
                                 translateTransition.setToY(moveY);
@@ -1634,8 +1639,7 @@ public class GamePresenter extends AbstractPresenter {
 
                     // update robot position in board
                     for (PlayerDTO player : respawnRobots) {
-                        if(player.getRobotDTO().isDeadForever())
-                            continue;
+                        if (player.getRobotDTO().isDeadForever()) continue;
                         startPosition = player.getRobotDTO().getPosition();
                         LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 

@@ -544,7 +544,7 @@ public class LobbyPresenter extends AbstractPresenter {
      * @author Maria
      * @since 2023-07-05
      */
-    public TextChatChannel getTextChat(){
+    public TextChatChannel getTextChat() {
         return this.textChat;
     }
 }

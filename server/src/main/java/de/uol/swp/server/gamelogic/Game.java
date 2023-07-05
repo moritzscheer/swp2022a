@@ -345,8 +345,7 @@ public class Game {
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
                 Card[] receivedCards = botPlayer.getReceivedCards();
-                botPlayer.chooseCardsOrder(
-                        chooseFirstCardMoveBot(receivedCards));
+                botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(receivedCards));
                 System.out.println(receivedCards.length); // set cards of this bot
                 allReady = register();
             }
@@ -357,8 +356,7 @@ public class Game {
     /**
      * The method makes sure that the first card of the first round is a move
      *
-     * @return chosenCards
-     * @Author Maria
+     * @return chosenCards @Author Maria
      * @since 2023-06-23
      */
     public Card[] chooseFirstCardMoveBot(Card[] receivedCards) {
@@ -379,11 +377,11 @@ public class Game {
                     || Objects.equals(chosenCards[i].getBehaviourType(), "4")) {
 
                 i++;
-                if(i == 5){
+                if (i == 5) {
                     break;
                 }
             }
-            if(i == 5) {
+            if (i == 5) {
                 // did not find a Move card on chosen
                 for (int j = 5; j < receivedCards.length; j++) {
                     if (!Objects.equals(receivedCards[j].getBehaviourType(), "1")
@@ -556,21 +554,20 @@ public class Game {
 
                 countSurvivors++;
                 survivor = player.getUser();
-            }
-            else{
+            } else {
                 countDeadForever++;
-                if(player instanceof Player) // this is case real players died forever and all others turn off
-                    nRealPlayers--;
+                if (player
+                        instanceof
+                        Player) // this is case real players died forever and all others turn off
+                nRealPlayers--;
             }
-
         }
-        this.nRobots = players.size() - countDeadForever; // to not wait on the dead ones to play the round
+        this.nRobots =
+                players.size() - countDeadForever; // to not wait on the dead ones to play the round
 
         // test game over
-        if(wonTheGame != null)
-            return wonTheGame;
-        else if (countSurvivors <= 1)
-            return survivor;
+        if (wonTheGame != null) return wonTheGame;
+        else if (countSurvivors <= 1) return survivor;
 
         return null;
     }
@@ -717,8 +714,7 @@ public class Game {
                 Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
 
         for (int i = 0; i < cardsToPlay.length; i++) {
-            if(wonTheGame != null)
-                break;
+            if (wonTheGame != null) break;
             // Get index of next card to play
             int indexOfCurrentCard = Arrays.asList(priorities).indexOf(sortedPriorities[i]);
             Card currentCard = cardsToPlay[indexOfCurrentCard];
@@ -938,16 +934,14 @@ public class Game {
      * @since 2023-03-24
      */
     private void executeMoveIntents(List<MoveIntent> moves) {
-        if(wonTheGame != null)
-            return;
+        if (wonTheGame != null) return;
         if (moves != null) {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
                 // after robot moved to new block, check for behaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
-                if(wonTheGame != null)
-                    break;
+                if (wonTheGame != null) break;
             }
         }
 
@@ -974,7 +968,7 @@ public class Game {
                     board[position.x][position.y].getBehaviourList()) {
                 if (behaviour instanceof CheckPointBehaviour) {
                     int checkPoint = ((CheckPointBehaviour) behaviour).setCheckPoint(robotID);
-                    if(checkPoint == this.lastCheckPoint){
+                    if (checkPoint == this.lastCheckPoint) {
                         wonTheGame = players.get(robotID).getUser();
                         break;
                     }
@@ -1000,8 +994,7 @@ public class Game {
      */
     private void executeBehavioursInEndDestination() {
         // execute board elements functions, other than moves
-        if(wonTheGame != null)
-            return;
+        if (wonTheGame != null) return;
         try {
             for (Robot robot : robots) {
                 if (!robot.isAlive()) continue;
@@ -1291,7 +1284,7 @@ public class Game {
      * @author Maria
      * @since 2023-07-05
      */
-    public UserDTO getWonTheGame(){
+    public UserDTO getWonTheGame() {
         return wonTheGame;
     }
 

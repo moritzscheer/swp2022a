@@ -218,11 +218,13 @@ public class GameManagement {
             for (GameMovement gameMovement : gameMovements) {
                 List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
-                for (PlayerDTO playerDTO: moves) {
-                    if(playerDTO.getRobotDTO().isDeadForever() &&
-                            !game.getSendOnlyOneMessageDeadForever().contains(playerDTO)){
+                for (PlayerDTO playerDTO : moves) {
+                    if (playerDTO.getRobotDTO().isDeadForever()
+                            && !game.getSendOnlyOneMessageDeadForever().contains(playerDTO)) {
                         secondsToMessage.add(
-                                new Pair<>(secondsToWait, new RobotIsFinallyDead(lobbyID, playerDTO.getUser())));
+                                new Pair<>(
+                                        secondsToWait,
+                                        new RobotIsFinallyDead(lobbyID, playerDTO.getUser())));
                         game.addSendOnlyOneMessageDeadForever(playerDTO);
                     }
                 }
@@ -267,7 +269,7 @@ public class GameManagement {
      * @since 2023-06-05
      */
     private AbstractLobbyMessage isGameOver(int lobbyID, Game game) {
-        if(game.getWonTheGame() != null){
+        if (game.getWonTheGame() != null) {
             return new GameOverMessage(lobbyID, game.getWonTheGame());
         }
         for (AbstractPlayer player : game.getPlayers()) {
