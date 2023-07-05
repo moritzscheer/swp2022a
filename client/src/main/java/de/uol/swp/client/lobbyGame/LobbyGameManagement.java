@@ -345,8 +345,6 @@ public class LobbyGameManagement extends AbstractPresenter {
         // only keep sending messages if then lobby was not dropped, otherwise ignore
         if (!Objects.equals(gamePresenter, null)) {
             gamePresenter.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
-            // for each new round show robots, after some died and came back
-            gamePresenter.loadRobotsInBoard();
         } else LOG.warn("gamePresenter object was deleted! Ignoring ProgramCardDataResponse!");
     }
 

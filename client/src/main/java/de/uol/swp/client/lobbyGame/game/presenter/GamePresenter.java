@@ -613,63 +613,6 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * method the load the robot images on the gameboard
-     *
-     * @author Maria Anrade, Ole Zimmermann, Tommy Dang
-     * @see de.uol.swp.common.game.dto
-     * @see de.uol.swp.common.user
-     * @see de.uol.swp.common.game.dto.PlayerDTO
-     * @since 2023-06-09
-     */
-    public void loadRobotsInBoard() {
-        Platform.runLater(
-                () -> {
-                    Position startPosition;
-
-                    // update robot position in board
-                    for (Map.Entry<UserDTO, PlayerDTO> player :
-                            this.userDTOPlayerDTOMap.entrySet()) {
-
-                        // if exists and not null, go on, to not create twice the same image
-                        // if player is null in userDTOPlayerDTOMap, it means it died forever
-                        if (!Objects.equals(
-                                        this.userRobotImageViewReference.get(player.getKey()), null)
-                                || deadForeverUsers.contains(player.getKey())) continue;
-
-                        startPosition = player.getValue().getRobotDTO().getPosition();
-                        LOG.debug(
-                                "{} startPosition {} {}",
-                                player.getKey().getUsername(),
-                                startPosition.x,
-                                startPosition.y);
-
-                        // show this player robot, since they all start in checkpoint 1
-                        int robotID = player.getValue().getRobotDTO().getRobotID();
-                        ImageView imageView = jsonUtils.getRobotImage(robotID);
-                        imageView.setRotate(
-                                (player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
-                        imageView
-                                .fitWidthProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board.length + 1)
-                                                .subtract(10));
-                        imageView
-                                .fitHeightProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board[0].length + 1)
-                                                .subtract(10));
-
-                        gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
-                        this.userRobotImageViewReference.replace(player.getKey(), imageView);
-                    }
-                });
-    }
-
-    /**
      * Helps to resize the rectangles of the cards and makes it more automatic
      *
      * @author Tommy Dang
@@ -1354,7 +1297,7 @@ public class GamePresenter extends AbstractPresenter {
                         ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
                         for (PlayerDTO playerDTO : playerDTOList) {
-                            if(!playerDTO.getRobotDTO().isAlive())
+                            if(!playerDTO.getRobotDTO().isAlive() || deadForeverUsers.contains(playerDTO.getUser()))
                                 continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
@@ -1649,7 +1592,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Disables the player's interface and suspends programming card selection
      *
-     * @author Maria Andrade, Ole Zimmermann, Tommy Dang
+     * @author Maria Andrade, Tommy Dang
      * @param userDied
      * @since 2023-09-09
      */
@@ -1680,7 +1623,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Respawn robots after round is over
      *
-     * @author Maria Andrade & Ole Zimmermann
+     * @author Maria Andrade
      * @param respawnRobots
      * @since 2023-06-22
      */

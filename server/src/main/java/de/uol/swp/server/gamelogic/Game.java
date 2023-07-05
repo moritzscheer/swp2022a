@@ -45,8 +45,8 @@ public class Game {
     private final int lastCheckPoint;
     private final Position dockingStartPosition;
     private final List<Robot> robots = new ArrayList<>();
-    private final int nRobots;
-    private final int nRealPlayers;
+    private int nRobots; // we update the number of robots
+    private int nRealPlayers;
     private int programStep; // program steps from 0 to 4
     private int readyRegister; // count how many are ready
     private final List<AbstractPlayer> players = new ArrayList<>();
@@ -449,9 +449,10 @@ public class Game {
         player.getRobot().setDamageToken(0);
 
         boolean allChosen = register();
+
+        // if all real players decided to turn off, we have to
+        // start the bots manually, so the game can happen
         if (nRealPlayers == readyRegister) {
-            // if all real players decided to turn off, we have to
-            // start the bots manually, so the game can happen
             distributeProgramCards();
             return registerCardsFromBot();
         }
@@ -469,12 +470,10 @@ public class Game {
      * @since 2023-04-25
      */
     public boolean register() throws InterruptedException {
-        // TODO
         // check when all players are ready to register the next cards
         this.readyRegister += 1;
 
-        if (this.readyRegister == this.nRobots - 1) {
-        } else if (this.readyRegister == this.nRobots) {
+        if (this.readyRegister == this.nRobots) {
             this.programStep = 0; // start in the first (0) program step, until 4
             for (int playerIterator = 0; playerIterator < players.size(); playerIterator++) {
                 this.playedCards[playerIterator] = players.get(playerIterator).getChosenCards();
@@ -537,6 +536,7 @@ public class Game {
         this.respawnRobots = new ArrayList<>();
 
         int countSurvivors = 0;
+        int countDeadForever = 0;
         UserDTO survivor = null;
         for (AbstractPlayer player : this.players) {
             if (!player.getRobot().isDeadForever()) {
@@ -558,11 +558,21 @@ public class Game {
                 countSurvivors++;
                 survivor = player.getUser();
             }
+            else{
+                countDeadForever++;
+                if(player instanceof Player) // this is case real players died forever and all others turn off
+                    nRealPlayers--;
+            }
+
         }
-        if (countSurvivors <= 1) {
-            // game over
+        this.nRobots = players.size() - countDeadForever; // to not wait on the dead ones to play the round
+
+        // test game over
+        if(wonTheGame != null)
+            return wonTheGame;
+        else if (countSurvivors <= 1)
             return survivor;
-        }
+
         return null;
     }
 
