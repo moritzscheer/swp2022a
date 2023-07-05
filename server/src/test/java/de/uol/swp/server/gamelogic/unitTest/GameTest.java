@@ -41,7 +41,7 @@ public class GameTest {
         int numberBots = 0;
         int checkpoint = 3;
 
-        lobby = new LobbyDTO(123,"testLobby", user1,null,true,uuid);
+        lobby = new LobbyDTO(123,"testLobby", user1, null, true, uuid, false);
         Set<User> users = new HashSet<>();
         users.add(user1);
         users.add(user2);
