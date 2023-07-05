@@ -145,10 +145,54 @@ public class LobbyPresenter extends AbstractPresenter {
             first = true;
         }
 
+        setOwnerSettings(lobby);
+
+        // display data in GUI
+        textFieldLobbyName.setText(lobbyName);
+        textFieldOnlineUsers.setText(String.valueOf(slots));
+        textFieldPassword.setText(password);
+        textFieldOwner.setText(owner.getUsername());
+
+
+        // initialize user list
+        List<User> list1 = new ArrayList<>(lobby.getUsers());
+        updateUsersList(list1);
+
+        // initialize user not ready list
+        List<User> list2 = new ArrayList<>(lobby.getUsers());
+        updateUsersNotReadyList(list2);
+
+        eventBus.register(this);
+    }
+
+    /**
+     * method to set visibility of buttons
+     *
+     * If the loggedInUser is equal to the owner, then it enables certain buttons and options.
+     * If not those options are disabled.
+     *
+     * @param lobby The lobby file containing all the information of the lobby
+     * @author Moritz Scheer and Tommy Dang and Maxim Erden and Mathis Eilers
+     * @since 2023-07-05
+     */
+    private void setOwnerSettings(LobbyDTO lobby) {
         if (!owner.equals(loggedInUser)) {
+            startButton.setManaged(false);
+            startButton.setVisible(false);
+            numberBots.setDisable(true);
+            spinnerCheckpoints.setDisable(true);
             mapList.setMouseTransparent(true);
             mapList.setFocusTraversable(false);
         } else {
+            startButton.setManaged(true);
+            startButton.setVisible(true);
+            numberBots.setDisable(false);
+            numberBots.setValueFactory(valueFactory);
+            spinnerCheckpoints.setDisable(false);
+            spinnerCheckpoints.setValueFactory(valueFactoryCP);
+            mapList.setMouseTransparent(false);
+            mapList.setFocusTraversable(true);
+
             ChangeListener<? super Number> cl =
                     (obsV, oldV, newV) -> {
                         int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
@@ -191,39 +235,9 @@ public class LobbyPresenter extends AbstractPresenter {
                     };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }
-
         this.mapList.setItems(FXCollections.observableList(Arrays.asList(Map.getMapList())));
         this.mapList.getSelectionModel().selectFirst();
         textFieldMapName.setText("None");
-
-        // display data in GUI
-        textFieldLobbyName.setText(lobbyName);
-        textFieldOnlineUsers.setText(String.valueOf(slots));
-        textFieldPassword.setText(password);
-        textFieldOwner.setText(owner.getUsername());
-        if (Objects.equals(user.getUsername(), owner.getUsername())) {
-            numberBots.setValueFactory(valueFactory);
-            spinnerCheckpoints.setValueFactory(valueFactoryCP);
-        } else {
-            numberBots.setDisable(true);
-            spinnerCheckpoints.setDisable(true);
-        }
-        if (!loggedInUser.equals(owner)) {
-            startButton.setManaged(false);
-            startButton.setVisible(false);
-        } else if (lobby.getUsers().size() == 1) {
-            readyButton.setVisible(false);
-        }
-
-        // initialize user list
-        List<User> list1 = new ArrayList<>(lobby.getUsers());
-        updateUsersList(list1);
-
-        // initialize user not ready list
-        List<User> list2 = new ArrayList<>(lobby.getUsers());
-        updateUsersNotReadyList(list2);
-
-        eventBus.register(this);
     }
 
     /**
@@ -315,13 +329,10 @@ public class LobbyPresenter extends AbstractPresenter {
                     slots--;
                     textFieldOnlineUsers.setText(String.valueOf(slots));
 
-                    owner = message.getNewOwner();
+                    owner = message.getLobby().getOwner();
                     textFieldOwner.setText(owner.getUsername());
 
-                    if (loggedInUser.equals(owner)) {
-                        startButton.setManaged(true);
-                        startButton.setVisible(true);
-                    }
+                    setOwnerSettings(message.getLobby());
                     if (users.size() == 1) {
                         startButton.setDisable(false);
                         readyButton.setVisible(false);
@@ -496,7 +507,9 @@ public class LobbyPresenter extends AbstractPresenter {
             textChat.sendTextMessage("There are too many players or bots in the lobby!");
             throw new Exception("There are too many players or bots in the lobby!");
         } else {
-            if (loggedInUser == owner) {
+            System.out.println(loggedInUser);
+            System.out.println(owner);
+            if (loggedInUser.equals(owner)) {
                 eventBus.post(
                         new RequestStartGameEvent(
                                 (Integer) numberBots.getValue(),
@@ -534,6 +547,7 @@ public class LobbyPresenter extends AbstractPresenter {
                     mapThumb.setImage(new Image(m.getImageResource().toString()));
                     mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
                     mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
+                    mapList.getSelectionModel().select(m.getIndex());;
                 });
     }
 }

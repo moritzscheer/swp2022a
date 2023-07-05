@@ -194,7 +194,7 @@ public class LobbyService extends AbstractService {
                                     lobby.get().getLobbyID(),
                                     leaveLobbyRequest.getName(),
                                     leaveLobbyRequest.getUser(),
-                                    (UserDTO) lobby.get().getOwner()));
+                                    lobby.get()));
                 } else {
                     lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
                 }

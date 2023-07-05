@@ -27,29 +27,29 @@ public class UserLeftLobbyMessageTest {
     public void testConstructorAndGetters() {
 
         UserLeftLobbyMessage message =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         Assertions.assertEquals(lobbyDTO.getLobbyID(), message.getLobbyID());
         Assertions.assertEquals(lobbyDTO.getName(), message.getName());
         Assertions.assertEquals(user, message.getUser());
-        Assertions.assertEquals(newOwner, message.getNewOwner());
+        Assertions.assertEquals(user, message.getLobby().getOwner());
     }
 
     /**
-     * Tests the getNewOwner method
+     * Tests the getLobby method
      *
-     * @author WKempel
-     * @result The getNewOwner method should return the correct newOwner
+     * @author WKempel and Moritz Scheer
+     * @result The getLobby method should return the lobbyDTO
      * @see de.uol.swp.common.lobby.message.UserLeftLobbyMessage
      * @since 2023-06-16
      */
     @Test
-    public void testGetNewOwner() {
+    public void testGetLobby() {
 
         UserLeftLobbyMessage message =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
-        Assertions.assertEquals(newOwner, message.getNewOwner());
+        Assertions.assertEquals(user, message.getLobby().getOwner());
     }
 
     /**
@@ -64,7 +64,7 @@ public class UserLeftLobbyMessageTest {
     public void testGetLobbyID() {
 
         UserLeftLobbyMessage message =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         Assertions.assertEquals(lobbyDTO.getLobbyID(), message.getLobbyID());
     }
@@ -80,7 +80,7 @@ public class UserLeftLobbyMessageTest {
     @Test
     public void testGetName() {
         UserLeftLobbyMessage message =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         Assertions.assertEquals(lobbyDTO.getName(), message.getName());
     }
@@ -97,7 +97,7 @@ public class UserLeftLobbyMessageTest {
     public void testGetUser() {
 
         UserLeftLobbyMessage message =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         Assertions.assertEquals(user, message.getUser());
     }
@@ -114,10 +114,10 @@ public class UserLeftLobbyMessageTest {
     public void testEqualsAndHashCode() {
 
         UserLeftLobbyMessage message1 =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         UserLeftLobbyMessage message2 =
-                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, newOwner);
+                new UserLeftLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), user, lobbyDTO);
 
         Assertions.assertEquals(message1, message2);
 
