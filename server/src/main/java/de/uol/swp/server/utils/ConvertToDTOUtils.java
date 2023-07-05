@@ -58,7 +58,7 @@ public final class ConvertToDTOUtils {
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         robotDTO.setAlive(robot.isAlive());
         robotDTO.setPowerDown(robot.isPowerDown());
-        robotDTO.setDeadForever(robotDTO.isDeadForever());
+        robotDTO.setDeadForever(robot.isDeadForever());
         return robotDTO;
     }
 
