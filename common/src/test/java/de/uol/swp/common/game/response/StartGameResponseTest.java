@@ -35,7 +35,7 @@ public class StartGameResponseTest {
 
     private final BlockDTO[][] blockDTOS = new BlockDTO[12][12];
     private final UUID chatID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID);
+    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
 
     @Test
     public void testGetLobbyID() {
@@ -137,7 +137,7 @@ public class StartGameResponseTest {
     @Test
     public void testGetLobbyIDWithNegativeValue() {
         int lobbyID = -1;
-        LobbyDTO lobby = new LobbyDTO(lobbyID, "testLobby", userDTO, "pw", false, chatID);
+        LobbyDTO lobby = new LobbyDTO(lobbyID, "testLobby", userDTO, "pw", false, chatID, false);
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);

@@ -173,9 +173,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+        System.out.println(message.getLobby().isLobbyStarted());
         Platform.runLater(
                 () -> {
-                    if (lobbiesList != null && loggedInUser != null) {
+                    if (lobbiesList != null && loggedInUser != null && !message.getLobby().isLobbyStarted()) {
                         lobbiesList.add(message.getLobby());
                     }
                 });
@@ -287,6 +288,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                             });
                 });
     }
+
 
     @Subscribe
     public void onStartGameMessage(StartGameMessage message) {

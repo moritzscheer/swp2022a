@@ -12,7 +12,7 @@ public class GetProgramCardsRequestTest {
 
     private final UserDTO loggedInUser = new UserDTO("Player1", "pw", "ml");
     private final UUID chatID = UUID.randomUUID();
-    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID);
+    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID, false);
 
     @Test
     public void testGetLobbyID() {
@@ -39,7 +39,7 @@ public class GetProgramCardsRequestTest {
     public void testConstructorWithNegativeLobbyID() {
         UserDTO loggedInUser = new UserDTO("Player1", "pw", "ml");
         UUID chatID = UUID.randomUUID();
-        LobbyDTO lobbyDTO = new LobbyDTO(-1, "testLobby", loggedInUser, "pw", false, chatID);
+        LobbyDTO lobbyDTO = new LobbyDTO(-1, "testLobby", loggedInUser, "pw", false, chatID, false);
 
         Assertions.assertThrows(
                 NullPointerException.class,

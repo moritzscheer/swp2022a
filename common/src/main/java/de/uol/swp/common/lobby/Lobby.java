@@ -125,4 +125,12 @@ public interface Lobby extends Serializable {
      * @since 2023-01-03
      */
     UUID getTextChatID();
+
+    /**
+     * Getter for lobbyStarted attribute
+     *
+     * @return A boolean indicating if a game has started
+     * @since 2023-07-05
+     */
+    Boolean isLobbyStarted();
 }

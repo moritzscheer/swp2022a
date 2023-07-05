@@ -12,7 +12,7 @@ public class LobbyDroppedSuccessfulResponseTest {
 
     private final UUID uuid = UUID.randomUUID();
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
-    private final LobbyDTO lobby = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid);
+    private final LobbyDTO lobby = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid, false);
 
     @Test
     public void testConstructorAndGetter() {

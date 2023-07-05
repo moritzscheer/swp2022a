@@ -16,7 +16,7 @@ public class SubmitCardsRequestTest {
     private final UserDTO loggedInUser = new UserDTO("Player1", "pw", "ml");
     private final UserDTO notLoggedInUser = new UserDTO("Player2", "pw2", "ml2");
     private final UUID chatID = UUID.randomUUID();
-    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID);
+    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID, false);
 
     @Test
     public void testConstructorWithNegativeLobbyID() {

@@ -13,7 +13,7 @@ public class PlayerIsReadyInLobbyMessageTest {
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
     private final UUID randomUUID = UUID.randomUUID();
     private final LobbyDTO lobbyDTO =
-            new LobbyDTO(123, "testLobby", userDTO, "pw", true, randomUUID);
+            new LobbyDTO(123, "testLobby", userDTO, "pw", true, randomUUID, false);
 
     @Test
     public void testConstructorAndGetters() {

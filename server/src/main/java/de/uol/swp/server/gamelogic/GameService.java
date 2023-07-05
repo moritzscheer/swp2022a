@@ -165,9 +165,11 @@ public class GameService extends AbstractService {
                             msg.getLobby().getMapName(),
                             msg.getNumberBots(),
                             msg.getNumberCheckpoints());
+            tmp.get().setLobbyStarted(true);
+            System.out.println(tmp.get());
             System.out.println("Sending Message to all in Lobby");
             lobbyService.sendToAllInLobby(
-                    msg.getLobbyID(), new StartGameResponse(msg.getLobbyID(), msg.getLobby(), game));
+                    msg.getLobbyID(), new StartGameResponse(msg.getLobbyID(), tmp.get(), game));
             post(new StartGameMessage(msg.getLobbyID()));
         } else {
             // TODO: send ErrorResponse

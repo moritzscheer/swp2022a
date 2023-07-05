@@ -15,8 +15,8 @@ public class AllOnlineLobbiesResponseTest {
     private final UUID uuid = UUID.randomUUID();
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
     private final UserDTO user2 = new UserDTO("Player2", "pw2", "ml2");
-    private final LobbyDTO lobby1 = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid);
-    private final LobbyDTO lobby2 = new LobbyDTO(123, "lobbyTest2", user2, "pw", true, uuid);
+    private final LobbyDTO lobby1 = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid, false);
+    private final LobbyDTO lobby2 = new LobbyDTO(123, "lobbyTest2", user2, "pw", true, uuid, false);
 
     @Test
     public void testDefaultConstructor() {
