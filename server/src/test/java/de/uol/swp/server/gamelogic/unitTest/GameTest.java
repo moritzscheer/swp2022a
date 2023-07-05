@@ -30,7 +30,7 @@ public class GameTest {
     private final UserDTO user1 = new UserDTO("Player1", "pw1", "ml1");
     private final UserDTO user2 = new UserDTO("Player2", "pw2", "ml2");
     private Game game;
-    private final LobbyDTO lobby = new LobbyDTO(123, "testLobby", user1, null, true, uuid);
+    private final LobbyDTO lobby = new LobbyDTO(123, "testLobby", user1, null, true, uuid, false);
 
     private final Position position = new Position(0, 0);
     private final CardinalDirection cardinalDirection = CardinalDirection.North;

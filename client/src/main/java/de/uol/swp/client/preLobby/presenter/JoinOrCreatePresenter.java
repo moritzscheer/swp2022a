@@ -7,6 +7,7 @@ import de.uol.swp.client.lobbyGame.LobbyGameManagement;
 import de.uol.swp.client.lobbyGame.lobby.event.UserJoinLobbyEvent;
 import de.uol.swp.client.preLobby.events.JoinOrCreateCanceledEvent;
 import de.uol.swp.client.preLobby.events.ShowCreateLobbyViewEvent;
+import de.uol.swp.common.game.message.StartGameMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.lobby.exception.LobbyJoinedExceptionResponse;
 import de.uol.swp.common.lobby.message.UserCreatedLobbyMessage;
@@ -171,9 +172,10 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
      */
     @Subscribe
     public void onLobbyLeaveUserResponse(LobbyLeftSuccessfulResponse message) {
+        System.out.println(message.getLobby().isLobbyStarted());
         Platform.runLater(
                 () -> {
-                    if (lobbiesList != null && loggedInUser != null) {
+                    if (lobbiesList != null && loggedInUser != null && !message.getLobby().isLobbyStarted()) {
                         lobbiesList.add(message.getLobby());
                     }
                 });
@@ -283,6 +285,28 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
                                     lobbiesList.add(u);
                                 }
                             });
+                });
+    }
+
+    /**
+     * Deletes the lobby in the lobby list
+     *
+     * If a Game has been started, the lobby will be deleted from the list of open lobbies
+     *
+     * @author Moritz Scheer
+     * @param message the StartGameMessage from the server
+     * @see de.uol.swp.common.game.message.StartGameMessage
+     * @since 2023-07-05
+     */
+    @Subscribe
+    public void onStartGameMessage(StartGameMessage message) {
+        Platform.runLater(
+                () -> {
+                    if (lobbiesList != null
+                            && loggedInUser != null) {
+                        lobbiesList.removeIf(
+                                u -> u.getLobbyID().equals(message.getLobbyID()));
+                    }
                 });
     }
 

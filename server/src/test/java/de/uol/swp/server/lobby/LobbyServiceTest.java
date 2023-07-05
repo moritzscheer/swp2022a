@@ -31,7 +31,7 @@ public class LobbyServiceTest {
     static final UserDTO notInLobbyUser = new UserDTO("Tommy", "Tommy2", "Tommy2@Dang.de");
 
     static UUID textChannelUUID = textChatService.createTextChatChannel();
-    static final Lobby lobby = new LobbyDTO(1, "lobby1", user, "password", true, textChannelUUID);
+    static final Lobby lobby = new LobbyDTO(1, "lobby1", user, "password", true, textChannelUUID, false);
 
     // ------------------------------------------
     // onCreateLobbyRequest tests

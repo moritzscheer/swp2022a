@@ -22,7 +22,7 @@ public class RobotTurnOffEventTest {
     private final UserDTO loggedInUser = new UserDTO("player1", "pw1", "ml1");
     private final UUID uuid = UUID.randomUUID();
     private final LobbyDTO lobbyDTO =
-            new LobbyDTO(123, "testLobby", loggedInUser, "pw", true, uuid);
+            new LobbyDTO(123, "testLobby", loggedInUser, "pw", true, uuid, false);
 
     @Test
     public void testConstructorAndGetters() {

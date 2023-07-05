@@ -24,7 +24,7 @@ public class RequestMapDataEventTest {
 
     @Test
     public void testConstructorAndGetters() {
-        LobbyDTO lobby = new LobbyDTO(123, "testLobby", loggedInUser, "pw", true, uuid);
+        LobbyDTO lobby = new LobbyDTO(123, "testLobby", loggedInUser, "pw", true, uuid, false);
 
         RequestMapDataEvent event = new RequestMapDataEvent(lobby);
 
