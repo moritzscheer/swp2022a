@@ -72,6 +72,7 @@ public class Game {
     private List<GameMovement> gameMovements;
 
     private List<PlayerDTO> respawnRobots;
+    private List<PlayerDTO> sendOnlyOneMessageDeadForever = new ArrayList<>();
 
     /**
      * Constructor
@@ -256,7 +257,7 @@ public class Game {
 
             for (AbstractPlayer player : this.players) {
                 // when robot is powered off, just set empty cards
-                if (player.getRobot().isPowerDown()) {
+                if (player.getRobot().isPowerDown() || player.getRobot().isDeadForever()) {
                     continue;
                 }
                 LOG.debug("Distributing cards for player {}", player.getUser().getUsername());
@@ -344,10 +345,10 @@ public class Game {
         boolean allReady = false;
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
-                Card[] chosenCards = botPlayer.getReceivedCards();
+                Card[] receivedCards = botPlayer.getReceivedCards();
                 botPlayer.chooseCardsOrder(
-                        chooseFirstCardMoveBot(Arrays.copyOfRange(chosenCards, 0, 5)));
-                System.out.println(chosenCards.length); // set cards of this bot
+                        chooseFirstCardMoveBot(receivedCards));
+                System.out.println(receivedCards.length); // set cards of this bot
                 allReady = register();
             }
         }
@@ -357,13 +358,15 @@ public class Game {
     /**
      * The method makes sure that the first card of the first round is a move
      *
-     * @return chosenCards @Author Maria
+     * @return chosenCards
+     * @Author Maria
      * @since 2023-06-23
      */
-    public Card[] chooseFirstCardMoveBot(Card[] chosenCards) {
+    public Card[] chooseFirstCardMoveBot(Card[] receivedCards) {
         if (this.roundNumber != 1) {
-            return chosenCards;
+            return Arrays.copyOfRange(receivedCards, 0, 5);
         }
+        Card[] chosenCards = Arrays.copyOfRange(receivedCards, 0, 5);
         LOG.debug("Bot cards:");
         for (int i = 0; i < 5; i++) {
             LOG.debug(chosenCards[i].getBehaviourType());
@@ -377,10 +380,25 @@ public class Game {
                     || Objects.equals(chosenCards[i].getBehaviourType(), "4")) {
 
                 i++;
+                if(i == 5){
+                    break;
+                }
             }
-            Card tmp = chosenCards[0];
-            chosenCards[0] = chosenCards[i];
-            chosenCards[i] = tmp;
+            if(i == 5) {
+                // did not find a Move card on chosen
+                for (int j = 5; j < receivedCards.length; j++) {
+                    if (!Objects.equals(receivedCards[j].getBehaviourType(), "1")
+                            && !Objects.equals(receivedCards[j].getBehaviourType(), "3")
+                            && !Objects.equals(receivedCards[j].getBehaviourType(), "4")) {
+                        chosenCards[0] = receivedCards[j];
+                        break;
+                    }
+                }
+            } else {
+                Card tmp = chosenCards[0];
+                chosenCards[0] = chosenCards[i];
+                chosenCards[i] = tmp;
+            }
         }
         LOG.debug("Bot cards AFTER:");
         for (int i = 0; i < 5; i++) {
@@ -1073,11 +1091,13 @@ public class Game {
             for (int j = 0; j < moveList.size(); j++) {
                 if (i != j) {
                     if (destinationTile.equals(moveList.get(j).getTargetPosition())) {
+                        MoveResult tmp = moveList.get(j);
                         removeMoveResultAndParents(move, moveList);
-                        removeMoveResultAndParents(moveList.get(j), moveList);
+                        removeMoveResultAndParents(tmp, moveList);
                         i = -1;
                         j = -1;
                         somethingChanged = true;
+                        break;
                     }
                 }
             }
@@ -1124,8 +1144,9 @@ public class Game {
                                     == CardinalDirection.values()[
                                             (moveList.get(j).getDirection().ordinal() + 2) % 4]
                             && destinationTile == moveList.get(j).getOriginPosition()) {
+                        MoveResult tmp = moveList.get(j);
                         removeMoveResultAndParents(move, moveList);
-                        removeMoveResultAndParents(moveList.get(j), moveList);
+                        removeMoveResultAndParents(tmp, moveList);
                         i = -1;
                         j = -1;
                         somethingChanged = true;
@@ -1244,6 +1265,22 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
+
+    /**
+     * @author Maria
+     * @since 2023-07-05
+     */
+    public List<PlayerDTO> getSendOnlyOneMessageDeadForever() {
+        return sendOnlyOneMessageDeadForever;
+    }
+
+    /**
+     * @author Maria
+     * @since 2023-07-05
+     */
+    public void addSendOnlyOneMessageDeadForever(PlayerDTO playerDeadForever) {
+        this.sendOnlyOneMessageDeadForever.add(playerDeadForever);
+    }
 
     /**
      * @author WKempel
