@@ -678,7 +678,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) throws IOException {
-        System.out.println("SceneManager.onShowGameViewEvent");
+        LOG.debug("SceneManager.onShowGameViewEvent");
         Parent thisGameParent = initGameView(event.getLobbyID());
         showGameScreen(event.getLobbyID(), thisGameParent);
     }
