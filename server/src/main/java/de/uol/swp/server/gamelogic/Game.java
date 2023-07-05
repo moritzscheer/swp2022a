@@ -68,11 +68,10 @@ public class Game {
 
     private boolean notDistributedCards = true;
     private String fullMapName;
-
     private List<GameMovement> gameMovements;
-
     private List<PlayerDTO> respawnRobots;
     private List<PlayerDTO> sendOnlyOneMessageDeadForever = new ArrayList<>();
+    private UserDTO wonTheGame = null;
 
     /**
      * Constructor
@@ -609,7 +608,7 @@ public class Game {
      */
     public void calcAllGameRound() {
         gameMovements = new ArrayList<>();
-        if (areAllRobotsAreDead()) {
+        if (areAllRobotsAreDead() || wonTheGame != null) {
             return;
         }
         gameMovements.add(new GameMovement(getPlayerDTOSForAllPlayers(), null, null, ""));
@@ -718,6 +717,8 @@ public class Game {
                 Arrays.stream(cardsToPlay).map(Card::getPriority).toArray(Integer[]::new);
 
         for (int i = 0; i < cardsToPlay.length; i++) {
+            if(wonTheGame != null)
+                break;
             // Get index of next card to play
             int indexOfCurrentCard = Arrays.asList(priorities).indexOf(sortedPriorities[i]);
             Card currentCard = cardsToPlay[indexOfCurrentCard];
@@ -937,12 +938,16 @@ public class Game {
      * @since 2023-03-24
      */
     private void executeMoveIntents(List<MoveIntent> moves) {
+        if(wonTheGame != null)
+            return;
         if (moves != null) {
             for (MoveIntent move : moves) {
                 if (!this.robots.get(move.robotID).isAlive()) continue; // if not alive, go on
                 robots.get(move.robotID).move(move.direction);
                 // after robot moved to new block, check for behaviours to be executed
                 executeBehavioursBetweenDestination(move.robotID);
+                if(wonTheGame != null)
+                    break;
             }
         }
 
@@ -968,7 +973,11 @@ public class Game {
             for (AbstractTileBehaviour behaviour :
                     board[position.x][position.y].getBehaviourList()) {
                 if (behaviour instanceof CheckPointBehaviour) {
-                    ((CheckPointBehaviour) behaviour).setCheckPoint(robotID);
+                    int checkPoint = ((CheckPointBehaviour) behaviour).setCheckPoint(robotID);
+                    if(checkPoint == this.lastCheckPoint){
+                        wonTheGame = players.get(robotID).getUser();
+                        break;
+                    }
                 } else if (behaviour instanceof RepairBehaviour) {
                     ((RepairBehaviour) behaviour).setBackupCopy(robotID);
                 } else if (behaviour instanceof PitBehaviour) {
@@ -991,6 +1000,8 @@ public class Game {
      */
     private void executeBehavioursInEndDestination() {
         // execute board elements functions, other than moves
+        if(wonTheGame != null)
+            return;
         try {
             for (Robot robot : robots) {
                 if (!robot.isAlive()) continue;
@@ -1275,6 +1286,14 @@ public class Game {
     //////////////////////////////
     // GETTERS // SETTERS
     /////////////////////////////
+
+    /**
+     * @author Maria
+     * @since 2023-07-05
+     */
+    public UserDTO getWonTheGame(){
+        return wonTheGame;
+    }
 
     /**
      * @author Maria

@@ -1212,7 +1212,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting playercard of the user
      *
-     * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
+     * @author Jann Erik Bruns and Maria and Tommy Dang
      * @since 2023-06-12
      */
     public void setPlayerCard(Map<UserDTO, CardDTO> userDTOCardDTOMap) {
@@ -1237,7 +1237,7 @@ public class GamePresenter extends AbstractPresenter {
             /**
              * Setting all player cards of the opponent of the user
              *
-             * @author Maria and Tommy Dang and Ole Zimmermann
+             * @author Maria and Tommy Dang
              * @since 2023-06-12
              */
             int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
@@ -1675,10 +1675,6 @@ public class GamePresenter extends AbstractPresenter {
         handCardGridPane.setDisable(true);
         readyButton.setDisable(true);
         robotOffButton.setDisable(true);
-
-        ImageView imageView = userRobotImageViewReference.get(userWonTheGame);
-        Position pos = userDTOPlayerDTOMap.get(userWonTheGame).getRobotDTO().getPosition();
-        gameBoard.add(imageView, pos.x + 1, pos.y + 1);
     }
 
     /**
