@@ -1353,6 +1353,8 @@ public class GamePresenter extends AbstractPresenter {
                         ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
                         for (PlayerDTO playerDTO : playerDTOList) {
+                            if(!playerDTO.getRobotDTO().isAlive())
+                                continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
                             Position prevPos =
@@ -1430,8 +1432,8 @@ public class GamePresenter extends AbstractPresenter {
                                 else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
                                 else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
-                                gameBoard.getChildren().remove(imageView);
-                                imageView.setVisible(true);
+                                //gameBoard.getChildren().remove(node);
+                                //imageView.setVisible(true);
 
                                 translateTransition.setToX(moveX);
                                 translateTransition.setToY(moveY);
@@ -1557,8 +1559,7 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                         });
             } else {
-                ;
-                ; // it was and stays dead
+                // it was and stays dead
                 Platform.runLater(
                         () -> {
                             if (!Objects.equals(
@@ -1689,6 +1690,8 @@ public class GamePresenter extends AbstractPresenter {
 
                     // update robot position in board
                     for (PlayerDTO player : respawnRobots) {
+                        if(player.getRobotDTO().isDeadForever())
+                            continue;
                         startPosition = player.getRobotDTO().getPosition();
                         LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 
