@@ -12,35 +12,95 @@ public class UpdateUserRequestTest {
     private UpdateUserRequest request;
     private UserDTO user;
 
+    /**
+     * Sets up the test environment
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         user = new UserDTO("username", "password", "email");
         request = new UpdateUserRequest(user);
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct user
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-17
+     */
     @Test
-    void getUser() {
+    public void testGetUser() {
         assertEquals(user, request.getUser());
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the UpdateUserRequests are equal
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameObject_true() {
-        assertTrue(request.equals(request));
+    public void testEqualSameObjectThanTrue() {
+        assertEquals(request, request);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the UpdateUserRequests have the same values
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-17
+     */
     @Test
-    void equals_sameValues_true() {
+    public void testEqualSameValuesThanTrue() {
         UpdateUserRequest other = new UpdateUserRequest(user);
-        assertTrue(request.equals(other));
+        assertEquals(request, other);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the UpdateUserRequests have different values
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-17
+     */
     @Test
-    void equals_differentType_false() {
-        assertFalse(request.equals("not an UpdateUserRequest object"));
+    public void testEqualsDifferentTypeThanFalse() {
+        assertNotEquals("not an UpdateUserRequest object", request);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @result The equals method should return false if the UpdateUserRequests is null
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-17
+     */
     @Test
-    void equals_null_false() {
-        assertFalse(request.equals(null));
+    public void testEqualsNulThanFalse() {
+        assertNotEquals(null, request);
+    }
+
+    /**
+     * Tests the hasCode method
+     *
+     * @author WKempel
+     * @result The hashCode method should return the correct hash code
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @since 2023-06-30
+     */
+    @Test
+    public void testHashCode() {
+        UpdateUserRequest request = new UpdateUserRequest(user);
+        assertEquals(request.hashCode(), request.hashCode());
     }
 }

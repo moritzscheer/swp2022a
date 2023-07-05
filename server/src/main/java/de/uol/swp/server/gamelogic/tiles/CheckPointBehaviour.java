@@ -18,7 +18,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     protected int number;
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     public CheckPointBehaviour(
@@ -28,7 +28,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author TDang
      * @since 2023-03-05
      */
     public int getCheckPointNumber() {
@@ -63,7 +63,7 @@ public class CheckPointBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author Maria
      * @since 2023-03-05
      */
     @Override

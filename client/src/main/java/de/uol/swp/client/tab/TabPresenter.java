@@ -24,6 +24,12 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 
+/**
+ * Manages the Tab window
+ *
+ * @author Moritz Scheer
+ * @since 2022-12-22
+ */
 public class TabPresenter extends AbstractPresenter {
 
     public static final String FXML = "/fxml/TabView.fxml";
@@ -101,9 +107,7 @@ public class TabPresenter extends AbstractPresenter {
      * @since 2023-01-04
      */
     @Subscribe
-    public void onLobbyLeaveExceptionResponse(LobbyLeftExceptionResponse message) {
-        // todo not existing lobby
-    }
+    public void onLobbyLeaveExceptionResponse(LobbyLeftExceptionResponse message) {}
 
     // -----------------------------------------------------
     // public methods
@@ -147,6 +151,8 @@ public class TabPresenter extends AbstractPresenter {
      * important settings and adds the tab to the paneTab. Also, the tab is then selected.
      *
      * @author Moritz Scheer
+     * @param lobby
+     * @param parent
      * @see de.uol.swp.client.SceneManager
      * @since 2022-03-09
      */
@@ -199,6 +205,7 @@ public class TabPresenter extends AbstractPresenter {
      * to visible
      *
      * @author Moritz Scheer
+     * @param infoLabelNumber
      * @since 2022-12-28
      */
     public void setInfoLabel(Integer infoLabelNumber) {
@@ -215,6 +222,7 @@ public class TabPresenter extends AbstractPresenter {
      * method for checking if an exit request send
      *
      * @author Moritz Scheer
+     * @return set infoLabel1 to visible
      * @since 2022-12-28
      */
     public boolean infoLabel1IsVisible() {
@@ -224,7 +232,7 @@ public class TabPresenter extends AbstractPresenter {
     /**
      * method for checking if an exit request send
      *
-     * @author Moritz Scheer
+     * @author Moritz Scheer #@return set infoLabel2 to visibl
      * @since 2022-12-28
      */
     public boolean infoLabel2IsVisible() {
@@ -235,6 +243,7 @@ public class TabPresenter extends AbstractPresenter {
      * method for checking if an exit request send
      *
      * @author Moritz Scheer
+     * @return set infoLabel3 to visible
      * @since 2022-12-28
      */
     public boolean infoLabel3IsVisible() {
@@ -242,7 +251,7 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
-     * method for checking if an exit request send
+     * getter method to get the current tabID
      *
      * @author Moritz Scheer
      * @since 2022-12-28
@@ -252,6 +261,13 @@ public class TabPresenter extends AbstractPresenter {
                 tabPane.getTabs().get(tabPane.getSelectionModel().getSelectedIndex()).getId());
     }
 
+    /**
+     * method to change the main tab title
+     *
+     * @author Moritz Scheer
+     * @param title
+     * @since 2023-03-09
+     */
     public void changeMainTabTitle(String title) {
         Platform.runLater(
                 () -> {
@@ -405,12 +421,12 @@ public class TabPresenter extends AbstractPresenter {
     }
 
     /**
-     * Helper Method for getting the current logged in user
+     * Helper Method for getting the current logged-in user
      *
      * @author Tommy Dang
      * @since 2023-06-27
      */
-    public User getLoggedInUser(){
+    public User getLoggedInUser() {
         return loggedInUser;
     }
 }

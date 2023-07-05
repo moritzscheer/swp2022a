@@ -6,8 +6,14 @@ import org.junit.jupiter.api.Test;
 
 public class ConfigurationTest {
 
+    /**
+     * Tests the getDefaultHost method
+     *
+     * @author WKempel
+     * @since 2023-06-17
+     */
     @Test
-    void getDefaultPort() {
+    public void testGetDefaultPort() {
         int expectedPort = 8899;
         int actualPort = Configuration.getDefaultPort();
         assertEquals(expectedPort, actualPort);

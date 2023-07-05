@@ -16,14 +16,35 @@ public class ShowGameViewEvent {
 
     private LobbyDTO lobby;
 
+    /**
+     * Constructor
+     *
+     * @author Finn Oldeboershuis, Maria Andrade, Ole Zimmermann
+     * @return the lobby
+     * @since 2023-05-09
+     */
     public ShowGameViewEvent(LobbyDTO lobby) {
         this.lobby = lobby;
     }
 
+    /**
+     * Getter Method for the lobby ID
+     *
+     * @author Finn Oldeboershuis, Ole Zimmermann
+     * @return the lobby id
+     * @since 2023-05-23
+     */
     public Integer getLobbyID() {
         return lobby.getLobbyID();
     }
 
+    /**
+     * Getter method fot the current lobby
+     *
+     * @author Finn Oldeboershuis, Ole Zimmermann
+     * @return the lobby
+     * @since 2023-05-09
+     */
     public LobbyDTO getLobby() {
         return lobby;
     }

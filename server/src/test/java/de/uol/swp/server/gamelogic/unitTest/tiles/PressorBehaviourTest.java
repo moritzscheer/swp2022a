@@ -1,6 +1,7 @@
 package de.uol.swp.server.gamelogic.unitTest.tiles;
 
 import static junit.framework.TestCase.assertNull;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import de.uol.swp.common.game.Position;
@@ -31,6 +32,13 @@ public class PressorBehaviourTest {
     private PressorBehaviour pressorBehaviour;
     private PressorBehaviour pressorBehaviour2;
 
+    /**
+     * Set up the test
+     *
+     * @author WKempel
+     * @throws Exception
+     * @since 2023-02-25
+     */
     @Before
     public void setUp() throws Exception {
         robotStates = new Robot[1];
@@ -61,7 +69,7 @@ public class PressorBehaviourTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
      * @see de.uol.swp.server.gamelogic.Robot
-     * @since 25-02-2023
+     * @since 2023-02-25
      */
     @Test
     public void testKillRobotWhenRobotIsOnBlock() {
@@ -76,7 +84,7 @@ public class PressorBehaviourTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 25-02-2023
+     * @since 2023-02-25
      */
     @Test
     public void testKillRobotWhenRobotIsNotOnBlock() {
@@ -92,7 +100,7 @@ public class PressorBehaviourTest {
      * @author WKempel
      * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
      * @see de.uol.swp.server.gamelogic.Robot;
-     * @since 26-02-2023
+     * @since 2023-02-26
      */
     @Test
     public void testKillRobotWhenRobotIsNotInProgramStep() {
@@ -101,21 +109,29 @@ public class PressorBehaviourTest {
         assertTrue(robotStates[0].isAlive());
     }
 
+    /**
+     * Tests the getImage method
+     *
+     * @author WKempel
+     * @result The correct image is returned
+     * @see de.uol.swp.server.gamelogic.tiles.PressorBehaviour
+     * @since 2023-06-21
+     */
     @Test
     public void testGetImage() {
         List<int[]> image = new ArrayList<>();
-        if(!pressorBehaviour2.isCrossing()) {
+        if (!pressorBehaviour2.isCrossing()) {
             image = pressorBehaviour2.getImage();
-            if(activeInProgramSteps[0] == 1) {
+            if (activeInProgramSteps[0] == 1) {
                 assertEquals(35, image.get(0)[0]);
-            }else {
+            } else {
                 assertEquals(36, image.get(0)[0]);
             }
-        }else {
+        } else {
             image = pressorBehaviour.getImage();
-            if(activeInProgramSteps[0] == 2) {
+            if (activeInProgramSteps[0] == 2) {
                 assertEquals(37, image.get(0)[0]);
-            }else {
+            } else {
                 assertEquals(38, image.get(0)[0]);
             }
         }

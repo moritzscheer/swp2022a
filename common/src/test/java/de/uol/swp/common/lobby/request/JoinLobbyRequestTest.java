@@ -9,6 +9,14 @@ public class JoinLobbyRequestTest {
 
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyName,lobbyID, user and password
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
         Integer lobbyID = 123;
@@ -23,6 +31,14 @@ public class JoinLobbyRequestTest {
         Assertions.assertEquals(password, request.getPassword());
     }
 
+    /**
+     * Tests the getPassword method
+     *
+     * @author WKempel
+     * @result The getter should return the correct password
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testGetPassword() {
         Integer lobbyID = 123;
@@ -36,6 +52,14 @@ public class JoinLobbyRequestTest {
         Assertions.assertEquals(password, retrievedPassword);
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The getter should return the correct lobbyID
+     * @see de.uol.swp.common.lobby.request.JoinLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testGetLobbyID() {
         Integer lobbyID = 123;

@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * Manages the joinOrCreate window
  *
- * @author Maxim Erden
+ * @author Maxim Erden, Tommy Dang, Maria Eduarda, Moritz Scheer
  * @see de.uol.swp.client.AbstractPresenter
  * @since 2022-11-23
  */

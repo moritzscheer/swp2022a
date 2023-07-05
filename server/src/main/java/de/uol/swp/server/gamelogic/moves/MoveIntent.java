@@ -13,10 +13,8 @@ public class MoveIntent {
     public final CardinalDirection direction;
 
     /**
-     *
-     *
-     * @author
-     * @since
+     * @author Maria
+     * @since 2023-04-22
      */
     public MoveIntent(int id, CardinalDirection dir) {
         this.robotID = id;
@@ -24,10 +22,8 @@ public class MoveIntent {
     }
 
     /**
-     *
-     *
-     * @author
-     * @since
+     * @author Finn
+     * @since 2023-03-06
      */
     public CardinalDirection getDirection() {
         return this.direction;

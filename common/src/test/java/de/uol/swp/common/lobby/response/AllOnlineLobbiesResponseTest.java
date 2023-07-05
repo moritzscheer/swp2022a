@@ -18,6 +18,14 @@ public class AllOnlineLobbiesResponseTest {
     private final LobbyDTO lobby1 = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid, false);
     private final LobbyDTO lobby2 = new LobbyDTO(123, "lobbyTest2", user2, "pw", true, uuid, false);
 
+    /**
+     * Tests the default constructor
+     *
+     * @author WKempel
+     * @result The default constructor should create an empty lobby collection
+     * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @since 2023-06-17
+     */
     @Test
     public void testDefaultConstructor() {
         // Arrange
@@ -27,6 +35,14 @@ public class AllOnlineLobbiesResponseTest {
         Assertions.assertTrue(response.getLobbies().isEmpty());
     }
 
+    /**
+     * Tests the constructor with a collection
+     *
+     * @author WKempel
+     * @result The constructor should create a lobby collection with the given lobbies
+     * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @since 2023-06-17
+     */
     @Test
     public void testConstructorWithCollection() {
 
@@ -40,6 +56,14 @@ public class AllOnlineLobbiesResponseTest {
         Assertions.assertFalse(response.getLobbies().containsAll(lobbyCollection));
     }
 
+    /**
+     * Tests the constructor with a null collection
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.lobby.response.AllOnlineLobbiesResponse
+     * @since 2023-06-17
+     */
     @Test
     public void testConstructorWithCollectionNull() {
 

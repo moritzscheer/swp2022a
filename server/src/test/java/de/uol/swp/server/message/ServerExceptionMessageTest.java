@@ -3,9 +3,16 @@ package de.uol.swp.server.message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-
 public class ServerExceptionMessageTest {
 
+    /**
+     * Tests the getException method
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.message.ServerExceptionMessage
+     * @see java.lang.Exception
+     * @since 2023-06-23
+     */
     @Test
     public void testGetException() {
         Exception exception = new RuntimeException("Test exception");
@@ -16,6 +23,14 @@ public class ServerExceptionMessageTest {
         Assertions.assertEquals(exception, actualException);
     }
 
+    /**
+     * Tests the equals method
+     *
+     * @author WKempel
+     * @see de.uol.swp.server.message.ServerExceptionMessage
+     * @see java.lang.Exception
+     * @since 2023-06-23
+     */
     @Test
     public void testEquals() {
         Exception exception1 = new RuntimeException("Exception 1");

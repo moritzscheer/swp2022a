@@ -13,6 +13,7 @@ import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,7 +83,7 @@ public class ConveyorBeltBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void moveRobot() {
+    public void testMoveRobot() {
         // move robot in conveyorBelt
         assertEquals(robots[0].getPosition(), behaviours1[0].getBlockPos());
         List<MoveIntent> moveIntents = ((ConveyorBeltBehaviour) behaviours1[0]).onConveyorStage(1);
@@ -105,8 +106,8 @@ public class ConveyorBeltBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void moveTwoRobotAgainstEachOther() {
-        // this must be implemented calling move intents, beacuse the move happens
+    public void testMoveTwoRobotAgainstEachOther() {
+        // this must be implemented calling move intents, because the move happens
         // only later
     }
 
@@ -121,7 +122,7 @@ public class ConveyorBeltBehaviourTest {
      * @since 2023-03-13
      */
     @Test
-    public void moveTurnRobot() {
+    public void testMoveTurnRobot() {
         // move robot in conveyorBelt
         assertEquals(robots[2].getPosition(), behaviours4[0].getBlockPos());
         assertEquals(robots[2].getDirection(), CardinalDirection.North);
@@ -133,5 +134,41 @@ public class ConveyorBeltBehaviourTest {
         // TODO: must be tested with move intent
         //        assertEquals(robots[2].getPosition(), new Position(2, 2));
         //        assertEquals(robots[2].getDirection(), CardinalDirection.East);
+    }
+
+    @Test
+    public void getImageTest() {
+        List<Robot> robots = new ArrayList<>();
+        Block[][] board = new Block[12][12];
+
+        ConveyorBeltBehaviour conveyorBelt =
+                new ConveyorBeltBehaviour(
+                        robots,
+                        board,
+                        new Position(1, 1),
+                        ArrowType.Straight,
+                        CardinalDirection.East);
+
+        List<int[]> expectedImage = new ArrayList<>();
+
+        if (conveyorBelt.getArrowType() == ArrowType.Straight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(9, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TurnRight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(11, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TurnLeft) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(12, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.StraightTurnRight) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(15, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.StraightTurnLeft) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(14, expectedImage.get(0)[0]);
+        } else if (conveyorBelt.getArrowType() == ArrowType.TTurn) {
+            expectedImage = conveyorBelt.getImage();
+            assertEquals(52, expectedImage.get(0)[0]);
+        }
     }
 }

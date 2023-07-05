@@ -15,6 +15,9 @@ public class Player extends AbstractPlayer {
     /**
      * Constructor
      *
+     * @param robotID the ID of the robot
+     * @param startPosition the start position of the robot
+     * @param userDTO the userDTO of the player
      * @author Maria Eduarda Costa Leite Andrade
      * @see de.uol.swp.server.gamelogic.cards.Card
      * @see de.uol.swp.server.gamelogic.Robot
@@ -28,8 +31,8 @@ public class Player extends AbstractPlayer {
     }
 
     /**
-     * @author
-     * @since
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-03-28
      */
     public void setUser(UserDTO user) {
         this.userDTO = user;

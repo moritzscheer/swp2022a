@@ -3,8 +3,8 @@ package de.uol.swp.server.gamelogic.tiles;
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.moves.MoveIntent;
 import de.uol.swp.server.gamelogic.Robot;
+import de.uol.swp.server.gamelogic.moves.MoveIntent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     private boolean crossing;
 
     /**
-     * @author
+     * @author Ole Zimmermann
      * @since 2023-03-05
      */
     public PressorBehaviour(
@@ -51,8 +51,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
         for (int i : activeInProgramSteps) {
             if (i == programStep) {
                 for (Robot robotState : robotStates) {
-                    if(!robotState.isAlive())
-                        continue;
+                    if (!robotState.isAlive()) continue;
                     if (Objects.equals(robotState.getPosition(), blockPos)) {
                         robotState.setAlive(false);
                         break;
@@ -65,7 +64,7 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     }
 
     /**
-     * @author
+     * @author WKempel
      * @since 2023-03-05
      */
     public boolean isCrossing() {
@@ -75,7 +74,6 @@ public class PressorBehaviour extends AbstractTileBehaviour {
     /**
      * When the robot is under a pressor then it will die.
      *
-     * @param activeInProgramSteps the current program step
      * @return null
      */
     @Override

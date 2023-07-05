@@ -8,8 +8,17 @@ import org.junit.jupiter.api.Test;
 
 public class TextHistoryMessageTest {
 
+    /**
+     * Tests the constructor and getters.
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an
+     * @result message.
+     * @see de.uol.swp.common.lobby.message.AbstractLobbyMessage
+     * @since 2023-06-17
+     */
     @Test
-    void constructorAndGetters_withValidData() {
+    public void testConstructorAndGetters() {
 
         int lobbyID = 123;
         String message = "This is a chat message.";
@@ -20,8 +29,16 @@ public class TextHistoryMessageTest {
         assertEquals(message, historyMessage.getMessage());
     }
 
+    /**
+     * Tests the equals method with equal objects.
+     *
+     * @author WKempel
+     * @result The equals method should return true
+     * @see de.uol.swp.common.lobby.message.AbstractLobbyMessage
+     * @since 2023-06-17
+     */
     @Test
-    void equals_withEqualObjects() {
+    void testEqualsWithEqualObjects() {
 
         int lobbyID = 123;
         String message = "This is a chat message.";

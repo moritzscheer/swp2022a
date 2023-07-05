@@ -22,7 +22,7 @@ public class AbstractService {
     private final EventBus bus;
 
     /**
-     * Constructor
+     * Constructor Registers the service on the EventBus
      *
      * @param bus the EvenBus used throughout the server
      * @since 2019-10-08

@@ -10,8 +10,19 @@ import java.util.UUID;
 
 public class SendTextChatMessageRequestTest {
 
+    /**
+     * Tests the constructor and the getters with valid data
+     *
+     * @author WKempel
+     * @result The constructor and the getters should work without throwing an exception
+     * @see de.uol.swp.common.chat.message.SendTextChatMessageRequest
+     * @see de.uol.swp.common.chat.TextChatChannelDTO
+     * @see de.uol.swp.common.chat.TextChatMessage
+     * @see java.util.UUID
+     * @since 2023-06-17
+     */
     @Test
-    void constructorAndGetters_withValidData() {
+    public void testConstructorAndGetters() {
 
         UUID channelId = UUID.randomUUID();
         String message = "test!";
@@ -23,8 +34,16 @@ public class SendTextChatMessageRequestTest {
         assertTrue(request.authorizationNeeded());
     }
 
+    /**
+     * Tests the equals method with equal objects
+     *
+     * @author WKempel
+     * @result The equals method should return true
+     * @see de.uol.swp.common.chat.message.SendTextChatMessageRequest
+     * @since 2023-06-17
+     */
     @Test
-    void equals_withEqualObjects() {
+    public void testEqualsWithEqualObjects() {
 
         UUID channelId = UUID.randomUUID();
         String message = "test!";
@@ -35,8 +54,15 @@ public class SendTextChatMessageRequestTest {
         assertEquals(request1, request2);
     }
 
+    /**
+     * Tests the equals method with unequal objects
+     *
+     * @author WKempel
+     * @see de.uol.swp.common.chat.message.SendTextChatMessageRequest
+     * @since 2023-06-17
+     */
     @Test
-    void hashCode_withEqualObjects() {
+    public void testHashCodeWithEqualObjects() {
 
         UUID channelId = UUID.randomUUID();
         String message = "test!";

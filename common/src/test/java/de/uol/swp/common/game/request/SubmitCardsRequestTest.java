@@ -18,6 +18,14 @@ public class SubmitCardsRequestTest {
     private final UUID chatID = UUID.randomUUID();
     private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", loggedInUser, "pw", false, chatID, false);
 
+    /**
+     * Tests the constructor with a negative lobbyID
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNegativeLobbyID() {
 
@@ -28,6 +36,14 @@ public class SubmitCardsRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with a null as value for the loggedInUser
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNullUserDTO() {
 
@@ -38,6 +54,14 @@ public class SubmitCardsRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with a null as value for the cardDTOs
+     *
+     * @author WKempel
+     * @result The constructor should throw a NullPointerException
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testConstructorWithNullCardDTOs() {
 
@@ -48,6 +72,13 @@ public class SubmitCardsRequestTest {
                 });
     }
 
+    /**
+     * Tests the getSameCardDTOs method
+     *
+     * @result The method should return the same cardDTOs as the constructor
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetSameCardDTOs() {
         List<CardDTO> cardDTOs = new ArrayList<>();
@@ -62,6 +93,14 @@ public class SubmitCardsRequestTest {
         Assertions.assertEquals(cardDTOs, result);
     }
 
+    /**
+     * Tests the getNotSameCardDTOs method
+     *
+     * @author WKempel
+     * @result The method should return not the same cardDTOs as the constructor
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetNotSameCardDTOs() {
         List<CardDTO> cardDTOs = new ArrayList<>();
@@ -77,6 +116,14 @@ public class SubmitCardsRequestTest {
         Assertions.assertNotSame(request.getCardDTOs(), request2.getCardDTOs());
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The method should return the getLobbyID
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetLobbyID() {
 
@@ -90,6 +137,14 @@ public class SubmitCardsRequestTest {
         Assertions.assertEquals(lobbyDTO.getLobbyID(), result);
     }
 
+    /**
+     * Tests getLoggedInUser method
+     *
+     * @author WKempel
+     * @result The method should return the loggedInUser
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testGetLoggedInUser() {
 
@@ -106,6 +161,14 @@ public class SubmitCardsRequestTest {
         Assertions.assertNotSame(request2.getLoggedInUser(), result);
     }
 
+    /**
+     * Tests the authorizationNeeded method
+     *
+     * @author WKempel
+     * @result The method should return true
+     * @see de.uol.swp.common.game.request.SubmitCardsRequest
+     * @since 2023-06-15
+     */
     @Test
     public void testAuthorizationNeeded() {
         List<CardDTO> cardDTOs = new ArrayList<>();

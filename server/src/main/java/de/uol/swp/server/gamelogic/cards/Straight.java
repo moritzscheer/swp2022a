@@ -6,7 +6,6 @@ import de.uol.swp.server.gamelogic.Robot;
  * Moves the robot one to three tiles forward in direction where the robot is looking
  *
  * @author Maria
- * @see
  * @since 2023-04-03
  */
 public class Straight extends CardBehaviour {
@@ -39,7 +38,7 @@ public class Straight extends CardBehaviour {
      * tells the roboter how many tiles it goes.
      *
      * @author Tommy & WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     @Override

@@ -17,18 +17,30 @@ public class Card {
     private Rectangle position;
     private CardType cardType;
     private int value;
-
     private ImagePattern picture;
 
     private static final SecureRandom random = new SecureRandom();
 
+    /**
+     * constructor
+     *
+     * @author Ole Zimmerman
+     * @param value
+     * @since 2023-02-27
+     */
     public Card(int value) {
-
         this.value = value;
         this.cardType = createCardType(this.value);
         this.picture = this.createPicture();
     }
 
+    /**
+     * method to create card type
+     *
+     * @author Ole Zimmerman
+     * @param value
+     * @since 2023-02-27
+     */
     public CardType createCardType(int value) {
 
         if (value <= 60) {
@@ -56,6 +68,12 @@ public class Card {
         return null;
     }
 
+    /**
+     * method to create a picture
+     *
+     * @author Ole Zimmerman, Tommy Dang
+     * @since 2023-02-27
+     */
     public ImagePattern createPicture() {
         ImagePattern result;
 
@@ -95,34 +113,82 @@ public class Card {
         return result;
     }
 
+    /**
+     * getter method to get the position
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public Rectangle getPosition() {
         return position;
     }
 
+    /**
+     * setter method to set the position
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public void setPosition(Rectangle position) {
         this.position = position;
     }
 
+    /**
+     * getter method to get the card type
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public CardType getCardType() {
         return cardType;
     }
 
+    /**
+     * setter method to set the card type
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
+    /**
+     * getter method to get the value
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public int getValue() {
         return value;
     }
 
+    /**
+     * setter method to set the value
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public void setValue(int value) {
         this.value = value;
     }
 
+    /**
+     * getter method to get the picture
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public ImagePattern getPicture() {
         return picture;
     }
 
+    /**
+     * setter method to set the picture
+     *
+     * @author Ole Zimmerman
+     * @since 2023-02-27
+     */
     public void setPicture(ImagePattern picture) {
         this.picture = picture;
     }

@@ -13,29 +13,37 @@ abstract class CardBehaviour {
     private boolean uTurn;
 
     /**
+     * The method is for the movement of the robot
+     *
      * @author Tommy & WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     public void move(Robot robot, int moves) {}
 
     /**
+     * The method is for the rotation of the robot
+     *
      * @author Tommy & WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     public void turn(Robot robot) {}
 
     /**
+     * The method is for the uTurn of the robot
+     *
      * @author Tommy & WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     public void uTurn(Robot robot) {}
 
     /**
+     * The method execute, execute the methods move, turn and uTurn
+     *
      * @author WKempel
-     * @see
+     * @see de.uol.swp.server.gamelogic.Robot
      * @since 2023-04-03
      */
     public void execute(Robot robot) {

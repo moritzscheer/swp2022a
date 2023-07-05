@@ -38,9 +38,7 @@ import java.util.Map;
 public class LobbyGameManagement extends AbstractPresenter {
 
     private final EventBus eventBus;
-
     private static final Logger LOG = LogManager.getLogger(LobbyGameManagement.class);
-
     private UserDTO loggedInUser;
 
     // give access of GamePresenter/LobbyPresenter to LobbyManagement
@@ -60,6 +58,12 @@ public class LobbyGameManagement extends AbstractPresenter {
         return instance;
     }
 
+    /**
+     * Default constructor
+     *
+     * @author Finn Oldeboershuis, Maria Andrade
+     * @since 2023-03-19
+     */
     public LobbyGameManagement(EventBus eventBus) {
         this.eventBus = eventBus;
         instance = this;
@@ -446,7 +450,6 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-24
      */
     public void gameOver(GameOverMessage msg) {
-        // Todo Check if we need a lobbyIdToLobbyGamePresenterMap
         eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
     }
 }

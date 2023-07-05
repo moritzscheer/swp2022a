@@ -10,6 +10,14 @@ public class AbstractLobbyRequestTest {
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
     private final UserDTO newUser = new UserDTO("Player2", "pw", "ml");
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyName and userDTO
+     * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
 
@@ -21,6 +29,14 @@ public class AbstractLobbyRequestTest {
         Assertions.assertEquals(user, request.getUser());
     }
 
+    /**
+     * Tests the setName method
+     *
+     * @author WKempel
+     * @result The setter should set the correct lobbyName
+     * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testSetName() {
 
@@ -34,6 +50,14 @@ public class AbstractLobbyRequestTest {
         Assertions.assertEquals(newName, request.getName());
     }
 
+    /**
+     * Tests the setUser method
+     *
+     * @author WKempel
+     * @result The setter should set the correct newUser
+     * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testSetUser() {
 
@@ -46,6 +70,14 @@ public class AbstractLobbyRequestTest {
         Assertions.assertEquals(newUser, request.getUser());
     }
 
+    /**
+     * Tests the constructor with null as value for the name
+     *
+     * @author WKempel
+     * @result The constructor should throw an IllegalArgumentException
+     * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorWithNullName() {
 
@@ -58,6 +90,14 @@ public class AbstractLobbyRequestTest {
                 });
     }
 
+    /**
+     * Tests the constructor with null as value for the user
+     *
+     * @author WKempel
+     * @result The constructor should throw an IllegalArgumentException
+     * @see de.uol.swp.common.lobby.request.AbstractLobbyRequest
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorWithNullUser() {
 

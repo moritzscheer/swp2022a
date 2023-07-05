@@ -14,6 +14,14 @@ public class LobbyDroppedSuccessfulResponseTest {
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
     private final LobbyDTO lobby = new LobbyDTO(123, "lobbyTest", user, "pw", true, uuid, false);
 
+    /**
+     * Tests the constructor and the getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyName, user and lobbyID
+     * @see de.uol.swp.common.lobby.response.LobbyDroppedSuccessfulResponse
+     * @since 2023-06-17
+     */
     @Test
     public void testConstructorAndGetter() {
 

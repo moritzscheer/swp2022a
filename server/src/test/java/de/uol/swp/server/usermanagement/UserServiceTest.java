@@ -4,10 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.google.common.eventbus.EventBus;
 
-import de.uol.swp.common.message.ResponseMessage;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
-import de.uol.swp.common.user.exception.DropUserExceptionMessage;
 import de.uol.swp.common.user.request.DropUserRequest;
 import de.uol.swp.common.user.request.RegisterUserRequest;
 import de.uol.swp.common.user.request.UpdateUserRequest;
@@ -16,9 +14,6 @@ import de.uol.swp.common.user.response.UserDroppedSuccessfulResponse;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 class UserServiceTest {
@@ -30,8 +25,6 @@ class UserServiceTest {
     final MainMemoryBasedUserStore userStore = new MainMemoryBasedUserStore();
     final UserManagement userManagement = new UserManagement(userStore);
     final UserService userService = new UserService(bus, userManagement);
-
-
 
     @Test
     void registerUserTest() {
@@ -67,32 +60,58 @@ class UserServiceTest {
         assertNotEquals(loggedInUser.getEMail(), userWithSameName.getEMail());
     }
 
+    /**
+     * Tests the UpdateUserRequest
+     *
+     * @author WKempel
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @see de.uol.swp.common.user.request.DropUserRequest
+     * @see de.uol.swp.common.user.response.UserDroppedSuccessfulResponse
+     * @since 2023-06-23
+     */
     @Test
     public void testOnDropUserRequest() {
         final RegisterUserRequest request = new RegisterUserRequest(userToRegister);
         final DropUserRequest dropRequest = new DropUserRequest(userToRegister);
-        userStore.createUser(userToRegister.getUsername(), userToRegister.getPassword(), userToRegister.getEMail());
+        userStore.createUser(
+                userToRegister.getUsername(),
+                userToRegister.getPassword(),
+                userToRegister.getEMail());
 
         bus.post(request);
         bus.post(dropRequest);
 
-        UserDroppedSuccessfulResponse response = new UserDroppedSuccessfulResponse(dropRequest.getUser().getUsername());
+        UserDroppedSuccessfulResponse response =
+                new UserDroppedSuccessfulResponse(dropRequest.getUser().getUsername());
 
         assertEquals(response.getUsername(), dropRequest.getUser().getUsername());
         assertNotNull(response);
         assertTrue(true);
     }
 
+    /**
+     * Tests the UpdateUserRequest
+     *
+     * @author WKempel
+     * @see de.uol.swp.common.user.request.RegisterUserRequest
+     * @see de.uol.swp.common.user.request.UpdateUserRequest
+     * @see de.uol.swp.common.user.response.UpdatedUserSuccessfulResponse
+     * @since 2023-06-23
+     */
     @Test
     public void testOnUpdateUserRequest() {
         final RegisterUserRequest request = new RegisterUserRequest(userToRegister);
         final UpdateUserRequest updateRequest = new UpdateUserRequest(userToRegister);
-        userStore.createUser(userToRegister.getUsername(), userToRegister.getPassword(), userToRegister.getEMail());
+        userStore.createUser(
+                userToRegister.getUsername(),
+                userToRegister.getPassword(),
+                userToRegister.getEMail());
 
         bus.post(request);
         bus.post(updateRequest);
 
-        UpdatedUserSuccessfulResponse response = new UpdatedUserSuccessfulResponse(updateRequest.getUser());
+        UpdatedUserSuccessfulResponse response =
+                new UpdatedUserSuccessfulResponse(updateRequest.getUser());
 
         assertEquals(response.getUpdatedUser(), updateRequest.getUser());
         assertNotNull(response);

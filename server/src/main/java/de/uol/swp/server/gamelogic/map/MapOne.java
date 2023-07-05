@@ -6,18 +6,16 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import de.uol.swp.server.gamelogic.tiles.enums.ArrowType;
 
 /**
+ * It is the first map of the game
  *
- *
- * @author
- * @since
+ * @author Ole Zimmermann
+ * @since 2023-06-30
  */
 public class MapOne extends AbstractMap {
 
     /**
-     *
-     *
-     * @author
-     * @since
+     * @author Ole Zimmermann
+     * @since 2023-06-30
      */
     public MapOne() {
         int x = 0;

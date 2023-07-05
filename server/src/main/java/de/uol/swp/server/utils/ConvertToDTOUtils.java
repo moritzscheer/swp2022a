@@ -7,7 +7,6 @@ import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.AbstractPlayer;
-import de.uol.swp.server.gamelogic.BotPlayer;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Robot;
 import de.uol.swp.server.gamelogic.cards.Card;
@@ -34,11 +33,12 @@ public final class ConvertToDTOUtils {
      * @param user user to be converted to DTO
      * @return userDTO
      * @author Maria Andrade
+     * @see de.uol.swp.common.user.User
+     * @see de.uol.swp.common.user.UserDTO
      * @since 2023-05-13
      */
     public static UserDTO convertUserToUserDTO(User user) {
-        UserDTO userDTO = new UserDTO(user.getUsername(), user.getPassword(), user.getEMail());
-        return userDTO;
+        return new UserDTO(user.getUsername(), user.getPassword(), user.getEMail());
     }
 
     /**
@@ -47,6 +47,8 @@ public final class ConvertToDTOUtils {
      * @param robot robot to be converted to DTO
      * @return robotDTO
      * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.Robot
+     * @see de.uol.swp.common.game.dto.RobotDTO
      * @since 2023-05-13
      */
     public static RobotDTO convertRobotToRobotDTO(Robot robot) {
@@ -68,6 +70,8 @@ public final class ConvertToDTOUtils {
      * @param cards cards to be converted to DTO
      * @return List<CardDTO>
      * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @see de.uol.swp.common.game.dto.CardDTO
      * @since 2023-05-13
      */
     public static List<CardDTO> convertCardsToCardsDTO(Card[] cards) {
@@ -87,6 +91,8 @@ public final class ConvertToDTOUtils {
      * @param card card to be converted to DTO
      * @return List<CardDTO>
      * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.cards.Card
+     * @see de.uol.swp.common.game.dto.CardDTO
      * @since 2023-05-20
      */
     public static CardDTO convertCardToCardDTO(Card card) {
@@ -101,19 +107,21 @@ public final class ConvertToDTOUtils {
      * @param player Player to be converted to DTO
      * @return List<PlayerDTO>
      * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @see de.uol.swp.common.game.dto.PlayerDTO
      * @since 2023-05-27
      */
     public static PlayerDTO convertPlayerToPlayerDTO(AbstractPlayer player) {
-
-        PlayerDTO playerDTO =
-                new PlayerDTO(convertRobotToRobotDTO(player.getRobot()), player.getUser());
-
-        return playerDTO;
+        return new PlayerDTO(convertRobotToRobotDTO(player.getRobot()), player.getUser());
     }
 
     /**
-     * @author
-     * @since
+     * This function converts List<Player> to List<PlayerDTO>
+     *
+     * @author Maria Andrade
+     * @see de.uol.swp.server.gamelogic.AbstractPlayer
+     * @see de.uol.swp.common.game.dto.PlayerDTO
+     * @since 2023-05-27
      */
     public static List<PlayerDTO> convertPlayerListToPlayerDTOList(List<AbstractPlayer> players) {
 
@@ -121,7 +129,6 @@ public final class ConvertToDTOUtils {
         for (AbstractPlayer player : players) {
             playersDTO.add(convertPlayerToPlayerDTO(player));
         }
-
         return playersDTO;
     }
 
@@ -135,6 +142,8 @@ public final class ConvertToDTOUtils {
      * @param board board to be converted to DTO
      * @return BlockDTO[][]
      * @author Maria Andrade, Jann Bruns
+     * @see de.uol.swp.server.gamelogic.Block
+     * @see de.uol.swp.common.game.dto.BlockDTO
      * @since 2023-06-18
      */
     public static BlockDTO[][] convertBoardToBoardDTO(Block[][] board) {

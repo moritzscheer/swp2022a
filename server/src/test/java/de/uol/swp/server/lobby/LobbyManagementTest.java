@@ -26,6 +26,12 @@ public class LobbyManagementTest {
         Collections.sort(users);
     }
 
+    /**
+     * This test checks whether the lobby list is empty at the beginning
+     *
+     * @author Finn
+     * @since 2023-01-09
+     */
     private void addDefaultLobbies() {
         lobbyManagement.createLobby("lobby1", users.get(0), "1234", true);
         lobbyManagement.createLobby("lobby2", users.get(1), "4321", true);
@@ -129,6 +135,7 @@ public class LobbyManagementTest {
      * <p>If the variables are not set correctly the test fails
      *
      * @author Moritz Scheer
+     * @see java.util.Optional
      * @since 2022-12-20
      */
     @Test

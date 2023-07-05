@@ -15,6 +15,14 @@ public class UserJoinedLobbyMessageTest {
     private final LobbyDTO lobbyDTO =
             new LobbyDTO(123, "testLobby", userDTO, "pw", true, randomUUID, false);
 
+    /**
+     * Tests the constructor and getters
+     *
+     * @author WKempel
+     * @result The getters should return the correct lobbyDTO, lobbyName and userDTO
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testConstructorAndGetters() {
 
@@ -27,6 +35,14 @@ public class UserJoinedLobbyMessageTest {
         Assertions.assertEquals(userDTO, message.getUser());
     }
 
+    /**
+     * Tests the getLobbyID method
+     *
+     * @author WKempel
+     * @result The getLobby method should return the correct lobbyID
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetLobbyID() {
 
@@ -36,6 +52,14 @@ public class UserJoinedLobbyMessageTest {
         Assertions.assertEquals(lobbyDTO.getLobbyID(), message.getLobbyID());
     }
 
+    /**
+     * Tests the getName method
+     *
+     * @author WKempel
+     * @result The getName method should return the correct name of the lobby
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetName() {
 
@@ -45,6 +69,14 @@ public class UserJoinedLobbyMessageTest {
         Assertions.assertEquals(lobbyDTO.getName(), message.getName());
     }
 
+    /**
+     * Tests the getUser method
+     *
+     * @author WKempel
+     * @result The getUser method should return the correct userDTO
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testGetUser() {
 
@@ -54,13 +86,22 @@ public class UserJoinedLobbyMessageTest {
         Assertions.assertEquals(userDTO, message.getUser());
     }
 
+    /**
+     * Tests the equals and hashCode method
+     *
+     * @author WKempel
+     * @result The equals method should return true if the objects are equal
+     * @see de.uol.swp.common.lobby.message.UserJoinedLobbyMessage
+     * @since 2023-06-16
+     */
     @Test
     public void testEqualsAndHashCode() {
 
-        UserJoinedLobbyMessage message1 = new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
+        UserJoinedLobbyMessage message1 =
+                new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
 
-
-        UserJoinedLobbyMessage message2 = new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
+        UserJoinedLobbyMessage message2 =
+                new UserJoinedLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO.getName(), userDTO);
 
         Assertions.assertEquals(message1, message2);
 

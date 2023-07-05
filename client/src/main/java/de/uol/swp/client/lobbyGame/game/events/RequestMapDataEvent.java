@@ -12,11 +12,23 @@ import de.uol.swp.common.lobby.dto.LobbyDTO;
 public class RequestMapDataEvent {
     private final LobbyDTO lobbyDTO;
 
+    /**
+     * Constructor to assign lobbyDTO the RequestMapDataEvent
+     *
+     * @author Maria Andrade
+     * @since 2023-05-15
+     */
     public RequestMapDataEvent(LobbyDTO lobbyDTO) {
-
         this.lobbyDTO = lobbyDTO;
     }
 
+    /**
+     * Getter method to return the LobbyDTO
+     *
+     * @author Maria Andrade
+     * @return the lobby DTO
+     * @since 2023-05-15
+     */
     public LobbyDTO getLobbyDTO() {
         return lobbyDTO;
     }
