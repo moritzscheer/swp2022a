@@ -16,6 +16,7 @@ import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent;
 import de.uol.swp.client.lobbyGame.game.presenter.GamePresenter;
 import de.uol.swp.client.lobbyGame.lobby.LobbyService;
+import de.uol.swp.client.lobbyGame.lobby.event.LeaveLobbyEvent;
 import de.uol.swp.client.lobbyGame.lobby.event.ShowLobbyViewEvent;
 import de.uol.swp.client.lobbyGame.lobby.presenter.LobbyPresenter;
 import de.uol.swp.client.main.AccountMenuPresenter;
@@ -44,9 +45,13 @@ import de.uol.swp.common.user.UserDTO;
 
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
@@ -54,6 +59,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 /**
  * Class that manages which window/scene is currently shown
@@ -672,7 +678,7 @@ public class SceneManager {
      */
     @Subscribe
     public void onShowGameViewEvent(ShowGameViewEvent event) throws IOException {
-        System.out.println("SceneManager.onShowGameViewEvent");
+        LOG.debug("SceneManager.onShowGameViewEvent");
         Parent thisGameParent = initGameView(event.getLobbyID());
         showGameScreen(event.getLobbyID(), thisGameParent);
     }
@@ -854,17 +860,49 @@ public class SceneManager {
                     Dialog gameOverDialog = new Dialog();
                     // Setting the title
                     gameOverDialog.setTitle("Game Over");
-                    ButtonType type = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
-                    gameOverDialog.getDialogPane().getButtonTypes().add(type);
+                    ButtonType stay =
+                            new ButtonType("I wanna see the history", ButtonBar.ButtonData.FINISH);
+                    ButtonType lobby =
+                            new ButtonType("Back to Lobby", ButtonBar.ButtonData.BACK_PREVIOUS);
+                    ButtonType leave =
+                            new ButtonType("Leave Lobby", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    gameOverDialog.getDialogPane().getButtonTypes().add(stay);
+                    gameOverDialog.getDialogPane().getButtonTypes().add(lobby);
+                    gameOverDialog.getDialogPane().getButtonTypes().add(leave);
                     // Setting the content of the dialog
                     gameOverDialog.setContentText(
                             event.getUserWon().getUsername() + " won the game!");
+
+                    Node contentText = new Text(gameOverDialog.getContentText());
+                    HBox hbox = new HBox(event.getUserImage(), contentText);
+                    hbox.setSpacing(10);
+                    hbox.setAlignment(Pos.CENTER);
+                    gameOverDialog.getDialogPane().setContent(hbox);
 
                     // based on:
                     // https://www.tutorialspoint.com/how-to-create-a-dialog-in-javafx
                     DialogPane pane = gameOverDialog.getDialogPane();
                     pane.getStylesheets().add(DIALOG_STYLE_SHEET);
-                    gameOverDialog.showAndWait();
+                    Optional<ButtonType> result = gameOverDialog.showAndWait();
+
+                    // Handle the button actions
+                    if (result.isPresent()) {
+                        ButtonType buttonClicked = result.get();
+
+                        if (buttonClicked == stay) {
+                            LobbyGameManagement.getInstance()
+                                    .gameOverAfterDialog(event.getLobbyID());
+                        } else if (buttonClicked == lobby) {
+                            showLobbyScreen(event.getLobbyID());
+                        } else if (buttonClicked == leave) {
+                            eventBus.post(
+                                    new LeaveLobbyEvent(
+                                            event.getLoggedInUser(),
+                                            event.getLobbyID(),
+                                            event.getLobbyName(),
+                                            event.isMultiplayer()));
+                        }
+                    }
                 });
     }
 

@@ -635,7 +635,7 @@ public class gameTest {
             }
 
             assertEquals(robotOne.getPosition(), new Position(4, 5));
-            assertEquals(robotOne.getDirection().ordinal(), 2);
+            assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLastCheckPoint(), 4);
 
         } catch (Exception ex) {
@@ -663,7 +663,7 @@ public class gameTest {
             playerOne.chooseCardsOrder(cards);
             calcGameRound();
 
-            assertEquals(robotOne.getPosition(), new Position(9, 2));
+            assertEquals(robotOne.getPosition(), new Position(9, 3));
             assertEquals(robotOne.getDirection().ordinal(), 0);
             assertEquals(robotOne.getLastCheckPoint(), 2);
 

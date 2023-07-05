@@ -1,9 +1,16 @@
 package de.uol.swp.common.game.message;
 
+import de.uol.swp.common.game.Position;
+import de.uol.swp.common.game.dto.PlayerDTO;
+import de.uol.swp.common.game.dto.RobotDTO;
+import de.uol.swp.common.game.enums.CardinalDirection;
+import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoundIsOverMessageTest {
 
@@ -56,5 +63,28 @@ public class RoundIsOverMessageTest {
 
         Assertions.assertEquals(message1, message2);
         Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+    }
+
+    /**
+     * Tests respawn robots
+     *
+     * @author Maria
+     * @see de.uol.swp.common.game.message.RoundIsOverMessage
+     * @since 2023-07-05
+     */
+    @Test
+    public void testRespawnRobots() {
+        int lobbyID = 123;
+        RobotDTO robotDTO = new RobotDTO(1, new Position(1, 1), CardinalDirection.South);
+        PlayerDTO playerDTO = new PlayerDTO(robotDTO, new UserDTO("Maria", "mypass", ""));
+        List<PlayerDTO> respawn = new ArrayList<>() {};
+        respawn.add(playerDTO);
+
+        RoundIsOverMessage message1 = new RoundIsOverMessage(lobbyID, respawn);
+        RoundIsOverMessage message2 = new RoundIsOverMessage(lobbyID, respawn);
+
+        Assertions.assertEquals(message1, message2);
+        Assertions.assertEquals(message1.hashCode(), message2.hashCode());
+        Assertions.assertEquals(message1.getRespawnRobots(), message2.getRespawnRobots());
     }
 }

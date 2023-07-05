@@ -3,6 +3,7 @@ package de.uol.swp.client.lobbyGame;
 import com.google.common.eventbus.EventBus;
 
 import de.uol.swp.client.AbstractPresenter;
+import de.uol.swp.client.chat.TextChatChannel;
 import de.uol.swp.client.lobbyGame.game.events.RequestDistributeCardsEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameOverEvent;
 import de.uol.swp.client.lobbyGame.game.events.ShowGameViewEvent;
@@ -27,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class that manages the Presenter and Parents of the Lobby and Game views
@@ -116,8 +118,10 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @author Moritz Scheer
      * @since 2023-01-05
      */
-    public void removeLobby(LobbyDroppedSuccessfulResponse message) {
+    public void removeLobbyAndGame(LobbyDroppedSuccessfulResponse message) {
         lobbyIdToLobbyGamePresenterMap.remove(message.getLobbyID());
+        lobbyIdToLobbyDTOMap.remove(message.getLobbyID());
+        lobbyIdToGameDTOMap.remove(message.getLobbyID());
     }
 
     /**
@@ -262,6 +266,8 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void initPresenterAndStartRequests(Integer lobbyID) {
         // after presenter is created, we must call init() with the data
         // initialize the board and the robots on board inside init method
+        TextChatChannel lobbyChat =
+                lobbyIdToLobbyGamePresenterMap.get(lobbyID).getLobbyPresenter().getTextChat();
         lobbyIdToLobbyGamePresenterMap
                 .get(lobbyID)
                 .getGamePresenter()
@@ -269,7 +275,8 @@ public class LobbyGameManagement extends AbstractPresenter {
                         lobbyID,
                         lobbyIdToLobbyDTOMap.get(lobbyID),
                         lobbyIdToGameDTOMap.get(lobbyID),
-                        this.loggedInUser);
+                        this.loggedInUser,
+                        lobbyChat);
 
         // create request to get the cards
         eventBus.post(
@@ -288,10 +295,13 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void restartRounds(RoundIsOverMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.resetCardsAndSlots();
-        gamePresenter.setAllPlayersNotReady();
-        gamePresenter.enableRobotButton();
-        gamePresenter.respawnDeadRobots(msg.getRespawnRobots());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.resetCardsAndSlots();
+            gamePresenter.setAllPlayersNotReady();
+            gamePresenter.enableRobotButton();
+            gamePresenter.respawnDeadRobots(msg.getRespawnRobots());
+        } else LOG.warn("gamePresenter object was deleted! Ignoring RoundIsOverMessage!");
     }
 
     //////////////////////
@@ -332,9 +342,10 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void showCardsToUser(ProgramCardDataResponse msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
-        // for each new round show robots, after some died and came back
-        gamePresenter.loadRobotsInBoard();
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.setReceivedCards(msg.getAssignedProgramCards(), msg.getFreeCards());
+        } else LOG.warn("gamePresenter object was deleted! Ignoring ProgramCardDataResponse!");
     }
 
     /**
@@ -348,7 +359,10 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void sendMessageTurnedOffRobot(RobotTurnedOffMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.showRobotTurnedOff(msg.getTurnedOffUser());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null))
+            gamePresenter.showRobotTurnedOff(msg.getTurnedOffUser());
+        else LOG.warn("gamePresenter object was deleted! Ignoring RobotTurnedOffMessage!");
     }
 
     /**
@@ -362,8 +376,11 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void sendMessagePlayerIsReady(PlayerIsReadyMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.setPlayerReadyStatus(msg.getPlayerIsReady());
-        gamePresenter.blockPlayerCardsAfterSubmit(msg.getPlayerIsReady()); // block cards
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.setPlayerReadyStatus(msg.getPlayerIsReady());
+            gamePresenter.blockPlayerCardsAfterSubmit(msg.getPlayerIsReady()); // block cards
+        } else LOG.warn("gamePresenter object was deleted! Ignoring PlayerIsReadyMessage!");
     }
 
     /**
@@ -377,27 +394,19 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void sendMessageAllPlayersAreReady(ShowAllPlayersCardsMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.setPlayerCard(msg.getUserDTOCardDTOMap());
-    }
-
-    /**
-     * Handles ShowRobotMovingMessage
-     *
-     * @param msg the ShowRobotMovingMessage object seen on the EventBus
-     * @see ShowRobotMovingMessage
-     * @author Maria Andrade
-     * @since 2023-05-20
-     */
-    public void sendMessageRobotIsMoving(ShowRobotMovingMessage msg) {
-        GamePresenter gamePresenter =
-                lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.animateRobotState(msg.getPlayerDTO());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null))
+            gamePresenter.setPlayerCard(msg.getUserDTOCardDTOMap());
+        else LOG.warn("gamePresenter object was deleted! Ignoring ShowAllPlayersCardsMessage!");
     }
 
     public void sendMessageBoardIsMoving(ShowBoardMovingMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.animateBoardElements(msg.getPlayersDTO());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null))
+            gamePresenter.animateBoardElements(msg.getPlayersDTO());
+        else LOG.warn("gamePresenter object was deleted! Ignoring ShowBoardMovingMessage!");
     }
 
     /**
@@ -411,7 +420,10 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void updateHistory(TextHistoryMessage msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.updateHistoryMessage(msg.getMessage());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null))
+            gamePresenter.updateHistoryMessage(msg.getMessage());
+        else LOG.warn("gamePresenter object was deleted! Ignoring TextHistoryMessage!");
     }
 
     /**
@@ -437,7 +449,9 @@ public class LobbyGameManagement extends AbstractPresenter {
     public void setRobotDied(RobotIsFinallyDead msg) {
         GamePresenter gamePresenter =
                 lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
-        gamePresenter.setRobotDied(msg.getUserDied());
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) gamePresenter.setRobotDied(msg.getUserDied());
+        else LOG.warn("gamePresenter object was deleted! Ignoring RobotIsFinallyDead!");
     }
 
     /**
@@ -449,6 +463,35 @@ public class LobbyGameManagement extends AbstractPresenter {
      * @since 2023-05-24
      */
     public void gameOver(GameOverMessage msg) {
-        eventBus.post(new ShowGameOverEvent(msg.getLobbyID(), msg.getUserWon()));
+        GamePresenter gamePresenter =
+                lobbyIdToLobbyGamePresenterMap.get(msg.getLobbyID()).getGamePresenter();
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.setUserWon(msg.getUserWon());
+            eventBus.post(
+                    new ShowGameOverEvent(
+                            msg.getLobbyID(),
+                            msg.getUserWon(),
+                            gamePresenter.getUserWonImage(msg.getUserWon()),
+                            loggedInUser,
+                            lobbyIdToLobbyDTOMap.get(msg.getLobbyID()).getName(),
+                            lobbyIdToLobbyDTOMap.get(msg.getLobbyID()).isMultiplayer()));
+
+        } else LOG.warn("gamePresenter object was deleted! Ignoring RobotIsFinallyDead!");
+    }
+
+    /**
+     * Handles game over after clicking button to stay in game view
+     *
+     * @author Maria Eduarda
+     * @since 2023-07-04
+     */
+    public void gameOverAfterDialog(int lobbyID) {
+        GamePresenter gamePresenter =
+                lobbyIdToLobbyGamePresenterMap.get(lobbyID).getGamePresenter();
+        // only keep sending messages if then lobby was not dropped, otherwise ignore
+        if (!Objects.equals(gamePresenter, null)) {
+            gamePresenter.gameOver();
+        } else LOG.warn("gamePresenter object was deleted! Ignoring RobotIsFinallyDead!");
     }
 }

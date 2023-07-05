@@ -205,6 +205,7 @@ public class GameService extends AbstractService {
         boolean allChosen = pair.getValue0();
         List<AbstractLobbyMessage> msgs = pair.getValue1();
         for (AbstractLobbyMessage msg : msgs) {
+            if (Objects.equals(msg, null)) continue;
             lobbyService.sendToAllInLobby(lobbyID, msg);
         }
         if (allChosen) manageGameUpdate(lobbyID);
@@ -222,6 +223,7 @@ public class GameService extends AbstractService {
         List<Pair<Integer, AbstractLobbyMessage>> pairs = gameManagement.manageGameUpdate(lobbyID);
 
         for (Pair<Integer, AbstractLobbyMessage> pair : pairs) {
+            if (Objects.equals(pair.getValue1(), null)) continue;
             scheduler.schedule(
                     () -> {
                         try {

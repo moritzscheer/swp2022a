@@ -90,14 +90,16 @@ public class LobbyServiceTest {
     @Test
     public void testJoinLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+
         bus.post(request2);
 
-        assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertEquals(2, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertTrue(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
     }
 
     /**
@@ -111,17 +113,19 @@ public class LobbyServiceTest {
     @Test
     public void testJoinLobbyWithSameUser() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final JoinLobbyRequest request3 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-
         bus.post(request);
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+        final JoinLobbyRequest request3 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+
         bus.post(request2);
         bus.post(request3);
 
-        assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertEquals(2, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertTrue(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
     }
 
     /**
@@ -135,13 +139,15 @@ public class LobbyServiceTest {
     @Test
     public void testJoinLobbyWithFalsePassword() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 = new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "1234");
-
         bus.post(request);
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "1234");
+
         bus.post(request2);
 
-        assertEquals(1, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertFalse(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertEquals(1, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertFalse(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
     }
 
     // ------------------------------------------
@@ -159,16 +165,18 @@ public class LobbyServiceTest {
     @Test
     public void testLeaveMultiplayerLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final LeaveLobbyRequest request3 = new LeaveLobbyRequest(1, "lobby1", user, true);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+        final LeaveLobbyRequest request3 = new LeaveLobbyRequest(lobbyID, "lobby1", user, true);
+
         bus.post(request2);
         bus.post(request3);
 
         assertFalse(lobbyManagement.getLobbies().isEmpty());
-        assertEquals(1, lobbyManagement.getLobby(1).get().getUsers().size());
+        assertEquals(1, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
     }
 
     /**
@@ -182,9 +190,11 @@ public class LobbyServiceTest {
     @Test
     public void testLeaveSingleplayerLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, false, null);
-        final LeaveLobbyRequest request2 = new LeaveLobbyRequest(1, "lobby1", user, false);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final LeaveLobbyRequest request2 = new LeaveLobbyRequest(lobbyID, "lobby1", user, false);
+
         bus.post(request2);
 
         assertTrue(lobbyManagement.getLobbies().isEmpty());
@@ -201,9 +211,11 @@ public class LobbyServiceTest {
     @Test
     public void testDropLobby() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final LeaveLobbyRequest request2 = new LeaveLobbyRequest(1, "lobby1", user, true);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final LeaveLobbyRequest request2 = new LeaveLobbyRequest(lobbyID, "lobby1", user, true);
+
         bus.post(request2);
 
         assertTrue(lobbyManagement.getLobbies().isEmpty());
@@ -239,17 +251,19 @@ public class LobbyServiceTest {
     @Test
     public void testOnSetPlayerReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 =
-                new SetPlayerReadyInLobbyRequest(1, user, true);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(lobbyID, user, true);
+
         bus.post(request2);
         bus.post(request3);
 
-        assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertEquals(2, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertTrue(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
         assertTrue(request3.isReady(), "Player is ready");
     }
 
@@ -265,17 +279,19 @@ public class LobbyServiceTest {
     @Test
     public void testOnSetPlayerIsNotReadyInLobbyRequest() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final SetPlayerReadyInLobbyRequest request3 =
-                new SetPlayerReadyInLobbyRequest(1, user, false);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+        final SetPlayerReadyInLobbyRequest request3 =
+                new SetPlayerReadyInLobbyRequest(lobbyID, user, false);
+
         bus.post(request2);
         bus.post(request3);
 
-        assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
+        assertEquals(2, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertTrue(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
         assertFalse(request3.isReady(), "Player is not ready");
     }
 
@@ -292,16 +308,18 @@ public class LobbyServiceTest {
     public void testOnMapChangeRequest() {
         Map map = new Map();
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
-        final JoinLobbyRequest request2 =
-                new JoinLobbyRequest(1, "lobby1", notInLobbyUser, "password");
-        final MapChangeRequest request3 = new MapChangeRequest(1, user, map);
-
         bus.post(request);
+
+        int lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
+        final JoinLobbyRequest request2 =
+                new JoinLobbyRequest(lobbyID, "lobby1", notInLobbyUser, "password");
+        final MapChangeRequest request3 = new MapChangeRequest(lobbyID, user, map);
+
         bus.post(request2);
         bus.post(request3);
 
-        assertEquals(2, lobbyManagement.getLobby(1).get().getUsers().size());
-        assertTrue(lobbyManagement.getLobby(1).get().getUsers().contains(notInLobbyUser));
-        assertNull(lobbyManagement.getLobby(1).get().getMapName());
+        assertEquals(2, lobbyManagement.getLobby(lobbyID).get().getUsers().size());
+        assertTrue(lobbyManagement.getLobby(lobbyID).get().getUsers().contains(notInLobbyUser));
+        assertNull(lobbyManagement.getLobby(lobbyID).get().getMapName());
     }
 }

@@ -25,7 +25,8 @@ public class ShowGameOverEventTest {
 
     @Test
     public void testConstructorAndGetters() {
-        ShowGameOverEvent event = new ShowGameOverEvent(lobbyDTO.getLobbyID(), userWon);
+        ShowGameOverEvent event =
+                new ShowGameOverEvent(lobbyDTO.getLobbyID(), userWon, null, null, "", false);
 
         assertEquals(lobbyDTO.getLobbyID(), event.getLobbyID());
         assertEquals(userWon, event.getUserWon());
