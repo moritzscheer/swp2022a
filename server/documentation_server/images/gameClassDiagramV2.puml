@@ -3,59 +3,56 @@ interface Serializable
 interface User
 interface ICard <<Interface Card>>
 
-Game --> Logger
-Game --> Block
-Game --> Position
-Game --> Robot
-Game --> Card
-Game --> GameMovement
-Game --> PlayerDTO
-Game --> AbstractPlayer
+Game ---> Logger
+Game ---> Block
+Game ---> Position
+Game ---> Robot
+Game ---> Card
+Game ---> GameMovement
+Game ---> PlayerDTO
+Game ---> AbstractPlayer
 
-AbstractPlayer --> Robot
-AbstractPlayer --> Card
-AbstractPlayer --> UserDTO
+AbstractPlayer ---> Robot
+AbstractPlayer ---> Card
+AbstractPlayer ---> UserDTO
 
-UserDTO ..|> User
+UserDTO ...|> User
 
-Card --> CardBehaviour
+Card -.-> CardBehaviour
 
-CardBehaviour --> Direction
+CardBehaviour ---> Direction
 
-GameMovement --> PlayerDTO
-GameMovement --> GameMovement
+GameMovement ---> PlayerDTO
+GameMovement ---> GameMovement
 
-PlayerDTO ..|> Serializable
-PlayerDTO --> RobotDTO
-PlayerDTO --> CardDTO
+PlayerDTO ...|> Serializable
+PlayerDTO ---> RobotDTO
+PlayerDTO ---> CardDTO
 
-CardDTO ..|> ICard
+CardDTO ...|> ICard
 
-RobotDTO ..|> Serializable
-RobotDTO --> Position
-RobotDTO --> CardinalDirection
+RobotDTO ...|> Serializable
+RobotDTO ---> Position
+RobotDTO ---> CardinalDirection
 
-Block ..|> Serializable
-Block ..|> Cloneable
-Block --> AbstractTileBehaviour
-Block --> Position
+Block ...|> Serializable
+Block ...|> Cloneable
+Block ---> Position
 
-AbstractTileBehaviour ..|> Serializable
-AbstractTileBehaviour --> Robot
-AbstractTileBehaviour --> Block
-AbstractTileBehaviour --> Position
+AbstractTileBehaviour ...|> Serializable
+AbstractTileBehaviour ---> Robot
+AbstractTileBehaviour <---> Block
+AbstractTileBehaviour ---> Position
 
-Position ..|> Serializable
+Position ...|> Serializable
 
-Robot ..|> Serializable
-Robot --> Position
-Robot --> CardinalDirection
+Robot ...|> Serializable
+Robot ---> Position
+Robot ---> CardinalDirection
 
-CardDTO ..|> ICard
+ICard ...|> Serializable
 
-ICard ..|> Serializable
-
-User --|> Serializable
+User ---|> Serializable
 
 interface User{
     - getUsername(): String
