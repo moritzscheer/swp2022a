@@ -17,7 +17,7 @@ import java.util.Objects;
  * @since 2023/02/03
  */
 public class ConveyorBeltBehaviour extends AbstractTileBehaviour {
-
+    private static final long serialVersionUID = -9068580025163820566L;
     private ArrowType arrowType;
     private CardinalDirection direction;
 

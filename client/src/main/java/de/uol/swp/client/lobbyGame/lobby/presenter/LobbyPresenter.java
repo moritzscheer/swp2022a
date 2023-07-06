@@ -195,6 +195,7 @@ public class LobbyPresenter extends AbstractPresenter {
 
             ChangeListener<? super Number> cl =
                     (obsV, oldV, newV) -> {
+                        try{
                         int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
                         Map m = new Map(mapIndex);
 
@@ -232,6 +233,7 @@ public class LobbyPresenter extends AbstractPresenter {
                             default:
                         }
                         lobby.setMapName(mapName);
+                        } catch (IndexOutOfBoundsException e) {}
                     };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }

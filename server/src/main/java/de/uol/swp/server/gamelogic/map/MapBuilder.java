@@ -6,6 +6,8 @@ import de.uol.swp.server.gamelogic.BehaviourTypeComparator;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.tiles.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.javatuples.Pair;
 
 import java.io.*;
@@ -24,6 +26,7 @@ public final class MapBuilder {
     public static List<AbstractMap> testMaps = new LinkedList<>();
     private static final HashMap<String, Pair<Integer, Position>>
             mapStringToCheckpointNumberAndFirstPosition = new HashMap<>();
+    private static final Logger LOG = LogManager.getLogger(MapBuilder.class);
 
     public static List<ArrayList> checkpointLocations = new LinkedList<>();
     public static ArrayList<int[][]> checkpointsMapOne = new ArrayList<>();
@@ -107,7 +110,7 @@ public final class MapBuilder {
                 objIn.close();
                 return map;
             } catch (IOException | ClassNotFoundException IOExcept2) {
-                System.out.println(IOExcept2.getMessage());
+                LOG.warn(IOExcept2.getMessage());
                 return null;
             }
         }
@@ -204,9 +207,9 @@ public final class MapBuilder {
      */
     public static Pair<Integer, Position> getMapStringToCheckpointNumberAndFirstPosition(
             String mapName) {
-        System.out.println("In getMapStringToCheckpointNumberAndFirstPosition");
-        System.out.println("gettting info for " + mapName);
-        System.out.println(
+        LOG.warn("In getMapStringToCheckpointNumberAndFirstPosition");
+        LOG.warn("gettting info for " + mapName);
+        LOG.warn(
                 "---------> " + mapStringToCheckpointNumberAndFirstPosition.get(mapName));
         return mapStringToCheckpointNumberAndFirstPosition.get(mapName);
     }
@@ -312,17 +315,14 @@ public final class MapBuilder {
                 for (int i = 0; i < checkpoints + 2; i++) {
                     x = checkpointLocation[0][i];
                     y = checkpointLocation[1][i];
-                    System.out.println(x + " " + y);
                     map[x][y] =
                             new Block(
                                     new CheckPointBehaviour(null, map, new Position(x, y), (i + 1)),
                                     null,
                                     new Position(x, y));
                 }
-                System.out.println("NEXT");
-
             } catch (Exception b) {
-                System.out.println("No Checkpoints Found!");
+                LOG.warn("No Checkpoints found");
             }
         }
 
@@ -349,7 +349,6 @@ public final class MapBuilder {
                 }
             }
         }
-        System.out.println("Checkpoints: " + checkpointFound);
 
         // Sort Behaviours
         for (y = 0; y < 12; y++) {
@@ -384,7 +383,7 @@ public final class MapBuilder {
 
         boolean loop = true;
         CardinalDirection opposite = null;
-        boolean innerWallorLaser = false;
+        boolean innerWallOrLaser = false;
         boolean fullLaser = true;
 
         while (loop) {
@@ -421,7 +420,7 @@ public final class MapBuilder {
                     if (map[x2][y2].getBehaviourList()[i] instanceof WallBehaviour) {
                         if (map[x2][y2].getBehaviourList()[i].getObstruction(opposite)) {
                             loop = false;
-                            innerWallorLaser = true;
+                            innerWallOrLaser = true;
                         } else if (map[x2][y2].getBehaviourList()[i].getObstruction(direction)) {
                             loop = false;
                         }
@@ -447,7 +446,7 @@ public final class MapBuilder {
                                 ((LaserBehaviour) map[x2][y2].getBehaviourList()[i])
                                         .setLaserBeam(beam);
                             }
-                            innerWallorLaser = true;
+                            innerWallOrLaser = true;
                         }
                     }
                     // If its a Checkpointbehavior a new Wall gets placed that blocks the Laser so
@@ -465,14 +464,14 @@ public final class MapBuilder {
                                 copyForWall.length - 1);
                         copyForWall[copyForWall.length - 1] =
                                 new WallBehaviour(null, map, new Position(pastX, pastY), direction);
-                        innerWallorLaser = true;
+                        innerWallOrLaser = true;
                         map[pastX][pastY] =
                                 new Block(copyForWall, null, new Position(pastX, pastY));
                     }
                 }
 
                 // Place Laser if its eligible
-                if (!innerWallorLaser) {
+                if (!innerWallOrLaser) {
                     AbstractTileBehaviour[] copyForLaser =
                             new AbstractTileBehaviour[map[x2][y2].getBehaviourList().length + 1];
                     System.arraycopy(
