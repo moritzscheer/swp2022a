@@ -1,0 +1,318 @@
+@startuml
+interface Serializable
+interface User
+interface ICard <<Interface Card>>
+
+Game ---> Logger
+Game ---> Block
+Game ---> Position
+Game ---> Robot
+Game ---> Card
+Game ---> GameMovement
+Game ---> PlayerDTO
+Game ---> AbstractPlayer
+
+AbstractPlayer ---> Robot
+AbstractPlayer ---> Card
+AbstractPlayer ---> UserDTO
+
+UserDTO ...|> User
+
+Card -.-> CardBehaviour
+
+CardBehaviour ---> Direction
+
+GameMovement ---> PlayerDTO
+GameMovement ---> GameMovement
+
+PlayerDTO ...|> Serializable
+PlayerDTO ---> RobotDTO
+PlayerDTO ---> CardDTO
+
+CardDTO ...|> ICard
+
+RobotDTO ...|> Serializable
+RobotDTO ---> Position
+RobotDTO ---> CardinalDirection
+
+Block ...|> Serializable
+Block ...|> Cloneable
+Block ---> Position
+
+AbstractTileBehaviour ...|> Serializable
+AbstractTileBehaviour ---> Robot
+AbstractTileBehaviour <---> Block
+AbstractTileBehaviour ---> Position
+
+Position ...|> Serializable
+
+Robot ...|> Serializable
+Robot ---> Position
+Robot ---> CardinalDirection
+
+ICard ...|> Serializable
+
+User ---|> Serializable
+
+interface User{
+    - getUsername(): String
+    - getPassword(): String
+    - getEMail(): String
+    - getWithoutPassword(): User
+}
+interface ICard{
+    - getID(): Integer
+    - getPriority(): int
+}
+class CardDTO{
+    - cardID: Integer {Read only}
+    - priority: int {Read only}
+
+    + CardDTO(cardID: Integer, priority: int)
+    + equals(o: Object): boolean
+}
+class Robot{
+    - id: int
+    - currentPosition: Position
+    - damageToken: int
+    - direction: CardinalDirection
+    - lastCheckPoint: int
+    - lastBackupCopyPosition: Position
+    - lifeToken: int
+    - powerDown: boolean
+    - optionCard: int
+    - deadForTheRound: boolean
+    - deadForever: boolean
+
+    + Robot(id: int, currentPosition: Position, direction: CardinalDirection)
+    + move(directionToMove: CardinalDirection)
+    + move(targetCoords: Position)
+    + isAlive(): boolean
+    + fixDamageToken()
+}
+class Position{
+    + x: int
+    + y: int
+
+    + Position(x: int, y: int)
+    + {static} translate(p: Position, d: CardinalDirection): Position
+    + equals(o: Object): boolean
+    + hashCode(): int
+}
+class AbstractTileBehaviour{
+    # robotStates: List<Robot>
+    # board: Block[][]
+    # blockPos: Position
+
+    + AbstractTileBehaviour(robotStates: List<Robot>, board: Block[][], blockPos: Position)
+    + onRobotEntered(indexOfMovedRobot: int): List<MoveIntent>
+    + onExpressConveyorStage(programStep: int): List<MoveIntent>
+    + onConveyorStage(programStep: int): List<MoveIntent>
+    + onLaserStage(programStep: int): List<MoveIntent>
+    + onPusherStage(programStep: int): List<MoveIntent>
+    + onPressorStage(programStep: int): List<MoveIntent>
+    + getImage(): List<int[]>
+    + getObstruction(dir: CardinalDirection): boolean
+    + onCardEnding(programStep: int): List<MoveIntent>
+    + onRotatorStage(programStep: int): List<MoveIntent>
+    + onCheckPointStage(programStep: int): List<MoveIntent>
+}
+class Block{
+    - behaviourList: AbstractTileBehaviour[]
+    - imgPath: String
+    - pos: Position
+    - isRobotHere: boolean
+    - robot: Robot
+
+    + Block(behaviourList: AbstractTileBehaviour[], imgPath: String, pos: Position)
+    + Block(behaviourList: AbstractTileBehaviour, imgPath: String, pos: Position)
+    + Block(imgPath: String, pos: Position)
+    + getObstruction(dir CardinalDirection): boolean
+    + OnConveyorStage(programStep: int): List<MoveIntent>
+    + onExpressConveyorStage(programStep: int): List<MoveIntent>
+    + onPusherStage(programStep: int): List<MoveIntent>
+    + onLaserStage(programStep: int): List<MoveIntent>
+    + onPressorStage(programStep: int): List<MoveIntent>
+    + GetBehaviour(type: Class<T>): <T extends AbstractTileBehaviour> T
+    + OnRotatorStage(programStep: int): List<MoveIntent>
+    + OnCheckPointStage(programStep: int): List<MoveIntent>
+    + setRobotsInfo(robots: List<Robot>)
+    + getImages(): int[][]
+    + clone(): Block
+}
+enum CardinalDirection{
+    North
+    East
+    South
+    West
+}
+class RobotDTO{
+    - robotID: int
+    - position: Position
+    - direction: CardinalDirection
+    - lifeToken: int
+    - damageToken: int
+    - lastCheckpoint: int
+    - alive: boolean
+    - powerDown: boolean
+    - deadForever: boolean
+
+    + RobotDTO(robotID: int, position: Position, direction: CardinalDirection)
+    + equals(o: Object): boolean
+    + hashCode(): int
+
+}
+class CardDTO{
+    - cardID: Integer {Read only}
+    - priority: int {Read only}
+
+    + CardDTO(cardID: Integer, priority: int)
+    + equals(o: Object): boolean
+}
+class PlayerDTO{
+    - robotDTO: RobotDTO
+    - currentCards: List<CardDTO>
+    - user: UserDTO {Read only}
+
+    + PlayerDTO(robotDTO: RobotDTO, userDTO: UserDTO)
+    + equals(o: Object): boolean
+    + hashCode(): int
+}
+class GameMovement{
+    - moveMessage: String
+    - robotsPositionsInOneMove: List<PlayerDTO> {Read only}
+    - oldState: GameMovement
+    - someoneMoved: boolean
+    - isCardMove: boolean
+
+    + GameMovement(robotsPositionsInOneMove:  List<PlayerDTO>, moveType: String, oldState: GameMovement, robotThatPlayedTheCard: String)
+    + createMessageOfRobotsThatMoved()
+
+}
+enum Direction{
+Right
+Left
+}
+class CardBehaviour{
+    - moves: int
+    - directionCard: Direction
+    - uTurn: boolean
+
+    + move(robot: Robot, moves: int)
+    + turn(robot: Robot)
+    + uTurn(robot: Robot)
+    + execute(robot: Robot)
+}
+class Card{
+    - id: int {Read only}
+    - behaviour: CardBehaviour
+    - priority: int
+    - behaviourType: String
+
+    + Card(id: int, behaviour: CardBehaviour, priority: int)
+    + Card(id: int)
+    + Card(id: int, behaviourType: String, priority: int)
+    + executeBehaviour(robot: Robot)
+    + getDirectionCard(): Direction
+
+}
+class UserDTO{
+    - username: String {Read only}
+    - password: String {Read only}
+    - eMail: String {Read only}
+
+    + UserDTO(username: String, password: String, eMail: String)
+    + {static} create(user: User):UserDTO
+    + {static} createWithoutPassword(user: User): UserDTO
+    + compareTo(o: User): int
+    + equals(o: Object): boolean
+    + hashCode(): int
+}
+abstract class AbstractPlayer{
+    # robot: Robot
+    # receivedCards: Card[]
+    # chosenCards: Card[]
+    # userDTO: UserDTO
+    # numCardToPlay: int
+
+    + AbstractPlayer()
+    + receiveCards(cardsToReceive: Card[])
+    + chooseCardsOrder(chosenCards: Card[])
+}
+class Game {
+    - {static} LOG: Logger {Read only}
+    - lobbyID: Integer {Read only}
+    - board: Block[][]
+    - roundNumber: int
+    - startCheckpoint: Position {Read only}
+    - lastCheckpoint: int {Read only}
+    - dockingStartPosition: Position {Read only}
+    - robots: List<Robot> {Read only}
+    - nRobots: int {Read only}
+    - nRealPlayers: int {Read only}
+    - programStep: int {Read only}
+    - readyRegister: int {Read only}
+    - players: List<AbstractPlayer> {Read only}
+    - playedCards: Card[][] {Read only}
+    - mapName: String {Read only}
+    - checkpointCount: int {Read only}
+    - cardsIDs: int[]
+    - cardsIDsList: List<Integer>
+    - {static} cardsIdsOnlyTurn: Set<Integer> {Read only}
+    - cardIdCardMap: Map<Integer, Card>
+    - notDistributedCards: boolean
+    - fullMapName: String
+    - gameMovements: List<GameMovement>
+    - respawnRobots: List<PlayerDTO>
+__
+    + Game( lobbyID: Integer, users: Set<User>, mapName: String, numberBots: int ,checkpointCount: int, version: int)
+    - loadMapBuilder(version: int)
+    - updateBoardInAllBehaviours()
+    + distributeProgramCards(): boolean
+    + registerCardsFromBot(): boolean
+    + chooseFirstCardMoveBot(chosenCards: Card[]): Card[]
+    + registerCardsFromUser(loggedInUser: UserDTO, playerCards: List<CardDTO>): boolean
+    + setPowerDown(userDTO: UserDTO): boolean
+    + register(): boolean
+    + revealProgramCards(): Map<UserDTO, CardDTO>
+    + increaseProgramStep()
+    + roundIsOver(): UserDTO
+    - setRobotsInfoInBehaviours(board: Block[][], robots: List<Robot>)
+    + areAllRobotsAreDead(): boolean
+    + calcAllGameRound()
+    + getPlayerDTOSForAllPlayers(): List<PlayerDTO>
+    - calcGameRoundBoardNew(): List<List<PlayerDTO>>
+    - calcGameRoundCardsNew(): List<List<PlayerDTO>>
+    - onExpressConveyorStage(): List<MoveIntent>
+    - onConveyorStage(): List<MoveIntent>
+    - onPusherStage() : List<MoveIntent>
+    - onRotatorStage(): List<MoveIntent>
+    - onPresserStage(): List<MoveIntent>
+    - OnLaserStage(): List<MoveIntent>
+    - OnCheckPointStage(): List<MoveIntent>
+    - resolveCard(card: Card, robotID, int): List<List<MoveIntent>>
+    - turn(robot: Robot, directionCard: Direction)
+    - uTurn(robot: Robot)
+    - executeMoveIntents(move: List<MoveIntent>)
+    - executeBehavioursBetweenDestination(robotID: int)
+    - executeBehavioursInEndDestination()
+    + resolveMoveIntentConflicts(movesIn: List<MoveIntent>): List<MoveIntent>
+    - addPushMoves(moveList: ArrayList<MoveResult>, somethingChanged: boolean): boolean
+    - {static} removeSameDestinationConflicts(moveList: ArrayList<MoveResult>, somethingChanged: boolean): boolean
+    - {static} removeWallIntersections(moveList: ArrayList<MoveResult>, somethingChanged: boolean, board: Block[][]): boolean
+    - {static} removeHeadOnCollisions(moveList: ArrayList<MoveResult>, somethingChanged: boolean): boolean
+    - {static} checkForObstruction(currentTile: Position, destinationTile: Position, moveDir: CardinalDirection, board: Block[][]): boolean
+    - {static} removeMoveResultAndParents(move: MoveResult, move: List<MoveIntent>)
+    - checkRobotFellFromBoard()
+
+    --private class MoveResult extends MoveIntent--
+    + parentMove: MoveResult {Read only}
+__
+    + MoveResult(intent: MoveIntent)
+    + MoveResult(parentMove: MoveResult, robotID: int)
+    + getTargetPosition(): Position
+    + getOriginPosition(): Position
+--
+}
+
+@enduml
