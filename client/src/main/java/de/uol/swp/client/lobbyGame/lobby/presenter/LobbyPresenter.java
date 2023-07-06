@@ -41,7 +41,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Manages the Lobby window
@@ -153,7 +152,6 @@ public class LobbyPresenter extends AbstractPresenter {
         textFieldPassword.setText(password);
         textFieldOwner.setText(owner.getUsername());
 
-
         // initialize user list
         List<User> list1 = new ArrayList<>(lobby.getUsers());
         updateUsersList(list1);
@@ -168,8 +166,8 @@ public class LobbyPresenter extends AbstractPresenter {
     /**
      * method to set visibility of buttons
      *
-     * If the loggedInUser is equal to the owner, then it enables certain buttons and options.
-     * If not those options are disabled.
+     * <p>If the loggedInUser is equal to the owner, then it enables certain buttons and options. If
+     * not those options are disabled.
      *
      * @param lobby The lobby file containing all the information of the lobby
      * @author Moritz Scheer and Tommy Dang and Maxim Erden and Mathis Eilers
@@ -195,45 +193,46 @@ public class LobbyPresenter extends AbstractPresenter {
 
             ChangeListener<? super Number> cl =
                     (obsV, oldV, newV) -> {
-                        try{
-                        int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
-                        Map m = new Map(mapIndex);
+                        try {
+                            int mapIndex = mapList.getItems().get((Integer) newV).getIndex();
+                            Map m = new Map(mapIndex);
 
-                        updateMapDisplay(m);
-                        System.out.println(m.getName());
+                            updateMapDisplay(m);
+                            System.out.println(m.getName());
 
-                        if (this.multiplayer) {
-                            User u = this.loggedInUser;
-                            UserDTO dto =
-                                    new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
-                            eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+                            if (this.multiplayer) {
+                                User u = this.loggedInUser;
+                                UserDTO dto =
+                                        new UserDTO(u.getUsername(), u.getPassword(), u.getEMail());
+                                eventBus.post(new MapChangeRequest(this.lobbyID, dto, m));
+                            }
+                            switch (m.getName()) {
+                                case "Map 1":
+                                    mapName = "MapOne";
+                                    break;
+                                case "Map 2":
+                                    mapName = "MapTwo";
+                                    break;
+                                case "Map 3":
+                                    mapName = "MapThree";
+                                    break;
+                                case "TEST_LaserMap":
+                                    mapName = "TestLaserMap";
+                                    break;
+                                case "TEST_PusherMap":
+                                    mapName = "TestPusherMap";
+                                    break;
+                                case "TEST_ConveyorMap":
+                                    mapName = "TestConveyorMap";
+                                    break;
+                                case "TEST_WallMap":
+                                    mapName = "TestWallMap";
+                                    break;
+                                default:
+                            }
+                            lobby.setMapName(mapName);
+                        } catch (IndexOutOfBoundsException e) {
                         }
-                        switch (m.getName()) {
-                            case "Map 1":
-                                mapName = "MapOne";
-                                break;
-                            case "Map 2":
-                                mapName = "MapTwo";
-                                break;
-                            case "Map 3":
-                                mapName = "MapThree";
-                                break;
-                            case "TEST_LaserMap":
-                                mapName = "TestLaserMap";
-                                break;
-                            case "TEST_PusherMap":
-                                mapName = "TestPusherMap";
-                                break;
-                            case "TEST_ConveyorMap":
-                                mapName = "TestConveyorMap";
-                                break;
-                            case "TEST_WallMap":
-                                mapName = "TestWallMap";
-                                break;
-                            default:
-                        }
-                        lobby.setMapName(mapName);
-                        } catch (IndexOutOfBoundsException e) {}
                     };
             this.mapList.getSelectionModel().selectedIndexProperty().addListener(cl);
         }
@@ -549,7 +548,8 @@ public class LobbyPresenter extends AbstractPresenter {
                     mapThumb.setImage(new Image(m.getImageResource().toString()));
                     mapThumb.fitWidthProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
                     mapThumb.fitHeightProperty().bind(mapThumbWrapper.widthProperty().subtract(10));
-                    mapList.getSelectionModel().select(m.getIndex());;
+                    mapList.getSelectionModel().select(m.getIndex());
+                    ;
                 });
     }
 

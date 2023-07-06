@@ -10,9 +10,9 @@ import de.uol.swp.common.exception.LobbyDoesNotExistException;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.message.*;
+import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
-import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import de.uol.swp.common.lobby.dto.*;
 import de.uol.swp.common.lobby.message.AbstractLobbyMessage;
 import de.uol.swp.common.user.User;
@@ -92,7 +92,8 @@ public class GameService extends AbstractService {
                             users);
             lobby.get().setLobbyStarted(true);
             lobbyService.sendToAllInLobby(
-                    msg.getLobbyID(), new StartGameLobbyMessage(msg.getLobbyID(), lobby.get(), game));
+                    msg.getLobbyID(),
+                    new StartGameLobbyMessage(msg.getLobbyID(), lobby.get(), game));
             post(new StartGameMessage(msg.getLobbyID()));
         } else {
             throw new LobbyDoesNotExistException(

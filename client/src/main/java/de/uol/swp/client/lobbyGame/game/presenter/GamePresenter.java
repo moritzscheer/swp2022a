@@ -1413,6 +1413,25 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
+     * update direction of robot images, in case many robots are in checkpoint over each other
+     *
+     * @author Maria Anrade
+     * @since 2023-07-07
+     */
+    public void updateRobotDirection(PlayerDTO playerDTO) {
+        if (Objects.equals(playerDTO.getUser(), loggedInUser)) {
+            CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
+            ImageView imageView = (ImageView) player1Robot.getChildren().get(0);
+            imageView.setRotate((newDir.ordinal()) * 90);
+        } else {
+            int pos = userToPositionInStackPanes.get(playerDTO.getUser());
+            ImageView imageView = (ImageView) playerRobot.get(pos).getChildren().get(0);
+            CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
+            imageView.setRotate((newDir.ordinal()) * 90);
+        }
+    }
+
+    /**
      * method to update all board elements
      *
      * @author Maria Anrade, Jans Bruns
@@ -1425,6 +1444,7 @@ public class GamePresenter extends AbstractPresenter {
             setPlayerHP(playerDTO);
             setRoboterHP(playerDTO);
             setPlayerCheckpoint(playerDTO);
+            updateRobotDirection(playerDTO);
 
             if (playerDTO.getRobotDTO().isAlive()) {
                 LOG.debug("user {}", playerDTO.getUser().getUsername());
@@ -1527,6 +1547,7 @@ public class GamePresenter extends AbstractPresenter {
             this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
         }
     }
+
     /**
      * Remove last ImageView from the board when robot moves
      *

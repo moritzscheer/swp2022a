@@ -355,5 +355,4 @@ class LobbyDTOTest {
 
         assertEquals(true, lobby.isLobbyStarted());
     }
-
 }

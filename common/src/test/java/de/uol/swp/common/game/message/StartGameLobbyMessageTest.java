@@ -8,7 +8,6 @@ import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
-import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
@@ -35,7 +34,8 @@ public class StartGameLobbyMessageTest {
 
     private final BlockDTO[][] blockDTOS = new BlockDTO[12][12];
     private final UUID chatID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
+    private final LobbyDTO lobbyDTO =
+            new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
 
     @Test
     public void testGetLobbyID() {
@@ -43,7 +43,8 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
 
-        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         Integer result = message.getLobbyID();
 
@@ -55,7 +56,8 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         LobbyDTO result = message.getLobby();
 
@@ -67,7 +69,8 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         GameDTO result = message.getGame();
 
@@ -104,12 +107,14 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message1 = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message1 =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         playerDTOList2.add(playerDTO);
         playerDTOList2.add(playerDTO2);
         GameDTO game2 = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message2 = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game2);
+        StartGameLobbyMessage message2 =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game2);
 
         assertEquals(message1, message2);
     }
@@ -119,7 +124,8 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         assertEquals(message, message);
     }
@@ -129,7 +135,8 @@ public class StartGameLobbyMessageTest {
         playerDTOList.add(playerDTO);
         playerDTOList.add(playerDTO2);
         GameDTO game = new GameDTO(playerDTOList, blockDTOS);
-        StartGameLobbyMessage message = new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
+        StartGameLobbyMessage message =
+                new StartGameLobbyMessage(lobbyDTO.getLobbyID(), lobbyDTO, game);
 
         Assertions.assertNotEquals(message, null);
     }

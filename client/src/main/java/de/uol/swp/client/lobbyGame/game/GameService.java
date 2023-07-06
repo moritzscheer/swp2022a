@@ -13,10 +13,10 @@ import de.uol.swp.client.lobbyGame.game.events.SubmitCardsEvent;
 import de.uol.swp.common.chat.message.TextHistoryMessage;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.message.*;
+import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import de.uol.swp.common.game.request.*;
 import de.uol.swp.common.game.response.ProgramCardDataResponse;
 
-import de.uol.swp.common.game.message.StartGameLobbyMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

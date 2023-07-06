@@ -209,8 +209,7 @@ public final class MapBuilder {
             String mapName) {
         LOG.warn("In getMapStringToCheckpointNumberAndFirstPosition");
         LOG.warn("gettting info for " + mapName);
-        LOG.warn(
-                "---------> " + mapStringToCheckpointNumberAndFirstPosition.get(mapName));
+        LOG.warn("---------> " + mapStringToCheckpointNumberAndFirstPosition.get(mapName));
         return mapStringToCheckpointNumberAndFirstPosition.get(mapName);
     }
 

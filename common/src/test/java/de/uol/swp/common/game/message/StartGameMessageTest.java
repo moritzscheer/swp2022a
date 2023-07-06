@@ -1,21 +1,21 @@
 package de.uol.swp.common.game.message;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.BlockDTO;
-import de.uol.swp.common.game.dto.GameDTO;
 import de.uol.swp.common.game.dto.PlayerDTO;
 import de.uol.swp.common.game.dto.RobotDTO;
 import de.uol.swp.common.game.enums.CardinalDirection;
 import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StartGameMessageTest {
 
@@ -33,7 +33,8 @@ public class StartGameMessageTest {
 
     private final BlockDTO[][] blockDTOS = new BlockDTO[12][12];
     private final UUID chatID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
+    private final LobbyDTO lobbyDTO =
+            new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
 
     @Test
     public void testGetLobbyID() {

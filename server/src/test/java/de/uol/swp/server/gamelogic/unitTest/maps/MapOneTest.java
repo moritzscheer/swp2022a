@@ -1,17 +1,18 @@
 package de.uol.swp.server.gamelogic.unitTest.maps;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapOne;
 import de.uol.swp.server.gamelogic.tiles.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test Map One
@@ -88,7 +89,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 10, 2, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 11, 2, WallBehaviour.class);
 
-
         // Row 3
         assertBlockBehaviors(board, 0, 3, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 1, 3, ConveyorBeltBehaviour.class);
@@ -101,7 +101,6 @@ public class MapOneTest {
         assertNoBehaviors(board, 8, 3);
         assertBlockBehaviors(board, 10, 3, ConveyorBeltBehaviour.class);
         assertNoBehaviors(board, 11, 3);
-
 
         // Row 4
         assertBlockBehaviors(board, 0, 4, WallBehaviour.class, LaserBehaviour.class);
@@ -116,7 +115,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 9, 4, LaserBehaviour.class);
         assertBlockBehaviors(board, 10, 4, LaserBehaviour.class);
         assertBlockBehaviors(board, 11, 4, WallBehaviour.class, LaserBehaviour.class);
-
 
         // Row 5
         assertNoBehaviors(board, 0, 5);
@@ -201,7 +199,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 10, 10, ConveyorBeltBehaviour.class);
         assertNoBehaviors(board, 11, 10);
 
-
         // Row 11
         assertNoBehaviors(board, 0, 11);
         assertBlockBehaviors(board, 1, 11, ConveyorBeltBehaviour.class);
@@ -271,7 +268,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 10, 2, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 11, 2, WallBehaviour.class);
 
-
         // Row 3
         assertBlockBehaviors(board, 0, 3, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 1, 3, ConveyorBeltBehaviour.class);
@@ -284,7 +280,6 @@ public class MapOneTest {
         assertNoBehaviors(board, 8, 3);
         assertBlockBehaviors(board, 10, 3, ConveyorBeltBehaviour.class);
         assertNoBehaviors(board, 11, 3);
-
 
         // Row 4
         assertBlockBehaviors(board, 0, 4, WallBehaviour.class, LaserBehaviour.class);
@@ -299,7 +294,6 @@ public class MapOneTest {
         assertNoBehaviors(board, 9, 4);
         assertNoBehaviors(board, 10, 4);
         assertBlockBehaviors(board, 11, 4, WallBehaviour.class, LaserBehaviour.class);
-
 
         // Row 5
         assertNoBehaviors(board, 0, 5);
@@ -384,7 +378,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 10, 10, ConveyorBeltBehaviour.class);
         assertNoBehaviors(board, 11, 10);
 
-
         // Row 11
         assertNoBehaviors(board, 0, 11);
         assertBlockBehaviors(board, 1, 11, ConveyorBeltBehaviour.class);
@@ -399,11 +392,16 @@ public class MapOneTest {
         assertBlockBehaviors(board, 11, 11, RepairBehaviour.class);
     }
 
-    private void assertBlockBehaviors(Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
+    private void assertBlockBehaviors(
+            Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
         assertEquals(expectedBehaviors.length, board[x][y].getBehaviourList().length);
         for (Class<?> behavior : expectedBehaviors) {
-            assertTrue(Arrays.stream(board[x][y].getBehaviourList())
-                    .anyMatch(beh -> behavior.getSimpleName().equals(beh.getClass().getSimpleName())));
+            assertTrue(
+                    Arrays.stream(board[x][y].getBehaviourList())
+                            .anyMatch(
+                                    beh ->
+                                            behavior.getSimpleName()
+                                                    .equals(beh.getClass().getSimpleName())));
         }
     }
 

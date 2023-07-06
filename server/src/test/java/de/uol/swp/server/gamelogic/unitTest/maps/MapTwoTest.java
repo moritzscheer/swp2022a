@@ -1,18 +1,19 @@
 package de.uol.swp.server.gamelogic.unitTest.maps;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapTwo;
 import de.uol.swp.server.gamelogic.tiles.*;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test Map Two
@@ -152,7 +153,8 @@ public class MapTwoTest {
         assertBlockBehaviors(board, 4, 7, WallBehaviour.class, WallBehaviour.class);
         assertBlockBehaviors(board, 5, 7, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 6, 7, ConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 7, 7, WallBehaviour.class, WallBehaviour.class, RepairBehaviour.class);
+        assertBlockBehaviors(
+                board, 7, 7, WallBehaviour.class, WallBehaviour.class, RepairBehaviour.class);
         assertNoBehaviors(board, 8, 7);
         assertNoBehaviors(board, 9, 7);
         assertNoBehaviors(board, 10, 7);
@@ -213,7 +215,6 @@ public class MapTwoTest {
         assertBlockBehaviors(board, 9, 11, WallBehaviour.class);
         assertBlockBehaviors(board, 10, 11, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 11, 11, RepairBehaviour.class);
-
     }
 
     /**
@@ -334,7 +335,8 @@ public class MapTwoTest {
         assertBlockBehaviors(board, 4, 7, WallBehaviour.class, WallBehaviour.class);
         assertBlockBehaviors(board, 5, 7, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 6, 7, ConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 7, 7, WallBehaviour.class, WallBehaviour.class, RepairBehaviour.class);
+        assertBlockBehaviors(
+                board, 7, 7, WallBehaviour.class, WallBehaviour.class, RepairBehaviour.class);
         assertNoBehaviors(board, 8, 7);
         assertNoBehaviors(board, 9, 7);
         assertNoBehaviors(board, 10, 7);
@@ -395,14 +397,18 @@ public class MapTwoTest {
         assertBlockBehaviors(board, 9, 11, WallBehaviour.class);
         assertBlockBehaviors(board, 10, 11, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 11, 11, RepairBehaviour.class);
-
     }
 
-    private void assertBlockBehaviors(Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
+    private void assertBlockBehaviors(
+            Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
         assertEquals(expectedBehaviors.length, board[x][y].getBehaviourList().length);
         for (Class<?> behavior : expectedBehaviors) {
-            assertTrue(Arrays.stream(board[x][y].getBehaviourList())
-                    .anyMatch(beh -> behavior.getSimpleName().equals(beh.getClass().getSimpleName())));
+            assertTrue(
+                    Arrays.stream(board[x][y].getBehaviourList())
+                            .anyMatch(
+                                    beh ->
+                                            behavior.getSimpleName()
+                                                    .equals(beh.getClass().getSimpleName())));
         }
     }
 

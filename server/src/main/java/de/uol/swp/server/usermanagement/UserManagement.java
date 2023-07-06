@@ -55,7 +55,6 @@ public class UserManagement extends AbstractUserManagement {
     /**
      * Helper method to see if user is already logged in
      *
-     *
      * @param username as String instead as User
      * @return boolean if user is logged in or not
      * @author Tommy Dang
@@ -64,7 +63,6 @@ public class UserManagement extends AbstractUserManagement {
     public boolean isLoggedIn(String username) {
         return loggedInUsers.containsKey(username);
     }
-
 
     @Override
     public User createUser(User userToCreate) {
