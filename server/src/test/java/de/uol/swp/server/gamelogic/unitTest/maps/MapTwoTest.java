@@ -1,15 +1,16 @@
 package de.uol.swp.server.gamelogic.unitTest.maps;
 
+import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Block;
-import de.uol.swp.server.gamelogic.map.MapBuilder;
+import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapTwo;
 import de.uol.swp.server.gamelogic.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -23,15 +24,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("MapTwoTest")
 public class MapTwoTest {
 
-    public MapTwoTest() throws IOException {
-        MapBuilder.main(null);
-    }
-
     private Block[][] board;
 
     @BeforeEach
     public void setUp() {
-        board = MapBuilder.getMap("server/src/main/resources/maps/MapTwoV1C2.map");
+        List<User> users = new ArrayList<User>();
+        users.add(new UserDTO("test1", "test1", ""));
+        Set<User> usersSet = new HashSet<>(users);
+
+        Game game = new Game(1, usersSet, "MapTwo", 0, 2, 1);
+
+        board = game.getBoard();
     }
 
     /**

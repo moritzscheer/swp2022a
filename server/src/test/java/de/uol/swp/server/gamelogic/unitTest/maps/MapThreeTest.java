@@ -1,6 +1,9 @@
 package de.uol.swp.server.gamelogic.unitTest.maps;
 
+import de.uol.swp.common.user.User;
+import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Block;
+import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapBuilder;
 import de.uol.swp.server.gamelogic.map.MapThree;
 import de.uol.swp.server.gamelogic.tiles.*;
@@ -8,7 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -29,7 +32,13 @@ public class MapThreeTest {
 
     @BeforeEach
     public void setUp() {
-        board = MapBuilder.getMap("server/src/main/resources/maps/MapThreeV1C2.map");
+        List<User> users = new ArrayList<User>();
+        users.add(new UserDTO("test1", "test1", ""));
+        Set<User> usersSet = new HashSet<>(users);
+
+        Game game = new Game(1, usersSet, "MapThree", 0, 2, 1);
+
+        board = game.getBoard();
     }
 
     /**
