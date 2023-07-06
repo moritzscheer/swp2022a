@@ -6,7 +6,6 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapTwo;
 import de.uol.swp.server.gamelogic.tiles.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -23,18 +22,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DisplayName("MapTwoTest")
 public class MapTwoTest {
-
+    private Game game;
     private Block[][] board;
 
-    @BeforeEach
-    public void setUp() {
+    public Block[][] setGame() {
         List<User> users = new ArrayList<User>();
         users.add(new UserDTO("test1", "test1", ""));
         Set<User> usersSet = new HashSet<>(users);
 
-        Game game = new Game(1, usersSet, "MapTwo", 0, 2, 1);
-
-        board = game.getBoard();
+        game = new Game(1, usersSet, "MapTwo", 0, 2, 1);
+        return game.getBoard();
     }
 
     /**
@@ -45,6 +42,8 @@ public class MapTwoTest {
      */
     @Test
     public void testMapTwoBlocks() {
+        board = setGame();
+
         // Assert the dimensions of the board
         assertEquals(12, board.length);
         assertEquals(12, board[0].length);

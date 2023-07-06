@@ -11,12 +11,20 @@ import java.util.List;
 
 /** @author Ole Zimmermann */
 public class Block implements Serializable, Cloneable {
-
+    private static final long serialVersionUID = -7564209125132005278L;
     private AbstractTileBehaviour[] behaviourList;
     private String imgPath;
     private Position pos;
     private boolean isRobotHere;
     private Robot robot;
+
+    /**
+     * Default constructor
+     *
+     * @implNote this constructor is needed for serialization
+     * @since 2019-10-08
+     */
+    public Block() {}
 
     /**
      * Constructor
@@ -55,7 +63,6 @@ public class Block implements Serializable, Cloneable {
      * @since 2023-04-25
      */
     public Block(String imgPath, Position pos) {
-
         this.behaviourList = null;
         this.imgPath = imgPath;
         this.pos = pos;

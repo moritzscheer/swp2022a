@@ -15,6 +15,7 @@ import java.util.List;
  * @since 2023-03-05
  */
 public abstract class AbstractTileBehaviour implements Serializable {
+    private static final long serialVersionUID = 770153656897682426L;
 
     protected List<Robot> robotStates;
     protected Block[][] board;

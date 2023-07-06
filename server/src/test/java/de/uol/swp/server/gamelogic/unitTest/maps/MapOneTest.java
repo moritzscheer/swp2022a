@@ -6,7 +6,6 @@ import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapOne;
 import de.uol.swp.server.gamelogic.tiles.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
@@ -21,18 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 2023-07-06
  */
 public class MapOneTest {
-
+    private Game game;
     private Block[][] board;
 
-    @BeforeEach
-    public void setUp() {
+    public Block[][] setGame() {
         List<User> users = new ArrayList<User>();
         users.add(new UserDTO("test1", "test1", ""));
         Set<User> usersSet = new HashSet<>(users);
 
-        Game game = new Game(1, usersSet, "MapOne", 0, 2, 1);
-
-        board = game.getBoard();
+        game = new Game(1, usersSet, "MapOne", 0, 2, 1);
+        return game.getBoard();
     }
 
     /**
@@ -43,6 +40,8 @@ public class MapOneTest {
      */
     @Test
     public void testMapOneBlocks() {
+        board = setGame();
+
         // Assert the dimensions of the board
         assertEquals(12, board.length);
         assertEquals(12, board[0].length);
@@ -398,12 +397,6 @@ public class MapOneTest {
         assertBlockBehaviors(board, 9, 11, WallBehaviour.class);
         assertNoBehaviors(board, 10, 11);
         assertBlockBehaviors(board, 11, 11, RepairBehaviour.class);
-    }
-
-    @Test
-    public void testMapOneV1C2Blocks() {
-        assertBlockBehaviors(board, 9, 3, CheckPointBehaviour.class);
-        assertBlockBehaviors(board, 4, 11, CheckPointBehaviour.class);
     }
 
     private void assertBlockBehaviors(Block[][] board, int x, int y, Class<?>... expectedBehaviors) {

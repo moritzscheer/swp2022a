@@ -1345,7 +1345,7 @@ public class Game {
      * @since 2023-05-16
      */
     public Block[][] getBoard() {
-        return board;
+        return this.board;
     }
     /**
      * Setter for Board Array
