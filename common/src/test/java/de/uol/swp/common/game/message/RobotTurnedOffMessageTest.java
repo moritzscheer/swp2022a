@@ -14,7 +14,7 @@ public class RobotTurnedOffMessageTest {
     private final UUID uuid = UUID.randomUUID();
     private final UserDTO turnedOffUser = new UserDTO("testUser", "pw", "ml");
     private final LobbyDTO lobbyDTO =
-            new LobbyDTO(123, "testLobby", turnedOffUser, "pw", true, uuid);
+            new LobbyDTO(123, "testLobby", turnedOffUser, "pw", true, uuid, false);
 
     /**
      * Tests the constructor and the getter

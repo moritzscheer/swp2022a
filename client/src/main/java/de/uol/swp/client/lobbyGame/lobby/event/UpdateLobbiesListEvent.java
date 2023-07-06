@@ -8,4 +8,3 @@ package de.uol.swp.client.lobbyGame.lobby.event;
  * @since 2023-05-16
  */
 public class UpdateLobbiesListEvent {}
-

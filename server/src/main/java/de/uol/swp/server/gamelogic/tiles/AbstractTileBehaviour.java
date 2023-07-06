@@ -146,4 +146,12 @@ public abstract class AbstractTileBehaviour implements Serializable {
     public void setRobotStates(List<Robot> robots) {
         robotStates = robots;
     }
+
+    /**
+     * @author Maria
+     * @since 2023-07-03
+     */
+    public void setBoard(Block[][] newBoard) {
+        this.board = newBoard;
+    }
 }

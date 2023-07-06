@@ -194,7 +194,7 @@ public class LobbyService extends AbstractService {
                                     lobby.get().getLobbyID(),
                                     leaveLobbyRequest.getName(),
                                     leaveLobbyRequest.getUser(),
-                                    (UserDTO) lobby.get().getOwner()));
+                                    lobby.get()));
                 } else {
                     lobbyManagement.dropLobby(leaveLobbyRequest.getLobbyID());
                 }
@@ -281,7 +281,6 @@ public class LobbyService extends AbstractService {
      * @see de.uol.swp.common.lobby.request.SetPlayerReadyInLobbyRequest
      * @see de.uol.swp.common.lobby.message.PlayerReadyInLobbyMessage
      * @since 2022-11-30
-     *
      */
     @Subscribe
     public void onSetPlayerReadyInLobbyRequest(SetPlayerReadyInLobbyRequest request)

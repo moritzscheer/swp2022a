@@ -126,9 +126,11 @@ public class Block implements Serializable, Cloneable {
     public List<MoveIntent> onLaserStage(int programStep) {
         List<MoveIntent> moves = new ArrayList<>();
         for (AbstractTileBehaviour behaviour : this.behaviourList) {
-            List<MoveIntent> thisMoves = behaviour.onLaserStage(programStep);
-            if (thisMoves != null) {
-                moves.addAll(thisMoves);
+            if (behaviour instanceof LaserBehaviour && ((LaserBehaviour) behaviour).getStart()) {
+                List<MoveIntent> thisMoves = behaviour.onLaserStage(programStep);
+                if (thisMoves != null) {
+                    moves.addAll(thisMoves);
+                }
             }
         }
         return moves;

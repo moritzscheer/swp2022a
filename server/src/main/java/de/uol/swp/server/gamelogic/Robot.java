@@ -22,7 +22,6 @@ public class Robot implements Serializable {
     private int lifeToken;
     private boolean powerDown;
 
-
     private int optionCard;
     private boolean deadForTheRound;
     private boolean deadForever;
@@ -60,8 +59,7 @@ public class Robot implements Serializable {
      * @author Maria Eduarda Costa Leite Andrade
      * @since 2023-06-12
      */
-    public void move(Position targetCoords) {
-    }
+    public void move(Position targetCoords) {}
 
     /**
      * @author Maria Eduarda Costa Leite Andrade

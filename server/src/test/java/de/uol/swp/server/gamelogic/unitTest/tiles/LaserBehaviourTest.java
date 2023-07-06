@@ -27,8 +27,8 @@ import java.util.List;
  */
 public class LaserBehaviourTest {
 
-    private static final Position pos1 = new Position(1, 1);
-    private static final Position pos2 = new Position(1, 2);
+    private static final Position pos1 = new Position(0, 0);
+    private static final Position pos2 = new Position(0, 1);
     private static final Position pos3 = new Position(2, 3);
     private static final Robot[] robots = new Robot[3];
     private static final AbstractTileBehaviour[] behaviours1 = new AbstractTileBehaviour[1];

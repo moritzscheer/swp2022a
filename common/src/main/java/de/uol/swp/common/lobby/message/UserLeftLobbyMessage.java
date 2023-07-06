@@ -1,5 +1,6 @@
 package de.uol.swp.common.lobby.message;
 
+import de.uol.swp.common.lobby.dto.LobbyDTO;
 import de.uol.swp.common.user.UserDTO;
 
 /**
@@ -12,40 +13,32 @@ import de.uol.swp.common.user.UserDTO;
  */
 public class UserLeftLobbyMessage extends AbstractLobbyMessage {
 
-    private UserDTO newOwner;
+    private LobbyDTO lobby;
     private Integer lobbyID;
-
-    /**
-     * Default constructor
-     *
-     * @implNote this constructor is needed for serialization
-     * @since 2019-10-08
-     */
-    public UserLeftLobbyMessage() {}
 
     /**
      * Constructor
      *
      * @param lobbyName name of the lobby
      * @param user user who left the lobby
-     * @param newOwner new lobby owner
+     * @param lobby LobbyDTO Object containing all the information of the lobby
      * @since 2019-10-08
      */
-    public UserLeftLobbyMessage(Integer lobbyID, String lobbyName, UserDTO user, UserDTO newOwner) {
+    public UserLeftLobbyMessage(Integer lobbyID, String lobbyName, UserDTO user, LobbyDTO lobby) {
         super(lobbyName, user);
-        this.newOwner = newOwner;
+        this.lobby = lobby;
         this.lobbyID = lobbyID;
     }
 
     /**
-     * getter for the new Lobby owner
+     * Getter for the lobbyDTO variable
      *
-     * @return UserDTO containing the user information
+     * @return LobbyDTO Object containing all the information of the lobby
      * @author Moritz Scheer
-     * @since 2022-12-18
+     * @since 2023-04-07
      */
-    public UserDTO getNewOwner() {
-        return newOwner;
+    public LobbyDTO getLobby() {
+        return lobby;
     }
 
     /**

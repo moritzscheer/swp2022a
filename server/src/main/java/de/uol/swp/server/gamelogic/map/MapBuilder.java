@@ -37,7 +37,7 @@ public final class MapBuilder {
         // define all three positions for each version
         // Map1
         Position[] versionPositionsMap1 = {
-            new Position(4,11), new Position(4, 3), new Position(3, 5)
+            new Position(4, 11), new Position(4, 3), new Position(3, 5)
         };
         for (int v = 1; v <= 3; v++) {
             for (int c = 2; c <= 6; c++) {
@@ -220,7 +220,6 @@ public final class MapBuilder {
      * @author Ole Zimmermann
      * @see de.uol.swp.server.gamelogic.Block
      * @see java.io
-     *
      * @since 2023-06-18
      */
     public static void mapGen() throws IOException {
@@ -344,8 +343,7 @@ public final class MapBuilder {
                                     ((LaserBehaviour) map[x][y].getBehaviourList()[i])
                                             .getLaserDirection());
                         }
-                    }
-                    else if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
+                    } else if (map[x][y].getBehaviourList()[i] instanceof CheckPointBehaviour) {
                         checkpointFound++;
                     }
                 }

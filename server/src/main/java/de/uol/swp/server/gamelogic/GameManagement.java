@@ -133,7 +133,8 @@ public class GameManagement {
      * @since 2023-02-28
      */
     public List<CardDTO> getPlayerReceivedCards(int lobbyID, UserDTO user) {
-        return convertCardsToCardsDTO(games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
+        return convertCardsToCardsDTO(
+                games.get(lobbyID).getPlayerByUserDTO(user).getReceivedCards());
     }
 
     /**
@@ -217,6 +218,17 @@ public class GameManagement {
             for (GameMovement gameMovement : gameMovements) {
                 List<PlayerDTO> moves = gameMovement.getRobotsPositionsInOneMove();
 
+                for (PlayerDTO playerDTO : moves) {
+                    if (playerDTO.getRobotDTO().isDeadForever()
+                            && !game.getSendOnlyOneMessageDeadForever().contains(playerDTO)) {
+                        secondsToMessage.add(
+                                new Pair<>(
+                                        secondsToWait,
+                                        new RobotIsFinallyDead(lobbyID, playerDTO.getUser())));
+                        game.addSendOnlyOneMessageDeadForever(playerDTO);
+                    }
+                }
+
                 // just to speed up when there are no moves
                 if (gameMovement.isSomeoneMoved() || gameMovement.isCardMove()) secondsToWait += 1;
 
@@ -257,6 +269,9 @@ public class GameManagement {
      * @since 2023-06-05
      */
     private AbstractLobbyMessage isGameOver(int lobbyID, Game game) {
+        if (game.getWonTheGame() != null) {
+            return new GameOverMessage(lobbyID, game.getWonTheGame());
+        }
         for (AbstractPlayer player : game.getPlayers()) {
             if (player.getRobot().getLastCheckPoint() == game.getLastCheckPoint()) {
                 return new GameOverMessage(lobbyID, player.getUser());

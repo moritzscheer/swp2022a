@@ -69,7 +69,6 @@ public abstract class AbstractPlayer {
         return this.robot;
     }
 
-
     /**
      * @author Finn
      * @since 2023-06-05

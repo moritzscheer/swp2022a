@@ -32,6 +32,7 @@ public class LobbyDTO implements Lobby {
     private final Integer playerSlot = 8;
     private final UUID chatChannel;
     private String mapName;
+    private Boolean lobbyStarted;
 
     private Map currentMap;
 
@@ -43,6 +44,7 @@ public class LobbyDTO implements Lobby {
      * @param creator The user who created the lobby and therefore shall be the
      * @param password The password given to the lobby
      * @param multiplayer The gamemode given to the lobby
+     * @param lobbyStarted A Flag to indicate if a game has been started
      * @author Moritz Scheer
      * @since 2023-01-03
      */
@@ -52,7 +54,9 @@ public class LobbyDTO implements Lobby {
             User creator,
             String password,
             Boolean multiplayer,
-            UUID chatChannelUUID) {
+            UUID chatChannelUUID,
+            Boolean lobbyStarted
+    ) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -61,6 +65,7 @@ public class LobbyDTO implements Lobby {
         this.password = password;
         this.multiplayer = multiplayer;
         this.chatChannel = chatChannelUUID;
+        this.lobbyStarted = lobbyStarted;
     }
 
     public LobbyDTO() {
@@ -87,7 +92,7 @@ public class LobbyDTO implements Lobby {
         Lobby tmp = createWithoutUserPassword(lobby);
         if (tmp.getPassword() == null || tmp.getPassword().equals("")) {
             return new LobbyDTO(
-                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null);
+                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null, lobby.isLobbyStarted());
         } else {
             String passwordBlurred = "*".repeat(4);
             return new LobbyDTO(
@@ -96,7 +101,8 @@ public class LobbyDTO implements Lobby {
                     lobby.getOwner(),
                     passwordBlurred,
                     true,
-                    null);
+                    null,
+                    lobby.isLobbyStarted());
         }
     }
 
@@ -119,7 +125,8 @@ public class LobbyDTO implements Lobby {
                         lobby.getOwner().getWithoutPassword(),
                         lobby.getPassword(),
                         lobby.isMultiplayer(),
-                        null);
+                        null,
+                        lobby.isLobbyStarted());
         for (User users : lobby.getUsers()) {
             if (!users.equals(lobby.getOwner()))
                 tmp.joinUser(UserDTO.createWithoutPassword(users), lobby.getPassword());
@@ -338,5 +345,27 @@ public class LobbyDTO implements Lobby {
 
     public String getMapName() {
         return this.mapName;
+    }
+
+    /**
+     * Getter for the lobbyStarted attribute
+     *
+     * @return A boolean indicating if a game has started
+     * @author Moritz Scheer
+     * @since 2023-07-05
+     */
+    public Boolean isLobbyStarted() {
+        return lobbyStarted;
+    }
+
+    /**
+     * Getter for the lobbyStarted attribute
+     *
+     * @param lobbyStarted, a boolean indicating if a game has started
+     * @author Moritz Scheer
+     * @since 2023-07-05
+     */
+    public void setLobbyStarted(Boolean lobbyStarted) {
+        this.lobbyStarted = lobbyStarted;
     }
 }

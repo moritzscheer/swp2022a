@@ -253,6 +253,7 @@ public class GamePresenter extends AbstractPresenter {
     private TextChatChannel textChat;
     private TextChatChannel textHistory;
     private List<UserDTO> deadForeverUsers = new ArrayList<>();
+    private UserDTO userWonTheGame;
 
     @FXML private Button robotOffButton;
     private int x = 2;
@@ -277,10 +278,16 @@ public class GamePresenter extends AbstractPresenter {
      * @author Moritz Scheer, Tommy Dang, Jann Erik Bruns, Maxim Erden
      * @since 2023-03-23
      */
-    public void init(int lobbyID, LobbyDTO lobby, GameDTO game, UserDTO loggedInUser) {
+    public void init(
+            int lobbyID,
+            LobbyDTO lobby,
+            GameDTO game,
+            UserDTO loggedInUser,
+            TextChatChannel lobbyChat) {
         this.lobbyID = lobbyID;
         this.lobby = lobby;
-        this.textChat = new TextChatChannel(lobby.getTextChatID(), eventBus);
+        this.textChat = lobbyChat;
+        chatOutput.setText(textChat.getChatString());
 
         for (PlayerDTO playerDTO : game.getPlayers()) {
             this.userDTOPlayerDTOMap.put(playerDTO.getUser(), playerDTO);
@@ -611,63 +618,6 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * method the load the robot images on the gameboard
-     *
-     * @author Maria Anrade, Ole Zimmermann, Tommy Dang
-     * @see de.uol.swp.common.game.dto
-     * @see de.uol.swp.common.user
-     * @see de.uol.swp.common.game.dto.PlayerDTO
-     * @since 2023-06-09
-     */
-    public void loadRobotsInBoard() {
-        Platform.runLater(
-                () -> {
-                    Position startPosition;
-
-                    // update robot position in board
-                    for (Map.Entry<UserDTO, PlayerDTO> player :
-                            this.userDTOPlayerDTOMap.entrySet()) {
-
-                        // if exists and not null, go on, to not create twice the same image
-                        // if player is null in userDTOPlayerDTOMap, it means it died forever
-                        if (!Objects.equals(
-                                        this.userRobotImageViewReference.get(player.getKey()), null)
-                                || deadForeverUsers.contains(player.getKey())) continue;
-
-                        startPosition = player.getValue().getRobotDTO().getPosition();
-                        LOG.debug(
-                                "{} startPosition {} {}",
-                                player.getKey().getUsername(),
-                                startPosition.x,
-                                startPosition.y);
-
-                        // show this player robot, since they all start in checkpoint 1
-                        int robotID = player.getValue().getRobotDTO().getRobotID();
-                        ImageView imageView = jsonUtils.getRobotImage(robotID);
-                        imageView.setRotate(
-                                (player.getValue().getRobotDTO().getDirection().ordinal()) * 90);
-                        imageView
-                                .fitWidthProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board.length + 1)
-                                                .subtract(10));
-                        imageView
-                                .fitHeightProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board[0].length + 1)
-                                                .subtract(10));
-
-                        gameBoard.add(imageView, startPosition.x + 1, startPosition.y + 1);
-                        this.userRobotImageViewReference.replace(player.getKey(), imageView);
-                    }
-                });
-    }
-
-    /**
      * Helps to resize the rectangles of the cards and makes it more automatic
      *
      * @author Tommy Dang
@@ -932,6 +882,12 @@ public class GamePresenter extends AbstractPresenter {
             }
             countCards++;
         }
+        // block red ones
+        for (Map.Entry<Rectangle, CardDTO> cardSlot : cardsMap.entrySet()) {
+            if (Objects.equals(cardSlot.getKey().getFill(), RED)) {
+                cardSlot.getKey().setDisable(true);
+            }
+        }
         LOG.debug("countCards " + countCards);
         LOG.debug("freeCards " + freeCards);
         int i = 0;
@@ -1066,8 +1022,7 @@ public class GamePresenter extends AbstractPresenter {
      * @author Jann Erik Bruns
      * @since 2023-05-05
      */
-    public void setPlayerReadyStatus(
-            UserDTO playerIsReady) {
+    public void setPlayerReadyStatus(UserDTO playerIsReady) {
         if (Objects.equals(playerIsReady, loggedInUser)) {
             readyButton.setDisable(true);
         } else {
@@ -1262,11 +1217,10 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Setting playercard of the user
      *
-     * @author Jann Erik Bruns and Maria and Tommy Dang and Ole Zimmermann
+     * @author Jann Erik Bruns and Maria and Tommy Dang
      * @since 2023-06-12
      */
-    public void setPlayerCard(
-            Map<UserDTO, CardDTO> userDTOCardDTOMap) {
+    public void setPlayerCard(Map<UserDTO, CardDTO> userDTOCardDTOMap) {
         for (Map.Entry<UserDTO, CardDTO> userCurrentCard : userDTOCardDTOMap.entrySet()) {
             if (this.userDTOPlayerDTOMap
                     .get(userCurrentCard.getKey())
@@ -1288,7 +1242,7 @@ public class GamePresenter extends AbstractPresenter {
             /**
              * Setting all player cards of the opponent of the user
              *
-             * @author Maria and Tommy Dang and Ole Zimmermann
+             * @author Maria and Tommy Dang
              * @since 2023-06-12
              */
             int position = userToPositionInStackPanes.get(userCurrentCard.getKey());
@@ -1333,209 +1287,10 @@ public class GamePresenter extends AbstractPresenter {
     }
 
     /**
-     * Animate Robot states
-     *
-     * @author Jann Erik Bruns
-     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
-     * @since 2023-06-13
-     */
-    public void animateRobotState(PlayerDTO playerDTO) {
-        LOG.debug("in animateRobotState");
-        UserDTO userToUpdate = playerDTO.getUser();
-        Position newPos = playerDTO.getRobotDTO().getPosition();
-        Position prevPos = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getPosition();
-        int newDir = playerDTO.getRobotDTO().getDirection().ordinal();
-        int prevDir =
-                this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getDirection().ordinal();
-        int robotID = this.userDTOPlayerDTOMap.get(userToUpdate).getRobotDTO().getRobotID();
-        ImageView imageView = jsonUtils.getRobotImage(robotID);
-
-        Node node = this.userRobotImageViewReference.get(userToUpdate);
-        Platform.runLater(
-                () -> {
-                    if (newDir != prevDir) {
-                        RotateTransition rotateTransition =
-                                new RotateTransition(Duration.millis(500), node);
-                        int degrees = (prevDir - newDir) * -90;
-                        if (degrees > 180) degrees = (degrees - 360);
-                        else if (degrees < -180) degrees = (degrees + 360);
-                        rotateTransition.setByAngle(degrees);
-                        rotateTransition.setNode(node);
-                        rotateTransition.setOnFinished(e -> updateRobotState(playerDTO));
-                        rotateTransition.play();
-                    } else if (prevPos.x != newPos.x || newPos.y != prevPos.y) {
-                        TranslateTransition translateTransition =
-                                new TranslateTransition(Duration.millis(500), node);
-                        imageView.setVisible(false);
-
-                        imageView
-                                .fitWidthProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board.length + 1)
-                                                .subtract(10));
-                        imageView
-                                .fitHeightProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board[0].length + 1)
-                                                .subtract(10));
-                        gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                        gameBoard.layout();
-
-                        double toX = imageView.getLayoutX();
-                        double toY = imageView.getLayoutY();
-
-                        double fromX = node.getLayoutX();
-                        double fromY = node.getLayoutY();
-
-                        double moveX = 0;
-                        double moveY = 0;
-
-                        moveX = fromX - toX;
-                        moveY = fromY - toY;
-
-                        if (fromY <= 0 && toY >= 0) moveY = toY + fromY * -1;
-                        else if (fromY >= 0 && toY <= 0) moveY = toY - fromY * -1;
-                        else if (fromY <= 0 && toY <= 0) moveY = toY + fromY * -1;
-                        else if (fromY >= 0 && toY >= 0) moveY = toY - fromY;
-
-                        if (fromX <= 0 && toX >= 0) moveX = toX + fromX * -1;
-                        else if (fromX >= 0 && toX <= 0) moveX = toX - fromX * -1;
-                        else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
-                        else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
-
-                        gameBoard.getChildren().remove(imageView);
-                        imageView.setVisible(true);
-
-                        translateTransition.setToX(moveX);
-                        translateTransition.setToY(moveY);
-                        translateTransition.setOnFinished(e -> updateRobotState(playerDTO));
-                        translateTransition.play();
-                    } else {
-                        updateRobotState(playerDTO);
-                    }
-                });
-    }
-
-    /**
-     * Update robot states every time server sends a message
-     *
-     * @author Maria Andrade
-     * @see de.uol.swp.common.game.message.ShowRobotMovingMessage
-     * @since 2023-05-20
-     */
-    public void updateRobotState(PlayerDTO playerDTO) {
-        // print infos
-        LOG.debug("in updateRobotState");
-        LOG.debug("user {}", playerDTO.getUser().getUsername());
-        LOG.debug("robotID {}", playerDTO.getRobotDTO().getRobotID());
-        LOG.debug("gameBoard {}", gameBoard);
-        LOG.debug(
-                "newPosition x = {} y = {}",
-                playerDTO.getRobotDTO().getPosition().x,
-                playerDTO.getRobotDTO().getPosition().y);
-        LOG.debug("newDirection {}", playerDTO.getRobotDTO().getDirection());
-        int robotID = playerDTO.getRobotDTO().getRobotID();
-        UserDTO userToUpdate = playerDTO.getUser();
-        Position newPos = playerDTO.getRobotDTO().getPosition();
-        CardinalDirection newDir = playerDTO.getRobotDTO().getDirection();
-
-        // set new info after this robot suffered from lasers and might have died
-        setPlayerHP(playerDTO);
-        setRoboterHP(playerDTO);
-        setPlayerCheckpoint(playerDTO);
-
-        // only create new image if robot is alive
-        if (playerDTO.getRobotDTO().isAlive())
-            Platform.runLater(
-                    () -> {
-                        // show this player robot, since they all start in checkpoint 1
-                        Position prevPosition =
-                                this.userDTOPlayerDTOMap
-                                        .get(userToUpdate)
-                                        .getRobotDTO()
-                                        .getPosition();
-                        LOG.debug(
-                                "old Position to delete x = {} y = {}",
-                                prevPosition.x,
-                                prevPosition.y);
-                        removeNodeByRowColumnIndex(
-                                prevPosition.x + 1,
-                                prevPosition.y + 1,
-                                this.userRobotImageViewReference.get(userToUpdate));
-
-                        ImageView imageView = jsonUtils.getRobotImage(robotID);
-                        imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
-                        imageView
-                                .fitWidthProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board.length + 1)
-                                                .subtract(10));
-                        imageView
-                                .fitHeightProperty()
-                                .bind(
-                                        gameBoardWrapper
-                                                .heightProperty()
-                                                .divide(board[0].length + 1)
-                                                .subtract(10));
-                        gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-
-                        this.userRobotImageViewReference.replace(userToUpdate, imageView);
-                    });
-        // if it was alive and now it's not anymore
-        else if (this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive()
-                && !playerDTO.getRobotDTO().isAlive()) {
-            // try to remove last position where robot was
-            Platform.runLater(
-                    () -> {
-                        this.userRobotImageViewReference.get(playerDTO.getUser());
-                        Position prevPosition =
-                                this.userDTOPlayerDTOMap
-                                        .get(playerDTO.getUser())
-                                        .getRobotDTO()
-                                        .getPosition();
-                        LOG.debug(
-                                "old Position to delete x = {} y = {}",
-                                prevPosition.x,
-                                prevPosition.y);
-                        if (!Objects.equals(
-                                this.userRobotImageViewReference.get(playerDTO.getUser()), null))
-                            removeNodeByRowColumnIndex(
-                                    prevPosition.x + 1,
-                                    prevPosition.y + 1,
-                                    this.userRobotImageViewReference.get(playerDTO.getUser()));
-                        this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
-                    });
-        } else {
-
-            // it was and stays dead
-            Platform.runLater(
-                    () -> {
-                        if (!Objects.equals(
-                                this.userRobotImageViewReference.get(playerDTO.getUser()), null))
-                            gameBoard
-                                    .getChildren()
-                                    .remove(
-                                            this.userRobotImageViewReference.get(
-                                                    playerDTO.getUser()));
-                        this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
-                    });
-        }
-        // update playerDTO with new info in hashmap
-        this.userDTOPlayerDTOMap.replace(playerDTO.getUser(), playerDTO);
-    }
-
-    /**
      * animate multiple board elements
      *
      * @author Jann Erik Bruns
-     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage
-     * @Exeption Exception
+     * @see de.uol.swp.common.game.message.ShowBoardMovingMessage @Exeption Exception
      * @since 2023-06-13
      */
     public void animateBoardElements(List<PlayerDTO> playerDTOList) {
@@ -1547,6 +1302,8 @@ public class GamePresenter extends AbstractPresenter {
                         ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
                         for (PlayerDTO playerDTO : playerDTOList) {
+                            if (!playerDTO.getRobotDTO().isAlive()
+                                    || deadForeverUsers.contains(playerDTO.getUser())) continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
                             Position prevPos =
@@ -1624,8 +1381,8 @@ public class GamePresenter extends AbstractPresenter {
                                 else if (fromX <= 0 && toX <= 0) moveX = toX + fromX * -1;
                                 else if (fromX >= 0 && toX >= 0) moveX = toX - fromX;
 
-                                gameBoard.getChildren().remove(imageView);
-                                imageView.setVisible(true);
+                                // gameBoard.getChildren().remove(node);
+                                // imageView.setVisible(true);
 
                                 translateTransition.setToX(moveX);
                                 translateTransition.setToY(moveY);
@@ -1751,8 +1508,7 @@ public class GamePresenter extends AbstractPresenter {
                             this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
                         });
             } else {
-                ;
-                ; // it was and stays dead
+                // it was and stays dead
                 Platform.runLater(
                         () -> {
                             if (!Objects.equals(
@@ -1841,7 +1597,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Disables the player's interface and suspends programming card selection
      *
-     * @author Maria Andrade, Ole Zimmermann, Tommy Dang
+     * @author Maria Andrade, Tommy Dang
      * @param userDied
      * @since 2023-09-09
      */
@@ -1872,7 +1628,7 @@ public class GamePresenter extends AbstractPresenter {
     /**
      * Respawn robots after round is over
      *
-     * @author Maria Andrade & Ole Zimmermann
+     * @author Maria Andrade
      * @param respawnRobots
      * @since 2023-06-22
      */
@@ -1883,6 +1639,7 @@ public class GamePresenter extends AbstractPresenter {
 
                     // update robot position in board
                     for (PlayerDTO player : respawnRobots) {
+                        if (player.getRobotDTO().isDeadForever()) continue;
                         startPosition = player.getRobotDTO().getPosition();
                         LOG.debug("startPosition {} {}", startPosition.x, startPosition.y);
 
@@ -1909,5 +1666,46 @@ public class GamePresenter extends AbstractPresenter {
                         this.userRobotImageViewReference.replace(player.getUser(), imageView);
                     }
                 });
+    }
+
+    /**
+     * Block everything when game is over
+     *
+     * @author Maria Andrade
+     * @since 2023-07-04
+     */
+    public void gameOver() {
+        selectedCardGridPane.setDisable(true);
+        handCardGridPane.setDisable(true);
+        readyButton.setDisable(true);
+        robotOffButton.setDisable(true);
+    }
+
+    /**
+     * Setter
+     *
+     * @author Maria
+     * @since 2023-07-04
+     */
+    public void setUserWon(UserDTO userWonTheGame) {
+        this.userWonTheGame = userWonTheGame;
+    }
+
+    /**
+     * Getter
+     *
+     * @author Maria Andrade
+     * @since 2023-07-04
+     */
+    public ImageView getUserWonImage(UserDTO userWonTheGame) {
+        int robotID = userDTOPlayerDTOMap.get(userWonTheGame).getRobotDTO().getRobotID();
+        ImageView imageView = jsonUtils.getRobotImage(robotID);
+        imageView
+                .fitWidthProperty()
+                .bind(gameBoardWrapper.heightProperty().divide(board.length + 1).subtract(10));
+        imageView
+                .fitHeightProperty()
+                .bind(gameBoardWrapper.heightProperty().divide(board[0].length + 1).subtract(10));
+        return imageView;
     }
 }

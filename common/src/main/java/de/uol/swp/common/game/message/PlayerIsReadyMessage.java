@@ -16,41 +16,62 @@ import java.util.Objects;
  */
 public class PlayerIsReadyMessage extends AbstractLobbyMessage {
     private static final long serialVersionUID = -6003337260190748189L;
-    //    private final boolean isReady;
     private final UserDTO playerIsReady;
     private final int lobbyID;
 
     /**
-     * @author Ole Zimmermann
-     * @since 2023-04-25
+     * Constructor
+     *
+     * @param playerIsReady UserDTO of the player who is ready
+     * @param lobbyID lobby ID of the lobby
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-19
      */
     public PlayerIsReadyMessage(UserDTO playerIsReady, int lobbyID) {
-        //        this.isReady = isReady;
         this.playerIsReady = playerIsReady;
         this.lobbyID = lobbyID;
     }
 
     /**
+     * Getter for the ready player
+     *
+     * @return The UserDTO of the player who is ready
      * @author Ole Zimmermann
-     * @since 2023-04-25
+     * @since 2023-06-06
      */
-    //    public boolean isReady() {
-    //        return isReady;
-    //    }
     public UserDTO getPlayerIsReady() {
         return playerIsReady;
     }
-
+    /**
+     * Setter for the receiver List
+     *
+     * @param receiver List of Sessions
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
     @Override
     public void setReceiver(List<Session> receiver) {
         super.setReceiver(receiver);
     }
-
+    /**
+     * Getter for the receiver List
+     *
+     * @return List of sessions
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
     @Override
     public List<Session> getReceiver() {
         return super.getReceiver();
     }
-
+    /**
+     * Overrides the equals method to compare the objects attributes
+     *
+     * @return boolean if equals or not
+     * @param o Object
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -59,14 +80,24 @@ public class PlayerIsReadyMessage extends AbstractLobbyMessage {
         PlayerIsReadyMessage that = (PlayerIsReadyMessage) o;
         return Objects.equals(playerIsReady, that.playerIsReady);
     }
-
+    /**
+     * Overrides the hashCode method
+     *
+     * @return hashCode of super class
+     * @author Maria Eduarda Costa Leite Andrade
+     * @since 2023-05-13
+     */
     @Override
     public int hashCode() {
         return super.hashCode();
     }
     /**
-     * @author Maria Andrade
-     * @since 2023-05-18
+     * Getter for the lobby id
+     *
+     * @exception IllegalArgumentException if lobby id is negative
+     * @return lobby id
+     * @author Maria Eduarda Costa Leite Andrade, Waldemar Kempel
+     * @since 2023-05-13
      */
     public int getLobbyID() {
         if (lobbyID < 0) {

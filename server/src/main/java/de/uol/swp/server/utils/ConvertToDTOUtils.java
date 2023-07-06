@@ -58,7 +58,7 @@ public final class ConvertToDTOUtils {
         robotDTO.setLastCheckpoint(robot.getLastCheckPoint());
         robotDTO.setAlive(robot.isAlive());
         robotDTO.setPowerDown(robot.isPowerDown());
-        robotDTO.setDeadForever(robotDTO.isDeadForever());
+        robotDTO.setDeadForever(robot.isDeadForever());
         return robotDTO;
     }
 
@@ -122,7 +122,6 @@ public final class ConvertToDTOUtils {
      * @see de.uol.swp.server.gamelogic.AbstractPlayer
      * @see de.uol.swp.common.game.dto.PlayerDTO
      * @since 2023-05-27
-     *
      */
     public static List<PlayerDTO> convertPlayerListToPlayerDTOList(List<AbstractPlayer> players) {
 

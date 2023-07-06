@@ -13,7 +13,7 @@ import javafx.scene.Parent;
  */
 public class LobbyGamePresenterTuple {
 
-    private Parent lobbyParent;
+    private final Parent lobbyParent;
     private Parent gameParent;
     private final LobbyPresenter lobbyPresenter;
     private GamePresenter gamePresenter;
@@ -92,4 +92,3 @@ public class LobbyGamePresenterTuple {
         return lobbyPresenter;
     }
 }
-

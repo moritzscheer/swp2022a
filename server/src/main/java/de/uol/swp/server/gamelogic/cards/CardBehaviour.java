@@ -22,7 +22,7 @@ abstract class CardBehaviour {
     public void move(Robot robot, int moves) {}
 
     /**
-      * The method is for the rotation of the robot
+     * The method is for the rotation of the robot
      *
      * @author Tommy & WKempel
      * @see de.uol.swp.server.gamelogic.Robot

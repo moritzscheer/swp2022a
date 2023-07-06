@@ -12,8 +12,8 @@ public class AbstractGameRequestTest {
 
     private final UserDTO userDTO = new UserDTO("Player1", "pw", "ml");
     private final UUID chatID = UUID.randomUUID();
-    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID);
-    private LobbyDTO lobbyDTO2 = new LobbyDTO(123, "testLobby2", userDTO, "pw", false, chatID);
+    private LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userDTO, "pw", false, chatID, false);
+    private LobbyDTO lobbyDTO2 = new LobbyDTO(123,"testLobby2",userDTO,"pw",false,chatID, false);
 
     /**
      * Tests the constructor and the getters
