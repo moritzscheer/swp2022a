@@ -53,6 +53,20 @@ Robot --> CardinalDirection
 
 CardDTO ..|> ICard
 
+ICard ..|> Serializable
+
+User --|> Serializable
+
+interface User{
+    - getUsername(): String
+    - getPassword(): String
+    - getEMail(): String
+    - getWithoutPassword(): User
+}
+interface ICard{
+    - getID(): Integer
+    - getPriority(): int
+}
 class CardDTO{
     - cardID: Integer {Read only}
     - priority: int {Read only}
