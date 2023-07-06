@@ -13,7 +13,8 @@ public class UserLeftLobbyMessageTest {
     private final UserDTO user = new UserDTO("Player1", "pw", "ml");
     private final UserDTO newOwner = new UserDTO("Player1", "pw", "ml");
     private final UUID randomUUID = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", user, "pw", true, randomUUID, false);
+    private final LobbyDTO lobbyDTO =
+            new LobbyDTO(123, "testLobby", user, "pw", true, randomUUID, false);
 
     /**
      * Tests the constructor and getters

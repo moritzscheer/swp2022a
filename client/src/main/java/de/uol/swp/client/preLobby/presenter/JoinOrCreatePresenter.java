@@ -175,7 +175,9 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
         System.out.println(message.getLobby().isLobbyStarted());
         Platform.runLater(
                 () -> {
-                    if (lobbiesList != null && loggedInUser != null && !message.getLobby().isLobbyStarted()) {
+                    if (lobbiesList != null
+                            && loggedInUser != null
+                            && !message.getLobby().isLobbyStarted()) {
                         lobbiesList.add(message.getLobby());
                     }
                 });
@@ -291,7 +293,7 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     /**
      * Deletes the lobby in the lobby list
      *
-     * If a Game has been started, the lobby will be deleted from the list of open lobbies
+     * <p>If a Game has been started, the lobby will be deleted from the list of open lobbies
      *
      * @author Moritz Scheer
      * @param message the StartGameMessage from the server
@@ -302,10 +304,8 @@ public class JoinOrCreatePresenter extends AbstractPresenter {
     public void onStartGameMessage(StartGameMessage message) {
         Platform.runLater(
                 () -> {
-                    if (lobbiesList != null
-                            && loggedInUser != null) {
-                        lobbiesList.removeIf(
-                                u -> u.getLobbyID().equals(message.getLobbyID()));
+                    if (lobbiesList != null && loggedInUser != null) {
+                        lobbiesList.removeIf(u -> u.getLobbyID().equals(message.getLobbyID()));
                     }
                 });
     }

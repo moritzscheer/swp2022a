@@ -55,8 +55,7 @@ public class LobbyDTO implements Lobby {
             String password,
             Boolean multiplayer,
             UUID chatChannelUUID,
-            Boolean lobbyStarted
-    ) {
+            Boolean lobbyStarted) {
         this.lobbyID = lobbyID;
         this.name = name;
         this.owner = creator;
@@ -92,7 +91,13 @@ public class LobbyDTO implements Lobby {
         Lobby tmp = createWithoutUserPassword(lobby);
         if (tmp.getPassword() == null || tmp.getPassword().equals("")) {
             return new LobbyDTO(
-                    lobby.getLobbyID(), lobby.getName(), lobby.getOwner(), "", true, null, lobby.isLobbyStarted());
+                    lobby.getLobbyID(),
+                    lobby.getName(),
+                    lobby.getOwner(),
+                    "",
+                    true,
+                    null,
+                    lobby.isLobbyStarted());
         } else {
             String passwordBlurred = "*".repeat(4);
             return new LobbyDTO(

@@ -21,7 +21,6 @@ import de.uol.swp.server.message.ServerInternalMessage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LoggingException;
 
 import java.util.*;
 
@@ -113,7 +112,7 @@ public class AuthenticationService extends AbstractService {
         }
         ServerInternalMessage returnMessage;
         try {
-            if(userManagement.isLoggedIn(msg.getUsername()))
+            if (userManagement.isLoggedIn(msg.getUsername()))
                 throw new LoginException("Cannot auth user " + msg.getUsername());
             User newUser = userManagement.login(msg.getUsername(), msg.getPassword());
             returnMessage = new ClientAuthorizedMessage(newUser);

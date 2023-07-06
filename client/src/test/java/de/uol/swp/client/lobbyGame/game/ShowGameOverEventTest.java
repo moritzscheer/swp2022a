@@ -21,7 +21,8 @@ public class ShowGameOverEventTest {
 
     private final UserDTO userWon = new UserDTO("player1", "pw1", "ml1");
     private final UUID uuid = UUID.randomUUID();
-    private final LobbyDTO lobbyDTO = new LobbyDTO(123, "testLobby", userWon, "pw", true, uuid, false);
+    private final LobbyDTO lobbyDTO =
+            new LobbyDTO(123, "testLobby", userWon, "pw", true, uuid, false);
 
     @Test
     public void testConstructorAndGetters() {

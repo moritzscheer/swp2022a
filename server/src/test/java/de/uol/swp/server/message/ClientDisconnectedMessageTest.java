@@ -1,9 +1,8 @@
 package de.uol.swp.server.message;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Test;
 
 /**
  * Test GameServiceTest

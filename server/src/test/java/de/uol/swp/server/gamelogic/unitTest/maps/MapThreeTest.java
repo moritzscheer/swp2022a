@@ -1,17 +1,18 @@
 package de.uol.swp.server.gamelogic.unitTest.maps;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import de.uol.swp.common.user.User;
 import de.uol.swp.common.user.UserDTO;
 import de.uol.swp.server.gamelogic.Block;
 import de.uol.swp.server.gamelogic.Game;
 import de.uol.swp.server.gamelogic.map.MapThree;
 import de.uol.swp.server.gamelogic.tiles.*;
+
 import org.junit.jupiter.api.Test;
+
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 
 /**
  * Test Map Three
@@ -94,7 +95,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 2, 3, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 3, 3, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 3, ConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 5, 3, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                5,
+                3,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 6, 3, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 7, 3, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 3, ExpressConveyorBeltBehaviour.class);
@@ -109,7 +116,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 3, 4, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 4, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 5, 4, ExpressConveyorBeltBehaviour.class, LaserBehaviour.class);
-        assertBlockBehaviors(board, 6, 4, ExpressConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                6,
+                4,
+                ExpressConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 7, 4, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 4, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 9, 4, ConveyorBeltBehaviour.class);
@@ -134,11 +147,25 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 0, 6, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 1, 6, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 2, 6, ExpressConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 3, 6, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                3,
+                6,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 4, 6, ExpressConveyorBeltBehaviour.class, LaserBehaviour.class);
-        assertBlockBehaviors(board, 5, 6, PitBehaviour.class, LaserBehaviour.class, LaserBehaviour.class);
-        assertBlockBehaviors(board, 6, 6, PitBehaviour.class, LaserBehaviour.class, LaserBehaviour.class);
-        assertBlockBehaviors(board, 7, 6, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board, 5, 6, PitBehaviour.class, LaserBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board, 6, 6, PitBehaviour.class, LaserBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                7,
+                6,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 8, 6, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 9, 6, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 10, 6, ExpressConveyorBeltBehaviour.class);
@@ -150,7 +177,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 2, 7, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 3, 7, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 7, ExpressConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 5, 7, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                5,
+                7,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 6, 7, ConveyorBeltBehaviour.class, LaserBehaviour.class);
         assertBlockBehaviors(board, 7, 7, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 7, ExpressConveyorBeltBehaviour.class);
@@ -165,7 +198,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 3, 8, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 5, 8, ExpressConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 6, 8, ExpressConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                6,
+                8,
+                ExpressConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 7, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 9, 8, ConveyorBeltBehaviour.class);
@@ -320,7 +359,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 4, 6, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 5, 6, PitBehaviour.class);
         assertBlockBehaviors(board, 6, 6, PitBehaviour.class);
-        assertBlockBehaviors(board, 7, 6, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                7,
+                6,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 8, 6, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 9, 6, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 10, 6, ExpressConveyorBeltBehaviour.class);
@@ -332,7 +377,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 2, 7, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 3, 7, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 7, ExpressConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 5, 7, ConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                5,
+                7,
+                ConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 6, 7, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 7, 7, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 7, ExpressConveyorBeltBehaviour.class);
@@ -347,7 +398,13 @@ public class MapThreeTest {
         assertBlockBehaviors(board, 3, 8, ConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 4, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 5, 8, ExpressConveyorBeltBehaviour.class);
-        assertBlockBehaviors(board, 6, 8, ExpressConveyorBeltBehaviour.class, WallBehaviour.class, LaserBehaviour.class);
+        assertBlockBehaviors(
+                board,
+                6,
+                8,
+                ExpressConveyorBeltBehaviour.class,
+                WallBehaviour.class,
+                LaserBehaviour.class);
         assertBlockBehaviors(board, 7, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 8, 8, ExpressConveyorBeltBehaviour.class);
         assertBlockBehaviors(board, 9, 8, ConveyorBeltBehaviour.class);
@@ -396,11 +453,16 @@ public class MapThreeTest {
         assertNoBehaviors(board, 11, 11);
     }
 
-    private void assertBlockBehaviors(Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
+    private void assertBlockBehaviors(
+            Block[][] board, int x, int y, Class<?>... expectedBehaviors) {
         assertEquals(expectedBehaviors.length, board[x][y].getBehaviourList().length);
         for (Class<?> behavior : expectedBehaviors) {
-            assertTrue(Arrays.stream(board[x][y].getBehaviourList())
-                    .anyMatch(beh -> behavior.getSimpleName().equals(beh.getClass().getSimpleName())));
+            assertTrue(
+                    Arrays.stream(board[x][y].getBehaviourList())
+                            .anyMatch(
+                                    beh ->
+                                            behavior.getSimpleName()
+                                                    .equals(beh.getClass().getSimpleName())));
         }
     }
 

@@ -1,6 +1,11 @@
 package de.uol.swp.server.gamelogic;
 
+import static de.uol.swp.server.utils.ConvertToDTOUtils.convertCardsToCardsDTO;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.google.common.eventbus.EventBus;
+
 import de.uol.swp.common.game.Position;
 import de.uol.swp.common.game.dto.CardDTO;
 import de.uol.swp.common.game.request.GetProgramCardsRequest;
@@ -18,16 +23,13 @@ import de.uol.swp.server.lobby.LobbyService;
 import de.uol.swp.server.usermanagement.AuthenticationService;
 import de.uol.swp.server.usermanagement.UserManagement;
 import de.uol.swp.server.usermanagement.store.MainMemoryBasedUserStore;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
-import static de.uol.swp.server.utils.ConvertToDTOUtils.convertCardsToCardsDTO;
-import static org.junit.jupiter.api.Assertions.*;
-
 
 /**
  * Test GameServiceTest
@@ -44,7 +46,8 @@ public class GameServiceTest {
     final LobbyService lobbyService = new LobbyService(lobbyManagement, authenticationService, bus);
 
     GameManagement gameManagement = new GameManagement();
-    final GameService gameService = new GameService(bus, gameManagement, lobbyManagement, lobbyService);
+    final GameService gameService =
+            new GameService(bus, gameManagement, lobbyManagement, lobbyService);
 
     static final UserDTO user = new UserDTO("Marco", "Marco2", "Marco2@Grawunder.com");
     static final UserDTO user2 = new UserDTO("Maria", "Maria", "maria@mail.com");
@@ -54,19 +57,19 @@ public class GameServiceTest {
     int lobbyID;
     LobbyDTO lobby;
 
-
     // ------------------------------------------
     // onStartGameRequest tests
     // ------------------------------------------
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         final CreateLobbyRequest request = new CreateLobbyRequest("lobby1", user, true, "password");
         bus.post(request);
 
         lobbyID = lobbyManagement.getLobbies().get(0).getLobbyID();
 
-        final JoinLobbyRequest request1 = new JoinLobbyRequest(lobbyID, "lobby1", user2, "password");
+        final JoinLobbyRequest request1 =
+                new JoinLobbyRequest(lobbyID, "lobby1", user2, "password");
         bus.post(request1);
 
         lobby = lobbyManagement.getLobby(lobbyID).get();
@@ -116,13 +119,14 @@ public class GameServiceTest {
     @Test
     public void testTurnOff() {
 
-        Position oldPos = gameManagement.getGame(lobbyID).get().getPlayers().get(0).getRobot().getPosition();
+        Position oldPos =
+                gameManagement.getGame(lobbyID).get().getPlayers().get(0).getRobot().getPosition();
         final TurnRobotOffRequest request = new TurnRobotOffRequest(lobbyID, user);
         bus.post(request);
 
-        assertTrue(gameManagement.getGame(lobbyID).get().getPlayers().get(0).getRobot().isPowerDown());
+        assertTrue(
+                gameManagement.getGame(lobbyID).get().getPlayers().get(0).getRobot().isPowerDown());
     }
-
 
     /**
      * Tests distribute cards
@@ -135,7 +139,8 @@ public class GameServiceTest {
         final GetProgramCardsRequest request3 = new GetProgramCardsRequest(lobbyID, user);
         bus.post(request3);
 
-        Card[] receivedCards = gameManagement.getGame(lobbyID).get().getPlayers().get(0).getReceivedCards();
+        Card[] receivedCards =
+                gameManagement.getGame(lobbyID).get().getPlayers().get(0).getReceivedCards();
         List<CardDTO> cardDTO = convertCardsToCardsDTO(Arrays.copyOfRange(receivedCards, 0, 5));
 
         final SubmitCardsRequest request = new SubmitCardsRequest(lobbyID, user, cardDTO);
@@ -143,12 +148,9 @@ public class GameServiceTest {
 
         Card[] cards = gameManagement.getGame(lobbyID).get().getPlayers().get(0).getChosenCards();
 
-        for(int i = 0; i < 5; i++){
+        for (int i = 0; i < 5; i++) {
             assertEquals(receivedCards[i].getId(), cards[i].getId());
             assertEquals(receivedCards[i].getPriority(), cards[i].getPriority());
         }
-
     }
-
-
 }
