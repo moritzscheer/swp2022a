@@ -7,6 +7,7 @@ import de.uol.swp.server.gamelogic.tiles.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +21,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @since 2023-07-06
  */
 public class MapThreeTest {
+
+    public MapThreeTest() throws IOException {
+        MapBuilder.main(null);
+    }
     private Block[][] board;
 
     @BeforeEach

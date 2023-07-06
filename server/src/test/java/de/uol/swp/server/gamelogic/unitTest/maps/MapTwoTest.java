@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +22,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DisplayName("MapTwoTest")
 public class MapTwoTest {
+
+    public MapTwoTest() throws IOException {
+        MapBuilder.main(null);
+    }
+
     private Block[][] board;
 
     @BeforeEach
