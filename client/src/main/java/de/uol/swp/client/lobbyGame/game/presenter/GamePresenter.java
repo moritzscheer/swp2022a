@@ -1302,8 +1302,12 @@ public class GamePresenter extends AbstractPresenter {
                         ArrayList<TranslateTransition> moveAnimations = new ArrayList<>();
 
                         for (PlayerDTO playerDTO : playerDTOList) {
-                            if (!playerDTO.getRobotDTO().isAlive()
-                                    || deadForeverUsers.contains(playerDTO.getUser())) continue;
+                            if (deadForeverUsers.contains(playerDTO.getUser())
+                                || playerDTO.getRobotDTO().getPosition().x < 0
+                                || playerDTO.getRobotDTO().getPosition().y < 0
+                                || playerDTO.getRobotDTO().getPosition().x >= 12
+                                || playerDTO.getRobotDTO().getPosition().y >= 12
+                            ) continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
                             Position prevPos =
@@ -1471,76 +1475,59 @@ public class GamePresenter extends AbstractPresenter {
                                 .getPosition();
                 ImageView imageView = jsonUtils.getRobotImage(robotID);
                 UserDTO userToUpdate = playerDTO.getUser();
-
-                Platform.runLater(
-                        () -> {
-                            LOG.debug(
-                                    "old Position to delete x = {} y = {}",
-                                    prevPosition.x,
-                                    prevPosition.y);
-
-                            removeNodeByRowColumnIndex(
-                                    prevPosition.x + 1,
-                                    prevPosition.y + 1,
-                                    this.userRobotImageViewReference.get(playerDTO.getUser()));
-                            // TODO: we might have to fix all robots images facing north
-                            // +3 is just a workaround
-                            imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
-                            imageView
-                                    .fitWidthProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board.length + 1)
-                                                    .subtract(10));
-                            imageView
-                                    .fitHeightProperty()
-                                    .bind(
-                                            gameBoardWrapper
-                                                    .heightProperty()
-                                                    .divide(board[0].length + 1)
-                                                    .subtract(10));
-                            gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
-                            this.userRobotImageViewReference.replace(userToUpdate, imageView);
-                        });
+                removeNodeByRowColumnIndex(
+                        prevPosition.x + 1,
+                        prevPosition.y + 1,
+                        this.userRobotImageViewReference.get(playerDTO.getUser()));
+                imageView.setRotate((newDir.ordinal()) * 90); // Rotate the image
+                imageView
+                        .fitWidthProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board.length + 1)
+                                        .subtract(10));
+                imageView
+                        .fitHeightProperty()
+                        .bind(
+                                gameBoardWrapper
+                                        .heightProperty()
+                                        .divide(board[0].length + 1)
+                                        .subtract(10));
+                this.userRobotImageViewReference.replace(userToUpdate, imageView);
+                gameBoard.add(imageView, newPos.x + 1, newPos.y + 1);
             } else if (this.userDTOPlayerDTOMap.get(playerDTO.getUser()).getRobotDTO().isAlive()
                     && !playerDTO.getRobotDTO().isAlive()) {
+                Position prevPosition =
+                        this.userDTOPlayerDTOMap
+                                .get(playerDTO.getUser())
+                                .getRobotDTO()
+                                .getPosition();
+                LOG.debug(
+                        "old Position to delete x = {} y = {}",
+                        prevPosition.x,
+                        prevPosition.y);
                 // try to remove last position where robot was
-                Platform.runLater(
-                        () -> {
-                            this.userRobotImageViewReference.get(playerDTO.getUser());
-                            Position prevPosition =
-                                    this.userDTOPlayerDTOMap
-                                            .get(playerDTO.getUser())
-                                            .getRobotDTO()
-                                            .getPosition();
-                            LOG.debug(
-                                    "old Position to delete x = {} y = {}",
-                                    prevPosition.x,
-                                    prevPosition.y);
-                            if (!Objects.equals(
-                                    this.userRobotImageViewReference.get(playerDTO.getUser()),
-                                    null))
-                                removeNodeByRowColumnIndex(
-                                        prevPosition.x + 1,
-                                        prevPosition.y + 1,
-                                        this.userRobotImageViewReference.get(playerDTO.getUser()));
-                            this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
-                        });
+                if (!Objects.equals(
+                        this.userRobotImageViewReference.get(playerDTO.getUser()), null)){
+                    removeNodeByRowColumnIndex(
+                            prevPosition.x + 1,
+                            prevPosition.y + 1,
+                            this.userRobotImageViewReference.get(playerDTO.getUser()));
+                    this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+                }
             } else {
                 // it was and stays dead
-                Platform.runLater(
-                        () -> {
-                            if (!Objects.equals(
-                                    this.userRobotImageViewReference.get(playerDTO.getUser()),
-                                    null))
-                                gameBoard
-                                        .getChildren()
-                                        .remove(
-                                                this.userRobotImageViewReference.get(
-                                                        playerDTO.getUser()));
-                            this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
-                        });
+                if (!Objects.equals(
+                        this.userRobotImageViewReference.get(playerDTO.getUser()),
+                        null))
+                    gameBoard
+                            .getChildren()
+                            .remove(
+                                    this.userRobotImageViewReference.get(
+                                            playerDTO.getUser()));
+                this.userRobotImageViewReference.replace(playerDTO.getUser(), null);
+
             }
 
             // update playerDTO with new info in hashmap
