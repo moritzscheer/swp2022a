@@ -344,6 +344,7 @@ public class Game {
         boolean allReady = false;
         for (AbstractPlayer botPlayer : this.players) {
             if (botPlayer instanceof BotPlayer) {
+                if(botPlayer.getRobot().isDeadForever()) continue;
                 Card[] receivedCards = botPlayer.getReceivedCards();
                 botPlayer.chooseCardsOrder(chooseFirstCardMoveBot(receivedCards));
                 System.out.println(receivedCards.length); // set cards of this bot
@@ -556,10 +557,14 @@ public class Game {
                 survivor = player.getUser();
             } else {
                 countDeadForever++;
-                if (player
-                        instanceof
-                        Player) // this is case real players died forever and all others turn off
-                nRealPlayers--;
+                // this is case real players died forever and all others turn off
+                if (player instanceof Player)
+                    nRealPlayers--;
+                Card[] deadCards = new Card[5];
+                for (int i = 0; i < 5; i++) {
+                    deadCards[i] = new Card(-1);
+                }
+                player.chooseCardsOrder(deadCards);
             }
         }
         this.nRobots =
