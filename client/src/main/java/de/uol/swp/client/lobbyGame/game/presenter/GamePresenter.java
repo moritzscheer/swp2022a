@@ -1303,8 +1303,11 @@ public class GamePresenter extends AbstractPresenter {
 
                         for (PlayerDTO playerDTO : playerDTOList) {
                             if (deadForeverUsers.contains(playerDTO.getUser())
-                                || playerDTO.getRobotDTO().getPosition().x < 0 ||
-                                    playerDTO.getRobotDTO().getPosition().y < 0) continue;
+                                || playerDTO.getRobotDTO().getPosition().x < 0
+                                || playerDTO.getRobotDTO().getPosition().y < 0
+                                || playerDTO.getRobotDTO().getPosition().x >= 12
+                                || playerDTO.getRobotDTO().getPosition().y >= 12
+                            ) continue;
                             UserDTO userToUpdate = playerDTO.getUser();
                             Position newPos = playerDTO.getRobotDTO().getPosition();
                             Position prevPos =
