@@ -80,8 +80,8 @@ public class ClientApp extends Application implements ConnectionListener {
         List<String> args = p.getRaw();
 
         if (args.size() != 2) {
-            host = "localhost";
-            port = Configuration.getDefaultPort();
+            host = "duemmer.informatik.uni-oldenburg.de";
+            port = 52011;
             LOG.info("Usage: {} host port", ClientConnection.class.getSimpleName());
             LOG.info("Using default port {} {}", port, host);
         } else {
